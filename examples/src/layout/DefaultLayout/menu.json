@@ -1,0 +1,103 @@
+[
+  {
+    "id": "dashboard",
+    "name": "Dashboard",
+    "depth": 1,
+    "uri": "/",
+    "icon": "Dashboard"
+  },
+  {
+    "id": "form",
+    "name": "Form",
+    "depth": 1,
+    "uri": "/form",
+    "icon": "CallToAction"
+  },
+  {
+    "id": "form_item",
+    "name": "Form Item",
+    "depth": 1,
+    "icon": "ViewModule",
+    "items": [
+      {
+        "id": "form_item/styling",
+        "name": "Styling",
+        "depth": 2,
+        "uri": "/form_item/styling"
+      },
+      {
+        "id": "form_item/text",
+        "name": "FormText ...",
+        "depth": 2,
+        "uri": "/form_item/text"
+      },
+      {
+        "id": "form_item/number",
+        "name": "FormNumber",
+        "depth": 2,
+        "uri": "/form_item/number"
+      },
+      {
+        "id": "form_item/tag",
+        "name": "FormTag",
+        "depth": 2,
+        "uri": "/form_item/tag"
+      },
+      {
+        "id": "form_item/textarea",
+        "name": "FormTextarea",
+        "depth": 2,
+        "uri": "/form_item/textarea"
+      },
+      {
+        "id": "form_item/checkbox",
+        "name": "FormCheckbox",
+        "depth": 2,
+        "uri": "/form_item/checkbox"
+      },
+      {
+        "id": "form_item/select",
+        "name": "FormSelect",
+        "depth": 2,
+        "uri": "/form_item/select"
+      },
+      {
+        "id": "form_item/autocomplete",
+        "name": "FormAutocomplete",
+        "depth": 2,
+        "uri": "/form_item/autocomplete"
+      },
+      {
+        "id": "form_item/radio",
+        "name": "FormRadioGroup",
+        "depth": 2,
+        "uri": "/form_item/radio"
+      },
+      {
+        "id": "form_item/toggle_button",
+        "name": "FormToggleButtonGroup",
+        "depth": 2,
+        "uri": "/form_item/toggle_button"
+      },
+      {
+        "id": "form_item/rating",
+        "name": "FormRating",
+        "depth": 2,
+        "uri": "/form_item/rating"
+      },
+      {
+        "id": "form_item/text_editor",
+        "name": "FormTextEditor",
+        "depth": 2,
+        "uri": "/form_item/text_editor"
+      }
+    ]
+  },
+  {
+    "id": "search",
+    "name": "Search",
+    "depth": 1,
+    "uri": "/search",
+    "icon": "Search"
+  }
+]

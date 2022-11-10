@@ -1,0 +1,102 @@
+$outlined-medium-no-label-height: 52px;
+$outlined-small-no-label-height: 37px;
+$outlined-medium-label-height: 37px;
+$outlined-small-label-height: 24px;
+
+$filled-medium-no-label-height: 52px;
+$filled-small-no-label-height: 44px;
+$filled-medium-label-height: 37px;
+$filled-small-label-height: 31px;
+
+$standard-medium-no-label-height: 28px;
+$standard-small-no-label-height: 26px;
+$standard-medium-label-height: 28px;
+$standard-small-label-height: 26px;
+
+.FormToggleButtonGroup {
+  .ToggleButton {
+    display: inline-block;
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  // Label 없음
+  &:not(.with-label) {
+    &.variant-outlined .ToggleButton {
+      height: $outlined-medium-no-label-height;
+    }
+    &.variant-filled .ToggleButton {
+      height: $filled-medium-no-label-height;
+    }
+    &.variant-standard .ToggleButton {
+      height: $standard-medium-no-label-height;
+    }
+
+    &.size-small {
+      &.variant-outlined .ToggleButton {
+        height: $outlined-small-no-label-height;
+      }
+      &.variant-filled .ToggleButton {
+        height: $filled-small-no-label-height;
+      }
+      &.variant-standard .ToggleButton {
+        height: $standard-small-no-label-height;
+      }
+    }
+  }
+
+  // Label 있음
+  &.with-label {
+    &.variant-outlined .ToggleButton {
+      height: $outlined-medium-label-height;
+    }
+    &.variant-filled .ToggleButton {
+      height: $filled-medium-label-height;
+    }
+    &.variant-standard .ToggleButton {
+      height: $standard-medium-label-height;
+    }
+
+    &.size-small {
+      &.variant-outlined .ToggleButton {
+        height: $outlined-small-label-height;
+      }
+      &.variant-filled .ToggleButton {
+        height: $filled-small-label-height;
+      }
+      &.variant-standard .ToggleButton {
+        height: $standard-small-label-height;
+      }
+    }
+  }
+}
+
+.Form {
+  .FormCol.with-label {
+    .FormToggleButtonGroup {
+      &.variant-outlined .ToggleButton {
+        height: $outlined-medium-label-height;
+      }
+      &.variant-filled .ToggleButton {
+        height: $filled-medium-label-height;
+      }
+      &.variant-standard .ToggleButton {
+        height: $standard-medium-label-height;
+      }
+
+      &.size-small {
+        &.variant-outlined .ToggleButton {
+          height: $outlined-small-label-height;
+        }
+        &.variant-filled .ToggleButton {
+          height: $filled-small-label-height;
+        }
+        &.variant-standard .ToggleButton {
+          height: $standard-small-label-height;
+        }
+      }
+    }
+  }
+}
