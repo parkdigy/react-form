@@ -1,10 +1,10 @@
 [
   {
-    "id": "dashboard",
-    "name": "Dashboard",
+    "id": "home",
+    "name": "Home",
     "depth": 1,
     "uri": "/",
-    "icon": "Dashboard"
+    "icon": "Home"
   },
   {
     "id": "form",
