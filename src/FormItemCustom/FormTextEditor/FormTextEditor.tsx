@@ -79,6 +79,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
     // Ref -------------------------------------------------------------------------------------------------------------
 
     const editorRef = useRef<any>(null);
+    const keyDownTime = useRef(0);
 
     // State - value ---------------------------------------------------------------------------------------------------
 
@@ -221,12 +222,18 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
     const handleEditorChange = useCallback(
       (value: string) => {
         setValue(value);
-        nextTick(() => {
-          if (onValueChangeByUser) onValueChangeByUser(name, value);
-        });
+        if (new Date().getTime() - keyDownTime.current < 300) {
+          nextTick(() => {
+            if (onValueChangeByUser) onValueChangeByUser(name, value);
+          });
+        }
       },
       [name, onValueChangeByUser]
     );
+
+    const handleKeyDown = useCallback(() => {
+      keyDownTime.current = new Date().getTime();
+    }, []);
 
     const handleImageUpload = useCallback(
       (
@@ -291,6 +298,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
                 setTimeout(() => setInitialized(true), 10);
               }}
               onEditorChange={handleEditorChange}
+              onKeyDown={handleKeyDown}
               onFocus={() => setFocused(initFocused || true)}
               onBlur={() => setFocused(initFocused || false)}
             />

@@ -7172,6 +7172,7 @@ styleInject(css_248z$8);var FormTextEditor = React__default["default"].forwardRe
     var _c = useAutoUpdateState$1(initFocused || formFocused), focused = _c[0], setFocused = _c[1];
     // Ref -------------------------------------------------------------------------------------------------------------
     var editorRef = React.useRef(null);
+    var keyDownTime = React.useRef(0);
     // State - value ---------------------------------------------------------------------------------------------------
     var _d = useAutoUpdateState$1(initValue), value = _d[0], setValue = _d[1];
     useFirstSkipEffect$1(function () {
@@ -7290,11 +7291,16 @@ styleInject(css_248z$8);var FormTextEditor = React__default["default"].forwardRe
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleEditorChange = React.useCallback(function (value) {
         setValue(value);
-        nextTick(function () {
-            if (onValueChangeByUser)
-                onValueChangeByUser(name, value);
-        });
+        if (new Date().getTime() - keyDownTime.current < 300) {
+            nextTick(function () {
+                if (onValueChangeByUser)
+                    onValueChangeByUser(name, value);
+            });
+        }
     }, [name, onValueChangeByUser]);
+    var handleKeyDown = React.useCallback(function () {
+        keyDownTime.current = new Date().getTime();
+    }, []);
     var handleImageUpload = React.useCallback(function (blobInfo, success, failure, progress) {
         if (onImageUpload)
             onImageUpload(blobInfo.blob(), success, failure, progress);
@@ -7323,7 +7329,7 @@ styleInject(css_248z$8);var FormTextEditor = React__default["default"].forwardRe
                     images_upload_handler: handleImageUpload,
                 }, onInit: function () {
                     setTimeout(function () { return setInitialized(true); }, 10);
-                }, onEditorChange: handleEditorChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } })) }));
+                }, onEditorChange: handleEditorChange, onKeyDown: handleKeyDown, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } })) }));
 });
 FormTextEditor.displayName = 'FormTextEditor';
 FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDefaultProps = {
