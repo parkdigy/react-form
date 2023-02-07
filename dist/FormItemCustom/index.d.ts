@@ -8,3 +8,5 @@ export * from './FormDatePicker';
 export * from './FormDateTimePicker';
 export * from './FormTimePicker';
 export * from './FormDateRangePicker';
+export * from './FormFile';
+export * from './FormImageFile';

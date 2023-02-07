@@ -75,7 +75,7 @@ const Search = () => {
       {/*      </SearchButton>*/}
       {/*    </SearchGroup>*/}
       {/*  </_Search>*/}
-      {/*  <FormHelperText sx={{ ml: 1 }}>기본</FormHelperText>*/}
+      {/*  <FormHelperText component='div' sx={{ ml: 1 }}>기본</FormHelperText>*/}
       {/*</Grid>*/}
       <Grid item>
         <_Search ref={searchRef} autoSubmit onSubmit={handleSubmit}>

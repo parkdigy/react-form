@@ -26,6 +26,7 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
       helperText,
       helperTextProps,
       error,
+      hideLabel,
       //----------------------------------------------------------------------------------------------------------------
       className,
       style,
@@ -187,7 +188,7 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
               )}
             </InputLabel>
           )}
-          <div className='FormItemBase-Control-wrap' style={{ display: 'grid' }}>
+          <div className='FormItemBase-Control-wrap' style={{ display: 'grid', marginTop: hideLabel ? 0 : undefined }}>
             {variant === 'standard' && (
               <Input ref={inputResizeDetectorRef} size={size} fullWidth disabled style={{ visibility: 'hidden' }} />
             )}
@@ -222,7 +223,11 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
               {control}
             </div>
           </div>
-          {!formColWithHelperText && helperText && <FormHelperText {...helperTextProps}>{helperText}</FormHelperText>}
+          {!formColWithHelperText && helperText && (
+            <FormHelperText component='div' {...helperTextProps}>
+              {helperText}
+            </FormHelperText>
+          )}
         </FormControl>
       </div>
     );

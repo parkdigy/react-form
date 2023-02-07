@@ -453,6 +453,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
         fullWidth={!width && fullWidth}
         error={error}
         helperText={formColWithHelperText ? undefined : helperText}
+        FormHelperTextProps={{ component: 'div' } as any}
         disabled={disabled}
         InputProps={muiInputProps}
         InputLabelProps={muiInputLabelProps}

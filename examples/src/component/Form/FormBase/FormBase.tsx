@@ -28,7 +28,7 @@ import {
   FormTimePicker,
   FormDateRangePicker,
 } from '@pdg/react-form';
-import { ToggleButtonGroup, Checkbox, RadioGroup, Rating } from './sub';
+import { ToggleButtonGroup, Checkbox, RadioGroup, Rating, FileUpload } from './sub';
 
 const FormBase = () => {
   const formRef = useRef<FormCommands>(null);
@@ -48,6 +48,7 @@ const FormBase = () => {
   const [isFormBlock2Hidden, setIsFormBlock2Hidden] = useState(false);
   const [isFormBlock3Hidden, setIsFormBlock3Hidden] = useState(false);
   const [isFormBlock4Hidden, setIsFormBlock4Hidden] = useState(false);
+  const [isFormBlock5Hidden, setIsFormBlock5Hidden] = useState(false);
 
   //--------------------------------------------------------------------------------------------------------------------
 
@@ -160,6 +161,11 @@ const FormBase = () => {
                 {isFormBlock4Hidden ? 'Show' : 'Hide'} FormBlock 4
               </FormButton>
             </FormCol>
+            <FormCol>
+              <FormButton onClick={() => setIsFormBlock5Hidden((isFormBlock5Hidden) => !isFormBlock5Hidden)}>
+                {isFormBlock5Hidden ? 'Show' : 'Hide'} FormBlock 5
+              </FormButton>
+            </FormCol>
           </FormRow>
         </Form>
       </OutlinedPaper>
@@ -179,7 +185,7 @@ const FormBase = () => {
         <FormBlock icon='TextFields' label='FormBlock 1' hidden={isFormBlock1Hidden}>
           <FormRow>
             <FormCol>
-              <FormText name='FormText' label='FormText' ref={formTextRef} required helperText='FormText' />
+              <FormText name='FormText' label='FormText' ref={formTextRef} helperText='FormText' />
             </FormCol>
             <FormCol>
               <FormSearch name='FormSearch' label='FormSearch' />
@@ -255,7 +261,11 @@ const FormBase = () => {
           <Rating />
         </FormBlock>
 
-        <FormBlock icon='TextSnippet' label='FormBlock 4' hidden={isFormBlock4Hidden}>
+        <FormBlock icon='Upload' label='FormBlock 4' hidden={isFormBlock4Hidden}>
+          <FileUpload />
+        </FormBlock>
+
+        <FormBlock icon='TextSnippet' label='FormBlock 5' hidden={isFormBlock5Hidden}>
           <FormRow>
             <FormCol>
               <FormTextarea name='FormTextArea' label='FormTextArea' />

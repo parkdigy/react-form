@@ -10,3 +10,4 @@ export { default as FormItemToggleButtonGroup } from './FormItemToggleButtonGrou
 export { default as FormItemRating } from './FormItemRating';
 export { default as FormItemTextEditor } from './FormItemTextEditor';
 export { default as FormItemAutocomplete } from './FormItemAutocomplete';
+export { default as FormItemFile } from './FormItemFile';

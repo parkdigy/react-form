@@ -528,6 +528,20 @@ function checkDateAvailable(date, availableDate, type, time) {
     if (availableDateVal[1] && dateVal > availableDateVal[1])
         return 'max';
     return 'available';
+}function getFileSizeText(bytes, dp) {
+    if (dp === void 0) { dp = 1; }
+    var thresh = 1024;
+    if (Math.abs(bytes) < thresh) {
+        return "".concat(bytes, " Byte");
+    }
+    var units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    var u = -1;
+    var r = Math.pow(10, dp);
+    do {
+        bytes /= thresh;
+        u += 1;
+    } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
+    return "".concat(bytes.toFixed(dp), " ").concat(units[u]);
 }var nextTick = function (callback) {
     setTimeout(callback, 1);
 };var FormDefaultProps = {
@@ -1093,7 +1107,7 @@ var templateObject_1$1;var FormRow = React__default["default"].forwardRef(functi
         (icon || label || line) && (React__default["default"].createElement(FormDivider, { size: size, icon: icon, color: color, label: label, line: line, lineVerticalMargin: lineVerticalMargin, hidden: hidden })),
         React__default["default"].createElement(StyledWrapGrid, { ref: ref, item: true, className: classNames$1(className, 'FormRow'), xs: 12, style: style, sx: sx },
             React__default["default"].createElement(material.Grid, { container: true, spacing: spacing, direction: 'row', style: { flexWrap: 'nowrap' } }, children),
-            helperText && React__default["default"].createElement(material.FormHelperText, { error: error }, helperText))));
+            helperText && (React__default["default"].createElement(material.FormHelperText, { component: 'div', error: error }, helperText)))));
 });
 FormRow.displayName = 'FormRow';
 FormRow.defaultProps = FormRowDefaultProps;/* global Reflect, Promise */
@@ -2004,7 +2018,7 @@ function useResizeDetector(props) {
                 React__default["default"].createElement(material.Grid, { item: true, xs: 2 },
                     React__default["default"].createElement(material.Box, { sx: { display: 'flex', flexWrap: 'wrap', gap: gap } }, children)),
                 helperText && (React__default["default"].createElement(material.Grid, { item: true },
-                    React__default["default"].createElement(material.FormHelperText, { error: error, style: { marginLeft: helperTextShift ? 14 : 5 } }, helperText)))))));
+                    React__default["default"].createElement(material.FormHelperText, { component: 'div', error: error, style: { marginLeft: helperTextShift ? 14 : 5 } }, helperText)))))));
 });
 FormCol.displayName = 'FormCol';
 FormCol.defaultProps = FormColDefaultProps;var FormTextFieldDefaultProps = {};function styleInject(css, ref) {
@@ -2032,8 +2046,8 @@ FormCol.defaultProps = FormColDefaultProps;var FormTextFieldDefaultProps = {};fu
   } else {
     style.appendChild(document.createTextNode(css));
   }
-}var css_248z$g = ".FormTextField {\n  min-width: 200px;\n}\n.FormTextField .clear-icon-button-wrap {\n  visibility: hidden;\n}\n.FormTextField.variant-filled .clear-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormTextField:hover .clear-icon-button-wrap.show,\n.FormTextField .MuiInputBase-root.Mui-focused .clear-icon-button-wrap.show {\n  visibility: visible;\n}";
-styleInject(css_248z$g);var FormTextField = React__default["default"].forwardRef(function (_a, ref) {
+}var css_248z$i = ".FormTextField {\n  min-width: 200px;\n}\n.FormTextField .clear-icon-button-wrap {\n  visibility: hidden;\n}\n.FormTextField.variant-filled .clear-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormTextField:hover .clear-icon-button-wrap.show,\n.FormTextField .MuiInputBase-root.Mui-focused .clear-icon-button-wrap.show {\n  visibility: visible;\n}";
+styleInject(css_248z$i);var FormTextField = React__default["default"].forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var _b;
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
@@ -2310,7 +2324,7 @@ styleInject(css_248z$g);var FormTextField = React__default["default"].forwardRef
             onKeyDown(e);
     }, [select, multiline, name, value, noFormValueItem, onRequestSearchSubmit]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(material.TextField, __assign$4({}, props, { variant: variant, size: size, color: color, focused: focused || undefined, name: name, label: label, placeholder: placeholder, className: classNames$1(className, 'FormValueItem', 'FormTextField', "variant-".concat(variant)), inputRef: initInputRef ? initInputRef : inputRef, value: value, required: required, fullWidth: !width && fullWidth, error: error, helperText: formColWithHelperText ? undefined : helperText, disabled: disabled, InputProps: muiInputProps, InputLabelProps: muiInputLabelProps, inputProps: ((_b = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _b === void 0 ? void 0 : _b.includes('FormTag-Input')) ? initInputProps : inputProps, style: style, select: select, SelectProps: SelectProps, multiline: multiline, onChange: handleChange, onBlur: handleBlur, onKeyDown: handleKeyDown })));
+    return (React__default["default"].createElement(material.TextField, __assign$4({}, props, { variant: variant, size: size, color: color, focused: focused || undefined, name: name, label: label, placeholder: placeholder, className: classNames$1(className, 'FormValueItem', 'FormTextField', "variant-".concat(variant)), inputRef: initInputRef ? initInputRef : inputRef, value: value, required: required, fullWidth: !width && fullWidth, error: error, helperText: formColWithHelperText ? undefined : helperText, FormHelperTextProps: { component: 'div' }, disabled: disabled, InputProps: muiInputProps, InputLabelProps: muiInputLabelProps, inputProps: ((_b = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _b === void 0 ? void 0 : _b.includes('FormTag-Input')) ? initInputProps : inputProps, style: style, select: select, SelectProps: SelectProps, multiline: multiline, onChange: handleChange, onBlur: handleBlur, onKeyDown: handleKeyDown })));
 });
 FormTextField.displayName = 'FormText';
 FormTextField.defaultProps = FormTextFieldDefaultProps;var FormTextDefaultProps = __assign$4(__assign$4({}, FormTextFieldDefaultProps), { clear: true, value: '' });var FormText = React__default["default"].forwardRef(function (_a, ref) {
@@ -2332,8 +2346,8 @@ FormText.defaultProps = FormTextDefaultProps;var FormHiddenDefaultProps = {};var
     return (React__default["default"].createElement(FormText, __assign$4({ ref: ref, className: classNames$1(className, 'FormHidden'), type: 'hidden', variant: 'standard' }, props)));
 });
 FormHidden.displayName = 'FormHidden';
-FormHidden.defaultProps = FormHiddenDefaultProps;var FormTagDefaultProps = __assign$4(__assign$4({}, FormTextDefaultProps), { value: [], clear: true, formValueSeparator: ',' });var css_248z$f = ".FormTag.FormTextField {\n  min-width: 200px;\n}";
-styleInject(css_248z$f);var FormTag = React__default["default"].forwardRef(function (_a, ref) {
+FormHidden.defaultProps = FormHiddenDefaultProps;var FormTagDefaultProps = __assign$4(__assign$4({}, FormTextDefaultProps), { value: [], clear: true, formValueSeparator: ',' });var css_248z$h = ".FormTag.FormTextField {\n  min-width: 200px;\n}";
+styleInject(css_248z$h);var FormTag = React__default["default"].forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var className = _a.className, name = _a.name, initValue = _a.value, exceptValue = _a.exceptValue, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, disabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, initHelperText = _a.helperText, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest$2(_a, ["className", "name", "value", "exceptValue", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
     var _b = useFormState(), formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit, otherFormState = __rest$2(_b, ["fullWidth", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
@@ -2522,8 +2536,8 @@ FormTag.defaultProps = FormTagDefaultProps;var FormEmailDefaultProps = __assign$
     return React__default["default"].createElement(FormText, __assign$4({ ref: ref, className: classNames$1(className, 'FormEmail'), type: 'email' }, props));
 });
 FormEmail.displayName = 'FormEmail';
-FormEmail.defaultProps = FormEmailDefaultProps;var FormPasswordDefaultProps = __assign$4(__assign$4({}, FormTextFieldDefaultProps), { clear: false, eye: true });var css_248z$e = ".FormPassword .eye-icon-button-wrap {\n  visibility: hidden;\n}\n.FormPassword.variant-filled .eye-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormPassword:hover .eye-icon-button-wrap.show,\n.FormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show {\n  visibility: visible;\n}";
-styleInject(css_248z$e);var StyledEyeInputAdornment = material.styled(material.InputAdornment)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  visibility: hidden;\n"], ["\n  visibility: hidden;\n"])));
+FormEmail.defaultProps = FormEmailDefaultProps;var FormPasswordDefaultProps = __assign$4(__assign$4({}, FormTextFieldDefaultProps), { clear: false, eye: true });var css_248z$g = ".FormPassword .eye-icon-button-wrap {\n  visibility: hidden;\n}\n.FormPassword.variant-filled .eye-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormPassword:hover .eye-icon-button-wrap.show,\n.FormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show {\n  visibility: visible;\n}";
+styleInject(css_248z$g);var StyledEyeInputAdornment = material.styled(material.InputAdornment)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  visibility: hidden;\n"], ["\n  visibility: hidden;\n"])));
 var FormPassword = React__default["default"].forwardRef(function (_a, ref) {
     // State -----------------------------------------------------------------------------------------------------------
     var className = _a.className, initMuiInputProps = _a.InputProps, eye = _a.eye, onChange = _a.onChange, props = __rest$2(_a, ["className", "InputProps", "eye", "onChange"]);
@@ -4056,14 +4070,14 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
     return React__default["default"].createElement(FormText, __assign$4({ ref: ref, className: classNames$1(className, 'FormNumber'), InputProps: muiInputProps }, props));
 });
 FormNumber.displayName = 'FormNumber';
-FormNumber.defaultProps = FormNumberDefaultProps;var FormSearchDefaultProps = __assign$4({}, FormTextDefaultProps);var css_248z$d = ".FormSearch input[type=search]::-webkit-search-decoration,\n.FormSearch input[type=search]::-webkit-search-cancel-button,\n.FormSearch input[type=search]::-webkit-search-results-button,\n.FormSearch input[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n}";
-styleInject(css_248z$d);var FormSearch = React__default["default"].forwardRef(function (_a, ref) {
+FormNumber.defaultProps = FormNumberDefaultProps;var FormSearchDefaultProps = __assign$4({}, FormTextDefaultProps);var css_248z$f = ".FormSearch input[type=search]::-webkit-search-decoration,\n.FormSearch input[type=search]::-webkit-search-cancel-button,\n.FormSearch input[type=search]::-webkit-search-results-button,\n.FormSearch input[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n}";
+styleInject(css_248z$f);var FormSearch = React__default["default"].forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest$2(_a, ["className"]);
     return React__default["default"].createElement(FormText, __assign$4({ className: classNames$1(className, 'FormSearch'), ref: ref, type: 'search' }, props));
 });
 FormSearch.displayName = 'FormSearch';
-FormSearch.defaultProps = FormSearchDefaultProps;var FormTextareaDefaultProps = __assign$4(__assign$4({}, FormTextFieldDefaultProps), { clear: false, rows: 3, value: '' });var css_248z$c = ".FormTextarea .MuiInputBase-root .MuiInputBase-input {\n  overflow-y: scroll;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar {\n  width: 8px;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n}";
-styleInject(css_248z$c);var FormTextarea = React__default["default"].forwardRef(function (_a, ref) {
+FormSearch.defaultProps = FormSearchDefaultProps;var FormTextareaDefaultProps = __assign$4(__assign$4({}, FormTextFieldDefaultProps), { clear: false, rows: 3, value: '' });var css_248z$e = ".FormTextarea .MuiInputBase-root .MuiInputBase-input {\n  overflow-y: scroll;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar {\n  width: 8px;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n}";
+styleInject(css_248z$e);var FormTextarea = React__default["default"].forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest$2(_a, ["className"]);
     return React__default["default"].createElement(FormTextField, __assign$4({ ref: ref, className: classNames$1(className, 'FormTextarea') }, props, { multiline: true }));
 });
@@ -4073,8 +4087,8 @@ FormTextarea.defaultProps = FormTextareaDefaultProps;var FormUrlDefaultProps = _
     return React__default["default"].createElement(FormText, __assign$4({ ref: ref, className: classNames$1(className, 'FormUrl'), type: 'url' }, props));
 });
 FormUrl.displayName = 'FormUrl';
-FormUrl.defaultProps = FormUrlDefaultProps;var FormSelectDefaultProps = __assign$4(__assign$4({}, FormTextDefaultProps), { formValueSeparator: ',', minWidth: 120 });var css_248z$b = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
-styleInject(css_248z$b);var FormSelect = React__default["default"].forwardRef(function (_a, ref) {
+FormUrl.defaultProps = FormUrlDefaultProps;var FormSelectDefaultProps = __assign$4(__assign$4({}, FormTextDefaultProps), { formValueSeparator: ',', minWidth: 120 });var css_248z$d = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
+styleInject(css_248z$d);var FormSelect = React__default["default"].forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var className = _a.className, name = _a.name, initItems = _a.items, initFullWidth = _a.fullWidth, onLoadItems = _a.onLoadItems, readOnly = _a.readOnly, multiple = _a.multiple, checkbox = _a.checkbox, placeholder = _a.placeholder, initStartAdornment = _a.startAdornment, initValue = _a.value, initInputLabelProps = _a.InputLabelProps, initSelectProps = _a.SelectProps, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, width = _a.width, minWidth = _a.minWidth, initLoading = _a.loading, onChange = _a.onChange, onValue = _a.onValue, props = __rest$2(_a, ["className", "name", "items", "fullWidth", "onLoadItems", "readOnly", "multiple", "checkbox", "placeholder", "startAdornment", "value", "InputLabelProps", "SelectProps", "formValueSeparator", "formValueSort", "width", "minWidth", "loading", "onChange", "onValue"]);
     var _b = useFormState(), formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, otherFormState = __rest$2(_b, ["fullWidth", "onAddValueItem", "onValueChange"]);
@@ -4330,12 +4344,12 @@ FormSelect.defaultProps = FormSelectDefaultProps;var FormCheckboxDefaultProps = 
     checked: false,
     value: 1,
     uncheckedValue: 0,
-};var css_248z$a = ".FormItemBase .FormItemBase-InputLabel {\n  overflow: visible;\n  padding-left: 5px;\n}\n.FormItemBase .FormItemBase-InputLabel.MuiInputLabel-sizeSmall {\n  transform: translate(0, -1.5px) scale(0.7);\n}\n.FormItemBase .FormItemBase-Control-wrap {\n  position: relative;\n}\n.FormItemBase .FormItemBase-Control {\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n.FormItemBase.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 16px;\n}";
-styleInject(css_248z$a);var FormItemBase = React__default["default"].forwardRef(function (_a, ref) {
+};var css_248z$c = ".FormItemBase .FormItemBase-InputLabel {\n  overflow: visible;\n  padding-left: 5px;\n}\n.FormItemBase .FormItemBase-InputLabel.MuiInputLabel-sizeSmall {\n  transform: translate(0, -1.5px) scale(0.7);\n}\n.FormItemBase .FormItemBase-Control-wrap {\n  position: relative;\n}\n.FormItemBase .FormItemBase-Control {\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n.FormItemBase.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 16px;\n}";
+styleInject(css_248z$c);var FormItemBase = React__default["default"].forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    control = _a.control, controlHeight = _a.controlHeight, controlVerticalCenter = _a.controlVerticalCenter, required = _a.required, labelIcon = _a.labelIcon, label = _a.label, focused = _a.focused, helperText = _a.helperText, helperTextProps = _a.helperTextProps, error = _a.error, 
+    control = _a.control, controlHeight = _a.controlHeight, controlVerticalCenter = _a.controlVerticalCenter, required = _a.required, labelIcon = _a.labelIcon, label = _a.label, focused = _a.focused, helperText = _a.helperText, helperTextProps = _a.helperTextProps, error = _a.error, hideLabel = _a.hideLabel, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, style = _a.style, sx = _a.sx;
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFullWidth = _b.fullWidth, formColWithLabel = _b.formColWithLabel, formColWithHelperText = _b.formColWithHelperText;
@@ -4425,7 +4439,7 @@ styleInject(css_248z$a);var FormItemBase = React__default["default"].forwardRef(
             !formColWithLabel && label && (React__default["default"].createElement(material.InputLabel, { shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size, required: required }, labelIcon ? (React__default["default"].createElement(React__default["default"].Fragment, null,
                 React__default["default"].createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 3, marginTop: -4, marginBottom: -2 } }, labelIcon),
                 React__default["default"].createElement("span", { style: { verticalAlign: 'middle' } }, label))) : (label))),
-            React__default["default"].createElement("div", { className: 'FormItemBase-Control-wrap', style: { display: 'grid' } },
+            React__default["default"].createElement("div", { className: 'FormItemBase-Control-wrap', style: { display: 'grid', marginTop: hideLabel ? 0 : undefined } },
                 variant === 'standard' && (React__default["default"].createElement(material.Input, { ref: inputResizeDetectorRef, size: size, fullWidth: true, disabled: true, style: { visibility: 'hidden' } })),
                 variant === 'outlined' && (React__default["default"].createElement(material.OutlinedInput, { ref: inputResizeDetectorRef, size: size, fullWidth: true, disabled: true, style: { visibility: 'hidden' } })),
                 variant === 'filled' && (React__default["default"].createElement(material.FilledInput, { ref: inputResizeDetectorRef, size: size, fullWidth: true, disabled: true, style: { visibility: 'hidden' } })),
@@ -4435,7 +4449,7 @@ styleInject(css_248z$a);var FormItemBase = React__default["default"].forwardRef(
                         display: 'grid',
                         marginTop: controlMarginTop,
                     } }, control)),
-            !formColWithHelperText && helperText && React__default["default"].createElement(material.FormHelperText, __assign$4({}, helperTextProps), helperText))));
+            !formColWithHelperText && helperText && (React__default["default"].createElement(material.FormHelperText, __assign$4({ component: 'div' }, helperTextProps), helperText)))));
 });
 FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default["default"].forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
@@ -4900,8 +4914,8 @@ var FormRadioGroup = React__default["default"].forwardRef(function (_a, ref) {
 FormRadioGroup.displayName = 'FormRadioGroup';
 FormRadioGroup.defaultProps = FormRadioGroupDefaultProps;var FormToggleButtonGroupDefaultProps = {
     formValueSeparator: ',',
-};var css_248z$9 = ".FormToggleButtonGroup .ToggleButton {\n  display: inline-block;\n  padding: 0 10px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .ToggleButton {\n  height: 52px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .ToggleButton {\n  height: 52px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .ToggleButton {\n  height: 44px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .ToggleButton {\n  height: 26px;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-filled .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-standard .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .ToggleButton {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .ToggleButton {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .ToggleButton {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .ToggleButton {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .ToggleButton {\n  height: 26px;\n}";
-styleInject(css_248z$9);var FormToggleButtonGroup = React__default["default"].forwardRef(function (_a, ref) {
+};var css_248z$b = ".FormToggleButtonGroup .ToggleButton {\n  display: inline-block;\n  padding: 0 10px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .ToggleButton {\n  height: 52px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .ToggleButton {\n  height: 52px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .ToggleButton {\n  height: 44px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .ToggleButton {\n  height: 26px;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-filled .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-standard .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .ToggleButton {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .ToggleButton {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .ToggleButton {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .ToggleButton {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .ToggleButton {\n  height: 26px;\n}";
+styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
@@ -7152,8 +7166,8 @@ var Editor = /** @class */ (function (_super) {
 }(React__namespace.Component));var FormTextEditorDefaultProps = {
     menubar: true,
     height: 500,
-};var css_248z$8 = ".FormTextEditor.initializing textarea {\n  display: none;\n}\n.FormTextEditor.error .tox-tinymce {\n  border-color: #d32f2f;\n}\n\n.tox-menu.tox-collection.tox-collection--list .tox-collection__group .tox-menu-nav__js.tox-collection__item {\n  padding-right: 20px !important;\n}\n\n.tox-notifications-container {\n  display: none;\n}";
-styleInject(css_248z$8);var FormTextEditor = React__default["default"].forwardRef(function (_a, ref) {
+};var css_248z$a = ".FormTextEditor.initializing textarea {\n  display: none;\n}\n.FormTextEditor.error .tox-tinymce {\n  border-color: #d32f2f;\n}\n\n.tox-menu.tox-collection.tox-collection--list .tox-collection__group .tox-menu-nav__js.tox-collection__item {\n  padding-right: 20px !important;\n}\n\n.tox-notifications-container {\n  display: none;\n}";
+styleInject(css_248z$a);var FormTextEditor = React__default["default"].forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
@@ -7822,8 +7836,8 @@ Icon.defaultProps = IconDefaultProps;var IconTextDefaultProps = {
 IconText.defaultProps = IconTextDefaultProps;var PrivateDatePickerDefaultProps = {
     showDaysOutsideCurrentMonth: true,
     align: 'center',
-};var PrivateStaticDatePickerDefaultProps = {};var PrivateYearSelectDefaultProps = {};var css_248z$7 = ".PrivateYearSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateYearSelect button {\n  font-size: 14px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
-styleInject(css_248z$7);var PrivateToggleButtonDefaultProps = {};var PrivateToggleButton = React__default["default"].forwardRef(function (_a, ref) {
+};var PrivateStaticDatePickerDefaultProps = {};var PrivateYearSelectDefaultProps = {};var css_248z$9 = ".PrivateYearSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateYearSelect button {\n  font-size: 14px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
+styleInject(css_248z$9);var PrivateToggleButtonDefaultProps = {};var PrivateToggleButton = React__default["default"].forwardRef(function (_a, ref) {
     var children = _a.children, initClassName = _a.className, selected = _a.selected, activated = _a.activated, outlined = _a.outlined, props = __rest$2(_a, ["children", "className", "selected", "activated", "outlined"]);
     var theme = material.useTheme();
     var className = useAutoUpdateState$1(React.useCallback(function () {
@@ -14025,8 +14039,8 @@ var PrivateYearSelect = function (_a) {
             })))));
 };
 PrivateYearSelect.displayName = 'PrivateYearSelect';
-PrivateYearSelect.defaultProps = PrivateYearSelectDefaultProps;var PrivateMonthSelectDefaultProps = {};var css_248z$6 = ".PrivateMonthSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateMonthSelect button {\n  font-size: 15px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
-styleInject(css_248z$6);var MONTHS$1 = new Array(12).fill(0);
+PrivateYearSelect.defaultProps = PrivateYearSelectDefaultProps;var PrivateMonthSelectDefaultProps = {};var css_248z$8 = ".PrivateMonthSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateMonthSelect button {\n  font-size: 15px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
+styleInject(css_248z$8);var MONTHS$1 = new Array(12).fill(0);
 for (var i$3 = 0; i$3 < 12; i$3 += 1) {
     MONTHS$1[i$3] = i$3;
 }
@@ -14049,8 +14063,8 @@ var PrivateMonthSelect = function (_a) {
 PrivateMonthSelect.displayName = 'PrivateMonthSelect';
 PrivateMonthSelect.defaultProps = PrivateMonthSelectDefaultProps;var PrivateTimeSelectDefaultProps = {
     cols: 1,
-};var css_248z$5 = ".PrivateTimeSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n}\n.PrivateTimeSelect button {\n  border-radius: 0;\n}";
-styleInject(css_248z$5);var DEFAULT_MINUTES$1 = new Array(60).fill(0);
+};var css_248z$7 = ".PrivateTimeSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n}\n.PrivateTimeSelect button {\n  border-radius: 0;\n}";
+styleInject(css_248z$7);var DEFAULT_MINUTES$1 = new Array(60).fill(0);
 for (var i$2 = 0; i$2 < DEFAULT_MINUTES$1.length; i$2 += 1) {
     DEFAULT_MINUTES$1[i$2] = i$2;
 }
@@ -14155,8 +14169,8 @@ var PrivateTimeSelect = React__default["default"].forwardRef(function (_a, ref) 
                 }))))));
 });
 PrivateTimeSelect.displayName = 'PrivateTimeSelect';
-PrivateTimeSelect.defaultProps = PrivateTimeSelectDefaultProps;var css_248z$4 = ".PrivateStaticDatePicker.time {\n  height: 400px;\n}\n.PrivateStaticDatePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDatePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDatePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDatePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDatePicker .action-buttons button:not(:first-child) {\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDatePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDatePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDatePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDatePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDatePicker.time .time .time-container .time-select-wrap > div > div:not(:first-child) {\n  border-left: 1px solid #efefef;\n}";
-styleInject(css_248z$4);var DEFAULT_HOURS = new Array(24).fill(0);
+PrivateTimeSelect.defaultProps = PrivateTimeSelectDefaultProps;var css_248z$6 = ".PrivateStaticDatePicker.time {\n  height: 400px;\n}\n.PrivateStaticDatePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDatePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDatePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDatePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDatePicker .action-buttons button:not(:first-child) {\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDatePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDatePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDatePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDatePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDatePicker.time .time .time-container .time-select-wrap > div > div:not(:first-child) {\n  border-left: 1px solid #efefef;\n}";
+styleInject(css_248z$6);var DEFAULT_HOURS = new Array(24).fill(0);
 for (var i$1 = 0; i$1 < DEFAULT_HOURS.length; i$1 += 1) {
     DEFAULT_HOURS[i$1] = i$1;
 }
@@ -14465,8 +14479,8 @@ PrivateStaticDatePicker.defaultProps = PrivateStaticDatePickerDefaultProps;var P
             boxShadow: theme.shadows[8],
         },
         _b);
-});var css_248z$3 = ".PrivateDatePicker .input-text-field.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.PrivateDatePicker .input-text-field.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.PrivateDatePicker .input-text-field.align-right .MuiInputBase-input {\n  text-align: right;\n}";
-styleInject(css_248z$3);var PrivateDatePicker = React__default["default"].forwardRef(function (_a, ref) {
+});var css_248z$5 = ".PrivateDatePicker .input-text-field.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.PrivateDatePicker .input-text-field.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.PrivateDatePicker .input-text-field.align-right .MuiInputBase-input {\n  text-align: right;\n}";
+styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
@@ -14843,7 +14857,19 @@ styleInject(css_248z$3);var PrivateDatePicker = React__default["default"].forwar
                 !formColWithHelperText && helperText && (React__default["default"].createElement(material.FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, helperText))))));
 });
 PrivateDatePicker.displayName = 'PrivateDatePicker';
-PrivateDatePicker.defaultProps = PrivateDatePickerDefaultProps;var FormDatePicker = React__default["default"].forwardRef(function (props, ref) {
+PrivateDatePicker.defaultProps = PrivateDatePickerDefaultProps;var PrivateAlertDialogDefaultProps = {};var PrivateAlertDialog = function (_a) {
+    var open = _a.open, title = _a.title, content = _a.content, onClose = _a.onClose;
+    var handleClose = React.useCallback(function () {
+        onClose && onClose();
+    }, [onClose]);
+    return (React__default["default"].createElement(material.Dialog, { open: !!open, onClose: handleClose, "aria-labelledby": 'alert-dialog-title' },
+        title && React__default["default"].createElement(material.DialogTitle, { id: 'alert-dialog-title' }, title),
+        React__default["default"].createElement(material.DialogContent, null, content),
+        React__default["default"].createElement(material.DialogActions, null,
+            React__default["default"].createElement(material.Button, { variant: 'text', onClick: handleClose, autoFocus: true }, "\uD655\uC778"))));
+};
+PrivateAlertDialog.displayName = 'PrivateAlertDialog';
+PrivateAlertDialog.defaultProps = PrivateAlertDialogDefaultProps;var FormDatePicker = React__default["default"].forwardRef(function (props, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var _a = useFormState(), onAddValueItem = _a.onAddValueItem, otherFormState = __rest$2(_a, ["onAddValueItem"]);
     // Event Handler ---------------------------------------------------------------------------------------------------
@@ -14891,8 +14917,8 @@ FormTimePicker.defaultProps = FormTimePickerDefaultProps;var FormDateRangePicker
     align: 'center',
 };var CustomDatePickerContainerDefaultProps = {
     calendarCount: 2,
-};var CustomDatePickerDefaultProps = {};var css_248z$2 = ".CustomDatePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.CustomDatePicker .MuiDayPicker-header > span {\n  margin: 0;\n}\n.CustomDatePicker .MuiPickerStaticWrapper-content {\n  min-width: 292px;\n}\n.CustomDatePicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root > div {\n  width: 292px;\n}\n.CustomDatePicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root > div .MuiCalendarPicker-root {\n  width: 292px;\n}\n.CustomDatePicker .selected-bg {\n  display: none;\n  position: absolute;\n}\n.CustomDatePicker .selected-bg.sel {\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background-color: rgba(66, 165, 245, 0.6);\n}\n.CustomDatePicker .selected-bg.sel.ui-start, .CustomDatePicker .selected-bg.sel.s-start {\n  border-top-left-radius: 50%;\n  border-bottom-left-radius: 50%;\n}\n.CustomDatePicker .selected-bg.sel.ui-end, .CustomDatePicker .selected-bg.sel.s-end {\n  border-top-right-radius: 50%;\n  border-bottom-right-radius: 50%;\n}\n.CustomDatePicker .selected-bg.sel ~ .MuiPickersDay-root {\n  border: 0;\n}\n.CustomDatePicker .selected-bg.sel ~ .MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected) {\n  background-color: transparent;\n}\n.CustomDatePicker .focused-bg {\n  display: none;\n  position: absolute;\n}\n.CustomDatePicker .focused-bg.focused {\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  border: 2px solid #efefef;\n  border-left: 0;\n  border-right: 0;\n}\n.CustomDatePicker .focused-bg.focused.ui-start, .CustomDatePicker .focused-bg.focused.f-start {\n  border-left: 2px solid #efefef;\n  border-top-left-radius: 50%;\n  border-bottom-left-radius: 50%;\n}\n.CustomDatePicker .focused-bg.focused.ui-end, .CustomDatePicker .focused-bg.focused.f-end {\n  border-right: 2px solid #efefef;\n  border-top-right-radius: 50%;\n  border-bottom-right-radius: 50%;\n}\n.CustomDatePicker .focused-bg.focused ~ .MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected) {\n  background-color: transparent;\n}";
-styleInject(css_248z$2);var CustomDatePicker = React__default["default"].forwardRef(function (_a, ref) {
+};var CustomDatePickerDefaultProps = {};var css_248z$4 = ".CustomDatePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.CustomDatePicker .MuiDayPicker-header > span {\n  margin: 0;\n}\n.CustomDatePicker .MuiPickerStaticWrapper-content {\n  min-width: 292px;\n}\n.CustomDatePicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root > div {\n  width: 292px;\n}\n.CustomDatePicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root > div .MuiCalendarPicker-root {\n  width: 292px;\n}\n.CustomDatePicker .selected-bg {\n  display: none;\n  position: absolute;\n}\n.CustomDatePicker .selected-bg.sel {\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background-color: rgba(66, 165, 245, 0.6);\n}\n.CustomDatePicker .selected-bg.sel.ui-start, .CustomDatePicker .selected-bg.sel.s-start {\n  border-top-left-radius: 50%;\n  border-bottom-left-radius: 50%;\n}\n.CustomDatePicker .selected-bg.sel.ui-end, .CustomDatePicker .selected-bg.sel.s-end {\n  border-top-right-radius: 50%;\n  border-bottom-right-radius: 50%;\n}\n.CustomDatePicker .selected-bg.sel ~ .MuiPickersDay-root {\n  border: 0;\n}\n.CustomDatePicker .selected-bg.sel ~ .MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected) {\n  background-color: transparent;\n}\n.CustomDatePicker .focused-bg {\n  display: none;\n  position: absolute;\n}\n.CustomDatePicker .focused-bg.focused {\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  border: 2px solid #efefef;\n  border-left: 0;\n  border-right: 0;\n}\n.CustomDatePicker .focused-bg.focused.ui-start, .CustomDatePicker .focused-bg.focused.f-start {\n  border-left: 2px solid #efefef;\n  border-top-left-radius: 50%;\n  border-bottom-left-radius: 50%;\n}\n.CustomDatePicker .focused-bg.focused.ui-end, .CustomDatePicker .focused-bg.focused.f-end {\n  border-right: 2px solid #efefef;\n  border-top-right-radius: 50%;\n  border-bottom-right-radius: 50%;\n}\n.CustomDatePicker .focused-bg.focused ~ .MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected) {\n  background-color: transparent;\n}";
+styleInject(css_248z$4);var CustomDatePicker = React__default["default"].forwardRef(function (_a, ref) {
     // State -----------------------------------------------------------------------------------------------------------
     var selectType = _a.selectType, initValue = _a.value, focusedDate = _a.focusedDate, month = _a.month, disableFuture = _a.disableFuture, disablePast = _a.disablePast, minDate = _a.minDate, maxDate = _a.maxDate, onValueChange = _a.onValueChange, onMouseEnterPickersDay = _a.onMouseEnterPickersDay, onMonthChange = _a.onMonthChange;
     var value = useAutoUpdateState$1(React.useCallback(function () {
@@ -15071,8 +15097,8 @@ styleInject(css_248z$2);var CustomDatePicker = React__default["default"].forward
         } }));
 });
 CustomDatePicker.displayName = 'CustomDatePicker';
-CustomDatePicker.defaultProps = CustomDatePickerDefaultProps;var css_248z$1 = ".CustomDatePickerContainer {\n  display: inline-block;\n  position: relative;\n}\n.CustomDatePickerContainer .month-change-arrow-wrap {\n  position: absolute;\n  top: 15px;\n  left: 0;\n  right: 0;\n}\n.CustomDatePickerContainer .month-change-arrow-wrap > div:first-child {\n  padding-left: 20px;\n}\n.CustomDatePickerContainer .month-change-arrow-wrap > div:last-child {\n  padding-right: 20px;\n  text-align: right;\n}\n.CustomDatePickerContainer .month-title {\n  text-align: center;\n  padding-top: 13px;\n  padding-bottom: 10px;\n}\n.CustomDatePickerContainer .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.CustomDatePickerContainer .month-title button:not(.active) {\n  color: unset;\n}\n.CustomDatePickerContainer .date-picker-wrap {\n  position: relative;\n}\n.CustomDatePickerContainer .date-picker-wrap .year-select,\n.CustomDatePickerContainer .date-picker-wrap .month-select {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  border-top: 1px solid #efefef;\n  padding-top: 15px;\n  background-color: white;\n}\n.CustomDatePickerContainer .date-picker-wrap .year-select button.today:not(.selected),\n.CustomDatePickerContainer .date-picker-wrap .month-select button.today:not(.selected) {\n  border: 1px solid rgba(0, 0, 0, 0.1);\n}\n.CustomDatePickerContainer .date-picker-wrap .year-select button.active:not(.selected),\n.CustomDatePickerContainer .date-picker-wrap .month-select button.active:not(.selected) {\n  background-color: #f5f5f5;\n}\n.CustomDatePickerContainer .date-picker-wrap .year-select button.active:not(.selected):hover,\n.CustomDatePickerContainer .date-picker-wrap .month-select button.active:not(.selected):hover {\n  background-color: rgb(229, 229, 229);\n}\n.CustomDatePickerContainer .date-picker-wrap .year-select {\n  overflow-y: scroll;\n}\n.CustomDatePickerContainer .date-picker-wrap .year-select button {\n  font-size: 14px;\n  font-weight: 400;\n  border-radius: 18px;\n}\n.CustomDatePickerContainer .date-picker-wrap .month-select button {\n  font-size: 15px;\n  font-weight: 400;\n  border-radius: 18px;\n}\n.CustomDatePickerContainer .action-buttons button {\n  min-width: 0;\n  color: unset;\n}\n.CustomDatePickerContainer .action-buttons button:not(:first-child) {\n  margin-left: 5px;\n}\n.CustomDatePickerContainer .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}";
-styleInject(css_248z$1);var YEARS = new Array(200).fill(0);
+CustomDatePicker.defaultProps = CustomDatePickerDefaultProps;var css_248z$3 = ".CustomDatePickerContainer {\n  display: inline-block;\n  position: relative;\n}\n.CustomDatePickerContainer .month-change-arrow-wrap {\n  position: absolute;\n  top: 15px;\n  left: 0;\n  right: 0;\n}\n.CustomDatePickerContainer .month-change-arrow-wrap > div:first-child {\n  padding-left: 20px;\n}\n.CustomDatePickerContainer .month-change-arrow-wrap > div:last-child {\n  padding-right: 20px;\n  text-align: right;\n}\n.CustomDatePickerContainer .month-title {\n  text-align: center;\n  padding-top: 13px;\n  padding-bottom: 10px;\n}\n.CustomDatePickerContainer .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.CustomDatePickerContainer .month-title button:not(.active) {\n  color: unset;\n}\n.CustomDatePickerContainer .date-picker-wrap {\n  position: relative;\n}\n.CustomDatePickerContainer .date-picker-wrap .year-select,\n.CustomDatePickerContainer .date-picker-wrap .month-select {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  border-top: 1px solid #efefef;\n  padding-top: 15px;\n  background-color: white;\n}\n.CustomDatePickerContainer .date-picker-wrap .year-select button.today:not(.selected),\n.CustomDatePickerContainer .date-picker-wrap .month-select button.today:not(.selected) {\n  border: 1px solid rgba(0, 0, 0, 0.1);\n}\n.CustomDatePickerContainer .date-picker-wrap .year-select button.active:not(.selected),\n.CustomDatePickerContainer .date-picker-wrap .month-select button.active:not(.selected) {\n  background-color: #f5f5f5;\n}\n.CustomDatePickerContainer .date-picker-wrap .year-select button.active:not(.selected):hover,\n.CustomDatePickerContainer .date-picker-wrap .month-select button.active:not(.selected):hover {\n  background-color: rgb(229, 229, 229);\n}\n.CustomDatePickerContainer .date-picker-wrap .year-select {\n  overflow-y: scroll;\n}\n.CustomDatePickerContainer .date-picker-wrap .year-select button {\n  font-size: 14px;\n  font-weight: 400;\n  border-radius: 18px;\n}\n.CustomDatePickerContainer .date-picker-wrap .month-select button {\n  font-size: 15px;\n  font-weight: 400;\n  border-radius: 18px;\n}\n.CustomDatePickerContainer .action-buttons button {\n  min-width: 0;\n  color: unset;\n}\n.CustomDatePickerContainer .action-buttons button:not(:first-child) {\n  margin-left: 5px;\n}\n.CustomDatePickerContainer .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}";
+styleInject(css_248z$3);var YEARS = new Array(200).fill(0);
 for (var i = 0; i < 200; i += 1) {
     YEARS[i] = 1900 + i;
 }
@@ -15336,8 +15362,8 @@ var CustomDatePickerContainer = React__default["default"].forwardRef(function (_
 CustomDatePickerContainer.displayName = 'CustomDatePickerContainer';
 CustomDatePickerContainer.defaultProps = CustomDatePickerContainerDefaultProps;var InputDatePickerDefaultProps = {
     align: 'center',
-};var css_248z = ".InputDatePicker.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.InputDatePicker.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.InputDatePicker.align-right .MuiInputBase-input {\n  text-align: right;\n}";
-styleInject(css_248z);var InputDatePicker = function (_a) {
+};var css_248z$2 = ".InputDatePicker.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.InputDatePicker.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.InputDatePicker.align-right .MuiInputBase-input {\n  text-align: right;\n}";
+styleInject(css_248z$2);var InputDatePicker = function (_a) {
     // ID --------------------------------------------------------------------------------------------------------------
     var variant = _a.variant, size = _a.size, color = _a.color, focused = _a.focused, fullWidth = _a.fullWidth, disabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, labelShrink = _a.labelShrink, 
     //--------------------------------------------------------------------------------------------------------------------
@@ -15900,7 +15926,452 @@ var FormDateRangePicker = React__default["default"].forwardRef(function (_a, ref
                 !formColWithHelperText && helperText && (React__default["default"].createElement(material.FormHelperText, { error: error || startError || endError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, helperText))))));
 });
 FormDateRangePicker.displayName = 'FormDateRangePicker';
-FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var SearchDefaultProps = {
+FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var FormFileDefaultProps = {};var LinkDialogDefaultProps = {};var LinkDialog = function (_a) {
+    // Ref -------------------------------------------------------------------------------------------------------------
+    var open = _a.open, onConfirm = _a.onConfirm, onCancel = _a.onCancel, onClose = _a.onClose;
+    var inputRef = React.useRef();
+    // State -----------------------------------------------------------------------------------------------------------
+    var _b = React.useState(''), value = _b[0], setValue = _b[1];
+    // Effect ----------------------------------------------------------------------------------------------------------
+    React.useEffect(function () {
+        if (!open) {
+            setValue('');
+        }
+    }, [open]);
+    // Event Handler ---------------------------------------------------------------------------------------------------
+    var handleSubmit = React.useCallback(function () {
+        var _a, _b;
+        if ((_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.validate()) {
+            onConfirm && onConfirm(value);
+            onClose && onClose();
+        }
+        else {
+            (_b = inputRef.current) === null || _b === void 0 ? void 0 : _b.focus();
+        }
+    }, [value, onConfirm, onClose]);
+    var handleCancel = React.useCallback(function () {
+        onCancel && onCancel();
+        onClose && onClose();
+    }, [onCancel, onClose]);
+    // Render ----------------------------------------------------------------------------------------------------------
+    return (React__default["default"].createElement(material.Dialog, { open: !!open, maxWidth: 'sm', fullWidth: true, onClose: function (e, reason) {
+            if (reason === 'backdropClick') {
+                if (empty$1(value)) {
+                    onClose && onClose();
+                }
+            }
+        } },
+        React__default["default"].createElement(material.DialogTitle, null, "\uD30C\uC77C \uB9C1\uD06C"),
+        React__default["default"].createElement(material.DialogContent, null,
+            React__default["default"].createElement(material.DialogContentText, null, "\uD30C\uC77C\uC758 \uB9C1\uD06C URL\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694."),
+            React__default["default"].createElement(FormUrl, { ref: function (ref) {
+                    if (inputRef.current == null && ref !== null) {
+                        ref.focus();
+                    }
+                    inputRef.current = ref;
+                }, name: 'form-file-link-url', label: '\uB9C1\uD06C URL', value: value, required: true, style: { marginTop: 15 }, onChange: setValue })),
+        React__default["default"].createElement(material.DialogActions, null,
+            React__default["default"].createElement(material.Button, { variant: 'text', onClick: handleCancel }, "\uCDE8\uC18C"),
+            React__default["default"].createElement(material.Button, { variant: 'text', onClick: handleSubmit }, "\uD655\uC778"))));
+};
+LinkDialog.displayName = 'LinkDialog';
+LinkDialog.defaultProps = LinkDialogDefaultProps;var css_248z$1 = ".FormFile .control-wrap {\n  display: inline-flex;\n}\n.FormFile .control-wrap .file-name-wrap .file-name {\n  min-width: 350px;\n}\n.FormFile .control-wrap .file-name-wrap .file-name .MuiInputBase-root {\n  padding-right: 7px;\n}\n.FormFile .control-wrap .input-file {\n  display: none;\n}\n.FormFile .control-wrap .form-file-btn {\n  padding: 0;\n}\n.FormFile .control-wrap .form-file-btn label {\n  cursor: pointer;\n  display: flex;\n  width: 100%;\n  height: 100%;\n  justify-content: center;\n  align-items: center;\n  padding: 0 10px;\n}\n.FormFile .control-wrap .form-file-btn label .FormIcon {\n  margin-right: 5px;\n}\n.FormFile .control-wrap .input-file-wrap {\n  display: flex;\n}\n.FormFile .control-wrap .input-file-wrap .input-file-btn .FormIcon {\n  margin-left: -3px;\n}\n.FormFile .control-wrap .input-file-wrap .link-btn {\n  border-left: 0;\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.FormFile .control-wrap .input-file-wrap .remove-btn {\n  border-left: 0;\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.FormFile.with-value .control-wrap .input-file-wrap .link-btn {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.FormFile:not(.hide-file-name) .input-file-wrap .input-file-btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.FormFile:not(.hide-link) .input-file-wrap .input-file-btn, .FormFile.with-value .input-file-wrap .input-file-btn {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.FormFile.full-width .control-wrap {\n  display: flex;\n}\n.FormFile.full-width .control-wrap .file-name-wrap {\n  flex: 1;\n}\n.FormFile.variant-standard .file-name-wrap .file-name .MuiInputBase-root {\n  padding-right: 0;\n}\n\n.FormFile:not(.hide-file-name).variant-outlined .form-file-btn label, .FormFile:not(.hide-file-name).variant-filled .form-file-btn label {\n  padding-top: 10px;\n  padding-bottom: 10px;\n}\n.FormFile:not(.hide-file-name).variant-standard .form-file-btn label {\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n.FormFile:not(.hide-file-name).size-small .form-file-btn label {\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n\n.FormFile.hide-file-name:not(.with-label).variant-outlined .form-file-btn {\n  height: 52px;\n}\n.FormFile.hide-file-name:not(.with-label).variant-filled .form-file-btn {\n  height: 52px;\n}\n.FormFile.hide-file-name:not(.with-label).variant-standard .form-file-btn {\n  height: 28px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-filled .form-file-btn {\n  height: 44px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-standard .form-file-btn {\n  height: 26px;\n}\n.FormFile.hide-file-name.with-label.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name.with-label.variant-filled .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name.with-label.variant-standard .form-file-btn {\n  height: 28px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-outlined .form-file-btn {\n  height: 24px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-filled .form-file-btn {\n  height: 31px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-standard .form-file-btn {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-filled .form-file-btn {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-standard .form-file-btn {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-outlined .form-file-btn {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-filled .form-file-btn {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-standard .form-file-btn {\n  height: 26px;\n}";
+styleInject(css_248z$1);var FormFile = React__default["default"].forwardRef(function (_a, ref) {
+    // ID --------------------------------------------------------------------------------------------------------------
+    var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
+    //----------------------------------------------------------------------------------------------------------------
+    accept = _a.accept, hideUrl = _a.hideUrl, hideLink = _a.hideLink, maxFileSize = _a.maxFileSize, preview = _a.preview, onFile = _a.onFile, onLink = _a.onLink, 
+    //----------------------------------------------------------------------------------------------------------------
+    name = _a.name, labelIcon = _a.labelIcon, initLabel = _a.label, required = _a.required, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
+    //----------------------------------------------------------------------------------------------------------------
+    className = _a.className;
+    var id = React.useId();
+    // FormState -------------------------------------------------------------------------------------------------------
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onRemoveValueItem = _b.onRemoveValueItem, onValueChangeByUser = _b.onValueChangeByUser;
+    // State - FormState -----------------------------------------------------------------------------------------------
+    var variant = useAutoUpdateState$1(initVariant || formVariant)[0];
+    var size = useAutoUpdateState$1(initSize || formSize)[0];
+    var color = useAutoUpdateState$1(initColor || formColor)[0];
+    var focused = useAutoUpdateState$1(initFocused || formFocused)[0];
+    var labelShrink = useAutoUpdateState$1(initLabelShrink || formLabelShrink)[0];
+    var fullWidth = useAutoUpdateState$1(initFullWidth == null ? formFullWidth : initFullWidth)[0];
+    // Ref -------------------------------------------------------------------------------------------------------------
+    var textFieldRef = React.useRef(null);
+    var fileUploadBtnRef = React.useRef(null);
+    // State - value ---------------------------------------------------------------------------------------------------
+    var _c = useAutoUpdateState$1(initValue), value = _c[0], setValue = _c[1];
+    var fileValue = React.useState('')[0];
+    useFirstSkipEffect$1(function () {
+        if (error)
+            validate(value);
+        if (onChange)
+            onChange(value);
+        onValueChange(name, value);
+    }, [value]);
+    // State -----------------------------------------------------------------------------------------------------------
+    var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
+    var _e = useAutoUpdateState$1(initHelperText), helperText = _e[0], setHelperText = _e[1];
+    var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
+    var _g = React.useState(false), isOpenLinkDialog = _g[0], setIsOpenLinkDialog = _g[1];
+    var _h = React.useState({
+        open: false,
+    }), alertDialogProps = _h[0], setAlertDialogProps = _h[1];
+    var label = useAutoUpdateState$1(React.useCallback(function () {
+        return labelIcon ? (React__default["default"].createElement(React__default["default"].Fragment, null,
+            React__default["default"].createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
+            React__default["default"].createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
+    }, [initLabel, labelIcon]))[0];
+    // Function - focus ------------------------------------------------------------------------------------------------
+    var focus = React.useCallback(function () {
+        var _a, _b;
+        if (hideUrl) {
+            (_a = fileUploadBtnRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+        }
+        else {
+            (_b = textFieldRef.current) === null || _b === void 0 ? void 0 : _b.focus();
+        }
+    }, [hideUrl]);
+    // Function - validate ---------------------------------------------------------------------------------------------
+    var validate = React.useCallback(function (value) {
+        var isEmptyValue = false;
+        if (value) {
+            var d = document.createElement('div');
+            d.innerHTML = value;
+            var text = d.textContent || d.innerText;
+            isEmptyValue = empty$1(text.trim());
+        }
+        if (required && (isEmptyValue || empty$1(value))) {
+            setErrorHelperText(true, '필수 선택 항목입니다.');
+            return false;
+        }
+        if (onValidate) {
+            var onValidateResult = onValidate(value);
+            if (onValidateResult != null && onValidateResult !== true) {
+                setErrorHelperText(true, onValidateResult);
+                return false;
+            }
+        }
+        setErrorHelperText(false, initHelperText);
+        return true;
+    }, [onValidate, initHelperText]);
+    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+    var setErrorHelperText = React.useCallback(function (error, helperText) {
+        setError(error);
+        setHelperText(helperText);
+    }, []);
+    // Commands --------------------------------------------------------------------------------------------------------
+    React.useLayoutEffect(function () {
+        var lastValue = value;
+        var lastDisabled = !!disabled;
+        var commands = {
+            getType: function () { return 'FormFile'; },
+            getName: function () { return name; },
+            getReset: function () { return initValue; },
+            reset: function () {
+                lastValue = initValue;
+                setValue(lastValue);
+            },
+            getValue: function () { return lastValue; },
+            setValue: function (value) {
+                lastValue = value;
+                setValue(lastValue);
+            },
+            isExceptValue: function () { return !!exceptValue; },
+            isDisabled: function () { return lastDisabled; },
+            setDisabled: function (disabled) {
+                lastDisabled = disabled;
+                setDisabled(disabled);
+            },
+            focus: focus,
+            focusValidate: focus,
+            validate: function () { return validate(value); },
+            setError: function (error, helperText) {
+                return setErrorHelperText(error, error ? helperText : initHelperText);
+            },
+        };
+        onAddValueItem(id, commands);
+        if (ref) {
+            if (typeof ref === 'function') {
+                ref(commands);
+            }
+            else {
+                ref.current = commands;
+            }
+        }
+        return function () {
+            onRemoveValueItem(id);
+            if (ref) {
+                if (typeof ref === 'function') {
+                    ref(null);
+                }
+                else {
+                    ref.current = null;
+                }
+            }
+        };
+    }, [
+        name,
+        initValue,
+        value,
+        exceptValue,
+        disabled,
+        focus,
+        validate,
+        initHelperText,
+        ref,
+        onAddValueItem,
+        onRemoveValueItem,
+    ]);
+    // Function --------------------------------------------------------------------------------------------------------
+    var fileSizeCheck = React.useCallback(function (file) {
+        if (maxFileSize) {
+            return new Promise(function (resolve, reject) {
+                if (typeof file === 'object') {
+                    if (file.size > maxFileSize) {
+                        setAlertDialogProps({
+                            open: true,
+                            title: '파일 사이즈',
+                            content: (React__default["default"].createElement("div", null,
+                                React__default["default"].createElement("div", null,
+                                    React__default["default"].createElement(material.Typography, { color: 'error' },
+                                        getFileSizeText(maxFileSize),
+                                        " \uC774\uD558\uC758 \uD30C\uC77C\uB9CC \uC0AC\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4.")),
+                                React__default["default"].createElement("div", null,
+                                    "(\uC120\uD0DD\uD55C \uD30C\uC77C \uC0AC\uC774\uC988 : ",
+                                    getFileSizeText(file.size),
+                                    ")"))),
+                        });
+                        reject();
+                    }
+                    else {
+                        resolve();
+                    }
+                }
+                else {
+                    resolve();
+                }
+            });
+        }
+        else {
+            return Promise.resolve();
+        }
+    }, [maxFileSize]);
+    // Event Handler ---------------------------------------------------------------------------------------------------
+    var handleFileChange = React.useCallback(function (e) {
+        if (onFile) {
+            var target = e.currentTarget;
+            var file_1 = target.files[0];
+            fileSizeCheck(file_1).then(function () {
+                onFile(file_1).then(function (url) {
+                    setValue(url);
+                    nextTick(function () {
+                        if (onValueChangeByUser)
+                            onValueChangeByUser(name, url);
+                    });
+                });
+            });
+        }
+    }, [onFile, onValueChangeByUser]);
+    var handleLinkClick = React.useCallback(function () {
+        setIsOpenLinkDialog(true);
+    }, []);
+    var handleRemoveClick = React.useCallback(function () {
+        setValue('');
+        nextTick(function () {
+            if (onValueChangeByUser)
+                onValueChangeByUser(name, '');
+        });
+    }, [onValueChangeByUser]);
+    var handleLinkDialogConfirm = React.useCallback(function (url) {
+        if (onLink) {
+            onLink(url).then(function (finalUrl) {
+                setValue(finalUrl);
+                nextTick(function () {
+                    if (onValueChangeByUser)
+                        onValueChangeByUser(name, finalUrl);
+                });
+            });
+        }
+        else {
+            setValue(url);
+            nextTick(function () {
+                if (onValueChangeByUser)
+                    onValueChangeByUser(name, url);
+            });
+        }
+    }, [onLink, onValueChangeByUser]);
+    // Render ----------------------------------------------------------------------------------------------------------
+    return (React__default["default"].createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormFile', "variant-".concat(variant), "size-".concat(size), !!initLabel && 'with-label', !!fullWidth && 'full-width', !!hideUrl && 'hide-file-name', !!hideLink && 'hide-link', notEmpty(value) && 'with-value'), labelIcon: hideUrl ? labelIcon : undefined, label: hideUrl ? initLabel : undefined, error: error, required: required, fullWidth: fullWidth, helperText: React__default["default"].createElement("div", null,
+            preview,
+            React__default["default"].createElement("div", null, helperText)), hideLabel: !hideUrl, helperTextProps: {
+            style: {
+                marginLeft: !hideUrl && variant !== 'standard' ? 14 : undefined,
+                marginTop: !hideUrl && variant === 'standard' ? 19 : undefined,
+            },
+        }, style: { width: fullWidth ? '100%' : undefined }, control: React__default["default"].createElement("div", { className: 'control-wrap' },
+            !hideUrl && (React__default["default"].createElement("div", { className: 'file-name-wrap' },
+                React__default["default"].createElement(material.TextField, { inputRef: textFieldRef, className: 'file-name', variant: variant, label: label, size: size, required: required, value: value || '', focused: focused, disabled: disabled, fullWidth: true, error: error, InputLabelProps: labelShrink ? { shrink: labelShrink } : undefined, inputProps: { readOnly: true }, InputProps: {
+                        endAdornment: (React__default["default"].createElement(material.InputAdornment, { position: 'end' },
+                            React__default["default"].createElement("div", { className: 'input-file-wrap' },
+                                React__default["default"].createElement(material.Button, { variant: 'text', className: 'input-file-btn form-file-btn', color: error ? 'error' : color, disabled: disabled, ref: fileUploadBtnRef },
+                                    React__default["default"].createElement("label", { htmlFor: id },
+                                        React__default["default"].createElement(FormIcon, null, "upload"),
+                                        "\uD30C\uC77C \uC5C5\uB85C\uB4DC")),
+                                React__default["default"].createElement("input", { type: 'file', accept: accept, id: id, value: fileValue, className: 'input-file', onChange: handleFileChange }),
+                                !hideLink && (React__default["default"].createElement(material.Button, { variant: 'text', className: 'link-btn  form-file-btn', color: error ? 'error' : color, disabled: disabled, onClick: handleLinkClick },
+                                    React__default["default"].createElement("label", null,
+                                        React__default["default"].createElement(FormIcon, null, "link"),
+                                        "\uB9C1\uD06C"))),
+                                notEmpty(value) && (React__default["default"].createElement(material.Button, { variant: 'text', className: 'remove-btn form-file-btn', color: error ? 'error' : color, disabled: disabled, onClick: handleRemoveClick },
+                                    React__default["default"].createElement("label", null,
+                                        React__default["default"].createElement(FormIcon, null, "Close"),
+                                        "\uC0AD\uC81C")))))),
+                    }, placeholder: '\uD30C\uC77C\uC744 \uC120\uD0DD\uD558\uC138\uC694' }))),
+            !!hideUrl && (React__default["default"].createElement("div", { className: 'input-file-wrap' },
+                React__default["default"].createElement(material.Button, { variant: 'outlined', className: 'input-file-btn form-file-btn', color: error ? 'error' : color, ref: fileUploadBtnRef, disabled: disabled },
+                    React__default["default"].createElement("label", { htmlFor: id },
+                        React__default["default"].createElement(FormIcon, null, "upload"),
+                        "\uD30C\uC77C \uC5C5\uB85C\uB4DC")),
+                React__default["default"].createElement("input", { type: 'file', accept: accept, id: id, value: fileValue, className: 'input-file', onChange: handleFileChange }),
+                !hideLink && (React__default["default"].createElement(material.Button, { variant: 'outlined', className: 'link-btn  form-file-btn', color: error ? 'error' : color, onClick: handleLinkClick, disabled: disabled },
+                    React__default["default"].createElement("label", null,
+                        React__default["default"].createElement(FormIcon, null, "link"),
+                        "\uB9C1\uD06C"))),
+                notEmpty(value) && (React__default["default"].createElement(material.Button, { variant: 'outlined', className: 'remove-btn form-file-btn', color: error ? 'error' : color, disabled: disabled, onClick: handleRemoveClick },
+                    React__default["default"].createElement("label", null,
+                        React__default["default"].createElement(FormIcon, null, "Close"),
+                        "\uC0AD\uC81C"))))),
+            React__default["default"].createElement(PrivateAlertDialog, __assign$4({}, alertDialogProps, { onClose: function () { return setAlertDialogProps({ open: false }); } })),
+            React__default["default"].createElement(LinkDialog, { open: isOpenLinkDialog, onConfirm: handleLinkDialogConfirm, onClose: function () { return setIsOpenLinkDialog(false); } })) }));
+});
+FormFile.displayName = 'FormFile';
+FormFile.defaultProps = FormFileDefaultProps;var FormImageFileDefaultProps = __assign$4(__assign$4({}, FormFileDefaultProps), { accept: '.jpg,.jpeg,.png' });var css_248z = ".FormImageFile .preview-img {\n  max-width: 100%;\n}\n.FormImageFile:not(.hide-file-name):not(.variant-standard) .preview-img {\n  padding-right: 14px;\n}";
+styleInject(css_248z);var FormImageFile = React__default["default"].forwardRef(function (_a, ref) {
+    var className = _a.className, maxImageSize = _a.maxImageSize, preview = _a.preview, previewMaxHeight = _a.previewMaxHeight, initValue = _a.value, onChange = _a.onChange, onFile = _a.onFile, onLink = _a.onLink, props = __rest$2(_a, ["className", "maxImageSize", "preview", "previewMaxHeight", "value", "onChange", "onFile", "onLink"]);
+    var _b = useAutoUpdateState$1(initValue), value = _b[0], setValue = _b[1];
+    var _c = React.useState(), previewNode = _c[0], setPreviewNode = _c[1];
+    var _d = React.useState({
+        open: false,
+    }), alertDialogProps = _d[0], setAlertDialogProps = _d[1];
+    var urlKit = React.useState(function () {
+        if (window.URL)
+            return window.URL;
+        else if (window.webkitURL)
+            return window.webkitURL;
+    })[0];
+    // Effect ----------------------------------------------------------------------------------------------------------
+    React.useEffect(function () {
+        setPreviewNode(preview && value ? (React__default["default"].createElement("img", { className: 'preview-img', src: value, style: { maxHeight: previewMaxHeight || undefined }, alt: '' })) : undefined);
+    }, [value, preview, previewMaxHeight]);
+    // Function --------------------------------------------------------------------------------------------------------
+    var imageSizeCheck = React.useCallback(function (file) {
+        if (maxImageSize && urlKit) {
+            return new Promise(function (resolve, reject) {
+                var img = new Image();
+                img.onload = function () {
+                    var width = img.naturalWidth;
+                    var height = img.naturalHeight;
+                    urlKit.revokeObjectURL(img.src);
+                    var sizeOk = false;
+                    var sizeText = '';
+                    if (Array.isArray(maxImageSize)) {
+                        maxImageSize.forEach(function (a) {
+                            if (width === a.width && height === a.height) {
+                                sizeOk = true;
+                            }
+                            if (sizeText !== '')
+                                sizeText += ', ';
+                            sizeText += "".concat(a.width, "*").concat(a.height);
+                        });
+                    }
+                    else {
+                        sizeOk = width === maxImageSize.width && height === maxImageSize.height;
+                        sizeText = "".concat(maxImageSize.width, "*").concat(maxImageSize.height);
+                    }
+                    if (sizeOk) {
+                        resolve();
+                    }
+                    else {
+                        setAlertDialogProps({
+                            open: true,
+                            title: '이미지 사이즈',
+                            content: (React__default["default"].createElement(React__default["default"].Fragment, null,
+                                React__default["default"].createElement("div", null,
+                                    React__default["default"].createElement(material.Typography, { color: 'error' },
+                                        sizeText,
+                                        " \uC0AC\uC774\uC988\uC758 \uC774\uBBF8\uC9C0\uB9CC \uC0AC\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4.")),
+                                React__default["default"].createElement("div", null,
+                                    "(\uC120\uD0DD\uD55C \uC774\uBBF8\uC9C0 \uC0AC\uC774\uC988 : ",
+                                    width,
+                                    "*",
+                                    height,
+                                    ")"))),
+                        });
+                        reject();
+                    }
+                };
+                img.onerror = function () {
+                    setAlertDialogProps({ open: true, title: '이미지 사이즈', content: '이미지를 불러올 수 없습니다.' });
+                    reject();
+                };
+                if (typeof file === 'object')
+                    img.src = urlKit.createObjectURL(file);
+                else
+                    img.src = file;
+            });
+        }
+        return Promise.resolve();
+    }, [urlKit, maxImageSize]);
+    // Event Handler ---------------------------------------------------------------------------------------------------
+    var handleChange = React.useCallback(function (value) {
+        setValue(value);
+        onChange && onChange(value);
+    }, []);
+    var handleFile = React.useCallback(function (file) {
+        return new Promise(function (resolve, reject) {
+            imageSizeCheck(file)
+                .then(function () {
+                if (onFile) {
+                    onFile(file)
+                        .then(function (url) {
+                        resolve(url);
+                    })
+                        .catch(function () { return reject(); });
+                }
+                else {
+                    reject();
+                }
+            })
+                .catch(function () {
+                reject();
+            });
+        });
+    }, [onFile, imageSizeCheck]);
+    var handleLink = React.useCallback(function (url) {
+        return new Promise(function (resolve, reject) {
+            imageSizeCheck(url)
+                .then(function () {
+                if (onLink) {
+                    onLink(url)
+                        .then(function (finalUrl) { return resolve(finalUrl); })
+                        .catch(function () { return reject(); });
+                }
+                else {
+                    resolve(url);
+                }
+            })
+                .catch(function () {
+                reject();
+            });
+        });
+    }, [onLink, imageSizeCheck]);
+    // Render ----------------------------------------------------------------------------------------------------------
+    return (React__default["default"].createElement(React__default["default"].Fragment, null,
+        React__default["default"].createElement(FormFile, __assign$4({ ref: ref, className: classNames$1(className, 'FormImageFile'), value: value, preview: previewNode, onChange: handleChange, onFile: handleFile, onLink: handleLink }, props)),
+        React__default["default"].createElement(PrivateAlertDialog, __assign$4({}, alertDialogProps, { onClose: function () { return setAlertDialogProps({ open: false }); } }))));
+});
+FormImageFile.displayName = 'FormImageFile';
+FormImageFile.defaultProps = FormImageFileDefaultProps;var SearchDefaultProps = {
     color: 'primary',
 };var Search = React__default["default"].forwardRef(function (_a, ref) {
     // Ref -------------------------------------------------------------------------------------------------------------
@@ -15990,4 +16461,4 @@ SearchGroup.defaultProps = SearchGroupDefaultProps;var SearchButtonDefaultProps 
 };
 SearchButton.defaultProps = SearchButtonDefaultProps;dayjs__default["default"].extend(dayjsIsSameOrAfter__default["default"]);
 dayjs__default["default"].extend(dayjsIsSameOrBefore__default["default"]);
-dayjs__default["default"].extend(dayjsIsBetween__default["default"]);exports.Form=Form;exports.FormAutocomplete=FormAutocomplete;exports.FormAutocompleteDefaultProps=FormAutocompleteDefaultProps;exports.FormBlock=FormBlock;exports.FormBlockDefaultProps=FormBlockDefaultProps;exports.FormButton=FormButton;exports.FormButtonDefaultProps=FormButtonDefaultProps;exports.FormCheckbox=FormCheckbox;exports.FormCheckboxDefaultProps=FormCheckboxDefaultProps;exports.FormCol=FormCol;exports.FormColDefaultProps=FormColDefaultProps;exports.FormContext=FormContext;exports.FormContextDefaultValue=FormContextDefaultValue;exports.FormContextProvider=FormContextProvider;exports.FormDatePicker=FormDatePicker;exports.FormDatePickerDefaultProps=FormDatePickerDefaultProps;exports.FormDateRangePicker=FormDateRangePicker;exports.FormDateRangePickerDefaultProps=FormDateRangePickerDefaultProps;exports.FormDateTimePicker=FormDateTimePicker;exports.FormDateTimePickerDefaultProps=FormDateTimePickerDefaultProps;exports.FormDefaultProps=FormDefaultProps;exports.FormDivider=FormDivider;exports.FormDividerDefaultProps=FormDividerDefaultProps;exports.FormEmail=FormEmail;exports.FormEmailDefaultProps=FormEmailDefaultProps;exports.FormHidden=FormHidden;exports.FormHiddenDefaultProps=FormHiddenDefaultProps;exports.FormIcon=FormIcon;exports.FormIconDefaultProps=FormIconDefaultProps;exports.FormLabel=FormLabel;exports.FormLabelDefaultProps=FormLabelDefaultProps;exports.FormMobile=FormMobile;exports.FormMobileDefaultProps=FormMobileDefaultProps;exports.FormNumber=FormNumber;exports.FormNumberDefaultProps=FormNumberDefaultProps;exports.FormPassword=FormPassword;exports.FormPasswordDefaultProps=FormPasswordDefaultProps;exports.FormRadioGroup=FormRadioGroup;exports.FormRadioGroupDefaultProps=FormRadioGroupDefaultProps;exports.FormRating=FormRating;exports.FormRatingDefaultProps=FormRatingDefaultProps;exports.FormRow=FormRow;exports.FormRowDefaultProps=FormRowDefaultProps;exports.FormSearch=FormSearch;exports.FormSearchDefaultProps=FormSearchDefaultProps;exports.FormSelect=FormSelect;exports.FormSelectDefaultProps=FormSelectDefaultProps;exports.FormTag=FormTag;exports.FormTagDefaultProps=FormTagDefaultProps;exports.FormTel=FormTel;exports.FormTelDefaultProps=FormTelDefaultProps;exports.FormText=FormText;exports.FormTextDefaultProps=FormTextDefaultProps;exports.FormTextEditor=FormTextEditor;exports.FormTextEditorDefaultProps=FormTextEditorDefaultProps;exports.FormTextField=FormTextField;exports.FormTextFieldDefaultProps=FormTextFieldDefaultProps;exports.FormTextarea=FormTextarea;exports.FormTextareaDefaultProps=FormTextareaDefaultProps;exports.FormTimePicker=FormTimePicker;exports.FormTimePickerDefaultProps=FormTimePickerDefaultProps;exports.FormToggleButtonGroup=FormToggleButtonGroup;exports.FormToggleButtonGroupDefaultProps=FormToggleButtonGroupDefaultProps;exports.FormUrl=FormUrl;exports.FormUrlDefaultProps=FormUrlDefaultProps;exports.Search=Search;exports.SearchButton=SearchButton;exports.SearchButtonDefaultProps=SearchButtonDefaultProps;exports.SearchDefaultProps=SearchDefaultProps;exports.SearchGroup=SearchGroup;exports.SearchGroupDefaultProps=SearchGroupDefaultProps;exports.useFormState=useFormState;//# sourceMappingURL=index.js.map
+dayjs__default["default"].extend(dayjsIsBetween__default["default"]);exports.Form=Form;exports.FormAutocomplete=FormAutocomplete;exports.FormAutocompleteDefaultProps=FormAutocompleteDefaultProps;exports.FormBlock=FormBlock;exports.FormBlockDefaultProps=FormBlockDefaultProps;exports.FormButton=FormButton;exports.FormButtonDefaultProps=FormButtonDefaultProps;exports.FormCheckbox=FormCheckbox;exports.FormCheckboxDefaultProps=FormCheckboxDefaultProps;exports.FormCol=FormCol;exports.FormColDefaultProps=FormColDefaultProps;exports.FormContext=FormContext;exports.FormContextDefaultValue=FormContextDefaultValue;exports.FormContextProvider=FormContextProvider;exports.FormDatePicker=FormDatePicker;exports.FormDatePickerDefaultProps=FormDatePickerDefaultProps;exports.FormDateRangePicker=FormDateRangePicker;exports.FormDateRangePickerDefaultProps=FormDateRangePickerDefaultProps;exports.FormDateTimePicker=FormDateTimePicker;exports.FormDateTimePickerDefaultProps=FormDateTimePickerDefaultProps;exports.FormDefaultProps=FormDefaultProps;exports.FormDivider=FormDivider;exports.FormDividerDefaultProps=FormDividerDefaultProps;exports.FormEmail=FormEmail;exports.FormEmailDefaultProps=FormEmailDefaultProps;exports.FormFile=FormFile;exports.FormFileDefaultProps=FormFileDefaultProps;exports.FormHidden=FormHidden;exports.FormHiddenDefaultProps=FormHiddenDefaultProps;exports.FormIcon=FormIcon;exports.FormIconDefaultProps=FormIconDefaultProps;exports.FormImageFile=FormImageFile;exports.FormImageFileDefaultProps=FormImageFileDefaultProps;exports.FormLabel=FormLabel;exports.FormLabelDefaultProps=FormLabelDefaultProps;exports.FormMobile=FormMobile;exports.FormMobileDefaultProps=FormMobileDefaultProps;exports.FormNumber=FormNumber;exports.FormNumberDefaultProps=FormNumberDefaultProps;exports.FormPassword=FormPassword;exports.FormPasswordDefaultProps=FormPasswordDefaultProps;exports.FormRadioGroup=FormRadioGroup;exports.FormRadioGroupDefaultProps=FormRadioGroupDefaultProps;exports.FormRating=FormRating;exports.FormRatingDefaultProps=FormRatingDefaultProps;exports.FormRow=FormRow;exports.FormRowDefaultProps=FormRowDefaultProps;exports.FormSearch=FormSearch;exports.FormSearchDefaultProps=FormSearchDefaultProps;exports.FormSelect=FormSelect;exports.FormSelectDefaultProps=FormSelectDefaultProps;exports.FormTag=FormTag;exports.FormTagDefaultProps=FormTagDefaultProps;exports.FormTel=FormTel;exports.FormTelDefaultProps=FormTelDefaultProps;exports.FormText=FormText;exports.FormTextDefaultProps=FormTextDefaultProps;exports.FormTextEditor=FormTextEditor;exports.FormTextEditorDefaultProps=FormTextEditorDefaultProps;exports.FormTextField=FormTextField;exports.FormTextFieldDefaultProps=FormTextFieldDefaultProps;exports.FormTextarea=FormTextarea;exports.FormTextareaDefaultProps=FormTextareaDefaultProps;exports.FormTimePicker=FormTimePicker;exports.FormTimePickerDefaultProps=FormTimePickerDefaultProps;exports.FormToggleButtonGroup=FormToggleButtonGroup;exports.FormToggleButtonGroupDefaultProps=FormToggleButtonGroupDefaultProps;exports.FormUrl=FormUrl;exports.FormUrlDefaultProps=FormUrlDefaultProps;exports.Search=Search;exports.SearchButton=SearchButton;exports.SearchButtonDefaultProps=SearchButtonDefaultProps;exports.SearchDefaultProps=SearchDefaultProps;exports.SearchGroup=SearchGroup;exports.SearchGroupDefaultProps=SearchGroupDefaultProps;exports.useFormState=useFormState;//# sourceMappingURL=index.js.map

@@ -1,0 +1,88 @@
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { LinkDialogProps as Props, LinkDialogDefaultProps } from './LinkDialog.types';
+import { FormTextFieldCommands, FormUrl } from '../../../FormItemTextFieldBase';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { empty } from '../../../@util';
+
+const LinkDialog: React.FC<Props> = ({ open, onConfirm, onCancel, onClose }) => {
+  // Ref -------------------------------------------------------------------------------------------------------------
+
+  const inputRef = useRef<FormTextFieldCommands | null>();
+
+  // State -----------------------------------------------------------------------------------------------------------
+
+  const [value, setValue] = useState('');
+
+  // Effect ----------------------------------------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (!open) {
+      setValue('');
+    }
+  }, [open]);
+
+  // Event Handler ---------------------------------------------------------------------------------------------------
+
+  const handleSubmit = useCallback(() => {
+    if (inputRef.current?.validate()) {
+      onConfirm && onConfirm(value);
+      onClose && onClose();
+    } else {
+      inputRef.current?.focus();
+    }
+  }, [value, onConfirm, onClose]);
+
+  const handleCancel = useCallback(() => {
+    onCancel && onCancel();
+    onClose && onClose();
+  }, [onCancel, onClose]);
+
+  // Render ----------------------------------------------------------------------------------------------------------
+
+  return (
+    <Dialog
+      open={!!open}
+      maxWidth={'sm'}
+      fullWidth
+      onClose={(e, reason) => {
+        if (reason === 'backdropClick') {
+          if (empty(value)) {
+            onClose && onClose();
+          }
+        }
+      }}
+    >
+      <DialogTitle>파일 링크</DialogTitle>
+      <DialogContent>
+        <DialogContentText>파일의 링크 URL을 입력해주세요.</DialogContentText>
+        <FormUrl
+          ref={(ref) => {
+            if (inputRef.current == null && ref !== null) {
+              ref.focus();
+            }
+            inputRef.current = ref;
+          }}
+          name='form-file-link-url'
+          label='링크 URL'
+          value={value}
+          required
+          style={{ marginTop: 15 }}
+          onChange={setValue}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button variant='text' onClick={handleCancel}>
+          취소
+        </Button>
+        <Button variant='text' onClick={handleSubmit}>
+          확인
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+LinkDialog.displayName = 'LinkDialog';
+LinkDialog.defaultProps = LinkDialogDefaultProps;
+
+export default LinkDialog;

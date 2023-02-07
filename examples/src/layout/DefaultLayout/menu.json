@@ -90,6 +90,12 @@
         "name": "FormTextEditor",
         "depth": 2,
         "uri": "/form_item/text_editor"
+      },
+      {
+        "id": "form_item/file",
+        "name": "FormFile",
+        "depth": 2,
+        "uri": "/form_item/file"
       }
     ]
   },

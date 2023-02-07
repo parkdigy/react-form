@@ -157,7 +157,7 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
             </Grid>
             {helperText && (
               <Grid item>
-                <FormHelperText error={error} style={{ marginLeft: helperTextShift ? 14 : 5 }}>
+                <FormHelperText component='div' error={error} style={{ marginLeft: helperTextShift ? 14 : 5 }}>
                   {helperText}
                 </FormHelperText>
               </Grid>

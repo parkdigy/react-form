@@ -43,7 +43,8 @@ export interface FormValueItemBaseCommands<ValueType = FormItemValue> {
     | 'FormDatePicker'
     | 'FormDateTimePicker'
     | 'FormTimePicker'
-    | 'FormDateRangePicker';
+    | 'FormDateRangePicker'
+    | 'FormFile';
   getName(): string;
   getReset(): ValueType;
   reset(): void;

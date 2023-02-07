@@ -138,7 +138,11 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
           <Grid container spacing={spacing} direction='row' style={{ flexWrap: 'nowrap' }}>
             {children}
           </Grid>
-          {helperText && <FormHelperText error={error}>{helperText}</FormHelperText>}
+          {helperText && (
+            <FormHelperText component='div' error={error}>
+              {helperText}
+            </FormHelperText>
+          )}
         </StyledWrapGrid>
       </FormContext.Provider>
     );
