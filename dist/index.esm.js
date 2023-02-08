@@ -16448,7 +16448,9 @@ Search.defaultProps = SearchDefaultProps;var SearchGroupDefaultProps = {
     }, [align]))[0];
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default.createElement(Grid, { item: true, className: classNames$1(className, 'SearchGroup'), style: { flex: max ? 1 : undefined, display: hidden ? 'none' : undefined } },
-        React__default.createElement(Grid, { container: true, wrap: 'wrap', spacing: spacing, justifyContent: justifyContent, alignItems: 'start', style: style, sx: sx }, React__default.Children.map(children, function (child, idx) { return (React__default.createElement(Grid, { key: idx, item: true }, child)); }))));
+        React__default.createElement(Grid, { container: true, wrap: 'wrap', spacing: spacing, justifyContent: justifyContent, alignItems: 'start', style: style, sx: sx }, React__default.Children.map(children, function (child, idx) {
+            return React__default.isValidElement(child) ? (React__default.createElement(Grid, { key: idx, item: true }, child)) : undefined;
+        }))));
 };
 SearchGroup.defaultProps = SearchGroupDefaultProps;var SearchButtonDefaultProps = {};var SearchButton = function (_a) {
     // State -----------------------------------------------------------------------------------------------------------

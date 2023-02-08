@@ -48,11 +48,13 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
         style={style}
         sx={sx}
       >
-        {React.Children.map(children, (child, idx) => (
-          <Grid key={idx} item>
-            {child}
-          </Grid>
-        ))}
+        {React.Children.map(children, (child, idx) =>
+          React.isValidElement(child) ? (
+            <Grid key={idx} item>
+              {child}
+            </Grid>
+          ) : undefined
+        )}
       </Grid>
     </Grid>
   );
