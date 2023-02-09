@@ -595,6 +595,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
                         InputLabelProps={textFieldInputLabelProps}
                         InputProps={muiInputProps}
                         inputProps={inputProps}
+                        required={required}
                         fullWidth={fullWidth}
                         helperText={undefined}
                         error={!!error || !!initError || !!timeError}
