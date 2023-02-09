@@ -381,6 +381,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
         labelIcon={labelIcon}
         label={label}
         fullWidth={fullWidth}
+        required={required}
         error={error}
         helperText={helperText}
         helperTextProps={{ style: { marginLeft: 2 } }}

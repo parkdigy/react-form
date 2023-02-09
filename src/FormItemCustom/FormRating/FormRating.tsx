@@ -257,6 +257,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         label={label}
         error={error}
         fullWidth={false}
+        required={required}
         helperText={helperText}
         helperTextProps={{ style: { marginLeft: 5 } }}
         style={style}
