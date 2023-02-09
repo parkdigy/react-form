@@ -16247,7 +16247,7 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
 FormFile.displayName = 'FormFile';
 FormFile.defaultProps = FormFileDefaultProps;var FormImageFileDefaultProps = __assign$4(__assign$4({}, FormFileDefaultProps), { accept: '.jpg,.jpeg,.png' });var css_248z = ".FormImageFile .preview-img {\n  max-width: 100%;\n}\n.FormImageFile:not(.hide-file-name):not(.variant-standard) .preview-img {\n  padding-right: 14px;\n}";
 styleInject(css_248z);var FormImageFile = React__default.forwardRef(function (_a, ref) {
-    var className = _a.className, maxImageSize = _a.maxImageSize, preview = _a.preview, previewMaxHeight = _a.previewMaxHeight, initValue = _a.value, onChange = _a.onChange, onFile = _a.onFile, onLink = _a.onLink, props = __rest$2(_a, ["className", "maxImageSize", "preview", "previewMaxHeight", "value", "onChange", "onFile", "onLink"]);
+    var className = _a.className, imageSize = _a.imageSize, preview = _a.preview, previewMaxHeight = _a.previewMaxHeight, initValue = _a.value, onChange = _a.onChange, onFile = _a.onFile, onLink = _a.onLink, props = __rest$2(_a, ["className", "imageSize", "preview", "previewMaxHeight", "value", "onChange", "onFile", "onLink"]);
     var _b = useAutoUpdateState$1(initValue), value = _b[0], setValue = _b[1];
     var _c = useState(), previewNode = _c[0], setPreviewNode = _c[1];
     var _d = useState({
@@ -16265,7 +16265,7 @@ styleInject(css_248z);var FormImageFile = React__default.forwardRef(function (_a
     }, [value, preview, previewMaxHeight]);
     // Function --------------------------------------------------------------------------------------------------------
     var imageSizeCheck = useCallback(function (file) {
-        if (maxImageSize && urlKit) {
+        if (imageSize && urlKit) {
             return new Promise(function (resolve, reject) {
                 var img = new Image();
                 img.onload = function () {
@@ -16274,8 +16274,8 @@ styleInject(css_248z);var FormImageFile = React__default.forwardRef(function (_a
                     urlKit.revokeObjectURL(img.src);
                     var sizeOk = false;
                     var sizeText = '';
-                    if (Array.isArray(maxImageSize)) {
-                        maxImageSize.forEach(function (a) {
+                    if (Array.isArray(imageSize)) {
+                        imageSize.forEach(function (a) {
                             if (width === a.width && height === a.height) {
                                 sizeOk = true;
                             }
@@ -16285,8 +16285,8 @@ styleInject(css_248z);var FormImageFile = React__default.forwardRef(function (_a
                         });
                     }
                     else {
-                        sizeOk = width === maxImageSize.width && height === maxImageSize.height;
-                        sizeText = "".concat(maxImageSize.width, "*").concat(maxImageSize.height);
+                        sizeOk = width === imageSize.width && height === imageSize.height;
+                        sizeText = "".concat(imageSize.width, "*").concat(imageSize.height);
                     }
                     if (sizeOk) {
                         resolve();
@@ -16321,7 +16321,7 @@ styleInject(css_248z);var FormImageFile = React__default.forwardRef(function (_a
             });
         }
         return Promise.resolve();
-    }, [urlKit, maxImageSize]);
+    }, [urlKit, imageSize]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (value) {
         setValue(value);

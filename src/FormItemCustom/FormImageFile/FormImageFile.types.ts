@@ -1,12 +1,12 @@
 import { FormFileCommands, FormFileDefaultProps, FormFileProps } from '../FormFile';
 
-export interface FormImageFileMaxImageSize {
+export interface FormImageFileImageSize {
   width: number;
   height: number;
 }
 
 export interface FormImageFileProps extends Omit<FormFileProps, 'preview'> {
-  maxImageSize?: FormImageFileMaxImageSize | FormImageFileMaxImageSize[];
+  imageSize?: FormImageFileImageSize | FormImageFileImageSize[];
   preview?: boolean;
   previewMaxHeight?: number;
 }

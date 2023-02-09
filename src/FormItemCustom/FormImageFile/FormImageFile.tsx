@@ -8,10 +8,7 @@ import { useAutoUpdateState } from '@pdg/react-hook';
 import './FormImageFile.scss';
 
 const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
-  (
-    { className, maxImageSize, preview, previewMaxHeight, value: initValue, onChange, onFile, onLink, ...props },
-    ref
-  ) => {
+  ({ className, imageSize, preview, previewMaxHeight, value: initValue, onChange, onFile, onLink, ...props }, ref) => {
     const [value, setValue] = useAutoUpdateState(initValue);
     const [previewNode, setPreviewNode] = useState<ReactNode>();
 
@@ -39,7 +36,7 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
 
     const imageSizeCheck = useCallback(
       (file: File | string) => {
-        if (maxImageSize && urlKit) {
+        if (imageSize && urlKit) {
           return new Promise<void>((resolve, reject) => {
             const img = new Image();
             img.onload = () => {
@@ -50,8 +47,8 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
 
               let sizeOk = false;
               let sizeText = '';
-              if (Array.isArray(maxImageSize)) {
-                maxImageSize.forEach((a) => {
+              if (Array.isArray(imageSize)) {
+                imageSize.forEach((a) => {
                   if (width === a.width && height === a.height) {
                     sizeOk = true;
                   }
@@ -59,8 +56,8 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
                   sizeText += `${a.width}*${a.height}`;
                 });
               } else {
-                sizeOk = width === maxImageSize.width && height === maxImageSize.height;
-                sizeText = `${maxImageSize.width}*${maxImageSize.height}`;
+                sizeOk = width === imageSize.width && height === imageSize.height;
+                sizeText = `${imageSize.width}*${imageSize.height}`;
               }
 
               if (sizeOk) {
@@ -95,7 +92,7 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
         }
         return Promise.resolve();
       },
-      [urlKit, maxImageSize]
+      [urlKit, imageSize]
     );
 
     // Event Handler ---------------------------------------------------------------------------------------------------
