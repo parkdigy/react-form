@@ -8,7 +8,7 @@ import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
 import { FormIcon } from '../../FormCommon';
 import LinkDialog from './LinkDialog/LinkDialog';
-import { PrivateAlertDialog } from '../../@private';
+import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
 import './FormFile.scss';
 
 const FormFile = React.forwardRef<FormFileCommands, Props>(
@@ -95,11 +95,12 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
     const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [isOpenLinkDialog, setIsOpenLinkDialog] = useState(false);
-    const [alertDialogProps, setAlertDialogProps] = useState<{ open: boolean; title?: ReactNode; content?: ReactNode }>(
-      {
-        open: false,
-      }
-    );
+    const [alertDialogProps, setAlertDialogProps] = useState<{
+      open: boolean;
+      color?: PrivateAlertDialogProps['color'];
+      title?: ReactNode;
+      content?: ReactNode;
+    }>({ open: false });
     const [label] = useAutoUpdateState<Props['label']>(
       useCallback(() => {
         return labelIcon ? (
@@ -238,6 +239,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
               if (file.size > maxFileSize) {
                 setAlertDialogProps({
                   open: true,
+                  color: 'error',
                   title: '파일 사이즈',
                   content: (
                     <div>
@@ -246,7 +248,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                           {getFileSizeText(maxFileSize)} 이하의 파일만 사용 가능합니다.
                         </Typography>
                       </div>
-                      <div>(선택한 파일 사이즈 : {getFileSizeText(file.size)})</div>
+                      <div style={{ opacity: 0.7 }}>(선택한 파일 사이즈 : {getFileSizeText(file.size)})</div>
                     </div>
                   ),
                 });

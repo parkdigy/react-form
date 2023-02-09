@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { FormImageFileProps as Props, FormImageFileDefaultProps, FormImageFileCommands } from './FormImageFile.types';
 import FormFile from '../FormFile';
-import { PrivateAlertDialog } from '../../@private';
+import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
 import { Typography } from '@mui/material';
 import { useAutoUpdateState } from '@pdg/react-hook';
 import './FormImageFile.scss';
@@ -12,11 +12,14 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
     const [value, setValue] = useAutoUpdateState(initValue);
     const [previewNode, setPreviewNode] = useState<ReactNode>();
 
-    const [alertDialogProps, setAlertDialogProps] = useState<{ open: boolean; title?: ReactNode; content?: ReactNode }>(
-      {
-        open: false,
-      }
-    );
+    const [alertDialogProps, setAlertDialogProps] = useState<{
+      open: boolean;
+      color?: PrivateAlertDialogProps['color'];
+      title?: ReactNode;
+      content?: ReactNode;
+    }>({
+      open: false,
+    });
     const [urlKit] = useState<typeof window.URL | typeof window.webkitURL | undefined>(() => {
       if (window.URL) return window.URL;
       else if (window.webkitURL) return window.webkitURL;
@@ -65,13 +68,14 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
               } else {
                 setAlertDialogProps({
                   open: true,
+                  color: 'error',
                   title: '이미지 사이즈',
                   content: (
                     <>
                       <div>
                         <Typography color='error'>{sizeText} 사이즈의 이미지만 사용 가능합니다.</Typography>
                       </div>
-                      <div>
+                      <div style={{ opacity: 0.7 }}>
                         (선택한 이미지 사이즈 : {width}*{height})
                       </div>
                     </>

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { LinkDialogProps as Props, LinkDialogDefaultProps } from './LinkDialog.types';
 import { FormTextFieldCommands, FormUrl } from '../../../FormItemTextFieldBase';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { empty } from '../../../@util';
 
 const LinkDialog: React.FC<Props> = ({ open, onConfirm, onCancel, onClose }) => {
@@ -41,6 +41,7 @@ const LinkDialog: React.FC<Props> = ({ open, onConfirm, onCancel, onClose }) => 
 
   return (
     <Dialog
+      className='color-primary'
       open={!!open}
       maxWidth={'sm'}
       fullWidth
@@ -54,21 +55,23 @@ const LinkDialog: React.FC<Props> = ({ open, onConfirm, onCancel, onClose }) => 
     >
       <DialogTitle>파일 링크</DialogTitle>
       <DialogContent>
-        <DialogContentText>파일의 링크 URL을 입력해주세요.</DialogContentText>
-        <FormUrl
-          ref={(ref) => {
-            if (inputRef.current == null && ref !== null) {
-              ref.focus();
-            }
-            inputRef.current = ref;
-          }}
-          name='form-file-link-url'
-          label='링크 URL'
-          value={value}
-          required
-          style={{ marginTop: 15 }}
-          onChange={setValue}
-        />
+        <Box>
+          <div>파일의 링크 URL을 입력해주세요.</div>
+          <FormUrl
+            ref={(ref) => {
+              if (inputRef.current == null && ref !== null) {
+                ref.focus();
+              }
+              inputRef.current = ref;
+            }}
+            name='form-file-link-url'
+            label='링크 URL'
+            value={value}
+            required
+            style={{ marginTop: 15 }}
+            onChange={setValue}
+          />
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button variant='text' onClick={handleCancel}>

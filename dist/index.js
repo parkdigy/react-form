@@ -14857,12 +14857,14 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwar
                 !formColWithHelperText && helperText && (React__default["default"].createElement(material.FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, helperText))))));
 });
 PrivateDatePicker.displayName = 'PrivateDatePicker';
-PrivateDatePicker.defaultProps = PrivateDatePickerDefaultProps;var PrivateAlertDialogDefaultProps = {};var PrivateAlertDialog = function (_a) {
-    var open = _a.open, title = _a.title, content = _a.content, onClose = _a.onClose;
+PrivateDatePicker.defaultProps = PrivateDatePickerDefaultProps;var PrivateAlertDialogDefaultProps = {
+    color: 'primary',
+};var PrivateAlertDialog = function (_a) {
+    var color = _a.color, open = _a.open, title = _a.title, content = _a.content, onClose = _a.onClose;
     var handleClose = React.useCallback(function () {
         onClose && onClose();
     }, [onClose]);
-    return (React__default["default"].createElement(material.Dialog, { open: !!open, onClose: handleClose, "aria-labelledby": 'alert-dialog-title' },
+    return (React__default["default"].createElement(material.Dialog, { className: "color-".concat(color), open: !!open, onClose: handleClose, "aria-labelledby": 'alert-dialog-title' },
         title && React__default["default"].createElement(material.DialogTitle, { id: 'alert-dialog-title' }, title),
         React__default["default"].createElement(material.DialogContent, null, content),
         React__default["default"].createElement(material.DialogActions, null,
@@ -15954,7 +15956,7 @@ FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var FormFileD
         onClose && onClose();
     }, [onCancel, onClose]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(material.Dialog, { open: !!open, maxWidth: 'sm', fullWidth: true, onClose: function (e, reason) {
+    return (React__default["default"].createElement(material.Dialog, { className: 'color-primary', open: !!open, maxWidth: 'sm', fullWidth: true, onClose: function (e, reason) {
             if (reason === 'backdropClick') {
                 if (empty$1(value)) {
                     onClose && onClose();
@@ -15963,13 +15965,14 @@ FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var FormFileD
         } },
         React__default["default"].createElement(material.DialogTitle, null, "\uD30C\uC77C \uB9C1\uD06C"),
         React__default["default"].createElement(material.DialogContent, null,
-            React__default["default"].createElement(material.DialogContentText, null, "\uD30C\uC77C\uC758 \uB9C1\uD06C URL\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694."),
-            React__default["default"].createElement(FormUrl, { ref: function (ref) {
-                    if (inputRef.current == null && ref !== null) {
-                        ref.focus();
-                    }
-                    inputRef.current = ref;
-                }, name: 'form-file-link-url', label: '\uB9C1\uD06C URL', value: value, required: true, style: { marginTop: 15 }, onChange: setValue })),
+            React__default["default"].createElement(material.Box, null,
+                React__default["default"].createElement("div", null, "\uD30C\uC77C\uC758 \uB9C1\uD06C URL\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694."),
+                React__default["default"].createElement(FormUrl, { ref: function (ref) {
+                        if (inputRef.current == null && ref !== null) {
+                            ref.focus();
+                        }
+                        inputRef.current = ref;
+                    }, name: 'form-file-link-url', label: '\uB9C1\uD06C URL', value: value, required: true, style: { marginTop: 15 }, onChange: setValue }))),
         React__default["default"].createElement(material.DialogActions, null,
             React__default["default"].createElement(material.Button, { variant: 'text', onClick: handleCancel }, "\uCDE8\uC18C"),
             React__default["default"].createElement(material.Button, { variant: 'text', onClick: handleSubmit }, "\uD655\uC778"))));
@@ -16013,9 +16016,7 @@ styleInject(css_248z$1);var FormFile = React__default["default"].forwardRef(func
     var _e = useAutoUpdateState$1(initHelperText), helperText = _e[0], setHelperText = _e[1];
     var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
     var _g = React.useState(false), isOpenLinkDialog = _g[0], setIsOpenLinkDialog = _g[1];
-    var _h = React.useState({
-        open: false,
-    }), alertDialogProps = _h[0], setAlertDialogProps = _h[1];
+    var _h = React.useState({ open: false }), alertDialogProps = _h[0], setAlertDialogProps = _h[1];
     var label = useAutoUpdateState$1(React.useCallback(function () {
         return labelIcon ? (React__default["default"].createElement(React__default["default"].Fragment, null,
             React__default["default"].createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
@@ -16130,13 +16131,14 @@ styleInject(css_248z$1);var FormFile = React__default["default"].forwardRef(func
                     if (file.size > maxFileSize) {
                         setAlertDialogProps({
                             open: true,
+                            color: 'error',
                             title: '파일 사이즈',
                             content: (React__default["default"].createElement("div", null,
                                 React__default["default"].createElement("div", null,
                                     React__default["default"].createElement(material.Typography, { color: 'error' },
                                         getFileSizeText(maxFileSize),
                                         " \uC774\uD558\uC758 \uD30C\uC77C\uB9CC \uC0AC\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4.")),
-                                React__default["default"].createElement("div", null,
+                                React__default["default"].createElement("div", { style: { opacity: 0.7 } },
                                     "(\uC120\uD0DD\uD55C \uD30C\uC77C \uC0AC\uC774\uC988 : ",
                                     getFileSizeText(file.size),
                                     ")"))),
@@ -16294,13 +16296,14 @@ styleInject(css_248z);var FormImageFile = React__default["default"].forwardRef(f
                     else {
                         setAlertDialogProps({
                             open: true,
+                            color: 'error',
                             title: '이미지 사이즈',
                             content: (React__default["default"].createElement(React__default["default"].Fragment, null,
                                 React__default["default"].createElement("div", null,
                                     React__default["default"].createElement(material.Typography, { color: 'error' },
                                         sizeText,
                                         " \uC0AC\uC774\uC988\uC758 \uC774\uBBF8\uC9C0\uB9CC \uC0AC\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4.")),
-                                React__default["default"].createElement("div", null,
+                                React__default["default"].createElement("div", { style: { opacity: 0.7 } },
                                     "(\uC120\uD0DD\uD55C \uC774\uBBF8\uC9C0 \uC0AC\uC774\uC988 : ",
                                     width,
                                     "*",

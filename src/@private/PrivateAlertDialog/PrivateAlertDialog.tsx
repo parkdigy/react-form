@@ -2,13 +2,13 @@ import React, { useCallback } from 'react';
 import { PrivateAlertDialogProps as Props, PrivateAlertDialogDefaultProps } from './PrivateAlertDialog.types';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
-const PrivateAlertDialog: React.FC<Props> = ({ open, title, content, onClose }) => {
+const PrivateAlertDialog: React.FC<Props> = ({ color, open, title, content, onClose }) => {
   const handleClose = useCallback(() => {
     onClose && onClose();
   }, [onClose]);
 
   return (
-    <Dialog open={!!open} onClose={handleClose} aria-labelledby='alert-dialog-title'>
+    <Dialog className={`color-${color}`} open={!!open} onClose={handleClose} aria-labelledby='alert-dialog-title'>
       {title && <DialogTitle id='alert-dialog-title'>{title}</DialogTitle>}
       <DialogContent>{content}</DialogContent>
       <DialogActions>
