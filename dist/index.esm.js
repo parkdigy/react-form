@@ -16433,7 +16433,41 @@ FormImageFile.defaultProps = FormImageFileDefaultProps;var SearchDefaultProps = 
 Search.displayName = 'Search';
 Search.defaultProps = SearchDefaultProps;var SearchGroupDefaultProps = {
     spacing: 1.5,
-};var SearchGroup = function (_a) {
+};var isReactFragment = function (child) {
+    try {
+        return child.type.toString() === React__default.Fragment.toString();
+    }
+    catch (e) {
+        return false;
+    }
+};
+var removeReactFragment = function (el) {
+    if (isReactFragment(el)) {
+        var children = el.props.children;
+        if (children) {
+            if (Array.isArray(children)) {
+                return children.map(function (child) {
+                    if (React__default.isValidElement(child)) {
+                        return removeReactFragment(child);
+                    }
+                    else {
+                        return React__default.createElement(Grid, { item: true }, child);
+                    }
+                });
+            }
+            else {
+                return React__default.createElement(Grid, { item: true }, el);
+            }
+        }
+        else {
+            return React__default.createElement(Grid, { item: true }, el);
+        }
+    }
+    else {
+        return React__default.createElement(Grid, { item: true }, el);
+    }
+};
+var SearchGroup = function (_a) {
     // State -----------------------------------------------------------------------------------------------------------
     var children = _a.children, className = _a.className, style = _a.style, sx = _a.sx, 
     //--------------------------------------------------------------------------------------------------------------------
@@ -16451,8 +16485,13 @@ Search.defaultProps = SearchDefaultProps;var SearchGroupDefaultProps = {
     }, [align]))[0];
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default.createElement(Grid, { item: true, className: classNames$1(className, 'SearchGroup'), style: { flex: max ? 1 : undefined, display: hidden ? 'none' : undefined } },
-        React__default.createElement(Grid, { container: true, wrap: 'wrap', spacing: spacing, justifyContent: justifyContent, alignItems: 'start', style: style, sx: sx }, React__default.Children.map(children, function (child, idx) {
-            return React__default.isValidElement(child) ? (React__default.createElement(Grid, { key: idx, item: true }, child)) : undefined;
+        React__default.createElement(Grid, { container: true, wrap: 'wrap', spacing: spacing, justifyContent: justifyContent, alignItems: 'start', style: style, sx: sx }, React__default.Children.map(children, function (child) {
+            if (React__default.isValidElement(child)) {
+                return removeReactFragment(child);
+            }
+            else {
+                return child;
+            }
         }))));
 };
 SearchGroup.defaultProps = SearchGroupDefaultProps;var SearchButtonDefaultProps = {};var SearchButton = function (_a) {

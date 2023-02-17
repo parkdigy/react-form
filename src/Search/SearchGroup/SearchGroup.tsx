@@ -1,8 +1,39 @@
-import React, { useCallback } from 'react';
+import React, { ReactElement, useCallback } from 'react';
 import classNames from 'classnames';
 import { SearchGroupDefaultProps as Props, SearchGroupProps } from './SearchGroup.types';
 import { Grid, GridProps } from '@mui/material';
 import { useAutoUpdateState } from '@pdg/react-hook';
+
+const isReactFragment = (child: ReactElement) => {
+  try {
+    return child.type.toString() === React.Fragment.toString();
+  } catch (e) {
+    return false;
+  }
+};
+
+const removeReactFragment = (el: ReactElement): any => {
+  if (isReactFragment(el)) {
+    const children: ReactElement | ReactElement[] = el.props.children;
+    if (children) {
+      if (Array.isArray(children)) {
+        return children.map((child) => {
+          if (React.isValidElement(child)) {
+            return removeReactFragment(child);
+          } else {
+            return <Grid item>{child}</Grid>;
+          }
+        });
+      } else {
+        return <Grid item>{el}</Grid>;
+      }
+    } else {
+      return <Grid item>{el}</Grid>;
+    }
+  } else {
+    return <Grid item>{el}</Grid>;
+  }
+};
 
 const SearchGroup: React.FC<SearchGroupProps> = ({
   children,
@@ -48,13 +79,13 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
         style={style}
         sx={sx}
       >
-        {React.Children.map(children, (child, idx) =>
-          React.isValidElement(child) ? (
-            <Grid key={idx} item>
-              {child}
-            </Grid>
-          ) : undefined
-        )}
+        {React.Children.map(children, (child) => {
+          if (React.isValidElement(child)) {
+            return removeReactFragment(child);
+          } else {
+            return child;
+          }
+        })}
       </Grid>
     </Grid>
   );
