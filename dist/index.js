@@ -4082,7 +4082,7 @@ styleInject(css_248z$e);var FormTextarea = React__default["default"].forwardRef(
     return React__default["default"].createElement(FormTextField, __assign$4({ ref: ref, className: classNames$1(className, 'FormTextarea') }, props, { multiline: true }));
 });
 FormTextarea.displayName = 'FormTextarea';
-FormTextarea.defaultProps = FormTextareaDefaultProps;var FormUrlDefaultProps = __assign$4(__assign$4({}, FormTextDefaultProps), { validPattern: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/gim });var FormUrl = React__default["default"].forwardRef(function (_a, ref) {
+FormTextarea.defaultProps = FormTextareaDefaultProps;var FormUrlDefaultProps = __assign$4(__assign$4({}, FormTextDefaultProps), { validPattern: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'%()*+,;=.]+$/gim });var FormUrl = React__default["default"].forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest$2(_a, ["className"]);
     return React__default["default"].createElement(FormText, __assign$4({ ref: ref, className: classNames$1(className, 'FormUrl'), type: 'url' }, props));
 });
