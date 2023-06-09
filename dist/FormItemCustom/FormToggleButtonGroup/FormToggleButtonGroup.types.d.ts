@@ -11,6 +11,7 @@ export interface FormToggleButtonGroupItem {
 }
 export declare type FormToggleButtonGroupValue = FormToggleButtonGroupItemValue | FormToggleButtonGroupItemValue[] | undefined;
 export interface FormToggleButtonGroupProps extends CommonSxProps, Omit<FormValueItemProps, 'value'>, PartialPick<FormItemBaseProps, 'required' | 'focused'> {
+    type?: 'button' | 'checkbox';
     value?: FormToggleButtonGroupValue;
     items?: FormToggleButtonGroupItem[];
     multiple?: boolean;
@@ -21,7 +22,7 @@ export interface FormToggleButtonGroupProps extends CommonSxProps, Omit<FormValu
     onLoadItems?: () => Promise<FormToggleButtonGroupItem[]>;
     onValue?: (value: FormToggleButtonGroupValue) => FormToggleButtonGroupValue;
 }
-export declare const FormToggleButtonGroupDefaultProps: Pick<FormToggleButtonGroupProps, 'formValueSeparator'>;
+export declare const FormToggleButtonGroupDefaultProps: Pick<FormToggleButtonGroupProps, 'type' | 'formValueSeparator'>;
 export interface FormToggleButtonGroupExtraCommands extends FormArrayValueItemCommands, FormItemsValueItemCommands<FormToggleButtonGroupItem>, FormMultipleValueItemCommands, FormLoadingValueItemCommands {
 }
 export interface FormToggleButtonGroupCommands extends FormValueItemBaseCommands<FormToggleButtonGroupValue>, FormToggleButtonGroupExtraCommands {

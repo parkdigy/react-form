@@ -126,6 +126,16 @@ const FormItemToggleButtonGroup = () => {
               helperText='disabled=true'
             />
           </FormCol>
+          <FormCol>
+            <FormToggleButtonGroup
+              {...additionalProps}
+              type='checkbox'
+              name='checkbox'
+              items={items}
+              label='FormToggleButtonGroup'
+              helperText='type=checkbox'
+            />
+          </FormCol>
         </FormRow>
 
         <FormRow line>

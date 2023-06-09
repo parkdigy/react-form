@@ -22,6 +22,35 @@ $standard-small-label-height: 26px;
     text-overflow: ellipsis;
   }
 
+  &.type-checkbox {
+    .ToggleButton {
+      padding-left: 3px;
+      padding-right: 5px;
+      &:not(:last-child) {
+        margin-right: 5px;
+      }
+      display: flex;
+      background-color: transparent !important;
+      border: 0;
+      .__checkbox-checked__,
+      .__checkbox-unchecked__ {
+        margin-right: 3px;
+      }
+
+      .__checkbox-checked__ {
+        display: none;
+      }
+      &.Mui-selected {
+        .__checkbox-checked__ {
+          display: block;
+        }
+        .__checkbox-unchecked__ {
+          display: none;
+        }
+      }
+    }
+  }
+
   // Label 없음
   &:not(.with-label) {
     &.variant-outlined .ToggleButton {

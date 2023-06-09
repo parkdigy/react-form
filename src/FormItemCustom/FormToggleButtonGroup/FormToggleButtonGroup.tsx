@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
-import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress } from '@mui/material';
+import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick, notEmpty, isSame } from '../../@util';
 import { PartialPick } from '../../@types';
@@ -26,6 +26,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
       name,
       labelIcon,
       label,
+      type,
       loading: initLoading,
       items: initItems,
       value: initValue,
@@ -442,7 +443,8 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
           `variant-${variant}`,
           `size-${size}`,
           !!label && 'with-label',
-          !!fullWidth && 'full-width'
+          !!fullWidth && 'full-width',
+          `type-${type}`
         )}
         variant={variant}
         size={size}
@@ -510,6 +512,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
                     !fullWidth && formColWidth && typeof width === 'number' && width > formColWidth
                       ? formColWidth
                       : undefined,
+                  flexWrap: type === 'checkbox' ? 'wrap' : 'nowrap',
                 }}
                 aria-labelledby={notEmpty(label) ? labelId : undefined}
               >
@@ -535,10 +538,17 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
                       style={{
                         borderColor: error ? theme.palette.error.main : '',
                         color: error ? theme.palette.error.main : '',
+                        width: type === 'checkbox' ? 'auto' : undefined,
                       }}
                       onFocus={() => setFocused(initFocused || true)}
                       onBlur={() => setFocused(initFocused || false)}
                     >
+                      {type === 'checkbox' && (
+                        <>
+                          <Icon className='__checkbox-unchecked__'>check_box_outline_blank</Icon>
+                          <Icon className='__checkbox-checked__'>check_box</Icon>
+                        </>
+                      )}
                       {label}
                     </ToggleButton>
                   ))

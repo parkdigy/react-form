@@ -19,7 +19,7 @@ export interface FormValueMap {
     [key: string]: FormValue;
 }
 export interface FormValueItemBaseCommands<ValueType = FormItemValue> {
-    getType(): 'default' | 'FormCheckbox' | 'FormToggleButtonGroup' | 'FormRadioGroup' | 'FormRating' | 'FormTextEditor' | 'FormAutocomplete' | 'FormDatePicker' | 'FormDateTimePicker' | 'FormTimePicker' | 'FormDateRangePicker' | 'FormFile';
+    getType(): 'default' | 'FormCheckbox' | 'FormCheckboxGroup' | 'FormToggleButtonGroup' | 'FormRadioGroup' | 'FormRating' | 'FormTextEditor' | 'FormAutocomplete' | 'FormDatePicker' | 'FormDateTimePicker' | 'FormTimePicker' | 'FormDateRangePicker' | 'FormFile';
     getName(): string;
     getReset(): ValueType;
     reset(): void;

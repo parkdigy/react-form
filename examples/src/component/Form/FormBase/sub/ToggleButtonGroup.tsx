@@ -1,7 +1,16 @@
 import React from 'react';
 import { FormCol, FormRow, FormToggleButtonGroup, FormToggleButtonGroupItem } from '@pdg/react-form';
 
-const DEFAULT_ITEMS: FormToggleButtonGroupItem[] = [lv('Btn1', 1), lv('Btn2', 2), lv('Btn3', 3)];
+const DEFAULT_ITEMS: FormToggleButtonGroupItem[] = [
+  lv('Btn1', 1),
+  lv('Btn2', 2),
+  lv('Btn3', 3),
+  // lv('Btn4', 4),
+  // lv('Btn5', 5),
+  // lv('Btn6', 6),
+  // lv('Btn7', 7),
+  // lv('Btn8', 8),
+];
 
 const ToggleButtonGroup = () => {
   return (
@@ -12,6 +21,8 @@ const ToggleButtonGroup = () => {
           label='FormToggleButtonGroup'
           labelIcon='Workspaces'
           items={DEFAULT_ITEMS}
+          type='checkbox'
+          multiple
           helperText='AAAAAA'
         />
       </FormCol>
