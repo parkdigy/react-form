@@ -2046,8 +2046,8 @@ FormCol.defaultProps = FormColDefaultProps;var FormTextFieldDefaultProps = {};fu
   } else {
     style.appendChild(document.createTextNode(css));
   }
-}var css_248z$i = ".FormTextField {\n  min-width: 200px;\n}\n.FormTextField .clear-icon-button-wrap {\n  visibility: hidden;\n}\n.FormTextField.variant-filled .clear-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormTextField:hover .clear-icon-button-wrap.show,\n.FormTextField .MuiInputBase-root.Mui-focused .clear-icon-button-wrap.show {\n  visibility: visible;\n}";
-styleInject(css_248z$i);var FormTextField = React__default["default"].forwardRef(function (_a, ref) {
+}var css_248z$j = ".FormTextField {\n  min-width: 200px;\n}\n.FormTextField .clear-icon-button-wrap {\n  visibility: hidden;\n}\n.FormTextField.variant-filled .clear-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormTextField:hover .clear-icon-button-wrap.show,\n.FormTextField .MuiInputBase-root.Mui-focused .clear-icon-button-wrap.show {\n  visibility: visible;\n}";
+styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var _b;
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
@@ -2341,7 +2341,8 @@ FormTextField.defaultProps = FormTextFieldDefaultProps;var FormTextDefaultProps 
     return React__default["default"].createElement(FormTextField, __assign$4({ ref: ref, className: classNames$1(className, 'FormText'), onValue: handleValue }, props));
 });
 FormText.displayName = 'FormText';
-FormText.defaultProps = FormTextDefaultProps;var FormHiddenDefaultProps = {};var FormHidden = React__default["default"].forwardRef(function (_a, ref) {
+FormText.defaultProps = FormTextDefaultProps;var FormHiddenDefaultProps = {};var css_248z$i = ".FormHidden {\n  display: none !important;\n}";
+styleInject(css_248z$i);var FormHidden = React__default["default"].forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest$2(_a, ["className"]);
     return (React__default["default"].createElement(FormText, __assign$4({ ref: ref, className: classNames$1(className, 'FormHidden'), type: 'hidden', variant: 'standard' }, props)));
 });
@@ -16483,20 +16484,20 @@ var removeReactFragment = function (el) {
                         return removeReactFragment(child);
                     }
                     else {
-                        return React__default["default"].createElement(material.Grid, { item: true }, child);
+                        return (React__default["default"].createElement(material.Grid, { item: true, style: { display: child === FormHidden ? 'none' : undefined } }, child));
                     }
                 });
             }
             else {
-                return React__default["default"].createElement(material.Grid, { item: true }, el);
+                return (React__default["default"].createElement(material.Grid, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
             }
         }
         else {
-            return React__default["default"].createElement(material.Grid, { item: true }, el);
+            return (React__default["default"].createElement(material.Grid, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
         }
     }
     else {
-        return React__default["default"].createElement(material.Grid, { item: true }, el);
+        return (React__default["default"].createElement(material.Grid, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
     }
 };
 var SearchGroup = function (_a) {
