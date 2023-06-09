@@ -16411,7 +16411,7 @@ SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React__def
             }
         });
         if (basicRowItems.length > 0) {
-            return __spreadArray([React__default.createElement(SearchGroupRow, null, basicRowItems)], rowItems, true);
+            return __spreadArray([React__default.createElement(SearchGroupRow, { key: '$basicRow$' }, basicRowItems)], rowItems, true);
         }
         else {
             return rowItems;

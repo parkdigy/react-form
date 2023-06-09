@@ -51,7 +51,7 @@ const Search = React.forwardRef<SearchCommands, Props>(
       });
 
       if (basicRowItems.length > 0) {
-        return [<SearchGroupRow>{basicRowItems}</SearchGroupRow>, ...rowItems];
+        return [<SearchGroupRow key='$basicRow$'>{basicRowItems}</SearchGroupRow>, ...rowItems];
       } else {
         return rowItems;
       }
