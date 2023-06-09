@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { Paper, Grid } from '@mui/material';
+import React, { ReactNode, useEffect, useMemo, useRef } from 'react';
+import { Paper } from '@mui/material';
 import { SearchProps as Props, SearchCommands, SearchDefaultProps } from './Search.types';
 import { Form, FormCommands } from '../../Form';
-import { FormCol, FormRow } from '../../FormLayout';
 import FormContextProvider from '../../FormContextProvider';
+import SearchGroupRow from '../SearchGroupRow';
 
 const Search = React.forwardRef<SearchCommands, Props>(
   (
@@ -33,6 +33,29 @@ const Search = React.forwardRef<SearchCommands, Props>(
         formRef.current?.submit();
       }
     }, []);
+
+    // Memo --------------------------------------------------------------------------------------------------------------
+
+    const renderChildren = useMemo(() => {
+      const rowItems: ReactNode[] = [];
+      const basicRowItems: ReactNode[] = [];
+
+      React.Children.forEach(children, (child) => {
+        if (React.isValidElement(child)) {
+          if (child.type.toString() === SearchGroupRow.toString()) {
+            rowItems.push(child);
+          } else {
+            basicRowItems.push(child);
+          }
+        }
+      });
+
+      if (basicRowItems.length > 0) {
+        return [<SearchGroupRow>{basicRowItems}</SearchGroupRow>, ...rowItems];
+      } else {
+        return rowItems;
+      }
+    }, [children]);
 
     // Render ----------------------------------------------------------------------------------------------------------
 
@@ -85,13 +108,7 @@ const Search = React.forwardRef<SearchCommands, Props>(
             fullWidth={false}
             {...otherProps}
           >
-            <FormRow>
-              <FormCol>
-                <Grid container spacing={1} alignItems='center'>
-                  {children}
-                </Grid>
-              </FormCol>
-            </FormRow>
+            {renderChildren}
           </Form>
         </Paper>
       </FormContextProvider>

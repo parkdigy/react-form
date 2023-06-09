@@ -1,4 +1,4 @@
-import*as React from'react';import React__default,{useRef,useEffect,useState,useCallback,useLayoutEffect,createContext,useContext,cloneElement,isValidElement,createRef,PureComponent,useId}from'react';import {Box,Grid,Icon as Icon$1,Button,InputLabel,styled,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,useTheme,RadioGroup,Radio,ToggleButtonGroup,ToggleButton,Rating,Skeleton,darken,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Paper}from'@mui/material';import dayjs from'dayjs';import {findDOMNode}from'react-dom';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import CircularProgress$1 from'@mui/material/CircularProgress';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker}from'@mui/x-date-pickers';import dayjsLocale from'dayjs/locale/ko';import dayjsIsSameOrAfter from'dayjs/plugin/isSameOrAfter';import dayjsIsSameOrBefore from'dayjs/plugin/isSameOrBefore';import dayjsIsBetween from'dayjs/plugin/isBetween';/******************************************************************************
+import*as React from'react';import React__default,{useRef,useEffect,useState,useCallback,useLayoutEffect,createContext,useContext,cloneElement,isValidElement,createRef,PureComponent,useId,useMemo}from'react';import {Box,Grid,Icon as Icon$1,Button,InputLabel,styled,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,useTheme,RadioGroup,Radio,ToggleButtonGroup,ToggleButton,Rating,Skeleton,darken,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Paper}from'@mui/material';import dayjs from'dayjs';import {findDOMNode}from'react-dom';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import CircularProgress$1 from'@mui/material/CircularProgress';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker}from'@mui/x-date-pickers';import dayjsLocale from'dayjs/locale/ko';import dayjsIsSameOrAfter from'dayjs/plugin/isSameOrAfter';import dayjsIsSameOrBefore from'dayjs/plugin/isSameOrBefore';import dayjsIsBetween from'dayjs/plugin/isBetween';/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -16376,7 +16376,14 @@ styleInject(css_248z);var FormImageFile = React__default.forwardRef(function (_a
 FormImageFile.displayName = 'FormImageFile';
 FormImageFile.defaultProps = FormImageFileDefaultProps;var SearchDefaultProps = {
     color: 'primary',
-};var Search = React__default.forwardRef(function (_a, ref) {
+};var SearchGroupRowDefaultProps = {};var SearchGroupRow = function (_a) {
+    var children = _a.children;
+    return (React__default.createElement(FormRow, null,
+        React__default.createElement(FormCol, null,
+            React__default.createElement(Grid, { container: true, spacing: 1, alignItems: 'center' }, children))));
+};
+SearchGroupRow.displayName = 'SearchGroupRow';
+SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React__default.forwardRef(function (_a, ref) {
     // Ref -------------------------------------------------------------------------------------------------------------
     var children = _a.children, className = _a.className, style = _a.style, sx = _a.sx, 
     //----------------------------------------------------------------------------------------------------------------
@@ -16389,6 +16396,27 @@ FormImageFile.defaultProps = FormImageFileDefaultProps;var SearchDefaultProps = 
             (_a = formRef.current) === null || _a === void 0 ? void 0 : _a.submit();
         }
     }, []);
+    // Memo --------------------------------------------------------------------------------------------------------------
+    var renderChildren = useMemo(function () {
+        var rowItems = [];
+        var basicRowItems = [];
+        React__default.Children.forEach(children, function (child) {
+            if (React__default.isValidElement(child)) {
+                if (child.type.toString() === SearchGroupRow.toString()) {
+                    rowItems.push(child);
+                }
+                else {
+                    basicRowItems.push(child);
+                }
+            }
+        });
+        if (basicRowItems.length > 0) {
+            return __spreadArray([React__default.createElement(SearchGroupRow, null, basicRowItems)], rowItems, true);
+        }
+        else {
+            return rowItems;
+        }
+    }, [children]);
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default.createElement(FormContextProvider, { value: {
             id: 'search',
@@ -16425,10 +16453,7 @@ FormImageFile.defaultProps = FormImageFileDefaultProps;var SearchDefaultProps = 
                         }
                     }
                     formRef.current = commands || undefined;
-                }, className: 'Search', variant: 'outlined', size: 'small', color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: false }, otherProps),
-                React__default.createElement(FormRow, null,
-                    React__default.createElement(FormCol, null,
-                        React__default.createElement(Grid, { container: true, spacing: 1, alignItems: 'center' }, children)))))));
+                }, className: 'Search', variant: 'outlined', size: 'small', color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: false }, otherProps), renderChildren))));
 });
 Search.displayName = 'Search';
 Search.defaultProps = SearchDefaultProps;var SearchGroupDefaultProps = {
@@ -16505,4 +16530,4 @@ SearchGroup.defaultProps = SearchGroupDefaultProps;var SearchButtonDefaultProps 
 };
 SearchButton.defaultProps = SearchButtonDefaultProps;dayjs.extend(dayjsIsSameOrAfter);
 dayjs.extend(dayjsIsSameOrBefore);
-dayjs.extend(dayjsIsBetween);export{Form,FormAutocomplete,FormAutocompleteDefaultProps,FormBlock,FormBlockDefaultProps,FormButton,FormButtonDefaultProps,FormCheckbox,FormCheckboxDefaultProps,FormCol,FormColDefaultProps,FormContext,FormContextDefaultValue,FormContextProvider,FormDatePicker,FormDatePickerDefaultProps,FormDateRangePicker,FormDateRangePickerDefaultProps,FormDateTimePicker,FormDateTimePickerDefaultProps,FormDefaultProps,FormDivider,FormDividerDefaultProps,FormEmail,FormEmailDefaultProps,FormFile,FormFileDefaultProps,FormHidden,FormHiddenDefaultProps,FormIcon,FormIconDefaultProps,FormImageFile,FormImageFileDefaultProps,FormLabel,FormLabelDefaultProps,FormMobile,FormMobileDefaultProps,FormNumber,FormNumberDefaultProps,FormPassword,FormPasswordDefaultProps,FormRadioGroup,FormRadioGroupDefaultProps,FormRating,FormRatingDefaultProps,FormRow,FormRowDefaultProps,FormSearch,FormSearchDefaultProps,FormSelect,FormSelectDefaultProps,FormTag,FormTagDefaultProps,FormTel,FormTelDefaultProps,FormText,FormTextDefaultProps,FormTextEditor,FormTextEditorDefaultProps,FormTextField,FormTextFieldDefaultProps,FormTextarea,FormTextareaDefaultProps,FormTimePicker,FormTimePickerDefaultProps,FormToggleButtonGroup,FormToggleButtonGroupDefaultProps,FormUrl,FormUrlDefaultProps,Search,SearchButton,SearchButtonDefaultProps,SearchDefaultProps,SearchGroup,SearchGroupDefaultProps,useFormState};//# sourceMappingURL=index.esm.js.map
+dayjs.extend(dayjsIsBetween);export{Form,FormAutocomplete,FormAutocompleteDefaultProps,FormBlock,FormBlockDefaultProps,FormButton,FormButtonDefaultProps,FormCheckbox,FormCheckboxDefaultProps,FormCol,FormColDefaultProps,FormContext,FormContextDefaultValue,FormContextProvider,FormDatePicker,FormDatePickerDefaultProps,FormDateRangePicker,FormDateRangePickerDefaultProps,FormDateTimePicker,FormDateTimePickerDefaultProps,FormDefaultProps,FormDivider,FormDividerDefaultProps,FormEmail,FormEmailDefaultProps,FormFile,FormFileDefaultProps,FormHidden,FormHiddenDefaultProps,FormIcon,FormIconDefaultProps,FormImageFile,FormImageFileDefaultProps,FormLabel,FormLabelDefaultProps,FormMobile,FormMobileDefaultProps,FormNumber,FormNumberDefaultProps,FormPassword,FormPasswordDefaultProps,FormRadioGroup,FormRadioGroupDefaultProps,FormRating,FormRatingDefaultProps,FormRow,FormRowDefaultProps,FormSearch,FormSearchDefaultProps,FormSelect,FormSelectDefaultProps,FormTag,FormTagDefaultProps,FormTel,FormTelDefaultProps,FormText,FormTextDefaultProps,FormTextEditor,FormTextEditorDefaultProps,FormTextField,FormTextFieldDefaultProps,FormTextarea,FormTextareaDefaultProps,FormTimePicker,FormTimePickerDefaultProps,FormToggleButtonGroup,FormToggleButtonGroupDefaultProps,FormUrl,FormUrlDefaultProps,Search,SearchButton,SearchButtonDefaultProps,SearchDefaultProps,SearchGroup,SearchGroupDefaultProps,SearchGroupRow,SearchGroupRowDefaultProps,useFormState};//# sourceMappingURL=index.esm.js.map

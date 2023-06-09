@@ -2,6 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import {
   FormText,
   Search as _Search,
+  SearchGroupRow,
   SearchGroup,
   SearchButton,
   FormIcon,
@@ -94,6 +95,12 @@ const Search = () => {
               새 항목
             </SearchButton>
           </SearchGroup>
+
+          <SearchGroupRow>
+            <SearchGroup>
+              <FormText name='keyword2' label='검색어 2' />
+            </SearchGroup>
+          </SearchGroupRow>
         </_Search>
         <FormHelperText sx={{ ml: 1 }}>autoSubmit=true</FormHelperText>
       </Grid>
