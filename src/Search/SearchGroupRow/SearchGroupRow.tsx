@@ -3,9 +3,9 @@ import { SearchGroupRowProps as Props, SearchGroupRowDefaultProps } from './Sear
 import { FormCol, FormRow } from '../../FormLayout';
 import { Grid } from '@mui/material';
 
-const SearchGroupRow: React.FC<Props> = ({ children }) => {
+const SearchGroupRow: React.FC<Props> = ({ children, ...props }) => {
   return (
-    <FormRow>
+    <FormRow {...props}>
       <FormCol>
         <Grid container spacing={1} alignItems='center'>
           {children}

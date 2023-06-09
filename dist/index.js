@@ -16377,8 +16377,8 @@ FormImageFile.displayName = 'FormImageFile';
 FormImageFile.defaultProps = FormImageFileDefaultProps;var SearchDefaultProps = {
     color: 'primary',
 };var SearchGroupRowDefaultProps = {};var SearchGroupRow = function (_a) {
-    var children = _a.children;
-    return (React__default["default"].createElement(FormRow, null,
+    var children = _a.children, props = __rest$2(_a, ["children"]);
+    return (React__default["default"].createElement(FormRow, __assign$4({}, props),
         React__default["default"].createElement(FormCol, null,
             React__default["default"].createElement(material.Grid, { container: true, spacing: 1, alignItems: 'center' }, children))));
 };
