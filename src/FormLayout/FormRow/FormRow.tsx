@@ -123,27 +123,38 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
           ...otherFormState,
         }}
       >
-        {(icon || label || line) && (
-          <FormDivider
-            size={size}
-            icon={icon}
-            color={color}
-            label={label}
-            line={line}
-            lineVerticalMargin={lineVerticalMargin}
-            hidden={hidden}
-          />
-        )}
-        <StyledWrapGrid ref={ref} item className={classNames(className, 'FormRow')} xs={12} style={style} sx={sx}>
-          <Grid container spacing={spacing} direction='row' style={{ flexWrap: 'nowrap' }}>
-            {children}
+        <Grid item ref={ref} xs={12} className={classNames(className, 'FormRow')} style={style} sx={sx}>
+          <Grid container spacing={spacing}>
+            {(icon || label || line) && (
+              <FormDivider
+                className={classNames(className, 'FormRow-header')}
+                size={size}
+                icon={icon}
+                color={color}
+                label={label}
+                line={line}
+                lineVerticalMargin={lineVerticalMargin}
+                hidden={hidden}
+              />
+            )}
+            <StyledWrapGrid item xs={12} className='FormRow-body'>
+              <Grid
+                className='FormRow-content'
+                container
+                spacing={spacing}
+                direction='row'
+                style={{ flexWrap: 'nowrap' }}
+              >
+                {children}
+              </Grid>
+              {helperText && (
+                <FormHelperText className='FormRow-helper-text' component='div' error={error}>
+                  {helperText}
+                </FormHelperText>
+              )}
+            </StyledWrapGrid>
           </Grid>
-          {helperText && (
-            <FormHelperText component='div' error={error}>
-              {helperText}
-            </FormHelperText>
-          )}
-        </StyledWrapGrid>
+        </Grid>
       </FormContext.Provider>
     );
   }

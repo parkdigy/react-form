@@ -1,9 +1,11 @@
 import React, { CSSProperties, useCallback } from 'react';
+import classNames from 'classnames';
 import { Grid, Box } from '@mui/material';
 import { FormDividerProps as Props, FormDividerDefaultProps } from './FormDivider.types';
 import { FormIcon } from '../../FormCommon';
 import { useFormState } from '../../FormContext';
 import { useAutoUpdateState } from '@pdg/react-hook';
+import { StyledLineDiv } from './FormDivider.style';
 
 const DEFAULT_LINE_STYLE: CSSProperties = { flex: 1, position: 'relative' };
 
@@ -17,6 +19,9 @@ const FormDivider = React.forwardRef<HTMLDivElement, Props>(
       line,
       lineVerticalMargin,
       hidden,
+      collapse,
+      collapseIn,
+      onCollapseChange,
       //----------------------------------------------------------------------------------------------------------------
       className,
       style: initStyle,
@@ -56,11 +61,29 @@ const FormDivider = React.forwardRef<HTMLDivElement, Props>(
       }, [lineVerticalMargin])
     );
 
+    // Event Handler -----------------------------------------------------------------------------------------------------
+
+    const handleClick = useCallback(() => {
+      if (collapse) {
+        onCollapseChange && onCollapseChange(!collapseIn);
+      }
+    }, [collapse, collapseIn, onCollapseChange]);
+
     // Render ----------------------------------------------------------------------------------------------------------
 
     return (
-      <Grid ref={ref} item xs={12} style={style} className={className} sx={sx}>
-        <Box sx={{ display: 'flex', py: 1, alignItems: 'center', justifyItems: 'center', padding: 0 }}>
+      <Grid ref={ref} item xs={12} style={style} className={classNames(className, 'FormDivider')} sx={sx}>
+        <Box
+          sx={{
+            display: 'flex',
+            py: 1,
+            alignItems: 'center',
+            justifyItems: 'center',
+            padding: 0,
+            cursor: collapse ? 'pointer' : undefined,
+          }}
+          onClick={handleClick}
+        >
           {icon && (
             <FormIcon style={{ opacity: 0.54, marginRight: 5 }} fontSize={size}>
               {icon}
@@ -78,18 +101,15 @@ const FormDivider = React.forwardRef<HTMLDivElement, Props>(
               {label}
             </Box>
           )}
-          {line && (
+          {(line || collapse) && (
             <div style={lineStyle}>
-              <div
-                style={{
-                  borderBottom: 'thin solid #dfdfdf',
-                  position: 'absolute',
-                  left: 0,
-                  top: '50%',
-                  width: '100%',
-                }}
-              />
+              <StyledLineDiv />
             </div>
+          )}
+          {collapse && (
+            <FormIcon sx={{ opacity: 0.6, ml: 1 }}>
+              {collapseIn ? 'KeyboardDoubleArrowUp' : 'KeyboardDoubleArrowDown'}
+            </FormIcon>
           )}
         </Box>
       </Grid>

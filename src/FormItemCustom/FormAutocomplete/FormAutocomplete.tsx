@@ -430,7 +430,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
     return (
       <Autocomplete
         options={items || []}
-        className={classNames(className, 'FormAutocomplete')}
+        className={classNames(className, 'FormValueItem', 'FormAutocomplete')}
         sx={sx}
         multiple={multiple}
         fullWidth={!width && fullWidth}

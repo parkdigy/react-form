@@ -29,6 +29,7 @@ import {
   FormDateRangePicker,
 } from '@pdg/react-form';
 import { ToggleButtonGroup, Checkbox, RadioGroup, Rating, FileUpload } from './sub';
+import { Collapse } from '@mui/material';
 
 const FormBase = () => {
   const formRef = useRef<FormCommands>(null);
@@ -182,7 +183,7 @@ const FormBase = () => {
         style={{ marginTop: 20 }}
         onSubmit={handleSubmit}
       >
-        <FormBlock icon='TextFields' label='FormBlock 1' hidden={isFormBlock1Hidden}>
+        <FormBlock icon='TextFields' label='FormBlock 1' hidden={isFormBlock1Hidden} collapse collapseIn>
           <FormRow>
             <FormCol>
               <FormText name='FormText' label='FormText' ref={formTextRef} helperText='FormText' />
@@ -238,7 +239,7 @@ const FormBase = () => {
         <FormBlock icon='CalendarMonth' label='FormBlock 2' hidden={isFormBlock2Hidden}>
           <FormRow>
             <FormCol>
-              <FormDatePicker name='FormDatepicker' label='FormDatePicker' />
+              <FormDatePicker name='FormDatepicker' label='FormDatePicker' className='AAA' />
             </FormCol>
             <FormCol>
               <FormDateTimePicker name='FormDateTimePicker' label='FormDateTimePicker' time='minute' />

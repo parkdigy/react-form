@@ -136,7 +136,7 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
         >
           <Grid container direction='column'>
             {label && (
-              <Grid item>
+              <Grid item className='FormCol-header'>
                 <div style={{ position: 'relative', height: 20 }}>
                   <FormLabel
                     className='FormCol-FormLabel'
@@ -152,11 +152,11 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
                 </div>
               </Grid>
             )}
-            <Grid item xs={2}>
+            <Grid item xs={2} className='FormCol-content'>
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap }}>{children}</Box>
             </Grid>
             {helperText && (
-              <Grid item>
+              <Grid item className='FormCol-helper-text'>
                 <FormHelperText component='div' error={error} style={{ marginLeft: helperTextShift ? 14 : 5 }}>
                   {helperText}
                 </FormHelperText>

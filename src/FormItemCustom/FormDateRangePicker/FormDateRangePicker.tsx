@@ -1,4 +1,5 @@
 import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import classNames from 'classnames';
 import {
   FormDateRangePickerProps as Props,
   FormDateRangePickerDefaultProps,
@@ -82,6 +83,8 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       maxDate,
       onChange,
       onValidate,
+      // -------------------------------------------------------------------------------------------------------------------
+      className,
     },
     ref
   ) => {
@@ -640,6 +643,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={dayjsLocale}>
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
           <div
+            className={classNames(className, 'FormDateRangePicker')}
             style={{
               display: fullWidth ? 'block' : 'inline-block',
               flex: fullWidth ? 1 : undefined,

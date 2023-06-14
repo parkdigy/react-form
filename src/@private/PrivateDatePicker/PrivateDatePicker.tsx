@@ -80,6 +80,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       onChange,
       onValidate,
       //--------------------------------------------------------------------------------------------------------------------
+      className,
       style: initStyle,
       sx,
       ...otherProps
@@ -477,7 +478,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={dayjsLocale}>
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
           <div
-            className='PrivateDatePicker'
+            className={classNames(className, 'PrivateDatePicker')}
             style={{
               display: fullWidth ? 'block' : 'inline-block',
               flex: fullWidth ? 1 : undefined,

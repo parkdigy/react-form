@@ -5,6 +5,9 @@ import { FormContextValue } from '../../FormContext';
 export interface FormBlockProps
   extends CommonSxProps,
     PartialPick<FormContextValue, 'variant' | 'size' | 'color' | 'spacing' | 'focused' | 'labelShrink' | 'fullWidth'>,
-    PartialPick<FormDividerProps, 'icon' | 'label' | 'line' | 'lineVerticalMargin' | 'hidden'> {}
+    PartialPick<FormDividerProps, 'icon' | 'label' | 'line' | 'lineVerticalMargin' | 'hidden'> {
+  collapse?: boolean;
+  collapseIn?: boolean;
+}
 
 export const FormBlockDefaultProps = {};

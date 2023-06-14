@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { Grid } from '@mui/material';
+import { Collapse, Grid } from '@mui/material';
 import { FormBlockProps as Props, FormBlockDefaultProps } from './FormBlock.types';
 import { FormContext, useFormState } from '../../FormContext';
 import FormDivider from '../FormDivider';
@@ -24,6 +24,8 @@ const FormBlock = React.forwardRef<HTMLDivElement, Props>(
       lineVerticalMargin,
       //----------------------------------------------------------------------------------------------------------------
       hidden,
+      collapse,
+      collapseIn: initCollapseIn,
       //----------------------------------------------------------------------------------------------------------------
       children,
       className,
@@ -55,6 +57,10 @@ const FormBlock = React.forwardRef<HTMLDivElement, Props>(
     const [labelShrink] = useAutoUpdateState<Props['labelShrink']>(initLabelShrink || formLabelShrink);
     const [fullWidth] = useAutoUpdateState<Props['fullWidth']>(initFullWidth == null ? formFullWidth : initFullWidth);
 
+    // State -------------------------------------------------------------------------------------------------------------
+
+    const [collapseIn, setCollapseIn] = useState(initCollapseIn);
+
     // State - style ---------------------------------------------------------------------------------------------------
 
     const [style] = useAutoUpdateState<Props['style']>(
@@ -67,28 +73,58 @@ const FormBlock = React.forwardRef<HTMLDivElement, Props>(
       }, [initStyle, hidden])
     );
 
+    // Effect ------------------------------------------------------------------------------------------------------------
+
+    useEffect(() => {
+      setCollapseIn(initCollapseIn);
+    }, [initCollapseIn]);
+
+    // Memo --------------------------------------------------------------------------------------------------------------
+
+    const Container = useMemo(() => {
+      return collapse ? Collapse : React.Fragment;
+    }, [collapse]);
+
+    const containerProps = useMemo(() => {
+      return collapse ? { in: collapseIn } : undefined;
+    }, [collapse, collapseIn]);
+
     // Render ----------------------------------------------------------------------------------------------------------
 
     return (
       <FormContext.Provider
         value={{ variant, size, color, spacing, focused, labelShrink, fullWidth, ...otherFormState }}
       >
-        {(icon || label || line) && (
-          <FormDivider
-            size={size}
-            icon={icon}
-            color={color}
-            label={label}
-            line={line}
-            lineVerticalMargin={lineVerticalMargin}
-            hidden={hidden}
-          />
-        )}
-        <StyledWrapGrid ref={ref} item xs={12} className={classNames(className, 'FormBlock')} style={style} sx={sx}>
+        <Grid item ref={ref} xs={12} className={classNames(className, 'FormBlock')} style={style} sx={sx}>
           <Grid container spacing={spacing}>
-            {children}
+            {(icon || label || line || collapse) && (
+              <FormDivider
+                className='FormBlock-header'
+                collapse={collapse}
+                collapseIn={collapseIn}
+                size={size}
+                icon={icon}
+                color={color}
+                label={label}
+                line={line}
+                lineVerticalMargin={lineVerticalMargin}
+                hidden={hidden}
+                onCollapseChange={collapse ? (newCollapseIn) => setCollapseIn(newCollapseIn) : undefined}
+              />
+            )}
+            <StyledWrapGrid item xs={12}>
+              <Container {...containerProps}>
+                <Grid container spacing={spacing}>
+                  <StyledWrapGrid item xs={12} className='FormBlock-body'>
+                    <Grid className='FormBlock-content' container spacing={spacing}>
+                      {children}
+                    </Grid>
+                  </StyledWrapGrid>
+                </Grid>
+              </Container>
+            </StyledWrapGrid>
           </Grid>
-        </StyledWrapGrid>
+        </Grid>
       </FormContext.Provider>
     );
   }
