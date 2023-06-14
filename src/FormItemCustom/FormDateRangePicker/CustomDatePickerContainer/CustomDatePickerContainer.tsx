@@ -1,16 +1,11 @@
-import React, { ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   CustomDatePickerContainerProps as Props,
   CustomDatePickerContainerDefaultProps,
   CustomDatePickerContainerCommands,
 } from './CustomDatePickerContainer.types';
-import {
-  CustomDatePicker,
-  CustomDatePickerCommands,
-  CustomDatePickerDateValue,
-  CustomDatePickerProps,
-} from './CustomDatePicker';
+import { CustomDatePicker, CustomDatePickerCommands, CustomDatePickerDateValue } from './CustomDatePicker';
 import { Button, darken, Grid, Icon, IconButton, useTheme } from '@mui/material';
 import './CustomDatePickerContainer.scss';
 import dayjs, { Dayjs } from 'dayjs';
@@ -22,8 +17,6 @@ import {
   makeAvailableDate,
   nextTick,
 } from '../../../@util';
-import { useAutoUpdateState } from '@pdg/react-hook';
-import { FormAvailableDate } from '../../../@private/@types';
 
 const YEARS = new Array(200).fill(0);
 for (let i = 0; i < 200; i += 1) {
@@ -62,28 +55,21 @@ const CustomDatePickerContainer = React.forwardRef<CustomDatePickerContainerComm
     const yearSelectRef = useRef<HTMLDivElement>(null);
     const activeYearBtnRef = useRef<HTMLButtonElement>(null);
 
-    // State -----------------------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
     const [focusedDate, setFocusedDate] = useState<CustomDatePickerDateValue>();
     const [yearMonthSelectIndex, setYearMonthSelectIndex] = useState<number>(0);
     const [yearSelectOpen, setYearSelectOpen] = useState(false);
     const [monthSelectOpen, setMonthSelectOpen] = useState(false);
 
-    const [customDatePickerProps] = useAutoUpdateState<
-      Pick<
-        CustomDatePickerProps,
-        'value' | 'selectType' | 'minDate' | 'maxDate' | 'disablePast' | 'disableFuture' | 'onValueChange'
-      >
-    >(
-      useCallback(() => {
-        return { selectType, value, minDate, maxDate, disableFuture, disablePast, onValueChange };
-      }, [selectType, value, minDate, maxDate, disableFuture, disablePast, onValueChange])
+    const customDatePickerProps = useMemo(
+      () => ({ selectType, value, minDate, maxDate, disableFuture, disablePast, onValueChange }),
+      [selectType, value, minDate, maxDate, disableFuture, disablePast, onValueChange]
     );
 
-    const [availableDate] = useAutoUpdateState<FormAvailableDate>(
-      useCallback((): FormAvailableDate => {
-        return makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture);
-      }, [minDate, maxDate, disablePast, disableFuture])
+    const availableDate = useMemo(
+      () => makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture),
+      [minDate, maxDate, disablePast, disableFuture]
     );
 
     // Effect ----------------------------------------------------------------------------------------------------------
@@ -125,11 +111,14 @@ const CustomDatePickerContainer = React.forwardRef<CustomDatePickerContainerComm
 
     // Event Handler ---------------------------------------------------------------------------------------------------
 
-    const handleFirstDatePickerMonthChange = useCallback((date: Dayjs) => {
-      if (onMonthsChange) {
-        onMonthsChange([date, date.add(1, 'month'), date.add(2, 'month')]);
-      }
-    }, []);
+    const handleFirstDatePickerMonthChange = useCallback(
+      (date: Dayjs) => {
+        if (onMonthsChange) {
+          onMonthsChange([date, date.add(1, 'month'), date.add(2, 'month')]);
+        }
+      },
+      [onMonthsChange]
+    );
 
     const handleYearSelectClick = useCallback(
       (index: number) => {
@@ -175,7 +164,7 @@ const CustomDatePickerContainer = React.forwardRef<CustomDatePickerContainerComm
         setYearSelectOpen(false);
         setMonthSelectOpen(true);
       },
-      [months, yearMonthSelectIndex]
+      [activeMonth, months, yearMonthSelectIndex]
     );
 
     const handleMonthSelect = useCallback(
@@ -183,7 +172,7 @@ const CustomDatePickerContainer = React.forwardRef<CustomDatePickerContainerComm
         activeMonth(months[yearMonthSelectIndex].set('month', m).subtract(yearMonthSelectIndex, 'month'));
         setMonthSelectOpen(false);
       },
-      [months, yearMonthSelectIndex]
+      [activeMonth, months, yearMonthSelectIndex]
     );
 
     // Commands --------------------------------------------------------------------------------------------------------
@@ -237,7 +226,7 @@ const CustomDatePickerContainer = React.forwardRef<CustomDatePickerContainerComm
           </div>
         );
       },
-      [months, yearSelectOpen, monthSelectOpen, yearMonthSelectIndex]
+      [yearSelectOpen, yearMonthSelectIndex, months, monthSelectOpen, handleYearSelectClick, handleMonthSelectClick]
     );
 
     // Render - Function -----------------------------------------------------------------------------------------------
@@ -282,41 +271,39 @@ const CustomDatePickerContainer = React.forwardRef<CustomDatePickerContainerComm
       [onChange, availableDate]
     );
 
-    const [actionButtons] = useAutoUpdateState<ReactNode>(
-      useCallback(() => {
-        const now = dayjs().startOf('d');
-        const lastWeek = now.subtract(1, 'week');
-        const dayOfWeek = now.day();
-        let lastWeekDate: [Dayjs, Dayjs];
-        let thisWeekDate: [Dayjs, Dayjs];
-        if (dayOfWeek === 0) {
-          lastWeekDate = [lastWeek.subtract(6, 'd'), lastWeek];
-          thisWeekDate = [now.subtract(6, 'd'), now];
-        } else {
-          lastWeekDate = [lastWeek.subtract(dayOfWeek - 1, 'd'), lastWeek.add(7 - dayOfWeek, 'd')];
-          thisWeekDate = [now.subtract(dayOfWeek - 1, 'd'), now.add(7 - dayOfWeek, 'd')];
-        }
-
-        return (
-          <>
-            {getActionButton(
-              now.subtract(1, 'month').startOf('month'),
-              now.subtract(1, 'month').endOf('month'),
-              '지난달'
-            )}
-            {getActionButton(now.startOf('month'), now.endOf('month'), '이번달')}
-            {getActionButton(now.subtract(29, 'd'), now, '최근 30일')}
-            {getActionButton(now.subtract(6, 'd'), now, '최근 7일')}
-            {getActionButton(lastWeekDate[0], lastWeekDate[1], '지난주')}
-            {getActionButton(thisWeekDate[0], thisWeekDate[1], '이번주')}
-            {getActionButton(now.subtract(1, 'd'), now.subtract(1, 'd'), '어제')}
-            {getActionButton(now, now, '오늘')}
-          </>
-        );
-      }, [getActionButton])
-    );
-
     // Render ----------------------------------------------------------------------------------------------------------
+
+    const actionButtons = useMemo(() => {
+      const now = dayjs().startOf('d');
+      const lastWeek = now.subtract(1, 'week');
+      const dayOfWeek = now.day();
+      let lastWeekDate: [Dayjs, Dayjs];
+      let thisWeekDate: [Dayjs, Dayjs];
+      if (dayOfWeek === 0) {
+        lastWeekDate = [lastWeek.subtract(6, 'd'), lastWeek];
+        thisWeekDate = [now.subtract(6, 'd'), now];
+      } else {
+        lastWeekDate = [lastWeek.subtract(dayOfWeek - 1, 'd'), lastWeek.add(7 - dayOfWeek, 'd')];
+        thisWeekDate = [now.subtract(dayOfWeek - 1, 'd'), now.add(7 - dayOfWeek, 'd')];
+      }
+
+      return (
+        <>
+          {getActionButton(
+            now.subtract(1, 'month').startOf('month'),
+            now.subtract(1, 'month').endOf('month'),
+            '지난달'
+          )}
+          {getActionButton(now.startOf('month'), now.endOf('month'), '이번달')}
+          {getActionButton(now.subtract(29, 'd'), now, '최근 30일')}
+          {getActionButton(now.subtract(6, 'd'), now, '최근 7일')}
+          {getActionButton(lastWeekDate[0], lastWeekDate[1], '지난주')}
+          {getActionButton(thisWeekDate[0], thisWeekDate[1], '이번주')}
+          {getActionButton(now.subtract(1, 'd'), now.subtract(1, 'd'), '어제')}
+          {getActionButton(now, now, '오늘')}
+        </>
+      );
+    }, [getActionButton]);
 
     return (
       <div className='CustomDatePickerContainer'>

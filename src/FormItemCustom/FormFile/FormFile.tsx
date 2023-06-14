@@ -1,7 +1,7 @@
-import React, { ChangeEvent, ReactNode, useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Button, InputAdornment, TextField, Typography } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, notEmpty, nextTick, getFileSizeText } from '../../@util';
 import { FormFileProps as Props, FormFileDefaultProps, FormFileCommands } from './FormFile.types';
 import FormItemBase from '../FormItemBase';
@@ -64,14 +64,20 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       onValueChangeByUser,
     } = useFormState();
 
-    // State - FormState -----------------------------------------------------------------------------------------------
+    // Memo - FormState ------------------------------------------------------------------------------------------------
 
-    const [variant] = useAutoUpdateState<Props['variant']>(initVariant || formVariant);
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [focused] = useAutoUpdateState<Props['focused']>(initFocused || formFocused);
-    const [labelShrink] = useAutoUpdateState<Props['labelShrink']>(initLabelShrink || formLabelShrink);
-    const [fullWidth] = useAutoUpdateState<Props['fullWidth']>(initFullWidth == null ? formFullWidth : initFullWidth);
+    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
+    const labelShrink = useMemo(
+      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
+      [initLabelShrink, formLabelShrink]
+    );
+    const fullWidth = useMemo(
+      () => (initFullWidth == null ? formFullWidth : initFullWidth),
+      [initFullWidth, formFullWidth]
+    );
 
     // Ref -------------------------------------------------------------------------------------------------------------
 
@@ -80,7 +86,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue);
+    const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue);
     const [fileValue] = useState('');
 
     useFirstSkipEffect(() => {
@@ -91,9 +97,9 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
+    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
     const [isOpenLinkDialog, setIsOpenLinkDialog] = useState(false);
     const [alertDialogProps, setAlertDialogProps] = useState<{
       open: boolean;
@@ -101,18 +107,19 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       title?: ReactNode;
       content?: ReactNode;
     }>({ open: false });
-    const [label] = useAutoUpdateState<Props['label']>(
-      useCallback(() => {
-        return labelIcon ? (
-          <>
-            <FormIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</FormIcon>
-            <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
-          </>
-        ) : (
-          initLabel
-        );
-      }, [initLabel, labelIcon])
-    );
+
+    // Memo --------------------------------------------------------------------------------------------------------------
+
+    const label = useMemo(() => {
+      return labelIcon ? (
+        <>
+          <FormIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</FormIcon>
+          <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
+        </>
+      ) : (
+        initLabel
+      );
+    }, [initLabel, labelIcon]);
 
     // Function - focus ------------------------------------------------------------------------------------------------
 
@@ -123,6 +130,16 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
         textFieldRef.current?.focus();
       }
     }, [hideUrl]);
+
+    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+
+    const setErrorHelperText = useCallback(
+      function (error: Props['error'], helperText: Props['helperText']) {
+        setError(error);
+        setHelperText(helperText);
+      },
+      [setError, setHelperText]
+    );
 
     // Function - validate ---------------------------------------------------------------------------------------------
 
@@ -152,15 +169,8 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
 
         return true;
       },
-      [onValidate, initHelperText]
+      [required, onValidate, setErrorHelperText, initHelperText]
     );
-
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-
-    const setErrorHelperText = useCallback(function (error: Props['error'], helperText: Props['helperText']) {
-      setError(error);
-      setHelperText(helperText);
-    }, []);
 
     // Commands --------------------------------------------------------------------------------------------------------
 
@@ -227,6 +237,10 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       ref,
       onAddValueItem,
       onRemoveValueItem,
+      id,
+      setValue,
+      setDisabled,
+      setErrorHelperText,
     ]);
 
     // Function --------------------------------------------------------------------------------------------------------
@@ -284,7 +298,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
           });
         }
       },
-      [onFile, onValueChangeByUser]
+      [fileSizeCheck, name, onFile, onValueChangeByUser, setValue]
     );
 
     const handleLinkClick = useCallback(() => {
@@ -296,7 +310,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       nextTick(() => {
         if (onValueChangeByUser) onValueChangeByUser(name, '');
       });
-    }, [onValueChangeByUser]);
+    }, [name, onValueChangeByUser, setValue]);
 
     const handleLinkDialogConfirm = useCallback(
       (url: string) => {
@@ -314,7 +328,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
           });
         }
       },
-      [onLink, onValueChangeByUser]
+      [name, onLink, onValueChangeByUser, setValue]
     );
 
     // Render ----------------------------------------------------------------------------------------------------------

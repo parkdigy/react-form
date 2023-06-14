@@ -1,10 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { Button } from '@mui/material';
 import { FormButtonProps as Props, FormButtonDefaultProps } from './FormButton.types';
 import { useFormState } from '../../FormContext';
 import FormIcon from '../FormIcon';
-import { useAutoUpdateState } from '@pdg/react-hook';
 
 const FormButton = React.forwardRef<HTMLButtonElement, Props>(
   (
@@ -28,28 +27,29 @@ const FormButton = React.forwardRef<HTMLButtonElement, Props>(
 
     const { size: formSize, color: formColor, fullWidth: formFullWidth } = useFormState();
 
-    // State - FormState -----------------------------------------------------------------------------------------------
+    // Memo - FormState ------------------------------------------------------------------------------------------------
 
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [fullWidth] = useAutoUpdateState<Props['fullWidth']>(initFullWidth == null ? formFullWidth : initFullWidth);
-
-    // State - variant -------------------------------------------------------------------------------------------------
-
-    const [variant] = useAutoUpdateState<Props['variant']>(
-      useCallback(() => {
-        if (initVariant) {
-          return initVariant;
-        } else {
-          switch (type) {
-            case 'submit':
-              return 'contained';
-            default:
-              return 'outlined';
-          }
-        }
-      }, [initVariant, type])
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const fullWidth = useMemo(
+      () => (initFullWidth == null ? formFullWidth : initFullWidth),
+      [initFullWidth, formFullWidth]
     );
+
+    // Memo ------------------------------------------------------------------------------------------------------------
+
+    const variant = useMemo(() => {
+      if (initVariant) {
+        return initVariant;
+      } else {
+        switch (type) {
+          case 'submit':
+            return 'contained';
+          default:
+            return 'outlined';
+        }
+      }
+    }, [initVariant, type]);
 
     // Render ----------------------------------------------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, ReactNode, useCallback } from 'react';
+import React, { useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { Box, Checkbox, Chip, CircularProgress, MenuItem } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, notEmpty, isSame } from '../../@util';
 import { FormValueItemBaseCommands, FormValueItemCommands } from '../../@types';
 import {
@@ -51,9 +51,12 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
 
     const { fullWidth: formFullWidth, onAddValueItem, onValueChange, ...otherFormState } = useFormState();
 
-    // State - FormState -----------------------------------------------------------------------------------------------
+    // Memo - FormState ------------------------------------------------------------------------------------------------
 
-    const [fullWidth] = useAutoUpdateState(initFullWidth == null ? formFullWidth : initFullWidth);
+    const fullWidth = useMemo(
+      () => (initFullWidth == null ? formFullWidth : initFullWidth),
+      [initFullWidth, formFullWidth]
+    );
 
     // State -----------------------------------------------------------------------------------------------------------
 
@@ -63,32 +66,30 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
     const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean | undefined>(initLoading);
 
-    // State - startAdornment ------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
-    const [startAdornment] = useAutoUpdateState<Props['startAdornment']>(
-      useCallback(() => {
-        if (isOnGetItemLoading || loading) {
-          return (
-            <>
-              {initStartAdornment}
-              {(isOnGetItemLoading || loading) && (
-                <CircularProgress
-                  size={16}
-                  color='inherit'
-                  style={{ verticalAlign: 'middle', marginLeft: initStartAdornment ? 8 : 0 }}
-                />
-              )}
-            </>
-          );
-        } else {
-          return initStartAdornment;
-        }
-      }, [initStartAdornment, isOnGetItemLoading, loading])
-    );
+    const startAdornment = useMemo(() => {
+      if (isOnGetItemLoading || loading) {
+        return (
+          <>
+            {initStartAdornment}
+            {(isOnGetItemLoading || loading) && (
+              <CircularProgress
+                size={16}
+                color='inherit'
+                style={{ verticalAlign: 'middle', marginLeft: initStartAdornment ? 8 : 0 }}
+              />
+            )}
+          </>
+        );
+      } else {
+        return initStartAdornment;
+      }
+    }, [initStartAdornment, isOnGetItemLoading, loading]);
 
     // State - items ---------------------------------------------------------------------------------------------------
 
-    const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
+    const [items, setItems] = useAutoUpdateLayoutState<Props['items']>(initItems);
 
     useEffect(() => {
       if (items) {
@@ -105,24 +106,22 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
       }
     }, [items]);
 
-    // State - itemsValues ---------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
-    const [itemsValues] = useAutoUpdateState<Record<string, string | number>>(
-      useCallback(() => {
-        if (items) {
-          return items.reduce<Record<string, string | number>>((res, { value }) => {
-            res[value.toString()] = value;
-            return res;
-          }, {});
-        } else {
-          return {};
-        }
-      }, [items])
-    );
+    const itemsValues = useMemo(() => {
+      if (items) {
+        return items.reduce<Record<string, string | number>>((res, { value }) => {
+          res[value.toString()] = value;
+          return res;
+        }, {});
+      } else {
+        return {};
+      }
+    }, [items]);
 
     // State - inputLabelProps -----------------------------------------------------------------------------------------
 
-    const [inputLabelProps] = useAutoUpdateState<Props['InputLabelProps']>(
+    const [inputLabelProps] = useAutoUpdateLayoutState<Props['InputLabelProps']>(
       useCallback(() => {
         if (hasEmptyValue || (!hasEmptyValue && placeholder)) {
           return { ...initInputLabelProps, shrink: true };
@@ -184,7 +183,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateLayoutState(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
       if (onChange) onChange(value);
@@ -193,7 +192,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
 
     // State - isSelectedPlaceholder -----------------------------------------------------------------------------------
 
-    const [isSelectedPlaceholder] = useAutoUpdateState<boolean>(
+    const [isSelectedPlaceholder] = useAutoUpdateLayoutState<boolean>(
       useCallback(() => {
         return notEmpty(items) && empty(value) && !!placeholder && !hasEmptyValue;
       }, [items, value, placeholder, hasEmptyValue])
@@ -214,53 +213,43 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
           setIsOnGetItemLoading(false);
         });
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // State - selectProps ---------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
-    const [selectProps] = useAutoUpdateState<Props['SelectProps']>(
-      useCallback(() => {
-        const finalSelectProps = { ...initSelectProps, displayEmpty: true, multiple: !!multiple };
-        if (multiple) {
-          finalSelectProps.renderValue = (selected) => {
-            if (isSelectedPlaceholder) {
-              return placeholder;
-            } else {
-              return (
-                <Box className='selected-list' sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {Array.isArray(selected) &&
-                    selected.map((value) => {
-                      if (isSelectedPlaceholder) {
-                        return <Chip key={value || '$$$EmptyValuePlaceholder$$$'} label='hahaha' size='small' />;
-                      } else {
-                        return <Chip key={value} label={itemValueLabels[value]} size='small' />;
-                      }
-                    })}
-                </Box>
-              );
-            }
-          };
-        }
-        if (minWidth != null) {
-          finalSelectProps.style = { ...finalSelectProps.style, minWidth: width || minWidth };
-        }
-        finalSelectProps.MenuProps = {
-          ...finalSelectProps.MenuProps,
-          className: classNames(finalSelectProps.MenuProps?.className, 'FormSelect-Menu-Popover'),
+    const selectProps = useMemo(() => {
+      const finalSelectProps = { ...initSelectProps, displayEmpty: true, multiple: !!multiple };
+      if (multiple) {
+        finalSelectProps.renderValue = (selected) => {
+          if (isSelectedPlaceholder) {
+            return placeholder;
+          } else {
+            return (
+              <Box className='selected-list' sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {Array.isArray(selected) &&
+                  selected.map((value) => {
+                    if (isSelectedPlaceholder) {
+                      return <Chip key={value || '$$$EmptyValuePlaceholder$$$'} label='hahaha' size='small' />;
+                    } else {
+                      return <Chip key={value} label={itemValueLabels[value]} size='small' />;
+                    }
+                  })}
+              </Box>
+            );
+          }
         };
+      }
+      if (minWidth != null) {
+        finalSelectProps.style = { ...finalSelectProps.style, minWidth: width || minWidth };
+      }
+      finalSelectProps.MenuProps = {
+        ...finalSelectProps.MenuProps,
+        className: classNames(finalSelectProps.MenuProps?.className, 'FormSelect-Menu-Popover'),
+      };
 
-        return finalSelectProps;
-      }, [
-        initSelectProps,
-        multiple,
-        itemValueLabels,
-        minWidth,
-        width,
-        hasEmptyValue,
-        placeholder,
-        isSelectedPlaceholder,
-      ])
-    );
+      return finalSelectProps;
+    }, [initSelectProps, isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, width]);
 
     // Function - getExtraCommands -------------------------------------------------------------------------------------
 
@@ -279,7 +268,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
           setValue(lastValue);
         },
       };
-    }, [value, initValue, getFinalValue]);
+    }, [value, getFinalValue, initValue, setValue]);
 
     const getExtraCommands = useCallback((): FormSelectExtraCommands => {
       let lastItems = items;
@@ -300,7 +289,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
           setLoading(lastLoading);
         },
       };
-    }, [items, loading, formValueSeparator, formValueSort, multiple]);
+    }, [items, loading, formValueSeparator, formValueSort, setItems, multiple]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
 

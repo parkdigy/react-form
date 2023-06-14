@@ -1,10 +1,9 @@
-import React, { useCallback, useId } from 'react';
+import React, { useId, useMemo } from 'react';
 import classNames from 'classnames';
 import { InputDatePickerProps as Props, InputDatePickerDefaultProps } from './InputDatePicker.types';
-import { TextField, TextFieldProps, InputProps, InputAdornment } from '@mui/material';
+import { TextField, InputProps, InputAdornment } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { FormIcon } from '../../../FormCommon';
-import { useAutoUpdateState } from '@pdg/react-hook';
 import './InputDatePicker.scss';
 
 const InputDatePicker: React.FC<Props> = ({
@@ -39,30 +38,28 @@ const InputDatePicker: React.FC<Props> = ({
 
   const id = useId();
 
-  // State -----------------------------------------------------------------------------------------------------------
+  // Memo --------------------------------------------------------------------------------------------------------------
 
-  const [label] = useAutoUpdateState<Props['label']>(
-    useCallback(() => {
-      return labelIcon ? (
+  const label = useMemo(
+    () =>
+      labelIcon ? (
         <>
           <FormIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</FormIcon>
           <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
         </>
       ) : (
         initLabel
-      );
-    }, [initLabel, labelIcon])
+      ),
+    [initLabel, labelIcon]
   );
 
-  const [inputLabelProps] = useAutoUpdateState<TextFieldProps['InputLabelProps']>(
-    useCallback(() => {
-      if (labelShrink) {
-        return {
-          shrink: true,
-        };
-      }
-    }, [labelShrink])
-  );
+  const inputLabelProps = useMemo(() => {
+    if (labelShrink) {
+      return {
+        shrink: true,
+      };
+    }
+  }, [labelShrink]);
 
   // Render ----------------------------------------------------------------------------------------------------------
 

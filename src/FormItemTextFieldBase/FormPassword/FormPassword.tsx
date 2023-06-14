@@ -1,7 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { InputAdornment, IconButton, Icon, styled } from '@mui/material';
-import { useAutoUpdateState } from '@pdg/react-hook';
 import FormText, { FormTextProps } from '../FormText';
 import { notEmpty } from '../../@util';
 import { FormValueItemBaseCommands } from '../../@types';
@@ -19,34 +18,32 @@ const FormPassword = React.forwardRef<FormValueItemBaseCommands, Props>(
     const [type, setType] = useState<FormTextProps['type']>('password');
     const [showEye, setShowEye] = useState(notEmpty(props.value));
 
-    // State - muiInputProps -------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
-    const [muiInputProps] = useAutoUpdateState<Props['InputProps']>(
-      useCallback(() => {
-        if (eye) {
-          const newProps: Props['InputProps'] = { ...initMuiInputProps };
-          newProps.endAdornment = (
-            <>
-              <StyledEyeInputAdornment position='end' className={classNames('eye-icon-button-wrap', showEye && 'show')}>
-                <IconButton
-                  size='small'
-                  tabIndex={-1}
-                  onClick={() => {
-                    setType(type === 'password' ? 'text' : 'password');
-                  }}
-                >
-                  <Icon fontSize='inherit'>{type === 'password' ? 'visibility' : 'visibility_off'}</Icon>
-                </IconButton>
-              </StyledEyeInputAdornment>
-              {newProps.endAdornment}
-            </>
-          );
-          return newProps;
-        } else {
-          return initMuiInputProps;
-        }
-      }, [initMuiInputProps, type, eye, showEye])
-    );
+    const muiInputProps = useMemo(() => {
+      if (eye) {
+        const newProps: Props['InputProps'] = { ...initMuiInputProps };
+        newProps.endAdornment = (
+          <>
+            <StyledEyeInputAdornment position='end' className={classNames('eye-icon-button-wrap', showEye && 'show')}>
+              <IconButton
+                size='small'
+                tabIndex={-1}
+                onClick={() => {
+                  setType(type === 'password' ? 'text' : 'password');
+                }}
+              >
+                <Icon fontSize='inherit'>{type === 'password' ? 'visibility' : 'visibility_off'}</Icon>
+              </IconButton>
+            </StyledEyeInputAdornment>
+            {newProps.endAdornment}
+          </>
+        );
+        return newProps;
+      } else {
+        return initMuiInputProps;
+      }
+    }, [eye, initMuiInputProps, showEye, type]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
 

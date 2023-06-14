@@ -1,8 +1,7 @@
-import React, { CSSProperties, useCallback, useState } from 'react';
+import React, { CSSProperties, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { FormControl, FormHelperText, Input, InputLabel, OutlinedInput, FilledInput } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
-import { useAutoUpdateState } from '@pdg/react-hook';
 import { FormItemBaseProps as Props } from './FormItemBase.types';
 import { useFormState } from '../../FormContext';
 import { FormIcon } from '../../FormCommon';
@@ -45,27 +44,28 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
       formColWithHelperText,
     } = useFormState();
 
-    // State - FormState -----------------------------------------------------------------------------------------------
+    // Memo - FormState ------------------------------------------------------------------------------------------------
 
-    const [variant] = useAutoUpdateState<Props['variant']>(initVariant || formVariant);
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [fullWidth] = useAutoUpdateState<Props['fullWidth']>(initFullWidth == null ? formFullWidth : initFullWidth);
-
-    // State - wrapStyle -----------------------------------------------------------------------------------------------
-
-    const [wrapStyle] = useAutoUpdateState<CSSProperties>(
-      useCallback(() => {
-        const wrapStyle: CSSProperties = {
-          display: fullWidth ? 'block' : 'inline-flex',
-          width: fullWidth ? '100%' : undefined,
-        };
-        if (formColWithLabel) {
-          wrapStyle.marginTop = -20;
-        }
-        return wrapStyle;
-      }, [formColWithLabel])
+    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const fullWidth = useMemo(
+      () => (initFullWidth == null ? formFullWidth : initFullWidth),
+      [initFullWidth, formFullWidth]
     );
+
+    // Memo --------------------------------------------------------------------------------------------------------------
+
+    const wrapStyle = useMemo(() => {
+      const wrapStyle: CSSProperties = {
+        display: fullWidth ? 'block' : 'inline-flex',
+        width: fullWidth ? '100%' : undefined,
+      };
+      if (formColWithLabel) {
+        wrapStyle.marginTop = -20;
+      }
+      return wrapStyle;
+    }, [formColWithLabel, fullWidth]);
 
     // State - inputHeight ---------------------------------------------------------------------------------------------
 
@@ -91,62 +91,56 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
       },
     });
 
-    // State - bottomMargin --------------------------------------------------------------------------------------------
+    // Memo ------------------------------------------------------------------------------------------------------------
 
-    const [bottomMargin] = useAutoUpdateState<number>(
-      useCallback(() => {
-        const realHeight = realControlHeight || 0;
-        const height = controlHeight || 0;
-        const checkInputHeight = variant === 'standard' ? inputHeight + 16 : inputHeight;
+    const bottomMargin = useMemo(() => {
+      const realHeight = realControlHeight || 0;
+      const height = controlHeight || 0;
+      const checkInputHeight = variant === 'standard' ? inputHeight + 16 : inputHeight;
 
-        let bottomMargin = 0;
-        if (height > checkInputHeight) {
-          bottomMargin = height - checkInputHeight;
-        } else {
-          if (realHeight > 0 && height > 0 && realHeight > height) {
-            bottomMargin = realHeight - height;
+      let bottomMargin = 0;
+      if (height > checkInputHeight) {
+        bottomMargin = height - checkInputHeight;
+      } else {
+        if (realHeight > 0 && height > 0 && realHeight > height) {
+          bottomMargin = realHeight - height;
+        }
+      }
+
+      return bottomMargin;
+    }, [variant, realControlHeight, controlHeight, inputHeight]);
+
+    const controlMarginTop = useMemo(() => {
+      let topMargin = 0;
+      if (inputHeight && controlHeight && controlVerticalCenter) {
+        topMargin = inputHeight / 2 - controlHeight / 2;
+      }
+
+      let withLabelControlAddTopMargin = 0;
+      if (size === 'small') {
+        withLabelControlAddTopMargin = controlVerticalCenter ? 7 : 13;
+      } else {
+        withLabelControlAddTopMargin = controlVerticalCenter ? 7 : 15;
+      }
+
+      let controlMarginTop = 0;
+
+      switch (variant) {
+        case 'outlined':
+        case 'filled':
+          if (label || formColWithLabel) {
+            controlMarginTop = topMargin + withLabelControlAddTopMargin;
+          } else {
+            controlMarginTop = topMargin;
           }
-        }
+          break;
+        case 'standard':
+          controlMarginTop = 0;
+          break;
+      }
 
-        return bottomMargin;
-      }, [variant, realControlHeight, controlHeight, inputHeight, label, formColWithLabel])
-    );
-
-    // State - controlMarginTop ----------------------------------------------------------------------------------------
-
-    const [controlMarginTop] = useAutoUpdateState<number>(
-      useCallback(() => {
-        let topMargin = 0;
-        if (inputHeight && controlHeight && controlVerticalCenter) {
-          topMargin = inputHeight / 2 - controlHeight / 2;
-        }
-
-        let withLabelControlAddTopMargin = 0;
-        if (size === 'small') {
-          withLabelControlAddTopMargin = controlVerticalCenter ? 7 : 13;
-        } else {
-          withLabelControlAddTopMargin = controlVerticalCenter ? 7 : 15;
-        }
-
-        let controlMarginTop = 0;
-
-        switch (variant) {
-          case 'outlined':
-          case 'filled':
-            if (label || formColWithLabel) {
-              controlMarginTop = topMargin + withLabelControlAddTopMargin;
-            } else {
-              controlMarginTop = topMargin;
-            }
-            break;
-          case 'standard':
-            controlMarginTop = 0;
-            break;
-        }
-
-        return controlMarginTop;
-      }, [inputHeight, controlHeight, controlVerticalCenter, size, label, formColWithLabel])
-    );
+      return controlMarginTop;
+    }, [controlHeight, controlVerticalCenter, formColWithLabel, inputHeight, label, size, variant]);
 
     // Render ----------------------------------------------------------------------------------------------------------
 

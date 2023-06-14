@@ -1,16 +1,14 @@
-import React, { useCallback } from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { SearchButtonProps as Props, SearchButtonDefaultProps } from './SearchButton.types';
 import { FormButton } from '../../FormCommon';
-import { useAutoUpdateState } from '@pdg/react-hook';
 
 const SearchButton: React.FC<Props> = ({ children, className, sx: initSx, startIcon, endIcon, icon, ...props }) => {
-  // State -----------------------------------------------------------------------------------------------------------
+  // Memo --------------------------------------------------------------------------------------------------------------
 
-  const [sx] = useAutoUpdateState<Props['sx']>(
-    useCallback(() => {
-      return { minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7, ...initSx };
-    }, [initSx, startIcon, endIcon, icon])
+  const sx = useMemo(
+    () => ({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7, ...initSx }),
+    [endIcon, icon, initSx, startIcon]
   );
 
   // Render ----------------------------------------------------------------------------------------------------------

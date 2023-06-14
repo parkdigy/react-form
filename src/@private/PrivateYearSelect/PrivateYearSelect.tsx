@@ -37,6 +37,7 @@ const PrivateYearSelect: React.FC<Props> = ({ selectYear, activeYear, availableD
         });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Render ----------------------------------------------------------------------------------------------------------

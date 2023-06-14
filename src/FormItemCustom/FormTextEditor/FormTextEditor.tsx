@@ -1,8 +1,8 @@
-import React, { useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Editor } from '@tinymce/tinymce-react';
 import { Skeleton } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick } from '../../@util';
 import {
   FormTextEditorProps as Props,
@@ -69,12 +69,17 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       onValueChangeByUser,
     } = useFormState();
 
+    // Memo - FormState ------------------------------------------------------------------------------------------------
+
+    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+
     // State - FormState -----------------------------------------------------------------------------------------------
 
-    const [variant] = useAutoUpdateState<Props['variant']>(initVariant || formVariant);
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [focused, setFocused] = useAutoUpdateState<Props['focused']>(initFocused || formFocused);
+    const [focused, setFocused] = useAutoUpdateLayoutState<Props['focused']>(
+      initFocused == null ? formFocused : initFocused
+    );
 
     // Ref -------------------------------------------------------------------------------------------------------------
 
@@ -83,7 +88,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue);
+    const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue);
 
     useFirstSkipEffect(() => {
       if (error) validate(value);
@@ -93,10 +98,10 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
     const [initialized, setInitialized] = useState(false);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
 
     // Function - focus ------------------------------------------------------------------------------------------------
 
@@ -110,6 +115,16 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
         }
       },
       [editorRef]
+    );
+
+    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+
+    const setErrorHelperText = useCallback(
+      function (error: Props['error'], helperText: Props['helperText']) {
+        setError(error);
+        setHelperText(helperText);
+      },
+      [setError, setHelperText]
     );
 
     // Function - validate ---------------------------------------------------------------------------------------------
@@ -140,15 +155,8 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
 
         return true;
       },
-      [onValidate, initHelperText]
+      [required, onValidate, setErrorHelperText, initHelperText]
     );
-
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-
-    const setErrorHelperText = useCallback(function (error: Props['error'], helperText: Props['helperText']) {
-      setError(error);
-      setHelperText(helperText);
-    }, []);
 
     // Commands --------------------------------------------------------------------------------------------------------
 
@@ -215,6 +223,10 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       ref,
       onAddValueItem,
       onRemoveValueItem,
+      id,
+      setValue,
+      setDisabled,
+      setErrorHelperText,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
@@ -228,7 +240,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
           });
         }
       },
-      [name, onValueChangeByUser]
+      [name, onValueChangeByUser, setValue]
     );
 
     const handleKeyDown = useCallback(() => {

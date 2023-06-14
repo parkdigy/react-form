@@ -1,8 +1,7 @@
-import React, { ReactElement, useCallback } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import classNames from 'classnames';
 import { SearchGroupDefaultProps as Props, SearchGroupProps } from './SearchGroup.types';
-import { Grid, GridProps } from '@mui/material';
-import { useAutoUpdateState } from '@pdg/react-hook';
+import { Grid } from '@mui/material';
 import { FormHidden } from '../../FormItemTextFieldBase';
 
 const isReactFragment = (child: ReactElement) => {
@@ -65,19 +64,17 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
 }) => {
   // State -----------------------------------------------------------------------------------------------------------
 
-  const [justifyContent] = useAutoUpdateState<GridProps['justifyContent']>(
-    useCallback(() => {
-      switch (align) {
-        case undefined:
-        case 'left':
-          return 'start';
-        case 'center':
-          return 'center';
-        case 'right':
-          return 'end';
-      }
-    }, [align])
-  );
+  const justifyContent = useMemo(() => {
+    switch (align) {
+      case undefined:
+      case 'left':
+        return 'start';
+      case 'center':
+        return 'center';
+      case 'right':
+        return 'end';
+    }
+  }, [align]);
 
   // Render ----------------------------------------------------------------------------------------------------------
 

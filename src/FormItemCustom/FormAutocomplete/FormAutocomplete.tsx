@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect, useRef, useMemo } from 'react';
 import classNames from 'classnames';
 import { Autocomplete, Chip } from '@mui/material';
-import { useAutoUpdateState, useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick, notEmpty, isSame } from '../../@util';
 import {
   FormAutocompleteProps as Props,
@@ -40,7 +40,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
       exceptValue,
       width,
       placeholder,
-      multiple: initMultiple,
+      multiple,
       formValueSeparator,
       formValueSort,
       disablePortal,
@@ -88,66 +88,61 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
       onRequestSearchSubmit,
     } = useFormState();
 
-    // State - FormState -----------------------------------------------------------------------------------------------
+    // Memo - FormState ------------------------------------------------------------------------------------------------
 
-    const [variant] = useAutoUpdateState<Props['variant']>(initVariant || formVariant);
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [focused] = useAutoUpdateState<Props['focused']>(initFocused || formFocused);
-    const [labelShrink] = useAutoUpdateState<Props['labelShrink']>(initLabelShrink || formLabelShrink);
-    const [fullWidth] = useAutoUpdateState<Props['fullWidth']>(initFullWidth == null ? formFullWidth : initFullWidth);
+    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
+    const labelShrink = useMemo(
+      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
+      [initLabelShrink, formLabelShrink]
+    );
+    const fullWidth = useMemo(
+      () => (initFullWidth == null ? formFullWidth : initFullWidth),
+      [initFullWidth, formFullWidth]
+    );
 
     // State -----------------------------------------------------------------------------------------------------------
 
     const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
 
-    const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
-    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
-    const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
-    const [multiple] = useAutoUpdateLayoutState<boolean | undefined>(
-      useCallback(() => {
-        return initMultiple;
-      }, [initMultiple])
-    );
+    const [items, setItems] = useAutoUpdateLayoutState<Props['items']>(initItems);
+    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
+    const [loading, setLoading] = useAutoUpdateLayoutState<Props['loading']>(initLoading);
+    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
 
-    // State - itemsValues-----------------------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
-    const [itemsValues] = useAutoUpdateState<Record<string, string | number>>(
-      useCallback(() => {
-        if (items) {
-          return items.reduce<Record<string, string | number>>((res, { value }) => {
-            res[value.toString()] = value;
-            return res;
-          }, {});
-        } else {
-          return {};
-        }
-      }, [items])
-    );
+    const itemsValues = useMemo(() => {
+      if (items) {
+        return items.reduce<Record<string, string | number>>((res, { value }) => {
+          res[value.toString()] = value;
+          return res;
+        }, {});
+      } else {
+        return {};
+      }
+    }, [items]);
 
-    // State - style ---------------------------------------------------------------------------------------------------
-
-    const [style] = useAutoUpdateState<Props['style']>(
-      useCallback(() => {
-        const style: Props['style'] = {
-          minWidth: 120,
-          ...initStyle,
-        };
-        if (width != null) {
-          style.width = width;
-        }
-        return style;
-      }, [initStyle, width])
-    );
+    const style = useMemo(() => {
+      const style: Props['style'] = {
+        minWidth: 120,
+        ...initStyle,
+      };
+      if (width != null) {
+        style.width = width;
+      }
+      return style;
+    }, [initStyle, width]);
 
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
     const getFinalValue = useCallback(
       (value: Props['value']): Props['value'] => {
         let finalValue = value;
-        if (initMultiple) {
+        if (multiple) {
           if (!Array.isArray(finalValue)) {
             if (finalValue != null && notEmpty(finalValue)) {
               if (typeof finalValue === 'string') {
@@ -171,7 +166,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
 
         if (notEmpty(itemsValues)) {
           if (finalValue != null && notEmpty(finalValue)) {
-            if (initMultiple) {
+            if (multiple) {
               if (Array.isArray(finalValue)) {
                 finalValue = finalValue.map((v) => {
                   const realValue = itemsValues[v.toString()];
@@ -189,43 +184,41 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
 
         return onValue ? onValue(finalValue) : finalValue;
       },
-      [initMultiple, formValueSeparator, itemsValues, onValue]
+      [multiple, formValueSeparator, itemsValues, onValue]
     );
 
     // State - value ---------------------------------------------------------------------------------------------------
 
     const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue, getFinalValue);
 
-    const [componentValue] = useAutoUpdateLayoutState<FormAutocompleteComponentValue>(
-      useCallback(() => {
-        let finalValue: Props['value'] = value;
-        if (finalValue != null) {
-          if (initMultiple) {
-            if (!Array.isArray(finalValue)) {
-              finalValue = [finalValue];
-            }
-          } else {
-            if (Array.isArray(finalValue)) {
-              finalValue = finalValue[0];
-            }
+    const componentValue = useMemo(() => {
+      let finalValue: Props['value'] = value;
+      if (finalValue != null) {
+        if (multiple) {
+          if (!Array.isArray(finalValue)) {
+            finalValue = [finalValue];
           }
         } else {
-          finalValue = initMultiple ? [] : undefined;
-        }
-
-        if (notEmpty(finalValue) && items) {
           if (Array.isArray(finalValue)) {
-            return items.filter(
-              (info) => Array.isArray(finalValue) && finalValue.includes(info.value)
-            ) as FormAutocompleteComponentValue;
-          } else {
-            return items.find((info) => info.value === value) || (initMultiple ? [] : null);
+            finalValue = finalValue[0];
           }
-        } else {
-          return initMultiple ? [] : null;
         }
-      }, [value, initMultiple, items])
-    );
+      } else {
+        finalValue = multiple ? [] : undefined;
+      }
+
+      if (notEmpty(finalValue) && items) {
+        if (Array.isArray(finalValue)) {
+          return items.filter(
+            (info) => Array.isArray(finalValue) && finalValue.includes(info.value)
+          ) as FormAutocompleteComponentValue;
+        } else {
+          return items.find((info) => info.value === value) || (multiple ? [] : null);
+        }
+      } else {
+        return multiple ? [] : null;
+      }
+    }, [value, multiple, items]);
 
     // Effect ----------------------------------------------------------------------------------------------------------
 
@@ -242,6 +235,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
           setIsOnGetItemLoading(false);
         });
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useFirstSkipEffect(() => {
@@ -255,6 +249,16 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
     const focus = useCallback(() => {
       textFieldRef.current?.focus();
     }, [textFieldRef]);
+
+    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+
+    const setErrorHelperText = useCallback(
+      (error: boolean, helperText: ReactNode) => {
+        setError(error);
+        setHelperText(helperText);
+      },
+      [setError, setHelperText]
+    );
 
     // Function - validate ---------------------------------------------------------------------------------------------
 
@@ -276,15 +280,8 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
 
         return true;
       },
-      [required, onValidate, initHelperText]
+      [required, onValidate, setErrorHelperText, initHelperText]
     );
-
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-
-    const setErrorHelperText = useCallback((error: boolean, helperText: ReactNode) => {
-      setError(error);
-      setHelperText(helperText);
-    }, []);
 
     // Commands --------------------------------------------------------------------------------------------------------
 
@@ -372,6 +369,14 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
       ref,
       onAddValueItem,
       onRemoveValueItem,
+      loading,
+      id,
+      setValue,
+      setDisabled,
+      setErrorHelperText,
+      initHelperText,
+      setItems,
+      setLoading,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
@@ -422,7 +427,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
           go();
         }
       },
-      [value, multiple, readOnly, getFinalValue, name, onValueChangeByUser, onRequestSearchSubmit, onAddItem]
+      [multiple, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit, onAddItem]
     );
 
     // Render ----------------------------------------------------------------------------------------------------------

@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick, notEmpty, isSame } from '../../@util';
 import { PartialPick } from '../../@types';
 import {
@@ -74,13 +74,21 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
       onRequestSearchSubmit,
     } = useFormState();
 
+    // Memo - FormState ------------------------------------------------------------------------------------------------
+
+    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const fullWidth = useMemo(
+      () => (initFullWidth == null ? formFullWidth : initFullWidth),
+      [initFullWidth, formFullWidth]
+    );
+
     // State - FormState -----------------------------------------------------------------------------------------------
 
-    const [variant] = useAutoUpdateState<Props['variant']>(initVariant || formVariant);
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [focused, setFocused] = useAutoUpdateState<Props['focused']>(initFocused || formFocused);
-    const [fullWidth] = useAutoUpdateState<Props['fullWidth']>(initFullWidth == null ? formFullWidth : initFullWidth);
+    const [focused, setFocused] = useAutoUpdateLayoutState<Props['focused']>(
+      initFocused == null ? formFocused : initFocused
+    );
 
     // Theme -----------------------------------------------------------------------------------------------------------
 
@@ -112,52 +120,46 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
 
     const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
 
-    const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
-    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
-    const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [items, setItems] = useAutoUpdateLayoutState<Props['items']>(initItems);
+    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
+    const [loading, setLoading] = useAutoUpdateLayoutState<Props['loading']>(initLoading);
+    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
 
-    // State - itemsValues-----------------------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
-    const [itemsValues] = useAutoUpdateState<Record<string, string | number>>(
-      useCallback(() => {
-        if (items) {
-          return items.reduce<Record<string, string | number>>((res, { value }) => {
-            res[value.toString()] = value;
-            return res;
-          }, {});
+    const itemsValues = useMemo(() => {
+      if (items) {
+        return items.reduce<Record<string, string | number>>((res, { value }) => {
+          res[value.toString()] = value;
+          return res;
+        }, {});
+      } else {
+        return {};
+      }
+    }, [items]);
+
+    const style = useMemo(() => {
+      let finalWidth;
+      if (initWidth) {
+        finalWidth = initWidth;
+      } else {
+        if (isOnGetItemLoading) {
+          finalWidth = 16;
+        } else if (fullWidth) {
+          finalWidth = '100%';
         } else {
-          return {};
-        }
-      }, [items])
-    );
-
-    // State - style ---------------------------------------------------------------------------------------------------
-
-    const [style] = useAutoUpdateState<Props['style']>(
-      useCallback(() => {
-        let finalWidth;
-        if (initWidth) {
-          finalWidth = initWidth;
-        } else {
-          if (isOnGetItemLoading) {
-            finalWidth = 16;
-          } else if (fullWidth) {
-            finalWidth = '100%';
-          } else {
-            finalWidth = width || 0;
-            if (formColWidth) {
-              if (finalWidth > formColWidth) {
-                finalWidth = formColWidth;
-              }
+          finalWidth = width || 0;
+          if (formColWidth) {
+            if (finalWidth > formColWidth) {
+              finalWidth = formColWidth;
             }
           }
         }
+      }
 
-        return { width: finalWidth, ...initStyle };
-      }, [initStyle, initWidth, fullWidth, isOnGetItemLoading, width, formColWidth])
-    );
+      return { width: finalWidth, ...initStyle };
+    }, [formColWidth, fullWidth, initStyle, initWidth, isOnGetItemLoading, width]);
 
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
@@ -211,7 +213,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue, getFinalValue);
 
     // Effect ----------------------------------------------------------------------------------------------------------
 
@@ -228,6 +230,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
           setIsOnGetItemLoading(false);
         });
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useFirstSkipEffect(() => {
@@ -256,6 +259,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
           }
         }
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items, value, multiple, notAllowEmptyValue]);
 
     // Function - focus ------------------------------------------------------------------------------------------------
@@ -263,6 +267,16 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
     const focus = useCallback(() => {
       if (resizeHeightDetectorRef.current) resizeHeightDetectorRef.current.focus();
     }, [resizeHeightDetectorRef]);
+
+    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+
+    const setErrorHelperText = useCallback(
+      (error: boolean, helperText: ReactNode) => {
+        setError(error);
+        setHelperText(helperText);
+      },
+      [setError, setHelperText]
+    );
 
     // Function - validate ---------------------------------------------------------------------------------------------
 
@@ -284,15 +298,8 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
 
         return true;
       },
-      [required, onValidate, initHelperText]
+      [required, onValidate, setErrorHelperText, initHelperText]
     );
-
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-
-    const setErrorHelperText = useCallback((error: boolean, helperText: ReactNode) => {
-      setError(error);
-      setHelperText(helperText);
-    }, []);
 
     // Commands --------------------------------------------------------------------------------------------------------
 
@@ -380,6 +387,14 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
       ref,
       onAddValueItem,
       onRemoveValueItem,
+      loading,
+      id,
+      setValue,
+      setDisabled,
+      setErrorHelperText,
+      initHelperText,
+      setItems,
+      setLoading,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
@@ -414,14 +429,14 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
         }
       },
       [
-        value,
-        multiple,
         readOnly,
         notAllowEmptyValue,
-        multiple,
         getFinalValue,
-        name,
+        value,
+        multiple,
+        setValue,
         onValueChangeByUser,
+        name,
         onRequestSearchSubmit,
       ]
     );

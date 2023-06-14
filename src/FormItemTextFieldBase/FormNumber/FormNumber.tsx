@@ -1,11 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { NumberFormatProps } from 'react-number-format';
 import NumberFormatCustom from './NumberFormatCustom';
 import FormText from '../FormText';
 import { FormNumberProps as Props, FormNumberDefaultProps } from './FormNumber.types';
 import { FormValueItemBaseCommands } from '../../@types';
-import { useAutoUpdateState } from '@pdg/react-hook';
 import { InputBaseComponentProps } from '@mui/material/InputBase/InputBase';
 
 const FormNumber = React.forwardRef<FormValueItemBaseCommands, Props>(
@@ -25,33 +24,41 @@ const FormNumber = React.forwardRef<FormValueItemBaseCommands, Props>(
     },
     ref
   ) => {
-    // State - muiInputProps -------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
-    const [muiInputProps] = useAutoUpdateState<Props['InputProps']>(
-      useCallback(() => {
-        const inputProps: NumberFormatProps = {
-          allowLeadingZeros,
-          allowNegative,
-          thousandSeparator,
-          prefix,
-          suffix,
-          readOnly,
-        };
-        if (allowDecimal) {
-          if (decimalScale) {
-            inputProps.decimalScale = decimalScale;
-          }
-        } else {
-          inputProps.decimalScale = 0;
+    const muiInputProps = useMemo(() => {
+      const inputProps: NumberFormatProps = {
+        allowLeadingZeros,
+        allowNegative,
+        thousandSeparator,
+        prefix,
+        suffix,
+        readOnly,
+      };
+      if (allowDecimal) {
+        if (decimalScale) {
+          inputProps.decimalScale = decimalScale;
         }
+      } else {
+        inputProps.decimalScale = 0;
+      }
 
-        return {
-          ...initMuiInputProps,
-          inputComponent: NumberFormatCustom as React.ElementType<InputBaseComponentProps>,
-          inputProps,
-        };
-      }, [initMuiInputProps, allowLeadingZeros, allowNegative, thousandSeparator, allowDecimal, decimalScale])
-    );
+      return {
+        ...initMuiInputProps,
+        inputComponent: NumberFormatCustom as React.ElementType<InputBaseComponentProps>,
+        inputProps,
+      };
+    }, [
+      allowDecimal,
+      allowLeadingZeros,
+      allowNegative,
+      decimalScale,
+      initMuiInputProps,
+      prefix,
+      readOnly,
+      suffix,
+      thousandSeparator,
+    ]);
 
     // Render ----------------------------------------------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useId, useCallback } from 'react';
+import React, { useEffect, useLayoutEffect, useId, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { FormHelperText, Grid, Box } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
@@ -6,7 +6,7 @@ import { FormColProps as Props, FormColDefaultProps } from './FormCol.types';
 import { useFormState } from '../../FormContext';
 import { FormLabel } from '../../FormCommon';
 import FormContextProvider from '../../FormContextProvider';
-import { useAutoUpdateState } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState } from '@pdg/react-hook';
 
 const FormCol = React.forwardRef<HTMLDivElement, Props>(
   (
@@ -56,19 +56,25 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
       ...otherFormState
     } = useFormState();
 
-    // State - FormState -----------------------------------------------------------------------------------------------
+    // Memo - FormState ------------------------------------------------------------------------------------------------
 
-    const [variant] = useAutoUpdateState<Props['variant']>(initVariant || formVariant);
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [spacing] = useAutoUpdateState<Props['spacing']>(initSpacing == null ? formSpacing : initSpacing);
-    const [focused] = useAutoUpdateState<Props['focused']>(initFocused || formFocused);
-    const [labelShrink] = useAutoUpdateState<Props['labelShrink']>(initLabelShrink || formLabelShrink);
-    const [fullWidth] = useAutoUpdateState<Props['fullWidth']>(initFullWidth == null ? formFullWidth : initFullWidth);
+    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const spacing = useMemo(() => initSpacing || formSpacing, [initSpacing, formSpacing]);
+    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
+    const labelShrink = useMemo(
+      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
+      [initLabelShrink, formLabelShrink]
+    );
+    const fullWidth = useMemo(
+      () => (initFullWidth == null ? formFullWidth : initFullWidth),
+      [initFullWidth, formFullWidth]
+    );
 
-    // State - Gap -----------------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
-    const [gap] = useAutoUpdateState<Props['gap']>(initGap == null ? formFormColGap : initGap);
+    const gap = useMemo(() => (initGap == null ? formFormColGap : initGap), [formFormColGap, initGap]);
 
     // ResizeDetector --------------------------------------------------------------------------------------------------
 
@@ -76,7 +82,7 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
 
     // State - style ---------------------------------------------------------------------------------------------------
 
-    const [style] = useAutoUpdateState<Props['style']>(
+    const [style] = useAutoUpdateLayoutState<Props['style']>(
       useCallback(() => {
         if (hidden) {
           return { ...initStyle, display: 'none' };
@@ -93,6 +99,7 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
       return () => {
         if (onRemoveFormCol) onRemoveFormCol(id);
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [xs]);
 
     // Effect ----------------------------------------------------------------------------------------------------------
@@ -105,6 +112,7 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
           ref.current = resizeDetectorRef.current;
         }
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Render ----------------------------------------------------------------------------------------------------------

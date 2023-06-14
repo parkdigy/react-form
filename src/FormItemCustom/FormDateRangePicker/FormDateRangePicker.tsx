@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   FormDateRangePickerProps as Props,
@@ -8,7 +8,7 @@ import {
   FormDateRangePickerCalendarCount,
   FormDateRangePickerCommands,
 } from './FormDateRangePicker.types';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjsLocale from 'dayjs/locale/ko';
@@ -25,7 +25,7 @@ import {
   CustomDatePickerSelectType,
   CustomDatePickerValue,
 } from './CustomDatePickerContainer/CustomDatePicker';
-import InputDatePicker, { InputDatePickerProps, InputDatePickerValue } from './InputDatePicker';
+import InputDatePicker, { InputDatePickerValue } from './InputDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { useFormState } from '../../FormContext';
 import { getDateValidationErrorText, nextTick, notEmpty } from '../../@util';
@@ -109,14 +109,20 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       onRequestSearchSubmit,
     } = useFormState();
 
-    // State - FormState -----------------------------------------------------------------------------------------------
+    // Memo - FormState ------------------------------------------------------------------------------------------------
 
-    const [variant] = useAutoUpdateState<Props['variant']>(initVariant || formVariant);
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [focused] = useAutoUpdateState<Props['focused']>(initFocused || formFocused);
-    const [labelShrink] = useAutoUpdateState<Props['labelShrink']>(initLabelShrink || formLabelShrink);
-    const [fullWidth] = useAutoUpdateState<Props['fullWidth']>(initFullWidth == null ? formFullWidth : initFullWidth);
+    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
+    const labelShrink = useMemo(
+      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
+      [initLabelShrink, formLabelShrink]
+    );
+    const fullWidth = useMemo(
+      () => (initFullWidth == null ? formFullWidth : initFullWidth),
+      [initFullWidth, formFullWidth]
+    );
 
     // Ref -------------------------------------------------------------------------------------------------------------
 
@@ -131,10 +137,15 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
+    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
     const [startError, setStartError] = useState(false);
     const [endError, setEndError] = useState(false);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
+    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
+
+    // Memo --------------------------------------------------------------------------------------------------------------
+
+    const format = useMemo(() => initFormat || DEFAULT_FORMAT, [initFormat]);
 
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
@@ -154,7 +165,33 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       } else {
         startDateTextFieldRef.current?.focus();
       }
-    }, [error, startError, endError, startDateTextFieldRef, endDateTextFieldRef]);
+    }, [endError, startDateTextFieldRef, endDateTextFieldRef]);
+
+    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+
+    const setErrorHelperText = useCallback(
+      (error: boolean, helperText: ReactNode) => {
+        setError(error);
+        setHelperText(helperText);
+      },
+      [setError, setHelperText]
+    );
+
+    const setStartErrorHelperText = useCallback(
+      (error: boolean, helperText: ReactNode) => {
+        setStartError(error);
+        setHelperText(helperText);
+      },
+      [setHelperText]
+    );
+
+    const setEndErrorHelperText = useCallback(
+      (error: boolean, helperText: ReactNode) => {
+        setEndError(error);
+        setHelperText(helperText);
+      },
+      [setHelperText]
+    );
 
     // Function - validate ---------------------------------------------------------------------------------------------
 
@@ -221,25 +258,19 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
         return true;
       },
-      [required, requiredStart, requiredEnd, startError, endError, allowSingleSelect, onValidate, initHelperText]
+      [
+        required,
+        requiredStart,
+        requiredEnd,
+        allowSingleSelect,
+        format,
+        onValidate,
+        setErrorHelperText,
+        initHelperText,
+        setStartErrorHelperText,
+        setEndErrorHelperText,
+      ]
     );
-
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-
-    const setErrorHelperText = useCallback((error: boolean, helperText: ReactNode) => {
-      setError(error);
-      setHelperText(helperText);
-    }, []);
-
-    const setStartErrorHelperText = useCallback((error: boolean, helperText: ReactNode) => {
-      setStartError(error);
-      setHelperText(helperText);
-    }, []);
-
-    const setEndErrorHelperText = useCallback((error: boolean, helperText: ReactNode) => {
-      setEndError(error);
-      setHelperText(helperText);
-    }, []);
 
     // Function activeMonth --------------------------------------------------------------------------------------------
 
@@ -255,66 +286,40 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
     const [open, setOpen] = useState(false);
     const [selectType, setSelectType] = useState<CustomDatePickerSelectType>('start');
-    const [value, setValue] = useAutoUpdateState<FormDateRangePickerValue>(
+    const [value, setValue] = useAutoUpdateLayoutState<FormDateRangePickerValue>(
       useCallback(() => {
         return initValue || DEFAULT_VALUE;
       }, [initValue])
     );
 
-    const [format] = useAutoUpdateState<string>(
-      useCallback(() => {
-        return initFormat || DEFAULT_FORMAT;
-      }, [initFormat])
-    );
-    const [calendarCount] = useAutoUpdateState<FormDateRangePickerCalendarCount>(initCalendarCount || 2);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [calendarCount] = useAutoUpdateLayoutState<FormDateRangePickerCalendarCount>(initCalendarCount || 2);
     const [months, setMonths] = useState<CustomDatePickerContainerMonths>(() => {
       const now = dayjs();
       return [now, now.add(1, 'month'), now.add(2, 'month')];
     });
-    const [inputDatePickerProps] = useAutoUpdateState<
-      Pick<
-        InputDatePickerProps,
-        | 'variant'
-        | 'size'
-        | 'color'
-        | 'labelShrink'
-        | 'fullWidth'
-        | 'disabled'
-        | 'format'
-        | 'disablePast'
-        | 'disableFuture'
-        | 'minDate'
-        | 'maxDate'
-      >
-    >(
-      useCallback(() => {
-        return {
-          variant,
-          size,
-          color,
-          labelShrink,
-          fullWidth,
-          disabled,
-          format,
-          disablePast,
-          disableFuture,
-          minDate,
-          maxDate,
-        };
-      }, [variant, size, color, labelShrink, fullWidth, disabled, format, disablePast, disableFuture, minDate, maxDate])
+
+    // Memo --------------------------------------------------------------------------------------------------------------
+
+    const inputDatePickerProps = useMemo(
+      () => ({
+        variant,
+        size,
+        color,
+        labelShrink,
+        fullWidth,
+        disabled,
+        format,
+        disablePast,
+        disableFuture,
+        minDate,
+        maxDate,
+      }),
+      [variant, size, color, labelShrink, fullWidth, disabled, format, disablePast, disableFuture, minDate, maxDate]
     );
 
-    // State - inputStyle ----------------------------------------------------------------------------------------------
-
-    const [inputStyle] = useAutoUpdateState<Props['style']>(
-      useCallback(() => {
-        if (inputWidth != null) {
-          return { width: inputWidth };
-        } else {
-          return { width: fullWidth ? undefined : 150 };
-        }
-      }, [inputWidth, fullWidth])
+    const inputStyle = useMemo(
+      () => (inputWidth != null ? { width: inputWidth } : { width: fullWidth ? undefined : 150 }),
+      [inputWidth, fullWidth]
     );
 
     // Effect ----------------------------------------------------------------------------------------------------------
@@ -324,6 +329,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
         if (onChange) onChange(value);
         onValueChange(name, value);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useFirstSkipEffect(() => {
@@ -369,12 +375,15 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
     // Event Handler ---------------------------------------------------------------------------------------------------
 
-    const handleChange = useCallback((newValue: CustomDatePickerValue) => {
-      setValue(newValue);
-      setOpen(false);
-      setStartErrorHelperText(false, initHelperText);
-      setEndErrorHelperText(false, initHelperText);
-    }, []);
+    const handleChange = useCallback(
+      (newValue: CustomDatePickerValue) => {
+        setValue(newValue);
+        setOpen(false);
+        setStartErrorHelperText(false, initHelperText);
+        setEndErrorHelperText(false, initHelperText);
+      },
+      [initHelperText, setEndErrorHelperText, setStartErrorHelperText, setValue]
+    );
 
     const handleValueChange = useCallback(
       (selectType: CustomDatePickerSelectType, newValue: CustomDatePickerDateValue, fromInput?: boolean) => {
@@ -442,14 +451,17 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
         });
       },
       [
-        name,
+        setValue,
         value,
-        activeMonth,
         setStartErrorHelperText,
-        setEndErrorHelperText,
         initHelperText,
-        allowSingleSelect,
+        activeMonth,
+        calendarCount,
+        setEndErrorHelperText,
         open,
+        onRequestSearchSubmit,
+        name,
+        onValueChangeByUser,
       ]
     );
 
@@ -635,6 +647,11 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       ref,
       onAddValueItem,
       onRemoveValueItem,
+      id,
+      setValue,
+      setDisabled,
+      setErrorHelperText,
+      initHelperText,
     ]);
 
     // Render ----------------------------------------------------------------------------------------------------------

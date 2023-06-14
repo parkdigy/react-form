@@ -1,7 +1,7 @@
-import React, { useId, useRef, useState, useEffect, useCallback, ReactNode, useLayoutEffect } from 'react';
+import React, { useId, useRef, useState, useEffect, useCallback, ReactNode, useLayoutEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { IconButton, InputAdornment, InputProps, TextField } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
 import { nextTick, empty, notEmpty } from '../../@util';
 import { FormTextFieldProps as Props, FormTextFieldDefaultProps, FormTextFieldCommands } from './FormTextField.types';
 import { useFormState } from '../../FormContext';
@@ -85,88 +85,86 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
       onRequestSearchSubmit,
     } = useFormState();
 
-    // State - FormState -----------------------------------------------------------------------------------------------
+    // Memo - FormState ------------------------------------------------------------------------------------------------
 
-    const [variant] = useAutoUpdateState<Props['variant']>(initVariant || formVariant);
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [focused] = useAutoUpdateState<Props['focused']>(initFocused || formFocused);
-    const [labelShrink] = useAutoUpdateState<Props['labelShrink']>(initLabelShrink || formLabelShrink);
-    const [fullWidth] = useAutoUpdateState<Props['fullWidth']>(initFullWidth == null ? formFullWidth : initFullWidth);
+    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
+    const labelShrink = useMemo(
+      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
+      [initLabelShrink, formLabelShrink]
+    );
+    const fullWidth = useMemo(
+      () => (initFullWidth == null ? formFullWidth : initFullWidth),
+      [initFullWidth, formFullWidth]
+    );
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
     const [showClear, setShowClear] = useState<boolean>(false);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
 
-    // State - muiInputLabelProps --------------------------------------------------------------------------------------
+    // Memo - muiInputLabelProps ---------------------------------------------------------------------------------------
 
-    const [muiInputLabelProps] = useAutoUpdateState<Props['InputLabelProps']>(
-      useCallback(() => {
-        if (labelShrink || placeholder) {
-          return {
-            ...initMuiInputLabelProps,
-            shrink: true,
-          };
-        } else {
-          return initMuiInputLabelProps;
+    const muiInputLabelProps = useMemo(() => {
+      if (labelShrink || placeholder) {
+        return {
+          ...initMuiInputLabelProps,
+          shrink: true,
+        };
+      } else {
+        return initMuiInputLabelProps;
+      }
+    }, [initMuiInputLabelProps, labelShrink, placeholder]);
+
+    // Memo - inputProps -----------------------------------------------------------------------------------------------
+
+    const inputProps = useMemo(() => {
+      if (readOnly != null || maxLength != null) {
+        const finalInputProps = {
+          ...initInputProps,
+          readOnly: readOnly,
+          maxLength: maxLength,
+        };
+
+        if (readOnly) {
+          finalInputProps.className = classNames(finalInputProps.className, 'Mui-disabled');
         }
-      }, [initMuiInputLabelProps, labelShrink, placeholder])
-    );
 
-    // State - inputProps ----------------------------------------------------------------------------------------------
+        return finalInputProps;
+      } else {
+        return initInputProps;
+      }
+    }, [initInputProps, readOnly, maxLength]);
 
-    const [inputProps] = useAutoUpdateState<Props['inputProps']>(
-      useCallback(() => {
-        if (readOnly != null || maxLength != null) {
-          const finalInputProps = {
-            ...initInputProps,
-            readOnly: readOnly,
-            maxLength: maxLength,
-          };
+    // Memo - style ----------------------------------------------------------------------------------------------------
 
-          if (readOnly) {
-            finalInputProps.className = classNames(finalInputProps.className, 'Mui-disabled');
-          }
+    const style = useMemo(() => {
+      if (width != null) {
+        return {
+          ...initStyle,
+          width,
+        };
+      } else {
+        return initStyle;
+      }
+    }, [initStyle, width]);
 
-          return finalInputProps;
-        } else {
-          return initInputProps;
-        }
-      }, [initInputProps, readOnly, maxLength])
-    );
+    // Memo - label ----------------------------------------------------------------------------------------------------
 
-    // State - style ---------------------------------------------------------------------------------------------------
-
-    const [style] = useAutoUpdateState<Props['style']>(
-      useCallback(() => {
-        if (width != null) {
-          return {
-            ...initStyle,
-            width,
-          };
-        } else {
-          return initStyle;
-        }
-      }, [initStyle, width])
-    );
-
-    // State - label ---------------------------------------------------------------------------------------------------
-
-    const [label] = useAutoUpdateState<Props['label']>(
-      useCallback(() => {
-        return labelIcon ? (
-          <>
-            <FormIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</FormIcon>
-            <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
-          </>
-        ) : (
-          initLabel
-        );
-      }, [initLabel, labelIcon])
-    );
+    const label = useMemo(() => {
+      return labelIcon ? (
+        <>
+          <FormIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</FormIcon>
+          <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
+        </>
+      ) : (
+        initLabel
+      );
+    }, [initLabel, labelIcon]);
 
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
@@ -179,10 +177,11 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue, getFinalValue);
 
     useEffect(() => {
       setShowClear(clear ? notEmpty(value) : false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     useFirstSkipEffect(() => {
@@ -204,6 +203,16 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
         }
       },
       [initInputRef, inputRef]
+    );
+
+    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+
+    const setErrorHelperText = useCallback(
+      function (error: boolean, helperText: ReactNode) {
+        setError(error);
+        setHelperText(helperText);
+      },
+      [setError, setHelperText]
     );
 
     // Function - validate ---------------------------------------------------------------------------------------------
@@ -239,83 +248,75 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
 
         return true;
       },
-      [required, validPattern, invalidPattern, onValidate, initHelperText]
+      [required, validPattern, invalidPattern, onValidate, setErrorHelperText, initHelperText]
     );
 
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+    // Memo - muiInputProps --------------------------------------------------------------------------------------------
 
-    const setErrorHelperText = useCallback(function (error: boolean, helperText: ReactNode) {
-      setError(error);
-      setHelperText(helperText);
-    }, []);
+    const muiInputProps = useMemo(() => {
+      const muiInputProps: InputProps = { ...initMuiInputProps };
+      if (startAdornment || icon || muiInputProps.startAdornment) {
+        muiInputProps.startAdornment = (
+          <>
+            {icon && (
+              <InputAdornment position='start'>
+                <FormIcon fontSize='small'>{icon}</FormIcon>
+              </InputAdornment>
+            )}
+            {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
+            {muiInputProps.startAdornment}
+          </>
+        );
+      }
+      if (endAdornment || muiInputProps.endAdornment || (clear && !readOnly && !disabled)) {
+        muiInputProps.endAdornment = (
+          <>
+            {clear && !readOnly && !disabled && (
+              <InputAdornment className={classNames('clear-icon-button-wrap', showClear && 'show')} position='end'>
+                <IconButton
+                  className={'clear-icon-button'}
+                  size='small'
+                  tabIndex={-1}
+                  onClick={() => {
+                    const finalValue = getFinalValue('');
+                    setValue(finalValue);
+                    focus();
+                    if (!noFormValueItem) {
+                      nextTick(() => {
+                        onValueChangeByUser(name, finalValue);
+                        onRequestSearchSubmit(name, finalValue);
+                      });
+                    }
+                  }}
+                >
+                  <FormIcon fontSize='inherit'>ClearRounded</FormIcon>
+                </IconButton>
+              </InputAdornment>
+            )}
+            {muiInputProps.endAdornment}
+            {endAdornment && <InputAdornment position='end'>{endAdornment}</InputAdornment>}
+          </>
+        );
+      }
 
-    // State - muiInputProps -------------------------------------------------------------------------------------------
-
-    const [muiInputProps] = useAutoUpdateState<Props['InputProps']>(
-      useCallback(() => {
-        const muiInputProps: InputProps = { ...initMuiInputProps };
-        if (startAdornment || icon || muiInputProps.startAdornment) {
-          muiInputProps.startAdornment = (
-            <>
-              {icon && (
-                <InputAdornment position='start'>
-                  <FormIcon fontSize='small'>{icon}</FormIcon>
-                </InputAdornment>
-              )}
-              {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
-              {muiInputProps.startAdornment}
-            </>
-          );
-        }
-        if (endAdornment || muiInputProps.endAdornment || (clear && !readOnly && !disabled)) {
-          muiInputProps.endAdornment = (
-            <>
-              {clear && !readOnly && !disabled && (
-                <InputAdornment className={classNames('clear-icon-button-wrap', showClear && 'show')} position='end'>
-                  <IconButton
-                    className={'clear-icon-button'}
-                    size='small'
-                    tabIndex={-1}
-                    onClick={() => {
-                      const finalValue = getFinalValue('');
-                      setValue(finalValue);
-                      focus();
-                      if (!noFormValueItem) {
-                        nextTick(() => {
-                          onValueChangeByUser(name, finalValue);
-                          onRequestSearchSubmit(name, finalValue);
-                        });
-                      }
-                    }}
-                  >
-                    <FormIcon fontSize='inherit'>ClearRounded</FormIcon>
-                  </IconButton>
-                </InputAdornment>
-              )}
-              {muiInputProps.endAdornment}
-              {endAdornment && <InputAdornment position='end'>{endAdornment}</InputAdornment>}
-            </>
-          );
-        }
-
-        return muiInputProps;
-      }, [
-        initMuiInputProps,
-        icon,
-        getFinalValue,
-        startAdornment,
-        endAdornment,
-        clear,
-        readOnly,
-        disabled,
-        showClear,
-        focus,
-        name,
-        noFormValueItem,
-        onValueChangeByUser,
-        onRequestSearchSubmit,
-      ])
-    );
+      return muiInputProps;
+    }, [
+      clear,
+      disabled,
+      endAdornment,
+      focus,
+      getFinalValue,
+      icon,
+      initMuiInputProps,
+      name,
+      noFormValueItem,
+      onRequestSearchSubmit,
+      onValueChangeByUser,
+      readOnly,
+      setValue,
+      showClear,
+      startAdornment,
+    ]);
 
     // Effect ----------------------------------------------------------------------------------------------------------
 
@@ -324,6 +325,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
         if (onChange) onChange(value);
         onValueChange(name, value);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Commands --------------------------------------------------------------------------------------------------------
@@ -394,6 +396,11 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
       noFormValueItem,
       onAddValueItem,
       onRemoveValueItem,
+      id,
+      setValue,
+      setDisabled,
+      setErrorHelperText,
+      initHelperText,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
@@ -411,7 +418,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
           });
         }
       },
-      [name, getFinalValue, select, noFormValueItem, onValueChangeByUser, onRequestSearchSubmit]
+      [getFinalValue, setValue, noFormValueItem, onValueChangeByUser, name, select, onRequestSearchSubmit]
     );
 
     const handleBlur = useCallback(
@@ -431,7 +438,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
         }
         if (onKeyDown) onKeyDown(e);
       },
-      [select, multiline, name, value, noFormValueItem, onRequestSearchSubmit]
+      [select, multiline, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, value]
     );
 
     // Render ----------------------------------------------------------------------------------------------------------

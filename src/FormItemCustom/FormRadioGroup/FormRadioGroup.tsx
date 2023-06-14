@@ -1,9 +1,19 @@
-import React, { useEffect, useState, useCallback, useRef, ReactNode, useId, ChangeEvent, useLayoutEffect } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  ReactNode,
+  useId,
+  ChangeEvent,
+  useLayoutEffect,
+  useMemo,
+} from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from '@mui/material';
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick } from '../../@util';
 import {
   FormRadioGroupProps as Props,
@@ -72,13 +82,16 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
       onRequestSearchSubmit,
     } = useFormState();
 
+    // Memo - FormState ------------------------------------------------------------------------------------------------
+
+    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
+
     // State - FormState -----------------------------------------------------------------------------------------------
 
-    const [variant] = useAutoUpdateState<Props['variant']>(initVariant || formVariant);
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [focused] = useAutoUpdateState<Props['focused']>(initFocused || formFocused);
-    const [fullWidth, setFullWidth] = useAutoUpdateState<Props['fullWidth']>(
+    const [fullWidth, setFullWidth] = useAutoUpdateLayoutState<Props['fullWidth']>(
       initFullWidth == null ? formFullWidth : initFullWidth
     );
 
@@ -93,13 +106,13 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
-    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [items, setItems] = useAutoUpdateLayoutState<Props['items']>(initItems);
+    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
+    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
     const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
-    const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
-    const [width, setWidth] = useAutoUpdateState<Props['width']>(initWidth || '100%');
+    const [loading, setLoading] = useAutoUpdateLayoutState<Props['loading']>(initLoading);
+    const [width, setWidth] = useAutoUpdateLayoutState<Props['width']>(initWidth || '100%');
     const [formColWrapRect, setFormColWrapRect] = useState<DOMRect>();
 
     // State - radioGroupNoWrapRect (ResizeDetector) -------------------------------------------------------------------
@@ -129,7 +142,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
       if (error) validate(value);
@@ -137,13 +150,9 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
       if (onValueChange) onValueChange(name, value);
     }, [value]);
 
-    // State - style ---------------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
-    const [style] = useAutoUpdateState<Props['style']>(
-      useCallback(() => {
-        return { width, paddingLeft: PADDING_LEFT, ...initStyle };
-      }, [initStyle, width])
-    );
+    const style = useMemo(() => ({ width, paddingLeft: PADDING_LEFT, ...initStyle }), [initStyle, width]);
 
     // Effect ----------------------------------------------------------------------------------------------------------
 
@@ -152,6 +161,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
         if (onChange) onChange(value);
         if (onValueChange) onValueChange(name, value);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -183,6 +193,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
           };
         }
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fullWidth, initWidth]);
 
     useEffect(() => {
@@ -212,6 +223,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
 
       setWidth(width);
       setFullWidth(fullWidth);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [initWidth, formFullWidth, initFullWidth, formColWrapRect, radioGroupNoWrapRect]);
 
     // Function - focus ------------------------------------------------------------------------------------------------
@@ -219,6 +231,16 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
     const focus = useCallback(function () {
       firstInputRef.current?.focus();
     }, []);
+
+    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+
+    const setErrorHelperText = useCallback(
+      function (error: boolean, helperText: ReactNode) {
+        setError(error);
+        setHelperText(helperText);
+      },
+      [setError, setHelperText]
+    );
 
     // Function - validate ---------------------------------------------------------------------------------------------
 
@@ -240,15 +262,8 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
 
         return true;
       },
-      [required, onValidate, initHelperText]
+      [required, onValidate, setErrorHelperText, initHelperText]
     );
-
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-
-    const setErrorHelperText = useCallback(function (error: boolean, helperText: ReactNode) {
-      setError(error);
-      setHelperText(helperText);
-    }, []);
 
     // Commands --------------------------------------------------------------------------------------------------------
 
@@ -329,6 +344,13 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
       ref,
       onAddValueItem,
       onRemoveValueItem,
+      id,
+      setValue,
+      setDisabled,
+      setErrorHelperText,
+      initHelperText,
+      setItems,
+      setLoading,
     ]);
 
     useEffect(() => {
@@ -339,6 +361,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
           setIsOnGetItemLoading(false);
         });
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
@@ -365,7 +388,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
           }
         }
       },
-      [readOnly, value, items, name, getFinalValue, onValueChangeByUser, onRequestSearchSubmit]
+      [readOnly, items, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     // Render ----------------------------------------------------------------------------------------------------------

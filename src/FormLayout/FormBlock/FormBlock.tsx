@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { Collapse, Grid } from '@mui/material';
 import { FormBlockProps as Props, FormBlockDefaultProps } from './FormBlock.types';
 import { FormContext, useFormState } from '../../FormContext';
 import FormDivider from '../FormDivider';
-import { useAutoUpdateState } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState } from '@pdg/react-hook';
 import { StyledWrapGrid } from './FormBlock.style';
 
 const FormBlock = React.forwardRef<HTMLDivElement, Props>(
@@ -47,37 +47,41 @@ const FormBlock = React.forwardRef<HTMLDivElement, Props>(
       ...otherFormState
     } = useFormState();
 
-    // State - FormState -----------------------------------------------------------------------------------------------
+    // Memo - FormState ------------------------------------------------------------------------------------------------
 
-    const [variant] = useAutoUpdateState<Props['variant']>(initVariant || formVariant);
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [spacing] = useAutoUpdateState<Props['spacing']>(initSpacing == null ? formSpacing : initSpacing);
-    const [focused] = useAutoUpdateState<Props['focused']>(initFocused || formFocused);
-    const [labelShrink] = useAutoUpdateState<Props['labelShrink']>(initLabelShrink || formLabelShrink);
-    const [fullWidth] = useAutoUpdateState<Props['fullWidth']>(initFullWidth == null ? formFullWidth : initFullWidth);
+    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const spacing = useMemo(() => initSpacing || formSpacing, [initSpacing, formSpacing]);
+    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
+    const labelShrink = useMemo(
+      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
+      [initLabelShrink, formLabelShrink]
+    );
+    const fullWidth = useMemo(
+      () => (initFullWidth == null ? formFullWidth : initFullWidth),
+      [initFullWidth, formFullWidth]
+    );
 
     // State -------------------------------------------------------------------------------------------------------------
 
-    const [collapseIn, setCollapseIn] = useState(initCollapseIn);
+    const [collapseIn, setCollapseIn] = useAutoUpdateLayoutState(initCollapseIn);
 
-    // State - style ---------------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
-    const [style] = useAutoUpdateState<Props['style']>(
-      useCallback(() => {
-        if (hidden) {
-          return { ...initStyle, display: 'none' };
-        } else {
-          return initStyle;
-        }
-      }, [initStyle, hidden])
-    );
+    const style = useMemo(() => {
+      if (hidden) {
+        return { ...initStyle, display: 'none' };
+      } else {
+        return initStyle;
+      }
+    }, [hidden, initStyle]);
 
     // Effect ------------------------------------------------------------------------------------------------------------
 
     useEffect(() => {
       setCollapseIn(initCollapseIn);
-    }, [initCollapseIn]);
+    }, [initCollapseIn, setCollapseIn]);
 
     // Memo --------------------------------------------------------------------------------------------------------------
 

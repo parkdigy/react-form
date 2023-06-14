@@ -1,24 +1,30 @@
-import React from 'react';
-import { InputLabel } from '@mui/material';
+import React, { useMemo } from 'react';
+import { InputLabel, InputLabelProps } from '@mui/material';
 import { FormLabelProps as Props, FormLabelDefaultProps } from './FormLabel.types';
-import FormIcon from '../FormIcon';
+import { ChildrenSpan, IconFormIcon } from './FormLabel.style';
 
 const FormLabel = React.forwardRef<HTMLLabelElement, Props>(({ children, icon, size, style, ...props }, ref) => {
+  // Memo --------------------------------------------------------------------------------------------------------------
+
+  const finalProps = useMemo(
+    (): InputLabelProps => ({
+      shrink: true,
+      className: 'FormItemBase-InputLabel',
+      size: size === 'medium' ? 'normal' : size,
+      ...props,
+      style: { height: 20, transform: size === 'small' ? 'translate(0, -1.5px) scale(0.7)' : undefined, ...style },
+    }),
+    [props, size, style]
+  );
+
+  // Render ------------------------------------------------------------------------------------------------------------
+
   return (
-    <InputLabel
-      ref={ref}
-      shrink
-      className='FormItemBase-InputLabel'
-      size={size === 'medium' ? 'normal' : size}
-      {...props}
-      style={{ height: 20, transform: size === 'small' ? 'translate(0, -1.5px) scale(0.7)' : undefined, ...style }}
-    >
+    <InputLabel ref={ref} {...finalProps}>
       {icon ? (
         <>
-          <FormIcon style={{ verticalAlign: 'middle', marginRight: 3, marginTop: -4, marginBottom: -2 }}>
-            {icon}
-          </FormIcon>
-          <span style={{ verticalAlign: 'middle' }}>{children}</span>
+          <IconFormIcon>{icon}</IconFormIcon>
+          <ChildrenSpan>{children}</ChildrenSpan>
         </>
       ) : (
         children

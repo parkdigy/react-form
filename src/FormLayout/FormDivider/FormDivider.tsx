@@ -1,10 +1,9 @@
-import React, { CSSProperties, useCallback } from 'react';
+import React, { CSSProperties, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { Grid, Box } from '@mui/material';
 import { FormDividerProps as Props, FormDividerDefaultProps } from './FormDivider.types';
 import { FormIcon } from '../../FormCommon';
 import { useFormState } from '../../FormContext';
-import { useAutoUpdateState } from '@pdg/react-hook';
 import { StyledLineDiv } from './FormDivider.style';
 
 const DEFAULT_LINE_STYLE: CSSProperties = { flex: 1, position: 'relative' };
@@ -33,33 +32,27 @@ const FormDivider = React.forwardRef<HTMLDivElement, Props>(
 
     const { size: formSize } = useFormState();
 
-    // State - FormState -----------------------------------------------------------------------------------------------
+    // Memo - FormState ------------------------------------------------------------------------------------------------
 
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
 
-    // State - style ---------------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
-    const [style] = useAutoUpdateState<Props['style']>(
-      useCallback(() => {
-        if (hidden) {
-          return { ...initStyle, display: 'none' };
-        } else {
-          return initStyle;
-        }
-      }, [initStyle, hidden])
-    );
+    const style = useMemo(() => {
+      if (hidden) {
+        return { ...initStyle, display: 'none' };
+      } else {
+        return initStyle;
+      }
+    }, [hidden, initStyle]);
 
-    // State - lineStyle -----------------------------------------------------------------------------------------------
-
-    const [lineStyle] = useAutoUpdateState<CSSProperties>(
-      useCallback(() => {
-        if (lineVerticalMargin) {
-          return { ...DEFAULT_LINE_STYLE, marginTop: lineVerticalMargin, marginBottom: lineVerticalMargin };
-        } else {
-          return DEFAULT_LINE_STYLE;
-        }
-      }, [lineVerticalMargin])
-    );
+    const lineStyle = useMemo(() => {
+      if (lineVerticalMargin) {
+        return { ...DEFAULT_LINE_STYLE, marginTop: lineVerticalMargin, marginBottom: lineVerticalMargin };
+      } else {
+        return DEFAULT_LINE_STYLE;
+      }
+    }, [lineVerticalMargin]);
 
     // Event Handler -----------------------------------------------------------------------------------------------------
 

@@ -1,8 +1,8 @@
-import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DesktopDatePicker } from '@mui/x-date-pickers';
-import { useAutoUpdateLayoutState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, TextField, FormHelperText } from '@mui/material';
 import { DateValidationError } from '@mui/x-date-pickers/internals';
 import dayjsLocale from 'dayjs/locale/ko';
@@ -35,7 +35,6 @@ import {
 import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
 import { FormIcon } from '../../FormCommon';
 import { InputBaseProps } from '@mui/material/InputBase';
-import { FormAvailableDate } from '../@types';
 import './PrivateDatePicker.scss';
 
 const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
@@ -117,14 +116,20 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       onRequestSearchSubmit,
     } = useFormState();
 
-    // State - FormState -----------------------------------------------------------------------------------------------
+    // Memo - FormState ------------------------------------------------------------------------------------------------
 
-    const [variant] = useAutoUpdateState<Props['variant']>(initVariant || formVariant);
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [focused] = useAutoUpdateState<Props['focused']>(initFocused || formFocused);
-    const [labelShrink] = useAutoUpdateState<Props['labelShrink']>(initLabelShrink || formLabelShrink);
-    const [fullWidth] = useAutoUpdateState<Props['fullWidth']>(initFullWidth == null ? formFullWidth : initFullWidth);
+    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
+    const labelShrink = useMemo(
+      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
+      [initLabelShrink, formLabelShrink]
+    );
+    const fullWidth = useMemo(
+      () => (initFullWidth == null ? formFullWidth : initFullWidth),
+      [initFullWidth, formFullWidth]
+    );
 
     // State - open ----------------------------------------------------------------------------------------------------
 
@@ -132,47 +137,45 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
+    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
     const [timeError, setTimeError] = useState<DateValidationError>(null);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
+    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
 
-    const [label] = useAutoUpdateState<Props['label']>(
-      useCallback(() => {
-        if (labelIcon) {
-          return <IconText icon={labelIcon}>{initLabel}</IconText>;
-        } else {
-          return initLabel;
-        }
-      }, [initLabel, labelIcon])
-    );
-    const [format] = useAutoUpdateState<string>(
-      useCallback(() => {
-        if (initFormat) {
-          return initFormat;
-        } else {
-          return getDateTimeFormat(type, time);
-        }
-      }, [type, time, initFormat])
-    );
-    const [formValueFormat] = useAutoUpdateState<string>(
-      useCallback(() => {
-        if (initFormValueFormat) {
-          return initFormValueFormat;
-        } else {
-          return getDateTimeFormValueFormat(type, time);
-        }
-      }, [time, initFormValueFormat])
-    );
-    const [availableDate] = useAutoUpdateState<FormAvailableDate>(
-      useCallback((): FormAvailableDate => {
-        return makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture);
-      }, [minDate, maxDate, disablePast, disableFuture])
+    // Memo --------------------------------------------------------------------------------------------------------------
+
+    const label = useMemo(() => {
+      if (labelIcon) {
+        return <IconText icon={labelIcon}>{initLabel}</IconText>;
+      } else {
+        return initLabel;
+      }
+    }, [initLabel, labelIcon]);
+
+    const format = useMemo(() => {
+      if (initFormat) {
+        return initFormat;
+      } else {
+        return getDateTimeFormat(type, time);
+      }
+    }, [initFormat, time, type]);
+
+    const formValueFormat = useMemo(() => {
+      if (initFormValueFormat) {
+        return initFormValueFormat;
+      } else {
+        return getDateTimeFormValueFormat(type, time);
+      }
+    }, [initFormValueFormat, time, type]);
+
+    const availableDate = useMemo(
+      () => makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture),
+      [disableFuture, disablePast, maxDate, minDate]
     );
 
     // State - style ---------------------------------------------------------------------------------------------------
 
-    const [style] = useAutoUpdateState<Props['style']>(
+    const [style] = useAutoUpdateLayoutState<Props['style']>(
       useCallback(() => {
         if (width != null) {
           return { ...initStyle, width };
@@ -200,6 +203,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
         if (onChange) onChange(value);
         onValueChange(name, value);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useFirstSkipEffect(() => {
@@ -236,7 +240,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     }, [open]);
 
     useEffect(() => {
-      if (time && value && (availableDate[0] || availableDate[1])) {
+      if (type !== 'time' && time && value && (availableDate[0] || availableDate[1])) {
         const availableDateVal = getAvailableDateVal(availableDate, type, time);
         const valueVal = getDateValForAvailableDate(value, type, time);
         let timeError: DateValidationError = null;
@@ -252,6 +256,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       } else {
         setTimeError(null);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     // Function - focus ------------------------------------------------------------------------------------------------
@@ -259,6 +264,16 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     const focus = useCallback(() => {
       textFieldInputRef.current?.focus();
     }, [textFieldInputRef]);
+
+    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+
+    const setErrorHelperText = useCallback(
+      (error: boolean, helperText: ReactNode) => {
+        setError(error);
+        setHelperText(helperText);
+      },
+      [setError, setHelperText]
+    );
 
     // Function - validate ---------------------------------------------------------------------------------------------
 
@@ -292,15 +307,8 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
         return true;
       },
-      [required, onValidate, initHelperText, datePickerErrorRef, timeError]
+      [required, timeError, onValidate, setErrorHelperText, initHelperText]
     );
-
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-
-    const setErrorHelperText = useCallback((error: boolean, helperText: ReactNode) => {
-      setError(error);
-      setHelperText(helperText);
-    }, []);
 
     // Commands --------------------------------------------------------------------------------------------------------
 
@@ -371,6 +379,11 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       ref,
       onAddValueItem,
       onRemoveValueItem,
+      id,
+      setValue,
+      setDisabled,
+      setErrorHelperText,
+      initHelperText,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
@@ -389,7 +402,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
         let finalValue = newValue;
 
         if (updateValue) {
-          if (finalValue != null && keyboardInputValue == null) {
+          if (type !== 'time' && finalValue != null && keyboardInputValue == null) {
             const checkResult = checkDateAvailable(finalValue, availableDate, type, time);
             if (checkResult !== 'available') {
               const availableDateDate = getAvailableDate(availableDate, type, time);
@@ -440,7 +453,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
         setInputValue(finalValue);
       },
-      [name, type, time, availableDate, open, value]
+      [type, time, setValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     const handleContainerFocus = useCallback(() => {

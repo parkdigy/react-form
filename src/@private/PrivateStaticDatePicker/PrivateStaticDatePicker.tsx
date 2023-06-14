@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   PrivateStaticDatePickerProps as Props,
@@ -6,16 +6,14 @@ import {
   PrivateStaticDatePickerCommands,
   TimeSelectScrollToDateUnit,
 } from './PrivateStaticDatePicker.types';
-import { PickersDay, PickersDayProps, StaticDatePicker, StaticDatePickerProps } from '@mui/x-date-pickers';
+import { PickersDay, PickersDayProps, StaticDatePicker } from '@mui/x-date-pickers';
 import { Button, Grid, Icon, IconButton, IconButtonProps, TextField } from '@mui/material';
-import { useAutoUpdateState } from '@pdg/react-hook';
 import dayjs, { Dayjs } from 'dayjs';
 import { PrivateYearSelect } from '../PrivateYearSelect';
 import { PrivateMonthSelect } from '../PrivateMonthSelect';
 import { PrivateTimeSelect, PrivateTimeSelectCommands } from '../PrivateTimeSelect';
 import { checkDateAvailable, getAvailableDate, isDateAvailable, makeAvailableDate } from '../../@util';
 import './PrivateStaticDatePicker.scss';
-import { FormAvailableDate } from '../@types';
 
 const DEFAULT_HOURS: number[] = new Array(24).fill(0);
 for (let i = 0; i < DEFAULT_HOURS.length; i += 1) {
@@ -74,83 +72,60 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
     const [yearSelectOpen, setYearSelectOpen] = useState(false);
     const [monthSelectOpen, setMonthSelectOpen] = useState(false);
 
-    const [hours] = useAutoUpdateState<number[]>(
-      useCallback(() => {
-        return initHours || DEFAULT_HOURS;
-      }, [initHours])
+    // Memo --------------------------------------------------------------------------------------------------------------
+
+    const hours = useMemo(() => initHours || DEFAULT_HOURS, [initHours]);
+    const minutes = useMemo(() => initMinutes || DEFAULT_MINUTES, [initMinutes]);
+    const seconds = useMemo(() => initSeconds || DEFAULT_SECONDS, [initSeconds]);
+    const availableDate = useMemo(
+      () =>
+        initAvailableDate ? initAvailableDate : makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture),
+      [initAvailableDate, minDate, maxDate, disablePast, disableFuture]
     );
 
-    const [minutes] = useAutoUpdateState<number[]>(
-      useCallback(() => {
-        return initMinutes || DEFAULT_MINUTES;
-      }, [initMinutes])
-    );
+    const disableHours = useMemo(() => {
+      const newDisableHours: number[] = [];
+      if (time && value && (availableDate[0] || availableDate[1])) {
+        hours.forEach((h) => {
+          if (!isDateAvailable(value.set('hour', h), availableDate, 'hour')) {
+            newDisableHours.push(h);
+          }
+        });
+      }
+      return newDisableHours;
+    }, [time, value, availableDate, hours]);
 
-    const [seconds] = useAutoUpdateState<number[]>(
-      useCallback(() => {
-        return initSeconds || DEFAULT_SECONDS;
-      }, [initSeconds])
-    );
+    const disableMinutes = useMemo(() => {
+      const newDisableMinutes: number[] = [];
 
-    const [availableDate] = useAutoUpdateState<FormAvailableDate>(
-      useCallback((): FormAvailableDate => {
-        if (initAvailableDate) {
-          return initAvailableDate;
-        } else {
-          return makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture);
-        }
-      }, [initAvailableDate, minDate, maxDate, disablePast, disableFuture])
-    );
-
-    const [disableHours] = useAutoUpdateState<number[]>(
-      useCallback(() => {
-        const newDisableHours: number[] = [];
-        if (time && value && (availableDate[0] || availableDate[1])) {
-          hours.forEach((h) => {
-            if (!isDateAvailable(value.set('hour', h), availableDate, 'hour')) {
-              newDisableHours.push(h);
+      if (time === 'minute' || time === 'second') {
+        if (value && (availableDate[0] || availableDate[1])) {
+          minutes.forEach((m) => {
+            if (!isDateAvailable(value.set('minute', m), availableDate, 'minute')) {
+              newDisableMinutes.push(m);
             }
           });
         }
-        return newDisableHours;
-      }, [time, value, availableDate, hours])
-    );
+      }
 
-    const [disableMinutes] = useAutoUpdateState<number[]>(
-      useCallback(() => {
-        const newDisableMinutes: number[] = [];
+      return newDisableMinutes;
+    }, [time, value, availableDate, minutes]);
 
-        if (time === 'minute' || time === 'second') {
-          if (value && (availableDate[0] || availableDate[1])) {
-            minutes.forEach((m) => {
-              if (!isDateAvailable(value.set('minute', m), availableDate, 'minute')) {
-                newDisableMinutes.push(m);
-              }
-            });
-          }
+    const disableSeconds = useMemo(() => {
+      const newDisableSeconds: number[] = [];
+
+      if (time === 'second') {
+        if (value && (availableDate[0] || availableDate[1])) {
+          seconds.forEach((s) => {
+            if (!isDateAvailable(value.set('second', s), availableDate, 'second')) {
+              newDisableSeconds.push(s);
+            }
+          });
         }
+      }
 
-        return newDisableMinutes;
-      }, [time, value, availableDate, minutes])
-    );
-
-    const [disableSeconds] = useAutoUpdateState<number[]>(
-      useCallback(() => {
-        const newDisableSeconds: number[] = [];
-
-        if (time === 'second') {
-          if (value && (availableDate[0] || availableDate[1])) {
-            seconds.forEach((s) => {
-              if (!isDateAvailable(value.set('second', s), availableDate, 'second')) {
-                newDisableSeconds.push(s);
-              }
-            });
-          }
-        }
-
-        return newDisableSeconds;
-      }, [time, value, availableDate, seconds])
-    );
+      return newDisableSeconds;
+    }, [time, value, availableDate, seconds]);
 
     // Effect ----------------------------------------------------------------------------------------------------------
 
@@ -181,13 +156,12 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
       return ArrowButton;
     });
 
-    const [components] = useAutoUpdateState<StaticDatePickerProps<Dayjs, Dayjs>['components']>(
-      useCallback(() => {
-        return {
-          LeftArrowButton,
-          RightArrowButton,
-        };
-      }, [LeftArrowButton, RightArrowButton])
+    const components = useMemo(
+      () => ({
+        LeftArrowButton,
+        RightArrowButton,
+      }),
+      [LeftArrowButton, RightArrowButton]
     );
 
     // Function --------------------------------------------------------------------------------------------------------
@@ -291,7 +265,7 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
           </Button>
         );
       },
-      [type, time, onChange, inputFormat, availableDate, timeSelectScrollToDate]
+      [type, time, onChange, inputFormat, availableDate]
     );
 
     // Render ----------------------------------------------------------------------------------------------------------

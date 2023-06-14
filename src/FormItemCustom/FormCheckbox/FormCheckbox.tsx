@@ -1,9 +1,9 @@
-import React, { useCallback, useId, useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useId, useLayoutEffect, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { FormControlLabel, Checkbox, Typography, ButtonBaseActions } from '@mui/material';
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
 import { FormCheckboxProps as Props, FormCheckboxDefaultProps, FormCheckboxCommands } from './FormCheckbox.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
@@ -62,13 +62,16 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       onRequestSearchSubmit,
     } = useFormState();
 
-    // State - FormState ------------------------------------------------------------------------------------------------------------------
+    // Memo - FormState ------------------------------------------------------------------------------------------------
 
-    const [variant] = useAutoUpdateState<Props['variant']>(initVariant || formVariant);
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [focused] = useAutoUpdateState<Props['focused']>(initFocused || formFocused);
-    const [fullWidth] = useAutoUpdateState<Props['fullWidth']>(initFullWidth == null ? formFullWidth : initFullWidth);
+    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
+    const fullWidth = useMemo(
+      () => (initFullWidth == null ? formFullWidth : initFullWidth),
+      [initFullWidth, formFullWidth]
+    );
 
     // Ref -------------------------------------------------------------------------------------------------------------
 
@@ -81,15 +84,15 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue);
-    const [uncheckedValue, setUncheckedValue] = useAutoUpdateState<Props['uncheckedValue']>(initUncheckedValue);
-    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue);
+    const [uncheckedValue, setUncheckedValue] = useAutoUpdateLayoutState<Props['uncheckedValue']>(initUncheckedValue);
+    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
+    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
 
     // State - checked -------------------------------------------------------------------------------------------------
 
-    const [checked, setChecked] = useAutoUpdateState<Props['checked']>(initChecked);
+    const [checked, setChecked] = useAutoUpdateLayoutState<Props['checked']>(initChecked);
 
     useFirstSkipEffect(() => {
       if (error) validate(checked);
@@ -97,12 +100,11 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       onValueChange(name, !!checked);
     }, [checked]);
 
-    // State - style ---------------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
-    const [style] = useAutoUpdateState<Props['style']>(
-      useCallback(() => {
-        return { width: fullWidth ? '100%' : width || 100, paddingLeft: 3, ...initStyle };
-      }, [initStyle, fullWidth, width])
+    const style = useMemo(
+      () => ({ width: fullWidth ? '100%' : width || 100, paddingLeft: 3, ...initStyle }),
+      [initStyle, fullWidth, width]
     );
 
     // Function - focus ------------------------------------------------------------------------------------------------
@@ -123,6 +125,16 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       [initInputRef, inputRef, initAction, actionRef]
     );
 
+    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+
+    const setErrorHelperText = useCallback(
+      function (error: Props['error'], helperText: Props['helperText']) {
+        setError(error);
+        setHelperText(helperText);
+      },
+      [setError, setHelperText]
+    );
+
     // Function - validate ---------------------------------------------------------------------------------------------
 
     const validate = useCallback(
@@ -139,15 +151,8 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
 
         return true;
       },
-      [onValidate, initHelperText]
+      [onValidate, setErrorHelperText, initHelperText]
     );
-
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-
-    const setErrorHelperText = useCallback(function (error: Props['error'], helperText: Props['helperText']) {
-      setError(error);
-      setHelperText(helperText);
-    }, []);
 
     // Commands --------------------------------------------------------------------------------------------------------
 
@@ -228,6 +233,12 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       disabled,
       validate,
       initHelperText,
+      id,
+      setChecked,
+      setValue,
+      setUncheckedValue,
+      setDisabled,
+      setErrorHelperText,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
@@ -244,7 +255,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
           });
         }
       },
-      [readOnly, name, onValueChangeByUser, onRequestSearchSubmit]
+      [readOnly, setChecked, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     // Render ----------------------------------------------------------------------------------------------------------

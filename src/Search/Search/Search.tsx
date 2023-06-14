@@ -32,6 +32,7 @@ const Search = React.forwardRef<SearchCommands, Props>(
       if (autoSubmit) {
         formRef.current?.submit();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Memo --------------------------------------------------------------------------------------------------------------

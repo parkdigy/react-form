@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, ReactNode } from 'react';
 import classNames from 'classnames';
 import { Autocomplete, Chip, InputLabelProps } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
 import { FormTagProps, FormTagDefaultProps, FormTagExtraCommands, FormTagCommands } from './FormTag.types';
 import FormText from '../FormText';
 import { FormItemValue, FormValueItemBaseCommands } from '../../@types';
@@ -48,7 +48,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
 
     // State - FormState -----------------------------------------------------------------------------------------------
 
-    const [fullWidth] = useAutoUpdateState<FormTagProps['fullWidth']>(
+    const [fullWidth] = useAutoUpdateLayoutState<FormTagProps['fullWidth']>(
       initFullWidth == null ? formFullWidth : initFullWidth
     );
 
@@ -76,7 +76,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     const [valueSet, setValueSet] = useState<Set<string>>(() => {
       return new Set<string>(getFinalValue(initValue));
     });
-    const [value, setValue] = useAutoUpdateState<FormTagProps['value']>(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateLayoutState<FormTagProps['value']>(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
       if (error) validate(value);
@@ -87,8 +87,8 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     //------------------------------------------------------------------------------------------------------------------
 
     const [inputValue, setInputValue] = useState<string>('');
-    const [error, setError] = useAutoUpdateState<FormTagProps['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<FormTagProps['helperText']>(initHelperText);
+    const [error, setError] = useAutoUpdateLayoutState<FormTagProps['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateLayoutState<FormTagProps['helperText']>(initHelperText);
 
     // Effect ----------------------------------------------------------------------------------------------------------
 
@@ -97,7 +97,18 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
         if (onChange) onChange(value);
         onValueChange(name, value);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+
+    const setErrorHelperText = useCallback(
+      function (error: boolean, helperText: ReactNode) {
+        setError(error);
+        setHelperText(helperText);
+      },
+      [setError, setHelperText]
+    );
 
     // Function - validate ---------------------------------------------------------------------------------------------
 
@@ -120,15 +131,8 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
 
         return true;
       },
-      [required, onValidate, initHelperText]
+      [required, onValidate, setErrorHelperText, initHelperText]
     );
-
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-
-    const setErrorHelperText = useCallback(function (error: boolean, helperText: ReactNode) {
-      setError(error);
-      setHelperText(helperText);
-    }, []);
 
     // Function - getExtraCommands -------------------------------------------------------------------------------------
 
@@ -165,7 +169,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           ...getExtraCommands(),
         };
       },
-      [initValue, value, getFinalValue, validate, getExtraCommands]
+      [value, getExtraCommands, getFinalValue, initValue, setValue, validate]
     );
 
     // Function - appendTag, removeTag ---------------------------------------------------------------------------------
@@ -186,7 +190,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           });
         }
       },
-      [valueSet, name, getFinalValue, onValueChangeByUser, onRequestSearchSubmit]
+      [valueSet, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     const removeTag = useCallback(
@@ -201,7 +205,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           });
         }
       },
-      [valueSet, name, getFinalValue, onValueChangeByUser, onRequestSearchSubmit]
+      [valueSet, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     // Event Handler ---------------------------------------------------------------------------------------------------
@@ -255,7 +259,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
         }
         if (onBlur) onBlur(e);
       },
-      [inputValue, onBlur]
+      [appendTag, inputValue, onBlur]
     );
 
     const handleRenderTags = useCallback(

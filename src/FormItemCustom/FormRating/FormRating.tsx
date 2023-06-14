@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { Rating } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick } from '../../@util';
 import { FormRatingProps as Props, FormRatingDefaultProps, FormRatingCommands } from './FormRating.types';
 import FormItemBase from '../FormItemBase';
@@ -61,12 +61,17 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       onRequestSearchSubmit,
     } = useFormState();
 
+    // Memo - FormState ------------------------------------------------------------------------------------------------
+
+    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
+    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
+    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+
     // State - FormState -----------------------------------------------------------------------------------------------
 
-    const [variant] = useAutoUpdateState<Props['variant']>(initVariant || formVariant);
-    const [size] = useAutoUpdateState<Props['size']>(initSize || formSize);
-    const [color] = useAutoUpdateState<Props['color']>(initColor || formColor);
-    const [focused, setFocused] = useAutoUpdateState<Props['focused']>(initFocused || formFocused);
+    const [focused, setFocused] = useAutoUpdateLayoutState<Props['focused']>(
+      initFocused == null ? formFocused : initFocused
+    );
 
     // Ref -------------------------------------------------------------------------------------------------------------
 
@@ -74,9 +79,9 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
+    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
 
     // State - width, height -------------------------------------------------------------------------------------------
 
@@ -93,7 +98,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<number>(initValue || 0, getFinalValue);
+    const [value, setValue] = useAutoUpdateLayoutState<number>(initValue || 0, getFinalValue);
 
     useFirstSkipEffect(() => {
       if (error) validate(value);
@@ -101,13 +106,9 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       onValueChange(name, value);
     }, [value]);
 
-    // State - style ---------------------------------------------------------------------------------------------------
+    // Memo --------------------------------------------------------------------------------------------------------------
 
-    const [style] = useAutoUpdateState<Props['style']>(
-      useCallback(() => {
-        return { width: width || 100, ...initStyle };
-      }, [initStyle, width])
-    );
+    const style = useMemo(() => ({ width: width || 100, ...initStyle }), [initStyle, width]);
 
     // Effect ----------------------------------------------------------------------------------------------------------
 
@@ -120,6 +121,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       if (resizeDetectorRef.current) {
         inputRef.current = resizeDetectorRef.current.querySelector('input');
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Function --------------------------------------------------------------------------------------------------------
@@ -130,6 +132,14 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         inputRef.current?.blur();
       });
     }, []);
+
+    const setErrorHelperText = useCallback(
+      function (error: Props['error'], helperText: Props['helperText']) {
+        setError(error);
+        setHelperText(helperText);
+      },
+      [setError, setHelperText]
+    );
 
     const validate = useCallback(
       function (value: Props['value']) {
@@ -150,13 +160,8 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
 
         return true;
       },
-      [required, onValidate, initHelperText]
+      [required, onValidate, setErrorHelperText, initHelperText]
     );
-
-    const setErrorHelperText = useCallback(function (error: Props['error'], helperText: Props['helperText']) {
-      setError(error);
-      setHelperText(helperText);
-    }, []);
 
     // Commands --------------------------------------------------------------------------------------------------------
 
@@ -224,6 +229,10 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       ref,
       onAddValueItem,
       onRemoveValueItem,
+      id,
+      setValue,
+      setDisabled,
+      setErrorHelperText,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
@@ -241,7 +250,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
           });
         }
       },
-      [readOnly, name, getFinalValue, onValueChangeByUser, onRequestSearchSubmit]
+      [readOnly, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     // Render ----------------------------------------------------------------------------------------------------------

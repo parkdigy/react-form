@@ -85,6 +85,7 @@ const PrivateTimeSelect = React.forwardRef<PrivateTimeSelectCommands, Props>(
       if (value != null) {
         scrollToValue(value);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // LayoutEffect ----------------------------------------------------------------------------------------------------
