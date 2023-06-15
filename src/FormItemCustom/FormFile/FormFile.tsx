@@ -1,7 +1,7 @@
 import React, { ChangeEvent, ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Button, InputAdornment, TextField, Typography } from '@mui/material';
-import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, notEmpty, nextTick, getFileSizeText } from '../../@util';
 import { FormFileProps as Props, FormFileDefaultProps, FormFileCommands } from './FormFile.types';
 import FormItemBase from '../FormItemBase';
@@ -86,7 +86,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue);
+    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue);
     const [fileValue] = useState('');
 
     useFirstSkipEffect(() => {
@@ -97,9 +97,9 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
-    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
+    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [isOpenLinkDialog, setIsOpenLinkDialog] = useState(false);
     const [alertDialogProps, setAlertDialogProps] = useState<{
       open: boolean;

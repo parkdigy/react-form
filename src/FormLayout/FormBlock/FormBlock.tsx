@@ -4,7 +4,7 @@ import { Collapse, Grid } from '@mui/material';
 import { FormBlockProps as Props, FormBlockDefaultProps } from './FormBlock.types';
 import { FormContext, useFormState } from '../../FormContext';
 import FormDivider from '../FormDivider';
-import { useAutoUpdateLayoutState } from '@pdg/react-hook';
+import { useAutoUpdateState } from '@pdg/react-hook';
 import { StyledWrapGrid } from './FormBlock.style';
 
 const FormBlock = React.forwardRef<HTMLDivElement, Props>(
@@ -65,7 +65,7 @@ const FormBlock = React.forwardRef<HTMLDivElement, Props>(
 
     // State -------------------------------------------------------------------------------------------------------------
 
-    const [collapseIn, setCollapseIn] = useAutoUpdateLayoutState(initCollapseIn);
+    const [collapseIn, setCollapseIn] = useAutoUpdateState(initCollapseIn);
 
     // Memo --------------------------------------------------------------------------------------------------------------
 

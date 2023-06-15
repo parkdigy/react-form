@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useMe
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DesktopDatePicker } from '@mui/x-date-pickers';
-import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, TextField, FormHelperText } from '@mui/material';
 import { DateValidationError } from '@mui/x-date-pickers/internals';
 import dayjsLocale from 'dayjs/locale/ko';
@@ -137,10 +137,10 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
+    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [timeError, setTimeError] = useState<DateValidationError>(null);
-    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
-    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
+    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
 
     // Memo --------------------------------------------------------------------------------------------------------------
 
@@ -175,7 +175,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
     // State - style ---------------------------------------------------------------------------------------------------
 
-    const [style] = useAutoUpdateLayoutState<Props['style']>(
+    const [style] = useAutoUpdateState<Props['style']>(
       useCallback(() => {
         if (width != null) {
           return { ...initStyle, width };
@@ -193,7 +193,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateLayoutState<PrivateDatePickerValue>(initValue || null, getFinalValue);
+    const [value, setValue] = useAutoUpdateState<PrivateDatePickerValue>(initValue || null, getFinalValue);
     const [inputValue, setInputValue] = useState<PrivateDatePickerValue>(null);
 
     // Effect ----------------------------------------------------------------------------------------------------------

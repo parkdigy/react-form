@@ -949,35 +949,25 @@ FormDivider.defaultProps = FormDividerDefaultProps;function useFirstSkipEffect$1
         return v1 === v2;
     }
     return true;
-};function useFirstSkipLayoutEffect(effect, deps) {
-    var firstRef = React.useRef(true);
-    React.useLayoutEffect(function () {
-        if (firstRef.current) {
-            firstRef.current = false;
-        }
-        else {
-            effect();
-        }
-    }, deps);
-}function useAutoUpdateLayoutState(p1, p2) {
+};function useAutoUpdateState$1(p1, p2) {
     var state = typeof p1 === 'function' ? undefined : p1;
     var finalStateCallback = typeof p1 === 'function' ? p1 : p2;
     var _a = React.useState(0), setUpdateKey = _a[1];
     var _initState = React.useState(function () {
-        return finalStateCallback ? finalStateCallback(state, 0) : state;
+        return finalStateCallback ? finalStateCallback(state) : state;
     })[0];
     var _state = React.useRef(_initState);
     var forceUpdate = React.useCallback(function () {
         setUpdateKey(function (updateKey) { return updateKey + 1; });
     }, []);
-    useFirstSkipLayoutEffect(function () {
+    useFirstSkipEffect$1(function () {
         var newState = finalStateCallback ? finalStateCallback(state) : state;
         if (!isSame$1(newState, _state.current)) {
             _state.current = newState;
             forceUpdate();
         }
     }, [state]);
-    useFirstSkipLayoutEffect(function () {
+    useFirstSkipEffect$1(function () {
         var newState = finalStateCallback ? finalStateCallback(_state.current) : _state.current;
         if (!isSame$1(newState, _state.current)) {
             _state.current = newState;
@@ -1012,7 +1002,7 @@ var templateObject_1$2;var FormBlock = React__default["default"].forwardRef(func
     var labelShrink = React.useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = React.useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
     // State -------------------------------------------------------------------------------------------------------------
-    var _c = useAutoUpdateLayoutState(initCollapseIn), collapseIn = _c[0], setCollapseIn = _c[1];
+    var _c = useAutoUpdateState$1(initCollapseIn), collapseIn = _c[0], setCollapseIn = _c[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var style = React.useMemo(function () {
         if (hidden) {
@@ -1978,7 +1968,7 @@ function useResizeDetector(props) {
     // ResizeDetector --------------------------------------------------------------------------------------------------
     var _c = useResizeDetector(), formColWidth = _c.width, resizeDetectorRef = _c.ref;
     // State - style ---------------------------------------------------------------------------------------------------
-    var style = useAutoUpdateLayoutState(React.useCallback(function () {
+    var style = useAutoUpdateState$1(React.useCallback(function () {
         if (hidden) {
             return __assign$4(__assign$4({}, initStyle), { display: 'none' });
         }
@@ -2072,10 +2062,10 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
     var labelShrink = React.useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = React.useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
     // State -----------------------------------------------------------------------------------------------------------
-    var _d = useAutoUpdateLayoutState(initError), error = _d[0], setError = _d[1];
-    var _e = useAutoUpdateLayoutState(initHelperText), helperText = _e[0], setHelperText = _e[1];
+    var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
+    var _e = useAutoUpdateState$1(initHelperText), helperText = _e[0], setHelperText = _e[1];
     var _f = React.useState(false), showClear = _f[0], setShowClear = _f[1];
-    var _g = useAutoUpdateLayoutState(initDisabled), disabled = _g[0], setDisabled = _g[1];
+    var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
     // Memo - muiInputLabelProps ---------------------------------------------------------------------------------------
     var muiInputLabelProps = React.useMemo(function () {
         if (labelShrink || placeholder) {
@@ -2118,7 +2108,7 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
         return onValue ? onValue(value) : value;
     }, [onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _h = useAutoUpdateLayoutState(initValue, getFinalValue), value = _h[0], setValue = _h[1];
+    var _h = useAutoUpdateState$1(initValue, getFinalValue), value = _h[0], setValue = _h[1];
     React.useEffect(function () {
         setShowClear(clear ? notEmpty(value) : false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -2361,7 +2351,7 @@ styleInject(css_248z$h);var FormTag = React__default["default"].forwardRef(funct
     var className = _a.className, name = _a.name, initValue = _a.value, exceptValue = _a.exceptValue, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, disabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, initHelperText = _a.helperText, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest$2(_a, ["className", "name", "value", "exceptValue", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
     var _b = useFormState(), formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit, otherFormState = __rest$2(_b, ["fullWidth", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
     // State - FormState -----------------------------------------------------------------------------------------------
-    var fullWidth = useAutoUpdateLayoutState(initFullWidth == null ? formFullWidth : initFullWidth)[0];
+    var fullWidth = useAutoUpdateState$1(initFullWidth == null ? formFullWidth : initFullWidth)[0];
     // Function - getFinalValue ----------------------------------------------------------------------------------------
     var getFinalValue = React.useCallback(function (value) {
         var finalValue;
@@ -2379,7 +2369,7 @@ styleInject(css_248z$h);var FormTag = React__default["default"].forwardRef(funct
     var _c = React.useState(function () {
         return new Set(getFinalValue(initValue));
     }), valueSet = _c[0], setValueSet = _c[1];
-    var _d = useAutoUpdateLayoutState(initValue, getFinalValue), value = _d[0], setValue = _d[1];
+    var _d = useAutoUpdateState$1(initValue, getFinalValue), value = _d[0], setValue = _d[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(value);
@@ -2389,8 +2379,8 @@ styleInject(css_248z$h);var FormTag = React__default["default"].forwardRef(funct
     }, [value]);
     //------------------------------------------------------------------------------------------------------------------
     var _e = React.useState(''), inputValue = _e[0], setInputValue = _e[1];
-    var _f = useAutoUpdateLayoutState(initError), error = _f[0], setError = _f[1];
-    var _g = useAutoUpdateLayoutState(initHelperText), helperText = _g[0], setHelperText = _g[1];
+    var _f = useAutoUpdateState$1(initError), error = _f[0], setError = _f[1];
+    var _g = useAutoUpdateState$1(initHelperText), helperText = _g[0], setHelperText = _g[1];
     // Effect ----------------------------------------------------------------------------------------------------------
     React.useEffect(function () {
         if (!isSame$2(value, initValue)) {
@@ -4132,7 +4122,7 @@ styleInject(css_248z$d);var FormSelect = React__default["default"].forwardRef(fu
         }
     }, [initStartAdornment, isOnGetItemLoading, loading]);
     // State - items ---------------------------------------------------------------------------------------------------
-    var _g = useAutoUpdateLayoutState(initItems), items = _g[0], setItems = _g[1];
+    var _g = useAutoUpdateState$1(initItems), items = _g[0], setItems = _g[1];
     React.useEffect(function () {
         if (items) {
             setItemValueLabels(items.reduce(function (res, item) {
@@ -4163,7 +4153,7 @@ styleInject(css_248z$d);var FormSelect = React__default["default"].forwardRef(fu
         }
     }, [items]);
     // State - inputLabelProps -----------------------------------------------------------------------------------------
-    var inputLabelProps = useAutoUpdateLayoutState(React.useCallback(function () {
+    var inputLabelProps = useAutoUpdateState$1(React.useCallback(function () {
         if (hasEmptyValue || (!hasEmptyValue && placeholder)) {
             return __assign$4(__assign$4({}, initInputLabelProps), { shrink: true });
         }
@@ -4220,14 +4210,14 @@ styleInject(css_248z$d);var FormSelect = React__default["default"].forwardRef(fu
         return onValue ? onValue(finalValue) : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _h = useAutoUpdateLayoutState(initValue, getFinalValue), value = _h[0], setValue = _h[1];
+    var _h = useAutoUpdateState$1(initValue, getFinalValue), value = _h[0], setValue = _h[1];
     useFirstSkipEffect$1(function () {
         if (onChange)
             onChange(value);
         onValueChange(name, value);
     }, [value]);
     // State - isSelectedPlaceholder -----------------------------------------------------------------------------------
-    var isSelectedPlaceholder = useAutoUpdateLayoutState(React.useCallback(function () {
+    var isSelectedPlaceholder = useAutoUpdateState$1(React.useCallback(function () {
         return notEmpty(items) && empty$1(value) && !!placeholder && !hasEmptyValue;
     }, [items, value, placeholder, hasEmptyValue]))[0];
     // Effect ----------------------------------------------------------------------------------------------------------
@@ -4484,13 +4474,13 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default["def
     // ResizeDetector --------------------------------------------------------------------------------------------------
     var _c = useResizeDetector(), width = _c.width, height = _c.height, resizeDetectorRef = _c.ref;
     // State -----------------------------------------------------------------------------------------------------------
-    var _d = useAutoUpdateLayoutState(initValue), value = _d[0], setValue = _d[1];
-    var _e = useAutoUpdateLayoutState(initUncheckedValue), uncheckedValue = _e[0], setUncheckedValue = _e[1];
-    var _f = useAutoUpdateLayoutState(initError), error = _f[0], setError = _f[1];
-    var _g = useAutoUpdateLayoutState(initHelperText), helperText = _g[0], setHelperText = _g[1];
-    var _h = useAutoUpdateLayoutState(initDisabled), disabled = _h[0], setDisabled = _h[1];
+    var _d = useAutoUpdateState$1(initValue), value = _d[0], setValue = _d[1];
+    var _e = useAutoUpdateState$1(initUncheckedValue), uncheckedValue = _e[0], setUncheckedValue = _e[1];
+    var _f = useAutoUpdateState$1(initError), error = _f[0], setError = _f[1];
+    var _g = useAutoUpdateState$1(initHelperText), helperText = _g[0], setHelperText = _g[1];
+    var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
     // State - checked -------------------------------------------------------------------------------------------------
-    var _j = useAutoUpdateLayoutState(initChecked), checked = _j[0], setChecked = _j[1];
+    var _j = useAutoUpdateState$1(initChecked), checked = _j[0], setChecked = _j[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(checked);
@@ -4654,20 +4644,20 @@ var FormRadioGroup = React__default["default"].forwardRef(function (_a, ref) {
     var color = React.useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var focused = React.useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     // State - FormState -----------------------------------------------------------------------------------------------
-    var _c = useAutoUpdateLayoutState(initFullWidth == null ? formFullWidth : initFullWidth), fullWidth = _c[0], setFullWidth = _c[1];
+    var _c = useAutoUpdateState$1(initFullWidth == null ? formFullWidth : initFullWidth), fullWidth = _c[0], setFullWidth = _c[1];
     // Theme -----------------------------------------------------------------------------------------------------------
     var theme = material.useTheme();
     // Ref -------------------------------------------------------------------------------------------------------------
     var baseRef = React.useRef(null);
     var firstInputRef = React.useRef(null);
     // State -----------------------------------------------------------------------------------------------------------
-    var _d = useAutoUpdateLayoutState(initItems), items = _d[0], setItems = _d[1];
-    var _e = useAutoUpdateLayoutState(initError), error = _e[0], setError = _e[1];
-    var _f = useAutoUpdateLayoutState(initHelperText), helperText = _f[0], setHelperText = _f[1];
-    var _g = useAutoUpdateLayoutState(initDisabled), disabled = _g[0], setDisabled = _g[1];
+    var _d = useAutoUpdateState$1(initItems), items = _d[0], setItems = _d[1];
+    var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
+    var _f = useAutoUpdateState$1(initHelperText), helperText = _f[0], setHelperText = _f[1];
+    var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
     var _h = React.useState(false), isOnGetItemLoading = _h[0], setIsOnGetItemLoading = _h[1];
-    var _j = useAutoUpdateLayoutState(initLoading), loading = _j[0], setLoading = _j[1];
-    var _k = useAutoUpdateLayoutState(initWidth || '100%'), width = _k[0], setWidth = _k[1];
+    var _j = useAutoUpdateState$1(initLoading), loading = _j[0], setLoading = _j[1];
+    var _k = useAutoUpdateState$1(initWidth || '100%'), width = _k[0], setWidth = _k[1];
     var _l = React.useState(), formColWrapRect = _l[0], setFormColWrapRect = _l[1];
     // State - radioGroupNoWrapRect (ResizeDetector) -------------------------------------------------------------------
     var _m = React.useState(), radioGroupNoWrapRect = _m[0], setRadioGroupNoWrapRect = _m[1];
@@ -4686,7 +4676,7 @@ var FormRadioGroup = React__default["default"].forwardRef(function (_a, ref) {
         return onValue ? onValue(value) : value;
     }, [onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _p = useAutoUpdateLayoutState(initValue, getFinalValue), value = _p[0], setValue = _p[1];
+    var _p = useAutoUpdateState$1(initValue, getFinalValue), value = _p[0], setValue = _p[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(value);
@@ -4960,7 +4950,7 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
     var color = React.useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var fullWidth = React.useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
     // State - FormState -----------------------------------------------------------------------------------------------
-    var _c = useAutoUpdateLayoutState(initFocused == null ? formFocused : initFocused), focused = _c[0], setFocused = _c[1];
+    var _c = useAutoUpdateState$1(initFocused == null ? formFocused : initFocused), focused = _c[0], setFocused = _c[1];
     // Theme -----------------------------------------------------------------------------------------------------------
     var theme = material.useTheme();
     // State - width (ResizeDetector) ----------------------------------------------------------------------------------
@@ -4981,11 +4971,11 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
     }).ref;
     // State -----------------------------------------------------------------------------------------------------------
     var _f = React.useState(false), isOnGetItemLoading = _f[0], setIsOnGetItemLoading = _f[1];
-    var _g = useAutoUpdateLayoutState(initItems), items = _g[0], setItems = _g[1];
-    var _h = useAutoUpdateLayoutState(initError), error = _h[0], setError = _h[1];
-    var _j = useAutoUpdateLayoutState(initHelperText), helperText = _j[0], setHelperText = _j[1];
-    var _k = useAutoUpdateLayoutState(initLoading), loading = _k[0], setLoading = _k[1];
-    var _l = useAutoUpdateLayoutState(initDisabled), disabled = _l[0], setDisabled = _l[1];
+    var _g = useAutoUpdateState$1(initItems), items = _g[0], setItems = _g[1];
+    var _h = useAutoUpdateState$1(initError), error = _h[0], setError = _h[1];
+    var _j = useAutoUpdateState$1(initHelperText), helperText = _j[0], setHelperText = _j[1];
+    var _k = useAutoUpdateState$1(initLoading), loading = _k[0], setLoading = _k[1];
+    var _l = useAutoUpdateState$1(initDisabled), disabled = _l[0], setDisabled = _l[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var itemsValues = React.useMemo(function () {
         if (items) {
@@ -5071,7 +5061,7 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
         return onValue ? onValue(finalValue) : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _m = useAutoUpdateLayoutState(initValue, getFinalValue), value = _m[0], setValue = _m[1];
+    var _m = useAutoUpdateState$1(initValue, getFinalValue), value = _m[0], setValue = _m[1];
     // Effect ----------------------------------------------------------------------------------------------------------
     React.useEffect(function () {
         if (value !== initValue) {
@@ -5337,13 +5327,13 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     var size = React.useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = React.useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     // State - FormState -----------------------------------------------------------------------------------------------
-    var _c = useAutoUpdateLayoutState(initFocused == null ? formFocused : initFocused), focused = _c[0], setFocused = _c[1];
+    var _c = useAutoUpdateState$1(initFocused == null ? formFocused : initFocused), focused = _c[0], setFocused = _c[1];
     // Ref -------------------------------------------------------------------------------------------------------------
     var inputRef = React.useRef();
     // State -----------------------------------------------------------------------------------------------------------
-    var _d = useAutoUpdateLayoutState(initError), error = _d[0], setError = _d[1];
-    var _e = useAutoUpdateLayoutState(initHelperText), helperText = _e[0], setHelperText = _e[1];
-    var _f = useAutoUpdateLayoutState(initDisabled), disabled = _f[0], setDisabled = _f[1];
+    var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
+    var _e = useAutoUpdateState$1(initHelperText), helperText = _e[0], setHelperText = _e[1];
+    var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
     // State - width, height -------------------------------------------------------------------------------------------
     var _g = useResizeDetector(), width = _g.width, height = _g.height, resizeDetectorRef = _g.ref;
     // Function - getFinalValue ----------------------------------------------------------------------------------------
@@ -5351,7 +5341,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         return onValue ? onValue(value) : value;
     }, [onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _h = useAutoUpdateLayoutState(initValue || 0, getFinalValue), value = _h[0], setValue = _h[1];
+    var _h = useAutoUpdateState$1(initValue || 0, getFinalValue), value = _h[0], setValue = _h[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(value);
@@ -7230,12 +7220,12 @@ styleInject(css_248z$a);var FormTextEditor = React__default["default"].forwardRe
     var size = React.useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = React.useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     // State - FormState -----------------------------------------------------------------------------------------------
-    var _c = useAutoUpdateLayoutState(initFocused == null ? formFocused : initFocused), focused = _c[0], setFocused = _c[1];
+    var _c = useAutoUpdateState$1(initFocused == null ? formFocused : initFocused), focused = _c[0], setFocused = _c[1];
     // Ref -------------------------------------------------------------------------------------------------------------
     var editorRef = React.useRef(null);
     var keyDownTime = React.useRef(0);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _d = useAutoUpdateLayoutState(initValue), value = _d[0], setValue = _d[1];
+    var _d = useAutoUpdateState$1(initValue), value = _d[0], setValue = _d[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(value);
@@ -7244,10 +7234,10 @@ styleInject(css_248z$a);var FormTextEditor = React__default["default"].forwardRe
         onValueChange(name, value);
     }, [value]);
     // State -----------------------------------------------------------------------------------------------------------
-    var _e = useAutoUpdateLayoutState(initError), error = _e[0], setError = _e[1];
-    var _f = useAutoUpdateLayoutState(initHelperText), helperText = _f[0], setHelperText = _f[1];
+    var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
+    var _f = useAutoUpdateState$1(initHelperText), helperText = _f[0], setHelperText = _f[1];
     var _g = React.useState(false), initialized = _g[0], setInitialized = _g[1];
-    var _h = useAutoUpdateLayoutState(initDisabled), disabled = _h[0], setDisabled = _h[1];
+    var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
     // Function - focus ------------------------------------------------------------------------------------------------
     var focus = React.useCallback(function () {
         var _a, _b;
@@ -7425,11 +7415,11 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     var fullWidth = React.useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
     // State -----------------------------------------------------------------------------------------------------------
     var _c = React.useState(false), isOnGetItemLoading = _c[0], setIsOnGetItemLoading = _c[1];
-    var _d = useAutoUpdateLayoutState(initItems), items = _d[0], setItems = _d[1];
-    var _e = useAutoUpdateLayoutState(initError), error = _e[0], setError = _e[1];
-    var _f = useAutoUpdateLayoutState(initHelperText), helperText = _f[0], setHelperText = _f[1];
-    var _g = useAutoUpdateLayoutState(initLoading), loading = _g[0], setLoading = _g[1];
-    var _h = useAutoUpdateLayoutState(initDisabled), disabled = _h[0], setDisabled = _h[1];
+    var _d = useAutoUpdateState$1(initItems), items = _d[0], setItems = _d[1];
+    var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
+    var _f = useAutoUpdateState$1(initHelperText), helperText = _f[0], setHelperText = _f[1];
+    var _g = useAutoUpdateState$1(initLoading), loading = _g[0], setLoading = _g[1];
+    var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
     var _j = React.useState(undefined), inputValue = _j[0], setInputValue = _j[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var itemsValues = React.useMemo(function () {
@@ -7500,7 +7490,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         return onValue ? onValue(finalValue) : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _k = useAutoUpdateLayoutState(initValue, getFinalValue), value = _k[0], setValue = _k[1];
+    var _k = useAutoUpdateState$1(initValue, getFinalValue), value = _k[0], setValue = _k[1];
     var _l = React.useState(null), valueItem = _l[0], setValueItem = _l[1];
     var componentValue = React.useMemo(function () {
         var finalValue = value;
@@ -14666,10 +14656,10 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwar
     // State - open ----------------------------------------------------------------------------------------------------
     var _c = React.useState(false), open = _c[0], setOpen = _c[1];
     // State -----------------------------------------------------------------------------------------------------------
-    var _d = useAutoUpdateLayoutState(initError), error = _d[0], setError = _d[1];
+    var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = React.useState(null), timeError = _e[0], setTimeError = _e[1];
-    var _f = useAutoUpdateLayoutState(initHelperText), helperText = _f[0], setHelperText = _f[1];
-    var _g = useAutoUpdateLayoutState(initDisabled), disabled = _g[0], setDisabled = _g[1];
+    var _f = useAutoUpdateState$1(initHelperText), helperText = _f[0], setHelperText = _f[1];
+    var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var label = React.useMemo(function () {
         if (labelIcon) {
@@ -14697,7 +14687,7 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwar
     }, [initFormValueFormat, time, type]);
     var availableDate = React.useMemo(function () { return makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture); }, [disableFuture, disablePast, maxDate, minDate]);
     // State - style ---------------------------------------------------------------------------------------------------
-    var style = useAutoUpdateLayoutState(React.useCallback(function () {
+    var style = useAutoUpdateState$1(React.useCallback(function () {
         if (width != null) {
             return __assign$4(__assign$4({}, initStyle), { width: width });
         }
@@ -14710,7 +14700,7 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwar
         return value;
     }, []);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _h = useAutoUpdateLayoutState(initValue || null, getFinalValue), value = _h[0], setValue = _h[1];
+    var _h = useAutoUpdateState$1(initValue || null, getFinalValue), value = _h[0], setValue = _h[1];
     var _j = React.useState(null), inputValue = _j[0], setInputValue = _j[1];
     // Effect ----------------------------------------------------------------------------------------------------------
     React.useEffect(function () {
@@ -15091,7 +15081,7 @@ FormTimePicker.defaultProps = FormTimePickerDefaultProps;var FormDateRangePicker
 styleInject(css_248z$4);var CustomDatePicker = React__default["default"].forwardRef(function (_a, ref) {
     // State -----------------------------------------------------------------------------------------------------------
     var selectType = _a.selectType, initValue = _a.value, focusedDate = _a.focusedDate, month = _a.month, disableFuture = _a.disableFuture, disablePast = _a.disablePast, minDate = _a.minDate, maxDate = _a.maxDate, onValueChange = _a.onValueChange, onMouseEnterPickersDay = _a.onMouseEnterPickersDay, onMonthChange = _a.onMonthChange;
-    var value = useAutoUpdateLayoutState(React.useCallback(function () {
+    var value = useAutoUpdateState$1(React.useCallback(function () {
         return initValue ? initValue : [null, null];
     }, [initValue]))[0];
     var _b = React.useState(null), activeMonthValue = _b[0], setActiveMonthValue = _b[1];
@@ -15612,11 +15602,11 @@ var FormDateRangePicker = React__default["default"].forwardRef(function (_a, ref
     var endInputDatePickerErrorRef = React.useRef(null);
     var openValueRef = React.useRef();
     // State -----------------------------------------------------------------------------------------------------------
-    var _c = useAutoUpdateLayoutState(initError), error = _c[0], setError = _c[1];
+    var _c = useAutoUpdateState$1(initError), error = _c[0], setError = _c[1];
     var _d = React.useState(false), startError = _d[0], setStartError = _d[1];
     var _e = React.useState(false), endError = _e[0], setEndError = _e[1];
-    var _f = useAutoUpdateLayoutState(initDisabled), disabled = _f[0], setDisabled = _f[1];
-    var _g = useAutoUpdateLayoutState(initHelperText), helperText = _g[0], setHelperText = _g[1];
+    var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
+    var _g = useAutoUpdateState$1(initHelperText), helperText = _g[0], setHelperText = _g[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var format = React.useMemo(function () { return initFormat || DEFAULT_FORMAT; }, [initFormat]);
     // Function - getFinalValue ----------------------------------------------------------------------------------------
@@ -15732,10 +15722,10 @@ var FormDateRangePicker = React__default["default"].forwardRef(function (_a, ref
     // State -----------------------------------------------------------------------------------------------------------
     var _h = React.useState(false), open = _h[0], setOpen = _h[1];
     var _j = React.useState('start'), selectType = _j[0], setSelectType = _j[1];
-    var _k = useAutoUpdateLayoutState(React.useCallback(function () {
+    var _k = useAutoUpdateState$1(React.useCallback(function () {
         return initValue || DEFAULT_VALUE;
     }, [initValue])), value = _k[0], setValue = _k[1];
-    var calendarCount = useAutoUpdateLayoutState(initCalendarCount || 2)[0];
+    var calendarCount = useAutoUpdateState$1(initCalendarCount || 2)[0];
     var _l = React.useState(function () {
         var now = dayjs__default["default"]();
         return [now, now.add(1, 'month'), now.add(2, 'month')];
@@ -16176,7 +16166,7 @@ styleInject(css_248z$1);var FormFile = React__default["default"].forwardRef(func
     var textFieldRef = React.useRef(null);
     var fileUploadBtnRef = React.useRef(null);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _c = useAutoUpdateLayoutState(initValue), value = _c[0], setValue = _c[1];
+    var _c = useAutoUpdateState$1(initValue), value = _c[0], setValue = _c[1];
     var fileValue = React.useState('')[0];
     useFirstSkipEffect$1(function () {
         if (error)
@@ -16186,9 +16176,9 @@ styleInject(css_248z$1);var FormFile = React__default["default"].forwardRef(func
         onValueChange(name, value);
     }, [value]);
     // State -----------------------------------------------------------------------------------------------------------
-    var _d = useAutoUpdateLayoutState(initError), error = _d[0], setError = _d[1];
-    var _e = useAutoUpdateLayoutState(initHelperText), helperText = _e[0], setHelperText = _e[1];
-    var _f = useAutoUpdateLayoutState(initDisabled), disabled = _f[0], setDisabled = _f[1];
+    var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
+    var _e = useAutoUpdateState$1(initHelperText), helperText = _e[0], setHelperText = _e[1];
+    var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
     var _g = React.useState(false), isOpenLinkDialog = _g[0], setIsOpenLinkDialog = _g[1];
     var _h = React.useState({ open: false }), alertDialogProps = _h[0], setAlertDialogProps = _h[1];
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -16429,7 +16419,7 @@ FormFile.displayName = 'FormFile';
 FormFile.defaultProps = FormFileDefaultProps;var FormImageFileDefaultProps = __assign$4(__assign$4({}, FormFileDefaultProps), { accept: '.jpg,.jpeg,.png' });var css_248z = ".FormImageFile .preview-img {\n  max-width: 100%;\n}\n.FormImageFile:not(.hide-file-name):not(.variant-standard) .preview-img {\n  padding-right: 14px;\n}";
 styleInject(css_248z);var FormImageFile = React__default["default"].forwardRef(function (_a, ref) {
     var className = _a.className, imageSize = _a.imageSize, preview = _a.preview, previewMaxHeight = _a.previewMaxHeight, initValue = _a.value, onChange = _a.onChange, onFile = _a.onFile, onLink = _a.onLink, props = __rest$2(_a, ["className", "imageSize", "preview", "previewMaxHeight", "value", "onChange", "onFile", "onLink"]);
-    var _b = useAutoUpdateLayoutState(initValue), value = _b[0], setValue = _b[1];
+    var _b = useAutoUpdateState$1(initValue), value = _b[0], setValue = _b[1];
     var _c = React.useState(), previewNode = _c[0], setPreviewNode = _c[1];
     var _d = React.useState({
         open: false,

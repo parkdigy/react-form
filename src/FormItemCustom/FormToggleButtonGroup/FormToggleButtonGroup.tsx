@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEff
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
-import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick, notEmpty, isSame } from '../../@util';
 import { PartialPick } from '../../@types';
 import {
@@ -86,9 +86,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
 
     // State - FormState -----------------------------------------------------------------------------------------------
 
-    const [focused, setFocused] = useAutoUpdateLayoutState<Props['focused']>(
-      initFocused == null ? formFocused : initFocused
-    );
+    const [focused, setFocused] = useAutoUpdateState<Props['focused']>(initFocused == null ? formFocused : initFocused);
 
     // Theme -----------------------------------------------------------------------------------------------------------
 
@@ -120,11 +118,11 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
 
     const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
 
-    const [items, setItems] = useAutoUpdateLayoutState<Props['items']>(initItems);
-    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
-    const [loading, setLoading] = useAutoUpdateLayoutState<Props['loading']>(initLoading);
-    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
+    const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
+    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
 
     // Memo --------------------------------------------------------------------------------------------------------------
 
@@ -213,7 +211,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue, getFinalValue);
 
     // Effect ----------------------------------------------------------------------------------------------------------
 

@@ -4,12 +4,12 @@ import { FormImageFileProps as Props, FormImageFileDefaultProps, FormImageFileCo
 import FormFile from '../FormFile';
 import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
 import { Typography } from '@mui/material';
-import { useAutoUpdateLayoutState } from '@pdg/react-hook';
+import { useAutoUpdateState } from '@pdg/react-hook';
 import './FormImageFile.scss';
 
 const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
   ({ className, imageSize, preview, previewMaxHeight, value: initValue, onChange, onFile, onLink, ...props }, ref) => {
-    const [value, setValue] = useAutoUpdateLayoutState(initValue);
+    const [value, setValue] = useAutoUpdateState(initValue);
     const [previewNode, setPreviewNode] = useState<ReactNode>();
 
     const [alertDialogProps, setAlertDialogProps] = useState<{

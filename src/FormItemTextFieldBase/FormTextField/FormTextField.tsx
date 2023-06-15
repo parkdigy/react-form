@@ -1,7 +1,7 @@
 import React, { useId, useRef, useState, useEffect, useCallback, ReactNode, useLayoutEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { IconButton, InputAdornment, InputProps, TextField } from '@mui/material';
-import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { nextTick, empty, notEmpty } from '../../@util';
 import { FormTextFieldProps as Props, FormTextFieldDefaultProps, FormTextFieldCommands } from './FormTextField.types';
 import { useFormState } from '../../FormContext';
@@ -102,10 +102,10 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
+    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
     const [showClear, setShowClear] = useState<boolean>(false);
-    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
 
     // Memo - muiInputLabelProps ---------------------------------------------------------------------------------------
 
@@ -177,7 +177,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue, getFinalValue);
 
     useEffect(() => {
       setShowClear(clear ? notEmpty(value) : false);

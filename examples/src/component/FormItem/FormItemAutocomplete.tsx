@@ -52,7 +52,7 @@ const FormItemAutocomplete = () => {
         if (keyword) {
           resolve(DEFAULT_ITEMS.filter((info) => info.label.includes(keyword)));
         } else {
-          resolve(DEFAULT_ITEMS);
+          resolve([]);
         }
       }, 1000);
     });

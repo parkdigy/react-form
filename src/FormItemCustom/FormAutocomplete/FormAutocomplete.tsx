@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect, useRef, useMemo } from 'react';
 import classNames from 'classnames';
 import { Autocomplete, Chip } from '@mui/material';
-import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick, notEmpty, isSame } from '../../@util';
 import {
   FormAutocompleteProps as Props,
@@ -111,11 +111,11 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
 
     const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
 
-    const [items, setItems] = useAutoUpdateLayoutState<Props['items']>(initItems);
-    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
-    const [loading, setLoading] = useAutoUpdateLayoutState<Props['loading']>(initLoading);
-    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
+    const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
+    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [inputValue, setInputValue] = useState<string | undefined>(undefined);
 
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -194,7 +194,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue, getFinalValue);
     const [valueItem, setValueItem] = useState<FormAutocompleteComponentValue>(null);
 
     const componentValue = useMemo(() => {

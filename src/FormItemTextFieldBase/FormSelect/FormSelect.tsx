@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { Box, Checkbox, Chip, CircularProgress, MenuItem } from '@mui/material';
-import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, notEmpty, isSame } from '../../@util';
 import { FormValueItemBaseCommands, FormValueItemCommands } from '../../@types';
 import {
@@ -89,7 +89,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
 
     // State - items ---------------------------------------------------------------------------------------------------
 
-    const [items, setItems] = useAutoUpdateLayoutState<Props['items']>(initItems);
+    const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
 
     useEffect(() => {
       if (items) {
@@ -121,7 +121,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
 
     // State - inputLabelProps -----------------------------------------------------------------------------------------
 
-    const [inputLabelProps] = useAutoUpdateLayoutState<Props['InputLabelProps']>(
+    const [inputLabelProps] = useAutoUpdateState<Props['InputLabelProps']>(
       useCallback(() => {
         if (hasEmptyValue || (!hasEmptyValue && placeholder)) {
           return { ...initInputLabelProps, shrink: true };
@@ -183,7 +183,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateLayoutState(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateState(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
       if (onChange) onChange(value);
@@ -192,7 +192,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
 
     // State - isSelectedPlaceholder -----------------------------------------------------------------------------------
 
-    const [isSelectedPlaceholder] = useAutoUpdateLayoutState<boolean>(
+    const [isSelectedPlaceholder] = useAutoUpdateState<boolean>(
       useCallback(() => {
         return notEmpty(items) && empty(value) && !!placeholder && !hasEmptyValue;
       }, [items, value, placeholder, hasEmptyValue])

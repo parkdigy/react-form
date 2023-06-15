@@ -8,7 +8,7 @@ import {
   FormDateRangePickerCalendarCount,
   FormDateRangePickerCommands,
 } from './FormDateRangePicker.types';
-import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjsLocale from 'dayjs/locale/ko';
@@ -137,11 +137,11 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
+    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [startError, setStartError] = useState(false);
     const [endError, setEndError] = useState(false);
-    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
-    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
 
     // Memo --------------------------------------------------------------------------------------------------------------
 
@@ -286,13 +286,13 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
     const [open, setOpen] = useState(false);
     const [selectType, setSelectType] = useState<CustomDatePickerSelectType>('start');
-    const [value, setValue] = useAutoUpdateLayoutState<FormDateRangePickerValue>(
+    const [value, setValue] = useAutoUpdateState<FormDateRangePickerValue>(
       useCallback(() => {
         return initValue || DEFAULT_VALUE;
       }, [initValue])
     );
 
-    const [calendarCount] = useAutoUpdateLayoutState<FormDateRangePickerCalendarCount>(initCalendarCount || 2);
+    const [calendarCount] = useAutoUpdateState<FormDateRangePickerCalendarCount>(initCalendarCount || 2);
     const [months, setMonths] = useState<CustomDatePickerContainerMonths>(() => {
       const now = dayjs();
       return [now, now.add(1, 'month'), now.add(2, 'month')];

@@ -10,7 +10,7 @@ import {
 import { PickersDay, PickersDayProps, StaticDatePicker } from '@mui/x-date-pickers';
 import { IconButton, IconButtonProps, TextField } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
-import { useAutoUpdateLayoutState } from '@pdg/react-hook';
+import { useAutoUpdateState } from '@pdg/react-hook';
 import './CustomDatePicker.scss';
 
 interface ClassNameMap {
@@ -36,7 +36,7 @@ const CustomDatePicker = React.forwardRef<CustomDatePickerCommands, Props>(
   ) => {
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [value] = useAutoUpdateLayoutState<CustomDatePickerValue>(
+    const [value] = useAutoUpdateState<CustomDatePickerValue>(
       useCallback((): CustomDatePickerValue => {
         return initValue ? initValue : [null, null];
       }, [initValue])

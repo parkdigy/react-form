@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from '@mui/material';
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
-import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick } from '../../@util';
 import {
   FormRadioGroupProps as Props,
@@ -91,7 +91,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
 
     // State - FormState -----------------------------------------------------------------------------------------------
 
-    const [fullWidth, setFullWidth] = useAutoUpdateLayoutState<Props['fullWidth']>(
+    const [fullWidth, setFullWidth] = useAutoUpdateState<Props['fullWidth']>(
       initFullWidth == null ? formFullWidth : initFullWidth
     );
 
@@ -106,13 +106,13 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [items, setItems] = useAutoUpdateLayoutState<Props['items']>(initItems);
-    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
-    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
+    const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
+    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
-    const [loading, setLoading] = useAutoUpdateLayoutState<Props['loading']>(initLoading);
-    const [width, setWidth] = useAutoUpdateLayoutState<Props['width']>(initWidth || '100%');
+    const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
+    const [width, setWidth] = useAutoUpdateState<Props['width']>(initWidth || '100%');
     const [formColWrapRect, setFormColWrapRect] = useState<DOMRect>();
 
     // State - radioGroupNoWrapRect (ResizeDetector) -------------------------------------------------------------------
@@ -142,7 +142,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
       if (error) validate(value);

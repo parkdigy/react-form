@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { FormControlLabel, Checkbox, Typography, ButtonBaseActions } from '@mui/material';
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material';
-import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { FormCheckboxProps as Props, FormCheckboxDefaultProps, FormCheckboxCommands } from './FormCheckbox.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
@@ -84,15 +84,15 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue);
-    const [uncheckedValue, setUncheckedValue] = useAutoUpdateLayoutState<Props['uncheckedValue']>(initUncheckedValue);
-    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
-    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
+    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue);
+    const [uncheckedValue, setUncheckedValue] = useAutoUpdateState<Props['uncheckedValue']>(initUncheckedValue);
+    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
 
     // State - checked -------------------------------------------------------------------------------------------------
 
-    const [checked, setChecked] = useAutoUpdateLayoutState<Props['checked']>(initChecked);
+    const [checked, setChecked] = useAutoUpdateState<Props['checked']>(initChecked);
 
     useFirstSkipEffect(() => {
       if (error) validate(checked);

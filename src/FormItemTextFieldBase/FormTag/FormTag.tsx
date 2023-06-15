@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, ReactNode } from 'react';
 import classNames from 'classnames';
 import { Autocomplete, Chip, InputLabelProps } from '@mui/material';
-import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { FormTagProps, FormTagDefaultProps, FormTagExtraCommands, FormTagCommands } from './FormTag.types';
 import FormText from '../FormText';
 import { FormItemValue, FormValueItemBaseCommands } from '../../@types';
@@ -48,7 +48,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
 
     // State - FormState -----------------------------------------------------------------------------------------------
 
-    const [fullWidth] = useAutoUpdateLayoutState<FormTagProps['fullWidth']>(
+    const [fullWidth] = useAutoUpdateState<FormTagProps['fullWidth']>(
       initFullWidth == null ? formFullWidth : initFullWidth
     );
 
@@ -76,7 +76,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     const [valueSet, setValueSet] = useState<Set<string>>(() => {
       return new Set<string>(getFinalValue(initValue));
     });
-    const [value, setValue] = useAutoUpdateLayoutState<FormTagProps['value']>(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateState<FormTagProps['value']>(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
       if (error) validate(value);
@@ -87,8 +87,8 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     //------------------------------------------------------------------------------------------------------------------
 
     const [inputValue, setInputValue] = useState<string>('');
-    const [error, setError] = useAutoUpdateLayoutState<FormTagProps['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateLayoutState<FormTagProps['helperText']>(initHelperText);
+    const [error, setError] = useAutoUpdateState<FormTagProps['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateState<FormTagProps['helperText']>(initHelperText);
 
     // Effect ----------------------------------------------------------------------------------------------------------
 

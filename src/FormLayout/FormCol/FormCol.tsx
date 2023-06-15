@@ -6,7 +6,7 @@ import { FormColProps as Props, FormColDefaultProps } from './FormCol.types';
 import { useFormState } from '../../FormContext';
 import { FormLabel } from '../../FormCommon';
 import FormContextProvider from '../../FormContextProvider';
-import { useAutoUpdateLayoutState } from '@pdg/react-hook';
+import { useAutoUpdateState } from '@pdg/react-hook';
 
 const FormCol = React.forwardRef<HTMLDivElement, Props>(
   (
@@ -82,7 +82,7 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
 
     // State - style ---------------------------------------------------------------------------------------------------
 
-    const [style] = useAutoUpdateLayoutState<Props['style']>(
+    const [style] = useAutoUpdateState<Props['style']>(
       useCallback(() => {
         if (hidden) {
           return { ...initStyle, display: 'none' };

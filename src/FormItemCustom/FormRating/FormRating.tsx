@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef 
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { Rating } from '@mui/material';
-import { useAutoUpdateLayoutState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick } from '../../@util';
 import { FormRatingProps as Props, FormRatingDefaultProps, FormRatingCommands } from './FormRating.types';
 import FormItemBase from '../FormItemBase';
@@ -69,9 +69,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
 
     // State - FormState -----------------------------------------------------------------------------------------------
 
-    const [focused, setFocused] = useAutoUpdateLayoutState<Props['focused']>(
-      initFocused == null ? formFocused : initFocused
-    );
+    const [focused, setFocused] = useAutoUpdateState<Props['focused']>(initFocused == null ? formFocused : initFocused);
 
     // Ref -------------------------------------------------------------------------------------------------------------
 
@@ -79,9 +77,9 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [error, setError] = useAutoUpdateLayoutState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
-    const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
+    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
 
     // State - width, height -------------------------------------------------------------------------------------------
 
@@ -98,7 +96,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateLayoutState<number>(initValue || 0, getFinalValue);
+    const [value, setValue] = useAutoUpdateState<number>(initValue || 0, getFinalValue);
 
     useFirstSkipEffect(() => {
       if (error) validate(value);
