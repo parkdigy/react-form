@@ -51,6 +51,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
       disableClearable,
       async,
       onLoadItems,
+      onAsyncLoadValueItem,
       onRenderItem,
       onRenderTag,
       onAddItem,
@@ -73,6 +74,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
 
     const textFieldRef = useRef<FormTextFieldCommands>(null);
     const asyncTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const oldComponentValueRef = useRef<FormAutocompleteComponentValue>(null);
 
     // FormState -------------------------------------------------------------------------------------------------------
 
@@ -193,6 +195,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
     // State - value ---------------------------------------------------------------------------------------------------
 
     const [value, setValue] = useAutoUpdateLayoutState<Props['value']>(initValue, getFinalValue);
+    const [valueItem, setValueItem] = useState<FormAutocompleteComponentValue>(null);
 
     const componentValue = useMemo(() => {
       let finalValue: Props['value'] = value;
@@ -210,18 +213,72 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
         finalValue = multiple ? [] : undefined;
       }
 
-      if (notEmpty(finalValue) && items) {
-        if (Array.isArray(finalValue)) {
-          return items.filter(
-            (info) => Array.isArray(finalValue) && finalValue.includes(info.value)
-          ) as FormAutocompleteComponentValue;
-        } else {
-          return items.find((info) => info.value === value) || (multiple ? [] : null);
+      let newComponentValue: FormAutocompleteComponentValue = multiple ? [] : null;
+
+      if (notEmpty(finalValue)) {
+        if (items) {
+          if (Array.isArray(finalValue)) {
+            newComponentValue = items.filter(
+              (info) => Array.isArray(finalValue) && finalValue.includes(info.value)
+            ) as FormAutocompleteComponentValue;
+          } else {
+            newComponentValue = items.find((info) => info.value === value) || (multiple ? [] : null);
+          }
         }
-      } else {
-        return multiple ? [] : null;
+        if (empty(newComponentValue) && valueItem) {
+          if (Array.isArray(finalValue)) {
+            if (Array.isArray(valueItem)) {
+              newComponentValue = valueItem.filter(
+                (info) => Array.isArray(finalValue) && finalValue.includes(info.value)
+              ) as FormAutocompleteComponentValue;
+            }
+          } else {
+            if (!Array.isArray(valueItem) && finalValue === valueItem.value) {
+              newComponentValue = valueItem;
+            }
+          }
+        }
       }
-    }, [value, multiple, items]);
+
+      if ((oldComponentValueRef.current, newComponentValue, isSame(oldComponentValueRef.current, newComponentValue))) {
+        return oldComponentValueRef.current;
+      } else {
+        oldComponentValueRef.current = newComponentValue;
+        return newComponentValue;
+      }
+    }, [value, multiple, items, valueItem]);
+
+    useEffect(() => {
+      if (async && onAsyncLoadValueItem) {
+        if (value != null) {
+          if (!valueItem) {
+            onAsyncLoadValueItem(value).then((valueItem) => {
+              setValueItem(valueItem);
+              if (valueItem) {
+                if (Array.isArray(valueItem)) {
+                  setItems(valueItem);
+                } else {
+                  setItems([valueItem]);
+                }
+              }
+            });
+          }
+        } else {
+          setValueItem(null);
+        }
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [async, value, valueItem]);
+
+    // Function ----------------------------------------------------------------------------------------------------------
+
+    const showOnGetItemLoading = useCallback(() => {
+      setIsOnGetItemLoading(true);
+    }, []);
+
+    const hideOnGetItemLoading = useCallback(() => {
+      setIsOnGetItemLoading(false);
+    }, []);
 
     // Effect ----------------------------------------------------------------------------------------------------------
 
@@ -232,12 +289,19 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
       }
 
       if (!async && onLoadItems) {
-        setIsOnGetItemLoading(true);
+        showOnGetItemLoading();
         onLoadItems().then((items) => {
           setItems(items);
-          setIsOnGetItemLoading(false);
+          hideOnGetItemLoading();
         });
       }
+
+      return () => {
+        if (asyncTimerRef.current) {
+          clearTimeout(asyncTimerRef.current);
+          asyncTimerRef.current = null;
+        }
+      };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -248,21 +312,48 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
     }, [value]);
 
     useEffect(() => {
-      if (asyncTimerRef.current) {
-        clearTimeout(asyncTimerRef.current);
-        asyncTimerRef.current = null;
-      }
-
-      if (async && onLoadItems && inputValue != null) {
-        asyncTimerRef.current = setTimeout(() => {
+      if (async && onLoadItems) {
+        if (asyncTimerRef.current) {
+          clearTimeout(asyncTimerRef.current);
           asyncTimerRef.current = null;
+        }
 
-          setIsOnGetItemLoading(true);
-          onLoadItems(inputValue).then((items) => {
-            setItems(items);
-            setIsOnGetItemLoading(false);
-          });
-        }, 300);
+        if (inputValue != null) {
+          showOnGetItemLoading();
+
+          asyncTimerRef.current = setTimeout(() => {
+            asyncTimerRef.current = null;
+
+            onLoadItems(inputValue)
+              .then((items) => {
+                if (componentValue) {
+                  if (Array.isArray(componentValue)) {
+                    const exceptValues = componentValue.map((info) => info.value);
+                    setItems([...componentValue, ...items.filter((info) => !exceptValues.includes(info.value))]);
+                  } else {
+                    const exceptValue = componentValue.value;
+                    setItems([componentValue, ...items.filter((info) => info.value !== exceptValue)]);
+                  }
+                } else {
+                  setItems(items);
+                }
+              })
+              .finally(() => {
+                hideOnGetItemLoading();
+              });
+          }, 300);
+        } else {
+          if (Array.isArray(componentValue)) {
+            setItems(componentValue);
+          } else {
+            if (componentValue) {
+              setItems([componentValue]);
+            } else {
+              setItems([]);
+            }
+          }
+          hideOnGetItemLoading();
+        }
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [async, inputValue]);
@@ -426,6 +517,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
           const finalValue = getFinalValue(newValue);
           if (!isSame(value, finalValue)) {
             setValue(finalValue);
+            setValueItem(componentValue);
             nextTick(() => {
               onValueChangeByUser(name, finalValue);
               onRequestSearchSubmit(name, finalValue);
@@ -483,6 +575,8 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
         onInputChange={(event, newInputValue, reason) => {
           if (reason === 'input') {
             setInputValue(newInputValue);
+          } else if (reason === 'reset') {
+            setInputValue(undefined);
           }
         }}
         renderTags={(value: FormAutocompleteItem[], getTagProps) =>

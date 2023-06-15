@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Form,
   FormAutocomplete,
@@ -11,6 +11,7 @@ import {
   FormValueMap,
 } from '@pdg/react-form';
 import { OutlinedPaper } from '#ccomp';
+import { FormAutocompleteValue } from '../../../../src';
 
 const DEFAULT_ITEMS: FormAutocompleteItem[] = [lv('Item 1', 1), lv('Item 2', 2), lv('Item 3', 3)];
 
@@ -45,17 +46,31 @@ const FormItemAutocomplete = () => {
 
   //--------------------------------------------------------------------------------------------------------------------
 
-  function handleLoadItems() {
+  const handleLoadItems = useCallback((keyword?: string) => {
     return new Promise<FormAutocompleteItem[]>((resolve) => {
       setTimeout(() => {
-        resolve(DEFAULT_ITEMS);
-      }, 2000);
+        if (keyword) {
+          resolve(DEFAULT_ITEMS.filter((info) => info.label.includes(keyword)));
+        } else {
+          resolve(DEFAULT_ITEMS);
+        }
+      }, 1000);
     });
-  }
+  }, []);
 
-  function handleSubmit(data: FormValueMap) {
+  const handleAsyncLoadValueItem = useCallback((value: FormAutocompleteValue) => {
+    return new Promise((resolve) => {
+      if (Array.isArray(value)) {
+        resolve(DEFAULT_ITEMS.filter((info) => value.includes(info.value)));
+      } else {
+        resolve(DEFAULT_ITEMS.find((info) => info.value === value));
+      }
+    });
+  }, []);
+
+  const handleSubmit = useCallback((data: FormValueMap) => {
     ll(data);
-  }
+  }, []);
 
   //--------------------------------------------------------------------------------------------------------------------
 
@@ -136,7 +151,6 @@ const FormItemAutocomplete = () => {
               name='onLoadItems'
               label='FormAutocomplete'
               helperText='onLoadItems'
-              async
               onLoadItems={handleLoadItems}
             />
           </FormCol>
@@ -147,6 +161,17 @@ const FormItemAutocomplete = () => {
               name='asyncLoadItems'
               label='FormAutocomplete'
               helperText='Async Load Items'
+            />
+          </FormCol>{' '}
+          <FormCol xs={3}>
+            <FormAutocomplete
+              {...additionalProps}
+              name='onLoadItems'
+              label='FormAutocomplete'
+              helperText='async=true'
+              async
+              onLoadItems={handleLoadItems}
+              onAsyncLoadValueItem={handleAsyncLoadValueItem}
             />
           </FormCol>
         </FormRow>

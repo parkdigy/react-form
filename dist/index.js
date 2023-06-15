@@ -7404,7 +7404,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, width = _a.width, placeholder = _a.placeholder, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, disablePortal = _a.disablePortal, noOptionsText = _a.noOptionsText, loadingText = _a.loadingText, limitTags = _a.limitTags, openOnFocus = _a.openOnFocus, disableClearable = _a.disableClearable, async = _a.async, onLoadItems = _a.onLoadItems, onRenderItem = _a.onRenderItem, onRenderTag = _a.onRenderTag, onAddItem = _a.onAddItem, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, width = _a.width, placeholder = _a.placeholder, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, disablePortal = _a.disablePortal, noOptionsText = _a.noOptionsText, loadingText = _a.loadingText, limitTags = _a.limitTags, openOnFocus = _a.openOnFocus, disableClearable = _a.disableClearable, async = _a.async, onLoadItems = _a.onLoadItems, onAsyncLoadValueItem = _a.onAsyncLoadValueItem, onRenderItem = _a.onRenderItem, onRenderTag = _a.onRenderTag, onAddItem = _a.onAddItem, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -7413,6 +7413,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     // Ref -------------------------------------------------------------------------------------------------------------
     var textFieldRef = React.useRef(null);
     var asyncTimerRef = React.useRef(null);
+    var oldComponentValueRef = React.useRef(null);
     // FormState -------------------------------------------------------------------------------------------------------
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
@@ -7500,6 +7501,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
     var _k = useAutoUpdateLayoutState(initValue, getFinalValue), value = _k[0], setValue = _k[1];
+    var _l = React.useState(null), valueItem = _l[0], setValueItem = _l[1];
     var componentValue = React.useMemo(function () {
         var finalValue = value;
         if (finalValue != null) {
@@ -7517,18 +7519,67 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         else {
             finalValue = multiple ? [] : undefined;
         }
-        if (notEmpty(finalValue) && items) {
-            if (Array.isArray(finalValue)) {
-                return items.filter(function (info) { return Array.isArray(finalValue) && finalValue.includes(info.value); });
+        var newComponentValue = multiple ? [] : null;
+        if (notEmpty(finalValue)) {
+            if (items) {
+                if (Array.isArray(finalValue)) {
+                    newComponentValue = items.filter(function (info) { return Array.isArray(finalValue) && finalValue.includes(info.value); });
+                }
+                else {
+                    newComponentValue = items.find(function (info) { return info.value === value; }) || (multiple ? [] : null);
+                }
             }
-            else {
-                return items.find(function (info) { return info.value === value; }) || (multiple ? [] : null);
+            if (empty$1(newComponentValue) && valueItem) {
+                if (Array.isArray(finalValue)) {
+                    if (Array.isArray(valueItem)) {
+                        newComponentValue = valueItem.filter(function (info) { return Array.isArray(finalValue) && finalValue.includes(info.value); });
+                    }
+                }
+                else {
+                    if (!Array.isArray(valueItem) && finalValue === valueItem.value) {
+                        newComponentValue = valueItem;
+                    }
+                }
             }
+        }
+        if ((oldComponentValueRef.current, isSame$2(oldComponentValueRef.current, newComponentValue))) {
+            return oldComponentValueRef.current;
         }
         else {
-            return multiple ? [] : null;
+            oldComponentValueRef.current = newComponentValue;
+            return newComponentValue;
         }
-    }, [value, multiple, items]);
+    }, [value, multiple, items, valueItem]);
+    React.useEffect(function () {
+        if (async && onAsyncLoadValueItem) {
+            if (value != null) {
+                if (!valueItem) {
+                    onAsyncLoadValueItem(value).then(function (valueItem) {
+                        setValueItem(valueItem);
+                        if (valueItem) {
+                            if (Array.isArray(valueItem)) {
+                                setItems(valueItem);
+                            }
+                            else {
+                                setItems([valueItem]);
+                            }
+                        }
+                    });
+                }
+            }
+            else {
+                setValueItem(null);
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [async, value, valueItem]);
+    // Function ----------------------------------------------------------------------------------------------------------
+    var showOnGetItemLoading = React.useCallback(function () {
+        setIsOnGetItemLoading(true);
+    }, []);
+    var hideOnGetItemLoading = React.useCallback(function () {
+        setIsOnGetItemLoading(false);
+    }, []);
     // Effect ----------------------------------------------------------------------------------------------------------
     React.useEffect(function () {
         if (value !== initValue) {
@@ -7537,12 +7588,18 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
             onValueChange(name, value);
         }
         if (!async && onLoadItems) {
-            setIsOnGetItemLoading(true);
+            showOnGetItemLoading();
             onLoadItems().then(function (items) {
                 setItems(items);
-                setIsOnGetItemLoading(false);
+                hideOnGetItemLoading();
             });
         }
+        return function () {
+            if (asyncTimerRef.current) {
+                clearTimeout(asyncTimerRef.current);
+                asyncTimerRef.current = null;
+            }
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useFirstSkipEffect$1(function () {
@@ -7553,19 +7610,50 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         onValueChange(name, value);
     }, [value]);
     React.useEffect(function () {
-        if (asyncTimerRef.current) {
-            clearTimeout(asyncTimerRef.current);
-            asyncTimerRef.current = null;
-        }
-        if (async && onLoadItems && inputValue != null) {
-            asyncTimerRef.current = setTimeout(function () {
+        if (async && onLoadItems) {
+            if (asyncTimerRef.current) {
+                clearTimeout(asyncTimerRef.current);
                 asyncTimerRef.current = null;
-                setIsOnGetItemLoading(true);
-                onLoadItems(inputValue).then(function (items) {
-                    setItems(items);
-                    setIsOnGetItemLoading(false);
-                });
-            }, 300);
+            }
+            if (inputValue != null) {
+                showOnGetItemLoading();
+                asyncTimerRef.current = setTimeout(function () {
+                    asyncTimerRef.current = null;
+                    onLoadItems(inputValue)
+                        .then(function (items) {
+                        if (componentValue) {
+                            if (Array.isArray(componentValue)) {
+                                var exceptValues_1 = componentValue.map(function (info) { return info.value; });
+                                setItems(__spreadArray(__spreadArray([], componentValue, true), items.filter(function (info) { return !exceptValues_1.includes(info.value); }), true));
+                            }
+                            else {
+                                var exceptValue_1 = componentValue.value;
+                                setItems(__spreadArray([componentValue], items.filter(function (info) { return info.value !== exceptValue_1; }), true));
+                            }
+                        }
+                        else {
+                            setItems(items);
+                        }
+                    })
+                        .finally(function () {
+                        hideOnGetItemLoading();
+                    });
+                }, 300);
+            }
+            else {
+                if (Array.isArray(componentValue)) {
+                    setItems(componentValue);
+                }
+                else {
+                    if (componentValue) {
+                        setItems([componentValue]);
+                    }
+                    else {
+                        setItems([]);
+                    }
+                }
+                hideOnGetItemLoading();
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [async, inputValue]);
@@ -7706,6 +7794,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
             var finalValue = getFinalValue(newValue);
             if (!isSame$2(value, finalValue)) {
                 setValue(finalValue);
+                setValueItem(componentValue);
                 nextTick(function () {
                     onValueChangeByUser(name, finalValue);
                     onRequestSearchSubmit(name, finalValue);
@@ -7737,6 +7826,9 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     return (React__default["default"].createElement(material.Autocomplete, { options: items || [], className: classNames$1(className, 'FormValueItem', 'FormAutocomplete'), sx: sx, multiple: multiple, fullWidth: !width && fullWidth, openOnFocus: openOnFocus, disableClearable: disableClearable, disablePortal: disablePortal, noOptionsText: noOptionsText, value: componentValue, style: style, isOptionEqualToValue: function (option, value) { return option.value === value.value; }, disabled: disabled, readOnly: readOnly, loading: loading || isOnGetItemLoading, loadingText: loadingText, limitTags: limitTags, onChange: function (e, value, reason, details) { return handleChange(value, reason, details); }, renderOption: function (props, option) { return (React__default["default"].createElement("li", __assign$4({}, props, { key: option.value }), onRenderItem ? onRenderItem(option) : option.label)); }, onInputChange: function (event, newInputValue, reason) {
             if (reason === 'input') {
                 setInputValue(newInputValue);
+            }
+            else if (reason === 'reset') {
+                setInputValue(undefined);
             }
         }, renderTags: function (value, getTagProps) {
             return value.map(function (option, index) { return (React__default["default"].createElement(material.Chip, __assign$4({ size: 'small', label: onRenderTag ? onRenderTag(option) : option.label }, getTagProps({ index: index })))); });

@@ -41,6 +41,7 @@ export interface FormAutocompleteProps
   disableClearable?: boolean;
   async?: boolean;
   onLoadItems?: (inputValue?: string) => Promise<FormAutocompleteItem[]>;
+  onAsyncLoadValueItem?: (value: FormAutocompleteValue) => Promise<FormAutocompleteComponentValue>;
   onRenderItem?: (item: FormAutocompleteItem) => ReactNode;
   onRenderTag?: (item: FormAutocompleteItem) => ReactNode;
   onValue?: (value: FormAutocompleteValue) => FormAutocompleteValue;
