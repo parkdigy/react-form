@@ -39,7 +39,8 @@ export interface FormAutocompleteProps
   limitTags?: number;
   openOnFocus?: boolean;
   disableClearable?: boolean;
-  onLoadItems?: () => Promise<FormAutocompleteItem[]>;
+  async?: boolean;
+  onLoadItems?: (inputValue?: string) => Promise<FormAutocompleteItem[]>;
   onRenderItem?: (item: FormAutocompleteItem) => ReactNode;
   onRenderTag?: (item: FormAutocompleteItem) => ReactNode;
   onValue?: (value: FormAutocompleteValue) => FormAutocompleteValue;

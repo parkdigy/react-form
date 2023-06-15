@@ -49,6 +49,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
       limitTags,
       openOnFocus,
       disableClearable,
+      async,
       onLoadItems,
       onRenderItem,
       onRenderTag,
@@ -71,6 +72,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
     // Ref -------------------------------------------------------------------------------------------------------------
 
     const textFieldRef = useRef<FormTextFieldCommands>(null);
+    const asyncTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     // FormState -------------------------------------------------------------------------------------------------------
 
@@ -112,6 +114,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
     const [helperText, setHelperText] = useAutoUpdateLayoutState<Props['helperText']>(initHelperText);
     const [loading, setLoading] = useAutoUpdateLayoutState<Props['loading']>(initLoading);
     const [disabled, setDisabled] = useAutoUpdateLayoutState<Props['disabled']>(initDisabled);
+    const [inputValue, setInputValue] = useState<string | undefined>(undefined);
 
     // Memo --------------------------------------------------------------------------------------------------------------
 
@@ -228,7 +231,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
         onValueChange(name, value);
       }
 
-      if (onLoadItems) {
+      if (!async && onLoadItems) {
         setIsOnGetItemLoading(true);
         onLoadItems().then((items) => {
           setItems(items);
@@ -243,6 +246,26 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
       if (onChange) onChange(value);
       onValueChange(name, value);
     }, [value]);
+
+    useEffect(() => {
+      if (asyncTimerRef.current) {
+        clearTimeout(asyncTimerRef.current);
+        asyncTimerRef.current = null;
+      }
+
+      if (async && onLoadItems && inputValue != null) {
+        asyncTimerRef.current = setTimeout(() => {
+          asyncTimerRef.current = null;
+
+          setIsOnGetItemLoading(true);
+          onLoadItems(inputValue).then((items) => {
+            setItems(items);
+            setIsOnGetItemLoading(false);
+          });
+        }, 300);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [async, inputValue]);
 
     // Function - focus ------------------------------------------------------------------------------------------------
 
@@ -457,6 +480,11 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
             {onRenderItem ? onRenderItem(option) : option.label}
           </li>
         )}
+        onInputChange={(event, newInputValue, reason) => {
+          if (reason === 'input') {
+            setInputValue(newInputValue);
+          }
+        }}
         renderTags={(value: FormAutocompleteItem[], getTagProps) =>
           value.map((option, index) => (
             <Chip size='small' label={onRenderTag ? onRenderTag(option) : option.label} {...getTagProps({ index })} />

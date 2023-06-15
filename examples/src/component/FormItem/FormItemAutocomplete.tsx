@@ -136,6 +136,7 @@ const FormItemAutocomplete = () => {
               name='onLoadItems'
               label='FormAutocomplete'
               helperText='onLoadItems'
+              async
               onLoadItems={handleLoadItems}
             />
           </FormCol>
