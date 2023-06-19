@@ -38,6 +38,7 @@ export interface PrivateDatePickerProps
   endAdornment?: ReactNode;
   align?: 'left' | 'center' | 'right';
   readOnlyInput?: boolean;
+  hidden?: boolean;
   onChange?(value: PrivateDatePickerValue): void;
   onValidate?(value: PrivateDatePickerValue): boolean | string;
 }

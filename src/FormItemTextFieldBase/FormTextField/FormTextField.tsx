@@ -46,6 +46,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
       startAdornment,
       endAdornment,
       noFormValueItem,
+      hidden,
       //----------------------------------------------------------------------------------------------------------------
       onChange,
       onValue,
@@ -143,15 +144,15 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
     // Memo - style ----------------------------------------------------------------------------------------------------
 
     const style = useMemo(() => {
+      const newStyle = { ...initStyle };
       if (width != null) {
-        return {
-          ...initStyle,
-          width,
-        };
-      } else {
-        return initStyle;
+        newStyle.width = width;
       }
-    }, [initStyle, width]);
+      if (hidden) {
+        newStyle.display = 'none';
+      }
+      return newStyle;
+    }, [initStyle, width, hidden]);
 
     // Memo - label ----------------------------------------------------------------------------------------------------
 

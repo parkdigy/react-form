@@ -15,6 +15,7 @@ export type FormTextFieldProps = Omit<TextFieldProps, 'ref' | 'name' | 'onChange
     startAdornment?: ReactNode;
     endAdornment?: ReactNode;
     noFormValueItem?: boolean;
+    hidden?: boolean;
     onValue?(value: FormItemValue): FormItemValue;
   };
 

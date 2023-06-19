@@ -16,4 +16,5 @@ export interface FormItemBaseProps extends CommonSxProps, PartialPick<FormContex
     helperTextProps?: FormHelperTextProps;
     error?: boolean;
     hideLabel?: boolean;
+    hidden?: boolean;
 }

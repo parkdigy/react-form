@@ -19,6 +19,7 @@ export interface FormToggleButtonGroupProps extends CommonSxProps, Omit<FormValu
     formValueSeparator?: string;
     formValueSort?: boolean;
     loading?: boolean;
+    hidden?: boolean;
     onLoadItems?: () => Promise<FormToggleButtonGroupItem[]>;
     onValue?: (value: FormToggleButtonGroupValue) => FormToggleButtonGroupValue;
 }

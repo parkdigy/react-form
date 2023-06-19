@@ -12,7 +12,15 @@ const FormItemCheckbox = () => {
     <Form onSubmit={handleSubmit}>
       <FormRow>
         <FormCol>
-          <FormCheckbox name='default' labelIcon='Check' label='FormCheckbox' text='체크박스' helperText='labelIcon' />
+          <FormCheckbox
+            hidden
+            name='default'
+            labelIcon='Check'
+            label='FormCheckbox'
+            text='체크박스'
+            helperText='labelIcon'
+          />
+          <FormCheckbox name='readOnly' label='FormCheckbox' text='체크박스' readOnly helperText='readOnly=true' />
         </FormCol>
         <FormCol>
           <FormCheckbox name='readOnly' label='FormCheckbox' text='체크박스' readOnly helperText='readOnly=true' />

@@ -33,6 +33,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       value: initValue,
       uncheckedValue: initUncheckedValue,
       exceptValue,
+      hidden,
       onChange,
       onValidate,
       //----------------------------------------------------------------------------------------------------------------
@@ -275,6 +276,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         helperTextProps={{ style: { marginLeft: 2 } }}
         style={style}
         sx={sx}
+        hidden={hidden}
         controlHeight={height || (size === 'small' ? 35 : 39)}
         controlVerticalCenter
         control={

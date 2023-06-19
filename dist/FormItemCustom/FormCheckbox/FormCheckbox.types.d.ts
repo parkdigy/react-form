@@ -7,6 +7,7 @@ export interface FormCheckboxProps extends CommonSxProps, Omit<CheckboxProps, 'c
     text?: ReactNode;
     inputRef?: RefObject<HTMLInputElement>;
     action?: RefObject<ButtonBaseActions>;
+    hidden?: boolean;
     onChange?(checked: boolean): void;
 }
 export declare const FormCheckboxDefaultProps: Pick<FormCheckboxProps, 'checked' | 'value' | 'uncheckedValue'>;

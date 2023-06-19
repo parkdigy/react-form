@@ -12,6 +12,7 @@ export interface FormRatingProps
   required?: boolean;
   icon?: string;
   emptyIcon?: string;
+  hidden?: boolean;
   onChange?(value: number): void;
   onValue?(value: number): number;
 }

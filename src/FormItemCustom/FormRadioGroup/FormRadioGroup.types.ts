@@ -23,6 +23,7 @@ export interface FormRadioGroupProps extends CommonSxProps, Omit<FormValueItemPr
   inline?: boolean;
   loading?: boolean;
   nowrap?: boolean;
+  hidden?: boolean;
   onLoadItems?(): Promise<FormRadioGroupItem[]>;
   onValue?(value: RadioGroupProps['value']): RadioGroupProps['value'];
 }

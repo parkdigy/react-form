@@ -2042,13 +2042,13 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
     var _b;
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, required = _a.required, initValue = _a.value, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, initHelperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, 
+    name = _a.name, required = _a.required, initValue = _a.value, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, initHelperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, hidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, onBlur = _a.onBlur, onKeyDown = _a.onKeyDown, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, 
     //----------------------------------------------------------------------------------------------------------------
-    props = __rest$2(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "required", "value", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
+    props = __rest$2(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "required", "value", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
     var id = React.useId();
     // Ref -------------------------------------------------------------------------------------------------------------
     var inputRef = React.useRef(null);
@@ -2090,13 +2090,15 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
     }, [initInputProps, readOnly, maxLength]);
     // Memo - style ----------------------------------------------------------------------------------------------------
     var style = React.useMemo(function () {
+        var newStyle = __assign$4({}, initStyle);
         if (width != null) {
-            return __assign$4(__assign$4({}, initStyle), { width: width });
+            newStyle.width = width;
         }
-        else {
-            return initStyle;
+        if (hidden) {
+            newStyle.display = 'none';
         }
-    }, [initStyle, width]);
+        return newStyle;
+    }, [initStyle, width, hidden]);
     // Memo - label ----------------------------------------------------------------------------------------------------
     var label = React.useMemo(function () {
         return labelIcon ? (React__default["default"].createElement(React__default["default"].Fragment, null,
@@ -4351,7 +4353,7 @@ styleInject(css_248z$c);var FormItemBase = React__default["default"].forwardRef(
     // FormState -------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    control = _a.control, controlHeight = _a.controlHeight, controlVerticalCenter = _a.controlVerticalCenter, required = _a.required, labelIcon = _a.labelIcon, label = _a.label, focused = _a.focused, helperText = _a.helperText, helperTextProps = _a.helperTextProps, error = _a.error, hideLabel = _a.hideLabel, 
+    control = _a.control, controlHeight = _a.controlHeight, controlVerticalCenter = _a.controlVerticalCenter, required = _a.required, labelIcon = _a.labelIcon, label = _a.label, focused = _a.focused, helperText = _a.helperText, helperTextProps = _a.helperTextProps, error = _a.error, hideLabel = _a.hideLabel, hidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, style = _a.style, sx = _a.sx;
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFullWidth = _b.fullWidth, formColWithLabel = _b.formColWithLabel, formColWithHelperText = _b.formColWithHelperText;
@@ -4363,14 +4365,14 @@ styleInject(css_248z$c);var FormItemBase = React__default["default"].forwardRef(
     // Memo --------------------------------------------------------------------------------------------------------------
     var wrapStyle = React.useMemo(function () {
         var wrapStyle = {
-            display: fullWidth ? 'block' : 'inline-flex',
+            display: hidden ? 'none' : fullWidth ? 'block' : 'inline-flex',
             width: fullWidth ? '100%' : undefined,
         };
         if (formColWithLabel) {
             wrapStyle.marginTop = -20;
         }
         return wrapStyle;
-    }, [formColWithLabel, fullWidth]);
+    }, [formColWithLabel, fullWidth, hidden]);
     // State - inputHeight ---------------------------------------------------------------------------------------------
     var _c = React.useState(0), inputHeight = _c[0], setInputHeight = _c[1];
     var inputResizeDetectorRef = useResizeDetector({
@@ -4456,9 +4458,9 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default["def
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initChecked = _a.checked, initInputRef = _a.inputRef, initAction = _a.action, readOnly = _a.readOnly, initDisabled = _a.disabled, text = _a.text, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initUncheckedValue = _a.uncheckedValue, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initChecked = _a.checked, initInputRef = _a.inputRef, initAction = _a.action, readOnly = _a.readOnly, initDisabled = _a.disabled, text = _a.text, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initUncheckedValue = _a.uncheckedValue, exceptValue = _a.exceptValue, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
-    className = _a.className, initStyle = _a.style, sx = _a.sx, props = __rest$2(_a, ["variant", "size", "color", "focused", "fullWidth", "name", "labelIcon", "label", "checked", "inputRef", "action", "readOnly", "disabled", "text", "error", "helperText", "value", "uncheckedValue", "exceptValue", "onChange", "onValidate", "className", "style", "sx"]);
+    className = _a.className, initStyle = _a.style, sx = _a.sx, props = __rest$2(_a, ["variant", "size", "color", "focused", "fullWidth", "name", "labelIcon", "label", "checked", "inputRef", "action", "readOnly", "disabled", "text", "error", "helperText", "value", "uncheckedValue", "exceptValue", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = React.useId();
     // FormState -------------------------------------------------------------------------------------------------------
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
@@ -4620,7 +4622,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default["def
         }
     }, [readOnly, setChecked, onValueChangeByUser, name, onRequestSearchSubmit]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormCheckbox'), labelIcon: labelIcon, label: label, error: error, fullWidth: fullWidth, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React__default["default"].createElement(material.FormControlLabel, { ref: resizeDetectorRef, control: React__default["default"].createElement(material.Checkbox, __assign$4({ name: name, color: color, size: size, inputRef: initInputRef ? initInputRef : inputRef, action: initAction ? initAction : actionRef, checked: !!checked, checkedIcon: React__default["default"].createElement(iconsMaterial.CheckBox, { color: error ? 'error' : undefined }), icon: React__default["default"].createElement(iconsMaterial.CheckBoxOutlineBlank, { color: error ? 'error' : undefined }), onChange: handleChange, disabled: disabled || readOnly }, props)), label: React__default["default"].createElement(material.Typography, { color: error ? 'error' : undefined, whiteSpace: 'nowrap' }, text) }) }));
+    return (React__default["default"].createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormCheckbox'), labelIcon: labelIcon, label: label, error: error, fullWidth: fullWidth, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React__default["default"].createElement(material.FormControlLabel, { ref: resizeDetectorRef, control: React__default["default"].createElement(material.Checkbox, __assign$4({ name: name, color: color, size: size, inputRef: initInputRef ? initInputRef : inputRef, action: initAction ? initAction : actionRef, checked: !!checked, checkedIcon: React__default["default"].createElement(iconsMaterial.CheckBox, { color: error ? 'error' : undefined }), icon: React__default["default"].createElement(iconsMaterial.CheckBoxOutlineBlank, { color: error ? 'error' : undefined }), onChange: handleChange, disabled: disabled || readOnly }, props)), label: React__default["default"].createElement(material.Typography, { color: error ? 'error' : undefined, whiteSpace: 'nowrap' }, text) }) }));
 });
 FormCheckbox.displayName = 'FormCheckbox';
 FormCheckbox.defaultProps = FormCheckboxDefaultProps;var FormRadioGroupDefaultProps = {
@@ -4628,13 +4630,13 @@ FormCheckbox.defaultProps = FormCheckboxDefaultProps;var FormRadioGroupDefaultPr
 };var PADDING_LEFT = 3;
 var FormRadioGroup = React__default["default"].forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
-    var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
+    var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, hidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, initWidth = _a.width, labelIcon = _a.labelIcon, label = _a.label, inline = _a.inline, initLoading = _a.loading, nowrap = _a.nowrap, initItems = _a.items, initValue = _a.value, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, onLoadItems = _a.onLoadItems, onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, 
     //----------------------------------------------------------------------------------------------------------------
-    props = __rest$2(_a, ["variant", "size", "color", "focused", "fullWidth", "name", "width", "labelIcon", "label", "inline", "loading", "nowrap", "items", "value", "error", "helperText", "disabled", "readOnly", "required", "exceptValue", "onLoadItems", "onChange", "onValue", "onValidate", "className", "style", "sx"]);
+    props = __rest$2(_a, ["variant", "size", "color", "focused", "fullWidth", "hidden", "name", "width", "labelIcon", "label", "inline", "loading", "nowrap", "items", "value", "error", "helperText", "disabled", "readOnly", "required", "exceptValue", "onLoadItems", "onChange", "onValue", "onValidate", "className", "style", "sx"]);
     var id = React.useId();
     // FormState -------------------------------------------------------------------------------------------------------
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
@@ -4899,7 +4901,7 @@ var FormRadioGroup = React__default["default"].forwardRef(function (_a, ref) {
         }
     }, [readOnly, items, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormItemBase, { focused: focused, ref: baseRef, className: classNames$1(className, 'FormValueItem', 'FormRadioGroup'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, fullWidth: fullWidth, required: required, error: error, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React__default["default"].createElement(React__default["default"].Fragment, null,
+    return (React__default["default"].createElement(FormItemBase, { focused: focused, ref: baseRef, className: classNames$1(className, 'FormValueItem', 'FormRadioGroup'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, fullWidth: fullWidth, required: required, error: error, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React__default["default"].createElement(React__default["default"].Fragment, null,
             !fullWidth && !isOnGetItemLoading && !loading && items && (React__default["default"].createElement("div", { ref: resizeWidthDetectorRef, style: {
                     display: 'grid',
                     position: 'absolute',
@@ -4935,7 +4937,7 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, type = _a.type, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, notAllowEmptyValue = _a.notAllowEmptyValue, exceptValue = _a.exceptValue, initWidth = _a.width, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, onLoadItems = _a.onLoadItems, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, type = _a.type, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, notAllowEmptyValue = _a.notAllowEmptyValue, exceptValue = _a.exceptValue, initWidth = _a.width, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, hidden = _a.hidden, onLoadItems = _a.onLoadItems, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -5272,7 +5274,7 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
     if (focused) {
         formControlBaseProps.focused = true;
     }
-    return (React__default["default"].createElement(FormItemBase, __assign$4({}, formControlBaseProps, { className: classNames$1(className, 'FormValueItem', 'FormToggleButtonGroup', "variant-".concat(variant), "size-".concat(size), !!label && 'with-label', !!fullWidth && 'full-width', "type-".concat(type)), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, required: required, fullWidth: fullWidth, error: error, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, controlHeight: height || 0, controlVerticalCenter: isOnGetItemLoading || loading, control: isOnGetItemLoading || loading ? (React__default["default"].createElement("div", { style: { opacity: 0.54 }, ref: resizeHeightDetectorRef },
+    return (React__default["default"].createElement(FormItemBase, __assign$4({}, formControlBaseProps, { className: classNames$1(className, 'FormValueItem', 'FormToggleButtonGroup', "variant-".concat(variant), "size-".concat(size), !!label && 'with-label', !!fullWidth && 'full-width', "type-".concat(type)), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, required: required, fullWidth: fullWidth, error: error, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, controlHeight: height || 0, controlVerticalCenter: isOnGetItemLoading || loading, control: isOnGetItemLoading || loading ? (React__default["default"].createElement("div", { style: { opacity: 0.54 }, ref: resizeHeightDetectorRef },
             React__default["default"].createElement(material.CircularProgress, { size: 16, color: 'inherit' }))) : (React__default["default"].createElement(React__default["default"].Fragment, null,
             !fullWidth && !isOnGetItemLoading && !loading && items && (React__default["default"].createElement("div", { ref: resizeWidthDetectorRef, style: {
                     display: 'grid',
@@ -5314,7 +5316,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
-    precision = _a.precision, highlightSelectedOnly = _a.highlightSelectedOnly, icon = _a.icon, emptyIcon = _a.emptyIcon, max = _a.max, 
+    precision = _a.precision, highlightSelectedOnly = _a.highlightSelectedOnly, icon = _a.icon, emptyIcon = _a.emptyIcon, max = _a.max, hidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, onValue = _a.onValue, 
     //----------------------------------------------------------------------------------------------------------------
@@ -5474,7 +5476,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         }
     }, [readOnly, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormRating'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, required: required, helperText: helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, controlHeight: height || (size === 'small' ? 21 : 26), controlVerticalCenter: true, control: React__default["default"].createElement(material.Rating, { ref: resizeDetectorRef, size: size === 'medium' ? 'large' : 'medium', name: name, precision: precision, highlightSelectedOnly: highlightSelectedOnly, value: value, disabled: disabled || readOnly, max: max, icon: React__default["default"].createElement(FormIcon, { color: color, fontSize: 'inherit' }, icon ? icon : 'Star'), emptyIcon: React__default["default"].createElement(FormIcon, { fontSize: 'inherit' }, emptyIcon ? emptyIcon : 'StarBorder'), onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } }) }));
+    return (React__default["default"].createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormRating'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, required: required, helperText: helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, controlHeight: height || (size === 'small' ? 21 : 26), controlVerticalCenter: true, control: React__default["default"].createElement(material.Rating, { ref: resizeDetectorRef, size: size === 'medium' ? 'large' : 'medium', name: name, precision: precision, highlightSelectedOnly: highlightSelectedOnly, value: value, disabled: disabled || readOnly, max: max, icon: React__default["default"].createElement(FormIcon, { color: color, fontSize: 'inherit' }, icon ? icon : 'Star'), emptyIcon: React__default["default"].createElement(FormIcon, { fontSize: 'inherit' }, emptyIcon ? emptyIcon : 'StarBorder'), onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } }) }));
 });
 FormRating.displayName = 'FormRating';
 FormRating.defaultProps = FormRatingDefaultProps;var propTypes = {exports: {}};var reactIs = {exports: {}};var reactIs_production_min = {};/** @license React v16.13.1
@@ -7207,7 +7209,7 @@ styleInject(css_248z$a);var FormTextEditor = React__default["default"].forwardRe
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
-    menubar = _a.menubar, height = _a.height, onImageUpload = _a.onImageUpload, 
+    menubar = _a.menubar, height = _a.height, hidden = _a.hidden, onImageUpload = _a.onImageUpload, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -7361,7 +7363,7 @@ styleInject(css_248z$a);var FormTextEditor = React__default["default"].forwardRe
             onImageUpload(blobInfo.blob(), success, failure, progress);
     }, [onImageUpload]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormTextEditor', !initialized && 'initializing'), labelIcon: labelIcon, label: label, error: error, required: required, fullWidth: true, helperText: helperText, helperTextProps: { style: { marginLeft: 5 } }, style: { width: '100%' }, controlHeight: height, control: React__default["default"].createElement(React__default["default"].Fragment, null,
+    return (React__default["default"].createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormTextEditor', !initialized && 'initializing'), labelIcon: labelIcon, label: label, error: error, required: required, fullWidth: true, helperText: helperText, helperTextProps: { style: { marginLeft: 5 } }, style: { width: '100%' }, hidden: hidden, controlHeight: height, control: React__default["default"].createElement(React__default["default"].Fragment, null,
             !initialized ? React__default["default"].createElement(material.Skeleton, { variant: 'rectangular', width: '100%', height: height }) : null,
             React__default["default"].createElement(Editor, { ref: editorRef, value: value, disabled: readOnly || disabled, init: {
                     height: height,
@@ -7394,7 +7396,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, width = _a.width, placeholder = _a.placeholder, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, disablePortal = _a.disablePortal, noOptionsText = _a.noOptionsText, loadingText = _a.loadingText, limitTags = _a.limitTags, openOnFocus = _a.openOnFocus, disableClearable = _a.disableClearable, async = _a.async, onLoadItems = _a.onLoadItems, onAsyncLoadValueItem = _a.onAsyncLoadValueItem, onRenderItem = _a.onRenderItem, onRenderTag = _a.onRenderTag, onAddItem = _a.onAddItem, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, width = _a.width, placeholder = _a.placeholder, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, disablePortal = _a.disablePortal, noOptionsText = _a.noOptionsText, loadingText = _a.loadingText, limitTags = _a.limitTags, openOnFocus = _a.openOnFocus, disableClearable = _a.disableClearable, async = _a.async, hidden = _a.hidden, onLoadItems = _a.onLoadItems, onAsyncLoadValueItem = _a.onAsyncLoadValueItem, onRenderItem = _a.onRenderItem, onRenderTag = _a.onRenderTag, onAddItem = _a.onAddItem, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -7436,11 +7438,14 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     }, [items]);
     var style = React.useMemo(function () {
         var style = __assign$4({ minWidth: 120 }, initStyle);
+        if (hidden) {
+            style.display = 'none';
+        }
         if (width != null) {
             style.width = width;
         }
         return style;
-    }, [initStyle, width]);
+    }, [initStyle, width, hidden]);
     // Function - getFinalValue ----------------------------------------------------------------------------------------
     var getFinalValue = React.useCallback(function (value) {
         var finalValue = value;
@@ -14633,9 +14638,9 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwar
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, initHelperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, initHelperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     //--------------------------------------------------------------------------------------------------------------------
-    className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$2(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "onChange", "onValidate", "className", "style", "sx"]);
+    className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$2(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = React.useId();
     // Ref -------------------------------------------------------------------------------------------------------------
     var privateStaticDatePickerRef = React.useRef(null);
@@ -14762,6 +14767,11 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwar
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
+    // Memo --------------------------------------------------------------------------------------------------------------
+    var wrapStyle = React.useMemo(function () { return ({
+        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+        flex: fullWidth ? 1 : undefined,
+    }); }, [hidden, fullWidth]);
     // Function - focus ------------------------------------------------------------------------------------------------
     var focus = React.useCallback(function () {
         var _a;
@@ -14966,10 +14976,7 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwar
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default["default"].createElement(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs.AdapterDayjs, adapterLocale: dayjsLocale__default["default"] },
         React__default["default"].createElement(material.ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
-            React__default["default"].createElement("div", { className: classNames$1(className, 'PrivateDatePicker'), style: {
-                    display: fullWidth ? 'block' : 'inline-block',
-                    flex: fullWidth ? 1 : undefined,
-                }, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
+            React__default["default"].createElement("div", { className: classNames$1(className, 'PrivateDatePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
                 React__default["default"].createElement(PrivateStyledTooltip, { open: open, PopperProps: {
                         modifiers: [
                             {
@@ -15579,7 +15586,7 @@ var FormDateRangePicker = React__default["default"].forwardRef(function (_a, ref
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, initValue = _a.value, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, initCalendarCount = _a.calendarCount, initFormat = _a.format, formValueFormat = _a.formValueFormat, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, initHelperText = _a.helperText, formValueStartNameSuffix = _a.formValueStartNameSuffix, formValueEndNameSuffix = _a.formValueEndNameSuffix, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, initValue = _a.value, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, initCalendarCount = _a.calendarCount, initFormat = _a.format, formValueFormat = _a.formValueFormat, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, initHelperText = _a.helperText, formValueStartNameSuffix = _a.formValueStartNameSuffix, formValueEndNameSuffix = _a.formValueEndNameSuffix, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = React.useId();
@@ -15796,6 +15803,11 @@ var FormDateRangePicker = React__default["default"].forwardRef(function (_a, ref
             }
         }
     }, [open]);
+    // Memo --------------------------------------------------------------------------------------------------------------
+    var wrapStyle = React.useMemo(function () { return ({
+        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+        flex: fullWidth ? 1 : undefined,
+    }); }, [hidden, fullWidth]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = React.useCallback(function (newValue) {
         setValue(newValue);
@@ -16068,10 +16080,7 @@ var FormDateRangePicker = React__default["default"].forwardRef(function (_a, ref
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default["default"].createElement(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs.AdapterDayjs, adapterLocale: dayjsLocale__default["default"] },
         React__default["default"].createElement(material.ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
-            React__default["default"].createElement("div", { className: classNames$1(className, 'FormDateRangePicker'), style: {
-                    display: fullWidth ? 'block' : 'inline-block',
-                    flex: fullWidth ? 1 : undefined,
-                }, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
+            React__default["default"].createElement("div", { className: classNames$1(className, 'FormDateRangePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
                 React__default["default"].createElement(PrivateStyledTooltip, { open: open, PopperProps: {
                         modifiers: [
                             {
@@ -16147,7 +16156,7 @@ styleInject(css_248z$1);var FormFile = React__default["default"].forwardRef(func
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    accept = _a.accept, hideUrl = _a.hideUrl, hideLink = _a.hideLink, maxFileSize = _a.maxFileSize, preview = _a.preview, onFile = _a.onFile, onLink = _a.onLink, 
+    accept = _a.accept, hideUrl = _a.hideUrl, hideLink = _a.hideLink, maxFileSize = _a.maxFileSize, preview = _a.preview, hidden = _a.hidden, onFile = _a.onFile, onLink = _a.onLink, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, initLabel = _a.label, required = _a.required, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -16372,7 +16381,7 @@ styleInject(css_248z$1);var FormFile = React__default["default"].forwardRef(func
         }
     }, [name, onLink, onValueChangeByUser, setValue]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormFile', "variant-".concat(variant), "size-".concat(size), !!initLabel && 'with-label', !!fullWidth && 'full-width', !!hideUrl && 'hide-file-name', !!hideLink && 'hide-link', notEmpty(value) && 'with-value'), labelIcon: hideUrl ? labelIcon : undefined, label: hideUrl ? initLabel : undefined, error: error, required: required, fullWidth: fullWidth, helperText: React__default["default"].createElement("div", null,
+    return (React__default["default"].createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormFile', "variant-".concat(variant), "size-".concat(size), !!initLabel && 'with-label', !!fullWidth && 'full-width', !!hideUrl && 'hide-file-name', !!hideLink && 'hide-link', notEmpty(value) && 'with-value'), labelIcon: hideUrl ? labelIcon : undefined, label: hideUrl ? initLabel : undefined, error: error, required: required, fullWidth: fullWidth, hidden: hidden, helperText: React__default["default"].createElement("div", null,
             preview,
             React__default["default"].createElement("div", null, helperText)), hideLabel: !hideUrl, helperTextProps: {
             style: {

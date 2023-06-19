@@ -13,6 +13,7 @@ export declare type FormTextFieldProps = Omit<TextFieldProps, 'ref' | 'name' | '
     startAdornment?: ReactNode;
     endAdornment?: ReactNode;
     noFormValueItem?: boolean;
+    hidden?: boolean;
     onValue?(value: FormItemValue): FormItemValue;
 };
 export declare const FormTextFieldDefaultProps: {};

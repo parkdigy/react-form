@@ -81,6 +81,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       disableFuture,
       minDate,
       maxDate,
+      hidden,
       onChange,
       onValidate,
       // -------------------------------------------------------------------------------------------------------------------
@@ -373,6 +374,16 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       }
     }, [open]);
 
+    // Memo --------------------------------------------------------------------------------------------------------------
+
+    const wrapStyle = useMemo(
+      () => ({
+        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+        flex: fullWidth ? 1 : undefined,
+      }),
+      [hidden, fullWidth]
+    );
+
     // Event Handler ---------------------------------------------------------------------------------------------------
 
     const handleChange = useCallback(
@@ -661,10 +672,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
           <div
             className={classNames(className, 'FormDateRangePicker')}
-            style={{
-              display: fullWidth ? 'block' : 'inline-block',
-              flex: fullWidth ? 1 : undefined,
-            }}
+            style={wrapStyle}
             onMouseDown={handleContainerMouseDown}
             onFocus={handleContainerFocus}
             onBlur={handleContainerBlur}

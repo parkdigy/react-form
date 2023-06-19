@@ -50,6 +50,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
       openOnFocus,
       disableClearable,
       async,
+      hidden,
       onLoadItems,
       onAsyncLoadValueItem,
       onRenderItem,
@@ -136,11 +137,14 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
         minWidth: 120,
         ...initStyle,
       };
+      if (hidden) {
+        style.display = 'none';
+      }
       if (width != null) {
         style.width = width;
       }
       return style;
-    }, [initStyle, width]);
+    }, [initStyle, width, hidden]);
 
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 

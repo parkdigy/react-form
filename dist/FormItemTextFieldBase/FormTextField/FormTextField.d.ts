@@ -11,6 +11,7 @@ declare const FormTextField: React.ForwardRefExoticComponent<Omit<import("@mui/m
     startAdornment?: React.ReactNode;
     endAdornment?: React.ReactNode;
     noFormValueItem?: boolean | undefined;
+    hidden?: boolean | undefined;
     onValue?(value: any): any;
 } & React.RefAttributes<FormTextFieldCommands>>;
 export default FormTextField;

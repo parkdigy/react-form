@@ -33,6 +33,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       //----------------------------------------------------------------------------------------------------------------
       menubar,
       height,
+      hidden,
       onImageUpload,
       //----------------------------------------------------------------------------------------------------------------
       name,
@@ -274,6 +275,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
         helperText={helperText}
         helperTextProps={{ style: { marginLeft: 5 } }}
         style={{ width: '100%' }}
+        hidden={hidden}
         controlHeight={height}
         control={
           <>

@@ -34,6 +34,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
       color: initColor,
       focused: initFocused,
       fullWidth: initFullWidth,
+      hidden,
       //----------------------------------------------------------------------------------------------------------------
       name,
       width: initWidth,
@@ -410,6 +411,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
         helperTextProps={{ style: { marginLeft: 2 } }}
         style={style}
         sx={sx}
+        hidden={hidden}
         controlHeight={height || (size === 'small' ? 35 : 39)}
         controlVerticalCenter
         control={

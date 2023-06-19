@@ -53,6 +53,7 @@ export interface FormDateRangePickerProps
   disableFuture?: boolean;
   minDate?: Dayjs;
   maxDate?: Dayjs;
+  hidden?: boolean;
   onChange?(value: FormDateRangePickerValue): void;
   onValidate?(value: FormDateRangePickerValue): boolean | string;
 }

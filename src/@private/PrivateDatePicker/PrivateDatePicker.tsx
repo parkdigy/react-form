@@ -76,6 +76,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       minuteInterval,
       secondInterval,
       readOnlyInput,
+      hidden,
       onChange,
       onValidate,
       //--------------------------------------------------------------------------------------------------------------------
@@ -258,6 +259,16 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
+
+    // Memo --------------------------------------------------------------------------------------------------------------
+
+    const wrapStyle = useMemo(
+      () => ({
+        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+        flex: fullWidth ? 1 : undefined,
+      }),
+      [hidden, fullWidth]
+    );
 
     // Function - focus ------------------------------------------------------------------------------------------------
 
@@ -492,10 +503,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
           <div
             className={classNames(className, 'PrivateDatePicker')}
-            style={{
-              display: fullWidth ? 'block' : 'inline-block',
-              flex: fullWidth ? 1 : undefined,
-            }}
+            style={wrapStyle}
             onMouseDown={handleContainerMouseDown}
             onFocus={handleContainerFocus}
             onBlur={handleContainerBlur}

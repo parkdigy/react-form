@@ -26,6 +26,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       hideLink,
       maxFileSize,
       preview,
+      hidden,
       onFile,
       onLink,
       //----------------------------------------------------------------------------------------------------------------
@@ -356,6 +357,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
         error={error}
         required={required}
         fullWidth={fullWidth}
+        hidden={hidden}
         helperText={
           <div>
             {preview}

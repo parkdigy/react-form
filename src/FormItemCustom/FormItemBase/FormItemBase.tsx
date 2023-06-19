@@ -26,6 +26,7 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
       helperTextProps,
       error,
       hideLabel,
+      hidden,
       //----------------------------------------------------------------------------------------------------------------
       className,
       style,
@@ -58,14 +59,14 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
 
     const wrapStyle = useMemo(() => {
       const wrapStyle: CSSProperties = {
-        display: fullWidth ? 'block' : 'inline-flex',
+        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-flex',
         width: fullWidth ? '100%' : undefined,
       };
       if (formColWithLabel) {
         wrapStyle.marginTop = -20;
       }
       return wrapStyle;
-    }, [formColWithLabel, fullWidth]);
+    }, [formColWithLabel, fullWidth, hidden]);
 
     // State - inputHeight ---------------------------------------------------------------------------------------------
 

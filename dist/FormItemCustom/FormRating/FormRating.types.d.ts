@@ -7,6 +7,7 @@ export interface FormRatingProps extends CommonSxProps, PartialPick<RatingProps,
     required?: boolean;
     icon?: string;
     emptyIcon?: string;
+    hidden?: boolean;
     onChange?(value: number): void;
     onValue?(value: number): number;
 }

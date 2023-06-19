@@ -4,6 +4,7 @@ export interface FormTextEditorProps extends CommonSxProps, Omit<FormValueItemPr
   required?: boolean;
   menubar?: boolean;
   height?: number;
+  hidden?: boolean;
   onImageUpload?(
     blob: Blob,
     success: (url: string) => void,

@@ -22,6 +22,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       icon,
       emptyIcon,
       max,
+      hidden,
       //----------------------------------------------------------------------------------------------------------------
       name,
       labelIcon,
@@ -269,6 +270,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         helperTextProps={{ style: { marginLeft: 5 } }}
         style={style}
         sx={sx}
+        hidden={hidden}
         controlHeight={height || (size === 'small' ? 21 : 26)}
         controlVerticalCenter
         control={

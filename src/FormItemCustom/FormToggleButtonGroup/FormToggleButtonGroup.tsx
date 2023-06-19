@@ -41,6 +41,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
       multiple,
       formValueSeparator,
       formValueSort,
+      hidden,
       onLoadItems,
       //----------------------------------------------------------------------------------------------------------------
       onChange,
@@ -471,6 +472,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
         helperTextProps={{ style: { marginLeft: 2 } }}
         style={style}
         sx={sx}
+        hidden={hidden}
         controlHeight={height || 0}
         controlVerticalCenter={isOnGetItemLoading || loading}
         control={

@@ -26,6 +26,7 @@ export interface FormAutocompleteProps extends CommonSxProps, Omit<FormValueItem
     openOnFocus?: boolean;
     disableClearable?: boolean;
     async?: boolean;
+    hidden?: boolean;
     onLoadItems?: (inputValue?: string) => Promise<FormAutocompleteItem[]>;
     onAsyncLoadValueItem?: (value: FormAutocompleteValue) => Promise<FormAutocompleteComponentValue>;
     onRenderItem?: (item: FormAutocompleteItem) => ReactNode;

@@ -9,6 +9,7 @@ export interface FormFileProps extends CommonSxProps, Omit<FormValueItemProps, '
   labelShrink?: boolean;
   maxFileSize?: number;
   preview?: ReactNode;
+  hidden?: boolean;
   onFile?(file: File): Promise<string>;
   onLink?(url: string): Promise<string>;
 }
