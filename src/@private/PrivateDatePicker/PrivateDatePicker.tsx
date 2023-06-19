@@ -509,7 +509,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
             onBlur={handleContainerBlur}
           >
             <PrivateStyledTooltip
-              open={open}
+              open={disabled || readOnly ? false : open}
               PopperProps={{
                 modifiers: [
                   {
@@ -573,10 +573,14 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
                       shrink: labelShrink ? true : InputLabelProps?.shrink,
                     };
 
+                    const readOnly = initInputProps?.readOnly || readOnlyInput;
                     const inputProps: InputBaseProps['inputProps'] = {
                       ...initInputProps,
-                      readOnly: initInputProps?.readOnly || readOnlyInput,
+                      readOnly,
                     };
+                    if (readOnly) {
+                      inputProps.tabIndex = -1;
+                    }
 
                     const muiInputProps: InputProps = { ...initMuiInputProps, endAdornment: undefined };
                     if (startAdornment || icon || muiInputProps.startAdornment) {

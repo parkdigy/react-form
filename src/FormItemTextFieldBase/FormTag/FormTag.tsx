@@ -299,6 +299,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           multiple
           freeSolo
           value={value}
+          readOnly={readOnly}
           disableClearable
           disabled={disabled}
           renderTags={handleRenderTags}
@@ -329,6 +330,10 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
             renderProps.inputProps.className = classNames(renderProps.inputProps.className, 'FormTag-Input');
 
             renderProps.inputProps.readOnly = readOnly;
+            if (readOnly) {
+              renderProps.inputProps.tabIndex = -1;
+            }
+
             renderProps.inputProps.maxLength = maxLength;
             if (readOnly) {
               renderProps.inputProps.className = classNames(renderProps.inputProps.className, 'Mui-disabled');

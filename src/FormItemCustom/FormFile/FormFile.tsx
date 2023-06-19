@@ -389,7 +389,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                   fullWidth
                   error={error}
                   InputLabelProps={labelShrink ? { shrink: labelShrink } : undefined}
-                  inputProps={{ readOnly: true }}
+                  inputProps={{ readOnly: true, tabIndex: -1 }}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position='end'>

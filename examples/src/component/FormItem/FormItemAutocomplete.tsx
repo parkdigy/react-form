@@ -8,6 +8,7 @@ import {
   FormCheckbox,
   FormAutocompleteItem,
   FormAutocompleteCommands,
+  FormAutocompleteComponentValue,
   FormValueMap,
 } from '@pdg/react-form';
 import { OutlinedPaper } from '#ccomp';
@@ -59,11 +60,11 @@ const FormItemAutocomplete = () => {
   }, []);
 
   const handleAsyncLoadValueItem = useCallback((value: FormAutocompleteValue) => {
-    return new Promise((resolve) => {
+    return new Promise<FormAutocompleteComponentValue>((resolve) => {
       if (Array.isArray(value)) {
         resolve(DEFAULT_ITEMS.filter((info) => value.includes(info.value)));
       } else {
-        resolve(DEFAULT_ITEMS.find((info) => info.value === value));
+        resolve(DEFAULT_ITEMS.find((info) => info.value === value) || null);
       }
     });
   }, []);

@@ -614,6 +614,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
                 </React.Fragment>
               ),
             }}
+            inputProps={readOnly || disabled ? { ...params.inputProps, tabIndex: -1 } : params.inputProps}
           />
         )}
       />

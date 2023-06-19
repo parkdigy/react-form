@@ -29,6 +29,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
       helperText: initHelperText,
       exceptValue,
       readOnly,
+      tabIndex,
       disabled: initDisabled,
       placeholder,
       maxLength,
@@ -132,14 +133,17 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
         };
 
         if (readOnly) {
+          finalInputProps.tabIndex = -1;
           finalInputProps.className = classNames(finalInputProps.className, 'Mui-disabled');
+        } else {
+          finalInputProps.tabIndex = tabIndex;
         }
 
         return finalInputProps;
       } else {
         return initInputProps;
       }
-    }, [initInputProps, readOnly, maxLength]);
+    }, [initInputProps, readOnly, tabIndex, maxLength]);
 
     // Memo - style ----------------------------------------------------------------------------------------------------
 

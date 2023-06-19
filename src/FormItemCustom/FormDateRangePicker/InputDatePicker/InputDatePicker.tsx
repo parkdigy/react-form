@@ -76,6 +76,7 @@ const InputDatePicker: React.FC<Props> = ({
         style: inputStyle,
         inputRef: inputInputRef,
         InputProps: inputInputProps,
+        inputProps: initInputProps,
         error: inputError,
         onFocus: inputOnFocus,
         onBlur: inputOnBlur,
@@ -104,6 +105,11 @@ const InputDatePicker: React.FC<Props> = ({
           );
         }
 
+        const inputProps = { ...initInputProps };
+        if (readOnly) {
+          inputProps.tabIndex = -1;
+        }
+
         return (
           <TextField
             {...params}
@@ -129,6 +135,7 @@ const InputDatePicker: React.FC<Props> = ({
             }}
             InputProps={muiInputProps}
             InputLabelProps={inputLabelProps}
+            inputProps={inputProps}
             onFocus={(e) => {
               if (inputOnFocus) inputOnFocus(e);
               if (onFocus) onFocus(e);

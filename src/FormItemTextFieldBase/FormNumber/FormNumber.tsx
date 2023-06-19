@@ -19,6 +19,7 @@ const FormNumber = React.forwardRef<FormValueItemBaseCommands, Props>(
       prefix,
       suffix,
       readOnly,
+      tabIndex,
       InputProps: initMuiInputProps,
       ...props
     },
@@ -34,6 +35,7 @@ const FormNumber = React.forwardRef<FormValueItemBaseCommands, Props>(
         prefix,
         suffix,
         readOnly,
+        tabIndex: readOnly ? -1 : tabIndex,
       };
       if (allowDecimal) {
         if (decimalScale) {
@@ -56,6 +58,7 @@ const FormNumber = React.forwardRef<FormValueItemBaseCommands, Props>(
       initMuiInputProps,
       prefix,
       readOnly,
+      tabIndex,
       suffix,
       thousandSeparator,
     ]);

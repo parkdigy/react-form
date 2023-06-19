@@ -2042,13 +2042,13 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
     var _b;
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, required = _a.required, initValue = _a.value, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, initHelperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, hidden = _a.hidden, 
+    name = _a.name, required = _a.required, initValue = _a.value, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, initHelperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, hidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, onBlur = _a.onBlur, onKeyDown = _a.onKeyDown, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, 
     //----------------------------------------------------------------------------------------------------------------
-    props = __rest$2(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "required", "value", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
+    props = __rest$2(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "required", "value", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
     var id = React.useId();
     // Ref -------------------------------------------------------------------------------------------------------------
     var inputRef = React.useRef(null);
@@ -2080,14 +2080,18 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
         if (readOnly != null || maxLength != null) {
             var finalInputProps = __assign$4(__assign$4({}, initInputProps), { readOnly: readOnly, maxLength: maxLength });
             if (readOnly) {
+                finalInputProps.tabIndex = -1;
                 finalInputProps.className = classNames$1(finalInputProps.className, 'Mui-disabled');
+            }
+            else {
+                finalInputProps.tabIndex = tabIndex;
             }
             return finalInputProps;
         }
         else {
             return initInputProps;
         }
-    }, [initInputProps, readOnly, maxLength]);
+    }, [initInputProps, readOnly, tabIndex, maxLength]);
     // Memo - style ----------------------------------------------------------------------------------------------------
     var style = React.useMemo(function () {
         var newStyle = __assign$4({}, initStyle);
@@ -2512,7 +2516,7 @@ styleInject(css_248z$h);var FormTag = React__default["default"].forwardRef(funct
             onValueChangeByUser: function () { }, 
             // eslint-disable-next-line
             onRequestSearchSubmit: function () { } }, otherFormState) },
-        React__default["default"].createElement(material.Autocomplete, { options: [], multiple: true, freeSolo: true, value: value, disableClearable: true, disabled: disabled, renderTags: handleRenderTags, inputValue: inputValue, style: { display: fullWidth ? 'block' : 'inline-block', width: fullWidth ? '100%' : undefined }, renderInput: function (params) {
+        React__default["default"].createElement(material.Autocomplete, { options: [], multiple: true, freeSolo: true, value: value, readOnly: readOnly, disableClearable: true, disabled: disabled, renderTags: handleRenderTags, inputValue: inputValue, style: { display: fullWidth ? 'block' : 'inline-block', width: fullWidth ? '100%' : undefined }, renderInput: function (params) {
                 var _a;
                 var renderProps = __assign$4({}, props);
                 renderProps.InputLabelProps = __assign$4(__assign$4({}, renderProps.InputLabelProps), { htmlFor: params.InputLabelProps.htmlFor, id: params.InputLabelProps.id });
@@ -2525,6 +2529,9 @@ styleInject(css_248z$h);var FormTag = React__default["default"].forwardRef(funct
                 renderProps.inputProps = __assign$4(__assign$4({}, renderProps.inputProps), params.inputProps);
                 renderProps.inputProps.className = classNames$1(renderProps.inputProps.className, 'FormTag-Input');
                 renderProps.inputProps.readOnly = readOnly;
+                if (readOnly) {
+                    renderProps.inputProps.tabIndex = -1;
+                }
                 renderProps.inputProps.maxLength = maxLength;
                 if (readOnly) {
                     renderProps.inputProps.className = classNames$1(renderProps.inputProps.className, 'Mui-disabled');
@@ -4048,7 +4055,7 @@ NumberFormat.defaultProps = defaultProps;var NumberFormatCustom = React__default
 });
 NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps = __assign$4({}, FormTextDefaultProps);var FormNumber = React__default["default"].forwardRef(function (_a, ref) {
     // Memo --------------------------------------------------------------------------------------------------------------
-    var className = _a.className, allowLeadingZeros = _a.allowLeadingZeros, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, initMuiInputProps = _a.InputProps, props = __rest$2(_a, ["className", "allowLeadingZeros", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "InputProps"]);
+    var className = _a.className, allowLeadingZeros = _a.allowLeadingZeros, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initMuiInputProps = _a.InputProps, props = __rest$2(_a, ["className", "allowLeadingZeros", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "InputProps"]);
     var muiInputProps = React.useMemo(function () {
         var inputProps = {
             allowLeadingZeros: allowLeadingZeros,
@@ -4057,6 +4064,7 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
             prefix: prefix,
             suffix: suffix,
             readOnly: readOnly,
+            tabIndex: readOnly ? -1 : tabIndex,
         };
         if (allowDecimal) {
             if (decimalScale) {
@@ -4075,6 +4083,7 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
         initMuiInputProps,
         prefix,
         readOnly,
+        tabIndex,
         suffix,
         thousandSeparator,
     ]);
@@ -7829,7 +7838,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
             return value.map(function (option, index) { return (React__default["default"].createElement(material.Chip, __assign$4({ size: 'small', label: onRenderTag ? onRenderTag(option) : option.label }, getTagProps({ index: index })))); });
         }, renderInput: function (params) { return (React__default["default"].createElement(FormTextField, __assign$4({}, params, { ref: textFieldRef, name: name, variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, labelShrink: labelShrink, required: required, focused: focused, error: error, helperText: helperText, placeholder: placeholder, noFormValueItem: true, InputProps: __assign$4(__assign$4({}, params.InputProps), { endAdornment: (React__default["default"].createElement(React__default["default"].Fragment, null,
                     loading || isOnGetItemLoading ? React__default["default"].createElement(CircularProgress__default["default"], { color: 'inherit', size: 20 }) : null,
-                    params.InputProps.endAdornment)) }) }))); } }));
+                    params.InputProps.endAdornment)) }), inputProps: readOnly || disabled ? __assign$4(__assign$4({}, params.inputProps), { tabIndex: -1 }) : params.inputProps }))); } }));
 });
 FormAutocomplete.displayName = 'FormAutocomplete';
 FormAutocomplete.defaultProps = FormAutocompleteDefaultProps;var FormDatePickerDefaultProps = {};var __assign = function() {
@@ -14977,7 +14986,7 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwar
     return (React__default["default"].createElement(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs.AdapterDayjs, adapterLocale: dayjsLocale__default["default"] },
         React__default["default"].createElement(material.ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
             React__default["default"].createElement("div", { className: classNames$1(className, 'PrivateDatePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
-                React__default["default"].createElement(PrivateStyledTooltip, { open: open, PopperProps: {
+                React__default["default"].createElement(PrivateStyledTooltip, { open: disabled || readOnly ? false : open, PopperProps: {
                         modifiers: [
                             {
                                 name: 'offset',
@@ -14991,7 +15000,11 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwar
                         React__default["default"].createElement(xDatePickers.DesktopDatePicker, __assign$4({ value: inputValue, label: label, open: false, inputFormat: format, disabled: disabled, readOnly: readOnly, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, onClose: function () { return setOpen(false); }, onError: function (reason) { return (datePickerErrorRef.current = reason); }, onChange: function (newValue, keyboardInputValue) { return handleChange('date', newValue, keyboardInputValue); }, renderInput: function (_a) {
                                 var initClassName = _a.className, initFocused = _a.focused, initError = _a.error, initStyle = _a.style, initInputProps = _a.inputProps, initMuiInputProps = _a.InputProps, InputLabelProps = _a.InputLabelProps, params = __rest$2(_a, ["className", "focused", "error", "style", "inputProps", "InputProps", "InputLabelProps"]);
                                 var textFieldInputLabelProps = __assign$4(__assign$4({}, InputLabelProps), { shrink: labelShrink ? true : InputLabelProps === null || InputLabelProps === void 0 ? void 0 : InputLabelProps.shrink });
-                                var inputProps = __assign$4(__assign$4({}, initInputProps), { readOnly: (initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.readOnly) || readOnlyInput });
+                                var readOnly = (initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.readOnly) || readOnlyInput;
+                                var inputProps = __assign$4(__assign$4({}, initInputProps), { readOnly: readOnly });
+                                if (readOnly) {
+                                    inputProps.tabIndex = -1;
+                                }
                                 var muiInputProps = __assign$4(__assign$4({}, initMuiInputProps), { endAdornment: undefined });
                                 if (startAdornment || icon || muiInputProps.startAdornment) {
                                     muiInputProps.startAdornment = (React__default["default"].createElement(React__default["default"].Fragment, null,
@@ -15545,7 +15558,7 @@ styleInject(css_248z$2);var InputDatePicker = function (_a) {
     }, [labelShrink]);
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default["default"].createElement(xDatePickers.DesktopDatePicker, __assign$4({}, props, { className: classNames$1(className, 'InputDatePicker', "align-".concat(align)), open: false, value: value, inputFormat: format, disabled: disabled, readOnly: readOnly || readOnlyInput, renderInput: function (_a) {
-            var inputStyle = _a.style, inputInputRef = _a.inputRef, inputInputProps = _a.InputProps, inputError = _a.error, inputOnFocus = _a.onFocus, inputOnBlur = _a.onBlur, params = __rest$2(_a, ["style", "inputRef", "InputProps", "error", "onFocus", "onBlur"]);
+            var inputStyle = _a.style, inputInputRef = _a.inputRef, inputInputProps = _a.InputProps, initInputProps = _a.inputProps, inputError = _a.error, inputOnFocus = _a.onFocus, inputOnBlur = _a.onBlur, params = __rest$2(_a, ["style", "inputRef", "InputProps", "inputProps", "error", "onFocus", "onBlur"]);
             var muiInputProps = __assign$4(__assign$4({}, inputInputProps), { endAdornment: undefined });
             if (startAdornment || icon || muiInputProps.startAdornment) {
                 muiInputProps.startAdornment = (React__default["default"].createElement(React__default["default"].Fragment, null,
@@ -15557,6 +15570,10 @@ styleInject(css_248z$2);var InputDatePicker = function (_a) {
             if (endAdornment) {
                 muiInputProps.endAdornment = (React__default["default"].createElement(React__default["default"].Fragment, null, endAdornment && React__default["default"].createElement(material.InputAdornment, { position: 'end' }, endAdornment)));
             }
+            var inputProps = __assign$4({}, initInputProps);
+            if (readOnly) {
+                inputProps.tabIndex = -1;
+            }
             return (React__default["default"].createElement(material.TextField, __assign$4({}, params, { style: __assign$4(__assign$4({}, inputStyle), style), variant: variant, size: size, color: color, focused: focused, fullWidth: fullWidth, required: required, name: id, label: label, error: error || inputError, inputRef: function (ref) {
                     if (inputInputRef) {
                         if (typeof inputInputRef === 'function') {
@@ -15566,7 +15583,7 @@ styleInject(css_248z$2);var InputDatePicker = function (_a) {
                     if (inputRef) {
                         inputRef.current = ref;
                     }
-                }, InputProps: muiInputProps, InputLabelProps: inputLabelProps, onFocus: function (e) {
+                }, InputProps: muiInputProps, InputLabelProps: inputLabelProps, inputProps: inputProps, onFocus: function (e) {
                     if (inputOnFocus)
                         inputOnFocus(e);
                     if (onFocus)
@@ -16390,7 +16407,7 @@ styleInject(css_248z$1);var FormFile = React__default["default"].forwardRef(func
             },
         }, style: { width: fullWidth ? '100%' : undefined }, control: React__default["default"].createElement("div", { className: 'control-wrap' },
             !hideUrl && (React__default["default"].createElement("div", { className: 'file-name-wrap' },
-                React__default["default"].createElement(material.TextField, { inputRef: textFieldRef, className: 'file-name', variant: variant, label: label, size: size, required: required, value: value || '', focused: focused, disabled: disabled, fullWidth: true, error: error, InputLabelProps: labelShrink ? { shrink: labelShrink } : undefined, inputProps: { readOnly: true }, InputProps: {
+                React__default["default"].createElement(material.TextField, { inputRef: textFieldRef, className: 'file-name', variant: variant, label: label, size: size, required: required, value: value || '', focused: focused, disabled: disabled, fullWidth: true, error: error, InputLabelProps: labelShrink ? { shrink: labelShrink } : undefined, inputProps: { readOnly: true, tabIndex: -1 }, InputProps: {
                         endAdornment: (React__default["default"].createElement(material.InputAdornment, { position: 'end' },
                             React__default["default"].createElement("div", { className: 'input-file-wrap' },
                                 React__default["default"].createElement(material.Button, { variant: 'text', className: 'input-file-btn form-file-btn', color: error ? 'error' : color, disabled: disabled, ref: fileUploadBtnRef },
