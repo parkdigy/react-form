@@ -9,6 +9,8 @@ import {
   FormToggleButtonGroupItem,
   FormToggleButtonGroupCommands,
   FormValueMap,
+  FormBody,
+  FormFooter,
 } from '@pdg/react-form';
 import { OutlinedPaper } from '#ccomp';
 
@@ -65,108 +67,113 @@ const FormItemToggleButtonGroup = () => {
     <>
       <OutlinedPaper>
         <Form>
-          <FormRow>
-            <FormCol fullWidth={false}>
-              <FormCheckbox
-                name='multiple'
-                text='multiple'
-                checked={multiple}
-                onChange={(checked) => setMultiple(checked)}
-              />
-              <FormCheckbox
-                name='notAllowEmptyValue'
-                text='notAllowEmptyValue'
-                checked={notAllowEmptyValue}
-                onChange={(checked) => setNowAllowEmptyValue(checked)}
-              />
-            </FormCol>
-          </FormRow>
+          <FormBody>
+            <FormRow>
+              <FormCol fullWidth={false}>
+                <FormCheckbox
+                  name='multiple'
+                  text='multiple'
+                  checked={multiple}
+                  onChange={(checked) => setMultiple(checked)}
+                />
+                <FormCheckbox
+                  name='notAllowEmptyValue'
+                  text='notAllowEmptyValue'
+                  checked={notAllowEmptyValue}
+                  onChange={(checked) => setNowAllowEmptyValue(checked)}
+                />
+              </FormCol>
+            </FormRow>
+          </FormBody>
         </Form>
       </OutlinedPaper>
       <br />
-      <Form onSubmit={handleSubmit}>
-        <FormRow>
-          <FormCol>
-            <FormToggleButtonGroup
-              {...additionalProps}
-              name='label'
-              items={items}
-              labelIcon='RadioButtonChecked'
-              label='FormToggleButtonGroup'
-              helperText='labelIcon'
-            />
-          </FormCol>
-          <FormCol>
-            <FormToggleButtonGroup
-              {...additionalProps}
-              name='required'
-              items={items}
-              label='FormToggleButtonGroup'
-              required
-              helperText='required=true'
-            />
-          </FormCol>
-          <FormCol>
-            <FormToggleButtonGroup
-              {...additionalProps}
-              name='readOnly'
-              items={items}
-              label='FormToggleButtonGroup'
-              readOnly
-              helperText='readOnly=true'
-            />
-          </FormCol>
-          <FormCol>
-            <FormToggleButtonGroup
-              {...additionalProps}
-              name='disabled'
-              items={items}
-              label='FormToggleButtonGroup'
-              disabled
-              helperText='disabled=true'
-            />
-          </FormCol>
-          <FormCol>
-            <FormToggleButtonGroup
-              {...additionalProps}
-              type='checkbox'
-              name='checkbox'
-              items={items}
-              label='FormToggleButtonGroup'
-              helperText='type=checkbox'
-            />
-          </FormCol>
-        </FormRow>
+      <Form fullHeight onSubmit={handleSubmit}>
+        <FormBody>
+          <FormRow>
+            <FormCol>
+              <FormToggleButtonGroup
+                {...additionalProps}
+                name='label'
+                items={items}
+                labelIcon='RadioButtonChecked'
+                label='FormToggleButtonGroup'
+                helperText='labelIcon'
+              />
+            </FormCol>
+            <FormCol>
+              <FormToggleButtonGroup
+                {...additionalProps}
+                name='required'
+                items={items}
+                label='FormToggleButtonGroup'
+                required
+                helperText='required=true'
+              />
+            </FormCol>
+            <FormCol>
+              <FormToggleButtonGroup
+                {...additionalProps}
+                name='readOnly'
+                items={items}
+                label='FormToggleButtonGroup'
+                readOnly
+                helperText='readOnly=true'
+              />
+            </FormCol>
+            <FormCol>
+              <FormToggleButtonGroup
+                {...additionalProps}
+                name='disabled'
+                items={items}
+                label='FormToggleButtonGroup'
+                disabled
+                helperText='disabled=true'
+              />
+            </FormCol>
+            <FormCol>
+              <FormToggleButtonGroup
+                {...additionalProps}
+                type='checkbox'
+                name='checkbox'
+                items={items}
+                label='FormToggleButtonGroup'
+                helperText='type=checkbox'
+              />
+            </FormCol>
+          </FormRow>
 
-        <FormRow line>
-          <FormCol xs={3}>
-            <FormToggleButtonGroup
-              {...additionalProps}
-              name='onLoadItems'
-              label='FormToggleButtonGroup'
-              helperText='onLoadItems'
-              onLoadItems={handleLoadItems}
-            />
-          </FormCol>
-          <FormCol xs={3}>
-            <FormToggleButtonGroup
-              {...additionalProps}
-              ref={asyncLoadToggleButtonGroupRef}
-              name='asyncLoadItems'
-              label='FormToggleButtonGroup'
-              helperText='Async Load Items'
-            />
-          </FormCol>
-        </FormRow>
-
-        <FormRow line>
-          <FormCol>
-            <FormButton>취소</FormButton>
-          </FormCol>
-          <FormCol>
-            <FormButton type='submit'>확인</FormButton>
-          </FormCol>
-        </FormRow>
+          <FormRow line>
+            <FormCol xs={3}>
+              <FormToggleButtonGroup
+                {...additionalProps}
+                name='onLoadItems'
+                label='FormToggleButtonGroup'
+                helperText='onLoadItems'
+                onLoadItems={handleLoadItems}
+              />
+            </FormCol>
+            <FormCol xs={3}>
+              <FormToggleButtonGroup
+                {...additionalProps}
+                ref={asyncLoadToggleButtonGroupRef}
+                name='asyncLoadItems'
+                label='FormToggleButtonGroup'
+                helperText='Async Load Items'
+              />
+            </FormCol>
+          </FormRow>
+        </FormBody>
+        <FormFooter>
+          <FormRow>
+            <FormCol>
+              <FormButton>취소</FormButton>
+            </FormCol>
+            <FormCol>
+              <FormButton type='submit'>확인</FormButton>
+            </FormCol>
+          </FormRow>
+        </FormFooter>
       </Form>
     </>
   );

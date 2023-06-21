@@ -27,6 +27,8 @@ import {
   FormDatePicker,
   FormValueMap,
   FormProps,
+  FormBody,
+  FormFooter,
 } from '@pdg/react-form';
 import { OutlinedPaper } from '#ccomp';
 import { BasicBlock, IconAdornmentBlock, NumberBlock, TextareaBlock, WidthBlock, ColorBlock, RatingBlock } from './sub';
@@ -127,95 +129,97 @@ const FormItemStyling = () => {
     <>
       <OutlinedPaper>
         <Form size='small'>
-          <FormRow>
-            <FormCol>
-              <FormToggleButtonGroup
-                name='type'
-                label='Component'
-                items={_components.map((component) =>
-                  lv(component.displayName?.substring(4), component.displayName || '')
-                )}
-                value={componentName}
-                onChange={(value) => setComponentName(value)}
-                notAllowEmptyValue
-                fullWidth={false}
-              />
-            </FormCol>
-          </FormRow>
-          <FormRow>
-            <FormCol>
-              <Box sx={{ ml: -1, mt: -1 }}>
+          <FormBody>
+            <FormRow>
+              <FormCol>
                 <FormToggleButtonGroup
-                  name='variant'
-                  label='Variant'
-                  value={variant}
-                  onChange={(value) => setVariant(value)}
-                  items={[lv('outlined (Default)', 'outlined'), lv('filled', 'filled'), lv('standard', 'standard')]}
-                  fullWidth={false}
-                  notAllowEmptyValue
-                  sx={{ ml: 1, mt: 1 }}
-                />
-                <FormToggleButtonGroup
-                  name='size'
-                  label='size'
-                  value={size}
-                  onChange={(value) => setSize(value)}
-                  items={[lv('medium (Default)', 'medium'), lv('small', 'small')]}
-                  fullWidth={false}
-                  notAllowEmptyValue
-                  sx={{ ml: 1, mt: 1 }}
-                />
-                <FormToggleButtonGroup
-                  name='color'
-                  label='color'
-                  value={color}
-                  onChange={(value) => setColor(value)}
-                  items={[
-                    lv('primary (Default)', 'primary', { color: 'primary' }),
-                    lv('secondary', 'secondary', { color: 'secondary' }),
-                    lv('error', 'error', { color: 'error' }),
-                    lv('info', 'info', { color: 'info' }),
-                    lv('success', 'success', { color: 'success' }),
-                    lv('warning', 'warning', { color: 'warning' }),
-                  ]}
+                  name='type'
+                  label='Component'
+                  items={_components.map((component) =>
+                    lv(component.displayName?.substring(4), component.displayName || '')
+                  )}
+                  value={componentName}
+                  onChange={(value) => setComponentName(value)}
                   notAllowEmptyValue
                   fullWidth={false}
-                  sx={{ ml: 1, mt: 1 }}
                 />
-              </Box>
-            </FormCol>
-          </FormRow>
-          <FormRow>
-            <FormCol>
-              <Box sx={{ ml: -1, mt: -1 }}>
-                <FormSelect
-                  name='spacing'
-                  label='spacing'
-                  value={Number(spacing)}
-                  onChange={setSpacing}
-                  items={[lv('0', 0), lv('1', 1), lv('2 (Default)', 2), lv('3', 3), lv('4', 4), lv('5', 5)]}
-                  fullWidth={false}
-                  sx={{ ml: 1, mt: 1 }}
-                />
-                <FormCheckbox
-                  name='labelShrink'
-                  text='labelShrink'
-                  checked={labelShrink}
-                  onChange={(checked) => setLabelShrink(checked)}
-                  fullWidth={false}
-                  sx={{ ml: 1, mt: 1 }}
-                />
-                <FormCheckbox
-                  name='focused'
-                  text='focused'
-                  checked={focused}
-                  onChange={(checked) => setFocused(checked)}
-                  fullWidth={false}
-                  sx={{ ml: 1, mt: 1 }}
-                />
-              </Box>
-            </FormCol>
-          </FormRow>
+              </FormCol>
+            </FormRow>
+            <FormRow>
+              <FormCol>
+                <Box sx={{ ml: -1, mt: -1 }}>
+                  <FormToggleButtonGroup
+                    name='variant'
+                    label='Variant'
+                    value={variant}
+                    onChange={(value) => setVariant(value)}
+                    items={[lv('outlined (Default)', 'outlined'), lv('filled', 'filled'), lv('standard', 'standard')]}
+                    fullWidth={false}
+                    notAllowEmptyValue
+                    sx={{ ml: 1, mt: 1 }}
+                  />
+                  <FormToggleButtonGroup
+                    name='size'
+                    label='size'
+                    value={size}
+                    onChange={(value) => setSize(value)}
+                    items={[lv('medium (Default)', 'medium'), lv('small', 'small')]}
+                    fullWidth={false}
+                    notAllowEmptyValue
+                    sx={{ ml: 1, mt: 1 }}
+                  />
+                  <FormToggleButtonGroup
+                    name='color'
+                    label='color'
+                    value={color}
+                    onChange={(value) => setColor(value)}
+                    items={[
+                      lv('primary (Default)', 'primary', { color: 'primary' }),
+                      lv('secondary', 'secondary', { color: 'secondary' }),
+                      lv('error', 'error', { color: 'error' }),
+                      lv('info', 'info', { color: 'info' }),
+                      lv('success', 'success', { color: 'success' }),
+                      lv('warning', 'warning', { color: 'warning' }),
+                    ]}
+                    notAllowEmptyValue
+                    fullWidth={false}
+                    sx={{ ml: 1, mt: 1 }}
+                  />
+                </Box>
+              </FormCol>
+            </FormRow>
+            <FormRow>
+              <FormCol>
+                <Box sx={{ ml: -1, mt: -1 }}>
+                  <FormSelect
+                    name='spacing'
+                    label='spacing'
+                    value={Number(spacing)}
+                    onChange={setSpacing}
+                    items={[lv('0', 0), lv('1', 1), lv('2 (Default)', 2), lv('3', 3), lv('4', 4), lv('5', 5)]}
+                    fullWidth={false}
+                    sx={{ ml: 1, mt: 1 }}
+                  />
+                  <FormCheckbox
+                    name='labelShrink'
+                    text='labelShrink'
+                    checked={labelShrink}
+                    onChange={(checked) => setLabelShrink(checked)}
+                    fullWidth={false}
+                    sx={{ ml: 1, mt: 1 }}
+                  />
+                  <FormCheckbox
+                    name='focused'
+                    text='focused'
+                    checked={focused}
+                    onChange={(checked) => setFocused(checked)}
+                    fullWidth={false}
+                    sx={{ ml: 1, mt: 1 }}
+                  />
+                </Box>
+              </FormCol>
+            </FormRow>
+          </FormBody>
         </Form>
       </OutlinedPaper>
       <br />
@@ -230,29 +234,32 @@ const FormItemStyling = () => {
           focused={focused}
           onSubmit={handleSubmit}
         >
-          {![FormCheckbox, FormRadioGroup, FormToggleButtonGroup, FormRating].includes(Component) && (
-            <>
-              <BasicBlock component={Component} componentProps={componentProps} />
-              <IconAdornmentBlock component={Component} componentProps={componentProps} />
-            </>
-          )}
+          <FormBody>
+            {![FormCheckbox, FormRadioGroup, FormToggleButtonGroup, FormRating].includes(Component) && (
+              <>
+                <BasicBlock component={Component} componentProps={componentProps} />
+                <IconAdornmentBlock component={Component} componentProps={componentProps} />
+              </>
+            )}
 
-          <WidthBlock component={Component} componentProps={componentProps} />
-          <ColorBlock component={Component} componentProps={componentProps} />
-          <ColorBlock component={Component} componentProps={componentProps} focused />
+            <WidthBlock component={Component} componentProps={componentProps} />
+            <ColorBlock component={Component} componentProps={componentProps} />
+            <ColorBlock component={Component} componentProps={componentProps} focused />
 
-          {Component === FormNumber && <NumberBlock componentProps={componentProps} />}
-          {Component === FormTextarea && <TextareaBlock componentProps={componentProps} />}
-          {Component === FormRating && <RatingBlock componentProps={componentProps} />}
-
-          <FormRow line>
-            <FormCol>
-              <FormButton>취소</FormButton>
-            </FormCol>
-            <FormCol>
-              <FormButton type='submit'>확인</FormButton>
-            </FormCol>
-          </FormRow>
+            {Component === FormNumber && <NumberBlock componentProps={componentProps} />}
+            {Component === FormTextarea && <TextareaBlock componentProps={componentProps} />}
+            {Component === FormRating && <RatingBlock componentProps={componentProps} />}
+          </FormBody>
+          <FormFooter>
+            <FormRow>
+              <FormCol>
+                <FormButton>취소</FormButton>
+              </FormCol>
+              <FormCol>
+                <FormButton type='submit'>확인</FormButton>
+              </FormCol>
+            </FormRow>
+          </FormFooter>
         </Form>
       )}
     </>

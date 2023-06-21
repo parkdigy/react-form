@@ -4,12 +4,13 @@ import { PartialPick, CommonSxProps, FormItemValue, FormValue, FormValueMap, For
 export interface FormProps extends CommonSxProps, PartialPick<FormControlProps, 'variant' | 'size' | 'color' | 'focused'>, PartialPick<GridProps, 'spacing'> {
     labelShrink?: InputLabelProps['shrink'];
     fullWidth?: boolean;
+    fullHeight?: boolean;
     formColGap?: number;
     onSubmit?(data: FormValueMap): void;
     onValueChange?(name: string, value: FormItemValue): void;
     onValueChangeByUser?(name: string, value: FormItemValue): void;
 }
-export declare const FormDefaultProps: Pick<FormProps, 'variant' | 'size' | 'color' | 'spacing' | 'formColGap' | 'fullWidth'>;
+export declare const FormDefaultProps: Pick<FormProps, 'variant' | 'size' | 'color' | 'spacing' | 'formColGap' | 'fullWidth' | 'fullHeight'>;
 export interface FormCommands {
     submit(): void;
     getAllFormValue(): FormValueMap;

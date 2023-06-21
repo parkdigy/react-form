@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, FormButton, FormRow, FormCol, FormTextarea, FormValueMap } from '@pdg/react-form';
+import { Form, FormButton, FormRow, FormCol, FormTextarea, FormValueMap, FormBody, FormFooter } from '@pdg/react-form';
 
 const FormItemTextarea = () => {
   const [value] = useState(
@@ -15,26 +15,30 @@ const FormItemTextarea = () => {
   //--------------------------------------------------------------------------------------------------------------------
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormRow>
-        <FormCol>
-          <FormTextarea name='required' label='FormTextarea' required helperText='required=true' />
-        </FormCol>
-        <FormCol>
-          <FormTextarea name='readOnly' label='FormTextarea' value={value} readOnly helperText='readOnly=true' />
-        </FormCol>
-        <FormCol>
-          <FormTextarea name='disabled' label='FormTextarea' value={value} disabled helperText='disabled=true' />
-        </FormCol>
-      </FormRow>
-      <FormRow line>
-        <FormCol>
-          <FormButton>취소</FormButton>
-        </FormCol>
-        <FormCol>
-          <FormButton type='submit'>확인</FormButton>
-        </FormCol>
-      </FormRow>
+    <Form fullHeight onSubmit={handleSubmit}>
+      <FormBody>
+        <FormRow>
+          <FormCol>
+            <FormTextarea name='required' label='FormTextarea' required helperText='required=true' />
+          </FormCol>
+          <FormCol>
+            <FormTextarea name='readOnly' label='FormTextarea' value={value} readOnly helperText='readOnly=true' />
+          </FormCol>
+          <FormCol>
+            <FormTextarea name='disabled' label='FormTextarea' value={value} disabled helperText='disabled=true' />
+          </FormCol>
+        </FormRow>
+      </FormBody>
+      <FormFooter>
+        <FormRow>
+          <FormCol>
+            <FormButton>취소</FormButton>
+          </FormCol>
+          <FormCol>
+            <FormButton type='submit'>확인</FormButton>
+          </FormCol>
+        </FormRow>
+      </FormFooter>
     </Form>
   );
 };

@@ -80,21 +80,24 @@ const Search = () => {
       {/*</Grid>*/}
       <Grid item>
         <_Search ref={searchRef} autoSubmit onSubmit={handleSubmit}>
-          {leftSearchGroup}
-          <SearchGroup align='right'>
-            <SearchButton>
-              <FormIcon>download</FormIcon>
-            </SearchButton>
-            <SearchButton
-              icon='add'
-              variant='contained'
-              onClick={() => {
-                ll(searchRef.current?.getItem('search_date_from'));
-              }}
-            >
-              새 항목
-            </SearchButton>
-          </SearchGroup>
+          <SearchGroupRow>
+            {leftSearchGroup}
+
+            <SearchGroup align='right'>
+              <SearchButton>
+                <FormIcon>download</FormIcon>
+              </SearchButton>
+              <SearchButton
+                icon='add'
+                variant='contained'
+                onClick={() => {
+                  ll(searchRef.current?.getItem('search_date_from'));
+                }}
+              >
+                새 항목
+              </SearchButton>
+            </SearchGroup>
+          </SearchGroupRow>
 
           <SearchGroupRow>
             <SearchGroup>

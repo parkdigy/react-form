@@ -10,6 +10,8 @@ import {
   FormAutocompleteCommands,
   FormAutocompleteComponentValue,
   FormValueMap,
+  FormBody,
+  FormFooter,
 } from '@pdg/react-form';
 import { OutlinedPaper } from '#ccomp';
 import { FormAutocompleteValue } from '../../../../src';
@@ -81,110 +83,114 @@ const FormItemAutocomplete = () => {
     <>
       <OutlinedPaper>
         <Form>
-          <FormRow>
-            <FormCol fullWidth={false}>
-              <FormCheckbox
-                name='multiple'
-                text='multiple'
-                checked={multiple}
-                onChange={(checked) => setMultiple(checked)}
-              />
-              <FormCheckbox
-                name='openOnFocus'
-                text='openOnFocus'
-                checked={openOnFocus}
-                onChange={(checked) => setOpenOnFocus(checked)}
-              />
-            </FormCol>
-          </FormRow>
+          <FormBody>
+            <FormRow>
+              <FormCol fullWidth={false}>
+                <FormCheckbox
+                  name='multiple'
+                  text='multiple'
+                  checked={multiple}
+                  onChange={(checked) => setMultiple(checked)}
+                />
+                <FormCheckbox
+                  name='openOnFocus'
+                  text='openOnFocus'
+                  checked={openOnFocus}
+                  onChange={(checked) => setOpenOnFocus(checked)}
+                />
+              </FormCol>
+            </FormRow>
+          </FormBody>
         </Form>
       </OutlinedPaper>
       <br />
-      <Form onSubmit={handleSubmit}>
-        <FormRow>
-          <FormCol>
-            <FormAutocomplete
-              {...additionalProps}
-              name='label'
-              items={items}
-              value={1}
-              labelIcon='RadioButtonChecked'
-              label='FormAutocomplete'
-              helperText='labelIcon'
-            />
-          </FormCol>
-          <FormCol>
-            <FormAutocomplete
-              {...additionalProps}
-              name='required'
-              items={items}
-              label='FormAutocomplete'
-              required
-              helperText='required=true'
-            />
-          </FormCol>
-          <FormCol>
-            <FormAutocomplete
-              {...additionalProps}
-              name='readOnly'
-              items={items}
-              label='FormAutocomplete'
-              readOnly
-              helperText='readOnly=true'
-            />
-          </FormCol>
-          <FormCol>
-            <FormAutocomplete
-              {...additionalProps}
-              name='disabled'
-              items={items}
-              label='FormAutocomplete'
-              disabled
-              helperText='disabled=true'
-            />
-          </FormCol>
-        </FormRow>
-
-        <FormRow line>
-          <FormCol xs={3}>
-            <FormAutocomplete
-              {...additionalProps}
-              name='onLoadItems'
-              label='FormAutocomplete'
-              helperText='onLoadItems'
-              onLoadItems={handleLoadItems}
-            />
-          </FormCol>
-          <FormCol xs={3}>
-            <FormAutocomplete
-              {...additionalProps}
-              ref={asyncLoadAutocompleteRef}
-              name='asyncLoadItems'
-              label='FormAutocomplete'
-              helperText='Async Load Items'
-            />
-          </FormCol>{' '}
-          <FormCol xs={3}>
-            <FormAutocomplete
-              {...additionalProps}
-              name='onLoadItems'
-              label='FormAutocomplete'
-              helperText='async=true'
-              async
-              onLoadItems={handleLoadItems}
-              onAsyncLoadValueItem={handleAsyncLoadValueItem}
-            />
-          </FormCol>
-        </FormRow>
-
-        <FormRow line>
-          <FormCol>
-            <FormButton>취소</FormButton>
-          </FormCol>
-          <FormCol>
-            <FormButton type='submit'>확인</FormButton>
-          </FormCol>
-        </FormRow>
+      <Form fullHeight onSubmit={handleSubmit}>
+        <FormBody>
+          <FormRow>
+            <FormCol>
+              <FormAutocomplete
+                {...additionalProps}
+                name='label'
+                items={items}
+                value={1}
+                labelIcon='RadioButtonChecked'
+                label='FormAutocomplete'
+                helperText='labelIcon'
+              />
+            </FormCol>
+            <FormCol>
+              <FormAutocomplete
+                {...additionalProps}
+                name='required'
+                items={items}
+                label='FormAutocomplete'
+                required
+                helperText='required=true'
+              />
+            </FormCol>
+            <FormCol>
+              <FormAutocomplete
+                {...additionalProps}
+                name='readOnly'
+                items={items}
+                label='FormAutocomplete'
+                readOnly
+                helperText='readOnly=true'
+              />
+            </FormCol>
+            <FormCol>
+              <FormAutocomplete
+                {...additionalProps}
+                name='disabled'
+                items={items}
+                label='FormAutocomplete'
+                disabled
+                helperText='disabled=true'
+              />
+            </FormCol>
+          </FormRow>
+          <FormRow>
+            <FormCol xs={3}>
+              <FormAutocomplete
+                {...additionalProps}
+                name='onLoadItems'
+                label='FormAutocomplete'
+                helperText='onLoadItems'
+                onLoadItems={handleLoadItems}
+              />
+            </FormCol>
+            <FormCol xs={3}>
+              <FormAutocomplete
+                {...additionalProps}
+                ref={asyncLoadAutocompleteRef}
+                name='asyncLoadItems'
+                label='FormAutocomplete'
+                helperText='Async Load Items'
+              />
+            </FormCol>{' '}
+            <FormCol xs={3}>
+              <FormAutocomplete
+                {...additionalProps}
+                name='onLoadItems'
+                label='FormAutocomplete'
+                helperText='async=true'
+                async
+                onLoadItems={handleLoadItems}
+                onAsyncLoadValueItem={handleAsyncLoadValueItem}
+              />
+            </FormCol>
+          </FormRow>
+        </FormBody>
+        <FormFooter>
+          <FormRow>
+            <FormCol>
+              <FormButton>취소</FormButton>
+            </FormCol>
+            <FormCol>
+              <FormButton type='submit'>확인</FormButton>
+            </FormCol>
+          </FormRow>
+        </FormFooter>
       </Form>
     </>
   );

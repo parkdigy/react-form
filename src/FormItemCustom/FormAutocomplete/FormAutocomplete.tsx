@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect, useRef, useMemo } from 'react';
 import classNames from 'classnames';
-import { Autocomplete, Chip } from '@mui/material';
+import { Autocomplete, Chip, AutocompleteChangeReason, AutocompleteChangeDetails } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick, notEmpty, isSame } from '../../@util';
 import {
@@ -14,7 +14,6 @@ import {
 import { useFormState } from '../../FormContext';
 import { FormTextField, FormTextFieldCommands } from '../../FormItemTextFieldBase';
 import CircularProgress from '@mui/material/CircularProgress';
-import { AutocompleteChangeDetails, AutocompleteChangeReason } from '@mui/base/AutocompleteUnstyled/useAutocomplete';
 
 const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
   (

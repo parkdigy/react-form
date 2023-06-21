@@ -1,6 +1,6 @@
-import React, { useState, useRef, useLayoutEffect, FormEvent, useCallback, useMemo } from 'react';
+import React, { useState, useRef, useLayoutEffect, FormEvent, useCallback, useMemo, CSSProperties } from 'react';
 import classNames from 'classnames';
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import { empty, notEmpty, nextTick } from '../@util';
 import { FormProps as Props, FormDefaultProps, FormCommands } from './Form.types';
 import FormContextProvider from '../FormContextProvider';
@@ -22,7 +22,7 @@ const Form = React.forwardRef<FormCommands, Props>(
     {
       className,
       children,
-      style,
+      style: initStyle,
       sx,
       //--------------------------------------------------------------------------------------------------------------------
       variant: initVariant,
@@ -33,6 +33,7 @@ const Form = React.forwardRef<FormCommands, Props>(
       focused: initFocused,
       labelShrink: initLabelShrink,
       fullWidth: initFullWidth,
+      fullHeight,
       //----------------------------------------------------------------------------------------------------------------
       onSubmit,
       onValueChange,
@@ -384,6 +385,19 @@ const Form = React.forwardRef<FormCommands, Props>(
 
     // Render ----------------------------------------------------------------------------------------------------------
 
+    const style = useMemo(() => {
+      return fullHeight ? { ...initStyle, flex: 1, height: '100%' } : initStyle;
+    }, [initStyle, fullHeight]);
+
+    const contentWrapStyle: CSSProperties = useMemo(
+      () => ({
+        display: 'flex',
+        flexDirection: 'column',
+        height: fullHeight ? '100%' : undefined,
+      }),
+      [fullHeight]
+    );
+
     return (
       <FormContextProvider
         value={{
@@ -396,6 +410,7 @@ const Form = React.forwardRef<FormCommands, Props>(
           focused,
           labelShrink,
           fullWidth,
+          fullHeight,
           onAddValueItem(id, item) {
             valueItems[id] = item;
             if (formAddValueItem) formAddValueItem(id, item);
@@ -416,7 +431,7 @@ const Form = React.forwardRef<FormCommands, Props>(
         }}
       >
         <Box
-          className={classNames('Form', `Form-variant-${variant}`, className)}
+          className={classNames('Form', `Form-variant-${variant}`, fullHeight && 'full-height', className)}
           component='form'
           ref={formRef}
           noValidate
@@ -425,9 +440,7 @@ const Form = React.forwardRef<FormCommands, Props>(
           style={style}
           sx={sx}
         >
-          <Grid container spacing={spacing} direction='column'>
-            {children}
-          </Grid>
+          <div style={contentWrapStyle}>{children}</div>
         </Box>
       </FormContextProvider>
     );

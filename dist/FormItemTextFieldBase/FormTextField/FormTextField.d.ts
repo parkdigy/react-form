@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormTextFieldCommands } from './FormTextField.types';
 import './FormTextField.scss';
-declare const FormTextField: React.ForwardRefExoticComponent<Omit<import("@mui/material").TextFieldProps, "ref" | "name" | "onChange"> & Omit<import("../../@types").FormValueItemProps, "disabled" | "error" | "fullWidth" | "label" | "value"> & {
+declare const FormTextField: React.ForwardRefExoticComponent<Omit<import("@mui/material").FilledTextFieldProps | import("@mui/material").OutlinedTextFieldProps | import("@mui/material").StandardTextFieldProps, "ref" | "name" | "onChange"> & Omit<import("../../@types").FormValueItemProps, "disabled" | "error" | "fullWidth" | "label" | "value"> & {
     icon?: string | undefined;
     clear?: boolean | undefined;
     maxLength?: number | undefined;

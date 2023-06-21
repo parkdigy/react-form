@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormCheckbox, FormRow, FormCol, FormButton, FormValueMap } from '@pdg/react-form';
+import { Form, FormCheckbox, FormRow, FormCol, FormButton, FormValueMap, FormBody, FormFooter } from '@pdg/react-form';
 
 const FormItemCheckbox = () => {
   function handleSubmit(data: FormValueMap) {
@@ -9,34 +9,38 @@ const FormItemCheckbox = () => {
   //--------------------------------------------------------------------------------------------------------------------
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormRow>
-        <FormCol>
-          <FormCheckbox
-            hidden
-            name='default'
-            labelIcon='Check'
-            label='FormCheckbox'
-            text='체크박스'
-            helperText='labelIcon'
-          />
-          <FormCheckbox name='readOnly' label='FormCheckbox' text='체크박스' readOnly helperText='readOnly=true' />
-        </FormCol>
-        <FormCol>
-          <FormCheckbox name='readOnly' label='FormCheckbox' text='체크박스' readOnly helperText='readOnly=true' />
-        </FormCol>
-        <FormCol>
-          <FormCheckbox name='disabled' label='FormCheckbox' text='체크박스' disabled helperText='disabled=true' />
-        </FormCol>
-      </FormRow>
-      <FormRow line>
-        <FormCol>
-          <FormButton>취소</FormButton>
-        </FormCol>
-        <FormCol>
-          <FormButton type='submit'>확인</FormButton>
-        </FormCol>
-      </FormRow>
+    <Form fullHeight onSubmit={handleSubmit}>
+      <FormBody>
+        <FormRow>
+          <FormCol>
+            <FormCheckbox
+              hidden
+              name='default'
+              labelIcon='Check'
+              label='FormCheckbox'
+              text='체크박스'
+              helperText='labelIcon'
+            />
+            <FormCheckbox name='readOnly' label='FormCheckbox' text='체크박스' readOnly helperText='readOnly=true' />
+          </FormCol>
+          <FormCol>
+            <FormCheckbox name='readOnly' label='FormCheckbox' text='체크박스' readOnly helperText='readOnly=true' />
+          </FormCol>
+          <FormCol>
+            <FormCheckbox name='disabled' label='FormCheckbox' text='체크박스' disabled helperText='disabled=true' />
+          </FormCol>
+        </FormRow>
+      </FormBody>
+      <FormFooter>
+        <FormRow>
+          <FormCol>
+            <FormButton>취소</FormButton>
+          </FormCol>
+          <FormCol>
+            <FormButton type='submit'>확인</FormButton>
+          </FormCol>
+        </FormRow>
+      </FormFooter>
     </Form>
   );
 };

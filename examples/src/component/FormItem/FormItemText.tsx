@@ -14,6 +14,8 @@ import {
   FormToggleButtonGroup,
   FormToggleButtonGroupItem,
   FormValueMap,
+  FormBody,
+  FormFooter,
 } from '@pdg/react-form';
 import { OutlinedPaper } from '#ccomp';
 
@@ -96,26 +98,30 @@ const FormItemText = () => {
       </OutlinedPaper>
       <br />
       {Component && (
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <FormRow>
-            <FormCol>
-              <Component name='required' label={componentName} required helperText='required=true' />
-            </FormCol>
-            <FormCol>
-              <Component name='readOnly' label={componentName} value={value} readOnly helperText='readOnly=true' />
-            </FormCol>
-            <FormCol>
-              <Component name='disabled' label={componentName} value={value} disabled helperText='disabled=true' />
-            </FormCol>
-          </FormRow>
-          <FormRow line>
-            <FormCol>
-              <FormButton>취소</FormButton>
-            </FormCol>
-            <FormCol>
-              <FormButton type='submit'>확인</FormButton>
-            </FormCol>
-          </FormRow>
+        <Form ref={formRef} fullHeight onSubmit={handleSubmit}>
+          <FormBody>
+            <FormRow>
+              <FormCol>
+                <Component name='required' label={componentName} required helperText='required=true' />
+              </FormCol>
+              <FormCol>
+                <Component name='readOnly' label={componentName} value={value} readOnly helperText='readOnly=true' />
+              </FormCol>
+              <FormCol>
+                <Component name='disabled' label={componentName} value={value} disabled helperText='disabled=true' />
+              </FormCol>
+            </FormRow>
+          </FormBody>
+          <FormFooter>
+            <FormRow>
+              <FormCol>
+                <FormButton>취소</FormButton>
+              </FormCol>
+              <FormCol>
+                <FormButton type='submit'>확인</FormButton>
+              </FormCol>
+            </FormRow>
+          </FormFooter>
         </Form>
       )}
     </>

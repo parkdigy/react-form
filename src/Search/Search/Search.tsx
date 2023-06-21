@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useMemo, useRef } from 'react';
 import { Paper } from '@mui/material';
 import { SearchProps as Props, SearchCommands, SearchDefaultProps } from './Search.types';
 import { Form, FormCommands } from '../../Form';
+import { FormBody } from '../../FormLayout';
 import FormContextProvider from '../../FormContextProvider';
 import SearchGroupRow from '../SearchGroupRow';
 
@@ -109,7 +110,7 @@ const Search = React.forwardRef<SearchCommands, Props>(
             fullWidth={false}
             {...otherProps}
           >
-            {renderChildren}
+            <FormBody>{renderChildren}</FormBody>
           </Form>
         </Paper>
       </FormContextProvider>

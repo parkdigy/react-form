@@ -16,6 +16,7 @@ export interface FormProps
     PartialPick<GridProps, 'spacing'> {
   labelShrink?: InputLabelProps['shrink'];
   fullWidth?: boolean;
+  fullHeight?: boolean;
   formColGap?: number;
   //--------------------------------------------------------------------------------------------------------------------
   onSubmit?(data: FormValueMap): void;
@@ -23,15 +24,18 @@ export interface FormProps
   onValueChangeByUser?(name: string, value: FormItemValue): void;
 }
 
-export const FormDefaultProps: Pick<FormProps, 'variant' | 'size' | 'color' | 'spacing' | 'formColGap' | 'fullWidth'> =
-  {
-    variant: 'outlined',
-    size: 'medium',
-    color: 'primary',
-    spacing: 2,
-    formColGap: 1.5,
-    fullWidth: true,
-  };
+export const FormDefaultProps: Pick<
+  FormProps,
+  'variant' | 'size' | 'color' | 'spacing' | 'formColGap' | 'fullWidth' | 'fullHeight'
+> = {
+  variant: 'outlined',
+  size: 'medium',
+  color: 'primary',
+  spacing: 2,
+  formColGap: 1.5,
+  fullWidth: true,
+  fullHeight: false,
+};
 
 //--------------------------------------------------------------------------------------------------------------------
 

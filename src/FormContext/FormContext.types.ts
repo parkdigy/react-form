@@ -7,6 +7,7 @@ export interface FormContextValue
     'variant' | 'size' | 'color' | 'spacing' | 'formColGap' | 'focused' | 'labelShrink' | 'fullWidth'
   > {
   id: string;
+  fullHeight?: boolean;
   onAddValueItem(id: string, commands: FormValueItemCommands): void;
   onRemoveValueItem(id: string): void;
   onValueChange(name: string, value: FormItemValue): void;
