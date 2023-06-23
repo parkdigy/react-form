@@ -42,6 +42,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
       formValueSeparator,
       formValueSort,
       hidden,
+      itemWidth,
       onLoadItems,
       //----------------------------------------------------------------------------------------------------------------
       onChange,
@@ -81,8 +82,8 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
     const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
     const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
     const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
+      () => (type === 'checkbox' || type === 'radio' ? true : initFullWidth == null ? formFullWidth : initFullWidth),
+      [initFullWidth, formFullWidth, type]
     );
 
     // State - FormState -----------------------------------------------------------------------------------------------
@@ -447,6 +448,88 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
       formControlBaseProps.focused = true;
     }
 
+    const buttons = useMemo(() => {
+      let finalItemWidth: number | string | undefined = undefined;
+      if (type === 'button' && !fullWidth) {
+        finalItemWidth = 'auto';
+      } else if (!fullWidth || type === 'radio' || type === 'checkbox') {
+        finalItemWidth = 'auto';
+      }
+
+      const containerStyle =
+        type === 'checkbox' || type === 'radio'
+          ? {
+              width: itemWidth,
+            }
+          : undefined;
+
+      const buttonStyle = {
+        borderColor: error ? theme.palette.error.main : '',
+        color: error ? theme.palette.error.main : '',
+        width: finalItemWidth,
+      };
+
+      return (
+        items &&
+        items.map(({ value, label, disabled: itemDisabled, color: itemColor }, idx) => {
+          const button = (
+            <ToggleButton
+              ref={idx === 0 ? resizeHeightDetectorRef : undefined}
+              size={size}
+              className='ToggleButton'
+              value={value}
+              color={itemColor || color}
+              disabled={disabled || readOnly || itemDisabled}
+              style={buttonStyle}
+              onFocus={() => setFocused(initFocused || true)}
+              onBlur={() => setFocused(initFocused || false)}
+            >
+              {type === 'checkbox' ? (
+                <>
+                  <Icon className='__checkbox-unchecked__'>check_box_outline_blank</Icon>
+                  <Icon className='__checkbox-checked__'>check_box</Icon>
+                </>
+              ) : (
+                type === 'radio' && (
+                  <>
+                    <>
+                      <Icon className='__checkbox-unchecked__'>radio_button_unchecked</Icon>
+                      <Icon className='__checkbox-checked__'>radio_button_checked</Icon>
+                    </>
+                  </>
+                )
+              )}
+              {label}
+            </ToggleButton>
+          );
+
+          if (type === 'checkbox' || type === 'radio') {
+            return (
+              <div className='ToggleButtonContainer' style={containerStyle}>
+                {button}
+              </div>
+            );
+          } else {
+            return button;
+          }
+        })
+      );
+    }, [
+      color,
+      disabled,
+      error,
+      fullWidth,
+      initFocused,
+      itemWidth,
+      items,
+      readOnly,
+      resizeHeightDetectorRef,
+      setFocused,
+      size,
+      theme.palette.error.main,
+      type,
+    ]);
+
     return (
       <FormItemBase
         {...formControlBaseProps}
@@ -493,26 +576,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
                   }}
                 >
                   <ToggleButtonGroup className='ToggleButtonGroup' exclusive={!multiple}>
-                    {items &&
-                      items.map(({ value, label, disabled: itemDisabled, color: itemColor }, idx) => (
-                        <ToggleButton
-                          ref={idx === 0 ? resizeHeightDetectorRef : null}
-                          key={idx}
-                          size={size}
-                          className='ToggleButton'
-                          value={value}
-                          color={itemColor || color}
-                          disabled={disabled || readOnly || itemDisabled}
-                          style={{
-                            borderColor: error ? theme.palette.error.main : '',
-                            color: error ? theme.palette.error.main : '',
-                          }}
-                          onFocus={() => setFocused(initFocused || true)}
-                          onBlur={() => setFocused(initFocused || false)}
-                        >
-                          {label}
-                        </ToggleButton>
-                      ))}
+                    {buttons}
                   </ToggleButtonGroup>
                 </div>
               )}
@@ -541,41 +605,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
                     style={{ visibility: 'hidden' }}
                   />
                 ) : (
-                  items.map(({ value, label, disabled: itemDisabled, color: itemColor }, idx) => (
-                    <ToggleButton
-                      ref={idx === 0 ? resizeHeightDetectorRef : undefined}
-                      key={idx}
-                      size={size}
-                      className='ToggleButton'
-                      value={value}
-                      color={itemColor || color}
-                      disabled={disabled || readOnly || itemDisabled}
-                      style={{
-                        borderColor: error ? theme.palette.error.main : '',
-                        color: error ? theme.palette.error.main : '',
-                        width: type === 'checkbox' || type === 'radio' ? 'auto' : undefined,
-                      }}
-                      onFocus={() => setFocused(initFocused || true)}
-                      onBlur={() => setFocused(initFocused || false)}
-                    >
-                      {type === 'checkbox' ? (
-                        <>
-                          <Icon className='__checkbox-unchecked__'>check_box_outline_blank</Icon>
-                          <Icon className='__checkbox-checked__'>check_box</Icon>
-                        </>
-                      ) : (
-                        type === 'radio' && (
-                          <>
-                            <>
-                              <Icon className='__checkbox-unchecked__'>radio_button_unchecked</Icon>
-                              <Icon className='__checkbox-checked__'>radio_button_checked</Icon>
-                            </>
-                          </>
-                        )
-                      )}
-                      {label}
-                    </ToggleButton>
-                  ))
+                  buttons
                 )}
               </ToggleButtonGroup>
             </>

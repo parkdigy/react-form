@@ -4993,12 +4993,12 @@ FormRadioGroup.displayName = 'FormRadioGroup';
 FormRadioGroup.defaultProps = FormRadioGroupDefaultProps;var FormToggleButtonGroupDefaultProps = {
     type: 'button',
     formValueSeparator: ',',
-};var css_248z$b = ".FormToggleButtonGroup .ToggleButton {\n  display: inline-block;\n  padding: 0 10px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton, .FormToggleButtonGroup.type-radio .ToggleButton {\n  padding-left: 3px;\n  padding-right: 5px;\n  display: flex;\n  background-color: transparent !important;\n  border: 0;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton:not(:last-child), .FormToggleButtonGroup.type-radio .ToggleButton:not(:last-child) {\n  margin-right: 5px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-unchecked__ {\n  margin-right: 3px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__ {\n  display: none;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-checked__ {\n  display: block;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-unchecked__ {\n  display: none;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .ToggleButton {\n  height: 52px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .ToggleButton {\n  height: 52px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .ToggleButton {\n  height: 44px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .ToggleButton {\n  height: 26px;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-filled .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-standard .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .ToggleButton {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .ToggleButton {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .ToggleButton {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .ToggleButton {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .ToggleButton {\n  height: 26px;\n}";
+};var css_248z$b = ".FormToggleButtonGroup .ToggleButton {\n  display: inline-block;\n  padding: 0 10px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButtonContainer:not(:last-child), .FormToggleButtonGroup.type-radio .ToggleButtonContainer:not(:last-child) {\n  margin-right: 5px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButtonContainer .ToggleButton, .FormToggleButtonGroup.type-radio .ToggleButtonContainer .ToggleButton {\n  padding-left: 3px;\n  padding-right: 5px;\n  display: flex;\n  background-color: transparent !important;\n  border: 0 !important;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButtonContainer .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-checkbox .ToggleButtonContainer .ToggleButton .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButtonContainer .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-radio .ToggleButtonContainer .ToggleButton .__checkbox-unchecked__ {\n  margin-right: 3px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButtonContainer .ToggleButton .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButtonContainer .ToggleButton .__checkbox-checked__ {\n  display: none;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButtonContainer .ToggleButton.Mui-selected .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButtonContainer .ToggleButton.Mui-selected .__checkbox-checked__ {\n  display: block;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButtonContainer .ToggleButton.Mui-selected .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButtonContainer .ToggleButton.Mui-selected .__checkbox-unchecked__ {\n  display: none;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .ToggleButton {\n  height: 52px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .ToggleButton {\n  height: 52px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .ToggleButton {\n  height: 44px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .ToggleButton {\n  height: 26px;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-filled .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-standard .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .ToggleButton {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .ToggleButton {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .ToggleButton {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .ToggleButton {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .ToggleButton {\n  height: 26px;\n}";
 styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, type = _a.type, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, notAllowEmptyValue = _a.notAllowEmptyValue, exceptValue = _a.exceptValue, initWidth = _a.width, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, hidden = _a.hidden, onLoadItems = _a.onLoadItems, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, type = _a.type, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, notAllowEmptyValue = _a.notAllowEmptyValue, exceptValue = _a.exceptValue, initWidth = _a.width, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, hidden = _a.hidden, itemWidth = _a.itemWidth, onLoadItems = _a.onLoadItems, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -5011,7 +5011,7 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
     var variant = React.useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = React.useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = React.useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var fullWidth = React.useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    var fullWidth = React.useMemo(function () { return (type === 'checkbox' || type === 'radio' ? true : initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth, type]);
     // State - FormState -----------------------------------------------------------------------------------------------
     var _c = useAutoUpdateState$1(initFocused == null ? formFocused : initFocused), focused = _c[0], setFocused = _c[1];
     // Theme -----------------------------------------------------------------------------------------------------------
@@ -5335,6 +5335,57 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
     if (focused) {
         formControlBaseProps.focused = true;
     }
+    var buttons = React.useMemo(function () {
+        var finalItemWidth = undefined;
+        if (type === 'button' && !fullWidth) {
+            finalItemWidth = 'auto';
+        }
+        else if (!fullWidth || type === 'radio' || type === 'checkbox') {
+            finalItemWidth = 'auto';
+        }
+        var containerStyle = type === 'checkbox' || type === 'radio'
+            ? {
+                width: itemWidth,
+            }
+            : undefined;
+        var buttonStyle = {
+            borderColor: error ? theme.palette.error.main : '',
+            color: error ? theme.palette.error.main : '',
+            width: finalItemWidth,
+        };
+        return (items &&
+            items.map(function (_a, idx) {
+                var value = _a.value, label = _a.label, itemDisabled = _a.disabled, itemColor = _a.color;
+                var button = (React__default["default"].createElement(material.ToggleButton, { ref: idx === 0 ? resizeHeightDetectorRef : undefined, size: size, className: 'ToggleButton', value: value, color: itemColor || color, disabled: disabled || readOnly || itemDisabled, style: buttonStyle, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } },
+                    type === 'checkbox' ? (React__default["default"].createElement(React__default["default"].Fragment, null,
+                        React__default["default"].createElement(material.Icon, { className: '__checkbox-unchecked__' }, "check_box_outline_blank"),
+                        React__default["default"].createElement(material.Icon, { className: '__checkbox-checked__' }, "check_box"))) : (type === 'radio' && (React__default["default"].createElement(React__default["default"].Fragment, null,
+                        React__default["default"].createElement(React__default["default"].Fragment, null,
+                            React__default["default"].createElement(material.Icon, { className: '__checkbox-unchecked__' }, "radio_button_unchecked"),
+                            React__default["default"].createElement(material.Icon, { className: '__checkbox-checked__' }, "radio_button_checked"))))),
+                    label));
+                if (type === 'checkbox' || type === 'radio') {
+                    return (React__default["default"].createElement("div", { className: 'ToggleButtonContainer', style: containerStyle }, button));
+                }
+                else {
+                    return button;
+                }
+            }));
+    }, [
+        color,
+        disabled,
+        error,
+        fullWidth,
+        initFocused,
+        itemWidth,
+        items,
+        readOnly,
+        resizeHeightDetectorRef,
+        setFocused,
+        size,
+        theme.palette.error.main,
+        type,
+    ]);
     return (React__default["default"].createElement(FormItemBase, __assign$6({}, formControlBaseProps, { className: classNames$1(className, 'FormValueItem', 'FormToggleButtonGroup', "variant-".concat(variant), "size-".concat(size), !!label && 'with-label', !!fullWidth && 'full-width', "type-".concat(type)), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, required: required, fullWidth: fullWidth, error: error, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, controlHeight: height || 0, controlVerticalCenter: isOnGetItemLoading || loading, control: isOnGetItemLoading || loading ? (React__default["default"].createElement("div", { style: { opacity: 0.54 }, ref: resizeHeightDetectorRef },
             React__default["default"].createElement(material.CircularProgress, { size: 16, color: 'inherit' }))) : (React__default["default"].createElement(React__default["default"].Fragment, null,
             !fullWidth && !isOnGetItemLoading && !loading && items && (React__default["default"].createElement("div", { ref: resizeWidthDetectorRef, style: {
@@ -5343,34 +5394,13 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
                     whiteSpace: 'nowrap',
                     visibility: 'hidden',
                 } },
-                React__default["default"].createElement(material.ToggleButtonGroup, { className: 'ToggleButtonGroup', exclusive: !multiple }, items &&
-                    items.map(function (_a, idx) {
-                        var value = _a.value, label = _a.label, itemDisabled = _a.disabled, itemColor = _a.color;
-                        return (React__default["default"].createElement(material.ToggleButton, { ref: idx === 0 ? resizeHeightDetectorRef : null, key: idx, size: size, className: 'ToggleButton', value: value, color: itemColor || color, disabled: disabled || readOnly || itemDisabled, style: {
-                                borderColor: error ? theme.palette.error.main : '',
-                                color: error ? theme.palette.error.main : '',
-                            }, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } }, label));
-                    })))),
+                React__default["default"].createElement(material.ToggleButtonGroup, { className: 'ToggleButtonGroup', exclusive: !multiple }, buttons))),
             React__default["default"].createElement(material.ToggleButtonGroup, { className: 'ToggleButtonGroup', exclusive: !multiple, fullWidth: fullWidth, value: value == null ? null : value, onChange: handleChange, style: {
                     width: !fullWidth && formColWidth && typeof width === 'number' && width > formColWidth
                         ? formColWidth
                         : undefined,
                     flexWrap: type === 'checkbox' || type === 'radio' ? 'wrap' : 'nowrap',
-                }, "aria-labelledby": notEmpty(label) ? labelId : undefined }, isOnGetItemLoading || loading || !items || empty(items) ? (React__default["default"].createElement(material.ToggleButton, { ref: resizeHeightDetectorRef, size: size, className: 'ToggleButton', disabled: disabled || readOnly, value: '', style: { visibility: 'hidden' } })) : (items.map(function (_a, idx) {
-                var value = _a.value, label = _a.label, itemDisabled = _a.disabled, itemColor = _a.color;
-                return (React__default["default"].createElement(material.ToggleButton, { ref: idx === 0 ? resizeHeightDetectorRef : undefined, key: idx, size: size, className: 'ToggleButton', value: value, color: itemColor || color, disabled: disabled || readOnly || itemDisabled, style: {
-                        borderColor: error ? theme.palette.error.main : '',
-                        color: error ? theme.palette.error.main : '',
-                        width: type === 'checkbox' || type === 'radio' ? 'auto' : undefined,
-                    }, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } },
-                    type === 'checkbox' ? (React__default["default"].createElement(React__default["default"].Fragment, null,
-                        React__default["default"].createElement(material.Icon, { className: '__checkbox-unchecked__' }, "check_box_outline_blank"),
-                        React__default["default"].createElement(material.Icon, { className: '__checkbox-checked__' }, "check_box"))) : (type === 'radio' && (React__default["default"].createElement(React__default["default"].Fragment, null,
-                        React__default["default"].createElement(React__default["default"].Fragment, null,
-                            React__default["default"].createElement(material.Icon, { className: '__checkbox-unchecked__' }, "radio_button_unchecked"),
-                            React__default["default"].createElement(material.Icon, { className: '__checkbox-checked__' }, "radio_button_checked"))))),
-                    label));
-            }))))) })));
+                }, "aria-labelledby": notEmpty(label) ? labelId : undefined }, isOnGetItemLoading || loading || !items || empty(items) ? (React__default["default"].createElement(material.ToggleButton, { ref: resizeHeightDetectorRef, size: size, className: 'ToggleButton', disabled: disabled || readOnly, value: '', style: { visibility: 'hidden' } })) : (buttons)))) })));
 });
 FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';
 FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormRatingDefaultProps = {

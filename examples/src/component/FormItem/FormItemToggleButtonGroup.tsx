@@ -154,6 +154,17 @@ const FormItemToggleButtonGroup = () => {
                 helperText='type=radio'
               />
             </FormCol>
+            <FormCol>
+              <FormToggleButtonGroup
+                {...additionalProps}
+                type='radio'
+                name='radio'
+                items={items}
+                itemWidth={100}
+                label='FormToggleButtonGroup'
+                helperText='type=radio, itemWidth=100'
+              />
+            </FormCol>
           </FormRow>
 
           <FormRow line>

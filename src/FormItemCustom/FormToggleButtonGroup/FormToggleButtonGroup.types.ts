@@ -36,6 +36,7 @@ export interface FormToggleButtonGroupProps
   formValueSort?: boolean;
   loading?: boolean;
   hidden?: boolean;
+  itemWidth?: number | string;
   onLoadItems?: () => Promise<FormToggleButtonGroupItem[]>;
   onValue?: (value: FormToggleButtonGroupValue) => FormToggleButtonGroupValue;
 }
