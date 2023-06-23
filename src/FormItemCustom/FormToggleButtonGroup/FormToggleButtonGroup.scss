@@ -25,6 +25,9 @@ $standard-small-label-height: 26px;
   &.type-checkbox,
   &.type-radio {
     .ToggleButtonContainer {
+      border: 0 !important;
+      margin-left: 0 !important;
+
       &:not(:last-child) {
         margin-right: 5px;
       }
