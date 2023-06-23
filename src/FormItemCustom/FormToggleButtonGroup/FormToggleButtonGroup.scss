@@ -22,7 +22,8 @@ $standard-small-label-height: 26px;
     text-overflow: ellipsis;
   }
 
-  &.type-checkbox {
+  &.type-checkbox,
+  &.type-radio {
     .ToggleButton {
       padding-left: 3px;
       padding-right: 5px;

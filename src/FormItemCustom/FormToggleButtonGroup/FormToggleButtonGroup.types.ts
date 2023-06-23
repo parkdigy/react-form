@@ -27,7 +27,7 @@ export interface FormToggleButtonGroupProps
   extends CommonSxProps,
     Omit<FormValueItemProps, 'value'>,
     PartialPick<FormItemBaseProps, 'required' | 'focused'> {
-  type?: 'button' | 'checkbox';
+  type?: 'button' | 'checkbox' | 'radio';
   value?: FormToggleButtonGroupValue;
   items?: FormToggleButtonGroupItem[];
   multiple?: boolean;
