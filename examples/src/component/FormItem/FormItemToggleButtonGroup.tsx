@@ -150,7 +150,7 @@ const FormItemToggleButtonGroup = () => {
                 type='radio'
                 name='radio'
                 items={items}
-                // label='FormToggleButtonGroup'
+                label='FormToggleButtonGroup'
                 helperText='type=radio'
               />
             </FormCol>

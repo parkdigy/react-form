@@ -110,25 +110,49 @@ $standard-small-label-height: 26px;
 
   // Label 있음
   &.with-label {
-    &.variant-outlined .ToggleButton {
-      height: $outlined-medium-label-height;
+    &.variant-outlined .FormItemBase-Control-wrap {
+      margin-top: 0;
+      margin-bottom: 0;
+      .ToggleButton {
+        height: $outlined-medium-label-height;
+      }
     }
-    &.variant-filled .ToggleButton {
-      height: $filled-medium-label-height;
+    &.variant-filled .FormItemBase-Control-wrap {
+      margin-top: 0;
+      margin-bottom: 0;
+      .ToggleButton {
+        height: $filled-medium-label-height;
+      }
     }
-    &.variant-standard .ToggleButton {
-      height: $standard-medium-label-height;
+    &.variant-standard .FormItemBase-Control-wrap {
+      margin-top: 0;
+      margin-bottom: 0;
+      .ToggleButton {
+        height: $standard-medium-label-height;
+      }
     }
 
     &.size-small {
-      &.variant-outlined .ToggleButton {
-        height: $outlined-small-label-height;
+      &.variant-outlined .FormItemBase-Control-wrap {
+        margin-top: 0;
+        margin-bottom: 0;
+        .ToggleButton {
+          height: $outlined-small-label-height;
+        }
       }
-      &.variant-filled .ToggleButton {
-        height: $filled-small-label-height;
+      &.variant-filled .FormItemBase-Control-wrap {
+        margin-top: 0;
+        margin-bottom: 0;
+        .ToggleButton {
+          height: $filled-small-label-height;
+        }
       }
-      &.variant-standard .ToggleButton {
-        height: $standard-small-label-height;
+      &.variant-standard .FormItemBase-Control-wrap {
+        margin-top: 0;
+        margin-bottom: 0;
+        .ToggleButton {
+          height: $standard-small-label-height;
+        }
       }
     }
   }
@@ -137,25 +161,49 @@ $standard-small-label-height: 26px;
 .Form {
   .FormCol.with-label {
     .FormToggleButtonGroup {
-      &.variant-outlined .ToggleButton {
-        height: $outlined-medium-label-height;
+      &.variant-outlined .FormItemBase-Control-wrap {
+        margin-top: 0;
+        margin-bottom: 0;
+        .ToggleButton {
+          height: $outlined-medium-label-height;
+        }
       }
-      &.variant-filled .ToggleButton {
-        height: $filled-medium-label-height;
+      &.variant-filled .FormItemBase-Control-wrap {
+        margin-top: 0;
+        margin-bottom: 0;
+        .ToggleButton {
+          height: $filled-medium-label-height;
+        }
       }
-      &.variant-standard .ToggleButton {
-        height: $standard-medium-label-height;
+      &.variant-standard .FormItemBase-Control-wrap {
+        margin-top: 0;
+        margin-bottom: 0;
+        .ToggleButton {
+          height: $standard-medium-label-height;
+        }
       }
 
       &.size-small {
-        &.variant-outlined .ToggleButton {
-          height: $outlined-small-label-height;
+        &.variant-outlined .FormItemBase-Control-wrap {
+          margin-top: 0;
+          margin-bottom: 0;
+          .ToggleButton {
+            height: $outlined-small-label-height;
+          }
         }
-        &.variant-filled .ToggleButton {
-          height: $filled-small-label-height;
+        &.variant-filled .FormItemBase-Control-wrap {
+          margin-top: 0;
+          margin-bottom: 0;
+          .ToggleButton {
+            height: $filled-small-label-height;
+          }
         }
-        &.variant-standard .ToggleButton {
-          height: $standard-small-label-height;
+        &.variant-standard .FormItemBase-Control-wrap {
+          margin-top: 0;
+          margin-bottom: 0;
+          .ToggleButton {
+            height: $standard-small-label-height;
+          }
         }
       }
     }
