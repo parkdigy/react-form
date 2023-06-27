@@ -14,18 +14,7 @@ import {
 } from '@pdg/react-form';
 import { OutlinedPaper } from '#ccomp';
 
-const DEFAULT_ITEMS: FormToggleButtonGroupItem[] = [
-  lv('Item 1', 1),
-  lv('Item 2', 2),
-  lv('Item 3', 3),
-  lv('Item 3', 4),
-  lv('Item 3', 5),
-  lv('Item 3', 6),
-  lv('Item 3', 7),
-  lv('Item 3', 8),
-  lv('Item 3', 9),
-  lv('Item 3', 10),
-];
+const DEFAULT_ITEMS: FormToggleButtonGroupItem[] = [lv('Item 1', 1), lv('Item 2', 2), lv('Item 3', 3), lv('Item 4', 4)];
 
 const FormItemToggleButtonGroup = () => {
   const asyncLoadToggleButtonGroupRef = useRef<FormToggleButtonGroupCommands>(null);
@@ -144,7 +133,7 @@ const FormItemToggleButtonGroup = () => {
             </FormCol>
           </FormRow>
           <FormRow>
-            <FormCol>
+            <FormCol xs={3}>
               <FormToggleButtonGroup
                 {...additionalProps}
                 type='checkbox'
@@ -155,7 +144,7 @@ const FormItemToggleButtonGroup = () => {
                 helperText='type=checkbox, multiple=true'
               />
             </FormCol>
-            <FormCol>
+            <FormCol xs={3}>
               <FormToggleButtonGroup
                 {...additionalProps}
                 type='radio'
@@ -165,13 +154,13 @@ const FormItemToggleButtonGroup = () => {
                 helperText='type=radio'
               />
             </FormCol>
-            <FormCol>
+            <FormCol xs={3}>
               <FormToggleButtonGroup
                 {...additionalProps}
                 type='checkbox'
                 name='radio'
                 items={items}
-                itemWidth={100}
+                itemWidth={150}
                 label='FormToggleButtonGroup'
                 helperText='type=radio, itemWidth=100'
               />

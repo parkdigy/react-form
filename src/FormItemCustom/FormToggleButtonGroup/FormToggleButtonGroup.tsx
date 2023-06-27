@@ -468,6 +468,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
           const button = (
             <ToggleButton
               ref={idx === 0 ? resizeHeightDetectorRef : undefined}
+              key={idx}
               size={size}
               className='ToggleButton'
               value={value}

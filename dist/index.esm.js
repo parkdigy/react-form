@@ -5351,7 +5351,7 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default.forwardRef(fu
         return (items &&
             items.map(function (_a, idx) {
                 var value = _a.value, label = _a.label, itemDisabled = _a.disabled, itemColor = _a.color;
-                var button = (React__default.createElement(ToggleButton, { ref: idx === 0 ? resizeHeightDetectorRef : undefined, size: size, className: 'ToggleButton', value: value, color: itemColor || color, disabled: disabled || readOnly || itemDisabled, style: buttonStyle, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } },
+                var button = (React__default.createElement(ToggleButton, { ref: idx === 0 ? resizeHeightDetectorRef : undefined, key: idx, size: size, className: 'ToggleButton', value: value, color: itemColor || color, disabled: disabled || readOnly || itemDisabled, style: buttonStyle, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } },
                     type === 'checkbox' ? (React__default.createElement(React__default.Fragment, null,
                         React__default.createElement(Icon$1, { className: '__checkbox-unchecked__' }, "check_box_outline_blank"),
                         React__default.createElement(Icon$1, { className: '__checkbox-checked__' }, "check_box"))) : (type === 'radio' && (React__default.createElement(React__default.Fragment, null,
