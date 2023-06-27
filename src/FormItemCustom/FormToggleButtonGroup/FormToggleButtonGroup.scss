@@ -24,39 +24,36 @@ $standard-small-label-height: 26px;
 
   &.type-checkbox,
   &.type-radio {
-    .ToggleButtonContainer {
+    .ToggleButton {
+      padding-left: 3px;
+      padding-right: 5px;
       border: 0 !important;
       margin-left: 0 !important;
+      justify-content: flex-start;
+
+      display: flex;
+      background-color: transparent !important;
 
       &:not(:last-child) {
         margin-right: 5px;
       }
 
-      .ToggleButton {
-        padding-left: 3px;
-        padding-right: 5px;
+      .__checkbox-checked__,
+      .__checkbox-unchecked__ {
+        margin-right: 3px;
+      }
 
-        display: flex;
-        background-color: transparent !important;
-        border: 0 !important;
+      .__checkbox-checked__ {
+        display: none;
+      }
 
-        .__checkbox-checked__,
-        .__checkbox-unchecked__ {
-          margin-right: 3px;
-        }
-
+      &.Mui-selected {
         .__checkbox-checked__ {
-          display: none;
+          display: block;
         }
 
-        &.Mui-selected {
-          .__checkbox-checked__ {
-            display: block;
-          }
-
-          .__checkbox-unchecked__ {
-            display: none;
-          }
+        .__checkbox-unchecked__ {
+          display: none;
         }
       }
     }

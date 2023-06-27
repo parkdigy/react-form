@@ -453,15 +453,8 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
       if (type === 'button' && !fullWidth) {
         finalItemWidth = 'auto';
       } else if (!fullWidth || type === 'radio' || type === 'checkbox') {
-        finalItemWidth = 'auto';
+        finalItemWidth = itemWidth || 'auto';
       }
-
-      const containerStyle =
-        type === 'checkbox' || type === 'radio'
-          ? {
-              width: itemWidth,
-            }
-          : undefined;
 
       const buttonStyle = {
         borderColor: error ? theme.palette.error.main : '',
@@ -503,15 +496,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
             </ToggleButton>
           );
 
-          if (type === 'checkbox' || type === 'radio') {
-            return (
-              <div className='ToggleButtonContainer' style={containerStyle}>
-                {button}
-              </div>
-            );
-          } else {
-            return button;
-          }
+          return button;
         })
       );
     }, [
