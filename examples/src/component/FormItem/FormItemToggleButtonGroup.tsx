@@ -106,7 +106,7 @@ const FormItemToggleButtonGroup = () => {
                 {...additionalProps}
                 name='required'
                 items={items}
-                label='FormToggleButtonGroup'
+                // label='FormToggleButtonGroup'
                 required
                 helperText='required=true'
               />
@@ -150,7 +150,7 @@ const FormItemToggleButtonGroup = () => {
                 type='radio'
                 name='radio'
                 items={items}
-                label='FormToggleButtonGroup'
+                // label='FormToggleButtonGroup'
                 helperText='type=radio'
               />
             </FormCol>

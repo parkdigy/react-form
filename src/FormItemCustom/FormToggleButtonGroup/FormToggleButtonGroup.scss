@@ -61,25 +61,49 @@ $standard-small-label-height: 26px;
 
   // Label 없음
   &:not(.with-label) {
-    &.variant-outlined .ToggleButton {
-      height: $outlined-medium-no-label-height;
+    &.variant-outlined .FormItemBase-Control-wrap {
+      margin-top: calc(($outlined-medium-no-label-height - $outlined-medium-label-height));
+      margin-bottom: -(calc(($outlined-medium-no-label-height - $outlined-medium-label-height)));
+      .ToggleButton {
+        height: $outlined-medium-label-height;
+      }
     }
-    &.variant-filled .ToggleButton {
-      height: $filled-medium-no-label-height;
+    &.variant-filled .FormItemBase-Control-wrap {
+      margin-top: calc(($filled-medium-no-label-height - $filled-medium-label-height));
+      margin-bottom: -(calc(($filled-medium-no-label-height - $filled-medium-label-height)));
+      .ToggleButton {
+        height: $filled-medium-label-height;
+      }
     }
-    &.variant-standard .ToggleButton {
-      height: $standard-medium-no-label-height;
+    &.variant-standard .FormItemBase-Control-wrap {
+      margin-top: calc(($standard-medium-no-label-height - $standard-medium-label-height));
+      margin-bottom: -(calc(($standard-medium-no-label-height - $standard-medium-label-height)));
+      .ToggleButton {
+        height: $standard-medium-no-label-height;
+      }
     }
 
     &.size-small {
-      &.variant-outlined .ToggleButton {
-        height: $outlined-small-no-label-height;
+      &.variant-outlined .FormItemBase-Control-wrap {
+        margin-top: calc(($outlined-small-no-label-height - $outlined-small-label-height));
+        margin-bottom: -(calc(($outlined-small-no-label-height - $outlined-small-label-height)));
+        .ToggleButton {
+          height: $outlined-small-label-height;
+        }
       }
-      &.variant-filled .ToggleButton {
-        height: $filled-small-no-label-height;
+      &.variant-filled .FormItemBase-Control-wrap {
+        margin-top: calc(($filled-small-no-label-height - $filled-small-label-height));
+        margin-bottom: -(calc(($filled-small-no-label-height - $filled-small-label-height)));
+        .ToggleButton {
+          height: $filled-small-label-height;
+        }
       }
-      &.variant-standard .ToggleButton {
-        height: $standard-small-no-label-height;
+      &.variant-standard .FormItemBase-Control-wrap {
+        margin-top: calc(($standard-small-no-label-height - $standard-small-label-height));
+        margin-bottom: -(calc(($standard-small-no-label-height - $standard-small-label-height)));
+        .ToggleButton {
+          height: $standard-small-label-height;
+        }
       }
     }
   }
