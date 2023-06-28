@@ -4140,7 +4140,7 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
         thousandSeparator,
     ]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return React__default["default"].createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormNumber'), InputProps: muiInputProps }, props));
+    return (React__default["default"].createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormNumber'), InputProps: muiInputProps, readOnly: readOnly }, props)));
 });
 FormNumber.displayName = 'FormNumber';
 FormNumber.defaultProps = FormNumberDefaultProps;var FormSearchDefaultProps = __assign$6({}, FormTextDefaultProps);var css_248z$f = ".FormSearch input[type=search]::-webkit-search-decoration,\n.FormSearch input[type=search]::-webkit-search-cancel-button,\n.FormSearch input[type=search]::-webkit-search-results-button,\n.FormSearch input[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n}";

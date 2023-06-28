@@ -65,7 +65,15 @@ const FormNumber = React.forwardRef<FormValueItemBaseCommands, Props>(
 
     // Render ----------------------------------------------------------------------------------------------------------
 
-    return <FormText ref={ref} className={classNames(className, 'FormNumber')} InputProps={muiInputProps} {...props} />;
+    return (
+      <FormText
+        ref={ref}
+        className={classNames(className, 'FormNumber')}
+        InputProps={muiInputProps}
+        readOnly={readOnly}
+        {...props}
+      />
+    );
   }
 );
 

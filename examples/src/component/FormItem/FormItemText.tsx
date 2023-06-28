@@ -36,7 +36,7 @@ const FormItemText = () => {
 
   const [componentName, setComponentName] = useState<string | undefined>(FormText.displayName);
   const [Component, setComponent] = useState<React.ForwardRefExoticComponent<any>>();
-  const [value, setValue] = useState<string>();
+  const [value, setValue] = useState<string>('asdf');
 
   //--------------------------------------------------------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ const FormItemText = () => {
         setValue('검색어');
         break;
       default:
-        setValue(componentName);
+        setValue(componentName || '');
         break;
     }
   }, [componentName]);
