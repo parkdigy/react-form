@@ -142,6 +142,7 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
                 color={color}
                 label={label}
                 line={line}
+                error={error}
                 lineVerticalMargin={lineVerticalMargin}
                 hidden={hidden}
               />

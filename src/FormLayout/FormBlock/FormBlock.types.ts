@@ -8,6 +8,7 @@ export interface FormBlockProps
     PartialPick<FormDividerProps, 'icon' | 'label' | 'line' | 'lineVerticalMargin' | 'hidden'> {
   collapse?: boolean;
   collapseIn?: boolean;
+  error?: boolean;
 }
 
 export const FormBlockDefaultProps = {};

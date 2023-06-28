@@ -872,13 +872,24 @@ var templateObject_1$5, templateObject_2$1;var FormLabel = React__default["defau
 FormLabel.displayName = 'FormLabel';
 FormLabel.defaultProps = FormLabelDefaultProps;var FormBlockDefaultProps = {};var FormDividerDefaultProps = {
     lineVerticalMargin: 9,
-};var StyledLineDiv = material.styled('div')(templateObject_1$4 || (templateObject_1$4 = __makeTemplateObject(["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"], ["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"])));
+};var StyledLineBox = material.styled(material.Box)(templateObject_1$4 || (templateObject_1$4 = __makeTemplateObject(["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"], ["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"])));
+var StyledErrorLineBox = material.styled(material.Box)(function (_a) {
+    var theme = _a.theme;
+    return ({
+        borderBottom: "thin solid ".concat(theme.palette.error.main),
+        position: 'absolute',
+        left: 0,
+        top: '50%',
+        width: '100%',
+        opacity: 0.4,
+    });
+});
 var templateObject_1$4;var DEFAULT_LINE_STYLE = { flex: 1, position: 'relative' };
 var FormDivider = React__default["default"].forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var initSize = _a.size, 
     //----------------------------------------------------------------------------------------------------------------
-    icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, hidden = _a.hidden, collapse = _a.collapse, collapseIn = _a.collapseIn, onCollapseChange = _a.onCollapseChange, 
+    icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, hidden = _a.hidden, collapse = _a.collapse, collapseIn = _a.collapseIn, error = _a.error, onCollapseChange = _a.onCollapseChange, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var formSize = useFormState().size;
@@ -917,16 +928,15 @@ var FormDivider = React__default["default"].forwardRef(function (_a, ref) {
                 padding: 0,
                 cursor: collapse ? 'pointer' : undefined,
             }, onClick: handleClick },
-            icon && (React__default["default"].createElement(FormIcon, { style: { opacity: 0.54, marginRight: 5 }, fontSize: size }, icon)),
+            icon && (React__default["default"].createElement(FormIcon, { style: { opacity: 0.54, marginRight: 5 }, color: error ? 'error' : undefined, fontSize: size }, icon)),
             label && (React__default["default"].createElement(material.Box, { sx: {
                     paddingRight: '10px',
-                    color: 'text.secondary',
+                    color: error ? 'error.main' : 'text.secondary',
                     fontWeight: 700,
                     fontSize: size === 'small' ? '11.5px' : '12px',
                 } }, label)),
-            (line || collapse) && (React__default["default"].createElement("div", { style: lineStyle },
-                React__default["default"].createElement(StyledLineDiv, null))),
-            collapse && (React__default["default"].createElement(FormIcon, { sx: { opacity: 0.6, ml: 1 } }, collapseIn ? 'KeyboardDoubleArrowUp' : 'KeyboardDoubleArrowDown')))));
+            (line || collapse) && React__default["default"].createElement("div", { style: lineStyle }, error ? React__default["default"].createElement(StyledErrorLineBox, null) : React__default["default"].createElement(StyledLineBox, null)),
+            collapse && (React__default["default"].createElement(FormIcon, { sx: { opacity: 0.6, ml: 1 }, color: error ? 'error' : undefined }, collapseIn ? 'KeyboardDoubleArrowUp' : 'KeyboardDoubleArrowDown')))));
 });
 FormDivider.displayName = 'FormDivider.';
 FormDivider.defaultProps = FormDividerDefaultProps;function useFirstSkipEffect$1(effect, deps) {
@@ -996,7 +1006,7 @@ var templateObject_1$3;var FormBlock = React__default["default"].forwardRef(func
     // FormState -------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, 
+    icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, error = _a.error, 
     //----------------------------------------------------------------------------------------------------------------
     hidden = _a.hidden, collapse = _a.collapse, initCollapseIn = _a.collapseIn, 
     //----------------------------------------------------------------------------------------------------------------
@@ -1036,7 +1046,7 @@ var templateObject_1$3;var FormBlock = React__default["default"].forwardRef(func
     return (React__default["default"].createElement(FormContext.Provider, { value: __assign$6({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth }, otherFormState) },
         React__default["default"].createElement(material.Grid, { item: true, ref: ref, xs: 12, className: classNames$1(className, 'FormBlock'), style: style, sx: sx },
             React__default["default"].createElement(material.Grid, { container: true, spacing: spacing },
-                (icon || label || line || collapse) && (React__default["default"].createElement(FormDivider, { className: 'FormBlock-header', collapse: collapse, collapseIn: collapseIn, size: size, icon: icon, color: color, label: label, line: line, lineVerticalMargin: lineVerticalMargin, hidden: hidden, onCollapseChange: collapse ? function (newCollapseIn) { return setCollapseIn(newCollapseIn); } : undefined })),
+                (icon || label || line || collapse) && (React__default["default"].createElement(FormDivider, { className: 'FormBlock-header', collapse: collapse, collapseIn: collapseIn, size: size, icon: icon, color: color, label: label, line: line, error: error, lineVerticalMargin: lineVerticalMargin, hidden: hidden, onCollapseChange: collapse ? function (newCollapseIn) { return setCollapseIn(newCollapseIn); } : undefined })),
                 React__default["default"].createElement(StyledWrapGrid$1, { item: true, xs: 12 },
                     React__default["default"].createElement(Container, __assign$6({}, containerProps),
                         React__default["default"].createElement(material.Grid, { container: true, spacing: spacing },
@@ -1101,7 +1111,7 @@ var templateObject_1$2;var FormRow = React__default["default"].forwardRef(functi
     return (React__default["default"].createElement(FormContext.Provider, { value: __assign$6({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColAutoXs: formColAutoXs, onAddFormCol: handleAddFormCol, onRemoveFormCol: handleRemoveFormCol }, otherFormState) },
         React__default["default"].createElement(material.Grid, { item: true, ref: ref, xs: 12, className: classNames$1(className, 'FormRow'), style: style, sx: sx },
             React__default["default"].createElement(material.Grid, { container: true, spacing: spacing },
-                (icon || label || line) && (React__default["default"].createElement(FormDivider, { className: classNames$1(className, 'FormRow-header'), size: size, icon: icon, color: color, label: label, line: line, lineVerticalMargin: lineVerticalMargin, hidden: hidden })),
+                (icon || label || line) && (React__default["default"].createElement(FormDivider, { className: classNames$1(className, 'FormRow-header'), size: size, icon: icon, color: color, label: label, line: line, error: error, lineVerticalMargin: lineVerticalMargin, hidden: hidden })),
                 React__default["default"].createElement(StyledWrapGrid, { item: true, xs: 12, className: 'FormRow-body' },
                     React__default["default"].createElement(material.Grid, { className: 'FormRow-content', container: true, spacing: spacing, direction: 'row', style: { flexWrap: 'nowrap' } }, children),
                     helperText && (React__default["default"].createElement(material.FormHelperText, { className: 'FormRow-helper-text', component: 'div', error: error }, helperText)))))));
