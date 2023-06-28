@@ -580,6 +580,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
                     };
                     if (readOnly) {
                       inputProps.tabIndex = -1;
+                      inputProps.className = classNames(inputProps.className, 'Mui-disabled');
                     }
 
                     const muiInputProps: InputProps = { ...initMuiInputProps, endAdornment: undefined };

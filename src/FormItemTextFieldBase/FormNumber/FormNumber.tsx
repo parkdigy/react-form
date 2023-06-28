@@ -29,6 +29,7 @@ const FormNumber = React.forwardRef<FormValueItemBaseCommands, Props>(
 
     const muiInputProps = useMemo(() => {
       const inputProps: NumberFormatProps = {
+        className: readOnly ? 'Mui-disabled' : undefined,
         allowLeadingZeros,
         allowNegative,
         thousandSeparator,

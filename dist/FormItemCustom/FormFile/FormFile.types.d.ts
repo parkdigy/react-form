@@ -1,6 +1,6 @@
 import { CommonSxProps, FormValueItemCommands, FormValueItemProps } from '../../@types';
 import { ReactNode } from 'react';
-export interface FormFileProps extends CommonSxProps, Omit<FormValueItemProps, 'readOnly'> {
+export interface FormFileProps extends CommonSxProps, FormValueItemProps {
     required?: boolean;
     accept?: string;
     hideUrl?: boolean;

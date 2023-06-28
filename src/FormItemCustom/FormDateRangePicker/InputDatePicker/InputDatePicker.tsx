@@ -108,6 +108,7 @@ const InputDatePicker: React.FC<Props> = ({
         const inputProps = { ...initInputProps };
         if (readOnly) {
           inputProps.tabIndex = -1;
+          inputProps.className = classNames(inputProps.className, 'Mui-disabled');
         }
 
         return (

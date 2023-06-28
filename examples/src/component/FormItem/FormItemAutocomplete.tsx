@@ -135,6 +135,7 @@ const FormItemAutocomplete = () => {
                 items={items}
                 label='FormAutocomplete'
                 readOnly
+                value={1}
                 helperText='readOnly=true'
               />
             </FormCol>

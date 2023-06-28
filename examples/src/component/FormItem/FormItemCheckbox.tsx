@@ -21,7 +21,7 @@ const FormItemCheckbox = () => {
               text='체크박스'
               helperText='labelIcon'
             />
-            <FormCheckbox name='readOnly' label='FormCheckbox' text='체크박스' readOnly helperText='readOnly=true' />
+            <FormCheckbox name='default' label='FormCheckbox' text='체크박스' />
           </FormCol>
           <FormCol>
             <FormCheckbox name='readOnly' label='FormCheckbox' text='체크박스' readOnly helperText='readOnly=true' />

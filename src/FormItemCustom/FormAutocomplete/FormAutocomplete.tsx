@@ -601,6 +601,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
             required={required}
             focused={focused}
             error={error}
+            readOnly={readOnly}
             helperText={helperText}
             placeholder={placeholder}
             noFormValueItem

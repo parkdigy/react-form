@@ -34,6 +34,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       labelIcon,
       label: initLabel,
       required,
+      readOnly,
       disabled: initDisabled,
       error: initError,
       helperText: initHelperText,
@@ -398,7 +399,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                             variant='text'
                             className='input-file-btn form-file-btn'
                             color={error ? 'error' : color}
-                            disabled={disabled}
+                            disabled={readOnly || disabled}
                             ref={fileUploadBtnRef}
                           >
                             <label htmlFor={id}>
@@ -418,7 +419,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                               variant='text'
                               className='link-btn  form-file-btn'
                               color={error ? 'error' : color}
-                              disabled={disabled}
+                              disabled={readOnly || disabled}
                               onClick={handleLinkClick}
                             >
                               <label>
@@ -431,7 +432,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                               variant='text'
                               className='remove-btn form-file-btn'
                               color={error ? 'error' : color}
-                              disabled={disabled}
+                              disabled={readOnly || disabled}
                               onClick={handleRemoveClick}
                             >
                               <label>

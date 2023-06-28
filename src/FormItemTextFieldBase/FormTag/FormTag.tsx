@@ -270,7 +270,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
             key={tag}
             label={tag}
             size='small'
-            disabled={disabled}
+            disabled={readOnly || disabled}
             onDelete={readOnly || disabled ? undefined : () => removeTag(tag)}
           />
         ));

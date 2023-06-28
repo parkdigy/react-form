@@ -2558,7 +2558,7 @@ styleInject(css_248z$h);var FormTag = React__default.forwardRef(function (_a, re
             onBlur(e);
     }, [appendTag, inputValue, onBlur]);
     var handleRenderTags = useCallback(function (tags) {
-        return tags.map(function (tag) { return (React__default.createElement(Chip, { className: 'MuiAutocomplete-tag', key: tag, label: tag, size: 'small', disabled: disabled, onDelete: readOnly || disabled ? undefined : function () { return removeTag(tag); } })); });
+        return tags.map(function (tag) { return (React__default.createElement(Chip, { className: 'MuiAutocomplete-tag', key: tag, label: tag, size: 'small', disabled: readOnly || disabled, onDelete: readOnly || disabled ? undefined : function () { return removeTag(tag); } })); });
     }, [disabled, readOnly, removeTag]);
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default.createElement(FormContextProvider, { value: __assign$6({ fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, 
@@ -4110,6 +4110,7 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
     var className = _a.className, allowLeadingZeros = _a.allowLeadingZeros, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initMuiInputProps = _a.InputProps, props = __rest$3(_a, ["className", "allowLeadingZeros", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "InputProps"]);
     var muiInputProps = useMemo(function () {
         var inputProps = {
+            className: readOnly ? 'Mui-disabled' : undefined,
             allowLeadingZeros: allowLeadingZeros,
             allowNegative: allowNegative,
             thousandSeparator: thousandSeparator,
@@ -7911,7 +7912,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
             }
         }, renderTags: function (value, getTagProps) {
             return value.map(function (option, index) { return (React__default.createElement(Chip, __assign$6({ size: 'small', label: onRenderTag ? onRenderTag(option) : option.label }, getTagProps({ index: index })))); });
-        }, renderInput: function (params) { return (React__default.createElement(FormTextField, __assign$6({}, params, { ref: textFieldRef, name: name, variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, labelShrink: labelShrink, required: required, focused: focused, error: error, helperText: helperText, placeholder: placeholder, noFormValueItem: true, InputProps: __assign$6(__assign$6({}, params.InputProps), { endAdornment: (React__default.createElement(React__default.Fragment, null,
+        }, renderInput: function (params) { return (React__default.createElement(FormTextField, __assign$6({}, params, { ref: textFieldRef, name: name, variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, labelShrink: labelShrink, required: required, focused: focused, error: error, readOnly: readOnly, helperText: helperText, placeholder: placeholder, noFormValueItem: true, InputProps: __assign$6(__assign$6({}, params.InputProps), { endAdornment: (React__default.createElement(React__default.Fragment, null,
                     loading || isOnGetItemLoading ? React__default.createElement(CircularProgress$1, { color: 'inherit', size: 20 }) : null,
                     params.InputProps.endAdornment)) }), inputProps: readOnly || disabled ? __assign$6(__assign$6({}, params.inputProps), { tabIndex: -1 }) : params.inputProps }))); } }));
 });
@@ -10501,6 +10502,7 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default.forwardRef(functi
                                 var inputProps = __assign$6(__assign$6({}, initInputProps), { readOnly: readOnly });
                                 if (readOnly) {
                                     inputProps.tabIndex = -1;
+                                    inputProps.className = classNames$1(inputProps.className, 'Mui-disabled');
                                 }
                                 var muiInputProps = __assign$6(__assign$6({}, initMuiInputProps), { endAdornment: undefined });
                                 if (startAdornment || icon || muiInputProps.startAdornment) {
@@ -11070,6 +11072,7 @@ styleInject(css_248z$2);var InputDatePicker = function (_a) {
             var inputProps = __assign$6({}, initInputProps);
             if (readOnly) {
                 inputProps.tabIndex = -1;
+                inputProps.className = classNames$1(inputProps.className, 'Mui-disabled');
             }
             return (React__default.createElement(TextField, __assign$6({}, params, { style: __assign$6(__assign$6({}, inputStyle), style), variant: variant, size: size, color: color, focused: focused, fullWidth: fullWidth, required: required, name: id, label: label, error: error || inputError, inputRef: function (ref) {
                     if (inputInputRef) {
@@ -11672,7 +11675,7 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     //----------------------------------------------------------------------------------------------------------------
     accept = _a.accept, hideUrl = _a.hideUrl, hideLink = _a.hideLink, maxFileSize = _a.maxFileSize, preview = _a.preview, hidden = _a.hidden, onFile = _a.onFile, onLink = _a.onLink, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, initLabel = _a.label, required = _a.required, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, labelIcon = _a.labelIcon, initLabel = _a.label, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = useId();
@@ -11907,16 +11910,16 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
                 React__default.createElement(TextField, { inputRef: textFieldRef, className: 'file-name', variant: variant, label: label, size: size, required: required, value: value || '', focused: focused, disabled: disabled, fullWidth: true, error: error, InputLabelProps: labelShrink ? { shrink: labelShrink } : undefined, inputProps: { readOnly: true, tabIndex: -1 }, InputProps: {
                         endAdornment: (React__default.createElement(InputAdornment, { position: 'end' },
                             React__default.createElement("div", { className: 'input-file-wrap' },
-                                React__default.createElement(Button, { variant: 'text', className: 'input-file-btn form-file-btn', color: error ? 'error' : color, disabled: disabled, ref: fileUploadBtnRef },
+                                React__default.createElement(Button, { variant: 'text', className: 'input-file-btn form-file-btn', color: error ? 'error' : color, disabled: readOnly || disabled, ref: fileUploadBtnRef },
                                     React__default.createElement("label", { htmlFor: id },
                                         React__default.createElement(FormIcon, null, "upload"),
                                         "\uD30C\uC77C \uC5C5\uB85C\uB4DC")),
                                 React__default.createElement("input", { type: 'file', accept: accept, id: id, value: fileValue, className: 'input-file', onChange: handleFileChange }),
-                                !hideLink && (React__default.createElement(Button, { variant: 'text', className: 'link-btn  form-file-btn', color: error ? 'error' : color, disabled: disabled, onClick: handleLinkClick },
+                                !hideLink && (React__default.createElement(Button, { variant: 'text', className: 'link-btn  form-file-btn', color: error ? 'error' : color, disabled: readOnly || disabled, onClick: handleLinkClick },
                                     React__default.createElement("label", null,
                                         React__default.createElement(FormIcon, null, "link"),
                                         "\uB9C1\uD06C"))),
-                                notEmpty(value) && (React__default.createElement(Button, { variant: 'text', className: 'remove-btn form-file-btn', color: error ? 'error' : color, disabled: disabled, onClick: handleRemoveClick },
+                                notEmpty(value) && (React__default.createElement(Button, { variant: 'text', className: 'remove-btn form-file-btn', color: error ? 'error' : color, disabled: readOnly || disabled, onClick: handleRemoveClick },
                                     React__default.createElement("label", null,
                                         React__default.createElement(FormIcon, null, "Close"),
                                         "\uC0AD\uC81C")))))),
