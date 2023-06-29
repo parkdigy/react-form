@@ -31,6 +31,7 @@ import {
   FormFooter,
 } from '@pdg/react-form';
 import { ToggleButtonGroup, Checkbox, RadioGroup, Rating, FileUpload } from './sub';
+import TextFieldsIcon from '@mui/icons-material/TextFields';
 
 const FormBase = () => {
   const formRef = useRef<FormCommands>(null);
@@ -189,7 +190,7 @@ const FormBase = () => {
         onSubmit={handleSubmit}
       >
         <FormBody>
-          <FormBlock icon='TextFields' label='FormBlock 1' hidden={isFormBlock1Hidden} collapse collapseIn>
+          <FormBlock icon={TextFieldsIcon} label='FormBlock 1' hidden={isFormBlock1Hidden} collapse collapseIn>
             <FormRow>
               <FormCol>
                 <FormText name='FormText' label='FormText' ref={formTextRef} helperText='FormText' />

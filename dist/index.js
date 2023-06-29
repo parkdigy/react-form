@@ -823,11 +823,11 @@ Form.displayName = 'Form';
 Form.defaultProps = FormDefaultProps;var FormButtonDefaultProps = {
     type: 'button',
 };var FormIconDefaultProps = {};var FormIcon = React__default["default"].forwardRef(function (_a, ref) {
-    // Memo --------------------------------------------------------------------------------------------------------------
-    var className = _a.className, initChildren = _a.children, props = __rest$3(_a, ["className", "children"]);
-    var children = React.useMemo(function () { return initChildren.replace(/[A-Z]/g, function (letter, idx) { return "".concat(idx > 0 ? '_' : '').concat(letter.toLowerCase()); }); }, [initChildren]);
-    // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(material.Icon, __assign$6({ ref: ref }, props, { className: classNames$1('FormIcon', className) }), children));
+    var className = _a.className, InitChildren = _a.children, props = __rest$3(_a, ["className", "children"]);
+    return React.useMemo(function () {
+        var iconProps = __assign$6(__assign$6({}, props), { className: classNames$1('FormIcon', className) });
+        return typeof InitChildren === 'string' ? (React__default["default"].createElement(material.Icon, __assign$6({ ref: ref }, iconProps), InitChildren.replace(/[A-Z]/g, function (letter, idx) { return "".concat(idx > 0 ? '_' : '').concat(letter.toLowerCase()); }))) : (React__default["default"].createElement(InitChildren, __assign$6({}, iconProps)));
+    }, [InitChildren, className, props, ref]);
 });
 FormIcon.displayName = 'FormIcon';
 FormIcon.defaultProps = FormIconDefaultProps;var FormButton = React__default["default"].forwardRef(function (_a, ref) {

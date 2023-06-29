@@ -1,5 +1,6 @@
 import { IconProps } from '@mui/material';
-export interface FormIconProps extends IconProps {
-    children: string;
+import { SvgIconComponent } from '@mui/icons-material';
+export interface FormIconProps extends Pick<IconProps, 'color' | 'style' | 'sx' | 'className' | 'fontSize'> {
+    children: string | SvgIconComponent;
 }
 export declare const FormIconDefaultProps: {};

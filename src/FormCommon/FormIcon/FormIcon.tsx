@@ -3,21 +3,17 @@ import classNames from 'classnames';
 import { Icon } from '@mui/material';
 import { FormIconProps as Props, FormIconDefaultProps } from './FormIcon.types';
 
-const FormIcon = React.forwardRef<HTMLAnchorElement, Props>(({ className, children: initChildren, ...props }, ref) => {
-  // Memo --------------------------------------------------------------------------------------------------------------
-
-  const children = useMemo(
-    () => initChildren.replace(/[A-Z]/g, (letter, idx) => `${idx > 0 ? '_' : ''}${letter.toLowerCase()}`),
-    [initChildren]
-  );
-
-  // Render ----------------------------------------------------------------------------------------------------------
-
-  return (
-    <Icon ref={ref} {...props} className={classNames('FormIcon', className)}>
-      {children}
-    </Icon>
-  );
+const FormIcon = React.forwardRef<HTMLAnchorElement, Props>(({ className, children: InitChildren, ...props }, ref) => {
+  return useMemo(() => {
+    const iconProps = { ...props, className: classNames('FormIcon', className) };
+    return typeof InitChildren === 'string' ? (
+      <Icon ref={ref} {...iconProps}>
+        {InitChildren.replace(/[A-Z]/g, (letter, idx) => `${idx > 0 ? '_' : ''}${letter.toLowerCase()}`)}
+      </Icon>
+    ) : (
+      <InitChildren {...iconProps} />
+    );
+  }, [InitChildren, className, props, ref]);
 });
 
 FormIcon.displayName = 'FormIcon';
