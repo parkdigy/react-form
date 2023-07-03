@@ -4,7 +4,7 @@ import { Grid, Box } from '@mui/material';
 import { FormDividerProps as Props, FormDividerDefaultProps } from './FormDivider.types';
 import { FormIcon } from '../../FormCommon';
 import { useFormState } from '../../FormContext';
-import { StyledErrorLineBox, StyledLineBox } from './FormDivider.style';
+import { StyledErrorLineBox, StyledLineBox, StyledWarningLineBox } from './FormDivider.style';
 
 const DEFAULT_LINE_STYLE: CSSProperties = { flex: 1, position: 'relative' };
 
@@ -21,6 +21,7 @@ const FormDivider = React.forwardRef<HTMLDivElement, Props>(
       collapse,
       collapseIn,
       error,
+      warning,
       onCollapseChange,
       //----------------------------------------------------------------------------------------------------------------
       className,
@@ -79,7 +80,11 @@ const FormDivider = React.forwardRef<HTMLDivElement, Props>(
           onClick={handleClick}
         >
           {icon && (
-            <FormIcon style={{ opacity: 0.54, marginRight: 5 }} color={error ? 'error' : undefined} fontSize={size}>
+            <FormIcon
+              style={{ opacity: 0.54, marginRight: 5 }}
+              color={error ? 'error' : warning ? 'warning' : undefined}
+              fontSize={size}
+            >
               {icon}
             </FormIcon>
           )}
@@ -87,7 +92,7 @@ const FormDivider = React.forwardRef<HTMLDivElement, Props>(
             <Box
               sx={{
                 paddingRight: '10px',
-                color: error ? 'error.main' : 'text.secondary',
+                color: error ? 'error.main' : warning ? 'warning.main' : 'text.secondary',
                 fontWeight: 700,
                 fontSize: size === 'small' ? '11.5px' : '12px',
               }}
@@ -95,9 +100,13 @@ const FormDivider = React.forwardRef<HTMLDivElement, Props>(
               {label}
             </Box>
           )}
-          {(line || collapse) && <div style={lineStyle}>{error ? <StyledErrorLineBox /> : <StyledLineBox />}</div>}
+          {(line || collapse) && (
+            <div style={lineStyle}>
+              {error ? <StyledErrorLineBox /> : warning ? <StyledWarningLineBox /> : <StyledLineBox />}
+            </div>
+          )}
           {collapse && (
-            <FormIcon sx={{ opacity: 0.6, ml: 1 }} color={error ? 'error' : undefined}>
+            <FormIcon sx={{ opacity: 0.6, ml: 1 }} color={error ? 'error' : warning ? 'warning' : undefined}>
               {collapseIn ? 'KeyboardDoubleArrowUp' : 'KeyboardDoubleArrowDown'}
             </FormIcon>
           )}

@@ -5,5 +5,6 @@ export interface FormBlockProps extends CommonSxProps, PartialPick<FormContextVa
     collapse?: boolean;
     collapseIn?: boolean;
     error?: boolean;
+    warning?: boolean;
 }
 export declare const FormBlockDefaultProps: {};

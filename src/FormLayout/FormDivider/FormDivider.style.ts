@@ -16,3 +16,12 @@ export const StyledErrorLineBox = styled(Box)(({ theme }) => ({
   width: '100%',
   opacity: 0.4,
 }));
+
+export const StyledWarningLineBox = styled(Box)(({ theme }) => ({
+  borderBottom: `thin solid ${theme.palette.warning.main}`,
+  position: 'absolute',
+  left: 0,
+  top: '50%',
+  width: '100%',
+  opacity: 0.4,
+}));

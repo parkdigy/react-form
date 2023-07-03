@@ -13,6 +13,7 @@ export interface FormDividerProps extends CommonSxProps {
     collapse?: boolean;
     collapseIn?: boolean;
     error?: boolean;
+    warning?: boolean;
     onCollapseChange?(collapseIn: boolean): void;
 }
 export declare const FormDividerDefaultProps: FormDividerProps;

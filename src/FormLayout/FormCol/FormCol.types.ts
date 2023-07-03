@@ -6,7 +6,7 @@ import { FormContextValue } from '../../FormContext';
 export interface FormColProps
   extends CommonSxProps,
     PartialPick<FormContextValue, 'variant' | 'size' | 'color' | 'spacing' | 'focused' | 'labelShrink' | 'fullWidth'>,
-    PartialPick<FormLabelProps, 'icon' | 'error'> {
+    PartialPick<FormLabelProps, 'icon' | 'error' | 'warning'> {
   xs?: number;
   label?: ReactNode;
   hidden?: boolean;

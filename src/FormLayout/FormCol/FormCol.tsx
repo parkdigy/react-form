@@ -24,6 +24,7 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
       label,
       hidden,
       error,
+      warning,
       helperText,
       helperTextShift,
       //----------------------------------------------------------------------------------------------------------------
@@ -153,6 +154,7 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
                     focused={focused}
                     color={color}
                     error={error}
+                    warning={warning}
                     style={{ position: 'absolute', left: 5, top: 0 }}
                   >
                     {label}

@@ -23,6 +23,7 @@ const FormBlock = React.forwardRef<HTMLDivElement, Props>(
       line,
       lineVerticalMargin,
       error,
+      warning,
       //----------------------------------------------------------------------------------------------------------------
       hidden,
       collapse,
@@ -113,6 +114,7 @@ const FormBlock = React.forwardRef<HTMLDivElement, Props>(
                 label={label}
                 line={line}
                 error={error}
+                warning={warning}
                 lineVerticalMargin={lineVerticalMargin}
                 hidden={hidden}
                 onCollapseChange={collapse ? (newCollapseIn) => setCollapseIn(newCollapseIn) : undefined}

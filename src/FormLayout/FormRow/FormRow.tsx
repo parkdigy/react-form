@@ -24,6 +24,7 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
       //----------------------------------------------------------------------------------------------------------------
       hidden,
       error,
+      warning,
       helperText,
       //----------------------------------------------------------------------------------------------------------------
       children,
@@ -143,6 +144,7 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
                 label={label}
                 line={line}
                 error={error}
+                warning={warning}
                 lineVerticalMargin={lineVerticalMargin}
                 hidden={hidden}
               />

@@ -1,4 +1,4 @@
-import*as React from'react';import React__default,{createContext,useContext,useMemo,useRef,useState,useCallback,useLayoutEffect,useEffect,cloneElement,isValidElement,createRef,PureComponent,useId}from'react';import {Box,Icon as Icon$1,Button,styled,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,useTheme,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Paper}from'@mui/material';import dayjs from'dayjs';import {findDOMNode}from'react-dom';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import CircularProgress$1 from'@mui/material/CircularProgress';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker}from'@mui/x-date-pickers';import dayjsLocale from'dayjs/locale/ko';import dayjsIsSameOrAfter from'dayjs/plugin/isSameOrAfter';import dayjsIsSameOrBefore from'dayjs/plugin/isSameOrBefore';import dayjsIsBetween from'dayjs/plugin/isBetween';/******************************************************************************
+import*as React from'react';import React__default,{createContext,useContext,useMemo,useRef,useState,useCallback,useLayoutEffect,useEffect,cloneElement,isValidElement,createRef,PureComponent,useId}from'react';import {Box,Icon as Icon$1,Button,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Paper}from'@mui/material';import dayjs from'dayjs';import {findDOMNode}from'react-dom';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import CircularProgress$1 from'@mui/material/CircularProgress';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker}from'@mui/x-date-pickers';import dayjsLocale from'dayjs/locale/ko';import dayjsIsSameOrAfter from'dayjs/plugin/isSameOrAfter';import dayjsIsSameOrBefore from'dayjs/plugin/isSameOrBefore';import dayjsIsBetween from'dayjs/plugin/isBetween';/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -861,9 +861,17 @@ FormButton.displayName = 'FormButton';
 FormButton.defaultProps = FormButtonDefaultProps;var FormLabelDefaultProps = {};var IconFormIcon = styled(FormIcon)(templateObject_1$5 || (templateObject_1$5 = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
 var ChildrenSpan = styled('span')(templateObject_2$1 || (templateObject_2$1 = __makeTemplateObject(["\n  vertical-align: middle;\n"], ["\n  vertical-align: middle;\n"])));
 var templateObject_1$5, templateObject_2$1;var FormLabel = React__default.forwardRef(function (_a, ref) {
+    // Use ---------------------------------------------------------------------------------------------------------------
+    var children = _a.children, icon = _a.icon, size = _a.size, style = _a.style, error = _a.error, warning = _a.warning, props = __rest$3(_a, ["children", "icon", "size", "style", "error", "warning"]);
+    var theme = useTheme();
     // Memo --------------------------------------------------------------------------------------------------------------
-    var children = _a.children, icon = _a.icon, size = _a.size, style = _a.style, props = __rest$3(_a, ["children", "icon", "size", "style"]);
-    var finalProps = useMemo(function () { return (__assign$6(__assign$6({ shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size }, props), { style: __assign$6({ height: 20, transform: size === 'small' ? 'translate(0, -1.5px) scale(0.7)' : undefined }, style) })); }, [props, size, style]);
+    var finalProps = useMemo(function () {
+        var newStyle = __assign$6({ height: 20, transform: size === 'small' ? 'translate(0, -1.5px) scale(0.7)' : undefined }, style);
+        if (!error) {
+            newStyle.color = warning ? theme.palette.warning.main : style === null || style === void 0 ? void 0 : style.color;
+        }
+        return __assign$6({ shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size, error: error, style: newStyle }, props);
+    }, [size, style, warning, error, props, theme.palette.warning.main]);
     // Render ------------------------------------------------------------------------------------------------------------
     return (React__default.createElement(InputLabel, __assign$6({ ref: ref }, finalProps), icon ? (React__default.createElement(React__default.Fragment, null,
         React__default.createElement(IconFormIcon, null, icon),
@@ -884,12 +892,23 @@ var StyledErrorLineBox = styled(Box)(function (_a) {
         opacity: 0.4,
     });
 });
+var StyledWarningLineBox = styled(Box)(function (_a) {
+    var theme = _a.theme;
+    return ({
+        borderBottom: "thin solid ".concat(theme.palette.warning.main),
+        position: 'absolute',
+        left: 0,
+        top: '50%',
+        width: '100%',
+        opacity: 0.4,
+    });
+});
 var templateObject_1$4;var DEFAULT_LINE_STYLE = { flex: 1, position: 'relative' };
 var FormDivider = React__default.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var initSize = _a.size, 
     //----------------------------------------------------------------------------------------------------------------
-    icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, hidden = _a.hidden, collapse = _a.collapse, collapseIn = _a.collapseIn, error = _a.error, onCollapseChange = _a.onCollapseChange, 
+    icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, hidden = _a.hidden, collapse = _a.collapse, collapseIn = _a.collapseIn, error = _a.error, warning = _a.warning, onCollapseChange = _a.onCollapseChange, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var formSize = useFormState().size;
@@ -928,15 +947,15 @@ var FormDivider = React__default.forwardRef(function (_a, ref) {
                 padding: 0,
                 cursor: collapse ? 'pointer' : undefined,
             }, onClick: handleClick },
-            icon && (React__default.createElement(FormIcon, { style: { opacity: 0.54, marginRight: 5 }, color: error ? 'error' : undefined, fontSize: size }, icon)),
+            icon && (React__default.createElement(FormIcon, { style: { opacity: 0.54, marginRight: 5 }, color: error ? 'error' : warning ? 'warning' : undefined, fontSize: size }, icon)),
             label && (React__default.createElement(Box, { sx: {
                     paddingRight: '10px',
-                    color: error ? 'error.main' : 'text.secondary',
+                    color: error ? 'error.main' : warning ? 'warning.main' : 'text.secondary',
                     fontWeight: 700,
                     fontSize: size === 'small' ? '11.5px' : '12px',
                 } }, label)),
-            (line || collapse) && React__default.createElement("div", { style: lineStyle }, error ? React__default.createElement(StyledErrorLineBox, null) : React__default.createElement(StyledLineBox, null)),
-            collapse && (React__default.createElement(FormIcon, { sx: { opacity: 0.6, ml: 1 }, color: error ? 'error' : undefined }, collapseIn ? 'KeyboardDoubleArrowUp' : 'KeyboardDoubleArrowDown')))));
+            (line || collapse) && (React__default.createElement("div", { style: lineStyle }, error ? React__default.createElement(StyledErrorLineBox, null) : warning ? React__default.createElement(StyledWarningLineBox, null) : React__default.createElement(StyledLineBox, null))),
+            collapse && (React__default.createElement(FormIcon, { sx: { opacity: 0.6, ml: 1 }, color: error ? 'error' : warning ? 'warning' : undefined }, collapseIn ? 'KeyboardDoubleArrowUp' : 'KeyboardDoubleArrowDown')))));
 });
 FormDivider.displayName = 'FormDivider.';
 FormDivider.defaultProps = FormDividerDefaultProps;function useFirstSkipEffect$1(effect, deps) {
@@ -1006,7 +1025,7 @@ var templateObject_1$3;var FormBlock = React__default.forwardRef(function (_a, r
     // FormState -------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, error = _a.error, 
+    icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, error = _a.error, warning = _a.warning, 
     //----------------------------------------------------------------------------------------------------------------
     hidden = _a.hidden, collapse = _a.collapse, initCollapseIn = _a.collapseIn, 
     //----------------------------------------------------------------------------------------------------------------
@@ -1046,7 +1065,7 @@ var templateObject_1$3;var FormBlock = React__default.forwardRef(function (_a, r
     return (React__default.createElement(FormContext.Provider, { value: __assign$6({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth }, otherFormState) },
         React__default.createElement(Grid, { item: true, ref: ref, xs: 12, className: classNames$1(className, 'FormBlock'), style: style, sx: sx },
             React__default.createElement(Grid, { container: true, spacing: spacing },
-                (icon || label || line || collapse) && (React__default.createElement(FormDivider, { className: 'FormBlock-header', collapse: collapse, collapseIn: collapseIn, size: size, icon: icon, color: color, label: label, line: line, error: error, lineVerticalMargin: lineVerticalMargin, hidden: hidden, onCollapseChange: collapse ? function (newCollapseIn) { return setCollapseIn(newCollapseIn); } : undefined })),
+                (icon || label || line || collapse) && (React__default.createElement(FormDivider, { className: 'FormBlock-header', collapse: collapse, collapseIn: collapseIn, size: size, icon: icon, color: color, label: label, line: line, error: error, warning: warning, lineVerticalMargin: lineVerticalMargin, hidden: hidden, onCollapseChange: collapse ? function (newCollapseIn) { return setCollapseIn(newCollapseIn); } : undefined })),
                 React__default.createElement(StyledWrapGrid$1, { item: true, xs: 12 },
                     React__default.createElement(Container, __assign$6({}, containerProps),
                         React__default.createElement(Grid, { container: true, spacing: spacing },
@@ -1061,7 +1080,7 @@ var templateObject_1$2;var FormRow = React__default.forwardRef(function (_a, ref
     //----------------------------------------------------------------------------------------------------------------
     icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, 
     //----------------------------------------------------------------------------------------------------------------
-    hidden = _a.hidden, error = _a.error, helperText = _a.helperText, 
+    hidden = _a.hidden, error = _a.error, warning = _a.warning, helperText = _a.helperText, 
     //----------------------------------------------------------------------------------------------------------------
     children = _a.children, className = _a.className, initStyle = _a.style, sx = _a.sx;
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, otherFormState = __rest$3(_b, ["variant", "size", "color", "spacing", "focused", "labelShrink", "fullWidth"]);
@@ -1111,7 +1130,7 @@ var templateObject_1$2;var FormRow = React__default.forwardRef(function (_a, ref
     return (React__default.createElement(FormContext.Provider, { value: __assign$6({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColAutoXs: formColAutoXs, onAddFormCol: handleAddFormCol, onRemoveFormCol: handleRemoveFormCol }, otherFormState) },
         React__default.createElement(Grid, { item: true, ref: ref, xs: 12, className: classNames$1(className, 'FormRow'), style: style, sx: sx },
             React__default.createElement(Grid, { container: true, spacing: spacing },
-                (icon || label || line) && (React__default.createElement(FormDivider, { className: classNames$1(className, 'FormRow-header'), size: size, icon: icon, color: color, label: label, line: line, error: error, lineVerticalMargin: lineVerticalMargin, hidden: hidden })),
+                (icon || label || line) && (React__default.createElement(FormDivider, { className: classNames$1(className, 'FormRow-header'), size: size, icon: icon, color: color, label: label, line: line, error: error, warning: warning, lineVerticalMargin: lineVerticalMargin, hidden: hidden })),
                 React__default.createElement(StyledWrapGrid, { item: true, xs: 12, className: 'FormRow-body' },
                     React__default.createElement(Grid, { className: 'FormRow-content', container: true, spacing: spacing, direction: 'row', style: { flexWrap: 'nowrap' } }, children),
                     helperText && (React__default.createElement(FormHelperText, { className: 'FormRow-helper-text', component: 'div', error: error }, helperText)))))));
@@ -1968,7 +1987,7 @@ function useResizeDetector(props) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    initGap = _a.gap, icon = _a.icon, label = _a.label, hidden = _a.hidden, error = _a.error, helperText = _a.helperText, helperTextShift = _a.helperTextShift, 
+    initGap = _a.gap, icon = _a.icon, label = _a.label, hidden = _a.hidden, error = _a.error, warning = _a.warning, helperText = _a.helperText, helperTextShift = _a.helperTextShift, 
     //----------------------------------------------------------------------------------------------------------------
     xs = _a.xs, className = _a.className, children = _a.children, initStyle = _a.style, sx = _a.sx;
     var id = useId();
@@ -2023,7 +2042,7 @@ function useResizeDetector(props) {
             React__default.createElement(Grid, { container: true, direction: 'column' },
                 label && (React__default.createElement(Grid, { item: true, className: 'FormCol-header' },
                     React__default.createElement("div", { style: { position: 'relative', height: 20 } },
-                        React__default.createElement(FormLabel, { className: 'FormCol-FormLabel', size: size, icon: icon, focused: focused, color: color, error: error, style: { position: 'absolute', left: 5, top: 0 } }, label)))),
+                        React__default.createElement(FormLabel, { className: 'FormCol-FormLabel', size: size, icon: icon, focused: focused, color: color, error: error, warning: warning, style: { position: 'absolute', left: 5, top: 0 } }, label)))),
                 React__default.createElement(Grid, { item: true, xs: 2, className: 'FormCol-content' },
                     React__default.createElement(Box, { sx: { display: 'flex', flexWrap: 'wrap', gap: gap } }, children)),
                 helperText && (React__default.createElement(Grid, { item: true, className: 'FormCol-helper-text' },

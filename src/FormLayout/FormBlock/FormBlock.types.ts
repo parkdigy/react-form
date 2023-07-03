@@ -9,6 +9,7 @@ export interface FormBlockProps
   collapse?: boolean;
   collapseIn?: boolean;
   error?: boolean;
+  warning?: boolean;
 }
 
 export const FormBlockDefaultProps = {};
