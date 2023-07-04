@@ -2,7 +2,7 @@ import React, { useState, useRef, useLayoutEffect, FormEvent, useCallback, useMe
 import classNames from 'classnames';
 import { Box } from '@mui/material';
 import { empty, notEmpty, nextTick } from '../@util';
-import { FormProps as Props, FormDefaultProps, FormCommands } from './Form.types';
+import { FormProps as Props, FormDefaultProps, FormCommands, FormInvalidItems } from './Form.types';
 import FormContextProvider from '../FormContextProvider';
 import { useFormState } from '../FormContext';
 import {
@@ -36,6 +36,7 @@ const Form = React.forwardRef<FormCommands, Props>(
       fullHeight,
       //----------------------------------------------------------------------------------------------------------------
       onSubmit,
+      onInvalid,
       onValueChange,
       onValueChangeByUser,
     },
@@ -199,6 +200,7 @@ const Form = React.forwardRef<FormCommands, Props>(
       let firstInvalidItemId: string;
 
       const data: FormValueMap = {};
+      const invalidItems: FormInvalidItems = [];
 
       Object.keys(valueItems).forEach((id) => {
         const itemCommands = valueItems[id];
@@ -209,6 +211,8 @@ const Form = React.forwardRef<FormCommands, Props>(
                 appendFormValueData(data, itemCommands);
               }
             } else {
+              invalidItems.push({ name: itemCommands.getName(), commands: itemCommands });
+
               if (isAllValid) {
                 isAllValid = false;
                 firstInvalidItemId = id;
@@ -219,13 +223,14 @@ const Form = React.forwardRef<FormCommands, Props>(
       });
 
       if (isAllValid) {
-        if (onSubmit) onSubmit(data);
+        onSubmit && onSubmit(data);
       } else {
+        onInvalid && onInvalid(invalidItems);
         nextTick(() => {
           valueItems[firstInvalidItemId]?.focusValidate();
         });
       }
-    }, [valueItems, appendFormValueData, onSubmit]);
+    }, [valueItems, appendFormValueData, onSubmit, onInvalid]);
 
     // Commands --------------------------------------------------------------------------------------------------------
 

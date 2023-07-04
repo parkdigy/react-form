@@ -45,6 +45,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       error: initError,
       helperText: initHelperText,
       value: initValue,
+      data: initData,
       exceptValue,
       onChange,
       onValidate,
@@ -101,6 +102,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
     const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
     const [initialized, setInitialized] = useState(false);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // Function - focus ------------------------------------------------------------------------------------------------
 
@@ -161,6 +163,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
 
     useLayoutEffect(() => {
       let lastValue = value;
+      let lastData = data;
       let lastDisabled = !!disabled;
 
       const commands: FormTextEditorCommands = {
@@ -175,6 +178,11 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
         setValue: (value) => {
           lastValue = value;
           setValue(lastValue);
+        },
+        getData: () => lastData,
+        setData: (data) => {
+          lastData = data;
+          setData(data);
         },
         isExceptValue: () => !!exceptValue,
         isDisabled: () => lastDisabled,
@@ -226,6 +234,8 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       setValue,
       setDisabled,
       setErrorHelperText,
+      data,
+      setData,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

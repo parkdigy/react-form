@@ -481,7 +481,7 @@ function checkDateAvailable(date, availableDate, type, time) {
     //--------------------------------------------------------------------------------------------------------------------
     initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFormColGap = _a.formColGap, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, fullHeight = _a.fullHeight, 
     //----------------------------------------------------------------------------------------------------------------
-    onSubmit = _a.onSubmit, onValueChange = _a.onValueChange, onValueChangeByUser = _a.onValueChangeByUser;
+    onSubmit = _a.onSubmit, onInvalid = _a.onInvalid, onValueChange = _a.onValueChange, onValueChangeByUser = _a.onValueChangeByUser;
     var _b = useFormState(), formId = _b.id, formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFormColGap = _b.formColGap, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formAddValueItem = _b.onAddValueItem, formRemoveValueItem = _b.onRemoveValueItem, formValueChange = _b.onValueChange, formValueChangeByUser = _b.onValueChangeByUser, otherFormState = __rest$3(_b, ["id", "variant", "size", "color", "spacing", "formColGap", "focused", "labelShrink", "fullWidth", "onAddValueItem", "onRemoveValueItem", "onValueChange", "onValueChangeByUser"]);
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
@@ -587,6 +587,7 @@ function checkDateAvailable(date, availableDate, type, time) {
         var isAllValid = true;
         var firstInvalidItemId;
         var data = {};
+        var invalidItems = [];
         Object.keys(valueItems).forEach(function (id) {
             var itemCommands = valueItems[id];
             if (itemCommands) {
@@ -597,6 +598,7 @@ function checkDateAvailable(date, availableDate, type, time) {
                         }
                     }
                     else {
+                        invalidItems.push({ name: itemCommands.getName(), commands: itemCommands });
                         if (isAllValid) {
                             isAllValid = false;
                             firstInvalidItemId = id;
@@ -606,16 +608,16 @@ function checkDateAvailable(date, availableDate, type, time) {
             }
         });
         if (isAllValid) {
-            if (onSubmit)
-                onSubmit(data);
+            onSubmit && onSubmit(data);
         }
         else {
+            onInvalid && onInvalid(invalidItems);
             nextTick(function () {
                 var _a;
                 (_a = valueItems[firstInvalidItemId]) === null || _a === void 0 ? void 0 : _a.focusValidate();
             });
         }
-    }, [valueItems, appendFormValueData, onSubmit]);
+    }, [valueItems, appendFormValueData, onSubmit, onInvalid]);
     // Commands --------------------------------------------------------------------------------------------------------
     useLayoutEffect(function () {
         if (ref) {
@@ -2123,13 +2125,13 @@ styleInject(css_248z$j);var FormTextField = React__default.forwardRef(function (
     var _b;
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, required = _a.required, initValue = _a.value, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, initHelperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, hidden = _a.hidden, 
+    name = _a.name, required = _a.required, initValue = _a.value, initData = _a.data, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, initHelperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, hidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, onBlur = _a.onBlur, onKeyDown = _a.onKeyDown, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, 
     //----------------------------------------------------------------------------------------------------------------
-    props = __rest$3(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "required", "value", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
+    props = __rest$3(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "required", "value", "data", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
     var id = useId();
     // Ref -------------------------------------------------------------------------------------------------------------
     var inputRef = useRef(null);
@@ -2147,6 +2149,7 @@ styleInject(css_248z$j);var FormTextField = React__default.forwardRef(function (
     var _e = useAutoUpdateState$1(initHelperText), helperText = _e[0], setHelperText = _e[1];
     var _f = useState(false), showClear = _f[0], setShowClear = _f[1];
     var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
+    var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
     // Memo - muiInputLabelProps ---------------------------------------------------------------------------------------
     var muiInputLabelProps = useMemo(function () {
         if (labelShrink || placeholder) {
@@ -2195,7 +2198,7 @@ styleInject(css_248z$j);var FormTextField = React__default.forwardRef(function (
         return onValue ? onValue(value) : value;
     }, [onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _h = useAutoUpdateState$1(initValue, getFinalValue), value = _h[0], setValue = _h[1];
+    var _j = useAutoUpdateState$1(initValue, getFinalValue), value = _j[0], setValue = _j[1];
     useEffect(function () {
         setShowClear(clear ? notEmpty(value) : false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -2311,6 +2314,7 @@ styleInject(css_248z$j);var FormTextField = React__default.forwardRef(function (
     useLayoutEffect(function () {
         if (ref || (!noFormValueItem && onAddValueItem)) {
             var lastValue_1 = value;
+            var lastData_1 = data;
             var lastDisabled_1 = !!disabled;
             var commands = {
                 getType: function () { return 'default'; },
@@ -2324,6 +2328,11 @@ styleInject(css_248z$j);var FormTextField = React__default.forwardRef(function (
                 setValue: function (value) {
                     lastValue_1 = getFinalValue(value);
                     setValue(lastValue_1);
+                },
+                getData: function () { return lastData_1; },
+                setData: function (data) {
+                    lastData_1 = data;
+                    setData(data);
                 },
                 isExceptValue: function () { return !!exceptValue; },
                 isDisabled: function () { return lastDisabled_1; },
@@ -2365,6 +2374,7 @@ styleInject(css_248z$j);var FormTextField = React__default.forwardRef(function (
         name,
         initValue,
         value,
+        data,
         getFinalValue,
         exceptValue,
         disabled,
@@ -2379,6 +2389,7 @@ styleInject(css_248z$j);var FormTextField = React__default.forwardRef(function (
         setDisabled,
         setErrorHelperText,
         initHelperText,
+        setData,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (e) {
@@ -4549,9 +4560,9 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initChecked = _a.checked, initInputRef = _a.inputRef, initAction = _a.action, readOnly = _a.readOnly, initDisabled = _a.disabled, text = _a.text, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initUncheckedValue = _a.uncheckedValue, exceptValue = _a.exceptValue, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initChecked = _a.checked, initInputRef = _a.inputRef, initAction = _a.action, readOnly = _a.readOnly, initDisabled = _a.disabled, text = _a.text, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initData = _a.data, initUncheckedValue = _a.uncheckedValue, exceptValue = _a.exceptValue, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
-    className = _a.className, initStyle = _a.style, sx = _a.sx, props = __rest$3(_a, ["variant", "size", "color", "focused", "fullWidth", "name", "labelIcon", "label", "checked", "inputRef", "action", "readOnly", "disabled", "text", "error", "helperText", "value", "uncheckedValue", "exceptValue", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
+    className = _a.className, initStyle = _a.style, sx = _a.sx, props = __rest$3(_a, ["variant", "size", "color", "focused", "fullWidth", "name", "labelIcon", "label", "checked", "inputRef", "action", "readOnly", "disabled", "text", "error", "helperText", "value", "data", "uncheckedValue", "exceptValue", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = useId();
     // FormState -------------------------------------------------------------------------------------------------------
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
@@ -4572,8 +4583,9 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
     var _f = useAutoUpdateState$1(initError), error = _f[0], setError = _f[1];
     var _g = useAutoUpdateState$1(initHelperText), helperText = _g[0], setHelperText = _g[1];
     var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
+    var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
     // State - checked -------------------------------------------------------------------------------------------------
-    var _j = useAutoUpdateState$1(initChecked), checked = _j[0], setChecked = _j[1];
+    var _k = useAutoUpdateState$1(initChecked), checked = _k[0], setChecked = _k[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(checked);
@@ -4620,6 +4632,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
     useLayoutEffect(function () {
         var lastChecked = checked;
         var lastValue = value;
+        var lastData = data;
         var lastUncheckedValue = uncheckedValue;
         var lastDisabled = !!disabled;
         var commands = {
@@ -4634,6 +4647,11 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
             setValue: function (value) {
                 lastValue = value;
                 setValue(value);
+            },
+            getData: function () { return lastData; },
+            setData: function (data) {
+                lastData = data;
+                setData(data);
             },
             getUncheckedValue: function () { return lastUncheckedValue; },
             setUncheckedValue: function (uncheckedValue) {
@@ -4698,6 +4716,8 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
         setUncheckedValue,
         setDisabled,
         setErrorHelperText,
+        data,
+        setData,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (e, checked) {
@@ -4723,11 +4743,11 @@ var FormRadioGroup = React__default.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, hidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, initWidth = _a.width, labelIcon = _a.labelIcon, label = _a.label, inline = _a.inline, initLoading = _a.loading, nowrap = _a.nowrap, initItems = _a.items, initValue = _a.value, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, onLoadItems = _a.onLoadItems, onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
+    name = _a.name, initWidth = _a.width, labelIcon = _a.labelIcon, label = _a.label, inline = _a.inline, initLoading = _a.loading, nowrap = _a.nowrap, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, onLoadItems = _a.onLoadItems, onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, 
     //----------------------------------------------------------------------------------------------------------------
-    props = __rest$3(_a, ["variant", "size", "color", "focused", "fullWidth", "hidden", "name", "width", "labelIcon", "label", "inline", "loading", "nowrap", "items", "value", "error", "helperText", "disabled", "readOnly", "required", "exceptValue", "onLoadItems", "onChange", "onValue", "onValidate", "className", "style", "sx"]);
+    props = __rest$3(_a, ["variant", "size", "color", "focused", "fullWidth", "hidden", "name", "width", "labelIcon", "label", "inline", "loading", "nowrap", "items", "value", "data", "error", "helperText", "disabled", "readOnly", "required", "exceptValue", "onLoadItems", "onChange", "onValue", "onValidate", "className", "style", "sx"]);
     var id = useId();
     // FormState -------------------------------------------------------------------------------------------------------
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
@@ -4752,8 +4772,9 @@ var FormRadioGroup = React__default.forwardRef(function (_a, ref) {
     var _j = useAutoUpdateState$1(initLoading), loading = _j[0], setLoading = _j[1];
     var _k = useAutoUpdateState$1(initWidth || '100%'), width = _k[0], setWidth = _k[1];
     var _l = useState(), formColWrapRect = _l[0], setFormColWrapRect = _l[1];
+    var _m = useAutoUpdateState$1(initData), data = _m[0], setData = _m[1];
     // State - radioGroupNoWrapRect (ResizeDetector) -------------------------------------------------------------------
-    var _m = useState(), radioGroupNoWrapRect = _m[0], setRadioGroupNoWrapRect = _m[1];
+    var _o = useState(), radioGroupNoWrapRect = _o[0], setRadioGroupNoWrapRect = _o[1];
     var resizeWidthDetectorRef = useResizeDetector({
         handleWidth: true,
         handleHeight: false,
@@ -4763,13 +4784,13 @@ var FormRadioGroup = React__default.forwardRef(function (_a, ref) {
         },
     }).ref;
     // State - height (ResizeDetector) ---------------------------------------------------------------------------------
-    var _o = useResizeDetector(), height = _o.height, resizeHeightDetectorRef = _o.ref;
+    var _p = useResizeDetector(), height = _p.height, resizeHeightDetectorRef = _p.ref;
     // Function - getFinalValue ----------------------------------------------------------------------------------------
     var getFinalValue = useCallback(function (value) {
         return onValue ? onValue(value) : value;
     }, [onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _p = useAutoUpdateState$1(initValue, getFinalValue), value = _p[0], setValue = _p[1];
+    var _q = useAutoUpdateState$1(initValue, getFinalValue), value = _q[0], setValue = _q[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(value);
@@ -4874,6 +4895,7 @@ var FormRadioGroup = React__default.forwardRef(function (_a, ref) {
     // Commands --------------------------------------------------------------------------------------------------------
     useLayoutEffect(function () {
         var lastValue = value;
+        var lastData = data;
         var lastItems = items;
         var lastLoading = loading;
         var lastDisabled = !!disabled;
@@ -4889,6 +4911,11 @@ var FormRadioGroup = React__default.forwardRef(function (_a, ref) {
             setValue: function (value) {
                 lastValue = getFinalValue(value);
                 setValue(lastValue);
+            },
+            getData: function () { return lastData; },
+            setData: function (data) {
+                lastData = data;
+                setData(data);
             },
             isExceptValue: function () { return !!exceptValue; },
             isDisabled: function () { return lastDisabled; },
@@ -4954,6 +4981,8 @@ var FormRadioGroup = React__default.forwardRef(function (_a, ref) {
         initHelperText,
         setItems,
         setLoading,
+        data,
+        setData,
     ]);
     useEffect(function () {
         if (onLoadItems) {
@@ -5028,7 +5057,7 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default.forwardRef(fu
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, type = _a.type, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, notAllowEmptyValue = _a.notAllowEmptyValue, exceptValue = _a.exceptValue, initWidth = _a.width, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, hidden = _a.hidden, itemWidth = _a.itemWidth, onLoadItems = _a.onLoadItems, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, type = _a.type, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, notAllowEmptyValue = _a.notAllowEmptyValue, exceptValue = _a.exceptValue, initWidth = _a.width, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, hidden = _a.hidden, itemWidth = _a.itemWidth, onLoadItems = _a.onLoadItems, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -5069,6 +5098,7 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default.forwardRef(fu
     var _j = useAutoUpdateState$1(initHelperText), helperText = _j[0], setHelperText = _j[1];
     var _k = useAutoUpdateState$1(initLoading), loading = _k[0], setLoading = _k[1];
     var _l = useAutoUpdateState$1(initDisabled), disabled = _l[0], setDisabled = _l[1];
+    var _m = useAutoUpdateState$1(initData), data = _m[0], setData = _m[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var itemsValues = useMemo(function () {
         if (items) {
@@ -5154,7 +5184,7 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default.forwardRef(fu
         return onValue ? onValue(finalValue) : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _m = useAutoUpdateState$1(initValue, getFinalValue), value = _m[0], setValue = _m[1];
+    var _o = useAutoUpdateState$1(initValue, getFinalValue), value = _o[0], setValue = _o[1];
     // Effect ----------------------------------------------------------------------------------------------------------
     useEffect(function () {
         if (value !== initValue) {
@@ -5229,6 +5259,7 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default.forwardRef(fu
     useLayoutEffect(function () {
         if (ref || onAddValueItem) {
             var lastValue_1 = value;
+            var lastData_1 = data;
             var lastItems_1 = items;
             var lastLoading_1 = loading;
             var lastDisabled_1 = !!disabled;
@@ -5244,6 +5275,11 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default.forwardRef(fu
                 setValue: function (value) {
                     lastValue_1 = getFinalValue(value);
                     setValue(lastValue_1);
+                },
+                getData: function () { return lastData_1; },
+                setData: function (data) {
+                    lastData_1 = data;
+                    setData(data);
                 },
                 isExceptValue: function () { return !!exceptValue; },
                 isDisabled: function () { return lastDisabled_1; },
@@ -5318,6 +5354,8 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default.forwardRef(fu
         initHelperText,
         setItems,
         setLoading,
+        data,
+        setData,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (e, newValue) {
@@ -5432,7 +5470,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     //----------------------------------------------------------------------------------------------------------------
     precision = _a.precision, highlightSelectedOnly = _a.highlightSelectedOnly, icon = _a.icon, emptyIcon = _a.emptyIcon, max = _a.max, hidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, onValue = _a.onValue, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, onValue = _a.onValue, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = useId();
@@ -5450,14 +5488,15 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = useAutoUpdateState$1(initHelperText), helperText = _e[0], setHelperText = _e[1];
     var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
+    var _g = useAutoUpdateState$1(initData), data = _g[0], setData = _g[1];
     // State - width, height -------------------------------------------------------------------------------------------
-    var _g = useResizeDetector(), width = _g.width, height = _g.height, resizeDetectorRef = _g.ref;
+    var _h = useResizeDetector(), width = _h.width, height = _h.height, resizeDetectorRef = _h.ref;
     // Function - getFinalValue ----------------------------------------------------------------------------------------
     var getFinalValue = useCallback(function (value) {
         return onValue ? onValue(value) : value;
     }, [onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _h = useAutoUpdateState$1(initValue || 0, getFinalValue), value = _h[0], setValue = _h[1];
+    var _j = useAutoUpdateState$1(initValue || 0, getFinalValue), value = _j[0], setValue = _j[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(value);
@@ -5510,6 +5549,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     // Commands --------------------------------------------------------------------------------------------------------
     useLayoutEffect(function () {
         var lastValue = value;
+        var lastData = data;
         var lastDisabled = !!disabled;
         var commands = {
             getType: function () { return 'FormRating'; },
@@ -5523,6 +5563,11 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
             setValue: function (value) {
                 lastValue = getFinalValue(value);
                 setValue(lastValue);
+            },
+            getData: function () { return lastData; },
+            setData: function (data) {
+                lastData = data;
+                setData(data);
             },
             isExceptValue: function () { return !!exceptValue; },
             isDisabled: function () { return lastDisabled; },
@@ -5574,6 +5619,8 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         setValue,
         setDisabled,
         setErrorHelperText,
+        data,
+        setData,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (e, value) {
@@ -7325,7 +7372,7 @@ styleInject(css_248z$a);var FormTextEditor = React__default.forwardRef(function 
     //----------------------------------------------------------------------------------------------------------------
     menubar = _a.menubar, height = _a.height, hidden = _a.hidden, onImageUpload = _a.onImageUpload, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = useId();
@@ -7354,6 +7401,7 @@ styleInject(css_248z$a);var FormTextEditor = React__default.forwardRef(function 
     var _f = useAutoUpdateState$1(initHelperText), helperText = _f[0], setHelperText = _f[1];
     var _g = useState(false), initialized = _g[0], setInitialized = _g[1];
     var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
+    var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
     // Function - focus ------------------------------------------------------------------------------------------------
     var focus = useCallback(function () {
         var _a, _b;
@@ -7395,6 +7443,7 @@ styleInject(css_248z$a);var FormTextEditor = React__default.forwardRef(function 
     // Commands --------------------------------------------------------------------------------------------------------
     useLayoutEffect(function () {
         var lastValue = value;
+        var lastData = data;
         var lastDisabled = !!disabled;
         var commands = {
             getType: function () { return 'FormTextEditor'; },
@@ -7408,6 +7457,11 @@ styleInject(css_248z$a);var FormTextEditor = React__default.forwardRef(function 
             setValue: function (value) {
                 lastValue = value;
                 setValue(lastValue);
+            },
+            getData: function () { return lastData; },
+            setData: function (data) {
+                lastData = data;
+                setData(data);
             },
             isExceptValue: function () { return !!exceptValue; },
             isDisabled: function () { return lastDisabled; },
@@ -7458,6 +7512,8 @@ styleInject(css_248z$a);var FormTextEditor = React__default.forwardRef(function 
         setValue,
         setDisabled,
         setErrorHelperText,
+        data,
+        setData,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleEditorChange = useCallback(function (value) {
@@ -7510,7 +7566,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, width = _a.width, placeholder = _a.placeholder, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, disablePortal = _a.disablePortal, noOptionsText = _a.noOptionsText, loadingText = _a.loadingText, limitTags = _a.limitTags, openOnFocus = _a.openOnFocus, disableClearable = _a.disableClearable, async = _a.async, hidden = _a.hidden, onLoadItems = _a.onLoadItems, onAsyncLoadValueItem = _a.onAsyncLoadValueItem, onRenderItem = _a.onRenderItem, onRenderTag = _a.onRenderTag, onAddItem = _a.onAddItem, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, width = _a.width, placeholder = _a.placeholder, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, disablePortal = _a.disablePortal, noOptionsText = _a.noOptionsText, loadingText = _a.loadingText, limitTags = _a.limitTags, openOnFocus = _a.openOnFocus, disableClearable = _a.disableClearable, async = _a.async, hidden = _a.hidden, onLoadItems = _a.onLoadItems, onAsyncLoadValueItem = _a.onAsyncLoadValueItem, onRenderItem = _a.onRenderItem, onRenderTag = _a.onRenderTag, onAddItem = _a.onAddItem, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -7537,6 +7593,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     var _g = useAutoUpdateState$1(initLoading), loading = _g[0], setLoading = _g[1];
     var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
     var _j = useState(undefined), inputValue = _j[0], setInputValue = _j[1];
+    var _k = useAutoUpdateState$1(initData), data = _k[0], setData = _k[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var itemsValues = useMemo(function () {
         if (items) {
@@ -7609,8 +7666,8 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         return onValue ? onValue(finalValue) : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _k = useAutoUpdateState$1(initValue, getFinalValue), value = _k[0], setValue = _k[1];
-    var _l = useState(null), valueItem = _l[0], setValueItem = _l[1];
+    var _l = useAutoUpdateState$1(initValue, getFinalValue), value = _l[0], setValue = _l[1];
+    var _m = useState(null), valueItem = _m[0], setValueItem = _m[1];
     var componentValue = useMemo(function () {
         var finalValue = value;
         if (finalValue != null) {
@@ -7796,6 +7853,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     useLayoutEffect(function () {
         if (ref || onAddValueItem) {
             var lastValue_1 = value;
+            var lastData_1 = data;
             var lastItems_1 = items;
             var lastLoading_1 = loading;
             var lastDisabled_1 = !!disabled;
@@ -7811,6 +7869,11 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                 setValue: function (value) {
                     lastValue_1 = getFinalValue(value);
                     setValue(lastValue_1);
+                },
+                getData: function () { return lastData_1; },
+                setData: function (data) {
+                    lastData_1 = data;
+                    setData(data);
                 },
                 isExceptValue: function () { return !!exceptValue; },
                 isDisabled: function () { return lastDisabled_1; },
@@ -7885,6 +7948,8 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         initHelperText,
         setItems,
         setLoading,
+        data,
+        setData,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (componentValue, reason, details) {
@@ -10174,9 +10239,9 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default.forwardRef(functi
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, initHelperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, initHelperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     //--------------------------------------------------------------------------------------------------------------------
-    className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$3(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
+    className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$3(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = useId();
     // Ref -------------------------------------------------------------------------------------------------------------
     var privateStaticDatePickerRef = useRef(null);
@@ -10201,6 +10266,7 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default.forwardRef(functi
     var _e = useState(null), timeError = _e[0], setTimeError = _e[1];
     var _f = useAutoUpdateState$1(initHelperText), helperText = _f[0], setHelperText = _f[1];
     var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
+    var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var label = useMemo(function () {
         if (labelIcon) {
@@ -10241,8 +10307,8 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default.forwardRef(functi
         return value;
     }, []);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _h = useAutoUpdateState$1(initValue || null, getFinalValue), value = _h[0], setValue = _h[1];
-    var _j = useState(null), inputValue = _j[0], setInputValue = _j[1];
+    var _j = useAutoUpdateState$1(initValue || null, getFinalValue), value = _j[0], setValue = _j[1];
+    var _k = useState(null), inputValue = _k[0], setInputValue = _k[1];
     // Effect ----------------------------------------------------------------------------------------------------------
     useEffect(function () {
         if (value !== initValue) {
@@ -10350,6 +10416,7 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default.forwardRef(functi
     useLayoutEffect(function () {
         if (ref || onAddValueItem) {
             var lastValue_1 = value;
+            var lastData_1 = data;
             var lastDisabled_1 = !!disabled;
             var commands = {
                 getType: function () { return 'default'; },
@@ -10363,6 +10430,11 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default.forwardRef(functi
                 setValue: function (value) {
                     lastValue_1 = getFinalValue(value);
                     setValue(lastValue_1);
+                },
+                getData: function () { return lastData_1; },
+                setData: function (data) {
+                    lastData_1 = data;
+                    setData(data);
                 },
                 isExceptValue: function () { return !!exceptValue; },
                 isDisabled: function () { return lastDisabled_1; },
@@ -10419,6 +10491,8 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default.forwardRef(functi
         setDisabled,
         setErrorHelperText,
         initHelperText,
+        data,
+        setData,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (unit, newValue, keyboardInputValue) {
@@ -11132,7 +11206,7 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, initValue = _a.value, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, initCalendarCount = _a.calendarCount, initFormat = _a.format, formValueFormat = _a.formValueFormat, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, initHelperText = _a.helperText, formValueStartNameSuffix = _a.formValueStartNameSuffix, formValueEndNameSuffix = _a.formValueEndNameSuffix, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, initValue = _a.value, initData = _a.data, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, initCalendarCount = _a.calendarCount, initFormat = _a.format, formValueFormat = _a.formValueFormat, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, initHelperText = _a.helperText, formValueStartNameSuffix = _a.formValueStartNameSuffix, formValueEndNameSuffix = _a.formValueEndNameSuffix, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = useId();
@@ -11160,6 +11234,7 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
     var _e = useState(false), endError = _e[0], setEndError = _e[1];
     var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
     var _g = useAutoUpdateState$1(initHelperText), helperText = _g[0], setHelperText = _g[1];
+    var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var format = useMemo(function () { return initFormat || DEFAULT_FORMAT; }, [initFormat]);
     // Function - getFinalValue ----------------------------------------------------------------------------------------
@@ -11273,16 +11348,16 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
         (_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.activeMonth(month);
     }, [containerRef]);
     // State -----------------------------------------------------------------------------------------------------------
-    var _h = useState(false), open = _h[0], setOpen = _h[1];
-    var _j = useState('start'), selectType = _j[0], setSelectType = _j[1];
-    var _k = useAutoUpdateState$1(useCallback(function () {
+    var _j = useState(false), open = _j[0], setOpen = _j[1];
+    var _k = useState('start'), selectType = _k[0], setSelectType = _k[1];
+    var _l = useAutoUpdateState$1(useCallback(function () {
         return initValue || DEFAULT_VALUE;
-    }, [initValue])), value = _k[0], setValue = _k[1];
+    }, [initValue])), value = _l[0], setValue = _l[1];
     var calendarCount = useAutoUpdateState$1(initCalendarCount || 2)[0];
-    var _l = useState(function () {
+    var _m = useState(function () {
         var now = dayjs();
         return [now, now.add(1, 'month'), now.add(2, 'month')];
-    }), months = _l[0], setMonths = _l[1];
+    }), months = _m[0], setMonths = _m[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var inputDatePickerProps = useMemo(function () { return ({
         variant: variant,
@@ -11528,6 +11603,7 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
     useLayoutEffect(function () {
         if (ref || onAddValueItem) {
             var lastValue_1 = value;
+            var lastData_1 = data;
             var lastDisabled_1 = !!disabled;
             var commands = {
                 getType: function () { return 'FormDateRangePicker'; },
@@ -11541,6 +11617,11 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
                 setValue: function (value) {
                     lastValue_1 = getFinalValue(value);
                     setValue(lastValue_1);
+                },
+                getData: function () { return lastData_1; },
+                setData: function (data) {
+                    lastData_1 = data;
+                    setData(data);
                 },
                 getStartValue: function () { return lastValue_1[0]; },
                 setStartValue: function (value) {
@@ -11622,6 +11703,8 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
         setDisabled,
         setErrorHelperText,
         initHelperText,
+        data,
+        setData,
     ]);
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs, adapterLocale: dayjsLocale },
@@ -11704,7 +11787,7 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     //----------------------------------------------------------------------------------------------------------------
     accept = _a.accept, hideUrl = _a.hideUrl, hideLink = _a.hideLink, maxFileSize = _a.maxFileSize, preview = _a.preview, hidden = _a.hidden, onFile = _a.onFile, onLink = _a.onLink, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, initLabel = _a.label, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, labelIcon = _a.labelIcon, initLabel = _a.label, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = useId();
@@ -11735,7 +11818,8 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     var _e = useAutoUpdateState$1(initHelperText), helperText = _e[0], setHelperText = _e[1];
     var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
     var _g = useState(false), isOpenLinkDialog = _g[0], setIsOpenLinkDialog = _g[1];
-    var _h = useState({ open: false }), alertDialogProps = _h[0], setAlertDialogProps = _h[1];
+    var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
+    var _j = useState({ open: false }), alertDialogProps = _j[0], setAlertDialogProps = _j[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var label = useMemo(function () {
         return labelIcon ? (React__default.createElement(React__default.Fragment, null,
@@ -11783,6 +11867,7 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     // Commands --------------------------------------------------------------------------------------------------------
     useLayoutEffect(function () {
         var lastValue = value;
+        var lastData = data;
         var lastDisabled = !!disabled;
         var commands = {
             getType: function () { return 'FormFile'; },
@@ -11796,6 +11881,11 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
             setValue: function (value) {
                 lastValue = value;
                 setValue(lastValue);
+            },
+            getData: function () { return lastData; },
+            setData: function (data) {
+                lastData = data;
+                setData(data);
             },
             isExceptValue: function () { return !!exceptValue; },
             isDisabled: function () { return lastDisabled; },
@@ -11846,6 +11936,8 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
         setValue,
         setDisabled,
         setErrorHelperText,
+        data,
+        setData,
     ]);
     // Function --------------------------------------------------------------------------------------------------------
     var fileSizeCheck = useCallback(function (file) {

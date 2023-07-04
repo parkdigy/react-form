@@ -31,6 +31,8 @@ export interface FormValueMap {
   [key: string]: FormValue;
 }
 
+export type FormValueItemData = Record<string, any>;
+
 export interface FormValueItemBaseCommands<ValueType = FormItemValue> {
   getType():
     | 'default'
@@ -50,6 +52,8 @@ export interface FormValueItemBaseCommands<ValueType = FormItemValue> {
   reset(): void;
   getValue(): ValueType;
   setValue(value: ValueType): void;
+  getData(): FormValueItemData | undefined;
+  setData(data?: FormValueItemData): void;
   isExceptValue(): boolean;
   isDisabled(): boolean;
   setDisabled(disabled: boolean): void;
@@ -128,6 +132,7 @@ export interface FormValueItemProps extends PartialPick<FormContextValue, 'varia
   error?: boolean;
   exceptValue?: boolean;
   helperText?: ReactNode;
+  data?: FormValueItemData;
   onChange?(value: FormItemValue): void;
   onValidate?(value: FormItemValue): boolean | string;
 }

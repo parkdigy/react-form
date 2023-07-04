@@ -30,6 +30,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
       loading: initLoading,
       items: initItems,
       value: initValue,
+      data: initData,
       error: initError,
       helperText: initHelperText,
       disabled: initDisabled,
@@ -125,6 +126,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
     const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
     const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // Memo --------------------------------------------------------------------------------------------------------------
 
@@ -306,6 +308,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
     useLayoutEffect(() => {
       if (ref || onAddValueItem) {
         let lastValue = value;
+        let lastData = data;
         let lastItems = items;
         let lastLoading = loading;
         let lastDisabled = !!disabled;
@@ -322,6 +325,11 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
           setValue: (value) => {
             lastValue = getFinalValue(value);
             setValue(lastValue);
+          },
+          getData: () => lastData,
+          setData: (data) => {
+            lastData = data;
+            setData(data);
           },
           isExceptValue: () => !!exceptValue,
           isDisabled: () => lastDisabled,
@@ -395,6 +403,8 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
       initHelperText,
       setItems,
       setLoading,
+      data,
+      setData,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

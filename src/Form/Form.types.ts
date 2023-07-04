@@ -10,6 +10,13 @@ import {
   FormValueItemBaseCommands,
 } from '../@types';
 
+export interface FormInvalidItemInfo {
+  name: string;
+  commands: FormValueItemCommands;
+}
+
+export type FormInvalidItems = FormInvalidItemInfo[];
+
 export interface FormProps
   extends CommonSxProps,
     PartialPick<FormControlProps, 'variant' | 'size' | 'color' | 'focused'>,
@@ -20,6 +27,7 @@ export interface FormProps
   formColGap?: number;
   //--------------------------------------------------------------------------------------------------------------------
   onSubmit?(data: FormValueMap): void;
+  onInvalid?(invalidItems: FormInvalidItems): void;
   onValueChange?(name: string, value: FormItemValue): void;
   onValueChangeByUser?(name: string, value: FormItemValue): void;
 }

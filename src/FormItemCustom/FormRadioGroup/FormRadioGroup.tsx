@@ -45,6 +45,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
       nowrap,
       items: initItems,
       value: initValue,
+      data: initData,
       error: initError,
       helperText: initHelperText,
       disabled: initDisabled,
@@ -115,6 +116,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
     const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
     const [width, setWidth] = useAutoUpdateState<Props['width']>(initWidth || '100%');
     const [formColWrapRect, setFormColWrapRect] = useState<DOMRect>();
+    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // State - radioGroupNoWrapRect (ResizeDetector) -------------------------------------------------------------------
 
@@ -270,6 +272,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
 
     useLayoutEffect(() => {
       let lastValue = value;
+      let lastData = data;
       let lastItems = items;
       let lastLoading = loading;
       let lastDisabled = !!disabled;
@@ -286,6 +289,11 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
         setValue: (value: Props['value']) => {
           lastValue = getFinalValue(value);
           setValue(lastValue);
+        },
+        getData: () => lastData,
+        setData: (data) => {
+          lastData = data;
+          setData(data);
         },
         isExceptValue: () => !!exceptValue,
         isDisabled: () => lastDisabled,
@@ -352,6 +360,8 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
       initHelperText,
       setItems,
       setLoading,
+      data,
+      setData,
     ]);
 
     useEffect(() => {

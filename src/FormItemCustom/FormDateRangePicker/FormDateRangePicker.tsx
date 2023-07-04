@@ -46,6 +46,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       //--------------------------------------------------------------------------------------------------------------------
       name,
       value: initValue,
+      data: initData,
       startLabel,
       startLabelIcon,
       endLabel,
@@ -143,6 +144,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     const [endError, setEndError] = useState(false);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // Memo --------------------------------------------------------------------------------------------------------------
 
@@ -571,6 +573,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     useLayoutEffect(() => {
       if (ref || onAddValueItem) {
         let lastValue = value;
+        let lastData = data;
         let lastDisabled = !!disabled;
 
         const commands: FormDateRangePickerCommands = {
@@ -586,6 +589,12 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
             lastValue = getFinalValue(value);
             setValue(lastValue);
           },
+          getData: () => lastData,
+          setData: (data) => {
+            lastData = data;
+            setData(data);
+          },
+
           getStartValue: () => lastValue[0],
           setStartValue: (value) => {
             lastValue = [value, lastValue[1]];
@@ -663,6 +672,8 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       setDisabled,
       setErrorHelperText,
       initHelperText,
+      data,
+      setData,
     ]);
 
     // Render ----------------------------------------------------------------------------------------------------------

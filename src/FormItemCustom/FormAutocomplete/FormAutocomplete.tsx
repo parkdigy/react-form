@@ -31,6 +31,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
       loading: initLoading,
       items: initItems,
       value: initValue,
+      data: initData,
       error: initError,
       helperText: initHelperText,
       disabled: initDisabled,
@@ -117,6 +118,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
     const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [inputValue, setInputValue] = useState<string | undefined>(undefined);
+    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // Memo --------------------------------------------------------------------------------------------------------------
 
@@ -405,6 +407,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
     useLayoutEffect(() => {
       if (ref || onAddValueItem) {
         let lastValue = value;
+        let lastData = data;
         let lastItems = items;
         let lastLoading = loading;
         let lastDisabled = !!disabled;
@@ -421,6 +424,11 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
           setValue: (value) => {
             lastValue = getFinalValue(value);
             setValue(lastValue);
+          },
+          getData: () => lastData,
+          setData: (data) => {
+            lastData = data;
+            setData(data);
           },
           isExceptValue: () => !!exceptValue,
           isDisabled: () => lastDisabled,
@@ -494,6 +502,8 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
       initHelperText,
       setItems,
       setLoading,
+      data,
+      setData,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

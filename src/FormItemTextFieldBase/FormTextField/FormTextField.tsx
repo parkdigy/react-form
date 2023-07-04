@@ -22,6 +22,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
       name,
       required,
       value: initValue,
+      data: initData,
       icon,
       labelIcon,
       label: initLabel,
@@ -108,6 +109,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
     const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
     const [showClear, setShowClear] = useState<boolean>(false);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // Memo - muiInputLabelProps ---------------------------------------------------------------------------------------
 
@@ -338,6 +340,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
     useLayoutEffect(() => {
       if (ref || (!noFormValueItem && onAddValueItem)) {
         let lastValue = value;
+        let lastData = data;
         let lastDisabled = !!disabled;
 
         const commands: FormTextFieldCommands = {
@@ -352,6 +355,11 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
           setValue: (value) => {
             lastValue = getFinalValue(value);
             setValue(lastValue);
+          },
+          getData: () => lastData,
+          setData: (data) => {
+            lastData = data;
+            setData(data);
           },
           isExceptValue: () => !!exceptValue,
           isDisabled: () => lastDisabled,
@@ -392,6 +400,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
       name,
       initValue,
       value,
+      data,
       getFinalValue,
       exceptValue,
       disabled,
@@ -406,6 +415,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
       setDisabled,
       setErrorHelperText,
       initHelperText,
+      setData,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

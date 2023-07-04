@@ -1,12 +1,18 @@
 import { ReactNode } from 'react';
 import { FormControlProps, GridProps, InputLabelProps } from '@mui/material';
 import { PartialPick, CommonSxProps, FormItemValue, FormValue, FormValueMap, FormValueItemCommands, FormValueItemBaseCommands } from '../@types';
+export interface FormInvalidItemInfo {
+    name: string;
+    commands: FormValueItemCommands;
+}
+export declare type FormInvalidItems = FormInvalidItemInfo[];
 export interface FormProps extends CommonSxProps, PartialPick<FormControlProps, 'variant' | 'size' | 'color' | 'focused'>, PartialPick<GridProps, 'spacing'> {
     labelShrink?: InputLabelProps['shrink'];
     fullWidth?: boolean;
     fullHeight?: boolean;
     formColGap?: number;
     onSubmit?(data: FormValueMap): void;
+    onInvalid?(invalidItems: FormInvalidItems): void;
     onValueChange?(name: string, value: FormItemValue): void;
     onValueChangeByUser?(name: string, value: FormItemValue): void;
 }

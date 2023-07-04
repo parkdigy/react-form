@@ -31,6 +31,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       error: initError,
       helperText: initHelperText,
       value: initValue,
+      data: initData,
       uncheckedValue: initUncheckedValue,
       exceptValue,
       hidden,
@@ -90,6 +91,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // State - checked -------------------------------------------------------------------------------------------------
 
@@ -160,6 +162,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
     useLayoutEffect(() => {
       let lastChecked: Props['checked'] = checked;
       let lastValue: FormItemValue = value;
+      let lastData = data;
       let lastUncheckedValue: FormItemValue = uncheckedValue;
       let lastDisabled = !!disabled;
 
@@ -175,6 +178,11 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         setValue: (value) => {
           lastValue = value;
           setValue(value);
+        },
+        getData: () => lastData,
+        setData: (data) => {
+          lastData = data;
+          setData(data);
         },
         getUncheckedValue: () => lastUncheckedValue,
         setUncheckedValue: (uncheckedValue) => {
@@ -240,6 +248,8 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       setUncheckedValue,
       setDisabled,
       setErrorHelperText,
+      data,
+      setData,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

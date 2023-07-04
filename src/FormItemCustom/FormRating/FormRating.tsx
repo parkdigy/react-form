@@ -33,6 +33,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       error: initError,
       helperText: initHelperText,
       value: initValue,
+      data: initData,
       exceptValue,
       onChange,
       onValidate,
@@ -81,6 +82,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // State - width, height -------------------------------------------------------------------------------------------
 
@@ -166,6 +168,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
 
     useLayoutEffect(() => {
       let lastValue = value;
+      let lastData = data;
       let lastDisabled = !!disabled;
 
       const commands: FormRatingCommands = {
@@ -180,6 +183,11 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         setValue: (value: number) => {
           lastValue = getFinalValue(value);
           setValue(lastValue);
+        },
+        getData: () => lastData,
+        setData: (data) => {
+          lastData = data;
+          setData(data);
         },
         isExceptValue: () => !!exceptValue,
         isDisabled: () => lastDisabled,
@@ -232,6 +240,8 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       setValue,
       setDisabled,
       setErrorHelperText,
+      data,
+      setData,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

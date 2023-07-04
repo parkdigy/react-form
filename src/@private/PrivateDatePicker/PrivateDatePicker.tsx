@@ -51,6 +51,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       type,
       time,
       value: initValue,
+      data: initData,
       label: initLabel,
       labelIcon,
       format: initFormat,
@@ -142,6 +143,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     const [timeError, setTimeError] = useState<DateValidationError>(null);
     const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // Memo --------------------------------------------------------------------------------------------------------------
 
@@ -326,6 +328,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     useLayoutEffect(() => {
       if (ref || onAddValueItem) {
         let lastValue = value;
+        let lastData = data;
         let lastDisabled = !!disabled;
 
         const commands: PrivateDatePickerCommands = {
@@ -341,6 +344,12 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
             lastValue = getFinalValue(value);
             setValue(lastValue);
           },
+          getData: () => lastData,
+          setData: (data) => {
+            lastData = data;
+            setData(data);
+          },
+
           isExceptValue: () => !!exceptValue,
           isDisabled: () => lastDisabled,
           setDisabled: (disabled) => {
@@ -395,6 +404,8 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       setDisabled,
       setErrorHelperText,
       initHelperText,
+      data,
+      setData,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
