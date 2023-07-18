@@ -11785,7 +11785,7 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    accept = _a.accept, hideUrl = _a.hideUrl, hideLink = _a.hideLink, maxFileSize = _a.maxFileSize, preview = _a.preview, hidden = _a.hidden, onFile = _a.onFile, onLink = _a.onLink, 
+    accept = _a.accept, hideUrl = _a.hideUrl, hideLink = _a.hideLink, hideUpload = _a.hideUpload, hideRemove = _a.hideRemove, maxFileSize = _a.maxFileSize, preview = _a.preview, hidden = _a.hidden, onFile = _a.onFile, onLink = _a.onLink, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, initLabel = _a.label, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -12046,16 +12046,16 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
                                         "\uC0AD\uC81C")))))),
                     }, placeholder: '\uD30C\uC77C\uC744 \uC120\uD0DD\uD558\uC138\uC694' }))),
             !!hideUrl && (React__default.createElement("div", { className: 'input-file-wrap' },
-                React__default.createElement(Button, { variant: 'outlined', className: 'input-file-btn form-file-btn', color: error ? 'error' : color, ref: fileUploadBtnRef, disabled: disabled },
+                !hideUpload && (React__default.createElement(Button, { variant: 'outlined', className: 'input-file-btn form-file-btn', color: error ? 'error' : color, ref: fileUploadBtnRef, disabled: disabled },
                     React__default.createElement("label", { htmlFor: id },
                         React__default.createElement(FormIcon, null, "upload"),
-                        "\uD30C\uC77C \uC5C5\uB85C\uB4DC")),
+                        "\uD30C\uC77C \uC5C5\uB85C\uB4DC"))),
                 React__default.createElement("input", { type: 'file', accept: accept, id: id, value: fileValue, className: 'input-file', onChange: handleFileChange }),
                 !hideLink && (React__default.createElement(Button, { variant: 'outlined', className: 'link-btn  form-file-btn', color: error ? 'error' : color, onClick: handleLinkClick, disabled: disabled },
                     React__default.createElement("label", null,
                         React__default.createElement(FormIcon, null, "link"),
                         "\uB9C1\uD06C"))),
-                notEmpty(value) && (React__default.createElement(Button, { variant: 'outlined', className: 'remove-btn form-file-btn', color: error ? 'error' : color, disabled: disabled, onClick: handleRemoveClick },
+                !hideRemove && notEmpty(value) && (React__default.createElement(Button, { variant: 'outlined', className: 'remove-btn form-file-btn', color: error ? 'error' : color, disabled: disabled, onClick: handleRemoveClick },
                     React__default.createElement("label", null,
                         React__default.createElement(FormIcon, null, "Close"),
                         "\uC0AD\uC81C"))))),

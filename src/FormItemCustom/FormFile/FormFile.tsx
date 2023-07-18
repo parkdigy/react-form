@@ -24,6 +24,8 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       accept,
       hideUrl,
       hideLink,
+      hideUpload,
+      hideRemove,
       maxFileSize,
       preview,
       hidden,
@@ -461,17 +463,19 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
             )}
             {!!hideUrl && (
               <div className='input-file-wrap'>
-                <Button
-                  variant='outlined'
-                  className='input-file-btn form-file-btn'
-                  color={error ? 'error' : color}
-                  ref={fileUploadBtnRef}
-                  disabled={disabled}
-                >
-                  <label htmlFor={id}>
-                    <FormIcon>upload</FormIcon>파일 업로드
-                  </label>
-                </Button>
+                {!hideUpload && (
+                  <Button
+                    variant='outlined'
+                    className='input-file-btn form-file-btn'
+                    color={error ? 'error' : color}
+                    ref={fileUploadBtnRef}
+                    disabled={disabled}
+                  >
+                    <label htmlFor={id}>
+                      <FormIcon>upload</FormIcon>파일 업로드
+                    </label>
+                  </Button>
+                )}
                 <input
                   type='file'
                   accept={accept}
@@ -493,7 +497,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                     </label>
                   </Button>
                 )}
-                {notEmpty(value) && (
+                {!hideRemove && notEmpty(value) && (
                   <Button
                     variant='outlined'
                     className='remove-btn form-file-btn'
