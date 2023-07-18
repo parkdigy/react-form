@@ -14,7 +14,9 @@ import { OutlinedPaper } from '#ccomp';
 
 const FormItemFile = () => {
   const [hideUrl, setHideUrl] = useState(false);
+  const [hideUpload, setHideUpload] = useState(false);
   const [hideLink, setHideLink] = useState(false);
+  const [hideRemove, setHideRemove] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [preview, setPreview] = useState(false);
   const [previewMaxHeight, setPreviewMaxHeight] = useState(false);
@@ -35,10 +37,22 @@ const FormItemFile = () => {
                   onChange={(checked) => setHideUrl(checked)}
                 />
                 <FormCheckbox
+                  name='hideUpload'
+                  text='hideUpload'
+                  checked={hideUpload}
+                  onChange={(checked) => setHideUpload(checked)}
+                />
+                <FormCheckbox
                   name='hideLink'
                   text='hideLink'
                   checked={hideLink}
                   onChange={(checked) => setHideLink(checked)}
+                />
+                <FormCheckbox
+                  name='hideRemove'
+                  text='hideRemove'
+                  checked={hideRemove}
+                  onChange={(checked) => setHideRemove(checked)}
                 />
                 <FormCheckbox
                   name='disabled'
@@ -76,7 +90,9 @@ const FormItemFile = () => {
                 name='FormFile'
                 label='FormFile'
                 hideUrl={hideUrl}
+                hideUpload={hideUpload}
                 hideLink={hideLink}
+                hideRemove={hideRemove}
                 disabled={disabled}
                 onFile={(file: File) => {
                   return new Promise<string>((resolve) => {
@@ -92,7 +108,9 @@ const FormItemFile = () => {
                 name='FormImageFile'
                 label='FormImageFile'
                 hideUrl={hideUrl}
+                hideUpload={hideUpload}
                 hideLink={hideLink}
+                hideRemove={hideRemove}
                 disabled={disabled}
                 preview={preview}
                 previewMaxHeight={previewMaxHeight ? 100 : undefined}

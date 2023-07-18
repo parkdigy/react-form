@@ -42,45 +42,20 @@
         }
       }
 
-      .link-btn {
-        border-left: 0;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-      .remove-btn {
-        border-left: 0;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-    }
-  }
-
-  &.with-value {
-    .control-wrap {
-      .input-file-wrap {
-        .link-btn {
+      .form-file-btn {
+        &:first-of-type:not(:last-of-type) {
+          border-right: 0;
           border-top-right-radius: 0;
           border-bottom-right-radius: 0;
         }
-      }
-    }
-  }
-
-  &:not(.hide-file-name) {
-    .input-file-wrap {
-      .input-file-btn {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-    }
-  }
-
-  &:not(.hide-link),
-  &.with-value {
-    .input-file-wrap {
-      .input-file-btn {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+        &:last-of-type:not(:first-of-type) {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+        &:not(:first-of-type):not(:last-of-type) {
+          border-right: 0;
+          border-radius: 0;
+        }
       }
     }
   }

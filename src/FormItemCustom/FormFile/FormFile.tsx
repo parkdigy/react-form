@@ -364,6 +364,8 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
           !!fullWidth && 'full-width',
           !!hideUrl && 'hide-file-name',
           !!hideLink && 'hide-link',
+          !!hideUpload && 'hide-upload',
+          !!hideRemove && 'hide-remove',
           notEmpty(value) && 'with-value'
         )}
         labelIcon={hideUrl ? labelIcon : undefined}
@@ -408,25 +410,29 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                     endAdornment: (
                       <InputAdornment position='end'>
                         <div className='input-file-wrap'>
-                          <Button
-                            variant='text'
-                            className='input-file-btn form-file-btn'
-                            color={error ? 'error' : color}
-                            disabled={readOnly || disabled}
-                            ref={fileUploadBtnRef}
-                          >
-                            <label htmlFor={id}>
-                              <FormIcon>upload</FormIcon>파일 업로드
-                            </label>
-                          </Button>
-                          <input
-                            type='file'
-                            accept={accept}
-                            id={id}
-                            value={fileValue}
-                            className='input-file'
-                            onChange={handleFileChange}
-                          />
+                          {!hideUpload && (
+                            <>
+                              <Button
+                                variant='text'
+                                className='input-file-btn form-file-btn'
+                                color={error ? 'error' : color}
+                                disabled={readOnly || disabled}
+                                ref={fileUploadBtnRef}
+                              >
+                                <label htmlFor={id}>
+                                  <FormIcon>upload</FormIcon>파일 업로드
+                                </label>
+                              </Button>
+                              <input
+                                type='file'
+                                accept={accept}
+                                id={id}
+                                value={fileValue}
+                                className='input-file'
+                                onChange={handleFileChange}
+                              />
+                            </>
+                          )}
                           {!hideLink && (
                             <Button
                               variant='text'
@@ -440,7 +446,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                               </label>
                             </Button>
                           )}
-                          {notEmpty(value) && (
+                          {!hideRemove && notEmpty(value) && (
                             <Button
                               variant='text'
                               className='remove-btn form-file-btn'
@@ -464,26 +470,28 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
             {!!hideUrl && (
               <div className='input-file-wrap'>
                 {!hideUpload && (
-                  <Button
-                    variant='outlined'
-                    className='input-file-btn form-file-btn'
-                    color={error ? 'error' : color}
-                    ref={fileUploadBtnRef}
-                    disabled={disabled}
-                  >
-                    <label htmlFor={id}>
-                      <FormIcon>upload</FormIcon>파일 업로드
-                    </label>
-                  </Button>
+                  <>
+                    <Button
+                      variant='outlined'
+                      className='input-file-btn form-file-btn'
+                      color={error ? 'error' : color}
+                      ref={fileUploadBtnRef}
+                      disabled={disabled}
+                    >
+                      <label htmlFor={id}>
+                        <FormIcon>upload</FormIcon>파일 업로드
+                      </label>
+                    </Button>
+                    <input
+                      type='file'
+                      accept={accept}
+                      id={id}
+                      value={fileValue}
+                      className='input-file'
+                      onChange={handleFileChange}
+                    />
+                  </>
                 )}
-                <input
-                  type='file'
-                  accept={accept}
-                  id={id}
-                  value={fileValue}
-                  className='input-file'
-                  onChange={handleFileChange}
-                />
                 {!hideLink && (
                   <Button
                     variant='outlined'
