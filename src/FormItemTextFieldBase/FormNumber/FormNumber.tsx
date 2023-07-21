@@ -30,12 +30,12 @@ const FormNumber = React.forwardRef<FormValueItemBaseCommands, Props>(
     const muiInputProps = useMemo(() => {
       const inputProps: NumberFormatProps = {
         className: readOnly ? 'Mui-disabled' : undefined,
-        allowLeadingZeros,
-        allowNegative,
+        allowLeadingZeros: !!allowLeadingZeros,
+        allowNegative: !!allowNegative,
         thousandSeparator,
         prefix,
         suffix,
-        readOnly,
+        readOnly: !!readOnly,
         tabIndex: readOnly ? -1 : tabIndex,
       };
       if (allowDecimal) {

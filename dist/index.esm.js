@@ -4151,12 +4151,12 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
     var muiInputProps = useMemo(function () {
         var inputProps = {
             className: readOnly ? 'Mui-disabled' : undefined,
-            allowLeadingZeros: allowLeadingZeros,
-            allowNegative: allowNegative,
+            allowLeadingZeros: !!allowLeadingZeros,
+            allowNegative: !!allowNegative,
             thousandSeparator: thousandSeparator,
             prefix: prefix,
             suffix: suffix,
-            readOnly: readOnly,
+            readOnly: !!readOnly,
             tabIndex: readOnly ? -1 : tabIndex,
         };
         if (allowDecimal) {
