@@ -116,6 +116,7 @@ const FormItemAutocomplete = () => {
                 labelIcon='RadioButtonChecked'
                 label='FormAutocomplete'
                 helperText='labelIcon'
+                getOptionDisabled={(option) => option.value === 2}
               />
             </FormCol>
             <FormCol>

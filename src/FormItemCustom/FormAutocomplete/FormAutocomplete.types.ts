@@ -47,6 +47,7 @@ export interface FormAutocompleteProps
   onRenderTag?: (item: FormAutocompleteItem) => ReactNode;
   onValue?: (value: FormAutocompleteValue) => FormAutocompleteValue;
   onAddItem?: (item: FormAutocompleteItem) => boolean | Promise<boolean>;
+  getOptionDisabled?: (item: FormAutocompleteItem) => boolean;
 }
 
 export const FormAutocompleteDefaultProps: Pick<FormAutocompleteProps, 'formValueSeparator' | 'noOptionsText'> = {

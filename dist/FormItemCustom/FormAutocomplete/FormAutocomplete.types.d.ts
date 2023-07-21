@@ -33,6 +33,7 @@ export interface FormAutocompleteProps extends CommonSxProps, Omit<FormValueItem
     onRenderTag?: (item: FormAutocompleteItem) => ReactNode;
     onValue?: (value: FormAutocompleteValue) => FormAutocompleteValue;
     onAddItem?: (item: FormAutocompleteItem) => boolean | Promise<boolean>;
+    getOptionDisabled?: (item: FormAutocompleteItem) => boolean;
 }
 export declare const FormAutocompleteDefaultProps: Pick<FormAutocompleteProps, 'formValueSeparator' | 'noOptionsText'>;
 export interface FormAutocompleteCommands extends FormValueItemBaseCommands, FormArrayValueItemCommands, FormItemsValueItemCommands<FormAutocompleteItem>, FormMultipleValueItemCommands, FormLoadingValueItemCommands {

@@ -56,6 +56,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
       onRenderItem,
       onRenderTag,
       onAddItem,
+      getOptionDisabled,
       //----------------------------------------------------------------------------------------------------------------
       onChange,
       onValue,
@@ -574,6 +575,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
         value={componentValue}
         style={style}
         isOptionEqualToValue={(option, value) => option.value === value.value}
+        getOptionDisabled={getOptionDisabled}
         disabled={disabled}
         readOnly={readOnly}
         loading={loading || isOnGetItemLoading}
