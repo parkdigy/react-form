@@ -41,6 +41,11 @@ export interface FormDateRangePickerProps extends CommonSxProps, Omit<FormValueI
     minDate?: Dayjs;
     maxDate?: Dayjs;
     hidden?: boolean;
+    onGetActionButtons?(): {
+        label: string;
+        start: Dayjs;
+        end: Dayjs;
+    }[];
     onChange?(value: FormDateRangePickerValue): void;
     onValidate?(value: FormDateRangePickerValue): boolean | string;
 }

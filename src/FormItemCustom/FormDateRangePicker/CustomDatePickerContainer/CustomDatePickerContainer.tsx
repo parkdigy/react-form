@@ -39,6 +39,7 @@ const CustomDatePickerContainer = React.forwardRef<CustomDatePickerContainerComm
       disableFuture,
       maxDate,
       minDate,
+      onGetActionButtons,
       onChange,
       onValueChange,
       onMonthsChange,
@@ -274,36 +275,40 @@ const CustomDatePickerContainer = React.forwardRef<CustomDatePickerContainerComm
     // Render ----------------------------------------------------------------------------------------------------------
 
     const actionButtons = useMemo(() => {
-      const now = dayjs().startOf('d');
-      const lastWeek = now.subtract(1, 'week');
-      const dayOfWeek = now.day();
-      let lastWeekDate: [Dayjs, Dayjs];
-      let thisWeekDate: [Dayjs, Dayjs];
-      if (dayOfWeek === 0) {
-        lastWeekDate = [lastWeek.subtract(6, 'd'), lastWeek];
-        thisWeekDate = [now.subtract(6, 'd'), now];
+      if (onGetActionButtons) {
+        return onGetActionButtons().map((info) => getActionButton(info.start, info.end, info.label));
       } else {
-        lastWeekDate = [lastWeek.subtract(dayOfWeek - 1, 'd'), lastWeek.add(7 - dayOfWeek, 'd')];
-        thisWeekDate = [now.subtract(dayOfWeek - 1, 'd'), now.add(7 - dayOfWeek, 'd')];
-      }
+        const now = dayjs().startOf('d');
+        const lastWeek = now.subtract(1, 'week');
+        const dayOfWeek = now.day();
+        let lastWeekDate: [Dayjs, Dayjs];
+        let thisWeekDate: [Dayjs, Dayjs];
+        if (dayOfWeek === 0) {
+          lastWeekDate = [lastWeek.subtract(6, 'd'), lastWeek];
+          thisWeekDate = [now.subtract(6, 'd'), now];
+        } else {
+          lastWeekDate = [lastWeek.subtract(dayOfWeek - 1, 'd'), lastWeek.add(7 - dayOfWeek, 'd')];
+          thisWeekDate = [now.subtract(dayOfWeek - 1, 'd'), now.add(7 - dayOfWeek, 'd')];
+        }
 
-      return (
-        <>
-          {getActionButton(
-            now.subtract(1, 'month').startOf('month'),
-            now.subtract(1, 'month').endOf('month'),
-            '지난달'
-          )}
-          {getActionButton(now.startOf('month'), now.endOf('month'), '이번달')}
-          {getActionButton(now.subtract(29, 'd'), now, '최근 30일')}
-          {getActionButton(now.subtract(6, 'd'), now, '최근 7일')}
-          {getActionButton(lastWeekDate[0], lastWeekDate[1], '지난주')}
-          {getActionButton(thisWeekDate[0], thisWeekDate[1], '이번주')}
-          {getActionButton(now.subtract(1, 'd'), now.subtract(1, 'd'), '어제')}
-          {getActionButton(now, now, '오늘')}
-        </>
-      );
-    }, [getActionButton]);
+        return (
+          <>
+            {getActionButton(
+              now.subtract(1, 'month').startOf('month'),
+              now.subtract(1, 'month').endOf('month'),
+              '지난달'
+            )}
+            {getActionButton(now.startOf('month'), now.endOf('month'), '이번달')}
+            {getActionButton(now.subtract(29, 'd'), now, '최근 30일')}
+            {getActionButton(now.subtract(6, 'd'), now, '최근 7일')}
+            {getActionButton(lastWeekDate[0], lastWeekDate[1], '지난주')}
+            {getActionButton(thisWeekDate[0], thisWeekDate[1], '이번주')}
+            {getActionButton(now.subtract(1, 'd'), now.subtract(1, 'd'), '어제')}
+            {getActionButton(now, now, '오늘')}
+          </>
+        );
+      }
+    }, [onGetActionButtons, getActionButton]);
 
     return (
       <div className='CustomDatePickerContainer'>

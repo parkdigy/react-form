@@ -83,6 +83,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       minDate,
       maxDate,
       hidden,
+      onGetActionButtons,
       onChange,
       onValidate,
       // -------------------------------------------------------------------------------------------------------------------
@@ -712,6 +713,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
                     disableFuture={disableFuture}
                     minDate={minDate}
                     maxDate={maxDate}
+                    onGetActionButtons={onGetActionButtons}
                     onChange={handleChange}
                     onValueChange={handleValueChange}
                     onMonthsChange={setMonths}

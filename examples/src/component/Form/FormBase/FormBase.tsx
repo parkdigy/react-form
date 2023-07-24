@@ -29,7 +29,7 @@ import {
   FormDateRangePicker,
   FormBody,
   FormFooter,
-} from '@pdg/react-form';
+} from '../../../../../src';
 import { ToggleButtonGroup, Checkbox, RadioGroup, Rating, FileUpload } from './sub';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 

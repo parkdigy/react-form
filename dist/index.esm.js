@@ -10891,7 +10891,7 @@ for (var i = 0; i < 12; i += 1) {
     MONTHS[i] = i;
 }
 var CustomDatePickerContainer = React__default.forwardRef(function (_a, ref) {
-    var selectType = _a.selectType, value = _a.value, calendarCount = _a.calendarCount, months = _a.months, disablePast = _a.disablePast, disableFuture = _a.disableFuture, maxDate = _a.maxDate, minDate = _a.minDate, onChange = _a.onChange, onValueChange = _a.onValueChange, onMonthsChange = _a.onMonthsChange;
+    var selectType = _a.selectType, value = _a.value, calendarCount = _a.calendarCount, months = _a.months, disablePast = _a.disablePast, disableFuture = _a.disableFuture, maxDate = _a.maxDate, minDate = _a.minDate, onGetActionButtons = _a.onGetActionButtons, onChange = _a.onChange, onValueChange = _a.onValueChange, onMonthsChange = _a.onMonthsChange;
     var theme = useTheme();
     // Ref -------------------------------------------------------------------------------------------------------------
     var datePicker1Ref = useRef(null);
@@ -11049,29 +11049,34 @@ var CustomDatePickerContainer = React__default.forwardRef(function (_a, ref) {
     }, [onChange, availableDate]);
     // Render ----------------------------------------------------------------------------------------------------------
     var actionButtons = useMemo(function () {
-        var now = dayjs().startOf('d');
-        var lastWeek = now.subtract(1, 'week');
-        var dayOfWeek = now.day();
-        var lastWeekDate;
-        var thisWeekDate;
-        if (dayOfWeek === 0) {
-            lastWeekDate = [lastWeek.subtract(6, 'd'), lastWeek];
-            thisWeekDate = [now.subtract(6, 'd'), now];
+        if (onGetActionButtons) {
+            return onGetActionButtons().map(function (info) { return getActionButton(info.start, info.end, info.label); });
         }
         else {
-            lastWeekDate = [lastWeek.subtract(dayOfWeek - 1, 'd'), lastWeek.add(7 - dayOfWeek, 'd')];
-            thisWeekDate = [now.subtract(dayOfWeek - 1, 'd'), now.add(7 - dayOfWeek, 'd')];
+            var now = dayjs().startOf('d');
+            var lastWeek = now.subtract(1, 'week');
+            var dayOfWeek = now.day();
+            var lastWeekDate = void 0;
+            var thisWeekDate = void 0;
+            if (dayOfWeek === 0) {
+                lastWeekDate = [lastWeek.subtract(6, 'd'), lastWeek];
+                thisWeekDate = [now.subtract(6, 'd'), now];
+            }
+            else {
+                lastWeekDate = [lastWeek.subtract(dayOfWeek - 1, 'd'), lastWeek.add(7 - dayOfWeek, 'd')];
+                thisWeekDate = [now.subtract(dayOfWeek - 1, 'd'), now.add(7 - dayOfWeek, 'd')];
+            }
+            return (React__default.createElement(React__default.Fragment, null,
+                getActionButton(now.subtract(1, 'month').startOf('month'), now.subtract(1, 'month').endOf('month'), '지난달'),
+                getActionButton(now.startOf('month'), now.endOf('month'), '이번달'),
+                getActionButton(now.subtract(29, 'd'), now, '최근 30일'),
+                getActionButton(now.subtract(6, 'd'), now, '최근 7일'),
+                getActionButton(lastWeekDate[0], lastWeekDate[1], '지난주'),
+                getActionButton(thisWeekDate[0], thisWeekDate[1], '이번주'),
+                getActionButton(now.subtract(1, 'd'), now.subtract(1, 'd'), '어제'),
+                getActionButton(now, now, '오늘')));
         }
-        return (React__default.createElement(React__default.Fragment, null,
-            getActionButton(now.subtract(1, 'month').startOf('month'), now.subtract(1, 'month').endOf('month'), '지난달'),
-            getActionButton(now.startOf('month'), now.endOf('month'), '이번달'),
-            getActionButton(now.subtract(29, 'd'), now, '최근 30일'),
-            getActionButton(now.subtract(6, 'd'), now, '최근 7일'),
-            getActionButton(lastWeekDate[0], lastWeekDate[1], '지난주'),
-            getActionButton(thisWeekDate[0], thisWeekDate[1], '이번주'),
-            getActionButton(now.subtract(1, 'd'), now.subtract(1, 'd'), '어제'),
-            getActionButton(now, now, '오늘')));
-    }, [getActionButton]);
+    }, [onGetActionButtons, getActionButton]);
     return (React__default.createElement("div", { className: 'CustomDatePickerContainer' },
         React__default.createElement(Grid, { container: true, direction: 'column' },
             !yearSelectOpen && !monthSelectOpen && (React__default.createElement(Grid, { item: true },
@@ -11210,7 +11215,7 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, initValue = _a.value, initData = _a.data, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, initCalendarCount = _a.calendarCount, initFormat = _a.format, formValueFormat = _a.formValueFormat, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, initHelperText = _a.helperText, formValueStartNameSuffix = _a.formValueStartNameSuffix, formValueEndNameSuffix = _a.formValueEndNameSuffix, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, initValue = _a.value, initData = _a.data, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, initCalendarCount = _a.calendarCount, initFormat = _a.format, formValueFormat = _a.formValueFormat, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, initHelperText = _a.helperText, formValueStartNameSuffix = _a.formValueStartNameSuffix, formValueEndNameSuffix = _a.formValueEndNameSuffix, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, hidden = _a.hidden, onGetActionButtons = _a.onGetActionButtons, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = useId();
@@ -11724,7 +11729,7 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
                             },
                         ],
                     }, title: React__default.createElement("div", { style: { display: 'flex' } },
-                        React__default.createElement(CustomDatePickerContainer, { ref: containerRef, calendarCount: calendarCount, selectType: selectType, value: value, months: months, disablePast: disablePast, disableFuture: disableFuture, minDate: minDate, maxDate: maxDate, onChange: handleChange, onValueChange: handleValueChange, onMonthsChange: setMonths })) },
+                        React__default.createElement(CustomDatePickerContainer, { ref: containerRef, calendarCount: calendarCount, selectType: selectType, value: value, months: months, disablePast: disablePast, disableFuture: disableFuture, minDate: minDate, maxDate: maxDate, onGetActionButtons: onGetActionButtons, onChange: handleChange, onValueChange: handleValueChange, onMonthsChange: setMonths })) },
                     React__default.createElement(Grid, { container: true, alignItems: 'center' },
                         React__default.createElement(Grid, { item: true, flex: 1 },
                             React__default.createElement(InputDatePicker, __assign$6({}, inputDatePickerProps, { style: inputStyle, value: value[0], label: startLabel, labelIcon: startLabelIcon, error: error || startError, focused: focused || (open && selectType === 'start'), required: required || requiredStart, readOnly: readOnly || readOnlyStart, readOnlyInput: readOnlyInput, icon: startIcon || icon, startAdornment: startStartAdornment || startAdornment, endAdornment: startEndAdornment || endAdornment, inputRef: startDateTextFieldRef, onChange: function (newValue) { return handleInputDatePickerChange('start', newValue); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); } }))),

@@ -54,6 +54,7 @@ export interface FormDateRangePickerProps
   minDate?: Dayjs;
   maxDate?: Dayjs;
   hidden?: boolean;
+  onGetActionButtons?(): { label: string; start: Dayjs; end: Dayjs }[];
   onChange?(value: FormDateRangePickerValue): void;
   onValidate?(value: FormDateRangePickerValue): boolean | string;
 }

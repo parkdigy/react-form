@@ -14,6 +14,7 @@ export interface CustomDatePickerContainerProps {
   disableFuture?: boolean;
   minDate?: Dayjs;
   maxDate?: Dayjs;
+  onGetActionButtons?(): { label: string; start: Dayjs; end: Dayjs }[];
   onChange(newValue: CustomDatePickerValue): void;
   onValueChange(selectType: CustomDatePickerSelectType, newValue: CustomDatePickerDateValue): void;
   onMonthsChange(months: CustomDatePickerContainerMonths): void;
