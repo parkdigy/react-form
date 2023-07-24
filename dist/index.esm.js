@@ -10707,6 +10707,10 @@ styleInject(css_248z$4);var CustomDatePicker = React__default.forwardRef(functio
         return initValue ? initValue : [null, null];
     }, [initValue]))[0];
     var _b = useState(null), activeMonthValue = _b[0], setActiveMonthValue = _b[1];
+    // Effect ------------------------------------------------------------------------------------------------------------
+    useEffect(function () {
+        setActiveMonthValue(null);
+    }, [selectType]);
     //--------------------------------------------------------------------------------------------------------------------
     var leftArrowOnClickRef = useRef();
     var rightArrowOnClickRef = useRef();

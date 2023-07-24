@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Form,
   FormAutocomplete,
+  FormAutocompleteValue,
   FormRow,
   FormCol,
   FormButton,
@@ -12,9 +13,8 @@ import {
   FormValueMap,
   FormBody,
   FormFooter,
-} from '@pdg/react-form';
+} from '../../../../src';
 import { OutlinedPaper } from '#ccomp';
-import { FormAutocompleteValue } from '../../../../src';
 
 const DEFAULT_ITEMS: FormAutocompleteItem[] = [lv('Item 1', 1), lv('Item 2', 2), lv('Item 3', 3)];
 

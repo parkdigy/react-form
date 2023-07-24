@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   CustomDatePickerProps as Props,
@@ -42,6 +42,12 @@ const CustomDatePicker = React.forwardRef<CustomDatePickerCommands, Props>(
       }, [initValue])
     );
     const [activeMonthValue, setActiveMonthValue] = useState<CustomDatePickerDateValue>(null);
+
+    // Effect ------------------------------------------------------------------------------------------------------------
+
+    useEffect(() => {
+      setActiveMonthValue(null);
+    }, [selectType]);
 
     //--------------------------------------------------------------------------------------------------------------------
 
