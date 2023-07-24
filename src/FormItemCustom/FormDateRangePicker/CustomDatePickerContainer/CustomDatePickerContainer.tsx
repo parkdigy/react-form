@@ -276,7 +276,9 @@ const CustomDatePickerContainer = React.forwardRef<CustomDatePickerContainerComm
 
     const actionButtons = useMemo(() => {
       if (onGetActionButtons) {
-        return onGetActionButtons().map((info) => getActionButton(info.start, info.end, info.label));
+        return onGetActionButtons().map((info, idx) => (
+          <React.Fragment key={idx}>{getActionButton(info.start, info.end, info.label)}</React.Fragment>
+        ));
       } else {
         const now = dayjs().startOf('d');
         const lastWeek = now.subtract(1, 'week');

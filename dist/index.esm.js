@@ -11050,7 +11050,7 @@ var CustomDatePickerContainer = React__default.forwardRef(function (_a, ref) {
     // Render ----------------------------------------------------------------------------------------------------------
     var actionButtons = useMemo(function () {
         if (onGetActionButtons) {
-            return onGetActionButtons().map(function (info) { return getActionButton(info.start, info.end, info.label); });
+            return onGetActionButtons().map(function (info, idx) { return (React__default.createElement(React__default.Fragment, { key: idx }, getActionButton(info.start, info.end, info.label))); });
         }
         else {
             var now = dayjs().startOf('d');
