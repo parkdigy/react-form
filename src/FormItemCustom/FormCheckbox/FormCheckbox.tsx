@@ -1,7 +1,7 @@
 import React, { useCallback, useId, useLayoutEffect, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
-import { FormControlLabel, Checkbox, Typography, ButtonBaseActions } from '@mui/material';
+import { FormControlLabel, Checkbox, Typography, ButtonBaseActions, useTheme } from "@mui/material";
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { FormCheckboxProps as Props, FormCheckboxDefaultProps, FormCheckboxCommands } from './FormCheckbox.types';
@@ -48,6 +48,10 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
     // ID --------------------------------------------------------------------------------------------------------------
 
     const id = useId();
+
+    // Use ---------------------------------------------------------------------------------------------------------------
+
+    const theme = useTheme();
 
     // FormState -------------------------------------------------------------------------------------------------------
 
@@ -308,7 +312,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
               />
             }
             label={
-              <Typography color={error ? 'error' : undefined} whiteSpace='nowrap'>
+              <Typography color={error ? 'error' : (readOnly || disabled) ? theme.palette.text.disabled : undefined} whiteSpace='nowrap'>
                 {text}
               </Typography>
             }
