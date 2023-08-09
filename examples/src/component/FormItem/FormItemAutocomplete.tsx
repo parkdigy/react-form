@@ -16,7 +16,7 @@ import {
 } from '../../../../src';
 import { OutlinedPaper } from '#ccomp';
 
-const DEFAULT_ITEMS: FormAutocompleteItem[] = [lv('Item 1', 1), lv('Item 2', 2), lv('Item 3', 3)];
+const DEFAULT_ITEMS: FormAutocompleteItem[] = [lv('Item 1', 1), lv('Item 2', 2), lv('Item 3', 3, { disabled: true })];
 
 const FormItemAutocomplete = () => {
   const asyncLoadAutocompleteRef = useRef<FormAutocompleteCommands>(null);

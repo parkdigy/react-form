@@ -559,6 +559,17 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
       [multiple, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit, onAddItem]
     );
 
+    const handleGetOptionDisabled = useCallback(
+      (option: FormAutocompleteItem) => {
+        if (getOptionDisabled) {
+          return option.disabled || getOptionDisabled(option);
+        } else {
+          return !!option.disabled;
+        }
+      },
+      [getOptionDisabled]
+    );
+
     // Render ----------------------------------------------------------------------------------------------------------
 
     return (
@@ -575,7 +586,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
         value={componentValue}
         style={style}
         isOptionEqualToValue={(option, value) => option.value === value.value}
-        getOptionDisabled={getOptionDisabled}
+        getOptionDisabled={handleGetOptionDisabled}
         disabled={disabled}
         readOnly={readOnly}
         loading={loading || isOnGetItemLoading}
