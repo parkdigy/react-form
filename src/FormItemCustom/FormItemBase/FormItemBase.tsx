@@ -27,6 +27,7 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
       error,
       hideLabel,
       hidden,
+      autoSize,
       //----------------------------------------------------------------------------------------------------------------
       className,
       style,
@@ -184,39 +185,53 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
             </InputLabel>
           )}
           <div className='FormItemBase-Control-wrap' style={{ display: 'grid', marginTop: hideLabel ? 0 : undefined }}>
-            {variant === 'standard' && (
-              <Input ref={inputResizeDetectorRef} size={size} fullWidth disabled style={{ visibility: 'hidden' }} />
+            {autoSize ? (
+              <>
+                {variant === 'standard' && (
+                  <Input ref={inputResizeDetectorRef} size={size} fullWidth disabled style={{ visibility: 'hidden' }} />
+                )}
+                {variant === 'outlined' && (
+                  <OutlinedInput
+                    ref={inputResizeDetectorRef}
+                    size={size}
+                    fullWidth
+                    disabled
+                    style={{ visibility: 'hidden' }}
+                  />
+                )}
+                {variant === 'filled' && (
+                  <FilledInput
+                    ref={inputResizeDetectorRef}
+                    size={size}
+                    fullWidth
+                    disabled
+                    style={{ visibility: 'hidden' }}
+                  />
+                )}
+                <div style={{ height: bottomMargin, visibility: 'hidden' }} />
+                <div
+                  ref={realControlResizeDetectorRef}
+                  className='FormItemBase-Control'
+                  style={{
+                    width: fullWidth ? '100%' : 'auto',
+                    display: 'grid',
+                    marginTop: controlMarginTop,
+                  }}
+                >
+                  {control}
+                </div>
+              </>
+            ) : (
+              <div
+                style={{
+                  width: fullWidth ? '100%' : 'auto',
+                  display: 'grid',
+                  marginTop: controlMarginTop,
+                }}
+              >
+                {control}
+              </div>
             )}
-            {variant === 'outlined' && (
-              <OutlinedInput
-                ref={inputResizeDetectorRef}
-                size={size}
-                fullWidth
-                disabled
-                style={{ visibility: 'hidden' }}
-              />
-            )}
-            {variant === 'filled' && (
-              <FilledInput
-                ref={inputResizeDetectorRef}
-                size={size}
-                fullWidth
-                disabled
-                style={{ visibility: 'hidden' }}
-              />
-            )}
-            <div style={{ height: bottomMargin, visibility: 'hidden' }} />
-            <div
-              ref={realControlResizeDetectorRef}
-              className='FormItemBase-Control'
-              style={{
-                width: fullWidth ? '100%' : 'auto',
-                display: 'grid',
-                marginTop: controlMarginTop,
-              }}
-            >
-              {control}
-            </div>
           </div>
           {!formColWithHelperText && helperText && (
             <FormHelperText component='div' {...helperTextProps}>

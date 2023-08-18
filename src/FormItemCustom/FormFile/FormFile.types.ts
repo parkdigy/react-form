@@ -5,9 +5,15 @@ export interface FormFileProps extends CommonSxProps, FormValueItemProps {
   required?: boolean;
   accept?: string;
   hideUrl?: boolean;
-  hideLink?: boolean;
+  uploadLabel?: string;
   hideUpload?: boolean;
+  hideUploadLabel?: boolean;
+  linkLabel?: string;
+  hideLink?: boolean;
+  hideLinkLabel?: boolean;
+  removeLabel?: string;
   hideRemove?: boolean;
+  hideRemoveLabel?: boolean;
   labelShrink?: boolean;
   maxFileSize?: number;
   preview?: ReactNode;

@@ -23,9 +23,15 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       //----------------------------------------------------------------------------------------------------------------
       accept,
       hideUrl,
-      hideLink,
+      uploadLabel,
       hideUpload,
+      hideUploadLabel,
+      linkLabel,
+      hideLink,
+      hideLinkLabel,
+      removeLabel,
       hideRemove,
+      hideRemoveLabel,
       maxFileSize,
       preview,
       hidden,
@@ -414,13 +420,17 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                             <>
                               <Button
                                 variant='text'
-                                className='input-file-btn form-file-btn'
+                                className={classNames(
+                                  'input-file-btn form-file-btn',
+                                  !!hideUploadLabel && 'hidden-label'
+                                )}
                                 color={error ? 'error' : color}
                                 disabled={readOnly || disabled}
                                 ref={fileUploadBtnRef}
                               >
                                 <label htmlFor={id}>
-                                  <FormIcon>upload</FormIcon>파일 업로드
+                                  <FormIcon>upload</FormIcon>
+                                  {!hideUploadLabel && (uploadLabel || '파일 업로드')}
                                 </label>
                               </Button>
                               <input
@@ -436,26 +446,28 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                           {!hideLink && (
                             <Button
                               variant='text'
-                              className='link-btn  form-file-btn'
+                              className={classNames('link-btn  form-file-btn', !!hideLinkLabel && 'hidden-label')}
                               color={error ? 'error' : color}
                               disabled={readOnly || disabled}
                               onClick={handleLinkClick}
                             >
                               <label>
-                                <FormIcon>link</FormIcon>링크
+                                <FormIcon>link</FormIcon>
+                                {!hideLinkLabel && (linkLabel || '링크')}
                               </label>
                             </Button>
                           )}
                           {!hideRemove && notEmpty(value) && (
                             <Button
                               variant='text'
-                              className='remove-btn form-file-btn'
+                              className={classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label')}
                               color={error ? 'error' : color}
                               disabled={readOnly || disabled}
                               onClick={handleRemoveClick}
                             >
                               <label>
-                                <FormIcon>Close</FormIcon>삭제
+                                <FormIcon>Close</FormIcon>
+                                {!hideRemoveLabel && (removeLabel || '삭제')}
                               </label>
                             </Button>
                           )}
@@ -473,13 +485,14 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                   <>
                     <Button
                       variant='outlined'
-                      className='input-file-btn form-file-btn'
+                      className={classNames('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label')}
                       color={error ? 'error' : color}
                       ref={fileUploadBtnRef}
                       disabled={disabled}
                     >
                       <label htmlFor={id}>
-                        <FormIcon>upload</FormIcon>파일 업로드
+                        <FormIcon>upload</FormIcon>
+                        {!hideUploadLabel && (uploadLabel || '파일 업로드')}
                       </label>
                     </Button>
                     <input
@@ -495,26 +508,28 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                 {!hideLink && (
                   <Button
                     variant='outlined'
-                    className='link-btn  form-file-btn'
+                    className={classNames('link-btn form-file-btn', !!hideLinkLabel && 'hidden-label')}
                     color={error ? 'error' : color}
                     onClick={handleLinkClick}
                     disabled={disabled}
                   >
                     <label>
-                      <FormIcon>link</FormIcon>링크
+                      <FormIcon>link</FormIcon>
+                      {!hideLinkLabel && (linkLabel || '링크')}
                     </label>
                   </Button>
                 )}
                 {!hideRemove && notEmpty(value) && (
                   <Button
                     variant='outlined'
-                    className='remove-btn form-file-btn'
+                    className={classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label')}
                     color={error ? 'error' : color}
                     disabled={disabled}
                     onClick={handleRemoveClick}
                   >
                     <label>
-                      <FormIcon>Close</FormIcon>삭제
+                      <FormIcon>Close</FormIcon>
+                      {!hideRemoveLabel && (removeLabel || '삭제')}
                     </label>
                   </Button>
                 )}

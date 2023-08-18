@@ -552,6 +552,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
         style={style}
         sx={sx}
         hidden={hidden}
+        autoSize
         controlHeight={height || 0}
         controlVerticalCenter={isOnGetItemLoading || loading}
         control={

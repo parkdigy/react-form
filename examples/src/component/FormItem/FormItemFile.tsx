@@ -15,8 +15,11 @@ import { OutlinedPaper } from '#ccomp';
 const FormItemFile = () => {
   const [hideUrl, setHideUrl] = useState(false);
   const [hideUpload, setHideUpload] = useState(false);
+  const [hideUploadLabel, setHideUploadLabel] = useState(false);
   const [hideLink, setHideLink] = useState(false);
+  const [hideLinkLabel, setHideLinkLabel] = useState(false);
   const [hideRemove, setHideRemove] = useState(false);
+  const [hideRemoveLabel, setHideRemoveLabel] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [preview, setPreview] = useState(false);
   const [previewMaxHeight, setPreviewMaxHeight] = useState(false);
@@ -43,16 +46,34 @@ const FormItemFile = () => {
                   onChange={(checked) => setHideUpload(checked)}
                 />
                 <FormCheckbox
+                  name='hideUploadLabel'
+                  text='hideUploadLabel'
+                  checked={hideUploadLabel}
+                  onChange={(checked) => setHideUploadLabel(checked)}
+                />
+                <FormCheckbox
                   name='hideLink'
                   text='hideLink'
                   checked={hideLink}
                   onChange={(checked) => setHideLink(checked)}
                 />
                 <FormCheckbox
+                  name='hideLinkLabel'
+                  text='hideLinkLabel'
+                  checked={hideLinkLabel}
+                  onChange={(checked) => setHideLinkLabel(checked)}
+                />
+                <FormCheckbox
                   name='hideRemove'
                   text='hideRemove'
                   checked={hideRemove}
                   onChange={(checked) => setHideRemove(checked)}
+                />
+                <FormCheckbox
+                  name='hideRemoveLabel'
+                  text='hideRemoveLabel'
+                  checked={hideRemoveLabel}
+                  onChange={(checked) => setHideRemoveLabel(checked)}
                 />
                 <FormCheckbox
                   name='disabled'
@@ -91,8 +112,11 @@ const FormItemFile = () => {
                 label='FormFile'
                 hideUrl={hideUrl}
                 hideUpload={hideUpload}
+                hideUploadLabel={hideUploadLabel}
                 hideLink={hideLink}
+                hideLinkLabel={hideLinkLabel}
                 hideRemove={hideRemove}
+                hideRemoveLabel={hideRemoveLabel}
                 disabled={disabled}
                 onFile={(file: File) => {
                   return new Promise<string>((resolve) => {
@@ -109,8 +133,11 @@ const FormItemFile = () => {
                 label='FormImageFile'
                 hideUrl={hideUrl}
                 hideUpload={hideUpload}
+                hideUploadLabel={hideUploadLabel}
                 hideLink={hideLink}
+                hideLinkLabel={hideLinkLabel}
                 hideRemove={hideRemove}
+                hideRemoveLabel={hideRemoveLabel}
                 disabled={disabled}
                 preview={preview}
                 previewMaxHeight={previewMaxHeight ? 100 : undefined}

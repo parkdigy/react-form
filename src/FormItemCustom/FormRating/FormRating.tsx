@@ -281,6 +281,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         style={style}
         sx={sx}
         hidden={hidden}
+        autoSize
         controlHeight={height || (size === 'small' ? 21 : 26)}
         controlVerticalCenter
         control={

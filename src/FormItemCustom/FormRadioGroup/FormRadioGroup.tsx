@@ -422,6 +422,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
         style={style}
         sx={sx}
         hidden={hidden}
+        autoSize
         controlHeight={height || (size === 'small' ? 35 : 39)}
         controlVerticalCenter
         control={

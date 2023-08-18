@@ -16,6 +16,7 @@
     }
 
     .form-file-btn {
+      min-width: 0;
       padding: 0;
 
       label {
@@ -30,6 +31,10 @@
         .FormIcon {
           margin-right: 5px;
         }
+      }
+      &.hidden-label label .FormIcon {
+        margin-left: 0;
+        margin-right: 0;
       }
     }
 
