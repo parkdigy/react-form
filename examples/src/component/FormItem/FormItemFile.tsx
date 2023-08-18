@@ -20,6 +20,7 @@ const FormItemFile = () => {
   const [hideLinkLabel, setHideLinkLabel] = useState(false);
   const [hideRemove, setHideRemove] = useState(false);
   const [hideRemoveLabel, setHideRemoveLabel] = useState(false);
+  const [readOnly, setReadOnly] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [preview, setPreview] = useState(false);
   const [previewMaxHeight, setPreviewMaxHeight] = useState(false);
@@ -76,6 +77,12 @@ const FormItemFile = () => {
                   onChange={(checked) => setHideRemoveLabel(checked)}
                 />
                 <FormCheckbox
+                  name='readOnly'
+                  text='readOnly'
+                  checked={readOnly}
+                  onChange={(checked) => setReadOnly(checked)}
+                />
+                <FormCheckbox
                   name='disabled'
                   text='disabled'
                   checked={disabled}
@@ -110,6 +117,7 @@ const FormItemFile = () => {
               <FormFile
                 name='FormFile'
                 label='FormFile'
+                readOnly={readOnly}
                 hideUrl={hideUrl}
                 hideUpload={hideUpload}
                 hideUploadLabel={hideUploadLabel}
@@ -131,6 +139,7 @@ const FormItemFile = () => {
               <FormImageFile
                 name='FormImageFile'
                 label='FormImageFile'
+                readOnly={readOnly}
                 hideUrl={hideUrl}
                 hideUpload={hideUpload}
                 hideUploadLabel={hideUploadLabel}

@@ -24,12 +24,15 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       accept,
       hideUrl,
       uploadLabel,
+      uploadTabIndex,
       hideUpload,
       hideUploadLabel,
       linkLabel,
+      linkTabIndex,
       hideLink,
       hideLinkLabel,
       removeLabel,
+      removeTabIndex,
       hideRemove,
       hideRemoveLabel,
       maxFileSize,
@@ -94,6 +97,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
 
     const textFieldRef = useRef<HTMLInputElement>(null);
     const fileUploadBtnRef = useRef<HTMLButtonElement>(null);
+    const linkBtnRef = useRef<HTMLButtonElement>(null);
 
     // State - value ---------------------------------------------------------------------------------------------------
 
@@ -137,11 +141,15 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
 
     const focus = useCallback(() => {
       if (hideUrl) {
-        fileUploadBtnRef.current?.focus();
+        if (hideUpload) {
+          linkBtnRef.current?.focus();
+        } else {
+          fileUploadBtnRef.current?.focus();
+        }
       } else {
         textFieldRef.current?.focus();
       }
-    }, [hideUrl]);
+    }, [hideUpload, hideUrl]);
 
     // Function - setErrorHelperText -----------------------------------------------------------------------------------
 
@@ -411,7 +419,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                   fullWidth
                   error={error}
                   InputLabelProps={labelShrink ? { shrink: labelShrink } : undefined}
-                  inputProps={{ readOnly: true, tabIndex: -1 }}
+                  inputProps={{ readOnly: true }}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position='end'>
@@ -420,6 +428,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                             <>
                               <Button
                                 variant='text'
+                                tabIndex={uploadTabIndex == null ? -1 : uploadTabIndex}
                                 className={classNames(
                                   'input-file-btn form-file-btn',
                                   !!hideUploadLabel && 'hidden-label'
@@ -446,9 +455,11 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                           {!hideLink && (
                             <Button
                               variant='text'
+                              tabIndex={linkTabIndex == null ? -1 : linkTabIndex}
                               className={classNames('link-btn  form-file-btn', !!hideLinkLabel && 'hidden-label')}
                               color={error ? 'error' : color}
                               disabled={readOnly || disabled}
+                              ref={linkBtnRef}
                               onClick={handleLinkClick}
                             >
                               <label>
@@ -460,6 +471,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                           {!hideRemove && notEmpty(value) && (
                             <Button
                               variant='text'
+                              tabIndex={removeTabIndex == null ? -1 : removeTabIndex}
                               className={classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label')}
                               color={error ? 'error' : color}
                               disabled={readOnly || disabled}
@@ -485,6 +497,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                   <>
                     <Button
                       variant='outlined'
+                      tabIndex={uploadTabIndex}
                       className={classNames('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label')}
                       color={error ? 'error' : color}
                       ref={fileUploadBtnRef}
@@ -508,10 +521,12 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                 {!hideLink && (
                   <Button
                     variant='outlined'
+                    tabIndex={linkTabIndex}
                     className={classNames('link-btn form-file-btn', !!hideLinkLabel && 'hidden-label')}
                     color={error ? 'error' : color}
                     onClick={handleLinkClick}
                     disabled={disabled}
+                    ref={linkBtnRef}
                   >
                     <label>
                       <FormIcon>link</FormIcon>
@@ -522,6 +537,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                 {!hideRemove && notEmpty(value) && (
                   <Button
                     variant='outlined'
+                    tabIndex={removeTabIndex}
                     className={classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label')}
                     color={error ? 'error' : color}
                     disabled={disabled}

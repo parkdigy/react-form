@@ -11808,7 +11808,7 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    accept = _a.accept, hideUrl = _a.hideUrl, uploadLabel = _a.uploadLabel, hideUpload = _a.hideUpload, hideUploadLabel = _a.hideUploadLabel, linkLabel = _a.linkLabel, hideLink = _a.hideLink, hideLinkLabel = _a.hideLinkLabel, removeLabel = _a.removeLabel, hideRemove = _a.hideRemove, hideRemoveLabel = _a.hideRemoveLabel, maxFileSize = _a.maxFileSize, preview = _a.preview, hidden = _a.hidden, onFile = _a.onFile, onLink = _a.onLink, 
+    accept = _a.accept, hideUrl = _a.hideUrl, uploadLabel = _a.uploadLabel, uploadTabIndex = _a.uploadTabIndex, hideUpload = _a.hideUpload, hideUploadLabel = _a.hideUploadLabel, linkLabel = _a.linkLabel, linkTabIndex = _a.linkTabIndex, hideLink = _a.hideLink, hideLinkLabel = _a.hideLinkLabel, removeLabel = _a.removeLabel, removeTabIndex = _a.removeTabIndex, hideRemove = _a.hideRemove, hideRemoveLabel = _a.hideRemoveLabel, maxFileSize = _a.maxFileSize, preview = _a.preview, hidden = _a.hidden, onFile = _a.onFile, onLink = _a.onLink, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, initLabel = _a.label, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -11826,6 +11826,7 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     // Ref -------------------------------------------------------------------------------------------------------------
     var textFieldRef = useRef(null);
     var fileUploadBtnRef = useRef(null);
+    var linkBtnRef = useRef(null);
     // State - value ---------------------------------------------------------------------------------------------------
     var _c = useAutoUpdateState$1(initValue), value = _c[0], setValue = _c[1];
     var fileValue = useState('')[0];
@@ -11851,14 +11852,19 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     }, [initLabel, labelIcon]);
     // Function - focus ------------------------------------------------------------------------------------------------
     var focus = useCallback(function () {
-        var _a, _b;
+        var _a, _b, _c;
         if (hideUrl) {
-            (_a = fileUploadBtnRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+            if (hideUpload) {
+                (_a = linkBtnRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+            }
+            else {
+                (_b = fileUploadBtnRef.current) === null || _b === void 0 ? void 0 : _b.focus();
+            }
         }
         else {
-            (_b = textFieldRef.current) === null || _b === void 0 ? void 0 : _b.focus();
+            (_c = textFieldRef.current) === null || _c === void 0 ? void 0 : _c.focus();
         }
-    }, [hideUrl]);
+    }, [hideUpload, hideUrl]);
     // Function - setErrorHelperText -----------------------------------------------------------------------------------
     var setErrorHelperText = useCallback(function (error, helperText) {
         setError(error);
@@ -12051,36 +12057,36 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
             },
         }, style: { width: fullWidth ? '100%' : undefined }, control: React__default.createElement("div", { className: 'control-wrap' },
             !hideUrl && (React__default.createElement("div", { className: 'file-name-wrap' },
-                React__default.createElement(TextField, { inputRef: textFieldRef, className: 'file-name', variant: variant, label: label, size: size, required: required, value: value || '', focused: focused, disabled: disabled, fullWidth: true, error: error, InputLabelProps: labelShrink ? { shrink: labelShrink } : undefined, inputProps: { readOnly: true, tabIndex: -1 }, InputProps: {
+                React__default.createElement(TextField, { inputRef: textFieldRef, className: 'file-name', variant: variant, label: label, size: size, required: required, value: value || '', focused: focused, disabled: disabled, fullWidth: true, error: error, InputLabelProps: labelShrink ? { shrink: labelShrink } : undefined, inputProps: { readOnly: true }, InputProps: {
                         endAdornment: (React__default.createElement(InputAdornment, { position: 'end' },
                             React__default.createElement("div", { className: 'input-file-wrap' },
                                 !hideUpload && (React__default.createElement(React__default.Fragment, null,
-                                    React__default.createElement(Button, { variant: 'text', className: classNames$1('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, ref: fileUploadBtnRef },
+                                    React__default.createElement(Button, { variant: 'text', tabIndex: uploadTabIndex == null ? -1 : uploadTabIndex, className: classNames$1('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, ref: fileUploadBtnRef },
                                         React__default.createElement("label", { htmlFor: id },
                                             React__default.createElement(FormIcon, null, "upload"),
                                             !hideUploadLabel && (uploadLabel || '파일 업로드'))),
                                     React__default.createElement("input", { type: 'file', accept: accept, id: id, value: fileValue, className: 'input-file', onChange: handleFileChange }))),
-                                !hideLink && (React__default.createElement(Button, { variant: 'text', className: classNames$1('link-btn  form-file-btn', !!hideLinkLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, onClick: handleLinkClick },
+                                !hideLink && (React__default.createElement(Button, { variant: 'text', tabIndex: linkTabIndex == null ? -1 : linkTabIndex, className: classNames$1('link-btn  form-file-btn', !!hideLinkLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, ref: linkBtnRef, onClick: handleLinkClick },
                                     React__default.createElement("label", null,
                                         React__default.createElement(FormIcon, null, "link"),
                                         !hideLinkLabel && (linkLabel || '링크')))),
-                                !hideRemove && notEmpty(value) && (React__default.createElement(Button, { variant: 'text', className: classNames$1('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, onClick: handleRemoveClick },
+                                !hideRemove && notEmpty(value) && (React__default.createElement(Button, { variant: 'text', tabIndex: removeTabIndex == null ? -1 : removeTabIndex, className: classNames$1('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, onClick: handleRemoveClick },
                                     React__default.createElement("label", null,
                                         React__default.createElement(FormIcon, null, "Close"),
                                         !hideRemoveLabel && (removeLabel || '삭제'))))))),
                     }, placeholder: '\uD30C\uC77C\uC744 \uC120\uD0DD\uD558\uC138\uC694' }))),
             !!hideUrl && (React__default.createElement("div", { className: 'input-file-wrap' },
                 !hideUpload && (React__default.createElement(React__default.Fragment, null,
-                    React__default.createElement(Button, { variant: 'outlined', className: classNames$1('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label'), color: error ? 'error' : color, ref: fileUploadBtnRef, disabled: disabled },
+                    React__default.createElement(Button, { variant: 'outlined', tabIndex: uploadTabIndex, className: classNames$1('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label'), color: error ? 'error' : color, ref: fileUploadBtnRef, disabled: disabled },
                         React__default.createElement("label", { htmlFor: id },
                             React__default.createElement(FormIcon, null, "upload"),
                             !hideUploadLabel && (uploadLabel || '파일 업로드'))),
                     React__default.createElement("input", { type: 'file', accept: accept, id: id, value: fileValue, className: 'input-file', onChange: handleFileChange }))),
-                !hideLink && (React__default.createElement(Button, { variant: 'outlined', className: classNames$1('link-btn form-file-btn', !!hideLinkLabel && 'hidden-label'), color: error ? 'error' : color, onClick: handleLinkClick, disabled: disabled },
+                !hideLink && (React__default.createElement(Button, { variant: 'outlined', tabIndex: linkTabIndex, className: classNames$1('link-btn form-file-btn', !!hideLinkLabel && 'hidden-label'), color: error ? 'error' : color, onClick: handleLinkClick, disabled: disabled, ref: linkBtnRef },
                     React__default.createElement("label", null,
                         React__default.createElement(FormIcon, null, "link"),
                         !hideLinkLabel && (linkLabel || '링크')))),
-                !hideRemove && notEmpty(value) && (React__default.createElement(Button, { variant: 'outlined', className: classNames$1('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, disabled: disabled, onClick: handleRemoveClick },
+                !hideRemove && notEmpty(value) && (React__default.createElement(Button, { variant: 'outlined', tabIndex: removeTabIndex, className: classNames$1('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, disabled: disabled, onClick: handleRemoveClick },
                     React__default.createElement("label", null,
                         React__default.createElement(FormIcon, null, "Close"),
                         !hideRemoveLabel && (removeLabel || '삭제')))))),
