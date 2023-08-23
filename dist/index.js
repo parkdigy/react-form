@@ -2125,13 +2125,13 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
     var _b;
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, required = _a.required, initValue = _a.value, initData = _a.data, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, initHelperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, hidden = _a.hidden, 
+    name = _a.name, required = _a.required, initValue = _a.value, initData = _a.data, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, initHelperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, hidden = _a.hidden, disableReturnKey = _a.disableReturnKey, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, onBlur = _a.onBlur, onKeyDown = _a.onKeyDown, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, 
     //----------------------------------------------------------------------------------------------------------------
-    props = __rest$3(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "required", "value", "data", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
+    props = __rest$3(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "required", "value", "data", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "disableReturnKey", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
     var id = React.useId();
     // Ref -------------------------------------------------------------------------------------------------------------
     var inputRef = React.useRef(null);
@@ -2411,14 +2411,17 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
             onBlur(e);
     }, [error, value, validate, onBlur]);
     var handleKeyDown = React.useCallback(function (e) {
-        if (!select && !multiline && !noFormValueItem && ['Enter'].includes(e.key)) {
+        if (['Enter'].includes(e.key) &&
+            !select &&
+            (!multiline || (multiline && disableReturnKey)) &&
+            !noFormValueItem) {
             e.preventDefault();
             e.stopPropagation();
             onRequestSearchSubmit(name, value);
         }
         if (onKeyDown)
             onKeyDown(e);
-    }, [select, multiline, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, value]);
+    }, [select, multiline, disableReturnKey, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, value]);
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default["default"].createElement(material.TextField, __assign$6({}, props, { variant: variant, size: size, color: color, focused: focused || undefined, name: name, label: label, placeholder: placeholder, className: classNames$1(className, 'FormValueItem', 'FormTextField', "variant-".concat(variant)), inputRef: initInputRef ? initInputRef : inputRef, value: value, required: required, fullWidth: !width && fullWidth, error: error, helperText: formColWithHelperText ? undefined : helperText, FormHelperTextProps: { component: 'div' }, disabled: disabled, InputProps: muiInputProps, InputLabelProps: muiInputLabelProps, inputProps: ((_b = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _b === void 0 ? void 0 : _b.includes('FormTag-Input')) ? initInputProps : inputProps, style: style, select: select, SelectProps: SelectProps, multiline: multiline, onChange: handleChange, onBlur: handleBlur, onKeyDown: handleKeyDown })));
 });
@@ -2434,7 +2437,7 @@ FormTextField.defaultProps = FormTextFieldDefaultProps;var FormTextDefaultProps 
         return finalValue;
     }, [onValue]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return React__default["default"].createElement(FormTextField, __assign$6({ ref: ref, className: classNames$1(className, 'FormText'), onValue: handleValue }, props));
+    return (React__default["default"].createElement(FormTextField, __assign$6({ ref: ref, className: classNames$1(className, 'FormText'), disableReturnKey: true, onValue: handleValue }, props)));
 });
 FormText.displayName = 'FormText';
 FormText.defaultProps = FormTextDefaultProps;var FormHiddenDefaultProps = {};var css_248z$i = ".FormHidden {\n  display: none !important;\n}";

@@ -1,6 +1,6 @@
 import { FormTextFieldProps, FormTextFieldDefaultProps } from '../FormTextField';
 
-export interface FormPasswordProps extends Omit<FormTextFieldProps, 'type'> {
+export interface FormPasswordProps extends Omit<FormTextFieldProps, 'disableReturnKey' | 'type'> {
   eye?: boolean;
 }
 

@@ -14,6 +14,7 @@ export declare type FormTextFieldProps = Omit<TextFieldProps, 'ref' | 'name' | '
     endAdornment?: ReactNode;
     noFormValueItem?: boolean;
     hidden?: boolean;
+    disableReturnKey?: boolean;
     onValue?(value: FormItemValue): FormItemValue;
 };
 export declare const FormTextFieldDefaultProps: {};

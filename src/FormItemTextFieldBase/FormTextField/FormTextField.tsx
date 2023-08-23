@@ -49,6 +49,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
       endAdornment,
       noFormValueItem,
       hidden,
+      disableReturnKey,
       //----------------------------------------------------------------------------------------------------------------
       onChange,
       onValue,
@@ -446,14 +447,19 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
 
     const handleKeyDown = useCallback(
       (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (!select && !multiline && !noFormValueItem && ['Enter'].includes(e.key)) {
+        if (
+          ['Enter'].includes(e.key) &&
+          !select &&
+          (!multiline || (multiline && disableReturnKey)) &&
+          !noFormValueItem
+        ) {
           e.preventDefault();
           e.stopPropagation();
           onRequestSearchSubmit(name, value);
         }
         if (onKeyDown) onKeyDown(e);
       },
-      [select, multiline, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, value]
+      [select, multiline, disableReturnKey, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, value]
     );
 
     // Render ----------------------------------------------------------------------------------------------------------

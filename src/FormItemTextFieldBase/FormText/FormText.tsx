@@ -20,7 +20,15 @@ const FormText = React.forwardRef<FormValueItemBaseCommands, Props>(({ className
 
   // Render ----------------------------------------------------------------------------------------------------------
 
-  return <FormTextField ref={ref} className={classNames(className, 'FormText')} onValue={handleValue} {...props} />;
+  return (
+    <FormTextField
+      ref={ref}
+      className={classNames(className, 'FormText')}
+      disableReturnKey
+      onValue={handleValue}
+      {...props}
+    />
+  );
 });
 
 FormText.displayName = 'FormText';
