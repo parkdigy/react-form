@@ -1,16 +1,15 @@
-import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { FormImageFileProps as Props, FormImageFileDefaultProps, FormImageFileCommands } from './FormImageFile.types';
 import FormFile from '../FormFile';
 import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
-import { Typography } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 import { useAutoUpdateState } from '@pdg/react-hook';
 import './FormImageFile.scss';
 
 const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
   ({ className, imageSize, preview, previewMaxHeight, value: initValue, onChange, onFile, onLink, ...props }, ref) => {
     const [value, setValue] = useAutoUpdateState(initValue);
-    const [previewNode, setPreviewNode] = useState<ReactNode>();
 
     const [alertDialogProps, setAlertDialogProps] = useState<{
       open: boolean;
@@ -24,16 +23,6 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
       if (window.URL) return window.URL;
       else if (window.webkitURL) return window.webkitURL;
     });
-
-    // Effect ----------------------------------------------------------------------------------------------------------
-
-    useEffect(() => {
-      setPreviewNode(
-        preview && value ? (
-          <img className='preview-img' src={value} style={{ maxHeight: previewMaxHeight || undefined }} alt='' />
-        ) : undefined
-      );
-    }, [value, preview, previewMaxHeight]);
 
     // Function --------------------------------------------------------------------------------------------------------
 
@@ -152,6 +141,26 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
       },
       [onLink, imageSizeCheck]
     );
+
+    // Memo --------------------------------------------------------------------------------------------------------------
+
+    const previewNode = useMemo(() => {
+      if (preview && value) {
+        return (
+          <a href={value} target='_blank'>
+            <Tooltip
+              title={
+                <div style={{ paddingTop: 3, paddingBottom: 3 }}>
+                  <img src={value} style={{ maxWidth: '100%', verticalAlign: 'middle' }} />
+                </div>
+              }
+            >
+              <img className='preview-img' src={value} style={{ maxHeight: previewMaxHeight || undefined }} alt='' />
+            </Tooltip>
+          </a>
+        );
+      }
+    }, [preview, previewMaxHeight, value]);
 
     // Render ----------------------------------------------------------------------------------------------------------
 

@@ -12101,20 +12101,15 @@ FormFile.defaultProps = FormFileDefaultProps;var FormImageFileDefaultProps = __a
 styleInject(css_248z);var FormImageFile = React__default["default"].forwardRef(function (_a, ref) {
     var className = _a.className, imageSize = _a.imageSize, preview = _a.preview, previewMaxHeight = _a.previewMaxHeight, initValue = _a.value, onChange = _a.onChange, onFile = _a.onFile, onLink = _a.onLink, props = __rest$3(_a, ["className", "imageSize", "preview", "previewMaxHeight", "value", "onChange", "onFile", "onLink"]);
     var _b = useAutoUpdateState$1(initValue), value = _b[0], setValue = _b[1];
-    var _c = React.useState(), previewNode = _c[0], setPreviewNode = _c[1];
-    var _d = React.useState({
+    var _c = React.useState({
         open: false,
-    }), alertDialogProps = _d[0], setAlertDialogProps = _d[1];
+    }), alertDialogProps = _c[0], setAlertDialogProps = _c[1];
     var urlKit = React.useState(function () {
         if (window.URL)
             return window.URL;
         else if (window.webkitURL)
             return window.webkitURL;
     })[0];
-    // Effect ----------------------------------------------------------------------------------------------------------
-    React.useEffect(function () {
-        setPreviewNode(preview && value ? (React__default["default"].createElement("img", { className: 'preview-img', src: value, style: { maxHeight: previewMaxHeight || undefined }, alt: '' })) : undefined);
-    }, [value, preview, previewMaxHeight]);
     // Function --------------------------------------------------------------------------------------------------------
     var imageSizeCheck = React.useCallback(function (file) {
         if (imageSize && urlKit) {
@@ -12218,6 +12213,15 @@ styleInject(css_248z);var FormImageFile = React__default["default"].forwardRef(f
             });
         });
     }, [onLink, imageSizeCheck]);
+    // Memo --------------------------------------------------------------------------------------------------------------
+    var previewNode = React.useMemo(function () {
+        if (preview && value) {
+            return (React__default["default"].createElement("a", { href: value, target: '_blank' },
+                React__default["default"].createElement(material.Tooltip, { title: React__default["default"].createElement("div", { style: { paddingTop: 3, paddingBottom: 3 } },
+                        React__default["default"].createElement("img", { src: value, style: { maxWidth: '100%', verticalAlign: 'middle' } })) },
+                    React__default["default"].createElement("img", { className: 'preview-img', src: value, style: { maxHeight: previewMaxHeight || undefined }, alt: '' }))));
+        }
+    }, [preview, previewMaxHeight, value]);
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default["default"].createElement(React__default["default"].Fragment, null,
         React__default["default"].createElement(FormFile, __assign$6({ ref: ref, className: classNames$1(className, 'FormImageFile'), value: value, preview: previewNode, onChange: handleChange, onFile: handleFile, onLink: handleLink }, props)),

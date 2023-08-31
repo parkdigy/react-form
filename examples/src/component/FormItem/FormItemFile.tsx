@@ -9,7 +9,7 @@ import {
   FormCheckbox,
   FormBody,
   FormFooter,
-} from '@pdg/react-form';
+} from '../../../../src';
 import { OutlinedPaper } from '#ccomp';
 
 const FormItemFile = () => {
@@ -150,8 +150,8 @@ const FormItemFile = () => {
                 disabled={disabled}
                 preview={preview}
                 previewMaxHeight={previewMaxHeight ? 100 : undefined}
-                imageSize={{ width: 100, height: 100 }}
-                helperText='100*100 사이즈의 이미지만 등록할 수 있습니다.'
+                // imageSize={{ width: 114, height: 114 }}
+                // helperText='114*114 사이즈의 이미지만 등록할 수 있습니다.'
                 onFile={() => {
                   return new Promise<string>((resolve) => {
                     resolve(
