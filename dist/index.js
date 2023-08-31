@@ -12378,6 +12378,87 @@ SearchGroup.defaultProps = SearchGroupDefaultProps;var SearchButtonDefaultProps 
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default["default"].createElement(FormButton, __assign$6({ className: classNames$1(className, 'SearchButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, endIcon: endIcon, icon: icon }, props), children));
 };
-SearchButton.defaultProps = SearchButtonDefaultProps;dayjs__default["default"].extend(dayjsIsSameOrAfter__default["default"]);
+SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefaultProps = {};var SearchMenuButton = function (_a) {
+    // ID ----------------------------------------------------------------------------------------------------------------
+    var children = _a.children, className = _a.className, initSx = _a.sx, menuList = _a.menuList, startIcon = _a.startIcon, icon = _a.icon, placement = _a.placement, props = __rest$3(_a, ["children", "className", "sx", "menuList", "startIcon", "icon", "placement"]);
+    var buttonId = React.useId();
+    var menuId = React.useId();
+    // State -------------------------------------------------------------------------------------------------------------
+    var _b = React.useState(null), anchorEl = _b[0], setAnchorEl = _b[1];
+    var _c = React.useState('ArrowDropDown'), endIcon = _c[0], setEndIcon = _c[1];
+    // Event Handler -----------------------------------------------------------------------------------------------------
+    var handleClick = React.useCallback(function (e) {
+        setAnchorEl(e.currentTarget);
+        setEndIcon('ArrowDropUp');
+    }, []);
+    var handleClose = React.useCallback(function () {
+        setAnchorEl(null);
+        setEndIcon('ArrowDropDown');
+    }, []);
+    // Memo --------------------------------------------------------------------------------------------------------------
+    var open = React.useMemo(function () { return !!anchorEl; }, [anchorEl]);
+    var sx = React.useMemo(function () { return (__assign$6({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7 }, initSx)); }, [endIcon, icon, initSx, startIcon]);
+    var anchorOrigin = React.useMemo(function () {
+        switch (placement || 'bottom') {
+            case 'bottom':
+                return { vertical: 'bottom', horizontal: 'center' };
+            case 'bottom-left':
+                return { vertical: 'bottom', horizontal: 'left' };
+            case 'bottom-right':
+                return { vertical: 'bottom', horizontal: 'right' };
+            case 'top':
+                return { vertical: 'top', horizontal: 'center' };
+            case 'top-left':
+                return { vertical: 'top', horizontal: 'left' };
+            case 'top-right':
+                return { vertical: 'top', horizontal: 'right' };
+            case 'left':
+                return { vertical: 'center', horizontal: 'left' };
+            case 'left-top':
+                return { vertical: 'top', horizontal: 'left' };
+            case 'left-bottom':
+                return { vertical: 'bottom', horizontal: 'left' };
+            case 'right':
+                return { vertical: 'center', horizontal: 'right' };
+            case 'right-top':
+                return { vertical: 'top', horizontal: 'right' };
+            case 'right-bottom':
+                return { vertical: 'bottom', horizontal: 'right' };
+        }
+    }, [placement]);
+    var transformOrigin = React.useMemo(function () {
+        switch (placement || 'bottom') {
+            case 'bottom':
+                return { vertical: 'top', horizontal: 'center' };
+            case 'bottom-left':
+                return { vertical: 'top', horizontal: 'left' };
+            case 'bottom-right':
+                return { vertical: 'top', horizontal: 'right' };
+            case 'top':
+                return { vertical: 'bottom', horizontal: 'center' };
+            case 'top-left':
+                return { vertical: 'bottom', horizontal: 'left' };
+            case 'top-right':
+                return { vertical: 'bottom', horizontal: 'right' };
+            case 'left':
+                return { vertical: 'center', horizontal: 'right' };
+            case 'left-top':
+                return { vertical: 'top', horizontal: 'right' };
+            case 'left-bottom':
+                return { vertical: 'bottom', horizontal: 'right' };
+            case 'right':
+                return { vertical: 'center', horizontal: 'left' };
+            case 'right-top':
+                return { vertical: 'top', horizontal: 'left' };
+            case 'right-bottom':
+                return { vertical: 'bottom', horizontal: 'left' };
+        }
+    }, [placement]);
+    // Render ----------------------------------------------------------------------------------------------------------
+    return (React__default["default"].createElement(React__default["default"].Fragment, null,
+        React__default["default"].createElement(FormButton, __assign$6({ className: classNames$1(className, 'SearchMenuButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, icon: icon }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, onClick: handleClick }), children),
+        React__default["default"].createElement(material.Menu, { id: menuId, "aria-labelledby": buttonId, anchorEl: anchorEl, open: open, onClose: handleClose, onClick: handleClose, anchorOrigin: anchorOrigin, transformOrigin: transformOrigin }, menuList)));
+};
+SearchMenuButton.defaultProps = SearchMenuButtonDefaultProps;dayjs__default["default"].extend(dayjsIsSameOrAfter__default["default"]);
 dayjs__default["default"].extend(dayjsIsSameOrBefore__default["default"]);
-dayjs__default["default"].extend(dayjsIsBetween__default["default"]);exports.Form=Form;exports.FormAutocomplete=FormAutocomplete;exports.FormAutocompleteDefaultProps=FormAutocompleteDefaultProps;exports.FormBlock=FormBlock;exports.FormBlockDefaultProps=FormBlockDefaultProps;exports.FormBody=FormBody;exports.FormBodyDefaultProps=FormBodyDefaultProps;exports.FormButton=FormButton;exports.FormButtonDefaultProps=FormButtonDefaultProps;exports.FormCheckbox=FormCheckbox;exports.FormCheckboxDefaultProps=FormCheckboxDefaultProps;exports.FormCol=FormCol;exports.FormColDefaultProps=FormColDefaultProps;exports.FormContext=FormContext;exports.FormContextDefaultValue=FormContextDefaultValue;exports.FormContextProvider=FormContextProvider;exports.FormDatePicker=FormDatePicker;exports.FormDatePickerDefaultProps=FormDatePickerDefaultProps;exports.FormDateRangePicker=FormDateRangePicker;exports.FormDateRangePickerDefaultProps=FormDateRangePickerDefaultProps;exports.FormDateTimePicker=FormDateTimePicker;exports.FormDateTimePickerDefaultProps=FormDateTimePickerDefaultProps;exports.FormDefaultProps=FormDefaultProps;exports.FormDivider=FormDivider;exports.FormDividerDefaultProps=FormDividerDefaultProps;exports.FormEmail=FormEmail;exports.FormEmailDefaultProps=FormEmailDefaultProps;exports.FormFile=FormFile;exports.FormFileDefaultProps=FormFileDefaultProps;exports.FormFooter=FormFooter;exports.FormFooterDefaultProps=FormFooterDefaultProps;exports.FormHidden=FormHidden;exports.FormHiddenDefaultProps=FormHiddenDefaultProps;exports.FormIcon=FormIcon;exports.FormIconDefaultProps=FormIconDefaultProps;exports.FormImageFile=FormImageFile;exports.FormImageFileDefaultProps=FormImageFileDefaultProps;exports.FormLabel=FormLabel;exports.FormLabelDefaultProps=FormLabelDefaultProps;exports.FormMobile=FormMobile;exports.FormMobileDefaultProps=FormMobileDefaultProps;exports.FormNumber=FormNumber;exports.FormNumberDefaultProps=FormNumberDefaultProps;exports.FormPassword=FormPassword;exports.FormPasswordDefaultProps=FormPasswordDefaultProps;exports.FormRadioGroup=FormRadioGroup;exports.FormRadioGroupDefaultProps=FormRadioGroupDefaultProps;exports.FormRating=FormRating;exports.FormRatingDefaultProps=FormRatingDefaultProps;exports.FormRow=FormRow;exports.FormRowDefaultProps=FormRowDefaultProps;exports.FormSearch=FormSearch;exports.FormSearchDefaultProps=FormSearchDefaultProps;exports.FormSelect=FormSelect;exports.FormSelectDefaultProps=FormSelectDefaultProps;exports.FormTag=FormTag;exports.FormTagDefaultProps=FormTagDefaultProps;exports.FormTel=FormTel;exports.FormTelDefaultProps=FormTelDefaultProps;exports.FormText=FormText;exports.FormTextDefaultProps=FormTextDefaultProps;exports.FormTextEditor=FormTextEditor;exports.FormTextEditorDefaultProps=FormTextEditorDefaultProps;exports.FormTextField=FormTextField;exports.FormTextFieldDefaultProps=FormTextFieldDefaultProps;exports.FormTextarea=FormTextarea;exports.FormTextareaDefaultProps=FormTextareaDefaultProps;exports.FormTimePicker=FormTimePicker;exports.FormTimePickerDefaultProps=FormTimePickerDefaultProps;exports.FormToggleButtonGroup=FormToggleButtonGroup;exports.FormToggleButtonGroupDefaultProps=FormToggleButtonGroupDefaultProps;exports.FormUrl=FormUrl;exports.FormUrlDefaultProps=FormUrlDefaultProps;exports.Search=Search;exports.SearchButton=SearchButton;exports.SearchButtonDefaultProps=SearchButtonDefaultProps;exports.SearchDefaultProps=SearchDefaultProps;exports.SearchGroup=SearchGroup;exports.SearchGroupDefaultProps=SearchGroupDefaultProps;exports.SearchGroupRow=SearchGroupRow;exports.SearchGroupRowDefaultProps=SearchGroupRowDefaultProps;exports.useFormState=useFormState;//# sourceMappingURL=index.js.map
+dayjs__default["default"].extend(dayjsIsBetween__default["default"]);exports.Form=Form;exports.FormAutocomplete=FormAutocomplete;exports.FormAutocompleteDefaultProps=FormAutocompleteDefaultProps;exports.FormBlock=FormBlock;exports.FormBlockDefaultProps=FormBlockDefaultProps;exports.FormBody=FormBody;exports.FormBodyDefaultProps=FormBodyDefaultProps;exports.FormButton=FormButton;exports.FormButtonDefaultProps=FormButtonDefaultProps;exports.FormCheckbox=FormCheckbox;exports.FormCheckboxDefaultProps=FormCheckboxDefaultProps;exports.FormCol=FormCol;exports.FormColDefaultProps=FormColDefaultProps;exports.FormContext=FormContext;exports.FormContextDefaultValue=FormContextDefaultValue;exports.FormContextProvider=FormContextProvider;exports.FormDatePicker=FormDatePicker;exports.FormDatePickerDefaultProps=FormDatePickerDefaultProps;exports.FormDateRangePicker=FormDateRangePicker;exports.FormDateRangePickerDefaultProps=FormDateRangePickerDefaultProps;exports.FormDateTimePicker=FormDateTimePicker;exports.FormDateTimePickerDefaultProps=FormDateTimePickerDefaultProps;exports.FormDefaultProps=FormDefaultProps;exports.FormDivider=FormDivider;exports.FormDividerDefaultProps=FormDividerDefaultProps;exports.FormEmail=FormEmail;exports.FormEmailDefaultProps=FormEmailDefaultProps;exports.FormFile=FormFile;exports.FormFileDefaultProps=FormFileDefaultProps;exports.FormFooter=FormFooter;exports.FormFooterDefaultProps=FormFooterDefaultProps;exports.FormHidden=FormHidden;exports.FormHiddenDefaultProps=FormHiddenDefaultProps;exports.FormIcon=FormIcon;exports.FormIconDefaultProps=FormIconDefaultProps;exports.FormImageFile=FormImageFile;exports.FormImageFileDefaultProps=FormImageFileDefaultProps;exports.FormLabel=FormLabel;exports.FormLabelDefaultProps=FormLabelDefaultProps;exports.FormMobile=FormMobile;exports.FormMobileDefaultProps=FormMobileDefaultProps;exports.FormNumber=FormNumber;exports.FormNumberDefaultProps=FormNumberDefaultProps;exports.FormPassword=FormPassword;exports.FormPasswordDefaultProps=FormPasswordDefaultProps;exports.FormRadioGroup=FormRadioGroup;exports.FormRadioGroupDefaultProps=FormRadioGroupDefaultProps;exports.FormRating=FormRating;exports.FormRatingDefaultProps=FormRatingDefaultProps;exports.FormRow=FormRow;exports.FormRowDefaultProps=FormRowDefaultProps;exports.FormSearch=FormSearch;exports.FormSearchDefaultProps=FormSearchDefaultProps;exports.FormSelect=FormSelect;exports.FormSelectDefaultProps=FormSelectDefaultProps;exports.FormTag=FormTag;exports.FormTagDefaultProps=FormTagDefaultProps;exports.FormTel=FormTel;exports.FormTelDefaultProps=FormTelDefaultProps;exports.FormText=FormText;exports.FormTextDefaultProps=FormTextDefaultProps;exports.FormTextEditor=FormTextEditor;exports.FormTextEditorDefaultProps=FormTextEditorDefaultProps;exports.FormTextField=FormTextField;exports.FormTextFieldDefaultProps=FormTextFieldDefaultProps;exports.FormTextarea=FormTextarea;exports.FormTextareaDefaultProps=FormTextareaDefaultProps;exports.FormTimePicker=FormTimePicker;exports.FormTimePickerDefaultProps=FormTimePickerDefaultProps;exports.FormToggleButtonGroup=FormToggleButtonGroup;exports.FormToggleButtonGroupDefaultProps=FormToggleButtonGroupDefaultProps;exports.FormUrl=FormUrl;exports.FormUrlDefaultProps=FormUrlDefaultProps;exports.Search=Search;exports.SearchButton=SearchButton;exports.SearchButtonDefaultProps=SearchButtonDefaultProps;exports.SearchDefaultProps=SearchDefaultProps;exports.SearchGroup=SearchGroup;exports.SearchGroupDefaultProps=SearchGroupDefaultProps;exports.SearchGroupRow=SearchGroupRow;exports.SearchGroupRowDefaultProps=SearchGroupRowDefaultProps;exports.SearchMenuButton=SearchMenuButton;exports.SearchMenuButtonDefaultProps=SearchMenuButtonDefaultProps;exports.useFormState=useFormState;//# sourceMappingURL=index.js.map

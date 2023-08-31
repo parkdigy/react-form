@@ -5,6 +5,7 @@ import {
   SearchGroupRow,
   SearchGroup,
   SearchButton,
+  SearchMenuButton,
   FormIcon,
   FormSelect,
   FormToggleButtonGroup,
@@ -14,8 +15,8 @@ import {
   FormDatePicker,
   FormDateRangePicker,
   SearchCommands,
-} from '@pdg/react-form';
-import { FormHelperText, Grid } from '@mui/material';
+} from '../../../../src';
+import { FormHelperText, Grid, MenuItem, MenuList } from '@mui/material';
 import dayjs from 'dayjs';
 
 const Search = () => {
@@ -96,6 +97,19 @@ const Search = () => {
               >
                 새 항목
               </SearchButton>
+              <SearchMenuButton
+                icon='menu'
+                variant='contained'
+                placement='bottom-right'
+                menuList={
+                  <MenuList>
+                    <MenuItem onClick={() => ll('Menu 1 Click')}>Menu 1</MenuItem>
+                    <MenuItem onClick={() => ll('Menu 2 Click')}>Menu 2</MenuItem>
+                  </MenuList>
+                }
+              >
+                메뉴 버튼
+              </SearchMenuButton>
             </SearchGroup>
           </SearchGroupRow>
 
