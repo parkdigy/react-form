@@ -29,6 +29,8 @@ import {
   FormDateRangePicker,
   FormBody,
   FormFooter,
+  FormCompanyNo,
+  FormPersonalNo,
 } from '../../../../../src';
 import { ToggleButtonGroup, Checkbox, RadioGroup, Rating, FileUpload } from './sub';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
@@ -217,6 +219,14 @@ const FormBase = () => {
               </FormCol>
               <FormCol>
                 <FormUrl name='FormUrl' label='FormUrl' />
+              </FormCol>
+            </FormRow>
+            <FormRow>
+              <FormCol xs={3}>
+                <FormCompanyNo name='FormCompanyNo' label='FormCompanyNo' />
+              </FormCol>
+              <FormCol xs={3}>
+                <FormPersonalNo name='FormPersonalNo' label='FormPersonalNo' />
               </FormCol>
             </FormRow>
 

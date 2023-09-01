@@ -2683,7 +2683,7 @@ var templateObject_1;var FormTelDefaultProps = __assign$6(__assign$6({}, FormTex
         if (newValue && notEmpty(newValue)) {
             newValue = newValue.replace(/[^0-9]/gi, '');
         }
-        newValue = getTelAutoDash(newValue);
+        newValue = autoDash$2(newValue);
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     // Render ----------------------------------------------------------------------------------------------------------
@@ -2691,7 +2691,7 @@ var templateObject_1;var FormTelDefaultProps = __assign$6(__assign$6({}, FormTex
 });
 FormTel.displayName = 'FormTel';
 FormTel.defaultProps = FormTelDefaultProps;
-function getTelAutoDash(tel) {
+function autoDash$2(tel) {
     if (tel == null)
         return undefined;
     var str = tel.replace(/[^0-9*]/g, '');
@@ -4449,7 +4449,92 @@ styleInject(css_248z$d);var FormSelect = React__default["default"].forwardRef(fu
             })) : (React__default["default"].createElement(material.MenuItem, { value: '' })))));
 });
 FormSelect.displayName = 'FormSelect';
-FormSelect.defaultProps = FormSelectDefaultProps;var FormCheckboxDefaultProps = {
+FormSelect.defaultProps = FormSelectDefaultProps;var FormCompanyNoDefaultProps = __assign$6(__assign$6({}, FormTextDefaultProps), { validPattern: /(([0-9]{3})([0-9]{2})([0-9]{5}))|(([0-9]{3})-([0-9]{2})-([0-9]{5}))/ });var FormCompanyNo = React__default["default"].forwardRef(function (_a, ref) {
+    // Event Handler ---------------------------------------------------------------------------------------------------
+    var className = _a.className, onValue = _a.onValue, props = __rest$3(_a, ["className", "onValue"]);
+    var handleOnValue = React.useCallback(function (value) {
+        var newValue = value;
+        if (newValue && notEmpty(newValue)) {
+            newValue = newValue.replace(/[^0-9]/gi, '');
+        }
+        newValue = autoDash$1(newValue);
+        return onValue ? onValue(newValue) : newValue;
+    }, [onValue]);
+    // Render ----------------------------------------------------------------------------------------------------------
+    return (React__default["default"].createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormCompanyNo'), onValue: handleOnValue, maxLength: 12 }, props)));
+});
+FormCompanyNo.displayName = 'FormCompanyNo';
+FormCompanyNo.defaultProps = FormCompanyNoDefaultProps;
+function autoDash$1(companyNo) {
+    if (companyNo == null)
+        return undefined;
+    var str = companyNo.replace(/[^0-9]/g, '');
+    var tmp = '';
+    for (var i = 0; i < str.length; i += 1) {
+        if (i === 3 || i === 5) {
+            tmp += '-';
+        }
+        tmp += str[i];
+    }
+    return tmp;
+}var FormPersonalNoDefaultProps = __assign$6(__assign$6({}, FormTextDefaultProps), { validPattern: /(([0-9]{6})([0-9]{7}))|(([0-9]{6})-([0-9]{7}))/ });var FormPersonalNo = React__default["default"].forwardRef(function (_a, ref) {
+    // Event Handler ---------------------------------------------------------------------------------------------------
+    var className = _a.className, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest$3(_a, ["className", "onValue", "onValidate"]);
+    var handleOnValue = React.useCallback(function (value) {
+        var newValue = value;
+        if (newValue && notEmpty(newValue)) {
+            newValue = newValue.replace(/[^0-9]/gi, '');
+        }
+        newValue = autoDash(newValue);
+        return onValue ? onValue(newValue) : newValue;
+    }, [onValue]);
+    var handleValidate = React.useCallback(function (value) {
+        if (notEmpty(value) && value.length === 14 && value.includes('-')) {
+            var jumin = value
+                .replaceAll('-', '')
+                .split('')
+                .map(function (v) { return Number(v); });
+            var ckarr = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5];
+            for (var i = 0; i < jumin.length - 1; i += 1) {
+                jumin[i] = jumin[i] * ckarr[i];
+            }
+            var juminlast = jumin[jumin.length - 1];
+            var sum = 0;
+            for (var i = 0; i < jumin.length - 1; i += 1) {
+                sum += jumin[i];
+            }
+            sum = sum % 11;
+            sum = 11 - sum;
+            if (sum > 9) {
+                sum = sum % 10;
+            }
+            if (sum != juminlast && juminlast != undefined) {
+                return '유효하지 않은 값입니다.';
+            }
+            return onValidate ? onValidate(value) : true;
+        }
+        else {
+            return '유효하지 않은 값입니다.';
+        }
+    }, [onValidate]);
+    // Render ----------------------------------------------------------------------------------------------------------
+    return (React__default["default"].createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormPersonalNo'), onValue: handleOnValue, maxLength: 14, onValidate: handleValidate }, props)));
+});
+FormPersonalNo.displayName = 'FormPersonalNo';
+FormPersonalNo.defaultProps = FormPersonalNoDefaultProps;
+function autoDash(personalNo) {
+    if (personalNo == null)
+        return undefined;
+    var str = personalNo.replace(/[^0-9]/g, '');
+    var tmp = '';
+    for (var i = 0; i < str.length; i += 1) {
+        if (i === 6) {
+            tmp += '-';
+        }
+        tmp += str[i];
+    }
+    return tmp;
+}var FormCheckboxDefaultProps = {
     checked: false,
     value: 1,
     uncheckedValue: 0,
@@ -12465,4 +12550,4 @@ SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefault
 };
 SearchMenuButton.defaultProps = SearchMenuButtonDefaultProps;dayjs__default["default"].extend(dayjsIsSameOrAfter__default["default"]);
 dayjs__default["default"].extend(dayjsIsSameOrBefore__default["default"]);
-dayjs__default["default"].extend(dayjsIsBetween__default["default"]);exports.Form=Form;exports.FormAutocomplete=FormAutocomplete;exports.FormAutocompleteDefaultProps=FormAutocompleteDefaultProps;exports.FormBlock=FormBlock;exports.FormBlockDefaultProps=FormBlockDefaultProps;exports.FormBody=FormBody;exports.FormBodyDefaultProps=FormBodyDefaultProps;exports.FormButton=FormButton;exports.FormButtonDefaultProps=FormButtonDefaultProps;exports.FormCheckbox=FormCheckbox;exports.FormCheckboxDefaultProps=FormCheckboxDefaultProps;exports.FormCol=FormCol;exports.FormColDefaultProps=FormColDefaultProps;exports.FormContext=FormContext;exports.FormContextDefaultValue=FormContextDefaultValue;exports.FormContextProvider=FormContextProvider;exports.FormDatePicker=FormDatePicker;exports.FormDatePickerDefaultProps=FormDatePickerDefaultProps;exports.FormDateRangePicker=FormDateRangePicker;exports.FormDateRangePickerDefaultProps=FormDateRangePickerDefaultProps;exports.FormDateTimePicker=FormDateTimePicker;exports.FormDateTimePickerDefaultProps=FormDateTimePickerDefaultProps;exports.FormDefaultProps=FormDefaultProps;exports.FormDivider=FormDivider;exports.FormDividerDefaultProps=FormDividerDefaultProps;exports.FormEmail=FormEmail;exports.FormEmailDefaultProps=FormEmailDefaultProps;exports.FormFile=FormFile;exports.FormFileDefaultProps=FormFileDefaultProps;exports.FormFooter=FormFooter;exports.FormFooterDefaultProps=FormFooterDefaultProps;exports.FormHidden=FormHidden;exports.FormHiddenDefaultProps=FormHiddenDefaultProps;exports.FormIcon=FormIcon;exports.FormIconDefaultProps=FormIconDefaultProps;exports.FormImageFile=FormImageFile;exports.FormImageFileDefaultProps=FormImageFileDefaultProps;exports.FormLabel=FormLabel;exports.FormLabelDefaultProps=FormLabelDefaultProps;exports.FormMobile=FormMobile;exports.FormMobileDefaultProps=FormMobileDefaultProps;exports.FormNumber=FormNumber;exports.FormNumberDefaultProps=FormNumberDefaultProps;exports.FormPassword=FormPassword;exports.FormPasswordDefaultProps=FormPasswordDefaultProps;exports.FormRadioGroup=FormRadioGroup;exports.FormRadioGroupDefaultProps=FormRadioGroupDefaultProps;exports.FormRating=FormRating;exports.FormRatingDefaultProps=FormRatingDefaultProps;exports.FormRow=FormRow;exports.FormRowDefaultProps=FormRowDefaultProps;exports.FormSearch=FormSearch;exports.FormSearchDefaultProps=FormSearchDefaultProps;exports.FormSelect=FormSelect;exports.FormSelectDefaultProps=FormSelectDefaultProps;exports.FormTag=FormTag;exports.FormTagDefaultProps=FormTagDefaultProps;exports.FormTel=FormTel;exports.FormTelDefaultProps=FormTelDefaultProps;exports.FormText=FormText;exports.FormTextDefaultProps=FormTextDefaultProps;exports.FormTextEditor=FormTextEditor;exports.FormTextEditorDefaultProps=FormTextEditorDefaultProps;exports.FormTextField=FormTextField;exports.FormTextFieldDefaultProps=FormTextFieldDefaultProps;exports.FormTextarea=FormTextarea;exports.FormTextareaDefaultProps=FormTextareaDefaultProps;exports.FormTimePicker=FormTimePicker;exports.FormTimePickerDefaultProps=FormTimePickerDefaultProps;exports.FormToggleButtonGroup=FormToggleButtonGroup;exports.FormToggleButtonGroupDefaultProps=FormToggleButtonGroupDefaultProps;exports.FormUrl=FormUrl;exports.FormUrlDefaultProps=FormUrlDefaultProps;exports.Search=Search;exports.SearchButton=SearchButton;exports.SearchButtonDefaultProps=SearchButtonDefaultProps;exports.SearchDefaultProps=SearchDefaultProps;exports.SearchGroup=SearchGroup;exports.SearchGroupDefaultProps=SearchGroupDefaultProps;exports.SearchGroupRow=SearchGroupRow;exports.SearchGroupRowDefaultProps=SearchGroupRowDefaultProps;exports.SearchMenuButton=SearchMenuButton;exports.SearchMenuButtonDefaultProps=SearchMenuButtonDefaultProps;exports.useFormState=useFormState;//# sourceMappingURL=index.js.map
+dayjs__default["default"].extend(dayjsIsBetween__default["default"]);exports.Form=Form;exports.FormAutocomplete=FormAutocomplete;exports.FormAutocompleteDefaultProps=FormAutocompleteDefaultProps;exports.FormBlock=FormBlock;exports.FormBlockDefaultProps=FormBlockDefaultProps;exports.FormBody=FormBody;exports.FormBodyDefaultProps=FormBodyDefaultProps;exports.FormButton=FormButton;exports.FormButtonDefaultProps=FormButtonDefaultProps;exports.FormCheckbox=FormCheckbox;exports.FormCheckboxDefaultProps=FormCheckboxDefaultProps;exports.FormCol=FormCol;exports.FormColDefaultProps=FormColDefaultProps;exports.FormCompanyNo=FormCompanyNo;exports.FormCompanyNoDefaultProps=FormCompanyNoDefaultProps;exports.FormContext=FormContext;exports.FormContextDefaultValue=FormContextDefaultValue;exports.FormContextProvider=FormContextProvider;exports.FormDatePicker=FormDatePicker;exports.FormDatePickerDefaultProps=FormDatePickerDefaultProps;exports.FormDateRangePicker=FormDateRangePicker;exports.FormDateRangePickerDefaultProps=FormDateRangePickerDefaultProps;exports.FormDateTimePicker=FormDateTimePicker;exports.FormDateTimePickerDefaultProps=FormDateTimePickerDefaultProps;exports.FormDefaultProps=FormDefaultProps;exports.FormDivider=FormDivider;exports.FormDividerDefaultProps=FormDividerDefaultProps;exports.FormEmail=FormEmail;exports.FormEmailDefaultProps=FormEmailDefaultProps;exports.FormFile=FormFile;exports.FormFileDefaultProps=FormFileDefaultProps;exports.FormFooter=FormFooter;exports.FormFooterDefaultProps=FormFooterDefaultProps;exports.FormHidden=FormHidden;exports.FormHiddenDefaultProps=FormHiddenDefaultProps;exports.FormIcon=FormIcon;exports.FormIconDefaultProps=FormIconDefaultProps;exports.FormImageFile=FormImageFile;exports.FormImageFileDefaultProps=FormImageFileDefaultProps;exports.FormLabel=FormLabel;exports.FormLabelDefaultProps=FormLabelDefaultProps;exports.FormMobile=FormMobile;exports.FormMobileDefaultProps=FormMobileDefaultProps;exports.FormNumber=FormNumber;exports.FormNumberDefaultProps=FormNumberDefaultProps;exports.FormPassword=FormPassword;exports.FormPasswordDefaultProps=FormPasswordDefaultProps;exports.FormPersonalNo=FormPersonalNo;exports.FormPersonalNoDefaultProps=FormPersonalNoDefaultProps;exports.FormRadioGroup=FormRadioGroup;exports.FormRadioGroupDefaultProps=FormRadioGroupDefaultProps;exports.FormRating=FormRating;exports.FormRatingDefaultProps=FormRatingDefaultProps;exports.FormRow=FormRow;exports.FormRowDefaultProps=FormRowDefaultProps;exports.FormSearch=FormSearch;exports.FormSearchDefaultProps=FormSearchDefaultProps;exports.FormSelect=FormSelect;exports.FormSelectDefaultProps=FormSelectDefaultProps;exports.FormTag=FormTag;exports.FormTagDefaultProps=FormTagDefaultProps;exports.FormTel=FormTel;exports.FormTelDefaultProps=FormTelDefaultProps;exports.FormText=FormText;exports.FormTextDefaultProps=FormTextDefaultProps;exports.FormTextEditor=FormTextEditor;exports.FormTextEditorDefaultProps=FormTextEditorDefaultProps;exports.FormTextField=FormTextField;exports.FormTextFieldDefaultProps=FormTextFieldDefaultProps;exports.FormTextarea=FormTextarea;exports.FormTextareaDefaultProps=FormTextareaDefaultProps;exports.FormTimePicker=FormTimePicker;exports.FormTimePickerDefaultProps=FormTimePickerDefaultProps;exports.FormToggleButtonGroup=FormToggleButtonGroup;exports.FormToggleButtonGroupDefaultProps=FormToggleButtonGroupDefaultProps;exports.FormUrl=FormUrl;exports.FormUrlDefaultProps=FormUrlDefaultProps;exports.Search=Search;exports.SearchButton=SearchButton;exports.SearchButtonDefaultProps=SearchButtonDefaultProps;exports.SearchDefaultProps=SearchDefaultProps;exports.SearchGroup=SearchGroup;exports.SearchGroupDefaultProps=SearchGroupDefaultProps;exports.SearchGroupRow=SearchGroupRow;exports.SearchGroupRowDefaultProps=SearchGroupRowDefaultProps;exports.SearchMenuButton=SearchMenuButton;exports.SearchMenuButtonDefaultProps=SearchMenuButtonDefaultProps;exports.useFormState=useFormState;//# sourceMappingURL=index.js.map

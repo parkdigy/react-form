@@ -2683,7 +2683,7 @@ var templateObject_1;var FormTelDefaultProps = __assign$6(__assign$6({}, FormTex
         if (newValue && notEmpty(newValue)) {
             newValue = newValue.replace(/[^0-9]/gi, '');
         }
-        newValue = getTelAutoDash(newValue);
+        newValue = autoDash$2(newValue);
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     // Render ----------------------------------------------------------------------------------------------------------
@@ -2691,7 +2691,7 @@ var templateObject_1;var FormTelDefaultProps = __assign$6(__assign$6({}, FormTex
 });
 FormTel.displayName = 'FormTel';
 FormTel.defaultProps = FormTelDefaultProps;
-function getTelAutoDash(tel) {
+function autoDash$2(tel) {
     if (tel == null)
         return undefined;
     var str = tel.replace(/[^0-9*]/g, '');
@@ -4449,7 +4449,92 @@ styleInject(css_248z$d);var FormSelect = React__default.forwardRef(function (_a,
             })) : (React__default.createElement(MenuItem, { value: '' })))));
 });
 FormSelect.displayName = 'FormSelect';
-FormSelect.defaultProps = FormSelectDefaultProps;var FormCheckboxDefaultProps = {
+FormSelect.defaultProps = FormSelectDefaultProps;var FormCompanyNoDefaultProps = __assign$6(__assign$6({}, FormTextDefaultProps), { validPattern: /(([0-9]{3})([0-9]{2})([0-9]{5}))|(([0-9]{3})-([0-9]{2})-([0-9]{5}))/ });var FormCompanyNo = React__default.forwardRef(function (_a, ref) {
+    // Event Handler ---------------------------------------------------------------------------------------------------
+    var className = _a.className, onValue = _a.onValue, props = __rest$3(_a, ["className", "onValue"]);
+    var handleOnValue = useCallback(function (value) {
+        var newValue = value;
+        if (newValue && notEmpty(newValue)) {
+            newValue = newValue.replace(/[^0-9]/gi, '');
+        }
+        newValue = autoDash$1(newValue);
+        return onValue ? onValue(newValue) : newValue;
+    }, [onValue]);
+    // Render ----------------------------------------------------------------------------------------------------------
+    return (React__default.createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormCompanyNo'), onValue: handleOnValue, maxLength: 12 }, props)));
+});
+FormCompanyNo.displayName = 'FormCompanyNo';
+FormCompanyNo.defaultProps = FormCompanyNoDefaultProps;
+function autoDash$1(companyNo) {
+    if (companyNo == null)
+        return undefined;
+    var str = companyNo.replace(/[^0-9]/g, '');
+    var tmp = '';
+    for (var i = 0; i < str.length; i += 1) {
+        if (i === 3 || i === 5) {
+            tmp += '-';
+        }
+        tmp += str[i];
+    }
+    return tmp;
+}var FormPersonalNoDefaultProps = __assign$6(__assign$6({}, FormTextDefaultProps), { validPattern: /(([0-9]{6})([0-9]{7}))|(([0-9]{6})-([0-9]{7}))/ });var FormPersonalNo = React__default.forwardRef(function (_a, ref) {
+    // Event Handler ---------------------------------------------------------------------------------------------------
+    var className = _a.className, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest$3(_a, ["className", "onValue", "onValidate"]);
+    var handleOnValue = useCallback(function (value) {
+        var newValue = value;
+        if (newValue && notEmpty(newValue)) {
+            newValue = newValue.replace(/[^0-9]/gi, '');
+        }
+        newValue = autoDash(newValue);
+        return onValue ? onValue(newValue) : newValue;
+    }, [onValue]);
+    var handleValidate = useCallback(function (value) {
+        if (notEmpty(value) && value.length === 14 && value.includes('-')) {
+            var jumin = value
+                .replaceAll('-', '')
+                .split('')
+                .map(function (v) { return Number(v); });
+            var ckarr = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5];
+            for (var i = 0; i < jumin.length - 1; i += 1) {
+                jumin[i] = jumin[i] * ckarr[i];
+            }
+            var juminlast = jumin[jumin.length - 1];
+            var sum = 0;
+            for (var i = 0; i < jumin.length - 1; i += 1) {
+                sum += jumin[i];
+            }
+            sum = sum % 11;
+            sum = 11 - sum;
+            if (sum > 9) {
+                sum = sum % 10;
+            }
+            if (sum != juminlast && juminlast != undefined) {
+                return '유효하지 않은 값입니다.';
+            }
+            return onValidate ? onValidate(value) : true;
+        }
+        else {
+            return '유효하지 않은 값입니다.';
+        }
+    }, [onValidate]);
+    // Render ----------------------------------------------------------------------------------------------------------
+    return (React__default.createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormPersonalNo'), onValue: handleOnValue, maxLength: 14, onValidate: handleValidate }, props)));
+});
+FormPersonalNo.displayName = 'FormPersonalNo';
+FormPersonalNo.defaultProps = FormPersonalNoDefaultProps;
+function autoDash(personalNo) {
+    if (personalNo == null)
+        return undefined;
+    var str = personalNo.replace(/[^0-9]/g, '');
+    var tmp = '';
+    for (var i = 0; i < str.length; i += 1) {
+        if (i === 6) {
+            tmp += '-';
+        }
+        tmp += str[i];
+    }
+    return tmp;
+}var FormCheckboxDefaultProps = {
     checked: false,
     value: 1,
     uncheckedValue: 0,
@@ -12465,4 +12550,4 @@ SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefault
 };
 SearchMenuButton.defaultProps = SearchMenuButtonDefaultProps;dayjs.extend(dayjsIsSameOrAfter);
 dayjs.extend(dayjsIsSameOrBefore);
-dayjs.extend(dayjsIsBetween);export{Form,FormAutocomplete,FormAutocompleteDefaultProps,FormBlock,FormBlockDefaultProps,FormBody,FormBodyDefaultProps,FormButton,FormButtonDefaultProps,FormCheckbox,FormCheckboxDefaultProps,FormCol,FormColDefaultProps,FormContext,FormContextDefaultValue,FormContextProvider,FormDatePicker,FormDatePickerDefaultProps,FormDateRangePicker,FormDateRangePickerDefaultProps,FormDateTimePicker,FormDateTimePickerDefaultProps,FormDefaultProps,FormDivider,FormDividerDefaultProps,FormEmail,FormEmailDefaultProps,FormFile,FormFileDefaultProps,FormFooter,FormFooterDefaultProps,FormHidden,FormHiddenDefaultProps,FormIcon,FormIconDefaultProps,FormImageFile,FormImageFileDefaultProps,FormLabel,FormLabelDefaultProps,FormMobile,FormMobileDefaultProps,FormNumber,FormNumberDefaultProps,FormPassword,FormPasswordDefaultProps,FormRadioGroup,FormRadioGroupDefaultProps,FormRating,FormRatingDefaultProps,FormRow,FormRowDefaultProps,FormSearch,FormSearchDefaultProps,FormSelect,FormSelectDefaultProps,FormTag,FormTagDefaultProps,FormTel,FormTelDefaultProps,FormText,FormTextDefaultProps,FormTextEditor,FormTextEditorDefaultProps,FormTextField,FormTextFieldDefaultProps,FormTextarea,FormTextareaDefaultProps,FormTimePicker,FormTimePickerDefaultProps,FormToggleButtonGroup,FormToggleButtonGroupDefaultProps,FormUrl,FormUrlDefaultProps,Search,SearchButton,SearchButtonDefaultProps,SearchDefaultProps,SearchGroup,SearchGroupDefaultProps,SearchGroupRow,SearchGroupRowDefaultProps,SearchMenuButton,SearchMenuButtonDefaultProps,useFormState};//# sourceMappingURL=index.esm.js.map
+dayjs.extend(dayjsIsBetween);export{Form,FormAutocomplete,FormAutocompleteDefaultProps,FormBlock,FormBlockDefaultProps,FormBody,FormBodyDefaultProps,FormButton,FormButtonDefaultProps,FormCheckbox,FormCheckboxDefaultProps,FormCol,FormColDefaultProps,FormCompanyNo,FormCompanyNoDefaultProps,FormContext,FormContextDefaultValue,FormContextProvider,FormDatePicker,FormDatePickerDefaultProps,FormDateRangePicker,FormDateRangePickerDefaultProps,FormDateTimePicker,FormDateTimePickerDefaultProps,FormDefaultProps,FormDivider,FormDividerDefaultProps,FormEmail,FormEmailDefaultProps,FormFile,FormFileDefaultProps,FormFooter,FormFooterDefaultProps,FormHidden,FormHiddenDefaultProps,FormIcon,FormIconDefaultProps,FormImageFile,FormImageFileDefaultProps,FormLabel,FormLabelDefaultProps,FormMobile,FormMobileDefaultProps,FormNumber,FormNumberDefaultProps,FormPassword,FormPasswordDefaultProps,FormPersonalNo,FormPersonalNoDefaultProps,FormRadioGroup,FormRadioGroupDefaultProps,FormRating,FormRatingDefaultProps,FormRow,FormRowDefaultProps,FormSearch,FormSearchDefaultProps,FormSelect,FormSelectDefaultProps,FormTag,FormTagDefaultProps,FormTel,FormTelDefaultProps,FormText,FormTextDefaultProps,FormTextEditor,FormTextEditorDefaultProps,FormTextField,FormTextFieldDefaultProps,FormTextarea,FormTextareaDefaultProps,FormTimePicker,FormTimePickerDefaultProps,FormToggleButtonGroup,FormToggleButtonGroupDefaultProps,FormUrl,FormUrlDefaultProps,Search,SearchButton,SearchButtonDefaultProps,SearchDefaultProps,SearchGroup,SearchGroupDefaultProps,SearchGroupRow,SearchGroupRowDefaultProps,SearchMenuButton,SearchMenuButtonDefaultProps,useFormState};//# sourceMappingURL=index.esm.js.map

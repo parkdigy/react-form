@@ -14,7 +14,7 @@ const FormTel = React.forwardRef<FormValueItemBaseCommands, Props>(({ className,
       if (newValue && notEmpty(newValue)) {
         newValue = newValue.replace(/[^0-9]/gi, '');
       }
-      newValue = getTelAutoDash(newValue);
+      newValue = autoDash(newValue);
       return onValue ? onValue(newValue) : newValue;
     },
     [onValue]
@@ -38,7 +38,7 @@ FormTel.defaultProps = FormTelDefaultProps;
 
 export default FormTel;
 
-function getTelAutoDash(tel: string | undefined): string | undefined {
+function autoDash(tel: string | undefined): string | undefined {
   if (tel == null) return undefined;
 
   const str = tel.replace(/[^0-9*]/g, '');
