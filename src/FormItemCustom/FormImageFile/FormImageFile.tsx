@@ -79,8 +79,11 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
               reject();
             };
 
-            if (typeof file === 'object') img.src = urlKit.createObjectURL(file);
-            else img.src = file;
+            if (file instanceof File) {
+              img.src = urlKit.createObjectURL(file);
+            } else {
+              img.src = file;
+            }
           });
         }
         return Promise.resolve();

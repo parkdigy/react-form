@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormCheckbox, FormCol, FormRow } from '@pdg/react-form';
+import { FormCheckbox, FormCol, FormRow } from '../../../../../../src';
 
 const Checkbox = () => {
   return (

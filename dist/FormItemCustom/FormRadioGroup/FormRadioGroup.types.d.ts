@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { RadioGroupProps } from '@mui/material';
 import { CommonSxProps, FormItemsValueItemCommands, FormLoadingValueItemCommands, FormValueItemBaseCommands, FormValueItemProps } from '../../@types';
-export declare type FormRadioGroupValue = string | number | undefined;
+export type FormRadioGroupValue = string | number | undefined;
 export interface FormRadioGroupItem {
     label: ReactNode;
     value: string | number;

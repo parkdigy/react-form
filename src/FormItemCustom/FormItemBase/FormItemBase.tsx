@@ -1,4 +1,4 @@
-import React, { CSSProperties, useMemo, useState } from 'react';
+import React, { CSSProperties, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { FormControl, FormHelperText, Input, InputLabel, OutlinedInput, FilledInput } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
@@ -35,6 +35,11 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
     },
     ref
   ) => {
+    // Ref ---------------------------------------------------------------------------------------------------------------
+
+    const inputRef = useRef<HTMLInputElement>(null);
+    const realControlContainerRef = useRef<HTMLDivElement>(null);
+
     // FormState -------------------------------------------------------------------------------------------------------
 
     const {
@@ -73,11 +78,12 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
 
     const [inputHeight, setInputHeight] = useState(0);
 
-    const { ref: inputResizeDetectorRef } = useResizeDetector({
-      handleHeight: true,
+    useResizeDetector({
+      targetRef: inputRef,
       handleWidth: false,
+      handleHeight: true,
       onResize() {
-        setInputHeight(inputResizeDetectorRef.current.getBoundingClientRect().height);
+        setInputHeight(inputRef.current?.getBoundingClientRect()?.height || 0);
       },
     });
 
@@ -85,11 +91,12 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
 
     const [realControlHeight, setRealControlHeight] = useState(0);
 
-    const { ref: realControlResizeDetectorRef } = useResizeDetector({
-      handleHeight: true,
+    useResizeDetector({
+      targetRef: realControlContainerRef,
       handleWidth: false,
+      handleHeight: true,
       onResize() {
-        setRealControlHeight(realControlResizeDetectorRef.current.getBoundingClientRect().height);
+        setRealControlHeight(realControlContainerRef.current?.getBoundingClientRect()?.height || 0);
       },
     });
 
@@ -118,7 +125,7 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
         topMargin = inputHeight / 2 - controlHeight / 2;
       }
 
-      let withLabelControlAddTopMargin = 0;
+      let withLabelControlAddTopMargin: number;
       if (size === 'small') {
         withLabelControlAddTopMargin = controlVerticalCenter ? 7 : 13;
       } else {
@@ -188,29 +195,17 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
             {autoSize ? (
               <>
                 {variant === 'standard' && (
-                  <Input ref={inputResizeDetectorRef} size={size} fullWidth disabled style={{ visibility: 'hidden' }} />
+                  <Input ref={inputRef} size={size} fullWidth disabled style={{ visibility: 'hidden' }} />
                 )}
                 {variant === 'outlined' && (
-                  <OutlinedInput
-                    ref={inputResizeDetectorRef}
-                    size={size}
-                    fullWidth
-                    disabled
-                    style={{ visibility: 'hidden' }}
-                  />
+                  <OutlinedInput ref={inputRef} size={size} fullWidth disabled style={{ visibility: 'hidden' }} />
                 )}
                 {variant === 'filled' && (
-                  <FilledInput
-                    ref={inputResizeDetectorRef}
-                    size={size}
-                    fullWidth
-                    disabled
-                    style={{ visibility: 'hidden' }}
-                  />
+                  <FilledInput ref={inputRef} size={size} fullWidth disabled style={{ visibility: 'hidden' }} />
                 )}
                 <div style={{ height: bottomMargin, visibility: 'hidden' }} />
                 <div
-                  ref={realControlResizeDetectorRef}
+                  ref={realControlContainerRef}
                   className='FormItemBase-Control'
                   style={{
                     width: fullWidth ? '100%' : 'auto',

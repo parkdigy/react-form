@@ -20,7 +20,7 @@ const PrivateTimeSelect = React.forwardRef<PrivateTimeSelectCommands, Props>(
 
     const containerRef = useRef<HTMLDivElement>(null);
     const simpleBarRef = useRef<HTMLDivElement>(null);
-    const scrollTimerRef = useRef<NodeJS.Timer>();
+    const scrollTimerRef = useRef<NodeJS.Timeout>();
 
     // Function - scrollToValue ----------------------------------------------------------------------------------------
 

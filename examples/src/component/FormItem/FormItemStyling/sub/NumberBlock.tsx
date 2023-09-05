@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormBlock, FormCol, FormNumber, FormNumberProps, FormRow } from '@pdg/react-form';
+import { FormBlock, FormCol, FormNumber, FormNumberProps, FormRow } from '../../../../../../src';
 
 const NumberBlock: React.FC<{
   componentProps?: FormNumberProps;

@@ -2,7 +2,7 @@ import React, { CSSProperties, ReactNode } from 'react';
 import { Dayjs } from 'dayjs';
 import { TextFieldProps } from '@mui/material';
 import { FormValueItemProps } from '../../../@types';
-import { DateValidationError } from '@mui/x-date-pickers/internals';
+import { DateValidationError } from '@mui/x-date-pickers';
 
 export type InputDatePickerValue = Dayjs | null;
 

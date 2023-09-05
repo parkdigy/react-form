@@ -1,11 +1,9 @@
 import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider, DesktopDatePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider, DesktopDatePicker, DateValidationError } from '@mui/x-date-pickers';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { ClickAwayListener, InputAdornment, InputProps, TextField, FormHelperText } from '@mui/material';
-import { DateValidationError } from '@mui/x-date-pickers/internals';
-import dayjsLocale from 'dayjs/locale/ko';
+import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
 import { IconText } from '@pdg/react-component';
 import {
   PrivateDatePickerProps as Props,
@@ -36,6 +34,8 @@ import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
 import { FormIcon } from '../../FormCommon';
 import { InputBaseProps } from '@mui/material/InputBase';
 import './PrivateDatePicker.scss';
+import { DesktopDatePickerSlotsComponentsProps } from '@mui/x-date-pickers/DesktopDatePicker/DesktopDatePicker.types';
+import { Dayjs } from 'dayjs';
 
 const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
   (
@@ -507,10 +507,93 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       mouseDownTimeRef.current = new Date().getTime();
     }, []);
 
+    // Memo --------------------------------------------------------------------------------------------------------------
+
+    const slotProps = useMemo<DesktopDatePickerSlotsComponentsProps<Dayjs>>(() => {
+      const textFieldInputLabelProps: Partial<InputLabelProps> = {};
+      if (labelShrink) {
+        textFieldInputLabelProps.shrink = labelShrink;
+      }
+
+      const readOnly = readOnlyInput;
+      const inputProps: InputBaseProps['inputProps'] = {
+        readOnly,
+      };
+      if (readOnly) {
+        inputProps.tabIndex = -1;
+        inputProps.className = classNames(inputProps.className, 'Mui-disabled');
+      }
+
+      const muiInputProps: InputProps = { endAdornment: undefined };
+      if (startAdornment || icon || muiInputProps.startAdornment) {
+        muiInputProps.startAdornment = (
+          <>
+            {icon && (
+              <InputAdornment position='start'>
+                <FormIcon fontSize='small'>{icon}</FormIcon>
+              </InputAdornment>
+            )}
+            {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
+            {muiInputProps.startAdornment}
+          </>
+        );
+      }
+      if (endAdornment) {
+        muiInputProps.endAdornment = (
+          <>{endAdornment && <InputAdornment position='end'>{endAdornment}</InputAdornment>}</>
+        );
+      }
+
+      return {
+        textField: {
+          className: classNames('input-text-field', `align-${align}`),
+          inputRef: (ref) => {
+            textFieldInputRef.current = ref;
+          },
+          variant,
+          size,
+          color,
+          focused,
+          InputLabelProps: textFieldInputLabelProps,
+          InputProps: muiInputProps,
+          inputProps,
+          required,
+          fullWidth,
+          helperText: undefined,
+          error: !!error || !!timeError,
+          style,
+          sx,
+          onFocus: () => {
+            setOpen(true);
+          },
+          onClick: () => {
+            setOpen(true);
+          },
+        },
+      };
+    }, [
+      align,
+      color,
+      endAdornment,
+      error,
+      focused,
+      fullWidth,
+      icon,
+      labelShrink,
+      readOnlyInput,
+      required,
+      size,
+      startAdornment,
+      style,
+      sx,
+      timeError,
+      variant,
+    ]);
+
     // Render ----------------------------------------------------------------------------------------------------------
 
     return (
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={dayjsLocale}>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ko'>
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
           <div
             className={classNames(className, 'PrivateDatePicker')}
@@ -559,7 +642,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
                   value={inputValue}
                   label={label}
                   open={false}
-                  inputFormat={format}
+                  format={format}
                   disabled={disabled}
                   readOnly={readOnly}
                   minDate={minDate}
@@ -568,86 +651,8 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
                   disableFuture={disableFuture}
                   onClose={() => setOpen(false)}
                   onError={(reason) => (datePickerErrorRef.current = reason)}
-                  onChange={(newValue, keyboardInputValue) => handleChange('date', newValue, keyboardInputValue)}
-                  renderInput={({
-                    className: initClassName,
-                    focused: initFocused,
-                    error: initError,
-                    style: initStyle,
-                    inputProps: initInputProps,
-                    InputProps: initMuiInputProps,
-                    InputLabelProps,
-                    ...params
-                  }) => {
-                    const textFieldInputLabelProps = {
-                      ...InputLabelProps,
-                      shrink: labelShrink ? true : InputLabelProps?.shrink,
-                    };
-
-                    const readOnly = initInputProps?.readOnly || readOnlyInput;
-                    const inputProps: InputBaseProps['inputProps'] = {
-                      ...initInputProps,
-                      readOnly,
-                    };
-                    if (readOnly) {
-                      inputProps.tabIndex = -1;
-                      inputProps.className = classNames(inputProps.className, 'Mui-disabled');
-                    }
-
-                    const muiInputProps: InputProps = { ...initMuiInputProps, endAdornment: undefined };
-                    if (startAdornment || icon || muiInputProps.startAdornment) {
-                      muiInputProps.startAdornment = (
-                        <>
-                          {icon && (
-                            <InputAdornment position='start'>
-                              <FormIcon fontSize='small'>{icon}</FormIcon>
-                            </InputAdornment>
-                          )}
-                          {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
-                          {muiInputProps.startAdornment}
-                        </>
-                      );
-                    }
-                    if (endAdornment) {
-                      muiInputProps.endAdornment = (
-                        <>{endAdornment && <InputAdornment position='end'>{endAdornment}</InputAdornment>}</>
-                      );
-                    }
-
-                    return (
-                      <TextField
-                        {...params}
-                        className={classNames(initClassName, 'input-text-field', `align-${align}`)}
-                        inputRef={(ref) => {
-                          if (params.inputRef) {
-                            if (typeof params.inputRef === 'function') {
-                              params.inputRef(ref);
-                            }
-                          }
-                          textFieldInputRef.current = ref;
-                        }}
-                        variant={variant}
-                        size={size}
-                        color={color}
-                        focused={focused || initFocused}
-                        InputLabelProps={textFieldInputLabelProps}
-                        InputProps={muiInputProps}
-                        inputProps={inputProps}
-                        required={required}
-                        fullWidth={fullWidth}
-                        helperText={undefined}
-                        error={!!error || !!initError || !!timeError}
-                        style={{ ...style, ...initStyle }}
-                        sx={sx}
-                        onFocus={() => {
-                          setOpen(true);
-                        }}
-                        onClick={() => {
-                          setOpen(true);
-                        }}
-                      />
-                    );
-                  }}
+                  onChange={(newValue) => handleChange('date', newValue)}
+                  slotProps={slotProps}
                   {...otherProps}
                 />
               </div>

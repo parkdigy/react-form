@@ -11,7 +11,6 @@ import {
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjsLocale from 'dayjs/locale/ko';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
 import { PrivateStyledTooltip } from '../../@private';
 
@@ -29,7 +28,7 @@ import InputDatePicker, { InputDatePickerValue } from './InputDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { useFormState } from '../../FormContext';
 import { getDateValidationErrorText, nextTick, notEmpty } from '../../@util';
-import { DateValidationError } from '@mui/x-date-pickers/internals';
+import { DateValidationError } from '@mui/x-date-pickers';
 
 const DEFAULT_VALUE: FormDateRangePickerValue = [null, null];
 const DEFAULT_FORMAT = 'YYYY-MM-DD';
@@ -680,7 +679,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     // Render ----------------------------------------------------------------------------------------------------------
 
     return (
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={dayjsLocale}>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ko'>
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
           <div
             className={classNames(className, 'FormDateRangePicker')}

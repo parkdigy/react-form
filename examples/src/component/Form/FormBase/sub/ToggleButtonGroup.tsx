@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormCol, FormRow, FormToggleButtonGroup, FormToggleButtonGroupItem } from '@pdg/react-form';
+import { FormCol, FormRow, FormToggleButtonGroup, FormToggleButtonGroupItem } from '../../../../../../src';
 
 const DEFAULT_ITEMS: FormToggleButtonGroupItem[] = [
   lv('Btn1', 1),

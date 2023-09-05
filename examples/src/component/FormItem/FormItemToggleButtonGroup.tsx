@@ -11,7 +11,7 @@ import {
   FormValueMap,
   FormBody,
   FormFooter,
-} from '@pdg/react-form';
+} from '../../../../src';
 import { OutlinedPaper } from '#ccomp';
 
 const DEFAULT_ITEMS: FormToggleButtonGroupItem[] = [lv('Item 1', 1), lv('Item 2', 2), lv('Item 3', 3), lv('Item 4', 4)];

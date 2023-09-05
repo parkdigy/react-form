@@ -5,7 +5,7 @@ export interface FormInvalidItemInfo {
     name: string;
     commands: FormValueItemCommands;
 }
-export declare type FormInvalidItems = FormInvalidItemInfo[];
+export type FormInvalidItems = FormInvalidItemInfo[];
 export interface FormProps extends CommonSxProps, PartialPick<FormControlProps, 'variant' | 'size' | 'color' | 'focused'>, PartialPick<GridProps, 'spacing'> {
     labelShrink?: InputLabelProps['shrink'];
     fullWidth?: boolean;

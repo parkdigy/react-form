@@ -1,14 +1,14 @@
-import NumberFormat, { NumberFormatProps } from 'react-number-format';
+import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import { FormNumberProps } from './FormNumber.types';
 import React from 'react';
 
-interface NumberFormatCustomProps extends Omit<NumberFormatProps, 'onChange'> {
+interface NumberFormatCustomProps extends Omit<NumericFormatProps, 'onChange'> {
   onChange: FormNumberProps['onChange'];
 }
 const NumberFormatCustom = React.forwardRef<HTMLInputElement, NumberFormatCustomProps>(
   ({ onChange, ...props }, ref) => {
     return (
-      <NumberFormat
+      <NumericFormat
         {...props}
         getInputRef={ref}
         onValueChange={(values) => {

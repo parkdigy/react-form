@@ -1,14 +1,14 @@
 import { FormTextProps } from '../FormText';
 import { ReactNode } from 'react';
 import { FormArrayValueItemCommands, FormItemsValueItemCommands, FormLoadingValueItemCommands, FormValueItemBaseCommands, FormMultipleValueItemCommands } from '../../@types';
-export declare type FormSelectItemValue = string | number;
+export type FormSelectItemValue = string | number;
 export interface FormSelectItem {
     label: ReactNode;
     value: FormSelectItemValue;
     disabled?: boolean;
 }
-export declare type FormSelectValue = FormSelectItemValue | FormSelectItemValue[] | undefined;
-export declare type FormSelectProps = Omit<FormTextProps, 'type' | 'value' | 'clear'> & {
+export type FormSelectValue = FormSelectItemValue | FormSelectItemValue[] | undefined;
+export type FormSelectProps = Omit<FormTextProps, 'type' | 'value' | 'clear'> & {
     items?: FormSelectItem[];
     value?: FormSelectValue;
     multiple?: boolean;

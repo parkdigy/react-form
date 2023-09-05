@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormCol, FormRadioGroup, FormRow } from '@pdg/react-form';
+import { FormCol, FormRadioGroup, FormRow } from '../../../../../../src';
 
 const RadioGroup = () => {
   return (

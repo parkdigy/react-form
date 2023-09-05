@@ -3,7 +3,7 @@ import { TextFieldProps } from '@mui/material';
 import { FormItemValue, FormValueItemBaseCommands, FormValueItemProps } from '../../@types';
 export interface FormTextFieldCommands extends FormValueItemBaseCommands {
 }
-export declare type FormTextFieldProps = Omit<TextFieldProps, 'ref' | 'name' | 'onChange'> & Omit<FormValueItemProps, 'value' | 'label' | 'fullWidth' | 'disabled' | 'error'> & {
+export type FormTextFieldProps = Omit<TextFieldProps, 'ref' | 'name' | 'onChange'> & Omit<FormValueItemProps, 'value' | 'label' | 'fullWidth' | 'disabled' | 'error'> & {
     icon?: string;
     clear?: boolean;
     maxLength?: number;

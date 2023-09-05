@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormBlock, FormCol, FormRow } from '@pdg/react-form';
+import { FormBlock, FormCol, FormRow } from '../../../../../../src';
 
 const ColorBlock: React.FC<{
   component: React.ForwardRefExoticComponent<any>;

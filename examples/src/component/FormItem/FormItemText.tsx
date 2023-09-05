@@ -16,7 +16,7 @@ import {
   FormValueMap,
   FormBody,
   FormFooter,
-} from '@pdg/react-form';
+} from '../../../../src';
 import { OutlinedPaper } from '#ccomp';
 
 const _components: React.ForwardRefExoticComponent<any>[] = [

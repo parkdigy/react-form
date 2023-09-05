@@ -75,6 +75,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
 
     // Ref -------------------------------------------------------------------------------------------------------------
 
+    const ratingRef = useRef<HTMLSpanElement>(null);
     const inputRef = useRef<HTMLInputElement>();
 
     // State -----------------------------------------------------------------------------------------------------------
@@ -86,7 +87,11 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
 
     // State - width, height -------------------------------------------------------------------------------------------
 
-    const { width, height, ref: resizeDetectorRef } = useResizeDetector();
+    const { width, height } = useResizeDetector({
+      targetRef: ratingRef,
+      handleWidth: true,
+      handleHeight: true,
+    });
 
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
@@ -119,8 +124,8 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         onValueChange(name, value);
       }
 
-      if (resizeDetectorRef.current) {
-        inputRef.current = resizeDetectorRef.current.querySelector('input');
+      if (ratingRef.current) {
+        inputRef.current = ratingRef.current.querySelector('input') || undefined;
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -286,7 +291,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         controlVerticalCenter
         control={
           <Rating
-            ref={resizeDetectorRef}
+            ref={ratingRef}
             size={size === 'medium' ? 'large' : 'medium'}
             name={name}
             precision={precision}

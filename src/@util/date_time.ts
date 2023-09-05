@@ -1,4 +1,4 @@
-import { DateValidationError } from '@mui/x-date-pickers/internals';
+import { DateValidationError } from '@mui/x-date-pickers';
 import { FormDateType, FormTimeType } from '../@types';
 import { FormAvailableDate, FormAvailableDateItem, FormAvailableDateType } from '../@private/@types';
 import dayjs, { Dayjs } from 'dayjs';

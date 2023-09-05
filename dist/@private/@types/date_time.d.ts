@@ -1,5 +1,5 @@
 import { Dayjs } from 'dayjs';
-export declare type FormAvailableDateType = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
+export type FormAvailableDateType = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 export interface FormAvailableDateItem {
     date: Dayjs;
     year: number;
@@ -9,4 +9,4 @@ export interface FormAvailableDateItem {
     minute: number;
     second: number;
 }
-export declare type FormAvailableDate = [FormAvailableDateItem | null, FormAvailableDateItem | null];
+export type FormAvailableDate = [FormAvailableDateItem | null, FormAvailableDateItem | null];

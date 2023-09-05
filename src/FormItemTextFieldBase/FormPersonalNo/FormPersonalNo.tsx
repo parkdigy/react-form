@@ -25,7 +25,7 @@ const FormPersonalNo = React.forwardRef<FormValueItemBaseCommands, Props>(
       (value: string) => {
         if (notEmpty(value) && value.length === 14 && value.includes('-')) {
           const jumin: number[] = value
-            .replaceAll('-', '')
+            .replace(/-/g, '')
             .split('')
             .map((v) => Number(v));
           const ckarr = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5];

@@ -8,7 +8,7 @@ import {
   CustomDatePickerDateValue,
 } from './CustomDatePicker.types';
 import { PickersDay, PickersDayProps, StaticDatePicker } from '@mui/x-date-pickers';
-import { IconButton, IconButtonProps, TextField } from '@mui/material';
+import { IconButton, IconButtonProps } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { useAutoUpdateState } from '@pdg/react-hook';
 import './CustomDatePicker.scss';
@@ -69,14 +69,6 @@ const CustomDatePicker = React.forwardRef<CustomDatePickerCommands, Props>(
       };
       return ArrowButton;
     });
-
-    const components = useMemo(
-      () => ({
-        LeftArrowButton,
-        RightArrowButton,
-      }),
-      [LeftArrowButton, RightArrowButton]
-    );
 
     //--------------------------------------------------------------------------------------------------------------------
 
@@ -241,26 +233,26 @@ const CustomDatePicker = React.forwardRef<CustomDatePickerCommands, Props>(
     //--------------------------------------------------------------------------------------------------------------------
 
     const handleRenderDay = useCallback(
-      (date: Dayjs, selectedDates: Array<Dayjs | null>, pickersDayProps: PickersDayProps<Dayjs>) => {
+      (props: PickersDayProps<Dayjs>) => {
         const startDate = value[0];
         const endDate = value[1];
 
-        const dateVal = getDateVal(date);
+        const dateVal = getDateVal(props.day);
 
         const baseClassName = baseClassNames[dateVal];
         const selectedClassName = selectedClassNames[dateVal];
         const focusedClassName = focusedClassNames[dateVal];
 
         return (
-          <div key={pickersDayProps.key} style={{ position: 'relative' }}>
+          <div key={props.key} style={{ position: 'relative' }}>
             <div className={classNames('focused-bg', baseClassName, focusedClassName)} />
             <div className={classNames('selected-bg', baseClassName, selectedClassName)} />
             <PickersDay
-              {...pickersDayProps}
+              {...props}
               disableMargin
-              selected={date.isSame(startDate, 'date') || date.isSame(endDate, 'date')}
+              selected={props.day.isSame(startDate, 'date') || props.day.isSame(endDate, 'date')}
               onMouseEnter={
-                value[0] || value[1] ? () => onMouseEnterPickersDay && onMouseEnterPickersDay(date) : undefined
+                value[0] || value[1] ? () => onMouseEnterPickersDay && onMouseEnterPickersDay(props.day) : undefined
               }
             />
           </div>
@@ -269,11 +261,28 @@ const CustomDatePicker = React.forwardRef<CustomDatePickerCommands, Props>(
       [value, getDateVal, baseClassNames, selectedClassNames, focusedClassNames, onMouseEnterPickersDay]
     );
 
+    // -------------------------------------------------------------------------------------------------------------------
+
+    // const slots = useMemo(
+    //   () => ({
+    //     previousIconButton: LeftArrowButton,
+    //     nextIconButton: RightArrowButton,
+    //     day: handleRenderDay,
+    //   }),
+    //   [LeftArrowButton, RightArrowButton, handleRenderDay]
+    // );
+
+    // Render ------------------------------------------------------------------------------------------------------------
+
     return (
       <StaticDatePicker
         className='CustomDatePicker'
         displayStaticWrapperAs='desktop'
-        components={components}
+        slots={{
+          previousIconButton: LeftArrowButton,
+          nextIconButton: RightArrowButton,
+          day: handleRenderDay,
+        }}
         value={activeMonthValue}
         defaultCalendarMonth={month}
         disableFuture={disableFuture}
@@ -281,9 +290,9 @@ const CustomDatePicker = React.forwardRef<CustomDatePickerCommands, Props>(
         minDate={minDate}
         maxDate={maxDate}
         onChange={(newValue) => onValueChange && onValueChange(selectType, newValue)}
-        renderDay={handleRenderDay}
-        renderInput={(params) => <TextField {...params} />}
-        inputFormat='YYYY-MM-DD HH:mm:ss'
+        // renderDay={handleRenderDay}
+        // renderInput={(params) => <TextField {...params} />}
+        // format='YYYY-MM-DD HH:mm:ss'
         onMonthChange={(month) => {
           if (onMonthChange) onMonthChange(month);
           setActiveMonthValue(null);

@@ -1,5 +1,5 @@
 import { PrivateDatePickerValue, PrivateDatePickerProps, PrivateDatePickerCommands } from '../../@private';
-export declare type FormDatePickerValue = PrivateDatePickerValue;
+export type FormDatePickerValue = PrivateDatePickerValue;
 export interface FormDatePickerProps extends Omit<PrivateDatePickerProps, 'type' | 'time' | 'hours' | 'minutes' | 'seconds' | 'minuteInterval' | 'secondInterval'> {
 }
 export declare const FormDatePickerDefaultProps: {};

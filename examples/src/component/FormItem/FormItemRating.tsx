@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, FormRating, FormRow, FormCol, FormButton, FormValueMap, FormBody, FormFooter } from '@pdg/react-form';
+import { Form, FormRating, FormRow, FormCol, FormButton, FormValueMap, FormBody, FormFooter } from '../../../../src';
 
 const FormItemRating = () => {
   function handleSubmit(data: FormValueMap) {

@@ -83,10 +83,15 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
 
     const inputRef = useRef<HTMLInputElement>(null);
     const actionRef = useRef<ButtonBaseActions>(null);
+    const labelRef = useRef<HTMLLabelElement>(null);
 
     // ResizeDetector --------------------------------------------------------------------------------------------------
 
-    const { width, height, ref: resizeDetectorRef } = useResizeDetector();
+    const { width, height } = useResizeDetector({
+      targetRef: labelRef,
+      handleWidth: true,
+      handleHeight: true,
+    });
 
     // State -----------------------------------------------------------------------------------------------------------
 
@@ -296,7 +301,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         controlVerticalCenter
         control={
           <FormControlLabel
-            ref={resizeDetectorRef}
+            ref={labelRef}
             control={
               <Checkbox
                 name={name}

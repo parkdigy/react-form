@@ -6,7 +6,7 @@ import { FormDateType, FormTimeType } from '../../@types';
 export type PrivateStaticDatePickerUnit = 'date' | 'action_date' | 'hour' | 'minute' | 'second';
 
 export interface PrivateStaticDatePickerProps
-  extends Omit<StaticDatePickerProps<Dayjs, Dayjs>, 'displayStaticWrapperAs' | 'renderInput' | 'onChange'> {
+  extends Omit<StaticDatePickerProps<Dayjs>, 'displayStaticWrapperAs' | 'renderInput' | 'onChange'> {
   type: FormDateType;
   time?: FormTimeType;
   availableDate?: FormAvailableDate;
@@ -15,7 +15,7 @@ export interface PrivateStaticDatePickerProps
   seconds?: number[];
   minuteInterval?: number;
   secondInterval?: number;
-  onChange(unit: PrivateStaticDatePickerUnit, newValue: Dayjs | null, keyboardInputValue?: string): void;
+  onChange(unit: PrivateStaticDatePickerUnit, newValue: Dayjs | null): void;
   onClose?(): void;
 }
 

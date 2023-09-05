@@ -10,7 +10,7 @@ import {
   FormValueMap,
   FormBody,
   FormFooter,
-} from '@pdg/react-form';
+} from '../../../../src';
 
 const DEFAULT_ITEMS: FormRadioGroupItem[] = [lv('Item 1', 1), lv('Item 2', 2), lv('Item 3', 3)];
 

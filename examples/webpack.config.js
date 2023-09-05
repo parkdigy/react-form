@@ -9,6 +9,8 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const PackageJson = require('../package.json');
+const { SourceMapDevToolPlugin } = require('webpack');
 
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -22,7 +24,7 @@ const mode = isProduction ? 'production' : 'development';
 
 const preBuildScripts = [];
 if (!isProduction) {
-  const packageJson = require('../package.json');
+  const packageJson = PackageJson;
   const packageNames = Object.keys(packageJson.peerDependencies || {}).filter(
     (packageName) => !packageName.startsWith('@emotion/')
   );
@@ -104,6 +106,9 @@ const options = {
       : {},
   },
   plugins: [
+    new SourceMapDevToolPlugin({
+      filename: '[file].map',
+    }),
     new WebpackShellPluginNext({
       dev: !isProduction,
       onBuildStart: {
@@ -162,6 +167,11 @@ const options = {
             },
           },
         ],
+      },
+      {
+        test: /\.m?js$/,
+        enforce: 'pre',
+        use: ['source-map-loader'],
       },
       {
         test: /\.html$/,

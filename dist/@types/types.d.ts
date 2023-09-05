@@ -3,8 +3,8 @@ import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import { FormContextValue } from '../FormContext';
 import { Dayjs } from 'dayjs';
-export declare type PartialPick<T, K extends keyof T> = Partial<Pick<T, K>>;
-export declare type PartialOmit<T, K extends keyof T> = Partial<Omit<T, K>>;
+export type PartialPick<T, K extends keyof T> = Partial<Pick<T, K>>;
+export type PartialOmit<T, K extends keyof T> = Partial<Omit<T, K>>;
 export interface CommonProps {
     children?: ReactNode;
     className?: string;
@@ -13,12 +13,12 @@ export interface CommonProps {
 export interface CommonSxProps extends CommonProps {
     sx?: SxProps<Theme>;
 }
-export declare type FormItemValue = any;
-export declare type FormValue = string | number | boolean;
+export type FormItemValue = any;
+export type FormValue = string | number | boolean;
 export interface FormValueMap {
     [key: string]: FormValue;
 }
-export declare type FormValueItemData = Record<string, any>;
+export type FormValueItemData = Record<string, any>;
 export interface FormValueItemBaseCommands<ValueType = FormItemValue> {
     getType(): 'default' | 'FormCheckbox' | 'FormToggleButtonGroup' | 'FormRadioGroup' | 'FormRating' | 'FormTextEditor' | 'FormAutocomplete' | 'FormDatePicker' | 'FormDateTimePicker' | 'FormTimePicker' | 'FormDateRangePicker' | 'FormFile';
     getName(): string;

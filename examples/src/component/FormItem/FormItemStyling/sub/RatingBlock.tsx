@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormBlock, FormCol, FormRating, FormRow, FormRatingProps } from '@pdg/react-form';
+import { FormBlock, FormCol, FormRating, FormRow, FormRatingProps } from '../../../../../../src';
 
 const RatingBlock: React.FC<{
   componentProps?: FormRatingProps;

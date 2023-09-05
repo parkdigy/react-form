@@ -1,6 +1,6 @@
 import { FormTextProps } from '../FormText';
 import { FormArrayValueItemCommands, FormValueItemBaseCommands } from '../../@types';
-export declare type FormTagProps = Omit<FormTextProps, 'type' | 'value'> & {
+export type FormTagProps = Omit<FormTextProps, 'type' | 'value'> & {
     value?: string[];
     formValueSeparator?: string;
     formValueSort?: boolean;

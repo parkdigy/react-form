@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormBlock, FormCol, FormTextarea, FormRow, FormTextareaProps } from '@pdg/react-form';
+import { FormBlock, FormCol, FormTextarea, FormRow, FormTextareaProps } from '../../../../../../src';
 
 const TextareaBlock: React.FC<{
   componentProps?: FormTextareaProps;

@@ -21,11 +21,7 @@ const removeReactFragment = (el: ReactElement): any => {
           if (React.isValidElement(child)) {
             return removeReactFragment(child);
           } else {
-            return (
-              <Grid item style={{ display: child === FormHidden ? 'none' : undefined }}>
-                {child}
-              </Grid>
-            );
+            return <Grid item>{child}</Grid>;
           }
         });
       } else {

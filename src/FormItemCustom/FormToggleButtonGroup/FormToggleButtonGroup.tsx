@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
@@ -61,6 +61,12 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
     const id = useId();
     const labelId = useId();
 
+    // Ref ---------------------------------------------------------------------------------------------------------------
+
+    const refForResizeWidthDetect = useRef<HTMLDivElement>(null);
+    const refForButtonResizeHeightDetect = useRef<HTMLButtonElement>(null);
+    const refForLoadingResizeHeightDetect = useRef<HTMLDivElement>(null);
+
     // FormState -------------------------------------------------------------------------------------------------------
 
     const {
@@ -99,10 +105,11 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
 
     const [width, setWidth] = useState<number>();
 
-    const { ref: resizeWidthDetectorRef } = useResizeDetector({
+    useResizeDetector({
+      targetRef: refForResizeWidthDetect,
       handleWidth: true,
       onResize() {
-        setWidth(resizeWidthDetectorRef.current.getBoundingClientRect().width);
+        setWidth(refForResizeWidthDetect.current?.getBoundingClientRect()?.width);
       },
     });
 
@@ -110,10 +117,18 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
 
     const [height, setHeight] = useState<number>();
 
-    const { ref: resizeHeightDetectorRef } = useResizeDetector({
+    useResizeDetector({
+      targetRef: refForButtonResizeHeightDetect,
       handleHeight: true,
       onResize() {
-        setHeight(resizeHeightDetectorRef.current.getBoundingClientRect().height);
+        setHeight(refForButtonResizeHeightDetect.current?.getBoundingClientRect()?.height);
+      },
+    });
+    useResizeDetector({
+      targetRef: refForLoadingResizeHeightDetect,
+      handleHeight: true,
+      onResize() {
+        setHeight(refForLoadingResizeHeightDetect.current?.getBoundingClientRect()?.height);
       },
     });
 
@@ -267,8 +282,8 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
     // Function - focus ------------------------------------------------------------------------------------------------
 
     const focus = useCallback(() => {
-      if (resizeHeightDetectorRef.current) resizeHeightDetectorRef.current.focus();
-    }, [resizeHeightDetectorRef]);
+      refForButtonResizeHeightDetect.current?.focus();
+    }, [refForButtonResizeHeightDetect]);
 
     // Function - setErrorHelperText -----------------------------------------------------------------------------------
 
@@ -477,7 +492,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
         items.map(({ value, label, disabled: itemDisabled, color: itemColor }, idx) => {
           const button = (
             <ToggleButton
-              ref={idx === 0 ? resizeHeightDetectorRef : undefined}
+              ref={idx === 0 ? refForButtonResizeHeightDetect : undefined}
               key={idx}
               size={size}
               className='ToggleButton'
@@ -519,7 +534,6 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
       itemWidth,
       items,
       readOnly,
-      resizeHeightDetectorRef,
       setFocused,
       size,
       theme.palette.error.main,
@@ -557,14 +571,14 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
         controlVerticalCenter={isOnGetItemLoading || loading}
         control={
           isOnGetItemLoading || loading ? (
-            <div style={{ opacity: 0.54 }} ref={resizeHeightDetectorRef}>
+            <div style={{ opacity: 0.54 }} ref={refForLoadingResizeHeightDetect}>
               <CircularProgress size={16} color='inherit' />
             </div>
           ) : (
             <>
               {!fullWidth && !isOnGetItemLoading && !loading && items && (
                 <div
-                  ref={resizeWidthDetectorRef}
+                  ref={refForResizeWidthDetect}
                   style={{
                     display: 'grid',
                     position: 'absolute',
@@ -594,7 +608,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
               >
                 {isOnGetItemLoading || loading || !items || empty(items) ? (
                   <ToggleButton
-                    ref={resizeHeightDetectorRef}
+                    ref={refForButtonResizeHeightDetect}
                     size={size}
                     className='ToggleButton'
                     disabled={disabled || readOnly}

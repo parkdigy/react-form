@@ -2,8 +2,8 @@ import { StaticDatePickerProps } from '@mui/x-date-pickers';
 import { Dayjs } from 'dayjs';
 import { FormAvailableDate } from '../@types';
 import { FormDateType, FormTimeType } from '../../@types';
-export declare type PrivateStaticDatePickerUnit = 'date' | 'action_date' | 'hour' | 'minute' | 'second';
-export interface PrivateStaticDatePickerProps extends Omit<StaticDatePickerProps<Dayjs, Dayjs>, 'displayStaticWrapperAs' | 'renderInput' | 'onChange'> {
+export type PrivateStaticDatePickerUnit = 'date' | 'action_date' | 'hour' | 'minute' | 'second';
+export interface PrivateStaticDatePickerProps extends Omit<StaticDatePickerProps<Dayjs>, 'displayStaticWrapperAs' | 'renderInput' | 'onChange'> {
     type: FormDateType;
     time?: FormTimeType;
     availableDate?: FormAvailableDate;
@@ -12,11 +12,11 @@ export interface PrivateStaticDatePickerProps extends Omit<StaticDatePickerProps
     seconds?: number[];
     minuteInterval?: number;
     secondInterval?: number;
-    onChange(unit: PrivateStaticDatePickerUnit, newValue: Dayjs | null, keyboardInputValue?: string): void;
+    onChange(unit: PrivateStaticDatePickerUnit, newValue: Dayjs | null): void;
     onClose?(): void;
 }
 export declare const PrivateStaticDatePickerDefaultProps: {};
-export declare type TimeSelectScrollToDateUnit = 'hour' | 'minute' | 'second';
+export type TimeSelectScrollToDateUnit = 'hour' | 'minute' | 'second';
 export interface PrivateStaticDatePickerCommands {
     timeSelectScrollToDate(date: Dayjs, times?: TimeSelectScrollToDateUnit[]): void;
 }

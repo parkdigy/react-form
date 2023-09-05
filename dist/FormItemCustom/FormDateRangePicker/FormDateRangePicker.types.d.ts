@@ -4,9 +4,9 @@ import { CustomDatePickerDateValue } from './CustomDatePickerContainer/CustomDat
 import { CommonSxProps, FormDateRangeValueItemCommands, FormDateValueItemCommands, FormValueItemBaseCommands, FormValueItemProps } from '../../@types';
 import { Dayjs } from 'dayjs';
 import { InputDatePickerProps } from './InputDatePicker';
-export declare type FormDateRangePickerDateValue = CustomDatePickerDateValue;
-export declare type FormDateRangePickerValue = [FormDateRangePickerDateValue, FormDateRangePickerDateValue];
-export declare type FormDateRangePickerCalendarCount = CustomDatePickerContainerCalendarCount;
+export type FormDateRangePickerDateValue = CustomDatePickerDateValue;
+export type FormDateRangePickerValue = [FormDateRangePickerDateValue, FormDateRangePickerDateValue];
+export type FormDateRangePickerCalendarCount = CustomDatePickerContainerCalendarCount;
 export interface FormDateRangePickerProps extends CommonSxProps, Omit<FormValueItemProps, 'label' | 'labelIcon' | 'value' | 'width' | 'onChange'>, Pick<InputDatePickerProps, 'align'> {
     value?: FormDateRangePickerValue;
     startLabel?: ReactNode;

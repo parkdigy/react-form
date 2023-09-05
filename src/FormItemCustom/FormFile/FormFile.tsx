@@ -278,7 +278,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       (file: File | string) => {
         if (maxFileSize) {
           return new Promise<void>((resolve, reject) => {
-            if (typeof file === 'object') {
+            if (file instanceof File) {
               if (file.size > maxFileSize) {
                 setAlertDialogProps({
                   open: true,

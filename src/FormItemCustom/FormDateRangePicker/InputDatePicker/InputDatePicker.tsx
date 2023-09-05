@@ -1,10 +1,12 @@
 import React, { useId, useMemo } from 'react';
 import classNames from 'classnames';
 import { InputDatePickerProps as Props, InputDatePickerDefaultProps } from './InputDatePicker.types';
-import { TextField, InputProps, InputAdornment } from '@mui/material';
+import { InputProps, InputAdornment, InputBaseComponentProps } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { FormIcon } from '../../../FormCommon';
 import './InputDatePicker.scss';
+import { Dayjs } from 'dayjs';
+import { DesktopDatePickerSlotsComponentsProps } from '@mui/x-date-pickers/DesktopDatePicker/DesktopDatePicker.types';
 
 const InputDatePicker: React.FC<Props> = ({
   variant,
@@ -61,6 +63,84 @@ const InputDatePicker: React.FC<Props> = ({
     }
   }, [labelShrink]);
 
+  const slotProps = useMemo<DesktopDatePickerSlotsComponentsProps<Dayjs>>(() => {
+    const muiInputProps: InputProps = {
+      endAdornment: undefined,
+    };
+    if (startAdornment || icon || muiInputProps.startAdornment) {
+      muiInputProps.startAdornment = (
+        <>
+          {icon && (
+            <InputAdornment position='start'>
+              <FormIcon fontSize='small'>{icon}</FormIcon>
+            </InputAdornment>
+          )}
+          {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
+          {muiInputProps.startAdornment}
+        </>
+      );
+    }
+    if (endAdornment) {
+      muiInputProps.endAdornment = (
+        <>{endAdornment && <InputAdornment position='end'>{endAdornment}</InputAdornment>}</>
+      );
+    }
+
+    const inputProps: InputBaseComponentProps = {};
+    if (readOnly) {
+      inputProps.tabIndex = -1;
+      inputProps.className = classNames(inputProps.className, 'Mui-disabled');
+    }
+
+    return {
+      textField: {
+        variant,
+        size,
+        color,
+        focused,
+        fullWidth,
+        required,
+        name: id,
+        label,
+        style,
+        error,
+        InputProps: muiInputProps,
+        inputProps,
+        inputRef: (ref) => {
+          if (inputRef) {
+            inputRef.current = ref;
+          }
+        },
+        InputLabelProps: inputLabelProps,
+        onFocus: (e) => {
+          if (onFocus) onFocus(e);
+        },
+        onBlur: (e) => {
+          if (onBlur) onBlur(e);
+        },
+      },
+    };
+  }, [
+    color,
+    endAdornment,
+    error,
+    focused,
+    fullWidth,
+    icon,
+    id,
+    inputLabelProps,
+    inputRef,
+    label,
+    onBlur,
+    onFocus,
+    readOnly,
+    required,
+    size,
+    startAdornment,
+    style,
+    variant,
+  ]);
+
   // Render ----------------------------------------------------------------------------------------------------------
 
   return (
@@ -69,85 +149,10 @@ const InputDatePicker: React.FC<Props> = ({
       className={classNames(className, 'InputDatePicker', `align-${align}`)}
       open={false}
       value={value}
-      inputFormat={format}
+      format={format}
       disabled={disabled}
       readOnly={readOnly || readOnlyInput}
-      renderInput={({
-        style: inputStyle,
-        inputRef: inputInputRef,
-        InputProps: inputInputProps,
-        inputProps: initInputProps,
-        error: inputError,
-        onFocus: inputOnFocus,
-        onBlur: inputOnBlur,
-        ...params
-      }) => {
-        const muiInputProps: InputProps = {
-          ...inputInputProps,
-          endAdornment: undefined,
-        };
-        if (startAdornment || icon || muiInputProps.startAdornment) {
-          muiInputProps.startAdornment = (
-            <>
-              {icon && (
-                <InputAdornment position='start'>
-                  <FormIcon fontSize='small'>{icon}</FormIcon>
-                </InputAdornment>
-              )}
-              {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
-              {muiInputProps.startAdornment}
-            </>
-          );
-        }
-        if (endAdornment) {
-          muiInputProps.endAdornment = (
-            <>{endAdornment && <InputAdornment position='end'>{endAdornment}</InputAdornment>}</>
-          );
-        }
-
-        const inputProps = { ...initInputProps };
-        if (readOnly) {
-          inputProps.tabIndex = -1;
-          inputProps.className = classNames(inputProps.className, 'Mui-disabled');
-        }
-
-        return (
-          <TextField
-            {...params}
-            style={{ ...inputStyle, ...style }}
-            variant={variant}
-            size={size}
-            color={color}
-            focused={focused}
-            fullWidth={fullWidth}
-            required={required}
-            name={id}
-            label={label}
-            error={error || inputError}
-            inputRef={(ref) => {
-              if (inputInputRef) {
-                if (typeof inputInputRef === 'function') {
-                  inputInputRef(ref);
-                }
-              }
-              if (inputRef) {
-                inputRef.current = ref;
-              }
-            }}
-            InputProps={muiInputProps}
-            InputLabelProps={inputLabelProps}
-            inputProps={inputProps}
-            onFocus={(e) => {
-              if (inputOnFocus) inputOnFocus(e);
-              if (onFocus) onFocus(e);
-            }}
-            onBlur={(e) => {
-              if (inputOnBlur) inputOnBlur(e);
-              if (onBlur) onBlur(e);
-            }}
-          />
-        );
-      }}
+      slotProps={slotProps}
     />
   );
 };

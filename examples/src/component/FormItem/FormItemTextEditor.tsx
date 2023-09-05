@@ -8,7 +8,7 @@ import {
   FormCheckbox,
   FormBody,
   FormFooter,
-} from '@pdg/react-form';
+} from '../../../../src';
 import { OutlinedPaper } from '#ccomp';
 
 const FormItemTextEditor = () => {

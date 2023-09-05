@@ -9,4 +9,4 @@ export interface FormImageFileProps extends Omit<FormFileProps, 'preview'> {
     previewMaxHeight?: number;
 }
 export declare const FormImageFileDefaultProps: Pick<FormImageFileProps, 'accept'>;
-export declare type FormImageFileCommands = FormFileCommands;
+export type FormImageFileCommands = FormFileCommands;

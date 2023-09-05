@@ -1,4 +1,4 @@
-'use strict';Object.defineProperty(exports,'__esModule',{value:true});var React=require('react'),material=require('@mui/material'),dayjs=require('dayjs'),reactDom=require('react-dom'),iconsMaterial=require('@mui/icons-material'),CircularProgress=require('@mui/material/CircularProgress'),AdapterDayjs=require('@mui/x-date-pickers/AdapterDayjs'),xDatePickers=require('@mui/x-date-pickers'),dayjsLocale=require('dayjs/locale/ko'),dayjsIsSameOrAfter=require('dayjs/plugin/isSameOrAfter'),dayjsIsSameOrBefore=require('dayjs/plugin/isSameOrBefore'),dayjsIsBetween=require('dayjs/plugin/isBetween');function _interopDefaultLegacy(e){return e&&typeof e==='object'&&'default'in e?e:{'default':e}}function _interopNamespace(e){if(e&&e.__esModule)return e;var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n["default"]=e;return Object.freeze(n)}var React__default=/*#__PURE__*/_interopDefaultLegacy(React);var React__namespace=/*#__PURE__*/_interopNamespace(React);var dayjs__default=/*#__PURE__*/_interopDefaultLegacy(dayjs);var CircularProgress__default=/*#__PURE__*/_interopDefaultLegacy(CircularProgress);var dayjsLocale__default=/*#__PURE__*/_interopDefaultLegacy(dayjsLocale);var dayjsIsSameOrAfter__default=/*#__PURE__*/_interopDefaultLegacy(dayjsIsSameOrAfter);var dayjsIsSameOrBefore__default=/*#__PURE__*/_interopDefaultLegacy(dayjsIsSameOrBefore);var dayjsIsBetween__default=/*#__PURE__*/_interopDefaultLegacy(dayjsIsBetween);/******************************************************************************
+'use strict';var React=require('react'),material=require('@mui/material'),dayjs=require('dayjs'),reactDom=require('react-dom'),iconsMaterial=require('@mui/icons-material'),CircularProgress=require('@mui/material/CircularProgress'),AdapterDayjs=require('@mui/x-date-pickers/AdapterDayjs'),xDatePickers=require('@mui/x-date-pickers'),dayjsIsSameOrAfter=require('dayjs/plugin/isSameOrAfter'),dayjsIsSameOrBefore=require('dayjs/plugin/isSameOrBefore'),dayjsIsBetween=require('dayjs/plugin/isBetween');function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var React__namespace=/*#__PURE__*/_interopNamespaceDefault(React);/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -12,19 +12,21 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
+/* global Reflect, Promise, SuppressedError, Symbol */
 
-var __assign$6 = function() {
-    __assign$6 = Object.assign || function __assign(t) {
+
+var __assign$7 = function() {
+    __assign$7 = Object.assign || function __assign(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
             for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
         }
         return t;
     };
-    return __assign$6.apply(this, arguments);
+    return __assign$7.apply(this, arguments);
 };
 
-function __rest$3(s, e) {
+function __rest$4(s, e) {
     var t = {};
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
@@ -49,6 +51,14 @@ function __spreadArray(to, from, pack) {
 function __makeTemplateObject(cooked, raw) {
     if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
     return cooked;
+}
+typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+};var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+function getDefaultExportFromCjs$1 (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }var classnames$1 = {exports: {}};/*!
 	Copyright (c) 2018 Jed Watson.
 	Licensed under the MIT License (MIT), see
@@ -103,10 +113,11 @@ function __makeTemplateObject(cooked, raw) {
 		} else {
 			window.classNames = classNames;
 		}
-	}());
+	}()); 
 } (classnames$1));
 
-var classNames$1 = classnames$1.exports;var empty = function (v) {
+var classnamesExports$1 = classnames$1.exports;
+var classNames$1 = /*@__PURE__*/getDefaultExportFromCjs$1(classnamesExports$1);var empty = function (v) {
     var result = false;
     if (v == null) {
         result = true;
@@ -297,7 +308,7 @@ function getAvailableDateType(type, time) {
 }
 // makeAvailableDate ---------------------------------------------------------------------------------------------------
 function makeAvailableDate(minDate, maxDate, disablePast, disableFuture) {
-    var now = dayjs__default["default"]();
+    var now = dayjs();
     var min = null;
     var max = null;
     if (disablePast) {
@@ -364,8 +375,8 @@ function getAvailableDate(availableDate, type, time) {
     var availableDateVal = getAvailableDateVal(availableDate, availableDateType);
     var availableDateValFormat = getAvailableDateValFormat(availableDateType);
     return [
-        availableDateVal[0] ? dayjs__default["default"](availableDateVal[0].toString(), availableDateValFormat) : null,
-        availableDateVal[1] ? dayjs__default["default"](availableDateVal[1].toString(), availableDateValFormat) : null,
+        availableDateVal[0] ? dayjs(availableDateVal[0].toString(), availableDateValFormat) : null,
+        availableDateVal[1] ? dayjs(availableDateVal[1].toString(), availableDateValFormat) : null,
     ];
 }
 function getAvailableDateVal(availableDate, type, time) {
@@ -474,15 +485,15 @@ function checkDateAvailable(date, availableDate, type, time) {
     return value;
 }var FormContextProvider = function (_a) {
     var children = _a.children, value = _a.value;
-    return React__default["default"].createElement(FormContext.Provider, { value: value }, children);
-};var Form = React__default["default"].forwardRef(function (_a, ref) {
+    return React.createElement(FormContext.Provider, { value: value }, children);
+};var Form = React.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var className = _a.className, children = _a.children, initStyle = _a.style, sx = _a.sx, 
     //--------------------------------------------------------------------------------------------------------------------
     initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFormColGap = _a.formColGap, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, fullHeight = _a.fullHeight, 
     //----------------------------------------------------------------------------------------------------------------
     onSubmit = _a.onSubmit, onInvalid = _a.onInvalid, onValueChange = _a.onValueChange, onValueChangeByUser = _a.onValueChangeByUser;
-    var _b = useFormState(), formId = _b.id, formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFormColGap = _b.formColGap, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formAddValueItem = _b.onAddValueItem, formRemoveValueItem = _b.onRemoveValueItem, formValueChange = _b.onValueChange, formValueChangeByUser = _b.onValueChangeByUser, otherFormState = __rest$3(_b, ["id", "variant", "size", "color", "spacing", "formColGap", "focused", "labelShrink", "fullWidth", "onAddValueItem", "onRemoveValueItem", "onValueChange", "onValueChangeByUser"]);
+    var _b = useFormState(), formId = _b.id, formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFormColGap = _b.formColGap, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formAddValueItem = _b.onAddValueItem, formRemoveValueItem = _b.onRemoveValueItem, formValueChange = _b.onValueChange, formValueChangeByUser = _b.onValueChangeByUser, otherFormState = __rest$4(_b, ["id", "variant", "size", "color", "spacing", "formColGap", "focused", "labelShrink", "fullWidth", "onAddValueItem", "onRemoveValueItem", "onValueChange", "onValueChangeByUser"]);
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = React.useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = React.useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -514,7 +525,7 @@ function checkDateAvailable(date, availableDate, type, time) {
                 {
                     value = reset ? commands.getReset() : commands.getValue();
                     if (value) {
-                        value = dayjs__default["default"](value).format(commands.getFormValueFormat());
+                        value = dayjs(value).format(commands.getFormValueFormat());
                     }
                 }
                 break;
@@ -792,14 +803,14 @@ function checkDateAvailable(date, availableDate, type, time) {
     }, [submit]);
     // Render ----------------------------------------------------------------------------------------------------------
     var style = React.useMemo(function () {
-        return fullHeight ? __assign$6(__assign$6({}, initStyle), { flex: 1, height: '100%' }) : initStyle;
+        return fullHeight ? __assign$7(__assign$7({}, initStyle), { flex: 1, height: '100%' }) : initStyle;
     }, [initStyle, fullHeight]);
     var contentWrapStyle = React.useMemo(function () { return ({
         display: 'flex',
         flexDirection: 'column',
         height: fullHeight ? '100%' : undefined,
     }); }, [fullHeight]);
-    return (React__default["default"].createElement(FormContextProvider, { value: __assign$6({ id: formId || 'form', variant: variant, size: size, color: color, spacing: spacing, formColGap: formColGap, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, fullHeight: fullHeight, onAddValueItem: function (id, item) {
+    return (React.createElement(FormContextProvider, { value: __assign$7({ id: formId || 'form', variant: variant, size: size, color: color, spacing: spacing, formColGap: formColGap, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, fullHeight: fullHeight, onAddValueItem: function (id, item) {
                 valueItems[id] = item;
                 if (formAddValueItem)
                     formAddValueItem(id, item);
@@ -818,23 +829,23 @@ function checkDateAvailable(date, availableDate, type, time) {
                 if (formValueChangeByUser)
                     formValueChangeByUser(name, value);
             } }, otherFormState) },
-        React__default["default"].createElement(material.Box, { className: classNames$1('Form', "Form-variant-".concat(variant), fullHeight && 'full-height', className), component: 'form', ref: formRef, noValidate: true, autoComplete: 'off', onSubmit: handleSubmit, style: style, sx: sx },
-            React__default["default"].createElement("div", { style: contentWrapStyle }, children))));
+        React.createElement(material.Box, { className: classNames$1('Form', "Form-variant-".concat(variant), fullHeight && 'full-height', className), component: 'form', ref: formRef, noValidate: true, autoComplete: 'off', onSubmit: handleSubmit, style: style, sx: sx },
+            React.createElement("div", { style: contentWrapStyle }, children))));
 });
 Form.displayName = 'Form';
 Form.defaultProps = FormDefaultProps;var FormButtonDefaultProps = {
     type: 'button',
-};var FormIconDefaultProps = {};var FormIcon = React__default["default"].forwardRef(function (_a, ref) {
-    var className = _a.className, InitChildren = _a.children, props = __rest$3(_a, ["className", "children"]);
+};var FormIconDefaultProps = {};var FormIcon = React.forwardRef(function (_a, ref) {
+    var className = _a.className, InitChildren = _a.children, props = __rest$4(_a, ["className", "children"]);
     return React.useMemo(function () {
-        var iconProps = __assign$6(__assign$6({}, props), { className: classNames$1('FormIcon', className) });
-        return typeof InitChildren === 'string' ? (React__default["default"].createElement(material.Icon, __assign$6({ ref: ref }, iconProps), InitChildren.replace(/[A-Z]/g, function (letter, idx) { return "".concat(idx > 0 ? '_' : '').concat(letter.toLowerCase()); }))) : (React__default["default"].createElement(InitChildren, __assign$6({}, iconProps)));
+        var iconProps = __assign$7(__assign$7({}, props), { className: classNames$1('FormIcon', className) });
+        return typeof InitChildren === 'string' ? (React.createElement(material.Icon, __assign$7({ ref: ref }, iconProps), InitChildren.replace(/[A-Z]/g, function (letter, idx) { return "".concat(idx > 0 ? '_' : '').concat(letter.toLowerCase()); }))) : (React.createElement(InitChildren, __assign$7({}, iconProps)));
     }, [InitChildren, className, props, ref]);
 });
 FormIcon.displayName = 'FormIcon';
-FormIcon.defaultProps = FormIconDefaultProps;var FormButton = React__default["default"].forwardRef(function (_a, ref) {
+FormIcon.defaultProps = FormIconDefaultProps;var FormButton = React.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
-    var initSize = _a.size, initColor = _a.color, initVariant = _a.variant, initFullWidth = _a.fullWidth, children = _a.children, className = _a.className, type = _a.type, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, onClick = _a.onClick, props = __rest$3(_a, ["size", "color", "variant", "fullWidth", "children", "className", "type", "icon", "startIcon", "endIcon", "onClick"]);
+    var initSize = _a.size, initColor = _a.color, initVariant = _a.variant, initFullWidth = _a.fullWidth, children = _a.children, className = _a.className, type = _a.type, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, onClick = _a.onClick, props = __rest$4(_a, ["size", "color", "variant", "fullWidth", "children", "className", "type", "icon", "startIcon", "endIcon", "onClick"]);
     var _b = useFormState(), formSize = _b.size, formColor = _b.color, formFullWidth = _b.fullWidth;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var size = React.useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -855,29 +866,29 @@ FormIcon.defaultProps = FormIconDefaultProps;var FormButton = React__default["de
         }
     }, [initVariant, type]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(material.Button, __assign$6({ ref: ref, className: classNames$1(className, 'FormButton'), type: type, variant: variant, size: size, color: color, fullWidth: fullWidth, onClick: onClick, startIcon: startIcon ? React__default["default"].createElement(FormIcon, { sx: { mr: -0.5 } }, startIcon) : undefined, endIcon: endIcon ? React__default["default"].createElement(FormIcon, { sx: { ml: -0.5 } }, endIcon) : undefined }, props),
-        icon && (React__default["default"].createElement(FormIcon, { fontSize: size, color: 'inherit', sx: { mr: children ? 0.5 : undefined } }, icon)),
+    return (React.createElement(material.Button, __assign$7({ ref: ref, className: classNames$1(className, 'FormButton'), type: type, variant: variant, size: size, color: color, fullWidth: fullWidth, onClick: onClick, startIcon: startIcon ? React.createElement(FormIcon, { sx: { mr: -0.5 } }, startIcon) : undefined, endIcon: endIcon ? React.createElement(FormIcon, { sx: { ml: -0.5 } }, endIcon) : undefined }, props),
+        icon && (React.createElement(FormIcon, { fontSize: size, color: 'inherit', sx: { mr: children ? 0.5 : undefined } }, icon)),
         children));
 });
 FormButton.displayName = 'FormButton';
 FormButton.defaultProps = FormButtonDefaultProps;var FormLabelDefaultProps = {};var IconFormIcon = material.styled(FormIcon)(templateObject_1$5 || (templateObject_1$5 = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
 var ChildrenSpan = material.styled('span')(templateObject_2$1 || (templateObject_2$1 = __makeTemplateObject(["\n  vertical-align: middle;\n"], ["\n  vertical-align: middle;\n"])));
-var templateObject_1$5, templateObject_2$1;var FormLabel = React__default["default"].forwardRef(function (_a, ref) {
+var templateObject_1$5, templateObject_2$1;var FormLabel = React.forwardRef(function (_a, ref) {
     // Use ---------------------------------------------------------------------------------------------------------------
-    var children = _a.children, icon = _a.icon, size = _a.size, style = _a.style, error = _a.error, warning = _a.warning, props = __rest$3(_a, ["children", "icon", "size", "style", "error", "warning"]);
+    var children = _a.children, icon = _a.icon, size = _a.size, style = _a.style, error = _a.error, warning = _a.warning, props = __rest$4(_a, ["children", "icon", "size", "style", "error", "warning"]);
     var theme = material.useTheme();
     // Memo --------------------------------------------------------------------------------------------------------------
     var finalProps = React.useMemo(function () {
-        var newStyle = __assign$6({ height: 20, transform: size === 'small' ? 'translate(0, -1.5px) scale(0.7)' : undefined }, style);
+        var newStyle = __assign$7({ height: 20, transform: size === 'small' ? 'translate(0, -1.5px) scale(0.7)' : undefined }, style);
         if (!error) {
             newStyle.color = warning ? theme.palette.warning.main : style === null || style === void 0 ? void 0 : style.color;
         }
-        return __assign$6({ shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size, error: error, style: newStyle }, props);
+        return __assign$7({ shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size, error: error, style: newStyle }, props);
     }, [size, style, warning, error, props, theme.palette.warning.main]);
     // Render ------------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(material.InputLabel, __assign$6({ ref: ref }, finalProps), icon ? (React__default["default"].createElement(React__default["default"].Fragment, null,
-        React__default["default"].createElement(IconFormIcon, null, icon),
-        React__default["default"].createElement(ChildrenSpan, null, children))) : (children)));
+    return (React.createElement(material.InputLabel, __assign$7({ ref: ref }, finalProps), icon ? (React.createElement(React.Fragment, null,
+        React.createElement(IconFormIcon, null, icon),
+        React.createElement(ChildrenSpan, null, children))) : (children)));
 });
 FormLabel.displayName = 'FormLabel';
 FormLabel.defaultProps = FormLabelDefaultProps;var FormBlockDefaultProps = {};var FormDividerDefaultProps = {
@@ -906,7 +917,7 @@ var StyledWarningLineBox = material.styled(material.Box)(function (_a) {
     });
 });
 var templateObject_1$4;var DEFAULT_LINE_STYLE = { flex: 1, position: 'relative' };
-var FormDivider = React__default["default"].forwardRef(function (_a, ref) {
+var FormDivider = React.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var initSize = _a.size, 
     //----------------------------------------------------------------------------------------------------------------
@@ -919,7 +930,7 @@ var FormDivider = React__default["default"].forwardRef(function (_a, ref) {
     // Memo --------------------------------------------------------------------------------------------------------------
     var style = React.useMemo(function () {
         if (hidden) {
-            return __assign$6(__assign$6({}, initStyle), { display: 'none' });
+            return __assign$7(__assign$7({}, initStyle), { display: 'none' });
         }
         else {
             return initStyle;
@@ -927,7 +938,7 @@ var FormDivider = React__default["default"].forwardRef(function (_a, ref) {
     }, [hidden, initStyle]);
     var lineStyle = React.useMemo(function () {
         if (lineVerticalMargin) {
-            return __assign$6(__assign$6({}, DEFAULT_LINE_STYLE), { marginTop: lineVerticalMargin, marginBottom: lineVerticalMargin });
+            return __assign$7(__assign$7({}, DEFAULT_LINE_STYLE), { marginTop: lineVerticalMargin, marginBottom: lineVerticalMargin });
         }
         else {
             return DEFAULT_LINE_STYLE;
@@ -940,8 +951,8 @@ var FormDivider = React__default["default"].forwardRef(function (_a, ref) {
         }
     }, [collapse, collapseIn, onCollapseChange]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(material.Grid, { ref: ref, item: true, xs: 12, style: style, className: classNames$1(className, 'FormDivider'), sx: sx },
-        React__default["default"].createElement(material.Box, { sx: {
+    return (React.createElement(material.Grid, { ref: ref, item: true, xs: 12, style: style, className: classNames$1(className, 'FormDivider'), sx: sx },
+        React.createElement(material.Box, { sx: {
                 display: 'flex',
                 py: 1,
                 alignItems: 'center',
@@ -949,15 +960,15 @@ var FormDivider = React__default["default"].forwardRef(function (_a, ref) {
                 padding: 0,
                 cursor: collapse ? 'pointer' : undefined,
             }, onClick: handleClick },
-            icon && (React__default["default"].createElement(FormIcon, { style: { opacity: 0.54, marginRight: 5 }, color: error ? 'error' : warning ? 'warning' : undefined, fontSize: size }, icon)),
-            label && (React__default["default"].createElement(material.Box, { sx: {
+            icon && (React.createElement(FormIcon, { style: { opacity: 0.54, marginRight: 5 }, color: error ? 'error' : warning ? 'warning' : undefined, fontSize: size }, icon)),
+            label && (React.createElement(material.Box, { sx: {
                     paddingRight: '10px',
                     color: error ? 'error.main' : warning ? 'warning.main' : 'text.secondary',
                     fontWeight: 700,
                     fontSize: size === 'small' ? '11.5px' : '12px',
                 } }, label)),
-            (line || collapse) && (React__default["default"].createElement("div", { style: lineStyle }, error ? React__default["default"].createElement(StyledErrorLineBox, null) : warning ? React__default["default"].createElement(StyledWarningLineBox, null) : React__default["default"].createElement(StyledLineBox, null))),
-            collapse && (React__default["default"].createElement(FormIcon, { sx: { opacity: 0.6, ml: 1 }, color: error ? 'error' : warning ? 'warning' : undefined }, collapseIn ? 'KeyboardDoubleArrowUp' : 'KeyboardDoubleArrowDown')))));
+            (line || collapse) && (React.createElement("div", { style: lineStyle }, error ? React.createElement(StyledErrorLineBox, null) : warning ? React.createElement(StyledWarningLineBox, null) : React.createElement(StyledLineBox, null))),
+            collapse && (React.createElement(FormIcon, { sx: { opacity: 0.6, ml: 1 }, color: error ? 'error' : warning ? 'warning' : undefined }, collapseIn ? 'KeyboardDoubleArrowUp' : 'KeyboardDoubleArrowDown')))));
 });
 FormDivider.displayName = 'FormDivider.';
 FormDivider.defaultProps = FormDividerDefaultProps;function useFirstSkipEffect$1(effect, deps) {
@@ -1023,7 +1034,7 @@ FormDivider.defaultProps = FormDividerDefaultProps;function useFirstSkipEffect$1
     }, []);
     return [_state.current, setState];
 }var StyledWrapGrid$1 = material.styled(material.Grid)(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
-var templateObject_1$3;var FormBlock = React__default["default"].forwardRef(function (_a, ref) {
+var templateObject_1$3;var FormBlock = React.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
@@ -1032,7 +1043,7 @@ var templateObject_1$3;var FormBlock = React__default["default"].forwardRef(func
     hidden = _a.hidden, collapse = _a.collapse, initCollapseIn = _a.collapseIn, 
     //----------------------------------------------------------------------------------------------------------------
     children = _a.children, className = _a.className, initStyle = _a.style, sx = _a.sx;
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, otherFormState = __rest$3(_b, ["variant", "size", "color", "spacing", "focused", "labelShrink", "fullWidth"]);
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, otherFormState = __rest$4(_b, ["variant", "size", "color", "spacing", "focused", "labelShrink", "fullWidth"]);
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = React.useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = React.useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -1046,7 +1057,7 @@ var templateObject_1$3;var FormBlock = React__default["default"].forwardRef(func
     // Memo --------------------------------------------------------------------------------------------------------------
     var style = React.useMemo(function () {
         if (hidden) {
-            return __assign$6(__assign$6({}, initStyle), { display: 'none' });
+            return __assign$7(__assign$7({}, initStyle), { display: 'none' });
         }
         else {
             return initStyle;
@@ -1058,25 +1069,25 @@ var templateObject_1$3;var FormBlock = React__default["default"].forwardRef(func
     }, [initCollapseIn, setCollapseIn]);
     // Memo --------------------------------------------------------------------------------------------------------------
     var Container = React.useMemo(function () {
-        return collapse ? material.Collapse : React__default["default"].Fragment;
+        return collapse ? material.Collapse : React.Fragment;
     }, [collapse]);
     var containerProps = React.useMemo(function () {
         return collapse ? { in: collapseIn } : undefined;
     }, [collapse, collapseIn]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormContext.Provider, { value: __assign$6({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth }, otherFormState) },
-        React__default["default"].createElement(material.Grid, { item: true, ref: ref, xs: 12, className: classNames$1(className, 'FormBlock'), style: style, sx: sx },
-            React__default["default"].createElement(material.Grid, { container: true, spacing: spacing },
-                (icon || label || line || collapse) && (React__default["default"].createElement(FormDivider, { className: 'FormBlock-header', collapse: collapse, collapseIn: collapseIn, size: size, icon: icon, color: color, label: label, line: line, error: error, warning: warning, lineVerticalMargin: lineVerticalMargin, hidden: hidden, onCollapseChange: collapse ? function (newCollapseIn) { return setCollapseIn(newCollapseIn); } : undefined })),
-                React__default["default"].createElement(StyledWrapGrid$1, { item: true, xs: 12 },
-                    React__default["default"].createElement(Container, __assign$6({}, containerProps),
-                        React__default["default"].createElement(material.Grid, { container: true, spacing: spacing },
-                            React__default["default"].createElement(StyledWrapGrid$1, { item: true, xs: 12, className: 'FormBlock-body' },
-                                React__default["default"].createElement(material.Grid, { className: 'FormBlock-content', container: true, spacing: spacing }, children)))))))));
+    return (React.createElement(FormContext.Provider, { value: __assign$7({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth }, otherFormState) },
+        React.createElement(material.Grid, { item: true, ref: ref, xs: 12, className: classNames$1(className, 'FormBlock'), style: style, sx: sx },
+            React.createElement(material.Grid, { container: true, spacing: spacing },
+                (icon || label || line || collapse) && (React.createElement(FormDivider, { className: 'FormBlock-header', collapse: collapse, collapseIn: collapseIn, size: size, icon: icon, color: color, label: label, line: line, error: error, warning: warning, lineVerticalMargin: lineVerticalMargin, hidden: hidden, onCollapseChange: collapse ? function (newCollapseIn) { return setCollapseIn(newCollapseIn); } : undefined })),
+                React.createElement(StyledWrapGrid$1, { item: true, xs: 12 },
+                    React.createElement(Container, __assign$7({}, containerProps),
+                        React.createElement(material.Grid, { container: true, spacing: spacing },
+                            React.createElement(StyledWrapGrid$1, { item: true, xs: 12, className: 'FormBlock-body' },
+                                React.createElement(material.Grid, { className: 'FormBlock-content', container: true, spacing: spacing }, children)))))))));
 });
 FormBlock.displayName = 'FormBlock';
 FormBlock.defaultProps = FormBlockDefaultProps;var FormRowDefaultProps = {};var StyledWrapGrid = material.styled(material.Grid)(templateObject_1$2 || (templateObject_1$2 = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
-var templateObject_1$2;var FormRow = React__default["default"].forwardRef(function (_a, ref) {
+var templateObject_1$2;var FormRow = React.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
@@ -1085,7 +1096,7 @@ var templateObject_1$2;var FormRow = React__default["default"].forwardRef(functi
     hidden = _a.hidden, error = _a.error, warning = _a.warning, helperText = _a.helperText, 
     //----------------------------------------------------------------------------------------------------------------
     children = _a.children, className = _a.className, initStyle = _a.style, sx = _a.sx;
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, otherFormState = __rest$3(_b, ["variant", "size", "color", "spacing", "focused", "labelShrink", "fullWidth"]);
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, otherFormState = __rest$4(_b, ["variant", "size", "color", "spacing", "focused", "labelShrink", "fullWidth"]);
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = React.useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = React.useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -1099,7 +1110,7 @@ var templateObject_1$2;var FormRow = React__default["default"].forwardRef(functi
     var _c = React.useState(12), formColAutoXs = _c[0], setFormColAutoXs = _c[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var style = React.useMemo(function () {
-        var style = __assign$6({ width: '100%' }, initStyle);
+        var style = __assign$7({ width: '100%' }, initStyle);
         if (hidden) {
             style.display = 'none';
         }
@@ -1129,54 +1140,16 @@ var templateObject_1$2;var FormRow = React__default["default"].forwardRef(functi
         makeFormColXs();
     }, [formCols, makeFormColXs]);
     //------------------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormContext.Provider, { value: __assign$6({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColAutoXs: formColAutoXs, onAddFormCol: handleAddFormCol, onRemoveFormCol: handleRemoveFormCol }, otherFormState) },
-        React__default["default"].createElement(material.Grid, { item: true, ref: ref, xs: 12, className: classNames$1(className, 'FormRow'), style: style, sx: sx },
-            React__default["default"].createElement(material.Grid, { container: true, spacing: spacing },
-                (icon || label || line) && (React__default["default"].createElement(FormDivider, { className: classNames$1(className, 'FormRow-header'), size: size, icon: icon, color: color, label: label, line: line, error: error, warning: warning, lineVerticalMargin: lineVerticalMargin, hidden: hidden })),
-                React__default["default"].createElement(StyledWrapGrid, { item: true, xs: 12, className: 'FormRow-body' },
-                    React__default["default"].createElement(material.Grid, { className: 'FormRow-content', container: true, spacing: spacing, direction: 'row', style: { flexWrap: 'nowrap' } }, children),
-                    helperText && (React__default["default"].createElement(material.FormHelperText, { className: 'FormRow-helper-text', component: 'div', error: error }, helperText)))))));
+    return (React.createElement(FormContext.Provider, { value: __assign$7({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColAutoXs: formColAutoXs, onAddFormCol: handleAddFormCol, onRemoveFormCol: handleRemoveFormCol }, otherFormState) },
+        React.createElement(material.Grid, { item: true, ref: ref, xs: 12, className: classNames$1(className, 'FormRow'), style: style, sx: sx },
+            React.createElement(material.Grid, { container: true, spacing: spacing },
+                (icon || label || line) && (React.createElement(FormDivider, { className: classNames$1(className, 'FormRow-header'), size: size, icon: icon, color: color, label: label, line: line, error: error, warning: warning, lineVerticalMargin: lineVerticalMargin, hidden: hidden })),
+                React.createElement(StyledWrapGrid, { item: true, xs: 12, className: 'FormRow-body' },
+                    React.createElement(material.Grid, { className: 'FormRow-content', container: true, spacing: spacing, direction: 'row', style: { flexWrap: 'nowrap' } }, children),
+                    helperText && (React.createElement(material.FormHelperText, { className: 'FormRow-helper-text', component: 'div', error: error }, helperText)))))));
 });
 FormRow.displayName = 'FormRow';
-FormRow.defaultProps = FormRowDefaultProps;/* global Reflect, Promise */
-
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-    return extendStatics(d, b);
-};
-
-function __extends$1(d, b) {
-    if (typeof b !== "function" && b !== null)
-        throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
-var __assign$5 = function() {
-    __assign$5 = Object.assign || function __assign(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign$5.apply(this, arguments);
-};
-
-function __rest$2(s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-}var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};/**
+FormRow.defaultProps = FormRowDefaultProps;/**
  * Checks if `value` is the
  * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
  * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
@@ -1202,24 +1175,24 @@ function __rest$2(s, e) {
  * // => false
  */
 
-function isObject$3(value) {
+function isObject$4(value) {
   var type = typeof value;
   return value != null && (type == 'object' || type == 'function');
 }
 
-var isObject_1 = isObject$3;/** Detect free variable `global` from Node.js. */
+var isObject_1 = isObject$4;/** Detect free variable `global` from Node.js. */
 
-var freeGlobal$1$1 = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+var freeGlobal$3 = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
 
-var _freeGlobal = freeGlobal$1$1;var freeGlobal$2 = _freeGlobal;
+var _freeGlobal = freeGlobal$3;var freeGlobal$2 = _freeGlobal;
 
 /** Detect free variable `self`. */
 var freeSelf$1 = typeof self == 'object' && self && self.Object === Object && self;
 
 /** Used as a reference to the global object. */
-var root$2 = freeGlobal$2 || freeSelf$1 || Function('return this')();
+var root$4 = freeGlobal$2 || freeSelf$1 || Function('return this')();
 
-var _root = root$2;var root$1$1 = _root;
+var _root = root$4;var root$3 = _root;
 
 /**
  * Gets the timestamp of the number of milliseconds that have elapsed since
@@ -1237,11 +1210,11 @@ var _root = root$2;var root$1$1 = _root;
  * }, _.now());
  * // => Logs the number of milliseconds it took for the deferred invocation.
  */
-var now$1$1 = function() {
-  return root$1$1.Date.now();
+var now$3 = function() {
+  return root$3.Date.now();
 };
 
-var now_1 = now$1$1;/** Used to match a single whitespace character. */
+var now_1 = now$3;/** Used to match a single whitespace character. */
 
 var reWhitespace$1 = /\s/;
 
@@ -1253,14 +1226,14 @@ var reWhitespace$1 = /\s/;
  * @param {string} string The string to inspect.
  * @returns {number} Returns the index of the last non-whitespace character.
  */
-function trimmedEndIndex$1(string) {
+function trimmedEndIndex$2(string) {
   var index = string.length;
 
   while (index-- && reWhitespace$1.test(string.charAt(index))) {}
   return index;
 }
 
-var _trimmedEndIndex = trimmedEndIndex$1;var trimmedEndIndex$2 = _trimmedEndIndex;
+var _trimmedEndIndex = trimmedEndIndex$2;var trimmedEndIndex$1 = _trimmedEndIndex;
 
 /** Used to match leading whitespace. */
 var reTrimStart$1 = /^\s+/;
@@ -1272,34 +1245,34 @@ var reTrimStart$1 = /^\s+/;
  * @param {string} string The string to trim.
  * @returns {string} Returns the trimmed string.
  */
-function baseTrim$1(string) {
+function baseTrim$2(string) {
   return string
-    ? string.slice(0, trimmedEndIndex$2(string) + 1).replace(reTrimStart$1, '')
+    ? string.slice(0, trimmedEndIndex$1(string) + 1).replace(reTrimStart$1, '')
     : string;
 }
 
-var _baseTrim = baseTrim$1;var root$3 = _root;
+var _baseTrim = baseTrim$2;var root$2 = _root;
 
 /** Built-in value references. */
-var Symbol$2$1 = root$3.Symbol;
+var Symbol$5 = root$2.Symbol;
 
-var _Symbol = Symbol$2$1;var Symbol$1$1 = _Symbol;
+var _Symbol = Symbol$5;var Symbol$4 = _Symbol;
 
 /** Used for built-in method references. */
-var objectProto$1$1 = Object.prototype;
+var objectProto$3 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$1 = objectProto$1$1.hasOwnProperty;
+var hasOwnProperty$1 = objectProto$3.hasOwnProperty;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString$1$1 = objectProto$1$1.toString;
+var nativeObjectToString$3 = objectProto$3.toString;
 
 /** Built-in value references. */
-var symToStringTag$1$1 = Symbol$1$1 ? Symbol$1$1.toStringTag : undefined;
+var symToStringTag$3 = Symbol$4 ? Symbol$4.toStringTag : undefined;
 
 /**
  * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
@@ -1308,27 +1281,27 @@ var symToStringTag$1$1 = Symbol$1$1 ? Symbol$1$1.toStringTag : undefined;
  * @param {*} value The value to query.
  * @returns {string} Returns the raw `toStringTag`.
  */
-function getRawTag$1(value) {
-  var isOwn = hasOwnProperty$1.call(value, symToStringTag$1$1),
-      tag = value[symToStringTag$1$1];
+function getRawTag$2(value) {
+  var isOwn = hasOwnProperty$1.call(value, symToStringTag$3),
+      tag = value[symToStringTag$3];
 
   try {
-    value[symToStringTag$1$1] = undefined;
+    value[symToStringTag$3] = undefined;
     var unmasked = true;
   } catch (e) {}
 
-  var result = nativeObjectToString$1$1.call(value);
+  var result = nativeObjectToString$3.call(value);
   if (unmasked) {
     if (isOwn) {
-      value[symToStringTag$1$1] = tag;
+      value[symToStringTag$3] = tag;
     } else {
-      delete value[symToStringTag$1$1];
+      delete value[symToStringTag$3];
     }
   }
   return result;
 }
 
-var _getRawTag = getRawTag$1;/** Used for built-in method references. */
+var _getRawTag = getRawTag$2;/** Used for built-in method references. */
 
 var objectProto$2 = Object.prototype;
 
@@ -1346,13 +1319,13 @@ var nativeObjectToString$2 = objectProto$2.toString;
  * @param {*} value The value to convert.
  * @returns {string} Returns the converted string.
  */
-function objectToString$1(value) {
+function objectToString$2(value) {
   return nativeObjectToString$2.call(value);
 }
 
-var _objectToString = objectToString$1;var Symbol$3 = _Symbol,
-    getRawTag$2 = _getRawTag,
-    objectToString$2 = _objectToString;
+var _objectToString = objectToString$2;var Symbol$3 = _Symbol,
+    getRawTag$1 = _getRawTag,
+    objectToString$1 = _objectToString;
 
 /** `Object#toString` result references. */
 var nullTag$1 = '[object Null]',
@@ -1368,16 +1341,16 @@ var symToStringTag$2 = Symbol$3 ? Symbol$3.toStringTag : undefined;
  * @param {*} value The value to query.
  * @returns {string} Returns the `toStringTag`.
  */
-function baseGetTag$1(value) {
+function baseGetTag$2(value) {
   if (value == null) {
     return value === undefined ? undefinedTag$1 : nullTag$1;
   }
   return (symToStringTag$2 && symToStringTag$2 in Object(value))
-    ? getRawTag$2(value)
-    : objectToString$2(value);
+    ? getRawTag$1(value)
+    : objectToString$1(value);
 }
 
-var _baseGetTag = baseGetTag$1;/**
+var _baseGetTag = baseGetTag$2;/**
  * Checks if `value` is object-like. A value is object-like if it's not `null`
  * and has a `typeof` result of "object".
  *
@@ -1402,12 +1375,12 @@ var _baseGetTag = baseGetTag$1;/**
  * // => false
  */
 
-function isObjectLike$1(value) {
+function isObjectLike$2(value) {
   return value != null && typeof value == 'object';
 }
 
-var isObjectLike_1 = isObjectLike$1;var baseGetTag$2 = _baseGetTag,
-    isObjectLike$2 = isObjectLike_1;
+var isObjectLike_1 = isObjectLike$2;var baseGetTag$1 = _baseGetTag,
+    isObjectLike$1 = isObjectLike_1;
 
 /** `Object#toString` result references. */
 var symbolTag$1 = '[object Symbol]';
@@ -1429,14 +1402,14 @@ var symbolTag$1 = '[object Symbol]';
  * _.isSymbol('abc');
  * // => false
  */
-function isSymbol$1(value) {
+function isSymbol$2(value) {
   return typeof value == 'symbol' ||
-    (isObjectLike$2(value) && baseGetTag$2(value) == symbolTag$1);
+    (isObjectLike$1(value) && baseGetTag$1(value) == symbolTag$1);
 }
 
-var isSymbol_1 = isSymbol$1;var baseTrim$2 = _baseTrim,
-    isObject$2 = isObject_1,
-    isSymbol$2 = isSymbol_1;
+var isSymbol_1 = isSymbol$2;var baseTrim$1 = _baseTrim,
+    isObject$3 = isObject_1,
+    isSymbol$1 = isSymbol_1;
 
 /** Used as references for various `Number` constants. */
 var NAN$1 = 0 / 0;
@@ -1476,33 +1449,33 @@ var freeParseInt$1 = parseInt;
  * _.toNumber('3.2');
  * // => 3.2
  */
-function toNumber$1(value) {
+function toNumber$2(value) {
   if (typeof value == 'number') {
     return value;
   }
-  if (isSymbol$2(value)) {
+  if (isSymbol$1(value)) {
     return NAN$1;
   }
-  if (isObject$2(value)) {
+  if (isObject$3(value)) {
     var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
-    value = isObject$2(other) ? (other + '') : other;
+    value = isObject$3(other) ? (other + '') : other;
   }
   if (typeof value != 'string') {
     return value === 0 ? value : +value;
   }
-  value = baseTrim$2(value);
+  value = baseTrim$1(value);
   var isBinary = reIsBinary$1.test(value);
   return (isBinary || reIsOctal$1.test(value))
     ? freeParseInt$1(value.slice(2), isBinary ? 2 : 8)
     : (reIsBadHex$1.test(value) ? NAN$1 : +value);
 }
 
-var toNumber_1 = toNumber$1;var isObject$1 = isObject_1,
+var toNumber_1 = toNumber$2;var isObject$2 = isObject_1,
     now$2 = now_1,
-    toNumber$2 = toNumber_1;
+    toNumber$1 = toNumber_1;
 
 /** Error message constants. */
-var FUNC_ERROR_TEXT$1$1 = 'Expected a function';
+var FUNC_ERROR_TEXT$3 = 'Expected a function';
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeMax$1 = Math.max,
@@ -1562,7 +1535,7 @@ var nativeMax$1 = Math.max,
  * // Cancel the trailing debounced invocation.
  * jQuery(window).on('popstate', debounced.cancel);
  */
-function debounce$1(func, wait, options) {
+function debounce$2(func, wait, options) {
   var lastArgs,
       lastThis,
       maxWait,
@@ -1575,13 +1548,13 @@ function debounce$1(func, wait, options) {
       trailing = true;
 
   if (typeof func != 'function') {
-    throw new TypeError(FUNC_ERROR_TEXT$1$1);
+    throw new TypeError(FUNC_ERROR_TEXT$3);
   }
-  wait = toNumber$2(wait) || 0;
-  if (isObject$1(options)) {
+  wait = toNumber$1(wait) || 0;
+  if (isObject$2(options)) {
     leading = !!options.leading;
     maxing = 'maxWait' in options;
-    maxWait = maxing ? nativeMax$1(toNumber$2(options.maxWait) || 0, wait) : maxWait;
+    maxWait = maxing ? nativeMax$1(toNumber$1(options.maxWait) || 0, wait) : maxWait;
     trailing = 'trailing' in options ? !!options.trailing : trailing;
   }
 
@@ -1687,8 +1660,10 @@ function debounce$1(func, wait, options) {
   return debounced;
 }
 
-var debounce_1 = debounce$1;var debounce$2 = debounce_1,
-    isObject$4 = isObject_1;
+var debounce_1 = debounce$2;
+
+var debounce$3 = /*@__PURE__*/getDefaultExportFromCjs$1(debounce_1);var debounce$1 = debounce_1,
+    isObject$1 = isObject_1;
 
 /** Error message constants. */
 var FUNC_ERROR_TEXT$2 = 'Expected a function';
@@ -1744,48 +1719,69 @@ function throttle$1(func, wait, options) {
   if (typeof func != 'function') {
     throw new TypeError(FUNC_ERROR_TEXT$2);
   }
-  if (isObject$4(options)) {
+  if (isObject$1(options)) {
     leading = 'leading' in options ? !!options.leading : leading;
     trailing = 'trailing' in options ? !!options.trailing : trailing;
   }
-  return debounce$2(func, wait, {
+  return debounce$1(func, wait, {
     'leading': leading,
     'maxWait': wait,
     'trailing': trailing
   });
 }
 
-var throttle_1 = throttle$1;var patchResizeHandler = function (resizeCallback, refreshMode, refreshRate, refreshOptions) {
+var throttle_1 = throttle$1;
+
+var throttle$2 = /*@__PURE__*/getDefaultExportFromCjs$1(throttle_1);/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends$1(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign$6 = function() {
+    __assign$6 = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign$6.apply(this, arguments);
+};
+
+function __rest$3(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}var patchResizeCallback = function (resizeCallback, refreshMode, refreshRate, refreshOptions) {
     switch (refreshMode) {
         case 'debounce':
-            return debounce_1(resizeCallback, refreshRate, refreshOptions);
+            return debounce$3(resizeCallback, refreshRate, refreshOptions);
         case 'throttle':
-            return throttle_1(resizeCallback, refreshRate, refreshOptions);
+            return throttle$2(resizeCallback, refreshRate, refreshOptions);
         default:
             return resizeCallback;
     }
 };
 var isFunction$1 = function (fn) { return typeof fn === 'function'; };
 var isSSR = function () { return typeof window === 'undefined'; };
-var isDOMElement = function (element) { return element instanceof Element || element instanceof HTMLDocument; };
-var createNotifier = function (onResize, setSize, handleWidth, handleHeight) {
-    return function (_a) {
-        var width = _a.width, height = _a.height;
-        setSize(function (prev) {
-            if (prev.width === width && prev.height === height) {
-                // skip if dimensions haven't changed
-                return prev;
-            }
-            if ((prev.width === width && !handleHeight) || (prev.height === height && !handleWidth)) {
-                // process `handleHeight/handleWidth` props
-                return prev;
-            }
-            if (onResize && isFunction$1(onResize)) {
-                onResize(width, height);
-            }
-            return { width: width, height: height };
-        });
-    };
+var isDOMElement = function (element) {
+    return element instanceof Element || element instanceof HTMLDocument;
 };/** @class */ ((function (_super) {
     __extends$1(ResizeDetector, _super);
     function ResizeDetector(props) {
@@ -1853,7 +1849,19 @@ var createNotifier = function (onResize, setSize, handleWidth, handleHeight) {
             var _a = _this.props, _b = _a.handleWidth, handleWidth = _b === void 0 ? true : _b, _c = _a.handleHeight, handleHeight = _c === void 0 ? true : _c, onResize = _a.onResize;
             if (!handleWidth && !handleHeight)
                 return;
-            var notifyResize = createNotifier(onResize, _this.setState.bind(_this), handleWidth, handleHeight);
+            var notifyResize = function (_a) {
+                var width = _a.width, height = _a.height;
+                if (_this.state.width === width && _this.state.height === height) {
+                    // skip if dimensions haven't changed
+                    return;
+                }
+                if ((_this.state.width === width && !handleHeight) || (_this.state.height === height && !handleWidth)) {
+                    // process `handleHeight/handleWidth` props
+                    return;
+                }
+                onResize === null || onResize === void 0 ? void 0 : onResize(width, height);
+                _this.setState({ width: width, height: height });
+            };
             entries.forEach(function (entry) {
                 var _a = (entry && entry.contentRect) || {}, width = _a.width, height = _a.height;
                 var shouldSetSize = !_this.skipOnMount && !isSSR();
@@ -1887,13 +1895,16 @@ var createNotifier = function (onResize, setSize, handleWidth, handleHeight) {
             width: undefined,
             height: undefined
         };
+        _this.sizeRef = {
+            current: _this.state
+        };
         _this.skipOnMount = skipOnMount;
         _this.targetRef = React.createRef();
         _this.observableElement = null;
         if (isSSR()) {
             return _this;
         }
-        _this.resizeHandler = patchResizeHandler(_this.createResizeHandler, refreshMode, refreshRate, refreshOptions);
+        _this.resizeHandler = patchResizeCallback(_this.createResizeHandler, refreshMode, refreshRate, refreshOptions);
         _this.resizeObserver = new window.ResizeObserver(_this.resizeHandler);
         return _this;
     }
@@ -1902,6 +1913,7 @@ var createNotifier = function (onResize, setSize, handleWidth, handleHeight) {
     };
     ResizeDetector.prototype.componentDidUpdate = function () {
         this.attachObserver();
+        this.sizeRef.current = this.state;
     };
     ResizeDetector.prototype.componentWillUnmount = function () {
         if (isSSR()) {
@@ -1916,76 +1928,127 @@ var createNotifier = function (onResize, setSize, handleWidth, handleHeight) {
         var _c = this.state, width = _c.width, height = _c.height;
         var childProps = { width: width, height: height, targetRef: this.targetRef };
         var renderType = this.getRenderType();
-        var typedChildren;
         switch (renderType) {
             case 'renderProp':
-                return render && render(childProps);
-            case 'childFunction':
-                typedChildren = children;
-                return typedChildren(childProps);
-            case 'child':
+                return render === null || render === void 0 ? void 0 : render(childProps);
+            case 'childFunction': {
+                var childFunction = children;
+                return childFunction === null || childFunction === void 0 ? void 0 : childFunction(childProps);
+            }
+            case 'child': {
                 // @TODO bug prone logic
-                typedChildren = children;
-                if (typedChildren.type && typeof typedChildren.type === 'string') {
+                var child = children;
+                if (child.type && typeof child.type === 'string') {
                     // child is a native DOM elements such as div, span etc
-                    childProps.targetRef; var nativeProps = __rest$2(childProps, ["targetRef"]);
-                    return React.cloneElement(typedChildren, nativeProps);
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    childProps.targetRef; var nativeProps = __rest$3(childProps, ["targetRef"]);
+                    return React.cloneElement(child, nativeProps);
                 }
                 // class or functional component otherwise
-                return React.cloneElement(typedChildren, childProps);
-            case 'childArray':
-                typedChildren = children;
-                return typedChildren.map(function (el) { return !!el && React.cloneElement(el, childProps); });
+                return React.cloneElement(child, childProps);
+            }
+            case 'childArray': {
+                var childArray = children;
+                return childArray.map(function (el) { return !!el && React.cloneElement(el, childProps); });
+            }
             default:
-                return React__namespace.createElement(WrapperTag, null);
+                return React.createElement(WrapperTag, null);
         }
     };
     return ResizeDetector;
-})(React.PureComponent));var useEnhancedEffect = isSSR() ? React.useEffect : React.useLayoutEffect;
-function useResizeDetector(props) {
-    if (props === void 0) { props = {}; }
-    var _a = props.skipOnMount, skipOnMount = _a === void 0 ? false : _a, refreshMode = props.refreshMode, _b = props.refreshRate, refreshRate = _b === void 0 ? 1000 : _b, refreshOptions = props.refreshOptions, _c = props.handleWidth, handleWidth = _c === void 0 ? true : _c, _d = props.handleHeight, handleHeight = _d === void 0 ? true : _d, targetRef = props.targetRef, observerOptions = props.observerOptions, onResize = props.onResize;
+})(React.PureComponent));function useResizeDetector(_a) {
+    var _b = _a === void 0 ? {} : _a, _c = _b.skipOnMount, skipOnMount = _c === void 0 ? false : _c, refreshMode = _b.refreshMode, _d = _b.refreshRate, refreshRate = _d === void 0 ? 1000 : _d, refreshOptions = _b.refreshOptions, _e = _b.handleWidth, handleWidth = _e === void 0 ? true : _e, _f = _b.handleHeight, handleHeight = _f === void 0 ? true : _f, targetRef = _b.targetRef, observerOptions = _b.observerOptions, onResize = _b.onResize;
     var skipResize = React.useRef(skipOnMount);
-    var localRef = React.useRef(null);
-    var ref = (targetRef !== null && targetRef !== void 0 ? targetRef : localRef);
-    var resizeHandler = React.useRef();
-    var _e = React.useState({
+    var _g = React.useState({
         width: undefined,
         height: undefined
-    }), size = _e[0], setSize = _e[1];
-    useEnhancedEffect(function () {
-        if (isSSR()) {
+    }), size = _g[0], setSize = _g[1];
+    // we are going to use this ref to store the last element that was passed to the hook
+    var _h = React.useState((targetRef === null || targetRef === void 0 ? void 0 : targetRef.current) || null), refElement = _h[0], setRefElement = _h[1];
+    // if targetRef is passed, we need to update the refElement
+    // we have to use setTimeout because ref get assigned after the hook is called
+    // in the future releases we are going to remove targetRef and force users to use ref returned by the hook
+    if (targetRef) {
+        setTimeout(function () {
+            if (targetRef.current !== refElement) {
+                setRefElement(targetRef.current);
+            }
+        }, 0);
+    }
+    // this is a callback that will be called every time the ref is changed
+    // we call setState inside to trigger rerender
+    var onRefChange = React.useCallback(function (node) {
+        if (node !== refElement) {
+            setRefElement(node);
+        }
+    }, [refElement]);
+    // adding `current` to make it compatible with useRef shape
+    onRefChange.current = refElement;
+    React.useEffect(function () {
+        return function () {
+            // component is unmounted
+            // clear ref to avoid memory leaks
+            setRefElement(null);
+            onRefChange.current = null;
+        };
+    }, []);
+    var shouldSetSize = React.useCallback(function (prevSize, nextSize) {
+        if (prevSize.width === nextSize.width && prevSize.height === nextSize.height) {
+            // skip if dimensions haven't changed
+            return false;
+        }
+        if ((prevSize.width === nextSize.width && !handleHeight) ||
+            (prevSize.height === nextSize.height && !handleWidth)) {
+            // process `handleHeight/handleWidth` props
+            return false;
+        }
+        return true;
+    }, [handleWidth, handleHeight]);
+    var resizeCallback = React.useCallback(function (entries) {
+        if (!handleWidth && !handleHeight)
+            return;
+        if (skipResize.current) {
+            skipResize.current = false;
             return;
         }
-        var notifyResize = createNotifier(onResize, setSize, handleWidth, handleHeight);
-        var resizeCallback = function (entries) {
-            if (!handleWidth && !handleHeight)
-                return;
-            entries.forEach(function (entry) {
-                var _a = (entry && entry.contentRect) || {}, width = _a.width, height = _a.height;
-                var shouldSetSize = !skipResize.current && !isSSR();
-                if (shouldSetSize) {
-                    notifyResize({ width: width, height: height });
-                }
-                skipResize.current = false;
+        entries.forEach(function (entry) {
+            var _a = (entry === null || entry === void 0 ? void 0 : entry.contentRect) || {}, width = _a.width, height = _a.height;
+            setSize(function (prevSize) {
+                if (!shouldSetSize(prevSize, { width: width, height: height }))
+                    return prevSize;
+                return { width: width, height: height };
             });
-        };
-        resizeHandler.current = patchResizeHandler(resizeCallback, refreshMode, refreshRate, refreshOptions);
-        var resizeObserver = new window.ResizeObserver(resizeHandler.current);
-        if (ref.current) {
-            // Something wrong with typings here...
-            resizeObserver.observe(ref.current, observerOptions);
+        });
+    }, [handleWidth, handleHeight, skipResize, shouldSetSize]);
+    var resizeHandler = React.useCallback(patchResizeCallback(resizeCallback, refreshMode, refreshRate, refreshOptions), [
+        resizeCallback,
+        refreshMode,
+        refreshRate,
+        refreshOptions
+    ]);
+    // on refElement change
+    React.useEffect(function () {
+        var resizeObserver;
+        if (refElement) {
+            resizeObserver = new window.ResizeObserver(resizeHandler);
+            resizeObserver.observe(refElement, observerOptions);
+        }
+        else {
+            if (size.width || size.height) {
+                setSize({ width: undefined, height: undefined });
+            }
         }
         return function () {
-            resizeObserver.disconnect();
-            var patchedResizeHandler = resizeHandler.current;
-            if (patchedResizeHandler && patchedResizeHandler.cancel) {
-                patchedResizeHandler.cancel();
-            }
+            var _a, _b, _c;
+            (_a = resizeObserver === null || resizeObserver === void 0 ? void 0 : resizeObserver.disconnect) === null || _a === void 0 ? void 0 : _a.call(resizeObserver);
+            (_c = (_b = resizeHandler).cancel) === null || _c === void 0 ? void 0 : _c.call(_b);
         };
-    }, [refreshMode, refreshRate, refreshOptions, handleWidth, handleHeight, onResize, observerOptions, ref.current]);
-    return __assign$5({ ref: ref }, size);
-}var FormColDefaultProps = {};var FormCol = React__default["default"].forwardRef(function (_a, ref) {
+    }, [resizeHandler, refElement]);
+    React.useEffect(function () {
+        onResize === null || onResize === void 0 ? void 0 : onResize(size.width, size.height);
+    }, [size]);
+    return __assign$6({ ref: onRefChange }, size);
+}var FormColDefaultProps = {};var FormCol = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
@@ -1993,8 +2056,10 @@ function useResizeDetector(props) {
     //----------------------------------------------------------------------------------------------------------------
     xs = _a.xs, className = _a.className, children = _a.children, initStyle = _a.style, sx = _a.sx;
     var id = React.useId();
+    // Ref ---------------------------------------------------------------------------------------------------------------
+    var gridRef = React.useRef(null);
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFormColGap = _b.formColGap, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formColAutoXs = _b.formColAutoXs, onAddFormCol = _b.onAddFormCol, onRemoveFormCol = _b.onRemoveFormCol, otherFormState = __rest$3(_b, ["variant", "size", "color", "spacing", "formColGap", "focused", "labelShrink", "fullWidth", "formColAutoXs", "onAddFormCol", "onRemoveFormCol"]);
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFormColGap = _b.formColGap, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formColAutoXs = _b.formColAutoXs, onAddFormCol = _b.onAddFormCol, onRemoveFormCol = _b.onRemoveFormCol, otherFormState = __rest$4(_b, ["variant", "size", "color", "spacing", "formColGap", "focused", "labelShrink", "fullWidth", "formColAutoXs", "onAddFormCol", "onRemoveFormCol"]);
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = React.useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = React.useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -2006,11 +2071,15 @@ function useResizeDetector(props) {
     // Memo --------------------------------------------------------------------------------------------------------------
     var gap = React.useMemo(function () { return (initGap == null ? formFormColGap : initGap); }, [formFormColGap, initGap]);
     // ResizeDetector --------------------------------------------------------------------------------------------------
-    var _c = useResizeDetector(), formColWidth = _c.width, resizeDetectorRef = _c.ref;
+    var formColWidth = useResizeDetector({
+        targetRef: gridRef,
+        handleWidth: true,
+        handleHeight: false,
+    }).width;
     // State - style ---------------------------------------------------------------------------------------------------
     var style = useAutoUpdateState$1(React.useCallback(function () {
         if (hidden) {
-            return __assign$6(__assign$6({}, initStyle), { display: 'none' });
+            return __assign$7(__assign$7({}, initStyle), { display: 'none' });
         }
         else {
             return initStyle;
@@ -2030,41 +2099,46 @@ function useResizeDetector(props) {
     React.useEffect(function () {
         if (ref) {
             if (typeof ref === 'function') {
-                ref(resizeDetectorRef.current);
+                ref(gridRef.current);
             }
             else {
-                ref.current = resizeDetectorRef.current;
+                ref.current = gridRef.current;
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormContextProvider, { value: __assign$6({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColXs: xs || formColAutoXs || 12, formColWidth: formColWidth, formColWithLabel: !!label, formColWithHelperText: !!helperText }, otherFormState) },
-        React__default["default"].createElement(material.Grid, { ref: resizeDetectorRef, item: true, xs: xs || formColAutoXs || 12, className: classNames$1(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text'), style: style, sx: sx },
-            React__default["default"].createElement(material.Grid, { container: true, direction: 'column' },
-                label && (React__default["default"].createElement(material.Grid, { item: true, className: 'FormCol-header' },
-                    React__default["default"].createElement("div", { style: { position: 'relative', height: 20 } },
-                        React__default["default"].createElement(FormLabel, { className: 'FormCol-FormLabel', size: size, icon: icon, focused: focused, color: color, error: error, warning: warning, style: { position: 'absolute', left: 5, top: 0 } }, label)))),
-                React__default["default"].createElement(material.Grid, { item: true, xs: 2, className: 'FormCol-content' },
-                    React__default["default"].createElement(material.Box, { sx: { display: 'flex', flexWrap: 'wrap', gap: gap } }, children)),
-                helperText && (React__default["default"].createElement(material.Grid, { item: true, className: 'FormCol-helper-text' },
-                    React__default["default"].createElement(material.FormHelperText, { component: 'div', error: error, style: { marginLeft: helperTextShift ? 14 : 5 } }, helperText)))))));
+    return (React.createElement(FormContextProvider, { value: __assign$7({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColXs: xs || formColAutoXs || 12, formColWidth: formColWidth, formColWithLabel: !!label, formColWithHelperText: !!helperText }, otherFormState) },
+        React.createElement(material.Grid, { ref: gridRef, item: true, xs: xs || formColAutoXs || 12, className: classNames$1(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text'), style: style, sx: sx },
+            React.createElement(material.Grid, { container: true, direction: 'column' },
+                label && (React.createElement(material.Grid, { item: true, className: 'FormCol-header' },
+                    React.createElement("div", { style: { position: 'relative', height: 20 } },
+                        React.createElement(FormLabel, { className: 'FormCol-FormLabel', size: size, icon: icon, focused: focused, color: color, error: error, warning: warning, style: { position: 'absolute', left: 5, top: 0 } }, label)))),
+                React.createElement(material.Grid, { item: true, xs: 2, className: 'FormCol-content' },
+                    React.createElement(material.Box, { sx: { display: 'flex', flexWrap: 'wrap', gap: gap } }, children)),
+                helperText && (React.createElement(material.Grid, { item: true, className: 'FormCol-helper-text' },
+                    React.createElement(material.FormHelperText, { component: 'div', error: error, style: { marginLeft: helperTextShift ? 14 : 5 } }, helperText)))))));
 });
 FormCol.displayName = 'FormCol';
 FormCol.defaultProps = FormColDefaultProps;var FormBodyDefaultProps = {};var StyledContainerDiv = material.styled('div')(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  flex: 1;\n  position: relative;\n"], ["\n  flex: 1;\n  position: relative;\n"])));
 var StyledContentDiv = material.styled('div')(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"], ["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"])));
 var templateObject_1$1, templateObject_2;var FormBody = function (_a) {
+    // Ref ---------------------------------------------------------------------------------------------------------------
     var children = _a.children, hidden = _a.hidden;
+    var containerRef = React.useRef(null);
+    // State -------------------------------------------------------------------------------------------------------------
     var _b = useFormState(), spacing = _b.spacing, fullHeight = _b.fullHeight;
     var _c = React.useState(0), height = _c[0], setHeight = _c[1];
     // -------------------------------------------------------------------------------------------------------------------
-    var resizeDetectorRef = useResizeDetector({
-        handleHeight: true,
+    useResizeDetector({
+        targetRef: containerRef,
         handleWidth: false,
+        handleHeight: true,
         onResize: function () {
-            setHeight(resizeDetectorRef.current.getBoundingClientRect().height);
+            var _a, _b;
+            setHeight(((_b = (_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height) || 0);
         },
-    }).ref;
+    });
     // -------------------------------------------------------------------------------------------------------------------
     var style = React.useMemo(function () { return (hidden ? { display: 'none' } : undefined); }, [hidden]);
     var contentStyle = React.useMemo(function () {
@@ -2078,19 +2152,19 @@ var templateObject_1$1, templateObject_2;var FormBody = function (_a) {
             }
             : undefined;
     }, [fullHeight, height]);
-    return (React__default["default"].createElement(StyledContainerDiv, { ref: fullHeight ? resizeDetectorRef : undefined, className: 'FormBody', style: style },
-        React__default["default"].createElement(StyledContentDiv, { style: contentStyle },
-            React__default["default"].createElement(material.Grid, { container: true, spacing: spacing, direction: 'column' }, children))));
+    return (React.createElement(StyledContainerDiv, { ref: fullHeight ? containerRef : undefined, className: 'FormBody', style: style },
+        React.createElement(StyledContentDiv, { style: contentStyle },
+            React.createElement(material.Grid, { container: true, spacing: spacing, direction: 'column' }, children))));
 };
 FormBody.displayName = 'FormBody';
 FormBody.defaultProps = FormBodyDefaultProps;var FormFooterDefaultProps = {};var FormFooter = function (_a) {
     var children = _a.children, noLine = _a.noLine, hidden = _a.hidden;
     var spacing = useFormState().spacing;
     var style = React.useMemo(function () { return (hidden ? { display: 'none' } : undefined); }, [hidden]);
-    return (React__default["default"].createElement(material.Grid, { item: true, xs: 12, className: 'FormFooter', style: style },
-        React__default["default"].createElement(material.Grid, { container: true, spacing: spacing, direction: 'column' },
-            !noLine && (React__default["default"].createElement(material.Grid, { item: true, xs: 12, sx: { mt: spacing } },
-                React__default["default"].createElement(FormDivider, { line: true }))),
+    return (React.createElement(material.Grid, { item: true, xs: 12, className: 'FormFooter', style: style },
+        React.createElement(material.Grid, { container: true, spacing: spacing, direction: 'column' },
+            !noLine && (React.createElement(material.Grid, { item: true, xs: 12, sx: { mt: spacing } },
+                React.createElement(FormDivider, { line: true }))),
             children)));
 };
 FormFooter.displayName = 'FormFooter';
@@ -2120,7 +2194,7 @@ FormFooter.defaultProps = FormFooterDefaultProps;var FormTextFieldDefaultProps =
     style.appendChild(document.createTextNode(css));
   }
 }var css_248z$j = ".FormTextField {\n  min-width: 200px;\n}\n.FormTextField .clear-icon-button-wrap {\n  visibility: hidden;\n}\n.FormTextField.variant-filled .clear-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormTextField:hover .clear-icon-button-wrap.show,\n.FormTextField .MuiInputBase-root.Mui-focused .clear-icon-button-wrap.show {\n  visibility: visible;\n}";
-styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef(function (_a, ref) {
+styleInject(css_248z$j);var FormTextField = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var _b;
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
@@ -2131,7 +2205,7 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, 
     //----------------------------------------------------------------------------------------------------------------
-    props = __rest$3(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "required", "value", "data", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "disableReturnKey", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
+    props = __rest$4(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "required", "value", "data", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "disableReturnKey", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
     var id = React.useId();
     // Ref -------------------------------------------------------------------------------------------------------------
     var inputRef = React.useRef(null);
@@ -2153,7 +2227,7 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
     // Memo - muiInputLabelProps ---------------------------------------------------------------------------------------
     var muiInputLabelProps = React.useMemo(function () {
         if (labelShrink || placeholder) {
-            return __assign$6(__assign$6({}, initMuiInputLabelProps), { shrink: true });
+            return __assign$7(__assign$7({}, initMuiInputLabelProps), { shrink: true });
         }
         else {
             return initMuiInputLabelProps;
@@ -2162,7 +2236,7 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
     // Memo - inputProps -----------------------------------------------------------------------------------------------
     var inputProps = React.useMemo(function () {
         if (readOnly != null || maxLength != null) {
-            var finalInputProps = __assign$6(__assign$6({}, initInputProps), { readOnly: readOnly, maxLength: maxLength });
+            var finalInputProps = __assign$7(__assign$7({}, initInputProps), { readOnly: readOnly, maxLength: maxLength });
             if (readOnly) {
                 finalInputProps.tabIndex = -1;
                 finalInputProps.className = classNames$1(finalInputProps.className, 'Mui-disabled');
@@ -2178,7 +2252,7 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
     }, [initInputProps, readOnly, tabIndex, maxLength]);
     // Memo - style ----------------------------------------------------------------------------------------------------
     var style = React.useMemo(function () {
-        var newStyle = __assign$6({}, initStyle);
+        var newStyle = __assign$7({}, initStyle);
         if (width != null) {
             newStyle.width = width;
         }
@@ -2189,9 +2263,9 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
     }, [initStyle, width, hidden]);
     // Memo - label ----------------------------------------------------------------------------------------------------
     var label = React.useMemo(function () {
-        return labelIcon ? (React__default["default"].createElement(React__default["default"].Fragment, null,
-            React__default["default"].createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
-            React__default["default"].createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
+        return labelIcon ? (React.createElement(React.Fragment, null,
+            React.createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
+            React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
     }, [initLabel, labelIcon]);
     // Function - getFinalValue ----------------------------------------------------------------------------------------
     var getFinalValue = React.useCallback(function (value) {
@@ -2257,18 +2331,18 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
     }, [required, validPattern, invalidPattern, onValidate, setErrorHelperText, initHelperText]);
     // Memo - muiInputProps --------------------------------------------------------------------------------------------
     var muiInputProps = React.useMemo(function () {
-        var muiInputProps = __assign$6({}, initMuiInputProps);
+        var muiInputProps = __assign$7({}, initMuiInputProps);
         if (startAdornment || icon || muiInputProps.startAdornment) {
-            muiInputProps.startAdornment = (React__default["default"].createElement(React__default["default"].Fragment, null,
-                icon && (React__default["default"].createElement(material.InputAdornment, { position: 'start' },
-                    React__default["default"].createElement(FormIcon, { fontSize: 'small' }, icon))),
-                startAdornment && React__default["default"].createElement(material.InputAdornment, { position: 'start' }, startAdornment),
+            muiInputProps.startAdornment = (React.createElement(React.Fragment, null,
+                icon && (React.createElement(material.InputAdornment, { position: 'start' },
+                    React.createElement(FormIcon, { fontSize: 'small' }, icon))),
+                startAdornment && React.createElement(material.InputAdornment, { position: 'start' }, startAdornment),
                 muiInputProps.startAdornment));
         }
         if (endAdornment || muiInputProps.endAdornment || (clear && !readOnly && !disabled)) {
-            muiInputProps.endAdornment = (React__default["default"].createElement(React__default["default"].Fragment, null,
-                clear && !readOnly && !disabled && (React__default["default"].createElement(material.InputAdornment, { className: classNames$1('clear-icon-button-wrap', showClear && 'show'), position: 'end' },
-                    React__default["default"].createElement(material.IconButton, { className: 'clear-icon-button', size: 'small', tabIndex: -1, onClick: function () {
+            muiInputProps.endAdornment = (React.createElement(React.Fragment, null,
+                clear && !readOnly && !disabled && (React.createElement(material.InputAdornment, { className: classNames$1('clear-icon-button-wrap', showClear && 'show'), position: 'end' },
+                    React.createElement(material.IconButton, { className: 'clear-icon-button', size: 'small', tabIndex: -1, onClick: function () {
                             var finalValue = getFinalValue('');
                             setValue(finalValue);
                             focus();
@@ -2279,9 +2353,9 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
                                 });
                             }
                         } },
-                        React__default["default"].createElement(FormIcon, { fontSize: 'inherit' }, "ClearRounded")))),
+                        React.createElement(FormIcon, { fontSize: 'inherit' }, "ClearRounded")))),
                 muiInputProps.endAdornment,
-                endAdornment && React__default["default"].createElement(material.InputAdornment, { position: 'end' }, endAdornment)));
+                endAdornment && React.createElement(material.InputAdornment, { position: 'end' }, endAdornment)));
         }
         return muiInputProps;
     }, [
@@ -2423,12 +2497,12 @@ styleInject(css_248z$j);var FormTextField = React__default["default"].forwardRef
             onKeyDown(e);
     }, [select, multiline, disableReturnKey, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, value]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(material.TextField, __assign$6({}, props, { variant: variant, size: size, color: color, focused: focused || undefined, name: name, label: label, placeholder: placeholder, className: classNames$1(className, 'FormValueItem', 'FormTextField', "variant-".concat(variant)), inputRef: initInputRef ? initInputRef : inputRef, value: value, required: required, fullWidth: !width && fullWidth, error: error, helperText: formColWithHelperText ? undefined : helperText, FormHelperTextProps: { component: 'div' }, disabled: disabled, InputProps: muiInputProps, InputLabelProps: muiInputLabelProps, inputProps: ((_b = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _b === void 0 ? void 0 : _b.includes('FormTag-Input')) ? initInputProps : inputProps, style: style, select: select, SelectProps: SelectProps, multiline: multiline, onChange: handleChange, onBlur: handleBlur, onKeyDown: handleKeyDown })));
+    return (React.createElement(material.TextField, __assign$7({}, props, { variant: variant, size: size, color: color, focused: focused || undefined, name: name, label: label, placeholder: placeholder, className: classNames$1(className, 'FormValueItem', 'FormTextField', "variant-".concat(variant)), inputRef: initInputRef ? initInputRef : inputRef, value: value, required: required, fullWidth: !width && fullWidth, error: error, helperText: formColWithHelperText ? undefined : helperText, FormHelperTextProps: { component: 'div' }, disabled: disabled, InputProps: muiInputProps, InputLabelProps: muiInputLabelProps, inputProps: ((_b = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _b === void 0 ? void 0 : _b.includes('FormTag-Input')) ? initInputProps : inputProps, style: style, select: select, SelectProps: SelectProps, multiline: multiline, onChange: handleChange, onBlur: handleBlur, onKeyDown: handleKeyDown })));
 });
 FormTextField.displayName = 'FormText';
-FormTextField.defaultProps = FormTextFieldDefaultProps;var FormTextDefaultProps = __assign$6(__assign$6({}, FormTextFieldDefaultProps), { clear: true, value: '' });var FormText = React__default["default"].forwardRef(function (_a, ref) {
+FormTextField.defaultProps = FormTextFieldDefaultProps;var FormTextDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: true, value: '' });var FormText = React.forwardRef(function (_a, ref) {
     // Event Handler ---------------------------------------------------------------------------------------------------
-    var className = _a.className, onValue = _a.onValue, props = __rest$3(_a, ["className", "onValue"]);
+    var className = _a.className, onValue = _a.onValue, props = __rest$4(_a, ["className", "onValue"]);
     var handleValue = React.useCallback(function (value) {
         var finalValue = value == null ? '' : value;
         if (onValue) {
@@ -2437,20 +2511,20 @@ FormTextField.defaultProps = FormTextFieldDefaultProps;var FormTextDefaultProps 
         return finalValue;
     }, [onValue]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormTextField, __assign$6({ ref: ref, className: classNames$1(className, 'FormText'), disableReturnKey: true, onValue: handleValue }, props)));
+    return (React.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormText'), disableReturnKey: true, onValue: handleValue }, props)));
 });
 FormText.displayName = 'FormText';
 FormText.defaultProps = FormTextDefaultProps;var FormHiddenDefaultProps = {};var css_248z$i = ".FormHidden {\n  display: none !important;\n}";
-styleInject(css_248z$i);var FormHidden = React__default["default"].forwardRef(function (_a, ref) {
-    var className = _a.className, props = __rest$3(_a, ["className"]);
-    return (React__default["default"].createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormHidden'), type: 'hidden', variant: 'standard' }, props)));
+styleInject(css_248z$i);var FormHidden = React.forwardRef(function (_a, ref) {
+    var className = _a.className, props = __rest$4(_a, ["className"]);
+    return (React.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormHidden'), type: 'hidden', variant: 'standard' }, props)));
 });
 FormHidden.displayName = 'FormHidden';
-FormHidden.defaultProps = FormHiddenDefaultProps;var FormTagDefaultProps = __assign$6(__assign$6({}, FormTextDefaultProps), { value: [], clear: true, formValueSeparator: ',' });var css_248z$h = ".FormTag.FormTextField {\n  min-width: 200px;\n}";
-styleInject(css_248z$h);var FormTag = React__default["default"].forwardRef(function (_a, ref) {
+FormHidden.defaultProps = FormHiddenDefaultProps;var FormTagDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { value: [], clear: true, formValueSeparator: ',' });var css_248z$h = ".FormTag.FormTextField {\n  min-width: 200px;\n}";
+styleInject(css_248z$h);var FormTag = React.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
-    var className = _a.className, name = _a.name, initValue = _a.value, exceptValue = _a.exceptValue, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, disabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, initHelperText = _a.helperText, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest$3(_a, ["className", "name", "value", "exceptValue", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
-    var _b = useFormState(), formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit, otherFormState = __rest$3(_b, ["fullWidth", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
+    var className = _a.className, name = _a.name, initValue = _a.value, exceptValue = _a.exceptValue, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, disabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, initHelperText = _a.helperText, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest$4(_a, ["className", "name", "value", "exceptValue", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
+    var _b = useFormState(), formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit, otherFormState = __rest$4(_b, ["fullWidth", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
     // State - FormState -----------------------------------------------------------------------------------------------
     var fullWidth = useAutoUpdateState$1(initFullWidth == null ? formFullWidth : initFullWidth)[0];
     // Function - getFinalValue ----------------------------------------------------------------------------------------
@@ -2522,7 +2596,7 @@ styleInject(css_248z$h);var FormTag = React__default["default"].forwardRef(funct
     // Function - getCommands ------------------------------------------------------------------------------------------
     var getCommands = React.useCallback(function (baseCommands) {
         var lastValue = value;
-        return __assign$6(__assign$6(__assign$6({}, baseCommands), { getReset: function () { return getFinalValue(initValue); }, reset: function () {
+        return __assign$7(__assign$7(__assign$7({}, baseCommands), { getReset: function () { return getFinalValue(initValue); }, reset: function () {
                 lastValue = getFinalValue(initValue);
                 setValue(lastValue);
             }, getValue: function () { return lastValue; }, setValue: function (newValue) {
@@ -2601,27 +2675,27 @@ styleInject(css_248z$h);var FormTag = React__default["default"].forwardRef(funct
             onBlur(e);
     }, [appendTag, inputValue, onBlur]);
     var handleRenderTags = React.useCallback(function (tags) {
-        return tags.map(function (tag) { return (React__default["default"].createElement(material.Chip, { className: 'MuiAutocomplete-tag', key: tag, label: tag, size: 'small', disabled: readOnly || disabled, onDelete: readOnly || disabled ? undefined : function () { return removeTag(tag); } })); });
+        return tags.map(function (tag) { return (React.createElement(material.Chip, { className: 'MuiAutocomplete-tag', key: tag, label: tag, size: 'small', disabled: readOnly || disabled, onDelete: readOnly || disabled ? undefined : function () { return removeTag(tag); } })); });
     }, [disabled, readOnly, removeTag]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormContextProvider, { value: __assign$6({ fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, 
+    return (React.createElement(FormContextProvider, { value: __assign$7({ fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, 
             // eslint-disable-next-line
             onValueChange: function () { }, 
             // eslint-disable-next-line
             onValueChangeByUser: function () { }, 
             // eslint-disable-next-line
             onRequestSearchSubmit: function () { } }, otherFormState) },
-        React__default["default"].createElement(material.Autocomplete, { options: [], multiple: true, freeSolo: true, value: value, readOnly: readOnly, disableClearable: true, disabled: disabled, renderTags: handleRenderTags, inputValue: inputValue, style: { display: fullWidth ? 'block' : 'inline-block', width: fullWidth ? '100%' : undefined }, renderInput: function (params) {
+        React.createElement(material.Autocomplete, { options: [], multiple: true, freeSolo: true, value: value, readOnly: readOnly, disableClearable: true, disabled: disabled, renderTags: handleRenderTags, inputValue: inputValue, style: { display: fullWidth ? 'block' : 'inline-block', width: fullWidth ? '100%' : undefined }, renderInput: function (params) {
                 var _a;
-                var renderProps = __assign$6({}, props);
-                renderProps.InputLabelProps = __assign$6(__assign$6({}, renderProps.InputLabelProps), { htmlFor: params.InputLabelProps.htmlFor, id: params.InputLabelProps.id });
-                renderProps.InputProps = __assign$6(__assign$6({}, renderProps.InputProps), { className: classNames$1((_a = renderProps.InputProps) === null || _a === void 0 ? void 0 : _a.className, params.InputProps.className), ref: params.InputProps.ref });
+                var renderProps = __assign$7({}, props);
+                renderProps.InputLabelProps = __assign$7(__assign$7({}, renderProps.InputLabelProps), { htmlFor: params.InputLabelProps.htmlFor, id: params.InputLabelProps.id });
+                renderProps.InputProps = __assign$7(__assign$7({}, renderProps.InputProps), { className: classNames$1((_a = renderProps.InputProps) === null || _a === void 0 ? void 0 : _a.className, params.InputProps.className), ref: params.InputProps.ref });
                 if (notEmpty(params.InputProps.startAdornment)) {
-                    renderProps.InputProps.startAdornment = (React__default["default"].createElement(React__default["default"].Fragment, null,
+                    renderProps.InputProps.startAdornment = (React.createElement(React.Fragment, null,
                         renderProps.InputProps.startAdornment,
                         params.InputProps.startAdornment));
                 }
-                renderProps.inputProps = __assign$6(__assign$6({}, renderProps.inputProps), params.inputProps);
+                renderProps.inputProps = __assign$7(__assign$7({}, renderProps.inputProps), params.inputProps);
                 renderProps.inputProps.className = classNames$1(renderProps.inputProps.className, 'FormTag-Input');
                 renderProps.inputProps.readOnly = readOnly;
                 if (readOnly) {
@@ -2631,32 +2705,32 @@ styleInject(css_248z$h);var FormTag = React__default["default"].forwardRef(funct
                 if (readOnly) {
                     renderProps.inputProps.className = classNames$1(renderProps.inputProps.className, 'Mui-disabled');
                 }
-                return (React__default["default"].createElement(FormText, __assign$6({}, renderProps, { ref: handleRef, name: name, className: classNames$1(className, 'FormValueItem', 'FormTag'), error: error, disabled: disabled, fullWidth: fullWidth, required: required, value: inputValue, exceptValue: exceptValue, helperText: helperText, onKeyDown: handleInputKeyDown, onChange: handleInputChange, onBlur: handleBlur })));
+                return (React.createElement(FormText, __assign$7({}, renderProps, { ref: handleRef, name: name, className: classNames$1(className, 'FormValueItem', 'FormTag'), error: error, disabled: disabled, fullWidth: fullWidth, required: required, value: inputValue, exceptValue: exceptValue, helperText: helperText, onKeyDown: handleInputKeyDown, onChange: handleInputChange, onBlur: handleBlur })));
             } })));
 });
 FormTag.displayName = 'FormTag';
-FormTag.defaultProps = FormTagDefaultProps;var FormEmailDefaultProps = __assign$6(__assign$6({}, FormTextDefaultProps), { validPattern: /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/g });var FormEmail = React__default["default"].forwardRef(function (_a, ref) {
-    var className = _a.className, props = __rest$3(_a, ["className"]);
-    return React__default["default"].createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormEmail'), type: 'email' }, props));
+FormTag.defaultProps = FormTagDefaultProps;var FormEmailDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/g });var FormEmail = React.forwardRef(function (_a, ref) {
+    var className = _a.className, props = __rest$4(_a, ["className"]);
+    return React.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormEmail'), type: 'email' }, props));
 });
 FormEmail.displayName = 'FormEmail';
-FormEmail.defaultProps = FormEmailDefaultProps;var FormPasswordDefaultProps = __assign$6(__assign$6({}, FormTextFieldDefaultProps), { clear: false, eye: true });var css_248z$g = ".FormPassword .eye-icon-button-wrap {\n  visibility: hidden;\n}\n.FormPassword.variant-filled .eye-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormPassword:hover .eye-icon-button-wrap.show,\n.FormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show {\n  visibility: visible;\n}";
+FormEmail.defaultProps = FormEmailDefaultProps;var FormPasswordDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: false, eye: true });var css_248z$g = ".FormPassword .eye-icon-button-wrap {\n  visibility: hidden;\n}\n.FormPassword.variant-filled .eye-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormPassword:hover .eye-icon-button-wrap.show,\n.FormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show {\n  visibility: visible;\n}";
 styleInject(css_248z$g);var StyledEyeInputAdornment = material.styled(material.InputAdornment)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  visibility: hidden;\n"], ["\n  visibility: hidden;\n"])));
-var FormPassword = React__default["default"].forwardRef(function (_a, ref) {
+var FormPassword = React.forwardRef(function (_a, ref) {
     // State -----------------------------------------------------------------------------------------------------------
-    var className = _a.className, initMuiInputProps = _a.InputProps, eye = _a.eye, onChange = _a.onChange, props = __rest$3(_a, ["className", "InputProps", "eye", "onChange"]);
+    var className = _a.className, initMuiInputProps = _a.InputProps, eye = _a.eye, onChange = _a.onChange, props = __rest$4(_a, ["className", "InputProps", "eye", "onChange"]);
     var _b = React.useState('password'), type = _b[0], setType = _b[1];
     var _c = React.useState(notEmpty(props.value)), showEye = _c[0], setShowEye = _c[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var muiInputProps = React.useMemo(function () {
         if (eye) {
-            var newProps = __assign$6({}, initMuiInputProps);
-            newProps.endAdornment = (React__default["default"].createElement(React__default["default"].Fragment, null,
-                React__default["default"].createElement(StyledEyeInputAdornment, { position: 'end', className: classNames$1('eye-icon-button-wrap', showEye && 'show') },
-                    React__default["default"].createElement(material.IconButton, { size: 'small', tabIndex: -1, onClick: function () {
+            var newProps = __assign$7({}, initMuiInputProps);
+            newProps.endAdornment = (React.createElement(React.Fragment, null,
+                React.createElement(StyledEyeInputAdornment, { position: 'end', className: classNames$1('eye-icon-button-wrap', showEye && 'show') },
+                    React.createElement(material.IconButton, { size: 'small', tabIndex: -1, onClick: function () {
                             setType(type === 'password' ? 'text' : 'password');
                         } },
-                        React__default["default"].createElement(material.Icon, { fontSize: 'inherit' }, type === 'password' ? 'visibility' : 'visibility_off'))),
+                        React.createElement(material.Icon, { fontSize: 'inherit' }, type === 'password' ? 'visibility' : 'visibility_off'))),
                 newProps.endAdornment));
             return newProps;
         }
@@ -2671,13 +2745,13 @@ var FormPassword = React__default["default"].forwardRef(function (_a, ref) {
             onChange(value);
     }, [onChange]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormPassword'), onChange: handleChange, type: type, InputProps: muiInputProps }, props)));
+    return (React.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormPassword'), onChange: handleChange, type: type, InputProps: muiInputProps }, props)));
 });
 FormPassword.displayName = 'FormPassword';
 FormPassword.defaultProps = FormPasswordDefaultProps;
-var templateObject_1;var FormTelDefaultProps = __assign$6(__assign$6({}, FormTextDefaultProps), { validPattern: /(^([0-9]{2,3})([0-9]{3,4})([0-9]{4})$)|(^([0-9]{2,3})-([0-9]{3,4})-([0-9]{4})$)|(^([0-9]{4})-([0-9]{4})$)|(^\+(?:[-]?[0-9]){8,}$)/ });var FormTel = React__default["default"].forwardRef(function (_a, ref) {
+var templateObject_1;var FormTelDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /(^([0-9]{2,3})([0-9]{3,4})([0-9]{4})$)|(^([0-9]{2,3})-([0-9]{3,4})-([0-9]{4})$)|(^([0-9]{4})-([0-9]{4})$)|(^\+(?:[-]?[0-9]){8,}$)/ });var FormTel = React.forwardRef(function (_a, ref) {
     // Event Handler ---------------------------------------------------------------------------------------------------
-    var className = _a.className, onValue = _a.onValue, props = __rest$3(_a, ["className", "onValue"]);
+    var className = _a.className, onValue = _a.onValue, props = __rest$4(_a, ["className", "onValue"]);
     var handleOnValue = React.useCallback(function (value) {
         var newValue = value;
         if (newValue && notEmpty(newValue)) {
@@ -2687,7 +2761,7 @@ var templateObject_1;var FormTelDefaultProps = __assign$6(__assign$6({}, FormTex
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormTel'), onValue: handleOnValue, maxLength: 13 }, props)));
+    return (React.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormTel'), onValue: handleOnValue, maxLength: 13 }, props)));
 });
 FormTel.displayName = 'FormTel';
 FormTel.defaultProps = FormTelDefaultProps;
@@ -2757,1400 +2831,1191 @@ function autoDash$2(tel) {
         }
     }
     return tmp;
-}var FormMobileDefaultProps = __assign$6(__assign$6({}, FormTelDefaultProps), { validPattern: /(^(01(?:0|1|[6-9]))([0-9]{3,4})([0-9]{4,4})$)|(^(01(?:0|1|[6-9]))-([0-9]{3,4})-([0-9]{4,4})$)|(^\+(?:[-]?[0-9]){8,}$)/ });var FormMobile = React__default["default"].forwardRef(function (_a, ref) {
-    var className = _a.className, props = __rest$3(_a, ["className"]);
-    return React__default["default"].createElement(FormTel, __assign$6({ ref: ref, className: classNames$1(className, 'FormMobile') }, props));
+}var FormMobileDefaultProps = __assign$7(__assign$7({}, FormTelDefaultProps), { validPattern: /(^(01(?:0|1|[6-9]))([0-9]{3,4})([0-9]{4,4})$)|(^(01(?:0|1|[6-9]))-([0-9]{3,4})-([0-9]{4,4})$)|(^\+(?:[-]?[0-9]){8,}$)/ });var FormMobile = React.forwardRef(function (_a, ref) {
+    var className = _a.className, props = __rest$4(_a, ["className"]);
+    return React.createElement(FormTel, __assign$7({ ref: ref, className: classNames$1(className, 'FormMobile') }, props));
 });
 FormMobile.displayName = 'FormMobile';
 FormMobile.defaultProps = FormMobileDefaultProps;/**
- * react-number-format - 4.9.4
+ * react-number-format - 5.3.1
  * Author : Sudhanshu Yadav
- * Copyright (c) 2016, 2022 to Sudhanshu Yadav, released under the MIT license.
+ * Copyright (c) 2016, 2023 to Sudhanshu Yadav, released under the MIT license.
  * https://github.com/s-yadav/react-number-format
  */
 
-//     
 
-                                                               
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+function __rest$2(s, e) {
+    var t = {};
+    for (var p in s) { if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        { t[p] = s[p]; } }
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        { for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                { t[p[i]] = s[p[i]]; }
+        } }
+    return t;
+}
+
+var SourceType;
+(function (SourceType) {
+    SourceType["event"] = "event";
+    SourceType["props"] = "prop";
+})(SourceType || (SourceType = {}));
 
 // basic noop function
-function noop() {}
-function returnTrue() {
-  return true;
-}
+function noop() { }
+function memoizeOnce(cb) {
+    var lastArgs;
+    var lastValue = undefined;
+    return function () {
+        var args = [], len = arguments.length;
+        while ( len-- ) args[ len ] = arguments[ len ];
 
-function charIsNumber(char         ) {
-  return !!(char || '').match(/\d/);
+        if (lastArgs &&
+            args.length === lastArgs.length &&
+            args.every(function (value, index) { return value === lastArgs[index]; })) {
+            return lastValue;
+        }
+        lastArgs = args;
+        lastValue = cb.apply(void 0, args);
+        return lastValue;
+    };
 }
-
-function isNil(val     ) {
-  return val === null || val === undefined;
+function charIsNumber(char) {
+    return !!(char || '').match(/\d/);
 }
-
-function escapeRegExp(str        ) {
-  return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
+function isNil(val) {
+    return val === null || val === undefined;
 }
-
-function getThousandsGroupRegex(thousandsGroupStyle        ) {
-  switch (thousandsGroupStyle) {
-    case 'lakh':
-      return /(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/g;
-    case 'wan':
-      return /(\d)(?=(\d{4})+(?!\d))/g;
-    case 'thousand':
-    default:
-      return /(\d)(?=(\d{3})+(?!\d))/g;
-  }
+function isNanValue(val) {
+    return typeof val === 'number' && isNaN(val);
 }
-
-function applyThousandSeparator(
-  str        ,
-  thousandSeparator        ,
-  thousandsGroupStyle        
-) {
-  var thousandsGroupRegex = getThousandsGroupRegex(thousandsGroupStyle);
-  var index = str.search(/[1-9]/);
-  index = index === -1 ? str.length : index;
-  return (
-    str.substring(0, index) +
-    str.substring(index, str.length).replace(thousandsGroupRegex, '$1' + thousandSeparator)
-  );
+function isNotValidValue(val) {
+    return isNil(val) || isNanValue(val) || (typeof val === 'number' && !isFinite(val));
 }
+function escapeRegExp(str) {
+    return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
+}
+function getThousandsGroupRegex(thousandsGroupStyle) {
+    switch (thousandsGroupStyle) {
+        case 'lakh':
+            return /(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/g;
+        case 'wan':
+            return /(\d)(?=(\d{4})+(?!\d))/g;
+        case 'thousand':
+        default:
+            return /(\d)(?=(\d{3})+(?!\d))/g;
+    }
+}
+function applyThousandSeparator(str, thousandSeparator, thousandsGroupStyle) {
+    var thousandsGroupRegex = getThousandsGroupRegex(thousandsGroupStyle);
+    var index = str.search(/[1-9]/);
+    index = index === -1 ? str.length : index;
+    return (str.substring(0, index) +
+        str.substring(index, str.length).replace(thousandsGroupRegex, '$1' + thousandSeparator));
+}
+function usePersistentCallback(cb) {
+    var callbackRef = React.useRef(cb);
+    // keep the callback ref upto date
+    callbackRef.current = cb;
+    /**
+     * initialize a persistent callback which never changes
+     * through out the component lifecycle
+     */
+    var persistentCbRef = React.useRef(function () {
+        var args = [], len = arguments.length;
+        while ( len-- ) args[ len ] = arguments[ len ];
 
+        return callbackRef.current.apply(callbackRef, args);
+    });
+    return persistentCbRef.current;
+}
 //spilt a float number into different parts beforeDecimal, afterDecimal, and negation
-function splitDecimal(numStr        , allowNegative) {
-  if ( allowNegative === void 0 ) allowNegative          = true;
+function splitDecimal(numStr, allowNegative) {
+    if ( allowNegative === void 0 ) allowNegative = true;
 
-  var hasNagation = numStr[0] === '-';
-  var addNegation = hasNagation && allowNegative;
-  numStr = numStr.replace('-', '');
-
-  var parts = numStr.split('.');
-  var beforeDecimal = parts[0];
-  var afterDecimal = parts[1] || '';
-
-  return {
-    beforeDecimal: beforeDecimal,
-    afterDecimal: afterDecimal,
-    hasNagation: hasNagation,
-    addNegation: addNegation,
-  };
+    var hasNegation = numStr[0] === '-';
+    var addNegation = hasNegation && allowNegative;
+    numStr = numStr.replace('-', '');
+    var parts = numStr.split('.');
+    var beforeDecimal = parts[0];
+    var afterDecimal = parts[1] || '';
+    return {
+        beforeDecimal: beforeDecimal,
+        afterDecimal: afterDecimal,
+        hasNegation: hasNegation,
+        addNegation: addNegation,
+    };
 }
-
-function fixLeadingZero(numStr         ) {
-  if (!numStr) { return numStr; }
-  var isNegative = numStr[0] === '-';
-  if (isNegative) { numStr = numStr.substring(1, numStr.length); }
-  var parts = numStr.split('.');
-  var beforeDecimal = parts[0].replace(/^0+/, '') || '0';
-  var afterDecimal = parts[1] || '';
-
-  return ("" + (isNegative ? '-' : '') + beforeDecimal + (afterDecimal ? ("." + afterDecimal) : ''));
+function fixLeadingZero(numStr) {
+    if (!numStr)
+        { return numStr; }
+    var isNegative = numStr[0] === '-';
+    if (isNegative)
+        { numStr = numStr.substring(1, numStr.length); }
+    var parts = numStr.split('.');
+    var beforeDecimal = parts[0].replace(/^0+/, '') || '0';
+    var afterDecimal = parts[1] || '';
+    return ("" + (isNegative ? '-' : '') + beforeDecimal + (afterDecimal ? ("." + afterDecimal) : ''));
 }
-
 /**
  * limit decimal numbers to given scale
  * Not used .fixedTo because that will break with big numbers
  */
-function limitToScale(numStr        , scale        , fixedDecimalScale         ) {
-  var str = '';
-  var filler = fixedDecimalScale ? '0' : '';
-  for (var i = 0; i <= scale - 1; i++) {
-    str += numStr[i] || filler;
-  }
-  return str;
+function limitToScale(numStr, scale, fixedDecimalScale) {
+    var str = '';
+    var filler = fixedDecimalScale ? '0' : '';
+    for (var i = 0; i <= scale - 1; i++) {
+        str += numStr[i] || filler;
+    }
+    return str;
 }
-
 function repeat(str, count) {
-  return Array(count + 1).join(str);
+    return Array(count + 1).join(str);
 }
-
 function toNumericString(num) {
-  num += ''; // typecast number to string
-
-  // store the sign and remove it from the number.
-  var sign = num[0] === '-' ? '-' : '';
-  if (sign) { num = num.substring(1); }
-
-  // split the number into cofficient and exponent
-  var ref = num.split(/[eE]/g);
-  var coefficient = ref[0];
-  var exponent = ref[1];
-
-  // covert exponent to number;
-  exponent = Number(exponent);
-
-  // if there is no exponent part or its 0, return the coffiecient with sign
-  if (!exponent) { return sign + coefficient; }
-
-  coefficient = coefficient.replace('.', '');
-
-  /**
-   * for scientific notation the current decimal index will be after first number (index 0)
-   * So effective decimal index will always be 1 + exponent value
-   */
-  var decimalIndex = 1 + exponent;
-
-  var coffiecientLn = coefficient.length;
-
-  if (decimalIndex < 0) {
-    // if decimal index is less then 0 add preceding 0s
-    // add 1 as join will have
-    coefficient = '0.' + repeat('0', Math.abs(decimalIndex)) + coefficient;
-  } else if (decimalIndex >= coffiecientLn) {
-    // if decimal index is less then 0 add leading 0s
-    coefficient = coefficient + repeat('0', decimalIndex - coffiecientLn);
-  } else {
-    // else add decimal point at proper index
-    coefficient =
-      (coefficient.substring(0, decimalIndex) || '0') + '.' + coefficient.substring(decimalIndex);
-  }
-
-  return sign + coefficient;
+    var _num = num + ''; // typecast number to string
+    // store the sign and remove it from the number.
+    var sign = _num[0] === '-' ? '-' : '';
+    if (sign)
+        { _num = _num.substring(1); }
+    // split the number into cofficient and exponent
+    var ref = _num.split(/[eE]/g);
+    var coefficient = ref[0];
+    var exponent = ref[1];
+    // covert exponent to number;
+    exponent = Number(exponent);
+    // if there is no exponent part or its 0, return the coffiecient with sign
+    if (!exponent)
+        { return sign + coefficient; }
+    coefficient = coefficient.replace('.', '');
+    /**
+     * for scientific notation the current decimal index will be after first number (index 0)
+     * So effective decimal index will always be 1 + exponent value
+     */
+    var decimalIndex = 1 + exponent;
+    var coffiecientLn = coefficient.length;
+    if (decimalIndex < 0) {
+        // if decimal index is less then 0 add preceding 0s
+        // add 1 as join will have
+        coefficient = '0.' + repeat('0', Math.abs(decimalIndex)) + coefficient;
+    }
+    else if (decimalIndex >= coffiecientLn) {
+        // if decimal index is less then 0 add leading 0s
+        coefficient = coefficient + repeat('0', decimalIndex - coffiecientLn);
+    }
+    else {
+        // else add decimal point at proper index
+        coefficient =
+            (coefficient.substring(0, decimalIndex) || '0') + '.' + coefficient.substring(decimalIndex);
+    }
+    return sign + coefficient;
 }
-
 /**
  * This method is required to round prop value to given scale.
  * Not used .round or .fixedTo because that will break with big numbers
  */
-function roundToPrecision(numStr        , scale        , fixedDecimalScale         ) {
-  //if number is empty don't do anything return empty string
-  if (['', '-'].indexOf(numStr) !== -1) { return numStr; }
-
-  var shoudHaveDecimalSeparator = numStr.indexOf('.') !== -1 && scale;
-  var ref = splitDecimal(numStr);
-  var beforeDecimal = ref.beforeDecimal;
-  var afterDecimal = ref.afterDecimal;
-  var hasNagation = ref.hasNagation;
-  var floatValue = parseFloat(("0." + (afterDecimal || '0')));
-  var floatValueStr =
-    afterDecimal.length <= scale ? ("0." + afterDecimal) : floatValue.toFixed(scale);
-  var roundedDecimalParts = floatValueStr.split('.');
-  var intPart = beforeDecimal
-    .split('')
-    .reverse()
-    .reduce(function (roundedStr, current, idx) {
-      if (roundedStr.length > idx) {
-        return (
-          (Number(roundedStr[0]) + Number(current)).toString() +
-          roundedStr.substring(1, roundedStr.length)
-        );
-      }
-      return current + roundedStr;
+function roundToPrecision(numStr, scale, fixedDecimalScale) {
+    //if number is empty don't do anything return empty string
+    if (['', '-'].indexOf(numStr) !== -1)
+        { return numStr; }
+    var shouldHaveDecimalSeparator = (numStr.indexOf('.') !== -1 || fixedDecimalScale) && scale;
+    var ref = splitDecimal(numStr);
+    var beforeDecimal = ref.beforeDecimal;
+    var afterDecimal = ref.afterDecimal;
+    var hasNegation = ref.hasNegation;
+    var floatValue = parseFloat(("0." + (afterDecimal || '0')));
+    var floatValueStr = afterDecimal.length <= scale ? ("0." + afterDecimal) : floatValue.toFixed(scale);
+    var roundedDecimalParts = floatValueStr.split('.');
+    var intPart = beforeDecimal
+        .split('')
+        .reverse()
+        .reduce(function (roundedStr, current, idx) {
+        if (roundedStr.length > idx) {
+            return ((Number(roundedStr[0]) + Number(current)).toString() +
+                roundedStr.substring(1, roundedStr.length));
+        }
+        return current + roundedStr;
     }, roundedDecimalParts[0]);
-
-  var decimalPart = limitToScale(
-    roundedDecimalParts[1] || '',
-    Math.min(scale, afterDecimal.length),
-    fixedDecimalScale
-  );
-  var negation = hasNagation ? '-' : '';
-  var decimalSeparator = shoudHaveDecimalSeparator ? '.' : '';
-  return ("" + negation + intPart + decimalSeparator + decimalPart);
+    var decimalPart = limitToScale(roundedDecimalParts[1] || '', scale, fixedDecimalScale);
+    var negation = hasNegation ? '-' : '';
+    var decimalSeparator = shouldHaveDecimalSeparator ? '.' : '';
+    return ("" + negation + intPart + decimalSeparator + decimalPart);
 }
-
 /** set the caret positon in an input field **/
-function setCaretPosition(el                  , caretPos        ) {
-  el.value = el.value;
-  // ^ this is used to not only get 'focus', but
-  // to make sure we don't have it everything -selected-
-  // (it causes an issue in chrome, and having it doesn't hurt any other browser)
-  if (el !== null) {
-    if (el.createTextRange) {
-      var range = el.createTextRange();
-      range.move('character', caretPos);
-      range.select();
-      return true;
+function setCaretPosition(el, caretPos) {
+    el.value = el.value;
+    // ^ this is used to not only get 'focus', but
+    // to make sure we don't have it everything -selected-
+    // (it causes an issue in chrome, and having it doesn't hurt any other browser)
+    if (el !== null) {
+        /* @ts-ignore */
+        if (el.createTextRange) {
+            /* @ts-ignore */
+            var range = el.createTextRange();
+            range.move('character', caretPos);
+            range.select();
+            return true;
+        }
+        // (el.selectionStart === 0 added for Firefox bug)
+        if (el.selectionStart || el.selectionStart === 0) {
+            el.focus();
+            el.setSelectionRange(caretPos, caretPos);
+            return true;
+        }
+        // fail city, fortunately this never happens (as far as I've tested) :)
+        el.focus();
+        return false;
     }
-    // (el.selectionStart === 0 added for Firefox bug)
-    if (el.selectionStart || el.selectionStart === 0) {
-      el.focus();
-      el.setSelectionRange(caretPos, caretPos);
-      return true;
+}
+var findChangeRange = memoizeOnce(function (prevValue, newValue) {
+    var i = 0, j = 0;
+    var prevLength = prevValue.length;
+    var newLength = newValue.length;
+    while (prevValue[i] === newValue[i] && i < prevLength)
+        { i++; }
+    //check what has been changed from last
+    while (prevValue[prevLength - 1 - j] === newValue[newLength - 1 - j] &&
+        newLength - j > i &&
+        prevLength - j > i) {
+        j++;
     }
-
-    // fail city, fortunately this never happens (as far as I've tested) :)
-    el.focus();
-    return false;
-  }
-}
-
-/**
-  Given previous value and newValue it returns the index
-  start - end to which values have changed.
-  This function makes assumption about only consecutive
-  characters are changed which is correct assumption for caret input.
-*/
-function findChangedIndex(prevValue        , newValue        ) {
-  var i = 0,
-    j = 0;
-  var prevLength = prevValue.length;
-  var newLength = newValue.length;
-  while (prevValue[i] === newValue[i] && i < prevLength) { i++; }
-
-  //check what has been changed from last
-  while (
-    prevValue[prevLength - 1 - j] === newValue[newLength - 1 - j] &&
-    newLength - j > i &&
-    prevLength - j > i
-  ) {
-    j++;
-  }
-
-  return { start: i, end: prevLength - j };
-}
-
+    return {
+        from: { start: i, end: prevLength - j },
+        to: { start: i, end: newLength - j },
+    };
+});
 /*
   Returns a number whose value is limited to the given range
 */
-function clamp(num        , min        , max        ) {
-  return Math.min(Math.max(num, min), max);
+function clamp(num, min, max) {
+    return Math.min(Math.max(num, min), max);
 }
-
-function getCurrentCaretPosition(el                  ) {
-  /*Max of selectionStart and selectionEnd is taken for the patch of pixel and other mobile device caret bug*/
-  return Math.max(el.selectionStart, el.selectionEnd);
+function geInputCaretPosition(el) {
+    /*Max of selectionStart and selectionEnd is taken for the patch of pixel and other mobile device caret bug*/
+    return Math.max(el.selectionStart, el.selectionEnd);
 }
-
-function addInputMode(format                                   ) {
-  return (
-    format ||
-    (typeof navigator !== 'undefined' &&
-      !(navigator.platform && /iPhone|iPod/.test(navigator.platform)))
-  );
+function addInputMode() {
+    return (typeof navigator !== 'undefined' &&
+        !(navigator.platform && /iPhone|iPod/.test(navigator.platform)));
 }
-
-//     
-function objectWithoutProperties (obj, exclude) { var target = {}; for (var k in obj) if (Object.prototype.hasOwnProperty.call(obj, k) && exclude.indexOf(k) === -1) target[k] = obj[k]; return target; }
-
-var defaultProps = {
-  displayType: 'input',
-  decimalSeparator: '.',
-  thousandsGroupStyle: 'thousand',
-  fixedDecimalScale: false,
-  prefix: '',
-  suffix: '',
-  allowNegative: true,
-  allowEmptyFormatting: false,
-  allowLeadingZeros: false,
-  isNumericString: false,
-  type: 'text',
-  onValueChange: noop,
-  onChange: noop,
-  onKeyDown: noop,
-  onMouseUp: noop,
-  onFocus: noop,
-  onBlur: noop,
-  isAllowed: returnTrue,
-};
-var NumberFormat = /*@__PURE__*/(function (superclass) {
-  function NumberFormat(props        ) {
-    superclass.call(this, props);
-    var defaultValue = props.defaultValue;
-
-    //validate props
-    this.validateProps();
-
-    var formattedValue = this.formatValueProp(defaultValue);
-
-    this.state = {
-      value: formattedValue,
-      numAsString: this.removeFormatting(formattedValue),
-      mounted: false,
+function getDefaultChangeMeta(value) {
+    return {
+        from: {
+            start: 0,
+            end: 0,
+        },
+        to: {
+            start: 0,
+            end: value.length,
+        },
+        lastValue: '',
     };
+}
+function defaultIsCharacterSame(ref) {
+    var currentValue = ref.currentValue;
+    var formattedValue = ref.formattedValue;
+    var currentValueIndex = ref.currentValueIndex;
+    var formattedValueIndex = ref.formattedValueIndex;
 
-    this.selectionBeforeInput = {
-      selectionStart: 0,
-      selectionEnd: 0,
-    };
+    return currentValue[currentValueIndex] === formattedValue[formattedValueIndex];
+}
+function getCaretPosition(newFormattedValue, lastFormattedValue, curValue, curCaretPos, boundary, isValidInputCharacter, 
+/**
+ * format function can change the character, the caret engine relies on mapping old value and new value
+ * In such case if character is changed, parent can tell which chars are equivalent
+ * Some example, all allowedDecimalCharacters are updated to decimalCharacters, 2nd case if user is coverting
+ * number to different numeric system.
+ */
+isCharacterSame) {
+    if ( isCharacterSame === void 0 ) isCharacterSame = defaultIsCharacterSame;
 
-    this.onChange = this.onChange.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    this.onFocus = this.onFocus.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-  }
+    /**
+     * if something got inserted on empty value, add the formatted character before the current value,
+     * This is to avoid the case where typed character is present on format characters
+     */
+    var firstAllowedPosition = boundary.findIndex(function (b) { return b; });
+    var prefixFormat = newFormattedValue.slice(0, firstAllowedPosition);
+    if (!lastFormattedValue && !curValue.startsWith(prefixFormat)) {
+        lastFormattedValue = prefixFormat;
+        curValue = prefixFormat + curValue;
+        curCaretPos = curCaretPos + prefixFormat.length;
+    }
+    var curValLn = curValue.length;
+    var formattedValueLn = newFormattedValue.length;
+    // create index map
+    var addedIndexMap = {};
+    var indexMap = new Array(curValLn);
+    for (var i = 0; i < curValLn; i++) {
+        indexMap[i] = -1;
+        for (var j = 0, jLn = formattedValueLn; j < jLn; j++) {
+            var isCharSame = isCharacterSame({
+                currentValue: curValue,
+                lastValue: lastFormattedValue,
+                formattedValue: newFormattedValue,
+                currentValueIndex: i,
+                formattedValueIndex: j,
+            });
+            if (isCharSame && addedIndexMap[j] !== true) {
+                indexMap[i] = j;
+                addedIndexMap[j] = true;
+                break;
+            }
+        }
+    }
+    /**
+     * For current caret position find closest characters (left and right side)
+     * which are properly mapped to formatted value.
+     * The idea is that the new caret position will exist always in the boundary of
+     * that mapped index
+     */
+    var pos = curCaretPos;
+    while (pos < curValLn && (indexMap[pos] === -1 || !isValidInputCharacter(curValue[pos]))) {
+        pos++;
+    }
+    // if the caret position is on last keep the endIndex as last for formatted value
+    var endIndex = pos === curValLn || indexMap[pos] === -1 ? formattedValueLn : indexMap[pos];
+    pos = curCaretPos - 1;
+    while (pos > 0 && indexMap[pos] === -1)
+        { pos--; }
+    var startIndex = pos === -1 || indexMap[pos] === -1 ? 0 : indexMap[pos] + 1;
+    /**
+     * case where a char is added on suffix and removed from middle, example 2sq345 becoming $2,345 sq
+     * there is still a mapping but the order of start index and end index is changed
+     */
+    if (startIndex > endIndex)
+        { return endIndex; }
+    /**
+     * given the current caret position if it closer to startIndex
+     * keep the new caret position on start index or keep it closer to endIndex
+     */
+    return curCaretPos - startIndex < endIndex - curCaretPos ? startIndex : endIndex;
+}
+/* This keeps the caret within typing area so people can't type in between prefix or suffix or format characters */
+function getCaretPosInBoundary(value, caretPos, boundary, direction) {
+    var valLn = value.length;
+    // clamp caret position to [0, value.length]
+    caretPos = clamp(caretPos, 0, valLn);
+    if (direction === 'left') {
+        while (caretPos >= 0 && !boundary[caretPos])
+            { caretPos--; }
+        // if we don't find any suitable caret position on left, set it on first allowed position
+        if (caretPos === -1)
+            { caretPos = boundary.indexOf(true); }
+    }
+    else {
+        while (caretPos <= valLn && !boundary[caretPos])
+            { caretPos++; }
+        // if we don't find any suitable caret position on right, set it on last allowed position
+        if (caretPos > valLn)
+            { caretPos = boundary.lastIndexOf(true); }
+    }
+    // if we still don't find caret position, set it at the end of value
+    if (caretPos === -1)
+        { caretPos = valLn; }
+    return caretPos;
+}
+function caretUnknownFormatBoundary(formattedValue) {
+    var boundaryAry = Array.from({ length: formattedValue.length + 1 }).map(function () { return true; });
+    for (var i = 0, ln = boundaryAry.length; i < ln; i++) {
+        // consider caret to be in boundary if it is before or after numeric value
+        boundaryAry[i] = Boolean(charIsNumber(formattedValue[i]) || charIsNumber(formattedValue[i - 1]));
+    }
+    return boundaryAry;
+}
+function useInternalValues(value, defaultValue, valueIsNumericString, format, removeFormatting, onValueChange) {
+    if ( onValueChange === void 0 ) onValueChange = noop;
 
-  if ( superclass ) NumberFormat.__proto__ = superclass;
-  NumberFormat.prototype = Object.create( superclass && superclass.prototype );
-  NumberFormat.prototype.constructor = NumberFormat;
-
-  NumberFormat.prototype.componentDidMount = function componentDidMount () {
-    // set mounted state
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({
-      mounted: true,
+    var getValues = usePersistentCallback(function (value, valueIsNumericString) {
+        var formattedValue, numAsString;
+        if (isNotValidValue(value)) {
+            numAsString = '';
+            formattedValue = '';
+        }
+        else if (typeof value === 'number' || valueIsNumericString) {
+            numAsString = typeof value === 'number' ? toNumericString(value) : value;
+            formattedValue = format(numAsString);
+        }
+        else {
+            numAsString = removeFormatting(value, undefined);
+            formattedValue = format(numAsString);
+        }
+        return { formattedValue: formattedValue, numAsString: numAsString };
     });
-  };
+    var ref = React.useState(function () {
+        return getValues(isNil(value) ? defaultValue : value, valueIsNumericString);
+    });
+    var values = ref[0];
+    var setValues = ref[1];
+    var _onValueChange = function (newValues, sourceInfo) {
+        if (newValues.formattedValue !== values.formattedValue) {
+            setValues({
+                formattedValue: newValues.formattedValue,
+                numAsString: newValues.value,
+            });
+        }
+        // call parent on value change if only if formatted value is changed
+        onValueChange(newValues, sourceInfo);
+    };
+    // if value is switch from controlled to uncontrolled, use the internal state's value to format with new props
+    var _value = value;
+    var _valueIsNumericString = valueIsNumericString;
+    if (isNil(value)) {
+        _value = values.numAsString;
+        _valueIsNumericString = true;
+    }
+    var newValues = getValues(_value, _valueIsNumericString);
+    React.useMemo(function () {
+        setValues(newValues);
+    }, [newValues.formattedValue]);
+    return [values, _onValueChange];
+}
 
-  NumberFormat.prototype.componentDidUpdate = function componentDidUpdate (prevProps        ) {
-    this.updateValueIfRequired(prevProps);
-  };
-
-  NumberFormat.prototype.componentWillUnmount = function componentWillUnmount () {
-    clearTimeout(this.focusTimeout);
-    clearTimeout(this.caretPositionTimeout);
-  };
-
-  NumberFormat.prototype.updateValueIfRequired = function updateValueIfRequired (prevProps        ) {
-    var ref = this;
-    var props = ref.props;
-    var state = ref.state;
-    var focusedElm = ref.focusedElm;
-    var stateValue = state.value;
-    var lastNumStr = state.numAsString; if ( lastNumStr === void 0 ) lastNumStr = '';
-
-    // If only state changed no need to do any thing
-    if (prevProps !== props) {
-      //validate props
-      this.validateProps();
-
-      var lastValueWithNewFormat = this.formatNumString(lastNumStr);
-
-      var formattedValue = isNil(props.value) ? lastValueWithNewFormat : this.formatValueProp();
-      var numAsString = this.removeFormatting(formattedValue);
-
-      var floatValue = parseFloat(numAsString);
-      var lastFloatValue = parseFloat(lastNumStr);
-
-      if (
-        //while typing set state only when float value changes
-        ((!isNaN(floatValue) || !isNaN(lastFloatValue)) && floatValue !== lastFloatValue) ||
-        //can also set state when float value is same and the format props changes
-        lastValueWithNewFormat !== stateValue ||
-        //set state always when not in focus and formatted value is changed
-        (focusedElm === null && formattedValue !== stateValue)
-      ) {
-        this.updateValue({
-          formattedValue: formattedValue,
-          numAsString: numAsString,
-          input: focusedElm,
-          source: 'prop',
-          event: null,
+function defaultRemoveFormatting(value) {
+    return value.replace(/[^0-9]/g, '');
+}
+function defaultFormat(value) {
+    return value;
+}
+function NumberFormatBase(props) {
+    var type = props.type; if ( type === void 0 ) type = 'text';
+    var displayType = props.displayType; if ( displayType === void 0 ) displayType = 'input';
+    var customInput = props.customInput;
+    var renderText = props.renderText;
+    var getInputRef = props.getInputRef;
+    var format = props.format; if ( format === void 0 ) format = defaultFormat;
+    var removeFormatting = props.removeFormatting; if ( removeFormatting === void 0 ) removeFormatting = defaultRemoveFormatting;
+    var defaultValue = props.defaultValue;
+    var valueIsNumericString = props.valueIsNumericString;
+    var onValueChange = props.onValueChange;
+    var isAllowed = props.isAllowed;
+    var onChange = props.onChange; if ( onChange === void 0 ) onChange = noop;
+    var onKeyDown = props.onKeyDown; if ( onKeyDown === void 0 ) onKeyDown = noop;
+    var onMouseUp = props.onMouseUp; if ( onMouseUp === void 0 ) onMouseUp = noop;
+    var onFocus = props.onFocus; if ( onFocus === void 0 ) onFocus = noop;
+    var onBlur = props.onBlur; if ( onBlur === void 0 ) onBlur = noop;
+    var propValue = props.value;
+    var getCaretBoundary = props.getCaretBoundary; if ( getCaretBoundary === void 0 ) getCaretBoundary = caretUnknownFormatBoundary;
+    var isValidInputCharacter = props.isValidInputCharacter; if ( isValidInputCharacter === void 0 ) isValidInputCharacter = charIsNumber;
+    var isCharacterSame = props.isCharacterSame;
+    var otherProps = __rest$2(props, ["type", "displayType", "customInput", "renderText", "getInputRef", "format", "removeFormatting", "defaultValue", "valueIsNumericString", "onValueChange", "isAllowed", "onChange", "onKeyDown", "onMouseUp", "onFocus", "onBlur", "value", "getCaretBoundary", "isValidInputCharacter", "isCharacterSame"]);
+    var ref = useInternalValues(propValue, defaultValue, Boolean(valueIsNumericString), format, removeFormatting, onValueChange);
+    var ref_0 = ref[0];
+    var formattedValue = ref_0.formattedValue;
+    var numAsString = ref_0.numAsString;
+    var onFormattedValueChange = ref[1];
+    var lastUpdatedValue = React.useRef({ formattedValue: formattedValue, numAsString: numAsString });
+    var _onValueChange = function (values, source) {
+        lastUpdatedValue.current = { formattedValue: values.formattedValue, numAsString: values.value };
+        onFormattedValueChange(values, source);
+    };
+    var ref$1 = React.useState(false);
+    var mounted = ref$1[0];
+    var setMounted = ref$1[1];
+    var focusedElm = React.useRef(null);
+    var timeout = React.useRef({
+        setCaretTimeout: null,
+        focusTimeout: null,
+    });
+    React.useEffect(function () {
+        setMounted(true);
+        return function () {
+            clearTimeout(timeout.current.setCaretTimeout);
+            clearTimeout(timeout.current.focusTimeout);
+        };
+    }, []);
+    var _format = format;
+    var getValueObject = function (formattedValue, numAsString) {
+        var floatValue = parseFloat(numAsString);
+        return {
+            formattedValue: formattedValue,
+            value: numAsString,
+            floatValue: isNaN(floatValue) ? undefined : floatValue,
+        };
+    };
+    var setPatchedCaretPosition = function (el, caretPos, currentValue) {
+        // don't reset the caret position when the whole input content is selected
+        if (el.selectionStart === 0 && el.selectionEnd === el.value.length)
+            { return; }
+        /* setting caret position within timeout of 0ms is required for mobile chrome,
+        otherwise browser resets the caret position after we set it
+        We are also setting it without timeout so that in normal browser we don't see the flickering */
+        setCaretPosition(el, caretPos);
+        timeout.current.setCaretTimeout = setTimeout(function () {
+            if (el.value === currentValue && el.selectionStart !== el.selectionEnd) {
+                setCaretPosition(el, caretPos);
+            }
+        }, 0);
+    };
+    /* This keeps the caret within typing area so people can't type in between prefix or suffix */
+    var correctCaretPosition = function (value, caretPos, direction) {
+        return getCaretPosInBoundary(value, caretPos, getCaretBoundary(value), direction);
+    };
+    var getNewCaretPosition = function (inputValue, newFormattedValue, caretPos) {
+        var caretBoundary = getCaretBoundary(newFormattedValue);
+        var updatedCaretPos = getCaretPosition(newFormattedValue, formattedValue, inputValue, caretPos, caretBoundary, isValidInputCharacter, isCharacterSame);
+        //correct caret position if its outside of editable area
+        updatedCaretPos = getCaretPosInBoundary(newFormattedValue, updatedCaretPos, caretBoundary);
+        return updatedCaretPos;
+    };
+    var updateValueAndCaretPosition = function (params) {
+        var newFormattedValue = params.formattedValue; if ( newFormattedValue === void 0 ) newFormattedValue = '';
+        var input = params.input;
+        var setCaretPosition = params.setCaretPosition; if ( setCaretPosition === void 0 ) setCaretPosition = true;
+        var source = params.source;
+        var event = params.event;
+        var numAsString = params.numAsString;
+        var caretPos = params.caretPos;
+        if (input) {
+            //calculate caret position if not defined
+            if (caretPos === undefined && setCaretPosition) {
+                var inputValue = params.inputValue || input.value;
+                var currentCaretPosition = geInputCaretPosition(input);
+                /**
+                 * set the value imperatively, this is required for IE fix
+                 * This is also required as if new caret position is beyond the previous value.
+                 * Caret position will not be set correctly
+                 */
+                input.value = newFormattedValue;
+                //get the caret position
+                caretPos = getNewCaretPosition(inputValue, newFormattedValue, currentCaretPosition);
+            }
+            /**
+             * set the value imperatively, as we set the caret position as well imperatively.
+             * This is to keep value and caret position in sync
+             */
+            input.value = newFormattedValue;
+            //set caret position, and value imperatively when element is provided
+            if (setCaretPosition && caretPos !== undefined) {
+                //set caret position
+                setPatchedCaretPosition(input, caretPos, newFormattedValue);
+            }
+        }
+        if (newFormattedValue !== formattedValue) {
+            // trigger onValueChange synchronously, so parent is updated along with the number format. Fix for #277, #287
+            _onValueChange(getValueObject(newFormattedValue, numAsString), { event: event, source: source });
+        }
+    };
+    /**
+     * if the formatted value is not synced to parent, or if the formatted value is different from last synced value sync it
+     * we also don't need to sync to the parent if no formatting is applied
+     * if the formatting props is removed, in which case last formatted value will be different from the numeric string value
+     * in such case we need to inform the parent.
+     */
+    React.useEffect(function () {
+        var ref = lastUpdatedValue.current;
+        var lastFormattedValue = ref.formattedValue;
+        var lastNumAsString = ref.numAsString;
+        if (formattedValue !== lastFormattedValue &&
+            (formattedValue !== numAsString || lastFormattedValue !== lastNumAsString)) {
+            _onValueChange(getValueObject(formattedValue, numAsString), {
+                event: undefined,
+                source: SourceType.props,
+            });
+        }
+    }, [formattedValue, numAsString]);
+    // also if formatted value is changed from the props, we need to update the caret position
+    // keep the last caret position if element is focused
+    var currentCaretPosition = focusedElm.current
+        ? geInputCaretPosition(focusedElm.current)
+        : undefined;
+    // needed to prevent warning with useLayoutEffect on server
+    var useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+    useIsomorphicLayoutEffect(function () {
+        var input = focusedElm.current;
+        if (formattedValue !== lastUpdatedValue.current.formattedValue && input) {
+            var caretPos = getNewCaretPosition(lastUpdatedValue.current.formattedValue, formattedValue, currentCaretPosition);
+            /**
+             * set the value imperatively, as we set the caret position as well imperatively.
+             * This is to keep value and caret position in sync
+             */
+            input.value = formattedValue;
+            setPatchedCaretPosition(input, caretPos, formattedValue);
+        }
+    }, [formattedValue]);
+    var formatInputValue = function (inputValue, event, source) {
+        var changeRange = findChangeRange(formattedValue, inputValue);
+        var changeMeta = Object.assign(Object.assign({}, changeRange), { lastValue: formattedValue });
+        var _numAsString = removeFormatting(inputValue, changeMeta);
+        var _formattedValue = _format(_numAsString);
+        // formatting can remove some of the number chars, so we need to fine number string again
+        _numAsString = removeFormatting(_formattedValue, undefined);
+        if (isAllowed && !isAllowed(getValueObject(_formattedValue, _numAsString))) {
+            //reset the caret position
+            var input = event.target;
+            var currentCaretPosition = geInputCaretPosition(input);
+            var caretPos = getNewCaretPosition(inputValue, formattedValue, currentCaretPosition);
+            input.value = formattedValue;
+            setPatchedCaretPosition(input, caretPos, formattedValue);
+            return false;
+        }
+        updateValueAndCaretPosition({
+            formattedValue: _formattedValue,
+            numAsString: _numAsString,
+            inputValue: inputValue,
+            event: event,
+            source: source,
+            setCaretPosition: true,
+            input: event.target,
         });
-      }
+        return true;
+    };
+    var _onChange = function (e) {
+        var el = e.target;
+        var inputValue = el.value;
+        var changed = formatInputValue(inputValue, e, SourceType.event);
+        if (changed)
+            { onChange(e); }
+    };
+    var _onKeyDown = function (e) {
+        var el = e.target;
+        var key = e.key;
+        var selectionStart = el.selectionStart;
+        var selectionEnd = el.selectionEnd;
+        var value = el.value; if ( value === void 0 ) value = '';
+        var expectedCaretPosition;
+        //Handle backspace and delete against non numerical/decimal characters or arrow keys
+        if (key === 'ArrowLeft' || key === 'Backspace') {
+            expectedCaretPosition = Math.max(selectionStart - 1, 0);
+        }
+        else if (key === 'ArrowRight') {
+            expectedCaretPosition = Math.min(selectionStart + 1, value.length);
+        }
+        else if (key === 'Delete') {
+            expectedCaretPosition = selectionStart;
+        }
+        //if expectedCaretPosition is not set it means we don't want to Handle keyDown
+        // also if multiple characters are selected don't handle
+        if (expectedCaretPosition === undefined || selectionStart !== selectionEnd) {
+            onKeyDown(e);
+            return;
+        }
+        var newCaretPosition = expectedCaretPosition;
+        if (key === 'ArrowLeft' || key === 'ArrowRight') {
+            var direction = key === 'ArrowLeft' ? 'left' : 'right';
+            newCaretPosition = correctCaretPosition(value, expectedCaretPosition, direction);
+            // arrow left or right only moves the caret, so no need to handle the event, if we are handling it manually
+            if (newCaretPosition !== expectedCaretPosition) {
+                e.preventDefault();
+            }
+        }
+        else if (key === 'Delete' && !isValidInputCharacter(value[expectedCaretPosition])) {
+            // in case of delete go to closest caret boundary on the right side
+            newCaretPosition = correctCaretPosition(value, expectedCaretPosition, 'right');
+        }
+        else if (key === 'Backspace' && !isValidInputCharacter(value[expectedCaretPosition])) {
+            // in case of backspace go to closest caret boundary on the left side
+            newCaretPosition = correctCaretPosition(value, expectedCaretPosition, 'left');
+        }
+        if (newCaretPosition !== expectedCaretPosition) {
+            setPatchedCaretPosition(el, newCaretPosition, value);
+        }
+        /* NOTE: this is just required for unit test as we need to get the newCaretPosition,
+                Remove this when you find different solution */
+        /* @ts-ignore */
+        if (e.isUnitTestRun) {
+            setPatchedCaretPosition(el, newCaretPosition, value);
+        }
+        onKeyDown(e);
+    };
+    /** required to handle the caret position when click anywhere within the input **/
+    var _onMouseUp = function (e) {
+        var el = e.target;
+        /**
+         * NOTE: we have to give default value for value as in case when custom input is provided
+         * value can come as undefined when nothing is provided on value prop.
+         */
+        var selectionStart = el.selectionStart;
+        var selectionEnd = el.selectionEnd;
+        var value = el.value; if ( value === void 0 ) value = '';
+        if (selectionStart === selectionEnd) {
+            var caretPosition = correctCaretPosition(value, selectionStart);
+            if (caretPosition !== selectionStart) {
+                setPatchedCaretPosition(el, caretPosition, value);
+            }
+        }
+        onMouseUp(e);
+    };
+    var _onFocus = function (e) {
+        // Workaround Chrome and Safari bug https://bugs.chromium.org/p/chromium/issues/detail?id=779328
+        // (onFocus event target selectionStart is always 0 before setTimeout)
+        if (e.persist)
+            { e.persist(); }
+        var el = e.target;
+        focusedElm.current = el;
+        timeout.current.focusTimeout = setTimeout(function () {
+            var selectionStart = el.selectionStart;
+            var selectionEnd = el.selectionEnd;
+            var value = el.value; if ( value === void 0 ) value = '';
+            var caretPosition = correctCaretPosition(value, selectionStart);
+            //setPatchedCaretPosition only when everything is not selected on focus (while tabbing into the field)
+            if (caretPosition !== selectionStart &&
+                !(selectionStart === 0 && selectionEnd === value.length)) {
+                setPatchedCaretPosition(el, caretPosition, value);
+            }
+            onFocus(e);
+        }, 0);
+    };
+    var _onBlur = function (e) {
+        focusedElm.current = null;
+        clearTimeout(timeout.current.focusTimeout);
+        clearTimeout(timeout.current.setCaretTimeout);
+        onBlur(e);
+    };
+    // add input mode on element based on format prop and device once the component is mounted
+    var inputMode = mounted && addInputMode() ? 'numeric' : undefined;
+    var inputProps = Object.assign({ inputMode: inputMode }, otherProps, {
+        type: type,
+        value: formattedValue,
+        onChange: _onChange,
+        onKeyDown: _onKeyDown,
+        onMouseUp: _onMouseUp,
+        onFocus: _onFocus,
+        onBlur: _onBlur,
+    });
+    if (displayType === 'text') {
+        return renderText ? (React.createElement(React.Fragment, null, renderText(formattedValue, otherProps) || null)) : (React.createElement("span", Object.assign({}, otherProps, { ref: getInputRef }), formattedValue));
     }
-  };
-
-  /** Misc methods **/
-  NumberFormat.prototype.getFloatString = function getFloatString (num) {
-    if ( num === void 0 ) num         = '';
-
-    var ref = this.props;
-    var decimalScale = ref.decimalScale;
-    var ref$1 = this.getSeparators();
-    var decimalSeparator = ref$1.decimalSeparator;
-    var numRegex = this.getNumberRegex(true);
-
-    //remove negation for regex check
-    var hasNegation = num[0] === '-';
-    if (hasNegation) { num = num.replace('-', ''); }
-
-    //if decimal scale is zero remove decimal and number after decimalSeparator
-    if (decimalSeparator && decimalScale === 0) {
-      num = num.split(decimalSeparator)[0];
+    else if (customInput) {
+        var CustomInput = customInput;
+        /* @ts-ignore */
+        return React.createElement(CustomInput, Object.assign({}, inputProps, { ref: getInputRef }));
     }
+    return React.createElement("input", Object.assign({}, inputProps, { ref: getInputRef }));
+}
 
-    num = (num.match(numRegex) || []).join('').replace(decimalSeparator, '.');
-
-    //remove extra decimals
-    var firstDecimalIndex = num.indexOf('.');
-
-    if (firstDecimalIndex !== -1) {
-      num = (num.substring(0, firstDecimalIndex)) + "." + (num
-        .substring(firstDecimalIndex + 1, num.length)
-        .replace(new RegExp(escapeRegExp(decimalSeparator), 'g'), ''));
+function format(numStr, props) {
+    var decimalScale = props.decimalScale;
+    var fixedDecimalScale = props.fixedDecimalScale;
+    var prefix = props.prefix; if ( prefix === void 0 ) prefix = '';
+    var suffix = props.suffix; if ( suffix === void 0 ) suffix = '';
+    var allowNegative = props.allowNegative;
+    var thousandsGroupStyle = props.thousandsGroupStyle; if ( thousandsGroupStyle === void 0 ) thousandsGroupStyle = 'thousand';
+    // don't apply formatting on empty string or '-'
+    if (numStr === '' || numStr === '-') {
+        return numStr;
     }
-
-    //add negation back
-    if (hasNegation) { num = '-' + num; }
-
-    return num;
-  };
-
-  //returned regex assumes decimalSeparator is as per prop
-  NumberFormat.prototype.getNumberRegex = function getNumberRegex (g         , ignoreDecimalSeparator          ) {
-    var ref = this.props;
-    var format = ref.format;
-    var decimalScale = ref.decimalScale;
-    var customNumerals = ref.customNumerals;
-    var ref$1 = this.getSeparators();
-    var decimalSeparator = ref$1.decimalSeparator;
-    return new RegExp(
-      '[0-9' +
-        (customNumerals ? customNumerals.join('') : '') +
-        ']' +
-        (decimalSeparator && decimalScale !== 0 && !ignoreDecimalSeparator && !format
-          ? '|' + escapeRegExp(decimalSeparator)
-          : ''),
-      g ? 'g' : undefined
-    );
-  };
-
-  NumberFormat.prototype.getSeparators = function getSeparators () {
-    var ref = this.props;
+    var ref = getSeparators(props);
+    var thousandSeparator = ref.thousandSeparator;
     var decimalSeparator = ref.decimalSeparator;
-    var ref$1 = this.props;
-    var thousandSeparator = ref$1.thousandSeparator;
-    var allowedDecimalSeparators = ref$1.allowedDecimalSeparators;
-
+    /**
+     * Keep the decimal separator
+     * when decimalScale is not defined or non zero and the numStr has decimal in it
+     * Or if decimalScale is > 0 and fixeDecimalScale is true (even if numStr has no decimal)
+     */
+    var hasDecimalSeparator = (decimalScale !== 0 && numStr.indexOf('.') !== -1) || (decimalScale && fixedDecimalScale);
+    var ref$1 = splitDecimal(numStr, allowNegative);
+    var beforeDecimal = ref$1.beforeDecimal;
+    var afterDecimal = ref$1.afterDecimal;
+    var addNegation = ref$1.addNegation; // eslint-disable-line prefer-const
+    //apply decimal precision if its defined
+    if (decimalScale !== undefined) {
+        afterDecimal = limitToScale(afterDecimal, decimalScale, !!fixedDecimalScale);
+    }
+    if (thousandSeparator) {
+        beforeDecimal = applyThousandSeparator(beforeDecimal, thousandSeparator, thousandsGroupStyle);
+    }
+    //add prefix and suffix when there is a number present
+    if (prefix)
+        { beforeDecimal = prefix + beforeDecimal; }
+    if (suffix)
+        { afterDecimal = afterDecimal + suffix; }
+    //restore negation sign
+    if (addNegation)
+        { beforeDecimal = '-' + beforeDecimal; }
+    numStr = beforeDecimal + ((hasDecimalSeparator && decimalSeparator) || '') + afterDecimal;
+    return numStr;
+}
+function getSeparators(props) {
+    var decimalSeparator = props.decimalSeparator; if ( decimalSeparator === void 0 ) decimalSeparator = '.';
+    var thousandSeparator = props.thousandSeparator;
+    var allowedDecimalSeparators = props.allowedDecimalSeparators;
     if (thousandSeparator === true) {
-      thousandSeparator = ',';
+        thousandSeparator = ',';
     }
     if (!allowedDecimalSeparators) {
-      allowedDecimalSeparators = [decimalSeparator, '.'];
+        allowedDecimalSeparators = [decimalSeparator, '.'];
     }
-
     return {
-      decimalSeparator: decimalSeparator,
-      thousandSeparator: thousandSeparator,
-      allowedDecimalSeparators: allowedDecimalSeparators,
+        decimalSeparator: decimalSeparator,
+        thousandSeparator: thousandSeparator,
+        allowedDecimalSeparators: allowedDecimalSeparators,
     };
-  };
+}
+function handleNegation(value, allowNegative) {
+    if ( value === void 0 ) value = '';
 
-  NumberFormat.prototype.getMaskAtIndex = function getMaskAtIndex (index        ) {
-    var ref = this.props;
-    var mask = ref.mask; if ( mask === void 0 ) mask = ' ';
-    if (typeof mask === 'string') {
-      return mask;
+    var negationRegex = new RegExp('(-)');
+    var doubleNegationRegex = new RegExp('(-)(.)*(-)');
+    // Check number has '-' value
+    var hasNegation = negationRegex.test(value);
+    // Check number has 2 or more '-' values
+    var removeNegation = doubleNegationRegex.test(value);
+    //remove negation
+    value = value.replace(/-/g, '');
+    if (hasNegation && !removeNegation && allowNegative) {
+        value = '-' + value;
     }
+    return value;
+}
+function getNumberRegex(decimalSeparator, global) {
+    return new RegExp(("(^-)|[0-9]|" + (escapeRegExp(decimalSeparator))), global ? 'g' : undefined);
+}
+function isNumericString(val, prefix, suffix) {
+    // for empty value we can always treat it as numeric string
+    if (val === '')
+        { return true; }
+    return (!(prefix === null || prefix === void 0 ? void 0 : prefix.match(/\d/)) && !(suffix === null || suffix === void 0 ? void 0 : suffix.match(/\d/)) && typeof val === 'string' && !isNaN(Number(val)));
+}
+function removeFormatting(value, changeMeta, props) {
+    var assign;
 
-    return mask[index] || ' ';
-  };
-
-  NumberFormat.prototype.getValueObject = function getValueObject (formattedValue        , numAsString        ) {
-    var floatValue = parseFloat(numAsString);
-
-    return {
-      formattedValue: formattedValue,
-      value: numAsString,
-      floatValue: isNaN(floatValue) ? undefined : floatValue,
+    if ( changeMeta === void 0 ) changeMeta = getDefaultChangeMeta(value);
+    var allowNegative = props.allowNegative;
+    var prefix = props.prefix; if ( prefix === void 0 ) prefix = '';
+    var suffix = props.suffix; if ( suffix === void 0 ) suffix = '';
+    var decimalScale = props.decimalScale;
+    var from = changeMeta.from;
+    var to = changeMeta.to;
+    var start = to.start;
+    var end = to.end;
+    var ref = getSeparators(props);
+    var allowedDecimalSeparators = ref.allowedDecimalSeparators;
+    var decimalSeparator = ref.decimalSeparator;
+    var isBeforeDecimalSeparator = value[end] === decimalSeparator;
+    /**
+     * If only a number is added on empty input which matches with the prefix or suffix,
+     * then don't remove it, just return the same
+     */
+    if (charIsNumber(value) &&
+        (value === prefix || value === suffix) &&
+        changeMeta.lastValue === '') {
+        return value;
+    }
+    /** Check for any allowed decimal separator is added in the numeric format and replace it with decimal separator */
+    if (end - start === 1 && allowedDecimalSeparators.indexOf(value[start]) !== -1) {
+        var separator = decimalScale === 0 ? '' : decimalSeparator;
+        value = value.substring(0, start) + separator + value.substring(start + 1, value.length);
+    }
+    var stripNegation = function (value, start, end) {
+        /**
+         * if prefix starts with - we don't allow negative number to avoid confusion
+         * if suffix starts with - and the value length is same as suffix length, then the - sign is from the suffix
+         * In other cases, if the value starts with - then it is a negation
+         */
+        var hasNegation = false;
+        var hasDoubleNegation = false;
+        if (prefix.startsWith('-')) {
+            hasNegation = false;
+        }
+        else if (value.startsWith('--')) {
+            hasNegation = false;
+            hasDoubleNegation = true;
+        }
+        else if (suffix.startsWith('-') && value.length === suffix.length) {
+            hasNegation = false;
+        }
+        else if (value[0] === '-') {
+            hasNegation = true;
+        }
+        var charsToRemove = hasNegation ? 1 : 0;
+        if (hasDoubleNegation)
+            { charsToRemove = 2; }
+        // remove negation/double negation from start to simplify prefix logic as negation comes before prefix
+        if (charsToRemove) {
+            value = value.substring(charsToRemove);
+            // account for the removal of the negation for start and end index
+            start -= charsToRemove;
+            end -= charsToRemove;
+        }
+        return { value: value, start: start, end: end, hasNegation: hasNegation };
     };
-  };
-
-  NumberFormat.prototype.validateProps = function validateProps () {
-    var ref = this.props;
-    var mask = ref.mask;
-
-    //validate decimalSeparator and thousandSeparator
-    var ref$1 = this.getSeparators();
-    var decimalSeparator = ref$1.decimalSeparator;
-    var thousandSeparator = ref$1.thousandSeparator;
-
-    if (decimalSeparator === thousandSeparator) {
-      throw new Error(("\n          Decimal separator can't be same as thousand separator.\n          thousandSeparator: " + thousandSeparator + " (thousandSeparator = {true} is same as thousandSeparator = \",\")\n          decimalSeparator: " + decimalSeparator + " (default value for decimalSeparator is .)\n       "));
+    var toMetadata = stripNegation(value, start, end);
+    var hasNegation = toMetadata.hasNegation;
+    ((assign = toMetadata, value = assign.value, start = assign.start, end = assign.end));
+    var ref$1 = stripNegation(changeMeta.lastValue, from.start, from.end);
+    var fromStart = ref$1.start;
+    var fromEnd = ref$1.end;
+    var lastValue = ref$1.value;
+    // if only prefix and suffix part is updated reset the value to last value
+    // if the changed range is from suffix in the updated value, and the the suffix starts with the same characters, allow the change
+    var updatedSuffixPart = value.substring(start, end);
+    if (value.length &&
+        lastValue.length &&
+        (fromStart > lastValue.length - suffix.length || fromEnd < prefix.length) &&
+        !(updatedSuffixPart && suffix.startsWith(updatedSuffixPart))) {
+        value = lastValue;
     }
-
-    //validate mask
-    if (mask) {
-      var maskAsStr = mask === 'string' ? mask : mask.toString();
-      if (maskAsStr.match(/\d/g)) {
-        throw new Error(("\n          Mask " + mask + " should not contain numeric character;\n        "));
-      }
-    }
-  };
-  /** Misc methods end **/
-
-  /** caret specific methods **/
-  NumberFormat.prototype.setPatchedCaretPosition = function setPatchedCaretPosition (el                  , caretPos        , currentValue        ) {
-    /* setting caret position within timeout of 0ms is required for mobile chrome,
-    otherwise browser resets the caret position after we set it
-    We are also setting it without timeout so that in normal browser we don't see the flickering */
-    setCaretPosition(el, caretPos);
-    this.caretPositionTimeout = setTimeout(function () {
-      if (el.value === currentValue) { setCaretPosition(el, caretPos); }
-    }, 0);
-  };
-
-  /* This keeps the caret within typing area so people can't type in between prefix or suffix */
-  NumberFormat.prototype.correctCaretPosition = function correctCaretPosition (value        , caretPos        , direction         ) {
-    var ref = this.props;
-    var prefix = ref.prefix;
-    var suffix = ref.suffix;
-    var format = ref.format;
-
-    //if value is empty return 0
-    if (value === '') { return 0; }
-
-    //caret position should be between 0 and value length
-    caretPos = clamp(caretPos, 0, value.length);
-
-    //in case of format as number limit between prefix and suffix
-    if (!format) {
-      var hasNegation = value[0] === '-';
-      return clamp(caretPos, prefix.length + (hasNegation ? 1 : 0), value.length - suffix.length);
-    }
-
-    //in case if custom format method don't do anything
-    if (typeof format === 'function') { return caretPos; }
-
-    /* in case format is string find the closest # position from the caret position */
-
-    //in case the caretPos have input value on it don't do anything
-    if (format[caretPos] === '#' && charIsNumber(value[caretPos])) {
-      return caretPos;
-    }
-
-    //if caretPos is just after input value don't do anything
-    if (format[caretPos - 1] === '#' && charIsNumber(value[caretPos - 1])) {
-      return caretPos;
-    }
-
-    //find the nearest caret position
-    var firstHashPosition = format.indexOf('#');
-    var lastHashPosition = format.lastIndexOf('#');
-
-    //limit the cursor between the first # position and the last # position
-    caretPos = clamp(caretPos, firstHashPosition, lastHashPosition + 1);
-
-    var nextPos = format.substring(caretPos, format.length).indexOf('#');
-    var caretLeftBound = caretPos;
-    var caretRightBound = caretPos + (nextPos === -1 ? 0 : nextPos);
-
-    //get the position where the last number is present
-    while (
-      caretLeftBound > firstHashPosition &&
-      (format[caretLeftBound] !== '#' || !charIsNumber(value[caretLeftBound]))
-    ) {
-      caretLeftBound -= 1;
-    }
-
-    var goToLeft =
-      !charIsNumber(value[caretRightBound]) ||
-      (direction === 'left' && caretPos !== firstHashPosition) ||
-      caretPos - caretLeftBound < caretRightBound - caretPos;
-
-    if (goToLeft) {
-      //check if number should be taken after the bound or after it
-      //if number preceding a valid number keep it after
-      return charIsNumber(value[caretLeftBound]) ? caretLeftBound + 1 : caretLeftBound;
-    }
-
-    return caretRightBound;
-  };
-
-  NumberFormat.prototype.getCaretPosition = function getCaretPosition (inputValue        , formattedValue        , caretPos        ) {
-    var ref = this.props;
-    var format = ref.format;
-    var stateValue = this.state.value;
-    var numRegex = this.getNumberRegex(true);
-    var inputNumber = (inputValue.match(numRegex) || []).join('');
-    var formattedNumber = (formattedValue.match(numRegex) || []).join('');
-    var j, i;
-
-    j = 0;
-
-    for (i = 0; i < caretPos; i++) {
-      var currentInputChar = inputValue[i] || '';
-      var currentFormatChar = formattedValue[j] || '';
-      //no need to increase new cursor position if formatted value does not have those characters
-      //case inputValue = 1a23 and formattedValue =  123
-      if (!currentInputChar.match(numRegex) && currentInputChar !== currentFormatChar) {
-        continue;
-      }
-
-      //When we are striping out leading zeros maintain the new cursor position
-      //Case inputValue = 00023 and formattedValue = 23;
-      if (
-        currentInputChar === '0' &&
-        currentFormatChar.match(numRegex) &&
-        currentFormatChar !== '0' &&
-        inputNumber.length !== formattedNumber.length
-      ) {
-        continue;
-      }
-
-      //we are not using currentFormatChar because j can change here
-      while (currentInputChar !== formattedValue[j] && j < formattedValue.length) {
-        j++;
-      }
-      j++;
-    }
-
-    if (typeof format === 'string' && !stateValue) {
-      //set it to the maximum value so it goes after the last number
-      j = formattedValue.length;
-    }
-
-    //correct caret position if its outside of editable area
-    j = this.correctCaretPosition(formattedValue, j);
-
-    return j;
-  };
-  /** caret specific methods ends **/
-
-  /** methods to remove formattting **/
-  NumberFormat.prototype.removePrefixAndSuffix = function removePrefixAndSuffix (val        ) {
-    var ref = this.props;
-    var format = ref.format;
-    var prefix = ref.prefix;
-    var suffix = ref.suffix;
-
-    //remove prefix and suffix
-    if (!format && val) {
-      var isNegative = val[0] === '-';
-
-      //remove negation sign
-      if (isNegative) { val = val.substring(1, val.length); }
-
-      //remove prefix
-      val = prefix && val.indexOf(prefix) === 0 ? val.substring(prefix.length, val.length) : val;
-
-      //remove suffix
-      var suffixLastIndex = val.lastIndexOf(suffix);
-      val =
-        suffix && suffixLastIndex !== -1 && suffixLastIndex === val.length - suffix.length
-          ? val.substring(0, suffixLastIndex)
-          : val;
-
-      //add negation sign back
-      if (isNegative) { val = '-' + val; }
-    }
-
-    return val;
-  };
-
-  NumberFormat.prototype.removePatternFormatting = function removePatternFormatting (val        ) {
-    var ref = this.props;
-    var format = ref.format;
-    var formatArray = format.split('#').filter(function (str) { return str !== ''; });
-    var start = 0;
-    var numStr = '';
-
-    for (var i = 0, ln = formatArray.length; i <= ln; i++) {
-      var part = formatArray[i] || '';
-
-      //if i is the last fragment take the index of end of the value
-      //For case like +1 (911) 911 91 91 having pattern +1 (###) ### ## ##
-      var index = i === ln ? val.length : val.indexOf(part, start);
-
-      /* in any case if we don't find the pattern part in the value assume the val as numeric string
-      This will be also in case if user has started typing, in any other case it will not be -1
-      unless wrong prop value is provided */
-      if (index === -1) {
-        numStr = val;
-        break;
-      } else {
-        numStr += val.substring(start, index);
-        start = index + part.length;
-      }
-    }
-
-    return (numStr.match(this.getNumberRegex(true)) || []).join('');
-  };
-
-  NumberFormat.prototype.removeFormatting = function removeFormatting (val        ) {
-    var ref = this.props;
-    var format = ref.format;
-    var removeFormatting = ref.removeFormatting;
-    if (!val) { return val; }
-
-    if (!format) {
-      val = this.removePrefixAndSuffix(val);
-      val = this.getFloatString(val);
-    } else if (typeof format === 'string') {
-      val = this.removePatternFormatting(val);
-    } else if (typeof removeFormatting === 'function') {
-      //condition need to be handled if format method is provide,
-      val = removeFormatting(val);
-    } else {
-      val = (val.match(this.getNumberRegex(true)) || []).join('');
-    }
-    return val;
-  };
-  /** methods to remove formattting end **/
-
-  /*** format specific methods start ***/
-  /**
-   * Format when # based string is provided
-   * @param  {string} numStr Numeric String
-   * @return {string}        formatted Value
-   */
-  NumberFormat.prototype.formatWithPattern = function formatWithPattern (numStr        ) {
-    var ref = this.props;
-    var format = ref.format;
-    var hashCount = 0;
-    var formattedNumberAry = format.split('');
-    for (var i = 0, ln = format.length; i < ln; i++) {
-      if (format[i] === '#') {
-        formattedNumberAry[i] = numStr[hashCount] || this.getMaskAtIndex(hashCount);
-        hashCount += 1;
-      }
-    }
-    return formattedNumberAry.join('');
-  };
-  /**
-   * @param  {string} numStr Numeric string/floatString] It always have decimalSeparator as .
-   * @return {string} formatted Value
-   */
-  NumberFormat.prototype.formatAsNumber = function formatAsNumber (numStr        ) {
-    var ref = this.props;
-    var decimalScale = ref.decimalScale;
-    var fixedDecimalScale = ref.fixedDecimalScale;
-    var prefix = ref.prefix;
-    var suffix = ref.suffix;
-    var allowNegative = ref.allowNegative;
-    var thousandsGroupStyle = ref.thousandsGroupStyle;
-    var ref$1 = this.getSeparators();
-    var thousandSeparator = ref$1.thousandSeparator;
-    var decimalSeparator = ref$1.decimalSeparator;
-
-    var hasDecimalSeparator = numStr.indexOf('.') !== -1 || (decimalScale && fixedDecimalScale);
-    var ref$2 = splitDecimal(numStr, allowNegative);
+    /**
+     * remove prefix
+     * Remove whole prefix part if its present on the value
+     * If the prefix is partially deleted (in which case change start index will be less the prefix length)
+     * Remove only partial part of prefix.
+     */
+    var startIndex = 0;
+    if (value.startsWith(prefix))
+        { startIndex += prefix.length; }
+    else if (start < prefix.length)
+        { startIndex = start; }
+    value = value.substring(startIndex);
+    // account for deleted prefix for end
+    end -= startIndex;
+    /**
+     * Remove suffix
+     * Remove whole suffix part if its present on the value
+     * If the suffix is partially deleted (in which case change end index will be greater than the suffixStartIndex)
+     * remove the partial part of suffix
+     */
+    var endIndex = value.length;
+    var suffixStartIndex = value.length - suffix.length;
+    if (value.endsWith(suffix))
+        { endIndex = suffixStartIndex; }
+    // if the suffix is removed from the end
+    else if (end > suffixStartIndex)
+        { endIndex = end; }
+    // if the suffix is removed from start
+    else if (end > value.length - suffix.length)
+        { endIndex = end; }
+    value = value.substring(0, endIndex);
+    // add the negation back and handle for double negation
+    value = handleNegation(hasNegation ? ("-" + value) : value, allowNegative);
+    // remove non numeric characters
+    value = (value.match(getNumberRegex(decimalSeparator, true)) || []).join('');
+    // replace the decimalSeparator with ., and only keep the first separator, ignore following ones
+    var firstIndex = value.indexOf(decimalSeparator);
+    value = value.replace(new RegExp(escapeRegExp(decimalSeparator), 'g'), function (match, index) {
+        return index === firstIndex ? '.' : '';
+    });
+    //check if beforeDecimal got deleted and there is nothing after decimal,
+    //clear all numbers in such case while keeping the - sign
+    var ref$2 = splitDecimal(value, allowNegative);
     var beforeDecimal = ref$2.beforeDecimal;
     var afterDecimal = ref$2.afterDecimal;
     var addNegation = ref$2.addNegation; // eslint-disable-line prefer-const
-
-    //apply decimal precision if its defined
-    if (decimalScale !== undefined) {
-      afterDecimal = limitToScale(afterDecimal, decimalScale, fixedDecimalScale);
-    }
-
-    if (thousandSeparator) {
-      beforeDecimal = applyThousandSeparator(beforeDecimal, thousandSeparator, thousandsGroupStyle);
-    }
-
-    //add prefix and suffix
-    if (prefix) { beforeDecimal = prefix + beforeDecimal; }
-    if (suffix) { afterDecimal = afterDecimal + suffix; }
-
-    //restore negation sign
-    if (addNegation) { beforeDecimal = '-' + beforeDecimal; }
-
-    numStr = beforeDecimal + ((hasDecimalSeparator && decimalSeparator) || '') + afterDecimal;
-
-    return numStr;
-  };
-
-  NumberFormat.prototype.formatNumString = function formatNumString (numStr) {
-    if ( numStr === void 0 ) numStr         = '';
-
-    var ref = this.props;
-    var format = ref.format;
-    var allowEmptyFormatting = ref.allowEmptyFormatting;
-    var customNumerals = ref.customNumerals;
-    var formattedValue = numStr;
-
-    if (customNumerals && customNumerals.length === 10) {
-      var customNumeralRegex = new RegExp('[' + customNumerals.join('') + ']', 'g');
-      formattedValue = numStr.replace(customNumeralRegex, function (digit) { return customNumerals.indexOf(digit).toString(); }
-      );
-    }
-
-    if (numStr === '' && !allowEmptyFormatting) {
-      formattedValue = '';
-    } else if (numStr === '-' && !format) {
-      formattedValue = '-';
-    } else if (typeof format === 'string') {
-      formattedValue = this.formatWithPattern(formattedValue);
-    } else if (typeof format === 'function') {
-      formattedValue = format(formattedValue);
-    } else {
-      formattedValue = this.formatAsNumber(formattedValue);
-    }
-
-    return formattedValue;
-  };
-
-  NumberFormat.prototype.formatValueProp = function formatValueProp (defaultValue                 ) {
-    var ref = this.props;
-    var format = ref.format;
-    var decimalScale = ref.decimalScale;
-    var fixedDecimalScale = ref.fixedDecimalScale;
-    var allowEmptyFormatting = ref.allowEmptyFormatting;
-    var ref$1 = this.props;
-    var value = ref$1.value;
-    var isNumericString = ref$1.isNumericString;
-
-    // if value is undefined or null, use defaultValue instead
-    value = isNil(value) ? defaultValue : value;
-
-    var isNonNumericFalsy = !value && value !== 0;
-
-    if (isNonNumericFalsy && allowEmptyFormatting) {
-      value = '';
-    }
-
-    // if value is not defined return empty string
-    if (isNonNumericFalsy && !allowEmptyFormatting) { return ''; }
-
-    if (typeof value === 'number') {
-      value = toNumericString(value);
-      isNumericString = true;
-    }
-
-    //change infinity value to empty string
-    if (value === 'Infinity' && isNumericString) {
-      value = '';
-    }
-
-    //round the number based on decimalScale
-    //format only if non formatted value is provided
-    if (isNumericString && !format && typeof decimalScale === 'number') {
-      value = roundToPrecision(value, decimalScale, fixedDecimalScale);
-    }
-
-    var formattedValue = isNumericString ? this.formatNumString(value) : this.formatInput(value);
-
-    return formattedValue;
-  };
-
-  NumberFormat.prototype.formatNegation = function formatNegation (value) {
-    if ( value === void 0 ) value         = '';
-
-    var ref = this.props;
-    var allowNegative = ref.allowNegative;
-    var negationRegex = new RegExp('(-)');
-    var doubleNegationRegex = new RegExp('(-)(.)*(-)');
-
-    // Check number has '-' value
-    var hasNegation = negationRegex.test(value);
-
-    // Check number has 2 or more '-' values
-    var removeNegation = doubleNegationRegex.test(value);
-
-    //remove negation
-    value = value.replace(/-/g, '');
-
-    if (hasNegation && !removeNegation && allowNegative) {
-      value = '-' + value;
-    }
-
-    return value;
-  };
-
-  NumberFormat.prototype.formatInput = function formatInput (value) {
-    if ( value === void 0 ) value         = '';
-
-    var ref = this.props;
-    var format = ref.format;
-
-    //format negation only if we are formatting as number
-    if (!format) {
-      value = this.removePrefixAndSuffix(value);
-      value = this.formatNegation(value);
-    }
-
-    //remove formatting from number
-    value = this.removeFormatting(value);
-
-    return this.formatNumString(value);
-  };
-
-  /*** format specific methods end ***/
-  NumberFormat.prototype.isCharacterAFormat = function isCharacterAFormat (caretPos        , value        ) {
-    var ref = this.props;
-    var format = ref.format;
-    var prefix = ref.prefix;
-    var suffix = ref.suffix;
-    var decimalScale = ref.decimalScale;
-    var fixedDecimalScale = ref.fixedDecimalScale;
-    var ref$1 = this.getSeparators();
-    var decimalSeparator = ref$1.decimalSeparator;
-
-    //check within format pattern
-    if (typeof format === 'string' && format[caretPos] !== '#') { return true; }
-
-    //check in number format
-    if (
-      !format &&
-      (caretPos < prefix.length ||
-        caretPos >= value.length - suffix.length ||
-        (decimalScale && fixedDecimalScale && value[caretPos] === decimalSeparator))
-    ) {
-      return true;
-    }
-
-    return false;
-  };
-
-  /**
-   * This will check if any formatting got removed by the delete or backspace and reset the value
-   * It will also work as fallback if android chome keyDown handler does not work
-   **/
-  NumberFormat.prototype.correctInputValue = function correctInputValue (caretPos        , lastValue        , value        ) {
-    var this$1$1 = this;
-
-    var ref = this.props;
-    var format = ref.format;
-    var allowNegative = ref.allowNegative;
-    var prefix = ref.prefix;
-    var suffix = ref.suffix;
-    var decimalScale = ref.decimalScale;
-    var ref$1 = this.getSeparators();
-    var allowedDecimalSeparators = ref$1.allowedDecimalSeparators;
-    var decimalSeparator = ref$1.decimalSeparator;
-    var lastNumStr = this.state.numAsString || '';
-    var ref$2 = this.selectionBeforeInput;
-    var selectionStart = ref$2.selectionStart;
-    var selectionEnd = ref$2.selectionEnd;
-    var ref$3 = findChangedIndex(lastValue, value);
-    var start = ref$3.start;
-    var end = ref$3.end;
-
-    /** Check for any allowed decimal separator is added in the numeric format and replace it with decimal separator */
-    if (
-      !format &&
-      start === end &&
-      allowedDecimalSeparators.indexOf(value[selectionStart]) !== -1
-    ) {
-      var separator = decimalScale === 0 ? '' : decimalSeparator;
-      return (
-        value.substr(0, selectionStart) + separator + value.substr(selectionStart + 1, value.length)
-      );
-    }
-
-    var leftBound = !!format ? 0 : prefix.length;
-    var rightBound = lastValue.length - (!!format ? 0 : suffix.length);
-
-    if (
-      // don't do anything if something got added
-      value.length > lastValue.length ||
-      // or if the new value is an empty string
-      !value.length ||
-      // or if nothing has changed, in which case start will be same as end
-      start === end ||
-      // or in case if whole input is selected and new value is typed
-      (selectionStart === 0 && selectionEnd === lastValue.length) ||
-      // or in case if the whole content is replaced by browser, example (autocomplete)
-      (start === 0 && end === lastValue.length) ||
-      // or if charcters between prefix and suffix is selected.
-      // For numeric inputs we apply the format so, prefix and suffix can be ignored
-      (selectionStart === leftBound && selectionEnd === rightBound)
-    ) {
-      return value;
-    }
-
-    // check whether the deleted portion has a character that is part of a format
-    var deletedValues = lastValue.substr(start, end - start);
-    var formatGotDeleted = !![].concat( deletedValues ).find(function (deletedVal, idx) { return this$1$1.isCharacterAFormat(idx + start, lastValue); }
-    );
-
-    // if it has, only remove characters that are not part of the format
-    if (formatGotDeleted) {
-      var deletedValuePortion = lastValue.substr(start);
-      var recordIndexOfFormatCharacters = {};
-      var resolvedPortion = [];
-      [].concat( deletedValuePortion ).forEach(function (currentPortion, idx) {
-        if (this$1$1.isCharacterAFormat(idx + start, lastValue)) {
-          recordIndexOfFormatCharacters[idx] = currentPortion;
-        } else if (idx > deletedValues.length - 1) {
-          resolvedPortion.push(currentPortion);
-        }
-      });
-
-      Object.keys(recordIndexOfFormatCharacters).forEach(function (idx) {
-        if (resolvedPortion.length > idx) {
-          resolvedPortion.splice(idx, 0, recordIndexOfFormatCharacters[idx]);
-        } else {
-          resolvedPortion.push(recordIndexOfFormatCharacters[idx]);
-        }
-      });
-
-      value = lastValue.substr(0, start) + resolvedPortion.join('');
-    }
-
-    //for numbers check if beforeDecimal got deleted and there is nothing after decimal,
-    //clear all numbers in such case while keeping the - sign
-    if (!format) {
-      var numericString = this.removeFormatting(value);
-      var ref$4 = splitDecimal(
-        numericString,
-        allowNegative
-      );
-      var beforeDecimal = ref$4.beforeDecimal;
-      var afterDecimal = ref$4.afterDecimal;
-      var addNegation = ref$4.addNegation; // eslint-disable-line prefer-const
-
-      //clear only if something got deleted
-      var isBeforeDecimalPoint = caretPos < value.indexOf(decimalSeparator) + 1;
-      if (
-        numericString.length < lastNumStr.length &&
-        isBeforeDecimalPoint &&
+    //clear only if something got deleted before decimal (cursor is before decimal)
+    if (to.end - to.start < from.end - from.start &&
         beforeDecimal === '' &&
-        !parseFloat(afterDecimal)
-      ) {
-        return addNegation ? '-' : '';
-      }
+        isBeforeDecimalSeparator &&
+        !parseFloat(afterDecimal)) {
+        value = addNegation ? '-' : '';
     }
-
     return value;
-  };
-
-  /** Update value and caret position */
-  NumberFormat.prototype.updateValue = function updateValue (params   
-                           
-                        
-                       
-                            
-                               
-                   
-                     
-                              
-   ) {
-    var formattedValue = params.formattedValue;
-    var input = params.input;
-    var setCaretPosition = params.setCaretPosition; if ( setCaretPosition === void 0 ) setCaretPosition = true;
-    var source = params.source;
-    var event = params.event;
-    var numAsString = params.numAsString;
-    var caretPos = params.caretPos;
-    var ref = this.props;
-    var onValueChange = ref.onValueChange;
-    var ref$1 = this.state;
-    var lastValue = ref$1.value;
-
-    if (input) {
-      //calculate caret position if not defined
-      if (caretPos === undefined && setCaretPosition) {
-        var inputValue = params.inputValue || input.value;
-
-        var currentCaretPosition = getCurrentCaretPosition(input);
-
-        /**
-         * set the value imperatively, this is required for IE fix
-         * This is also required as if new caret position is beyond the previous value.
-         * Caret position will not be set correctly
-         */
-        input.value = formattedValue;
-
-        //get the caret position
-        caretPos = this.getCaretPosition(inputValue, formattedValue, currentCaretPosition);
-      }
-
-      /**
-       * set the value imperatively, as we set the caret position as well imperatively.
-       * This is to keep value and caret position in sync
-       */
-      input.value = formattedValue;
-
-      //set caret position, and value imperatively when element is provided
-      if (setCaretPosition) {
-        //set caret position
-        this.setPatchedCaretPosition(input, caretPos, formattedValue);
-      }
+}
+function getCaretBoundary(formattedValue, props) {
+    var prefix = props.prefix; if ( prefix === void 0 ) prefix = '';
+    var suffix = props.suffix; if ( suffix === void 0 ) suffix = '';
+    var boundaryAry = Array.from({ length: formattedValue.length + 1 }).map(function () { return true; });
+    var hasNegation = formattedValue[0] === '-';
+    // fill for prefix and negation
+    boundaryAry.fill(false, 0, prefix.length + (hasNegation ? 1 : 0));
+    // fill for suffix
+    var valLn = formattedValue.length;
+    boundaryAry.fill(false, valLn - suffix.length + 1, valLn + 1);
+    return boundaryAry;
+}
+function validateAndUpdateProps(props) {
+    var ref = getSeparators(props);
+    var thousandSeparator = ref.thousandSeparator;
+    var decimalSeparator = ref.decimalSeparator;
+    // eslint-disable-next-line prefer-const
+    var prefix = props.prefix; if ( prefix === void 0 ) prefix = '';
+    var allowNegative = props.allowNegative; if ( allowNegative === void 0 ) allowNegative = true;
+    if (thousandSeparator === decimalSeparator) {
+        throw new Error(("\n        Decimal separator can't be same as thousand separator.\n        thousandSeparator: " + thousandSeparator + " (thousandSeparator = {true} is same as thousandSeparator = \",\")\n        decimalSeparator: " + decimalSeparator + " (default value for decimalSeparator is .)\n     "));
     }
-
-    //calculate numeric string if not passed
-    if (numAsString === undefined) {
-      numAsString = this.removeFormatting(formattedValue);
+    if (prefix.startsWith('-') && allowNegative) {
+        // TODO: throw error in next major version
+        console.error(("\n      Prefix can't start with '-' when allowNegative is true.\n      prefix: " + prefix + "\n      allowNegative: " + allowNegative + "\n    "));
+        allowNegative = false;
     }
-
-    //update state if value is changed
-    if (formattedValue !== lastValue) {
-      this.setState({ value: formattedValue, numAsString: numAsString });
-
-      // trigger onValueChange synchronously, so parent is updated along with the number format. Fix for #277, #287
-      onValueChange(this.getValueObject(formattedValue, numAsString), { event: event, source: source });
-    }
-  };
-
-  NumberFormat.prototype.onChange = function onChange (e                     ) {
-    var el = e.target;
-    var inputValue = el.value;
-    var ref = this;
-    var state = ref.state;
-    var props = ref.props;
-    var isAllowed = props.isAllowed;
-    var lastValue = state.value || '';
-
-    var currentCaretPosition = getCurrentCaretPosition(el);
-
-    inputValue = this.correctInputValue(currentCaretPosition, lastValue, inputValue);
-
-    var formattedValue = this.formatInput(inputValue) || '';
-    var numAsString = this.removeFormatting(formattedValue);
-
-    var valueObj = this.getValueObject(formattedValue, numAsString);
-    var isChangeAllowed = isAllowed(valueObj);
-
-    if (!isChangeAllowed) {
-      formattedValue = lastValue;
-    }
-
-    this.updateValue({
-      formattedValue: formattedValue,
-      numAsString: numAsString,
-      inputValue: inputValue,
-      input: el,
-      event: e,
-      source: 'event',
-    });
-
-    if (isChangeAllowed) {
-      props.onChange(e);
-    }
-  };
-
-  NumberFormat.prototype.onBlur = function onBlur (e                     ) {
-    var ref = this;
-    var props = ref.props;
-    var state = ref.state;
-    var format = props.format;
-    var onBlur = props.onBlur;
+    return Object.assign(Object.assign({}, props), { allowNegative: allowNegative });
+}
+function useNumericFormat(props) {
+    // validate props
+    props = validateAndUpdateProps(props);
+    props.decimalSeparator;
+    props.allowedDecimalSeparators;
+    props.thousandsGroupStyle;
+    var suffix = props.suffix;
+    var allowNegative = props.allowNegative;
     var allowLeadingZeros = props.allowLeadingZeros;
-    var numAsString = state.numAsString;
-    var lastValue = state.value;
-    this.focusedElm = null;
-
-    clearTimeout(this.focusTimeout);
-    clearTimeout(this.caretPositionTimeout);
-
-    if (!format) {
-      // if the numAsString is not a valid number reset it to empty
-      if (isNaN(parseFloat(numAsString))) {
-        numAsString = '';
-      }
-
-      if (!allowLeadingZeros) {
-        numAsString = fixLeadingZero(numAsString);
-      }
-
-      var formattedValue = this.formatNumString(numAsString);
-
-      //change the state
-      if (formattedValue !== lastValue) {
-        // the event needs to be persisted because its properties can be accessed in an asynchronous way
-        this.updateValue({
-          formattedValue: formattedValue,
-          numAsString: numAsString,
-          input: e.target,
-          setCaretPosition: false,
-          event: e,
-          source: 'event',
-        });
-        onBlur(e);
-        return;
-      }
+    var onKeyDown = props.onKeyDown; if ( onKeyDown === void 0 ) onKeyDown = noop;
+    var onBlur = props.onBlur; if ( onBlur === void 0 ) onBlur = noop;
+    var thousandSeparator = props.thousandSeparator;
+    var decimalScale = props.decimalScale;
+    var fixedDecimalScale = props.fixedDecimalScale;
+    var prefix = props.prefix; if ( prefix === void 0 ) prefix = '';
+    var defaultValue = props.defaultValue;
+    var value = props.value;
+    var valueIsNumericString = props.valueIsNumericString;
+    var onValueChange = props.onValueChange;
+    var restProps = __rest$2(props, ["decimalSeparator", "allowedDecimalSeparators", "thousandsGroupStyle", "suffix", "allowNegative", "allowLeadingZeros", "onKeyDown", "onBlur", "thousandSeparator", "decimalScale", "fixedDecimalScale", "prefix", "defaultValue", "value", "valueIsNumericString", "onValueChange"]);
+    // get derived decimalSeparator and allowedDecimalSeparators
+    var ref = getSeparators(props);
+    var decimalSeparator = ref.decimalSeparator;
+    var allowedDecimalSeparators = ref.allowedDecimalSeparators;
+    var _format = function (numStr) { return format(numStr, props); };
+    var _removeFormatting = function (inputValue, changeMeta) { return removeFormatting(inputValue, changeMeta, props); };
+    var _value = isNil(value) ? defaultValue : value;
+    // try to figure out isValueNumericString based on format prop and value
+    var _valueIsNumericString = valueIsNumericString !== null && valueIsNumericString !== void 0 ? valueIsNumericString : isNumericString(_value, prefix, suffix);
+    if (!isNil(value)) {
+        _valueIsNumericString = _valueIsNumericString || typeof value === 'number';
     }
-    onBlur(e);
-  };
-
-  NumberFormat.prototype.onKeyDown = function onKeyDown (e                             ) {
-    var el = e.target;
-    var key = e.key;
-    var selectionStart = el.selectionStart;
-    var selectionEnd = el.selectionEnd;
-    var value = el.value; if ( value === void 0 ) value = '';
-    var expectedCaretPosition;
-    var ref = this.props;
-    var decimalScale = ref.decimalScale;
-    var fixedDecimalScale = ref.fixedDecimalScale;
-    var prefix = ref.prefix;
-    var suffix = ref.suffix;
-    var format = ref.format;
-    var onKeyDown = ref.onKeyDown;
-    var ignoreDecimalSeparator = decimalScale !== undefined && fixedDecimalScale;
-    var numRegex = this.getNumberRegex(false, ignoreDecimalSeparator);
-    var negativeRegex = new RegExp('-');
-    var isPatternFormat = typeof format === 'string';
-
-    this.selectionBeforeInput = {
-      selectionStart: selectionStart,
-      selectionEnd: selectionEnd,
-    };
-
-    //Handle backspace and delete against non numerical/decimal characters or arrow keys
-    if (key === 'ArrowLeft' || key === 'Backspace') {
-      expectedCaretPosition = selectionStart - 1;
-    } else if (key === 'ArrowRight') {
-      expectedCaretPosition = selectionStart + 1;
-    } else if (key === 'Delete') {
-      expectedCaretPosition = selectionStart;
+    else if (!isNil(defaultValue)) {
+        _valueIsNumericString = _valueIsNumericString || typeof defaultValue === 'number';
     }
-
-    //if expectedCaretPosition is not set it means we don't want to Handle keyDown
-    //also if multiple characters are selected don't handle
-    if (expectedCaretPosition === undefined || selectionStart !== selectionEnd) {
-      onKeyDown(e);
-      return;
-    }
-
-    var newCaretPosition = expectedCaretPosition;
-    var leftBound = isPatternFormat ? format.indexOf('#') : prefix.length;
-    var rightBound = isPatternFormat ? format.lastIndexOf('#') + 1 : value.length - suffix.length;
-
-    if (key === 'ArrowLeft' || key === 'ArrowRight') {
-      var direction = key === 'ArrowLeft' ? 'left' : 'right';
-      newCaretPosition = this.correctCaretPosition(value, expectedCaretPosition, direction);
-    } else if (
-      key === 'Delete' &&
-      !numRegex.test(value[expectedCaretPosition]) &&
-      !negativeRegex.test(value[expectedCaretPosition])
-    ) {
-      while (!numRegex.test(value[newCaretPosition]) && newCaretPosition < rightBound) {
-        newCaretPosition++;
-      }
-    } else if (key === 'Backspace' && !numRegex.test(value[expectedCaretPosition])) {
-      /* NOTE: This is special case when backspace is pressed on a
-      negative value while the cursor position is after prefix. We can't handle it on onChange because
-      we will not have any information of keyPress
-      */
-      if (selectionStart <= leftBound + 1 && value[0] === '-' && typeof format === 'undefined') {
-        var newValue = value.substring(1);
-        this.updateValue({
-          formattedValue: newValue,
-          caretPos: newCaretPosition,
-          input: el,
-          event: e,
-          source: 'event',
-        });
-      } else if (!negativeRegex.test(value[expectedCaretPosition])) {
-        while (!numRegex.test(value[newCaretPosition - 1]) && newCaretPosition > leftBound) {
-          newCaretPosition--;
+    var roundIncomingValueToPrecision = function (value) {
+        if (isNotValidValue(value))
+            { return value; }
+        if (typeof value === 'number') {
+            value = toNumericString(value);
         }
-        newCaretPosition = this.correctCaretPosition(value, newCaretPosition, 'left');
-      }
-    }
+        /**
+         * only round numeric or float string values coming through props,
+         * we don't need to do it for onChange events, as we want to prevent typing there
+         */
+        if (_valueIsNumericString && typeof decimalScale === 'number') {
+            return roundToPrecision(value, decimalScale, Boolean(fixedDecimalScale));
+        }
+        return value;
+    };
+    var ref$1 = useInternalValues(roundIncomingValueToPrecision(value), roundIncomingValueToPrecision(defaultValue), Boolean(_valueIsNumericString), _format, _removeFormatting, onValueChange);
+    var ref$1_0 = ref$1[0];
+    var numAsString = ref$1_0.numAsString;
+    var formattedValue = ref$1_0.formattedValue;
+    var _onValueChange = ref$1[1];
+    var _onKeyDown = function (e) {
+        var el = e.target;
+        var key = e.key;
+        var selectionStart = el.selectionStart;
+        var selectionEnd = el.selectionEnd;
+        var value = el.value; if ( value === void 0 ) value = '';
+        // if multiple characters are selected and user hits backspace, no need to handle anything manually
+        if (selectionStart !== selectionEnd) {
+            onKeyDown(e);
+            return;
+        }
+        // if user hits backspace, while the cursor is before prefix, and the input has negation, remove the negation
+        if (key === 'Backspace' &&
+            value[0] === '-' &&
+            selectionStart === prefix.length + 1 &&
+            allowNegative) {
+            // bring the cursor to after negation
+            setCaretPosition(el, 1);
+        }
+        // don't allow user to delete decimal separator when decimalScale and fixedDecimalScale is set
+        if (decimalScale && fixedDecimalScale) {
+            if (key === 'Backspace' && value[selectionStart - 1] === decimalSeparator) {
+                setCaretPosition(el, selectionStart - 1);
+                e.preventDefault();
+            }
+            else if (key === 'Delete' && value[selectionStart] === decimalSeparator) {
+                e.preventDefault();
+            }
+        }
+        // if user presses the allowed decimal separator before the separator, move the cursor after the separator
+        if ((allowedDecimalSeparators === null || allowedDecimalSeparators === void 0 ? void 0 : allowedDecimalSeparators.includes(key)) && value[selectionStart] === decimalSeparator) {
+            setCaretPosition(el, selectionStart + 1);
+        }
+        var _thousandSeparator = thousandSeparator === true ? ',' : thousandSeparator;
+        // move cursor when delete or backspace is pressed before/after thousand separator
+        if (key === 'Backspace' && value[selectionStart - 1] === _thousandSeparator) {
+            setCaretPosition(el, selectionStart - 1);
+        }
+        if (key === 'Delete' && value[selectionStart] === _thousandSeparator) {
+            setCaretPosition(el, selectionStart + 1);
+        }
+        onKeyDown(e);
+    };
+    var _onBlur = function (e) {
+        var _value = numAsString;
+        // if there no no numeric value, clear the input
+        if (!_value.match(/\d/g)) {
+            _value = '';
+        }
+        // clear leading 0s
+        if (!allowLeadingZeros) {
+            _value = fixLeadingZero(_value);
+        }
+        // apply fixedDecimalScale on blur event
+        if (fixedDecimalScale && decimalScale) {
+            _value = roundToPrecision(_value, decimalScale, fixedDecimalScale);
+        }
+        if (_value !== numAsString) {
+            var formattedValue = format(_value, props);
+            _onValueChange({
+                formattedValue: formattedValue,
+                value: _value,
+                floatValue: parseFloat(_value),
+            }, {
+                event: e,
+                source: SourceType.event,
+            });
+        }
+        onBlur(e);
+    };
+    var isValidInputCharacter = function (inputChar) {
+        if (inputChar === decimalSeparator)
+            { return true; }
+        return charIsNumber(inputChar);
+    };
+    var isCharacterSame = function (ref) {
+        var currentValue = ref.currentValue;
+        var lastValue = ref.lastValue;
+        var formattedValue = ref.formattedValue;
+        var currentValueIndex = ref.currentValueIndex;
+        var formattedValueIndex = ref.formattedValueIndex;
 
-    if (
-      newCaretPosition !== expectedCaretPosition ||
-      expectedCaretPosition < leftBound ||
-      expectedCaretPosition > rightBound
-    ) {
-      e.preventDefault();
-      this.setPatchedCaretPosition(el, newCaretPosition, value);
-    }
-
-    /* NOTE: this is just required for unit test as we need to get the newCaretPosition,
-            Remove this when you find different solution */
-    if (e.isUnitTestRun) {
-      this.setPatchedCaretPosition(el, newCaretPosition, value);
-    }
-
-    onKeyDown(e);
-  };
-
-  /** required to handle the caret position when click anywhere within the input **/
-  NumberFormat.prototype.onMouseUp = function onMouseUp (e                          ) {
-    var el = e.target;
-
-    /**
-     * NOTE: we have to give default value for value as in case when custom input is provided
-     * value can come as undefined when nothing is provided on value prop.
-     */
-    var selectionStart = el.selectionStart;
-    var selectionEnd = el.selectionEnd;
-    var value = el.value; if ( value === void 0 ) value = '';
-
-    if (selectionStart === selectionEnd) {
-      var caretPosition = this.correctCaretPosition(value, selectionStart);
-      if (caretPosition !== selectionStart) {
-        this.setPatchedCaretPosition(el, caretPosition, value);
-      }
-    }
-
-    this.props.onMouseUp(e);
-  };
-
-  NumberFormat.prototype.onFocus = function onFocus (e                     ) {
-    var this$1$1 = this;
-
-    // Workaround Chrome and Safari bug https://bugs.chromium.org/p/chromium/issues/detail?id=779328
-    // (onFocus event target selectionStart is always 0 before setTimeout)
-    e.persist();
-
-    this.focusedElm = e.target;
-    this.focusTimeout = setTimeout(function () {
-      var el = e.target;
-      var selectionStart = el.selectionStart;
-      var selectionEnd = el.selectionEnd;
-      var value = el.value; if ( value === void 0 ) value = '';
-
-      var caretPosition = this$1$1.correctCaretPosition(value, selectionStart);
-
-      //setPatchedCaretPosition only when everything is not selected on focus (while tabbing into the field)
-      if (
-        caretPosition !== selectionStart &&
-        !(selectionStart === 0 && selectionEnd === value.length)
-      ) {
-        this$1$1.setPatchedCaretPosition(el, caretPosition, value);
-      }
-
-      this$1$1.props.onFocus(e);
-    }, 0);
-  };
-
-  NumberFormat.prototype.render = function render () {
-    var ref = this.props;
-    var type = ref.type;
-    var displayType = ref.displayType;
-    var customInput = ref.customInput;
-    var renderText = ref.renderText;
-    var getInputRef = ref.getInputRef;
-    var format = ref.format;
-    ref.thousandSeparator;
-    ref.decimalSeparator;
-    ref.allowedDecimalSeparators;
-    ref.thousandsGroupStyle;
-    ref.decimalScale;
-    ref.fixedDecimalScale;
-    ref.prefix;
-    ref.suffix;
-    ref.removeFormatting;
-    ref.mask;
-    ref.defaultValue;
-    ref.isNumericString;
-    ref.allowNegative;
-    ref.allowEmptyFormatting;
-    ref.allowLeadingZeros;
-    ref.onValueChange;
-    ref.isAllowed;
-    ref.customNumerals;
-    ref.onChange;
-    ref.onKeyDown;
-    ref.onMouseUp;
-    ref.onFocus;
-    ref.onBlur;
-    ref.value;
-    var rest = objectWithoutProperties( ref, ["type", "displayType", "customInput", "renderText", "getInputRef", "format", "thousandSeparator", "decimalSeparator", "allowedDecimalSeparators", "thousandsGroupStyle", "decimalScale", "fixedDecimalScale", "prefix", "suffix", "removeFormatting", "mask", "defaultValue", "isNumericString", "allowNegative", "allowEmptyFormatting", "allowLeadingZeros", "onValueChange", "isAllowed", "customNumerals", "onChange", "onKeyDown", "onMouseUp", "onFocus", "onBlur", "value"] );
-    var otherProps = rest;
-    var ref$1 = this.state;
-    var value = ref$1.value;
-    var mounted = ref$1.mounted;
-
-    // add input mode on element based on format prop and device once the component is mounted
-    var inputMode = mounted && addInputMode(format) ? 'numeric' : undefined;
-
-    var inputProps = Object.assign({ inputMode: inputMode }, otherProps, {
-      type: type,
-      value: value,
-      onChange: this.onChange,
-      onKeyDown: this.onKeyDown,
-      onMouseUp: this.onMouseUp,
-      onFocus: this.onFocus,
-      onBlur: this.onBlur,
-    });
-
-    if (displayType === 'text') {
-      return renderText ? (
-        renderText(value, otherProps) || null
-      ) : (
-        React__default["default"].createElement( 'span', Object.assign({}, otherProps, { ref: getInputRef }),
-          value
-        )
-      );
-    } else if (customInput) {
-      var CustomInput = customInput;
-      return React__default["default"].createElement( CustomInput, Object.assign({}, inputProps, { ref: getInputRef }));
-    }
-
-    return React__default["default"].createElement( 'input', Object.assign({}, inputProps, { ref: getInputRef }));
-  };
-
-  return NumberFormat;
-}(React__default["default"].Component));
-
-NumberFormat.defaultProps = defaultProps;var NumberFormatCustom = React__default["default"].forwardRef(function (_a, ref) {
-    var onChange = _a.onChange, props = __rest$3(_a, ["onChange"]);
-    return (React__default["default"].createElement(NumberFormat, __assign$6({}, props, { getInputRef: ref, onValueChange: function (values) {
+        var curChar = currentValue[currentValueIndex];
+        var newChar = formattedValue[formattedValueIndex];
+        /**
+         * NOTE: as thousand separator and allowedDecimalSeparators can be same, we need to check on
+         * typed range if we have typed any character from allowedDecimalSeparators, in that case we
+         * consider different characters like , and . same within the range of updated value.
+         */
+        var typedRange = findChangeRange(lastValue, currentValue);
+        var to = typedRange.to;
+        if (currentValueIndex >= to.start &&
+            currentValueIndex < to.end &&
+            allowedDecimalSeparators &&
+            allowedDecimalSeparators.includes(curChar) &&
+            newChar === decimalSeparator) {
+            return true;
+        }
+        return curChar === newChar;
+    };
+    return Object.assign(Object.assign({}, restProps), { value: formattedValue, valueIsNumericString: false, isValidInputCharacter: isValidInputCharacter,
+        isCharacterSame: isCharacterSame, onValueChange: _onValueChange, format: _format, removeFormatting: _removeFormatting, getCaretBoundary: function (formattedValue) { return getCaretBoundary(formattedValue, props); }, onKeyDown: _onKeyDown, onBlur: _onBlur });
+}
+function NumericFormat(props) {
+    var numericFormatProps = useNumericFormat(props);
+    return React.createElement(NumberFormatBase, Object.assign({}, numericFormatProps));
+}var NumberFormatCustom = React.forwardRef(function (_a, ref) {
+    var onChange = _a.onChange, props = __rest$4(_a, ["onChange"]);
+    return (React.createElement(NumericFormat, __assign$7({}, props, { getInputRef: ref, onValueChange: function (values) {
             if (onChange)
                 onChange({ target: { value: values.value } });
         } })));
 });
-NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps = __assign$6({}, FormTextDefaultProps);var FormNumber = React__default["default"].forwardRef(function (_a, ref) {
+NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps = __assign$7({}, FormTextDefaultProps);var FormNumber = React.forwardRef(function (_a, ref) {
     // Memo --------------------------------------------------------------------------------------------------------------
-    var className = _a.className, allowLeadingZeros = _a.allowLeadingZeros, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initMuiInputProps = _a.InputProps, props = __rest$3(_a, ["className", "allowLeadingZeros", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "InputProps"]);
+    var className = _a.className, allowLeadingZeros = _a.allowLeadingZeros, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initMuiInputProps = _a.InputProps, props = __rest$4(_a, ["className", "allowLeadingZeros", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "InputProps"]);
     var muiInputProps = React.useMemo(function () {
         var inputProps = {
             className: readOnly ? 'Mui-disabled' : undefined,
@@ -4170,7 +4035,7 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
         else {
             inputProps.decimalScale = 0;
         }
-        return __assign$6(__assign$6({}, initMuiInputProps), { inputComponent: NumberFormatCustom, inputProps: inputProps });
+        return __assign$7(__assign$7({}, initMuiInputProps), { inputComponent: NumberFormatCustom, inputProps: inputProps });
     }, [
         allowDecimal,
         allowLeadingZeros,
@@ -4184,31 +4049,31 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
         thousandSeparator,
     ]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormNumber'), InputProps: muiInputProps, readOnly: readOnly }, props)));
+    return (React.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormNumber'), InputProps: muiInputProps, readOnly: readOnly }, props)));
 });
 FormNumber.displayName = 'FormNumber';
-FormNumber.defaultProps = FormNumberDefaultProps;var FormSearchDefaultProps = __assign$6({}, FormTextDefaultProps);var css_248z$f = ".FormSearch input[type=search]::-webkit-search-decoration,\n.FormSearch input[type=search]::-webkit-search-cancel-button,\n.FormSearch input[type=search]::-webkit-search-results-button,\n.FormSearch input[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n}";
-styleInject(css_248z$f);var FormSearch = React__default["default"].forwardRef(function (_a, ref) {
-    var className = _a.className, props = __rest$3(_a, ["className"]);
-    return React__default["default"].createElement(FormText, __assign$6({ className: classNames$1(className, 'FormSearch'), ref: ref, type: 'search' }, props));
+FormNumber.defaultProps = FormNumberDefaultProps;var FormSearchDefaultProps = __assign$7({}, FormTextDefaultProps);var css_248z$f = ".FormSearch input[type=search]::-webkit-search-decoration,\n.FormSearch input[type=search]::-webkit-search-cancel-button,\n.FormSearch input[type=search]::-webkit-search-results-button,\n.FormSearch input[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n}";
+styleInject(css_248z$f);var FormSearch = React.forwardRef(function (_a, ref) {
+    var className = _a.className, props = __rest$4(_a, ["className"]);
+    return React.createElement(FormText, __assign$7({ className: classNames$1(className, 'FormSearch'), ref: ref, type: 'search' }, props));
 });
 FormSearch.displayName = 'FormSearch';
-FormSearch.defaultProps = FormSearchDefaultProps;var FormTextareaDefaultProps = __assign$6(__assign$6({}, FormTextFieldDefaultProps), { clear: false, rows: 3, value: '' });var css_248z$e = ".FormTextarea .MuiInputBase-root .MuiInputBase-input {\n  overflow-y: scroll;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar {\n  width: 8px;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n}";
-styleInject(css_248z$e);var FormTextarea = React__default["default"].forwardRef(function (_a, ref) {
-    var className = _a.className, props = __rest$3(_a, ["className"]);
-    return React__default["default"].createElement(FormTextField, __assign$6({ ref: ref, className: classNames$1(className, 'FormTextarea') }, props, { multiline: true }));
+FormSearch.defaultProps = FormSearchDefaultProps;var FormTextareaDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: false, rows: 3, value: '' });var css_248z$e = ".FormTextarea .MuiInputBase-root .MuiInputBase-input {\n  overflow-y: scroll;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar {\n  width: 8px;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n}";
+styleInject(css_248z$e);var FormTextarea = React.forwardRef(function (_a, ref) {
+    var className = _a.className, props = __rest$4(_a, ["className"]);
+    return React.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormTextarea') }, props, { multiline: true }));
 });
 FormTextarea.displayName = 'FormTextarea';
-FormTextarea.defaultProps = FormTextareaDefaultProps;var FormUrlDefaultProps = __assign$6(__assign$6({}, FormTextDefaultProps), { validPattern: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'%()*+,;=.]+$/gim });var FormUrl = React__default["default"].forwardRef(function (_a, ref) {
-    var className = _a.className, props = __rest$3(_a, ["className"]);
-    return React__default["default"].createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormUrl'), type: 'url' }, props));
+FormTextarea.defaultProps = FormTextareaDefaultProps;var FormUrlDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'%()*+,;=.]+$/gim });var FormUrl = React.forwardRef(function (_a, ref) {
+    var className = _a.className, props = __rest$4(_a, ["className"]);
+    return React.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormUrl'), type: 'url' }, props));
 });
 FormUrl.displayName = 'FormUrl';
-FormUrl.defaultProps = FormUrlDefaultProps;var FormSelectDefaultProps = __assign$6(__assign$6({}, FormTextDefaultProps), { formValueSeparator: ',', minWidth: 120 });var css_248z$d = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
-styleInject(css_248z$d);var FormSelect = React__default["default"].forwardRef(function (_a, ref) {
+FormUrl.defaultProps = FormUrlDefaultProps;var FormSelectDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { formValueSeparator: ',', minWidth: 120 });var css_248z$d = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
+styleInject(css_248z$d);var FormSelect = React.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
-    var className = _a.className, name = _a.name, initItems = _a.items, initFullWidth = _a.fullWidth, onLoadItems = _a.onLoadItems, readOnly = _a.readOnly, multiple = _a.multiple, checkbox = _a.checkbox, placeholder = _a.placeholder, initStartAdornment = _a.startAdornment, initValue = _a.value, initInputLabelProps = _a.InputLabelProps, initSelectProps = _a.SelectProps, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, width = _a.width, minWidth = _a.minWidth, initLoading = _a.loading, onChange = _a.onChange, onValue = _a.onValue, props = __rest$3(_a, ["className", "name", "items", "fullWidth", "onLoadItems", "readOnly", "multiple", "checkbox", "placeholder", "startAdornment", "value", "InputLabelProps", "SelectProps", "formValueSeparator", "formValueSort", "width", "minWidth", "loading", "onChange", "onValue"]);
-    var _b = useFormState(), formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, otherFormState = __rest$3(_b, ["fullWidth", "onAddValueItem", "onValueChange"]);
+    var className = _a.className, name = _a.name, initItems = _a.items, initFullWidth = _a.fullWidth, onLoadItems = _a.onLoadItems, readOnly = _a.readOnly, multiple = _a.multiple, checkbox = _a.checkbox, placeholder = _a.placeholder, initStartAdornment = _a.startAdornment, initValue = _a.value, initInputLabelProps = _a.InputLabelProps, initSelectProps = _a.SelectProps, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, width = _a.width, minWidth = _a.minWidth, initLoading = _a.loading, onChange = _a.onChange, onValue = _a.onValue, props = __rest$4(_a, ["className", "name", "items", "fullWidth", "onLoadItems", "readOnly", "multiple", "checkbox", "placeholder", "startAdornment", "value", "InputLabelProps", "SelectProps", "formValueSeparator", "formValueSort", "width", "minWidth", "loading", "onChange", "onValue"]);
+    var _b = useFormState(), formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, otherFormState = __rest$4(_b, ["fullWidth", "onAddValueItem", "onValueChange"]);
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var fullWidth = React.useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
     // State -----------------------------------------------------------------------------------------------------------
@@ -4220,9 +4085,9 @@ styleInject(css_248z$d);var FormSelect = React__default["default"].forwardRef(fu
     // Memo --------------------------------------------------------------------------------------------------------------
     var startAdornment = React.useMemo(function () {
         if (isOnGetItemLoading || loading) {
-            return (React__default["default"].createElement(React__default["default"].Fragment, null,
+            return (React.createElement(React.Fragment, null,
                 initStartAdornment,
-                (isOnGetItemLoading || loading) && (React__default["default"].createElement(material.CircularProgress, { size: 16, color: 'inherit', style: { verticalAlign: 'middle', marginLeft: initStartAdornment ? 8 : 0 } }))));
+                (isOnGetItemLoading || loading) && (React.createElement(material.CircularProgress, { size: 16, color: 'inherit', style: { verticalAlign: 'middle', marginLeft: initStartAdornment ? 8 : 0 } }))));
         }
         else {
             return initStartAdornment;
@@ -4262,7 +4127,7 @@ styleInject(css_248z$d);var FormSelect = React__default["default"].forwardRef(fu
     // State - inputLabelProps -----------------------------------------------------------------------------------------
     var inputLabelProps = useAutoUpdateState$1(React.useCallback(function () {
         if (hasEmptyValue || (!hasEmptyValue && placeholder)) {
-            return __assign$6(__assign$6({}, initInputLabelProps), { shrink: true });
+            return __assign$7(__assign$7({}, initInputLabelProps), { shrink: true });
         }
         else {
             return initInputLabelProps;
@@ -4346,29 +4211,29 @@ styleInject(css_248z$d);var FormSelect = React__default["default"].forwardRef(fu
     // Memo --------------------------------------------------------------------------------------------------------------
     var selectProps = React.useMemo(function () {
         var _a;
-        var finalSelectProps = __assign$6(__assign$6({}, initSelectProps), { displayEmpty: true, multiple: !!multiple });
+        var finalSelectProps = __assign$7(__assign$7({}, initSelectProps), { displayEmpty: true, multiple: !!multiple });
         if (multiple) {
             finalSelectProps.renderValue = function (selected) {
                 if (isSelectedPlaceholder) {
                     return placeholder;
                 }
                 else {
-                    return (React__default["default"].createElement(material.Box, { className: 'selected-list', sx: { display: 'flex', flexWrap: 'wrap', gap: 0.5 } }, Array.isArray(selected) &&
+                    return (React.createElement(material.Box, { className: 'selected-list', sx: { display: 'flex', flexWrap: 'wrap', gap: 0.5 } }, Array.isArray(selected) &&
                         selected.map(function (value) {
                             if (isSelectedPlaceholder) {
-                                return React__default["default"].createElement(material.Chip, { key: value || '$$$EmptyValuePlaceholder$$$', label: 'hahaha', size: 'small' });
+                                return React.createElement(material.Chip, { key: value || '$$$EmptyValuePlaceholder$$$', label: 'hahaha', size: 'small' });
                             }
                             else {
-                                return React__default["default"].createElement(material.Chip, { key: value, label: itemValueLabels[value], size: 'small' });
+                                return React.createElement(material.Chip, { key: value, label: itemValueLabels[value], size: 'small' });
                             }
                         })));
                 }
             };
         }
         if (minWidth != null) {
-            finalSelectProps.style = __assign$6(__assign$6({}, finalSelectProps.style), { minWidth: width || minWidth });
+            finalSelectProps.style = __assign$7(__assign$7({}, finalSelectProps.style), { minWidth: width || minWidth });
         }
-        finalSelectProps.MenuProps = __assign$6(__assign$6({}, finalSelectProps.MenuProps), { className: classNames$1((_a = finalSelectProps.MenuProps) === null || _a === void 0 ? void 0 : _a.className, 'FormSelect-Menu-Popover') });
+        finalSelectProps.MenuProps = __assign$7(__assign$7({}, finalSelectProps.MenuProps), { className: classNames$1((_a = finalSelectProps.MenuProps) === null || _a === void 0 ? void 0 : _a.className, 'FormSelect-Menu-Popover') });
         return finalSelectProps;
     }, [initSelectProps, isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, width]);
     // Function - getExtraCommands -------------------------------------------------------------------------------------
@@ -4410,7 +4275,7 @@ styleInject(css_248z$d);var FormSelect = React__default["default"].forwardRef(fu
     var handleRef = React.useCallback(function (commands) {
         if (ref) {
             var finalCommands = commands
-                ? __assign$6(__assign$6(__assign$6({}, commands), getBaseCommands()), getExtraCommands()) : null;
+                ? __assign$7(__assign$7(__assign$7({}, commands), getBaseCommands()), getExtraCommands()) : null;
             if (typeof ref === 'function') {
                 return ref(finalCommands);
             }
@@ -4420,7 +4285,7 @@ styleInject(css_248z$d);var FormSelect = React__default["default"].forwardRef(fu
         }
     }, [ref, getBaseCommands, getExtraCommands]);
     var handleAddValueItem = React.useCallback(function (id, commands) {
-        onAddValueItem(id, __assign$6(__assign$6(__assign$6({}, commands), getBaseCommands()), getExtraCommands()));
+        onAddValueItem(id, __assign$7(__assign$7(__assign$7({}, commands), getBaseCommands()), getExtraCommands()));
     }, [onAddValueItem, getBaseCommands, getExtraCommands]);
     var handleChange = function (newValue) {
         setValue(newValue);
@@ -4436,22 +4301,22 @@ styleInject(css_248z$d);var FormSelect = React__default["default"].forwardRef(fu
     else {
         finalValue = multiple ? emptyValue : '';
     }
-    return (React__default["default"].createElement(FormContextProvider, { value: __assign$6({ fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, 
+    return (React.createElement(FormContextProvider, { value: __assign$7({ fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, 
             // eslint-disable-next-line
             onValueChange: function () { } }, otherFormState) },
-        React__default["default"].createElement(FormText, __assign$6({ select: true, ref: handleRef, name: name, className: classNames$1(className, 'FormSelect', isSelectedPlaceholder && 'is-selected-placeholder'), fullWidth: fullWidth }, props, { startAdornment: startAdornment, value: finalValue, clear: false, readOnly: readOnly || empty(items), InputLabelProps: inputLabelProps, SelectProps: selectProps, onChange: handleChange, onValue: handleValue }),
-            isSelectedPlaceholder && (React__default["default"].createElement(material.MenuItem, { key: '$$$EmptyValuePlaceholder$$$', value: '', disabled: true, sx: { display: 'none' } }, placeholder)),
+        React.createElement(FormText, __assign$7({ select: true, ref: handleRef, name: name, className: classNames$1(className, 'FormSelect', isSelectedPlaceholder && 'is-selected-placeholder'), fullWidth: fullWidth }, props, { startAdornment: startAdornment, value: finalValue, clear: false, readOnly: readOnly || empty(items), InputLabelProps: inputLabelProps, SelectProps: selectProps, onChange: handleChange, onValue: handleValue }),
+            isSelectedPlaceholder && (React.createElement(material.MenuItem, { key: '$$$EmptyValuePlaceholder$$$', value: '', disabled: true, sx: { display: 'none' } }, placeholder)),
             items && notEmpty(items) ? (items.map(function (_a) {
                 var itemLabel = _a.label, itemValue = _a.value, disabled = _a.disabled;
-                return (React__default["default"].createElement(material.MenuItem, { key: empty(itemValue) ? '$$$EmptyValue$$$' : itemValue, value: itemValue, disabled: disabled },
-                    multiple && checkbox && Array.isArray(value) && React__default["default"].createElement(material.Checkbox, { checked: value.includes(itemValue) }),
+                return (React.createElement(material.MenuItem, { key: empty(itemValue) ? '$$$EmptyValue$$$' : itemValue, value: itemValue, disabled: disabled },
+                    multiple && checkbox && Array.isArray(value) && React.createElement(material.Checkbox, { checked: value.includes(itemValue) }),
                     itemLabel));
-            })) : (React__default["default"].createElement(material.MenuItem, { value: '' })))));
+            })) : (React.createElement(material.MenuItem, { value: '' })))));
 });
 FormSelect.displayName = 'FormSelect';
-FormSelect.defaultProps = FormSelectDefaultProps;var FormCompanyNoDefaultProps = __assign$6(__assign$6({}, FormTextDefaultProps), { validPattern: /(([0-9]{3})([0-9]{2})([0-9]{5}))|(([0-9]{3})-([0-9]{2})-([0-9]{5}))/ });var FormCompanyNo = React__default["default"].forwardRef(function (_a, ref) {
+FormSelect.defaultProps = FormSelectDefaultProps;var FormCompanyNoDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /(([0-9]{3})([0-9]{2})([0-9]{5}))|(([0-9]{3})-([0-9]{2})-([0-9]{5}))/ });var FormCompanyNo = React.forwardRef(function (_a, ref) {
     // Event Handler ---------------------------------------------------------------------------------------------------
-    var className = _a.className, onValue = _a.onValue, props = __rest$3(_a, ["className", "onValue"]);
+    var className = _a.className, onValue = _a.onValue, props = __rest$4(_a, ["className", "onValue"]);
     var handleOnValue = React.useCallback(function (value) {
         var newValue = value;
         if (newValue && notEmpty(newValue)) {
@@ -4461,7 +4326,7 @@ FormSelect.defaultProps = FormSelectDefaultProps;var FormCompanyNoDefaultProps =
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormCompanyNo'), onValue: handleOnValue, maxLength: 12 }, props)));
+    return (React.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormCompanyNo'), onValue: handleOnValue, maxLength: 12 }, props)));
 });
 FormCompanyNo.displayName = 'FormCompanyNo';
 FormCompanyNo.defaultProps = FormCompanyNoDefaultProps;
@@ -4477,9 +4342,9 @@ function autoDash$1(companyNo) {
         tmp += str[i];
     }
     return tmp;
-}var FormPersonalNoDefaultProps = __assign$6(__assign$6({}, FormTextDefaultProps), { validPattern: /(([0-9]{6})([0-9]{7}))|(([0-9]{6})-([0-9]{7}))/ });var FormPersonalNo = React__default["default"].forwardRef(function (_a, ref) {
+}var FormPersonalNoDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /(([0-9]{6})([0-9]{7}))|(([0-9]{6})-([0-9]{7}))/ });var FormPersonalNo = React.forwardRef(function (_a, ref) {
     // Event Handler ---------------------------------------------------------------------------------------------------
-    var className = _a.className, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest$3(_a, ["className", "onValue", "onValidate"]);
+    var className = _a.className, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest$4(_a, ["className", "onValue", "onValidate"]);
     var handleOnValue = React.useCallback(function (value) {
         var newValue = value;
         if (newValue && notEmpty(newValue)) {
@@ -4491,7 +4356,7 @@ function autoDash$1(companyNo) {
     var handleValidate = React.useCallback(function (value) {
         if (notEmpty(value) && value.length === 14 && value.includes('-')) {
             var jumin = value
-                .replaceAll('-', '')
+                .replace(/-/g, '')
                 .split('')
                 .map(function (v) { return Number(v); });
             var ckarr = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5];
@@ -4518,7 +4383,7 @@ function autoDash$1(companyNo) {
         }
     }, [onValidate]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormText, __assign$6({ ref: ref, className: classNames$1(className, 'FormPersonalNo'), onValue: handleOnValue, maxLength: 14, onValidate: handleValidate }, props)));
+    return (React.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormPersonalNo'), onValue: handleOnValue, maxLength: 14, onValidate: handleValidate }, props)));
 });
 FormPersonalNo.displayName = 'FormPersonalNo';
 FormPersonalNo.defaultProps = FormPersonalNoDefaultProps;
@@ -4539,13 +4404,16 @@ function autoDash(personalNo) {
     value: 1,
     uncheckedValue: 0,
 };var css_248z$c = ".FormItemBase .FormItemBase-InputLabel {\n  overflow: visible;\n  padding-left: 5px;\n}\n.FormItemBase .FormItemBase-InputLabel.MuiInputLabel-sizeSmall {\n  transform: translate(0, -1.5px) scale(0.7);\n}\n.FormItemBase .FormItemBase-Control-wrap {\n  position: relative;\n}\n.FormItemBase .FormItemBase-Control {\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n.FormItemBase.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 16px;\n}";
-styleInject(css_248z$c);var FormItemBase = React__default["default"].forwardRef(function (_a, ref) {
-    // FormState -------------------------------------------------------------------------------------------------------
+styleInject(css_248z$c);var FormItemBase = React.forwardRef(function (_a, ref) {
+    // Ref ---------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
     control = _a.control, controlHeight = _a.controlHeight, controlVerticalCenter = _a.controlVerticalCenter, required = _a.required, labelIcon = _a.labelIcon, label = _a.label, focused = _a.focused, helperText = _a.helperText, helperTextProps = _a.helperTextProps, error = _a.error, hideLabel = _a.hideLabel, hidden = _a.hidden, autoSize = _a.autoSize, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, style = _a.style, sx = _a.sx;
+    var inputRef = React.useRef(null);
+    var realControlContainerRef = React.useRef(null);
+    // FormState -------------------------------------------------------------------------------------------------------
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFullWidth = _b.fullWidth, formColWithLabel = _b.formColWithLabel, formColWithHelperText = _b.formColWithHelperText;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = React.useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
@@ -4565,22 +4433,26 @@ styleInject(css_248z$c);var FormItemBase = React__default["default"].forwardRef(
     }, [formColWithLabel, fullWidth, hidden]);
     // State - inputHeight ---------------------------------------------------------------------------------------------
     var _c = React.useState(0), inputHeight = _c[0], setInputHeight = _c[1];
-    var inputResizeDetectorRef = useResizeDetector({
-        handleHeight: true,
+    useResizeDetector({
+        targetRef: inputRef,
         handleWidth: false,
+        handleHeight: true,
         onResize: function () {
-            setInputHeight(inputResizeDetectorRef.current.getBoundingClientRect().height);
+            var _a, _b;
+            setInputHeight(((_b = (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height) || 0);
         },
-    }).ref;
+    });
     // State - realControlHeight ---------------------------------------------------------------------------------------
     var _d = React.useState(0), realControlHeight = _d[0], setRealControlHeight = _d[1];
-    var realControlResizeDetectorRef = useResizeDetector({
-        handleHeight: true,
+    useResizeDetector({
+        targetRef: realControlContainerRef,
         handleWidth: false,
+        handleHeight: true,
         onResize: function () {
-            setRealControlHeight(realControlResizeDetectorRef.current.getBoundingClientRect().height);
+            var _a, _b;
+            setRealControlHeight(((_b = (_a = realControlContainerRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height) || 0);
         },
-    }).ref;
+    });
     // Memo ------------------------------------------------------------------------------------------------------------
     var bottomMargin = React.useMemo(function () {
         var realHeight = realControlHeight || 0;
@@ -4602,7 +4474,7 @@ styleInject(css_248z$c);var FormItemBase = React__default["default"].forwardRef(
         if (inputHeight && controlHeight && controlVerticalCenter) {
             topMargin = inputHeight / 2 - controlHeight / 2;
         }
-        var withLabelControlAddTopMargin = 0;
+        var withLabelControlAddTopMargin;
         if (size === 'small') {
             withLabelControlAddTopMargin = controlVerticalCenter ? 7 : 13;
         }
@@ -4627,34 +4499,34 @@ styleInject(css_248z$c);var FormItemBase = React__default["default"].forwardRef(
         return controlMarginTop;
     }, [controlHeight, controlVerticalCenter, formColWithLabel, inputHeight, label, size, variant]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement("div", { style: wrapStyle },
-        React__default["default"].createElement(material.FormControl, { ref: ref, variant: 'standard', className: classNames$1(className, 'FormItemBase', !!label && 'with-label', "variant-".concat(variant), controlVerticalCenter && 'control-vertical-center', !!error && 'error'), style: style, color: color, error: error, focused: focused, sx: sx },
-            !formColWithLabel && label && (React__default["default"].createElement(material.InputLabel, { shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size, required: required }, labelIcon ? (React__default["default"].createElement(React__default["default"].Fragment, null,
-                React__default["default"].createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 3, marginTop: -4, marginBottom: -2 } }, labelIcon),
-                React__default["default"].createElement("span", { style: { verticalAlign: 'middle' } }, label))) : (label))),
-            React__default["default"].createElement("div", { className: 'FormItemBase-Control-wrap', style: { display: 'grid', marginTop: hideLabel ? 0 : undefined } }, autoSize ? (React__default["default"].createElement(React__default["default"].Fragment, null,
-                variant === 'standard' && (React__default["default"].createElement(material.Input, { ref: inputResizeDetectorRef, size: size, fullWidth: true, disabled: true, style: { visibility: 'hidden' } })),
-                variant === 'outlined' && (React__default["default"].createElement(material.OutlinedInput, { ref: inputResizeDetectorRef, size: size, fullWidth: true, disabled: true, style: { visibility: 'hidden' } })),
-                variant === 'filled' && (React__default["default"].createElement(material.FilledInput, { ref: inputResizeDetectorRef, size: size, fullWidth: true, disabled: true, style: { visibility: 'hidden' } })),
-                React__default["default"].createElement("div", { style: { height: bottomMargin, visibility: 'hidden' } }),
-                React__default["default"].createElement("div", { ref: realControlResizeDetectorRef, className: 'FormItemBase-Control', style: {
+    return (React.createElement("div", { style: wrapStyle },
+        React.createElement(material.FormControl, { ref: ref, variant: 'standard', className: classNames$1(className, 'FormItemBase', !!label && 'with-label', "variant-".concat(variant), controlVerticalCenter && 'control-vertical-center', !!error && 'error'), style: style, color: color, error: error, focused: focused, sx: sx },
+            !formColWithLabel && label && (React.createElement(material.InputLabel, { shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size, required: required }, labelIcon ? (React.createElement(React.Fragment, null,
+                React.createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 3, marginTop: -4, marginBottom: -2 } }, labelIcon),
+                React.createElement("span", { style: { verticalAlign: 'middle' } }, label))) : (label))),
+            React.createElement("div", { className: 'FormItemBase-Control-wrap', style: { display: 'grid', marginTop: hideLabel ? 0 : undefined } }, autoSize ? (React.createElement(React.Fragment, null,
+                variant === 'standard' && (React.createElement(material.Input, { ref: inputRef, size: size, fullWidth: true, disabled: true, style: { visibility: 'hidden' } })),
+                variant === 'outlined' && (React.createElement(material.OutlinedInput, { ref: inputRef, size: size, fullWidth: true, disabled: true, style: { visibility: 'hidden' } })),
+                variant === 'filled' && (React.createElement(material.FilledInput, { ref: inputRef, size: size, fullWidth: true, disabled: true, style: { visibility: 'hidden' } })),
+                React.createElement("div", { style: { height: bottomMargin, visibility: 'hidden' } }),
+                React.createElement("div", { ref: realControlContainerRef, className: 'FormItemBase-Control', style: {
                         width: fullWidth ? '100%' : 'auto',
                         display: 'grid',
                         marginTop: controlMarginTop,
-                    } }, control))) : (React__default["default"].createElement("div", { style: {
+                    } }, control))) : (React.createElement("div", { style: {
                     width: fullWidth ? '100%' : 'auto',
                     display: 'grid',
                     marginTop: controlMarginTop,
                 } }, control))),
-            !formColWithHelperText && helperText && (React__default["default"].createElement(material.FormHelperText, __assign$6({ component: 'div' }, helperTextProps), helperText)))));
+            !formColWithHelperText && helperText && (React.createElement(material.FormHelperText, __assign$7({ component: 'div' }, helperTextProps), helperText)))));
 });
-FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default["default"].forwardRef(function (_a, ref) {
+FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initChecked = _a.checked, initInputRef = _a.inputRef, initAction = _a.action, readOnly = _a.readOnly, initDisabled = _a.disabled, text = _a.text, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initData = _a.data, initUncheckedValue = _a.uncheckedValue, exceptValue = _a.exceptValue, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
-    className = _a.className, initStyle = _a.style, sx = _a.sx, props = __rest$3(_a, ["variant", "size", "color", "focused", "fullWidth", "name", "labelIcon", "label", "checked", "inputRef", "action", "readOnly", "disabled", "text", "error", "helperText", "value", "data", "uncheckedValue", "exceptValue", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
+    className = _a.className, initStyle = _a.style, sx = _a.sx, props = __rest$4(_a, ["variant", "size", "color", "focused", "fullWidth", "name", "labelIcon", "label", "checked", "inputRef", "action", "readOnly", "disabled", "text", "error", "helperText", "value", "data", "uncheckedValue", "exceptValue", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = React.useId();
     // Use ---------------------------------------------------------------------------------------------------------------
     var theme = material.useTheme();
@@ -4669,8 +4541,13 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default["def
     // Ref -------------------------------------------------------------------------------------------------------------
     var inputRef = React.useRef(null);
     var actionRef = React.useRef(null);
+    var labelRef = React.useRef(null);
     // ResizeDetector --------------------------------------------------------------------------------------------------
-    var _c = useResizeDetector(), width = _c.width, height = _c.height, resizeDetectorRef = _c.ref;
+    var _c = useResizeDetector({
+        targetRef: labelRef,
+        handleWidth: true,
+        handleHeight: true,
+    }), width = _c.width, height = _c.height;
     // State -----------------------------------------------------------------------------------------------------------
     var _d = useAutoUpdateState$1(initValue), value = _d[0], setValue = _d[1];
     var _e = useAutoUpdateState$1(initUncheckedValue), uncheckedValue = _e[0], setUncheckedValue = _e[1];
@@ -4688,7 +4565,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default["def
         onValueChange(name, !!checked);
     }, [checked]);
     // Memo --------------------------------------------------------------------------------------------------------------
-    var style = React.useMemo(function () { return (__assign$6({ width: fullWidth ? '100%' : width || 100, paddingLeft: 3 }, initStyle)); }, [initStyle, fullWidth, width]);
+    var style = React.useMemo(function () { return (__assign$7({ width: fullWidth ? '100%' : width || 100, paddingLeft: 3 }, initStyle)); }, [initStyle, fullWidth, width]);
     // Function - focus ------------------------------------------------------------------------------------------------
     var focus = React.useCallback(function () {
         var _a, _b, _c, _d;
@@ -4827,13 +4704,13 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default["def
         }
     }, [readOnly, setChecked, onValueChangeByUser, name, onRequestSearchSubmit]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormCheckbox'), labelIcon: labelIcon, label: label, error: error, fullWidth: fullWidth, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React__default["default"].createElement(material.FormControlLabel, { ref: resizeDetectorRef, control: React__default["default"].createElement(material.Checkbox, __assign$6({ name: name, color: color, size: size, inputRef: initInputRef ? initInputRef : inputRef, action: initAction ? initAction : actionRef, checked: !!checked, checkedIcon: React__default["default"].createElement(iconsMaterial.CheckBox, { color: error ? 'error' : undefined }), icon: React__default["default"].createElement(iconsMaterial.CheckBoxOutlineBlank, { color: error ? 'error' : undefined }), onChange: handleChange, disabled: disabled || readOnly }, props)), label: React__default["default"].createElement(material.Typography, { color: error ? 'error' : readOnly || disabled ? theme.palette.text.disabled : undefined, whiteSpace: 'nowrap' }, text) }) }));
+    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormCheckbox'), labelIcon: labelIcon, label: label, error: error, fullWidth: fullWidth, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React.createElement(material.FormControlLabel, { ref: labelRef, control: React.createElement(material.Checkbox, __assign$7({ name: name, color: color, size: size, inputRef: initInputRef ? initInputRef : inputRef, action: initAction ? initAction : actionRef, checked: !!checked, checkedIcon: React.createElement(iconsMaterial.CheckBox, { color: error ? 'error' : undefined }), icon: React.createElement(iconsMaterial.CheckBoxOutlineBlank, { color: error ? 'error' : undefined }), onChange: handleChange, disabled: disabled || readOnly }, props)), label: React.createElement(material.Typography, { color: error ? 'error' : readOnly || disabled ? theme.palette.text.disabled : undefined, whiteSpace: 'nowrap' }, text) }) }));
 });
 FormCheckbox.displayName = 'FormCheckbox';
 FormCheckbox.defaultProps = FormCheckboxDefaultProps;var FormRadioGroupDefaultProps = {
     inline: true,
 };var PADDING_LEFT = 3;
-var FormRadioGroup = React__default["default"].forwardRef(function (_a, ref) {
+var FormRadioGroup = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, hidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
@@ -4841,7 +4718,7 @@ var FormRadioGroup = React__default["default"].forwardRef(function (_a, ref) {
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, 
     //----------------------------------------------------------------------------------------------------------------
-    props = __rest$3(_a, ["variant", "size", "color", "focused", "fullWidth", "hidden", "name", "width", "labelIcon", "label", "inline", "loading", "nowrap", "items", "value", "data", "error", "helperText", "disabled", "readOnly", "required", "exceptValue", "onLoadItems", "onChange", "onValue", "onValidate", "className", "style", "sx"]);
+    props = __rest$4(_a, ["variant", "size", "color", "focused", "fullWidth", "hidden", "name", "width", "labelIcon", "label", "inline", "loading", "nowrap", "items", "value", "data", "error", "helperText", "disabled", "readOnly", "required", "exceptValue", "onLoadItems", "onChange", "onValue", "onValidate", "className", "style", "sx"]);
     var id = React.useId();
     // FormState -------------------------------------------------------------------------------------------------------
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
@@ -4894,7 +4771,7 @@ var FormRadioGroup = React__default["default"].forwardRef(function (_a, ref) {
             onValueChange(name, value);
     }, [value]);
     // Memo --------------------------------------------------------------------------------------------------------------
-    var style = React.useMemo(function () { return (__assign$6({ width: width, paddingLeft: PADDING_LEFT }, initStyle)); }, [initStyle, width]);
+    var style = React.useMemo(function () { return (__assign$7({ width: width, paddingLeft: PADDING_LEFT }, initStyle)); }, [initStyle, width]);
     // Effect ----------------------------------------------------------------------------------------------------------
     React.useEffect(function () {
         if (value !== initValue) {
@@ -5115,31 +4992,31 @@ var FormRadioGroup = React__default["default"].forwardRef(function (_a, ref) {
         }
     }, [readOnly, items, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormItemBase, { focused: focused, ref: baseRef, className: classNames$1(className, 'FormValueItem', 'FormRadioGroup'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, fullWidth: fullWidth, required: required, error: error, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React__default["default"].createElement(React__default["default"].Fragment, null,
-            !fullWidth && !isOnGetItemLoading && !loading && items && (React__default["default"].createElement("div", { ref: resizeWidthDetectorRef, style: {
+    return (React.createElement(FormItemBase, { focused: focused, ref: baseRef, className: classNames$1(className, 'FormValueItem', 'FormRadioGroup'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, fullWidth: fullWidth, required: required, error: error, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React.createElement(React.Fragment, null,
+            !fullWidth && !isOnGetItemLoading && !loading && items && (React.createElement("div", { ref: resizeWidthDetectorRef, style: {
                     display: 'grid',
                     position: 'absolute',
                     whiteSpace: 'nowrap',
                     visibility: 'hidden',
                 } },
-                React__default["default"].createElement(material.RadioGroup, __assign$6({}, props, { style: { marginTop: 10, display: 'inline-flex', flexWrap: 'nowrap' }, name: name, row: inline, value: value === undefined ? null : value, onChange: handleChange }), items.map(function (_a, idx) {
+                React.createElement(material.RadioGroup, __assign$7({}, props, { style: { marginTop: 10, display: 'inline-flex', flexWrap: 'nowrap' }, name: name, row: inline, value: value === undefined ? null : value, onChange: handleChange }), items.map(function (_a, idx) {
                     var value = _a.value, label = _a.label, itemDisabled = _a.disabled;
-                    return (React__default["default"].createElement(material.FormControlLabel, { ref: idx === 0 ? resizeHeightDetectorRef : null, key: idx, control: React__default["default"].createElement(material.Radio, { icon: React__default["default"].createElement(iconsMaterial.RadioButtonUnchecked, { color: error ? 'error' : undefined }), checkedIcon: React__default["default"].createElement(iconsMaterial.RadioButtonChecked, { color: error ? 'error' : undefined }), color: color, size: size }), label: label, style: { color: error ? theme.palette.error.main : '', marginTop: -10, whiteSpace: 'nowrap' }, value: value, disabled: disabled || readOnly || itemDisabled }));
+                    return (React.createElement(material.FormControlLabel, { ref: idx === 0 ? resizeHeightDetectorRef : null, key: idx, control: React.createElement(material.Radio, { icon: React.createElement(iconsMaterial.RadioButtonUnchecked, { color: error ? 'error' : undefined }), checkedIcon: React.createElement(iconsMaterial.RadioButtonChecked, { color: error ? 'error' : undefined }), color: color, size: size }), label: label, style: { color: error ? theme.palette.error.main : '', marginTop: -10, whiteSpace: 'nowrap' }, value: value, disabled: disabled || readOnly || itemDisabled }));
                 })))),
-            React__default["default"].createElement("div", null,
-                React__default["default"].createElement(material.RadioGroup, __assign$6({}, props, { style: {
+            React.createElement("div", null,
+                React.createElement(material.RadioGroup, __assign$7({}, props, { style: {
                         marginTop: 10,
                         display: 'inline-flex',
                         visibility: width == null ? 'hidden' : undefined,
                         position: width == null ? 'absolute' : undefined,
                         flexWrap: nowrap ? 'nowrap' : undefined,
-                    }, name: name, row: inline, value: value === undefined ? null : value, onChange: handleChange }), isOnGetItemLoading || loading ? (React__default["default"].createElement("div", { style: { position: 'relative' } },
-                    React__default["default"].createElement(material.FormControlLabel, { ref: resizeHeightDetectorRef, label: '', control: React__default["default"].createElement(material.Radio, { color: color, size: size }), style: { marginTop: -10, visibility: 'hidden' } }),
-                    React__default["default"].createElement("div", { style: { position: 'absolute', left: 0, top: 1, opacity: 0.54 } },
-                        React__default["default"].createElement(material.CircularProgress, { size: size === 'small' ? 12 : 16, color: 'inherit' })))) : (React__default["default"].createElement(React__default["default"].Fragment, null, items &&
+                    }, name: name, row: inline, value: value === undefined ? null : value, onChange: handleChange }), isOnGetItemLoading || loading ? (React.createElement("div", { style: { position: 'relative' } },
+                    React.createElement(material.FormControlLabel, { ref: resizeHeightDetectorRef, label: '', control: React.createElement(material.Radio, { color: color, size: size }), style: { marginTop: -10, visibility: 'hidden' } }),
+                    React.createElement("div", { style: { position: 'absolute', left: 0, top: 1, opacity: 0.54 } },
+                        React.createElement(material.CircularProgress, { size: size === 'small' ? 12 : 16, color: 'inherit' })))) : (React.createElement(React.Fragment, null, items &&
                     items.map(function (_a, idx) {
                         var value = _a.value, label = _a.label, itemDisabled = _a.disabled;
-                        return (React__default["default"].createElement(material.FormControlLabel, { key: idx, control: React__default["default"].createElement(material.Radio, { icon: React__default["default"].createElement(iconsMaterial.RadioButtonUnchecked, { color: error ? 'error' : undefined }), checkedIcon: React__default["default"].createElement(iconsMaterial.RadioButtonChecked, { color: error ? 'error' : undefined }), color: color, size: size, inputRef: idx === 0 ? firstInputRef : null }), label: label, style: { color: error ? theme.palette.error.main : '', marginTop: -10, whiteSpace: 'nowrap' }, value: value, disabled: disabled || readOnly || itemDisabled }));
+                        return (React.createElement(material.FormControlLabel, { key: idx, control: React.createElement(material.Radio, { icon: React.createElement(iconsMaterial.RadioButtonUnchecked, { color: error ? 'error' : undefined }), checkedIcon: React.createElement(iconsMaterial.RadioButtonChecked, { color: error ? 'error' : undefined }), color: color, size: size, inputRef: idx === 0 ? firstInputRef : null }), label: label, style: { color: error ? theme.palette.error.main : '', marginTop: -10, whiteSpace: 'nowrap' }, value: value, disabled: disabled || readOnly || itemDisabled }));
                     })))))) }));
 });
 FormRadioGroup.displayName = 'FormRadioGroup';
@@ -5147,7 +5024,7 @@ FormRadioGroup.defaultProps = FormRadioGroupDefaultProps;var FormToggleButtonGro
     type: 'button',
     formValueSeparator: ',',
 };var css_248z$b = ".FormToggleButtonGroup .ToggleButton {\n  display: inline-block;\n  padding: 0 10px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton, .FormToggleButtonGroup.type-radio .ToggleButton {\n  padding-left: 3px;\n  padding-right: 5px;\n  border: 0 !important;\n  margin-left: 0 !important;\n  justify-content: flex-start;\n  display: flex;\n  background-color: transparent !important;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton:not(:last-child), .FormToggleButtonGroup.type-radio .ToggleButton:not(:last-child) {\n  margin-right: 5px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-unchecked__ {\n  margin-right: 3px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__ {\n  display: none;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-checked__ {\n  display: block;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-unchecked__ {\n  display: none;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 15px;\n  margin-bottom: -15px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .FormItemBase-Control-wrap {\n  margin-top: 15px;\n  margin-bottom: -15px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 13px;\n  margin-bottom: -13px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 13px;\n  margin-bottom: -13px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}";
-styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].forwardRef(function (_a, ref) {
+styleInject(css_248z$b);var FormToggleButtonGroup = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
@@ -5158,6 +5035,10 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = React.useId();
     var labelId = React.useId();
+    // Ref ---------------------------------------------------------------------------------------------------------------
+    var refForResizeWidthDetect = React.useRef(null);
+    var refForButtonResizeHeightDetect = React.useRef(null);
+    var refForLoadingResizeHeightDetect = React.useRef(null);
     // FormState -------------------------------------------------------------------------------------------------------
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, formColWidth = _b.formColWidth, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
@@ -5171,20 +5052,32 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
     var theme = material.useTheme();
     // State - width (ResizeDetector) ----------------------------------------------------------------------------------
     var _d = React.useState(), width = _d[0], setWidth = _d[1];
-    var resizeWidthDetectorRef = useResizeDetector({
+    useResizeDetector({
+        targetRef: refForResizeWidthDetect,
         handleWidth: true,
         onResize: function () {
-            setWidth(resizeWidthDetectorRef.current.getBoundingClientRect().width);
+            var _a, _b;
+            setWidth((_b = (_a = refForResizeWidthDetect.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.width);
         },
-    }).ref;
+    });
     // State - height (ResizeDetector) ---------------------------------------------------------------------------------
     var _e = React.useState(), height = _e[0], setHeight = _e[1];
-    var resizeHeightDetectorRef = useResizeDetector({
+    useResizeDetector({
+        targetRef: refForButtonResizeHeightDetect,
         handleHeight: true,
         onResize: function () {
-            setHeight(resizeHeightDetectorRef.current.getBoundingClientRect().height);
+            var _a, _b;
+            setHeight((_b = (_a = refForButtonResizeHeightDetect.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height);
         },
-    }).ref;
+    });
+    useResizeDetector({
+        targetRef: refForLoadingResizeHeightDetect,
+        handleHeight: true,
+        onResize: function () {
+            var _a, _b;
+            setHeight((_b = (_a = refForLoadingResizeHeightDetect.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height);
+        },
+    });
     // State -----------------------------------------------------------------------------------------------------------
     var _f = React.useState(false), isOnGetItemLoading = _f[0], setIsOnGetItemLoading = _f[1];
     var _g = useAutoUpdateState$1(initItems), items = _g[0], setItems = _g[1];
@@ -5227,7 +5120,7 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
                 }
             }
         }
-        return __assign$6({ width: finalWidth }, initStyle);
+        return __assign$7({ width: finalWidth }, initStyle);
     }, [formColWidth, fullWidth, initStyle, initWidth, isOnGetItemLoading, width]);
     // Function - getFinalValue ----------------------------------------------------------------------------------------
     var getFinalValue = React.useCallback(function (value) {
@@ -5325,9 +5218,9 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
     }, [items, value, multiple, notAllowEmptyValue]);
     // Function - focus ------------------------------------------------------------------------------------------------
     var focus = React.useCallback(function () {
-        if (resizeHeightDetectorRef.current)
-            resizeHeightDetectorRef.current.focus();
-    }, [resizeHeightDetectorRef]);
+        var _a;
+        (_a = refForButtonResizeHeightDetect.current) === null || _a === void 0 ? void 0 : _a.focus();
+    }, [refForButtonResizeHeightDetect]);
     // Function - setErrorHelperText -----------------------------------------------------------------------------------
     var setErrorHelperText = React.useCallback(function (error, helperText) {
         setError(error);
@@ -5513,13 +5406,13 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
         return (items &&
             items.map(function (_a, idx) {
                 var value = _a.value, label = _a.label, itemDisabled = _a.disabled, itemColor = _a.color;
-                var button = (React__default["default"].createElement(material.ToggleButton, { ref: idx === 0 ? resizeHeightDetectorRef : undefined, key: idx, size: size, className: 'ToggleButton', value: value, color: itemColor || color, disabled: disabled || readOnly || itemDisabled, style: buttonStyle, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } },
-                    type === 'checkbox' ? (React__default["default"].createElement(React__default["default"].Fragment, null,
-                        React__default["default"].createElement(material.Icon, { className: '__checkbox-unchecked__' }, "check_box_outline_blank"),
-                        React__default["default"].createElement(material.Icon, { className: '__checkbox-checked__' }, "check_box"))) : (type === 'radio' && (React__default["default"].createElement(React__default["default"].Fragment, null,
-                        React__default["default"].createElement(React__default["default"].Fragment, null,
-                            React__default["default"].createElement(material.Icon, { className: '__checkbox-unchecked__' }, "radio_button_unchecked"),
-                            React__default["default"].createElement(material.Icon, { className: '__checkbox-checked__' }, "radio_button_checked"))))),
+                var button = (React.createElement(material.ToggleButton, { ref: idx === 0 ? refForButtonResizeHeightDetect : undefined, key: idx, size: size, className: 'ToggleButton', value: value, color: itemColor || color, disabled: disabled || readOnly || itemDisabled, style: buttonStyle, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } },
+                    type === 'checkbox' ? (React.createElement(React.Fragment, null,
+                        React.createElement(material.Icon, { className: '__checkbox-unchecked__' }, "check_box_outline_blank"),
+                        React.createElement(material.Icon, { className: '__checkbox-checked__' }, "check_box"))) : (type === 'radio' && (React.createElement(React.Fragment, null,
+                        React.createElement(React.Fragment, null,
+                            React.createElement(material.Icon, { className: '__checkbox-unchecked__' }, "radio_button_unchecked"),
+                            React.createElement(material.Icon, { className: '__checkbox-checked__' }, "radio_button_checked"))))),
                     label));
                 return button;
             }));
@@ -5532,33 +5425,32 @@ styleInject(css_248z$b);var FormToggleButtonGroup = React__default["default"].fo
         itemWidth,
         items,
         readOnly,
-        resizeHeightDetectorRef,
         setFocused,
         size,
         theme.palette.error.main,
         type,
     ]);
-    return (React__default["default"].createElement(FormItemBase, __assign$6({}, formControlBaseProps, { className: classNames$1(className, 'FormValueItem', 'FormToggleButtonGroup', "variant-".concat(variant), "size-".concat(size), !!label && 'with-label', !!fullWidth && 'full-width', "type-".concat(type)), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, required: required, fullWidth: fullWidth, error: error, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || 0, controlVerticalCenter: isOnGetItemLoading || loading, control: isOnGetItemLoading || loading ? (React__default["default"].createElement("div", { style: { opacity: 0.54 }, ref: resizeHeightDetectorRef },
-            React__default["default"].createElement(material.CircularProgress, { size: 16, color: 'inherit' }))) : (React__default["default"].createElement(React__default["default"].Fragment, null,
-            !fullWidth && !isOnGetItemLoading && !loading && items && (React__default["default"].createElement("div", { ref: resizeWidthDetectorRef, style: {
+    return (React.createElement(FormItemBase, __assign$7({}, formControlBaseProps, { className: classNames$1(className, 'FormValueItem', 'FormToggleButtonGroup', "variant-".concat(variant), "size-".concat(size), !!label && 'with-label', !!fullWidth && 'full-width', "type-".concat(type)), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, required: required, fullWidth: fullWidth, error: error, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || 0, controlVerticalCenter: isOnGetItemLoading || loading, control: isOnGetItemLoading || loading ? (React.createElement("div", { style: { opacity: 0.54 }, ref: refForLoadingResizeHeightDetect },
+            React.createElement(material.CircularProgress, { size: 16, color: 'inherit' }))) : (React.createElement(React.Fragment, null,
+            !fullWidth && !isOnGetItemLoading && !loading && items && (React.createElement("div", { ref: refForResizeWidthDetect, style: {
                     display: 'grid',
                     position: 'absolute',
                     whiteSpace: 'nowrap',
                     visibility: 'hidden',
                 } },
-                React__default["default"].createElement(material.ToggleButtonGroup, { className: 'ToggleButtonGroup', exclusive: !multiple }, buttons))),
-            React__default["default"].createElement(material.ToggleButtonGroup, { className: 'ToggleButtonGroup', exclusive: !multiple, fullWidth: fullWidth, value: value == null ? null : value, onChange: handleChange, style: {
+                React.createElement(material.ToggleButtonGroup, { className: 'ToggleButtonGroup', exclusive: !multiple }, buttons))),
+            React.createElement(material.ToggleButtonGroup, { className: 'ToggleButtonGroup', exclusive: !multiple, fullWidth: fullWidth, value: value == null ? null : value, onChange: handleChange, style: {
                     width: !fullWidth && formColWidth && typeof width === 'number' && width > formColWidth
                         ? formColWidth
                         : undefined,
                     flexWrap: type === 'checkbox' || type === 'radio' ? 'wrap' : 'nowrap',
-                }, "aria-labelledby": notEmpty(label) ? labelId : undefined }, isOnGetItemLoading || loading || !items || empty(items) ? (React__default["default"].createElement(material.ToggleButton, { ref: resizeHeightDetectorRef, size: size, className: 'ToggleButton', disabled: disabled || readOnly, value: '', style: { visibility: 'hidden' } })) : (buttons)))) })));
+                }, "aria-labelledby": notEmpty(label) ? labelId : undefined }, isOnGetItemLoading || loading || !items || empty(items) ? (React.createElement(material.ToggleButton, { ref: refForButtonResizeHeightDetect, size: size, className: 'ToggleButton', disabled: disabled || readOnly, value: '', style: { visibility: 'hidden' } })) : (buttons)))) })));
 });
 FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';
 FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormRatingDefaultProps = {
     value: 0,
     precision: 1,
-};var FormRating = React__default["default"].forwardRef(function (_a, ref) {
+};var FormRating = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
@@ -5577,6 +5469,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     // State - FormState -----------------------------------------------------------------------------------------------
     var _c = useAutoUpdateState$1(initFocused == null ? formFocused : initFocused), focused = _c[0], setFocused = _c[1];
     // Ref -------------------------------------------------------------------------------------------------------------
+    var ratingRef = React.useRef(null);
     var inputRef = React.useRef();
     // State -----------------------------------------------------------------------------------------------------------
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
@@ -5584,7 +5477,11 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
     var _g = useAutoUpdateState$1(initData), data = _g[0], setData = _g[1];
     // State - width, height -------------------------------------------------------------------------------------------
-    var _h = useResizeDetector(), width = _h.width, height = _h.height, resizeDetectorRef = _h.ref;
+    var _h = useResizeDetector({
+        targetRef: ratingRef,
+        handleWidth: true,
+        handleHeight: true,
+    }), width = _h.width, height = _h.height;
     // Function - getFinalValue ----------------------------------------------------------------------------------------
     var getFinalValue = React.useCallback(function (value) {
         return onValue ? onValue(value) : value;
@@ -5599,7 +5496,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         onValueChange(name, value);
     }, [value]);
     // Memo --------------------------------------------------------------------------------------------------------------
-    var style = React.useMemo(function () { return (__assign$6({ width: width || 100 }, initStyle)); }, [initStyle, width]);
+    var style = React.useMemo(function () { return (__assign$7({ width: width || 100 }, initStyle)); }, [initStyle, width]);
     // Effect ----------------------------------------------------------------------------------------------------------
     React.useEffect(function () {
         if (value !== initValue) {
@@ -5607,8 +5504,8 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
                 onChange(value);
             onValueChange(name, value);
         }
-        if (resizeDetectorRef.current) {
-            inputRef.current = resizeDetectorRef.current.querySelector('input');
+        if (ratingRef.current) {
+            inputRef.current = ratingRef.current.querySelector('input') || undefined;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -5731,7 +5628,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         }
     }, [readOnly, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormRating'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, required: required, helperText: helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 21 : 26), controlVerticalCenter: true, control: React__default["default"].createElement(material.Rating, { ref: resizeDetectorRef, size: size === 'medium' ? 'large' : 'medium', name: name, precision: precision, highlightSelectedOnly: highlightSelectedOnly, value: value, disabled: disabled || readOnly, max: max, icon: React__default["default"].createElement(FormIcon, { color: color, fontSize: 'inherit' }, icon ? icon : 'Star'), emptyIcon: React__default["default"].createElement(FormIcon, { fontSize: 'inherit' }, emptyIcon ? emptyIcon : 'StarBorder'), onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } }) }));
+    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormRating'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, required: required, helperText: helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 21 : 26), controlVerticalCenter: true, control: React.createElement(material.Rating, { ref: ratingRef, size: size === 'medium' ? 'large' : 'medium', name: name, precision: precision, highlightSelectedOnly: highlightSelectedOnly, value: value, disabled: disabled || readOnly, max: max, icon: React.createElement(FormIcon, { color: color, fontSize: 'inherit' }, icon ? icon : 'Star'), emptyIcon: React.createElement(FormIcon, { fontSize: 'inherit' }, emptyIcon ? emptyIcon : 'StarBorder'), onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } }) }));
 });
 FormRating.displayName = 'FormRating';
 FormRating.defaultProps = FormRatingDefaultProps;var propTypes = {exports: {}};var reactIs = {exports: {}};var reactIs_production_min = {};/** @license React v16.13.1
@@ -5945,14 +5842,12 @@ function requireReactIs_development () {
 function requireReactIs () {
 	if (hasRequiredReactIs) return reactIs.exports;
 	hasRequiredReactIs = 1;
-	(function (module) {
 
-		if (process.env.NODE_ENV === 'production') {
-		  module.exports = requireReactIs_production_min();
-		} else {
-		  module.exports = requireReactIs_development();
-		}
-} (reactIs));
+	if (process.env.NODE_ENV === 'production') {
+	  reactIs.exports = requireReactIs_production_min();
+	} else {
+	  reactIs.exports = requireReactIs_development();
+	}
 	return reactIs.exports;
 }/*
 object-assign
@@ -6888,15 +6783,10 @@ if (process.env.NODE_ENV !== 'production') {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
   propTypes.exports = requireFactoryWithThrowingShims()();
-}/**
- * Copyright (c) 2017-present, Ephox, Inc.
- *
- * This source code is licensed under the Apache 2 license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-var __assign$4 = (window && window.__assign) || function () {
-    __assign$4 = Object.assign || function(t) {
+}
+
+var propTypesExports = propTypes.exports;var __assign$5 = (window && window.__assign) || function () {
+    __assign$5 = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
             for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -6904,84 +6794,94 @@ var __assign$4 = (window && window.__assign) || function () {
         }
         return t;
     };
-    return __assign$4.apply(this, arguments);
+    return __assign$5.apply(this, arguments);
 };
 var eventPropTypes = {
-    onActivate: propTypes.exports.func,
-    onAddUndo: propTypes.exports.func,
-    onBeforeAddUndo: propTypes.exports.func,
-    onBeforeExecCommand: propTypes.exports.func,
-    onBeforeGetContent: propTypes.exports.func,
-    onBeforeRenderUI: propTypes.exports.func,
-    onBeforeSetContent: propTypes.exports.func,
-    onBeforePaste: propTypes.exports.func,
-    onBlur: propTypes.exports.func,
-    onChange: propTypes.exports.func,
-    onClearUndos: propTypes.exports.func,
-    onClick: propTypes.exports.func,
-    onContextMenu: propTypes.exports.func,
-    onCopy: propTypes.exports.func,
-    onCut: propTypes.exports.func,
-    onDblclick: propTypes.exports.func,
-    onDeactivate: propTypes.exports.func,
-    onDirty: propTypes.exports.func,
-    onDrag: propTypes.exports.func,
-    onDragDrop: propTypes.exports.func,
-    onDragEnd: propTypes.exports.func,
-    onDragGesture: propTypes.exports.func,
-    onDragOver: propTypes.exports.func,
-    onDrop: propTypes.exports.func,
-    onExecCommand: propTypes.exports.func,
-    onFocus: propTypes.exports.func,
-    onFocusIn: propTypes.exports.func,
-    onFocusOut: propTypes.exports.func,
-    onGetContent: propTypes.exports.func,
-    onHide: propTypes.exports.func,
-    onInit: propTypes.exports.func,
-    onKeyDown: propTypes.exports.func,
-    onKeyPress: propTypes.exports.func,
-    onKeyUp: propTypes.exports.func,
-    onLoadContent: propTypes.exports.func,
-    onMouseDown: propTypes.exports.func,
-    onMouseEnter: propTypes.exports.func,
-    onMouseLeave: propTypes.exports.func,
-    onMouseMove: propTypes.exports.func,
-    onMouseOut: propTypes.exports.func,
-    onMouseOver: propTypes.exports.func,
-    onMouseUp: propTypes.exports.func,
-    onNodeChange: propTypes.exports.func,
-    onObjectResizeStart: propTypes.exports.func,
-    onObjectResized: propTypes.exports.func,
-    onObjectSelected: propTypes.exports.func,
-    onPaste: propTypes.exports.func,
-    onPostProcess: propTypes.exports.func,
-    onPostRender: propTypes.exports.func,
-    onPreProcess: propTypes.exports.func,
-    onProgressState: propTypes.exports.func,
-    onRedo: propTypes.exports.func,
-    onRemove: propTypes.exports.func,
-    onReset: propTypes.exports.func,
-    onSaveContent: propTypes.exports.func,
-    onSelectionChange: propTypes.exports.func,
-    onSetAttrib: propTypes.exports.func,
-    onSetContent: propTypes.exports.func,
-    onShow: propTypes.exports.func,
-    onSubmit: propTypes.exports.func,
-    onUndo: propTypes.exports.func,
-    onVisualAid: propTypes.exports.func
+    onActivate: propTypesExports.func,
+    onAddUndo: propTypesExports.func,
+    onBeforeAddUndo: propTypesExports.func,
+    onBeforeExecCommand: propTypesExports.func,
+    onBeforeGetContent: propTypesExports.func,
+    onBeforeRenderUI: propTypesExports.func,
+    onBeforeSetContent: propTypesExports.func,
+    onBeforePaste: propTypesExports.func,
+    onBlur: propTypesExports.func,
+    onChange: propTypesExports.func,
+    onClearUndos: propTypesExports.func,
+    onClick: propTypesExports.func,
+    onContextMenu: propTypesExports.func,
+    onCommentChange: propTypesExports.func,
+    onCopy: propTypesExports.func,
+    onCut: propTypesExports.func,
+    onDblclick: propTypesExports.func,
+    onDeactivate: propTypesExports.func,
+    onDirty: propTypesExports.func,
+    onDrag: propTypesExports.func,
+    onDragDrop: propTypesExports.func,
+    onDragEnd: propTypesExports.func,
+    onDragGesture: propTypesExports.func,
+    onDragOver: propTypesExports.func,
+    onDrop: propTypesExports.func,
+    onExecCommand: propTypesExports.func,
+    onFocus: propTypesExports.func,
+    onFocusIn: propTypesExports.func,
+    onFocusOut: propTypesExports.func,
+    onGetContent: propTypesExports.func,
+    onHide: propTypesExports.func,
+    onInit: propTypesExports.func,
+    onKeyDown: propTypesExports.func,
+    onKeyPress: propTypesExports.func,
+    onKeyUp: propTypesExports.func,
+    onLoadContent: propTypesExports.func,
+    onMouseDown: propTypesExports.func,
+    onMouseEnter: propTypesExports.func,
+    onMouseLeave: propTypesExports.func,
+    onMouseMove: propTypesExports.func,
+    onMouseOut: propTypesExports.func,
+    onMouseOver: propTypesExports.func,
+    onMouseUp: propTypesExports.func,
+    onNodeChange: propTypesExports.func,
+    onObjectResizeStart: propTypesExports.func,
+    onObjectResized: propTypesExports.func,
+    onObjectSelected: propTypesExports.func,
+    onPaste: propTypesExports.func,
+    onPostProcess: propTypesExports.func,
+    onPostRender: propTypesExports.func,
+    onPreProcess: propTypesExports.func,
+    onProgressState: propTypesExports.func,
+    onRedo: propTypesExports.func,
+    onRemove: propTypesExports.func,
+    onReset: propTypesExports.func,
+    onSaveContent: propTypesExports.func,
+    onSelectionChange: propTypesExports.func,
+    onSetAttrib: propTypesExports.func,
+    onSetContent: propTypesExports.func,
+    onShow: propTypesExports.func,
+    onSubmit: propTypesExports.func,
+    onUndo: propTypesExports.func,
+    onVisualAid: propTypesExports.func,
+    onSkinLoadError: propTypesExports.func,
+    onThemeLoadError: propTypesExports.func,
+    onModelLoadError: propTypesExports.func,
+    onPluginLoadError: propTypesExports.func,
+    onIconsLoadError: propTypesExports.func,
+    onLanguageLoadError: propTypesExports.func,
+    onScriptsLoad: propTypesExports.func,
+    onScriptsLoadError: propTypesExports.func,
 };
-var EditorPropTypes = __assign$4({ apiKey: propTypes.exports.string, id: propTypes.exports.string, inline: propTypes.exports.bool, init: propTypes.exports.object, initialValue: propTypes.exports.string, onEditorChange: propTypes.exports.func, outputFormat: propTypes.exports.oneOf(['html', 'text']), value: propTypes.exports.string, tagName: propTypes.exports.string, cloudChannel: propTypes.exports.string, plugins: propTypes.exports.oneOfType([propTypes.exports.string, propTypes.exports.array]), toolbar: propTypes.exports.oneOfType([propTypes.exports.string, propTypes.exports.array]), disabled: propTypes.exports.bool, textareaName: propTypes.exports.string, tinymceScriptSrc: propTypes.exports.string, rollback: propTypes.exports.oneOfType([propTypes.exports.number, propTypes.exports.oneOf([false])]), scriptLoading: propTypes.exports.shape({
-        async: propTypes.exports.bool,
-        defer: propTypes.exports.bool,
-        delay: propTypes.exports.number
-    }) }, eventPropTypes);/**
- * Copyright (c) 2017-present, Ephox, Inc.
- *
- * This source code is licensed under the Apache 2 license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-var isFunction = function (x) { return typeof x === 'function'; };
+var EditorPropTypes = __assign$5({ apiKey: propTypesExports.string, id: propTypesExports.string, inline: propTypesExports.bool, init: propTypesExports.object, initialValue: propTypesExports.string, onEditorChange: propTypesExports.func, value: propTypesExports.string, tagName: propTypesExports.string, cloudChannel: propTypesExports.string, plugins: propTypesExports.oneOfType([propTypesExports.string, propTypesExports.array]), toolbar: propTypesExports.oneOfType([propTypesExports.string, propTypesExports.array]), disabled: propTypesExports.bool, textareaName: propTypesExports.string, tinymceScriptSrc: propTypesExports.oneOfType([
+        propTypesExports.string,
+        propTypesExports.arrayOf(propTypesExports.string),
+        propTypesExports.arrayOf(propTypesExports.shape({
+            src: propTypesExports.string,
+            async: propTypesExports.bool,
+            defer: propTypesExports.bool
+        }))
+    ]), rollback: propTypesExports.oneOfType([propTypesExports.number, propTypesExports.oneOf([false])]), scriptLoading: propTypesExports.shape({
+        async: propTypesExports.bool,
+        defer: propTypesExports.bool,
+        delay: propTypesExports.number
+    }) }, eventPropTypes);var isFunction = function (x) { return typeof x === 'function'; };
 var isEventProp = function (name) { return name in eventPropTypes; };
 var eventAttrToEventName = function (attrName) { return attrName.substr(2); };
 var configHandlers2 = function (handlerLookup, on, off, adapter, prevProps, props, boundHandlers) {
@@ -7049,87 +6949,151 @@ var setMode = function (editor, mode) {
             editor.setMode(mode);
         }
     }
-};/**
- * Copyright (c) 2017-present, Ephox, Inc.
- *
- * This source code is licensed under the Apache 2 license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-var createState = function () { return ({
-    listeners: [],
-    scriptId: uuid('tiny-script'),
-    scriptLoading: false,
-    scriptLoaded: false
-}); };
-var CreateScriptLoader = function () {
-    var state = createState();
-    var injectScriptTag = function (scriptId, doc, url, async, defer, callback) {
-        var scriptTag = doc.createElement('script');
-        scriptTag.referrerPolicy = 'origin';
-        scriptTag.type = 'application/javascript';
-        scriptTag.id = scriptId;
-        scriptTag.src = url;
-        scriptTag.async = async;
-        scriptTag.defer = defer;
-        var handler = function () {
-            scriptTag.removeEventListener('load', handler);
-            callback();
-        };
-        scriptTag.addEventListener('load', handler);
-        if (doc.head) {
-            doc.head.appendChild(scriptTag);
+};var __assign$4 = (window && window.__assign) || function () {
+    __assign$4 = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
         }
+        return t;
     };
-    var load = function (doc, url, async, defer, delay, callback) {
-        var scriptTagInjection = function () { return injectScriptTag(state.scriptId, doc, url, async, defer, function () {
-            state.listeners.forEach(function (fn) { return fn(); });
-            state.scriptLoaded = true;
-        }); };
-        if (state.scriptLoaded) {
-            callback();
+    return __assign$4.apply(this, arguments);
+};
+var injectScriptTag = function (doc, item, handler) {
+    var _a, _b;
+    var scriptTag = doc.createElement('script');
+    scriptTag.referrerPolicy = 'origin';
+    scriptTag.type = 'application/javascript';
+    scriptTag.id = item.id;
+    scriptTag.src = item.src;
+    scriptTag.async = (_a = item.async) !== null && _a !== void 0 ? _a : false;
+    scriptTag.defer = (_b = item.defer) !== null && _b !== void 0 ? _b : false;
+    var loadHandler = function () {
+        scriptTag.removeEventListener('load', loadHandler);
+        scriptTag.removeEventListener('error', errorHandler);
+        handler(item.src);
+    };
+    var errorHandler = function (err) {
+        scriptTag.removeEventListener('load', loadHandler);
+        scriptTag.removeEventListener('error', errorHandler);
+        handler(item.src, err);
+    };
+    scriptTag.addEventListener('load', loadHandler);
+    scriptTag.addEventListener('error', errorHandler);
+    if (doc.head) {
+        doc.head.appendChild(scriptTag);
+    }
+};
+var createDocumentScriptLoader = function (doc) {
+    var lookup = {};
+    var scriptLoadOrErrorHandler = function (src, err) {
+        var item = lookup[src];
+        item.done = true;
+        item.error = err;
+        for (var _i = 0, _a = item.handlers; _i < _a.length; _i++) {
+            var h = _a[_i];
+            h(src, err);
         }
-        else {
-            state.listeners.push(callback);
-            if (!state.scriptLoading) {
-                state.scriptLoading = true;
-                if (delay > 0) {
-                    setTimeout(scriptTagInjection, delay);
+        item.handlers = [];
+    };
+    var loadScripts = function (items, success, failure) {
+        // eslint-disable-next-line no-console
+        var failureOrLog = function (err) { return failure !== undefined ? failure(err) : console.error(err); };
+        if (items.length === 0) {
+            failureOrLog(new Error('At least one script must be provided'));
+            return;
+        }
+        var successCount = 0;
+        var failed = false;
+        var loaded = function (_src, err) {
+            if (failed) {
+                return;
+            }
+            if (err) {
+                failed = true;
+                failureOrLog(err);
+            }
+            else if (++successCount === items.length) {
+                success();
+            }
+        };
+        for (var _i = 0, items_1 = items; _i < items_1.length; _i++) {
+            var item = items_1[_i];
+            var existing = lookup[item.src];
+            if (existing) {
+                if (existing.done) {
+                    loaded(item.src, existing.error);
                 }
                 else {
-                    scriptTagInjection();
+                    existing.handlers.push(loaded);
                 }
+            }
+            else {
+                // create a new entry
+                var id = uuid('tiny-');
+                lookup[item.src] = {
+                    id: id,
+                    src: item.src,
+                    done: false,
+                    error: null,
+                    handlers: [loaded],
+                };
+                injectScriptTag(doc, __assign$4({ id: id }, item), scriptLoadOrErrorHandler);
             }
         }
     };
-    // Only to be used by tests.
+    var deleteScripts = function () {
+        var _a;
+        for (var _i = 0, _b = Object.values(lookup); _i < _b.length; _i++) {
+            var item = _b[_i];
+            var scriptTag = doc.getElementById(item.id);
+            if (scriptTag != null && scriptTag.tagName === 'SCRIPT') {
+                (_a = scriptTag.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(scriptTag);
+            }
+        }
+        lookup = {};
+    };
+    var getDocument = function () { return doc; };
+    return {
+        loadScripts: loadScripts,
+        deleteScripts: deleteScripts,
+        getDocument: getDocument
+    };
+};
+var createScriptLoader = function () {
+    var cache = [];
+    var getDocumentScriptLoader = function (doc) {
+        var loader = cache.find(function (l) { return l.getDocument() === doc; });
+        if (loader === undefined) {
+            loader = createDocumentScriptLoader(doc);
+            cache.push(loader);
+        }
+        return loader;
+    };
+    var loadList = function (doc, items, delay, success, failure) {
+        var doLoad = function () { return getDocumentScriptLoader(doc).loadScripts(items, success, failure); };
+        if (delay > 0) {
+            setTimeout(doLoad, delay);
+        }
+        else {
+            doLoad();
+        }
+    };
     var reinitialize = function () {
-        state = createState();
+        for (var loader = cache.pop(); loader != null; loader = cache.pop()) {
+            loader.deleteScripts();
+        }
     };
     return {
-        load: load,
+        loadList: loadList,
         reinitialize: reinitialize
     };
 };
-var ScriptLoader = CreateScriptLoader();/**
- * Copyright (c) 2017-present, Ephox, Inc.
- *
- * This source code is licensed under the Apache 2 license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-var getGlobal = function () { return (typeof window !== 'undefined' ? window : global); };
-var getTinymce = function () {
-    var global = getGlobal();
+var ScriptLoader = createScriptLoader();var getTinymce = function (view) {
+    var global = view;
     return global && global.tinymce ? global.tinymce : null;
-};/**
- * Copyright (c) 2017-present, Ephox, Inc.
- *
- * This source code is licensed under the Apache 2 license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-var __extends = (window && window.__extends) || (function () {
+};var __extends = (window && window.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -7155,8 +7119,6 @@ var __assign$3 = (window && window.__assign) || function () {
     };
     return __assign$3.apply(this, arguments);
 };
-var changeEvents = function () { var _a, _b, _c; return ((_c = (_b = (_a = getTinymce()) === null || _a === void 0 ? void 0 : _a.Env) === null || _b === void 0 ? void 0 : _b.browser) === null || _c === void 0 ? void 0 : _c.isIE()) ? 'change keyup compositionend setcontent' : 'change input compositionend setcontent'; };
-var beforeInputEvent = function () { return isBeforeInputEventAvailable() ? 'beforeinput SelectionChange' : 'SelectionChange'; };
 var Editor = /** @class */ (function (_super) {
     __extends(Editor, _super);
     function Editor(props) {
@@ -7185,7 +7147,7 @@ var Editor = /** @class */ (function (_super) {
         };
         _this.handleBeforeInput = function (_evt) {
             if (_this.props.value !== undefined && _this.props.value === _this.currentContent && _this.editor) {
-                if (!_this.inline || _this.editor.hasFocus) {
+                if (!_this.inline || _this.editor.hasFocus()) {
                     try {
                         // getBookmark throws exceptions when the editor has not been focused
                         // possibly only in inline mode but I'm not taking chances
@@ -7213,9 +7175,7 @@ var Editor = /** @class */ (function (_super) {
                 if (newContent !== _this.currentContent) {
                     _this.currentContent = newContent;
                     if (isFunction(_this.props.onEditorChange)) {
-                        var format = _this.props.outputFormat;
-                        var out = format === 'html' ? newContent : editor.getContent({ format: format });
-                        _this.props.onEditorChange(out, editor);
+                        _this.props.onEditorChange(newContent, editor);
                     }
                 }
             }
@@ -7250,7 +7210,7 @@ var Editor = /** @class */ (function (_super) {
                 }
                 return;
             }
-            var tinymce = getTinymce();
+            var tinymce = getTinymce(_this.view);
             if (!tinymce) {
                 throw new Error('tinymce should have been loaded into global scope');
             }
@@ -7305,6 +7265,14 @@ var Editor = /** @class */ (function (_super) {
         _this.boundHandlers = {};
         return _this;
     }
+    Object.defineProperty(Editor.prototype, "view", {
+        get: function () {
+            var _a, _b;
+            return (_b = (_a = this.elementRef.current) === null || _a === void 0 ? void 0 : _a.ownerDocument.defaultView) !== null && _b !== void 0 ? _b : window;
+        },
+        enumerable: false,
+        configurable: true
+    });
     Editor.prototype.componentDidUpdate = function (prevProps) {
         var _this = this;
         var _a, _b;
@@ -7362,20 +7330,33 @@ var Editor = /** @class */ (function (_super) {
         }
     };
     Editor.prototype.componentDidMount = function () {
-        var _a, _b, _c, _d, _e, _f;
-        if (getTinymce() !== null) {
+        var _this = this;
+        var _a, _b, _c, _d, _e;
+        if (getTinymce(this.view) !== null) {
             this.initialise();
         }
-        else if (this.elementRef.current && this.elementRef.current.ownerDocument) {
-            ScriptLoader.load(this.elementRef.current.ownerDocument, this.getScriptSrc(), (_b = (_a = this.props.scriptLoading) === null || _a === void 0 ? void 0 : _a.async) !== null && _b !== void 0 ? _b : false, (_d = (_c = this.props.scriptLoading) === null || _c === void 0 ? void 0 : _c.defer) !== null && _d !== void 0 ? _d : false, (_f = (_e = this.props.scriptLoading) === null || _e === void 0 ? void 0 : _e.delay) !== null && _f !== void 0 ? _f : 0, this.initialise);
+        else if (Array.isArray(this.props.tinymceScriptSrc) && this.props.tinymceScriptSrc.length === 0) {
+            (_b = (_a = this.props).onScriptsLoadError) === null || _b === void 0 ? void 0 : _b.call(_a, new Error('No `tinymce` global is present but the `tinymceScriptSrc` prop was an empty array.'));
+        }
+        else if ((_c = this.elementRef.current) === null || _c === void 0 ? void 0 : _c.ownerDocument) {
+            var successHandler = function () {
+                var _a, _b;
+                (_b = (_a = _this.props).onScriptsLoad) === null || _b === void 0 ? void 0 : _b.call(_a);
+                _this.initialise();
+            };
+            var errorHandler = function (err) {
+                var _a, _b;
+                (_b = (_a = _this.props).onScriptsLoadError) === null || _b === void 0 ? void 0 : _b.call(_a, err);
+            };
+            ScriptLoader.loadList(this.elementRef.current.ownerDocument, this.getScriptSources(), (_e = (_d = this.props.scriptLoading) === null || _d === void 0 ? void 0 : _d.delay) !== null && _e !== void 0 ? _e : 0, successHandler, errorHandler);
         }
     };
     Editor.prototype.componentWillUnmount = function () {
         var _this = this;
         var editor = this.editor;
         if (editor) {
-            editor.off(changeEvents(), this.handleEditorChange);
-            editor.off(beforeInputEvent(), this.handleBeforeInput);
+            editor.off(this.changeEvents(), this.handleEditorChange);
+            editor.off(this.beforeInputEvent(), this.handleBeforeInput);
             editor.off('keypress', this.handleEditorChangeSpecial);
             editor.off('keydown', this.handleBeforeInputSpecial);
             editor.off('NewBlock', this.handleEditorChange);
@@ -7389,6 +7370,16 @@ var Editor = /** @class */ (function (_super) {
     };
     Editor.prototype.render = function () {
         return this.inline ? this.renderInline() : this.renderIframe();
+    };
+    Editor.prototype.changeEvents = function () {
+        var _a, _b, _c;
+        var isIE = (_c = (_b = (_a = getTinymce(this.view)) === null || _a === void 0 ? void 0 : _a.Env) === null || _b === void 0 ? void 0 : _b.browser) === null || _c === void 0 ? void 0 : _c.isIE();
+        return (isIE
+            ? 'change keyup compositionend setcontent CommentChange'
+            : 'change input compositionend setcontent CommentChange');
+    };
+    Editor.prototype.beforeInputEvent = function () {
+        return isBeforeInputEventAvailable() ? 'beforeinput SelectionChange' : 'SelectionChange';
     };
     Editor.prototype.renderInline = function () {
         var _a = this.props.tagName, tagName = _a === void 0 ? 'div' : _a;
@@ -7405,15 +7396,31 @@ var Editor = /** @class */ (function (_super) {
             id: this.id
         });
     };
-    Editor.prototype.getScriptSrc = function () {
-        if (typeof this.props.tinymceScriptSrc === 'string') {
-            return this.props.tinymceScriptSrc;
+    Editor.prototype.getScriptSources = function () {
+        var _a, _b;
+        var async = (_a = this.props.scriptLoading) === null || _a === void 0 ? void 0 : _a.async;
+        var defer = (_b = this.props.scriptLoading) === null || _b === void 0 ? void 0 : _b.defer;
+        if (this.props.tinymceScriptSrc !== undefined) {
+            if (typeof this.props.tinymceScriptSrc === 'string') {
+                return [{ src: this.props.tinymceScriptSrc, async: async, defer: defer }];
+            }
+            // multiple scripts can be specified which allows for hybrid mode
+            return this.props.tinymceScriptSrc.map(function (item) {
+                if (typeof item === 'string') {
+                    // async does not make sense for multiple items unless
+                    // they are not dependent (which will be unlikely)
+                    return { src: item, async: async, defer: defer };
+                }
+                else {
+                    return item;
+                }
+            });
         }
-        else {
-            var channel = this.props.cloudChannel;
-            var apiKey = this.props.apiKey ? this.props.apiKey : 'no-api-key';
-            return "https://cdn.tiny.cloud/1/".concat(apiKey, "/tinymce/").concat(channel, "/tinymce.min.js");
-        }
+        // fallback to the cloud when the tinymceScriptSrc is not specified
+        var channel = this.props.cloudChannel;
+        var apiKey = this.props.apiKey ? this.props.apiKey : 'no-api-key';
+        var cloudTinyJs = "https://cdn.tiny.cloud/1/".concat(apiKey, "/tinymce/").concat(channel, "/tinymce.min.js");
+        return [{ src: cloudTinyJs, async: async, defer: defer }];
     };
     Editor.prototype.getInitialValue = function () {
         if (typeof this.props.initialValue === 'string') {
@@ -7436,15 +7443,15 @@ var Editor = /** @class */ (function (_super) {
             var wasControlled = isValueControlled(prevProps);
             var nowControlled = isValueControlled(this.props);
             if (!wasControlled && nowControlled) {
-                this.editor.on(changeEvents(), this.handleEditorChange);
-                this.editor.on(beforeInputEvent(), this.handleBeforeInput);
+                this.editor.on(this.changeEvents(), this.handleEditorChange);
+                this.editor.on(this.beforeInputEvent(), this.handleBeforeInput);
                 this.editor.on('keydown', this.handleBeforeInputSpecial);
                 this.editor.on('keyup', this.handleEditorChangeSpecial);
                 this.editor.on('NewBlock', this.handleEditorChange);
             }
             else if (wasControlled && !nowControlled) {
-                this.editor.off(changeEvents(), this.handleEditorChange);
-                this.editor.off(beforeInputEvent(), this.handleBeforeInput);
+                this.editor.off(this.changeEvents(), this.handleEditorChange);
+                this.editor.off(this.beforeInputEvent(), this.handleBeforeInput);
                 this.editor.off('keydown', this.handleBeforeInputSpecial);
                 this.editor.off('keyup', this.handleEditorChangeSpecial);
                 this.editor.off('NewBlock', this.handleEditorChange);
@@ -7453,14 +7460,14 @@ var Editor = /** @class */ (function (_super) {
     };
     Editor.propTypes = EditorPropTypes;
     Editor.defaultProps = {
-        cloudChannel: '5'
+        cloudChannel: '6'
     };
     return Editor;
 }(React__namespace.Component));var FormTextEditorDefaultProps = {
     menubar: true,
     height: 500,
 };var css_248z$a = ".FormTextEditor.initializing textarea {\n  display: none;\n}\n.FormTextEditor.error .tox-tinymce {\n  border-color: #d32f2f;\n}\n\n.tox-menu.tox-collection.tox-collection--list .tox-collection__group .tox-menu-nav__js.tox-collection__item {\n  padding-right: 20px !important;\n}\n\n.tox-notifications-container {\n  display: none;\n}";
-styleInject(css_248z$a);var FormTextEditor = React__default["default"].forwardRef(function (_a, ref) {
+styleInject(css_248z$a);var FormTextEditor = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
@@ -7622,14 +7629,22 @@ styleInject(css_248z$a);var FormTextEditor = React__default["default"].forwardRe
     var handleKeyDown = React.useCallback(function () {
         keyDownTime.current = new Date().getTime();
     }, []);
-    var handleImageUpload = React.useCallback(function (blobInfo, success, failure, progress) {
-        if (onImageUpload)
-            onImageUpload(blobInfo.blob(), success, failure, progress);
+    var handleImageUpload = React.useCallback(function (blobInfo, progress) {
+        return new Promise(function (resolve, reject) {
+            if (onImageUpload) {
+                onImageUpload(blobInfo.blob(), function (url) {
+                    resolve(url);
+                }, function (err) { return reject(err); }, progress);
+            }
+            else {
+                reject('onImageUpload not implemented.');
+            }
+        });
     }, [onImageUpload]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormTextEditor', !initialized && 'initializing'), labelIcon: labelIcon, label: label, error: error, required: required, fullWidth: true, helperText: helperText, helperTextProps: { style: { marginLeft: 5 } }, style: { width: '100%' }, hidden: hidden, controlHeight: height, control: React__default["default"].createElement(React__default["default"].Fragment, null,
-            !initialized ? React__default["default"].createElement(material.Skeleton, { variant: 'rectangular', width: '100%', height: height }) : null,
-            React__default["default"].createElement(Editor, { ref: editorRef, value: value, disabled: readOnly || disabled, init: {
+    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormTextEditor', !initialized && 'initializing'), labelIcon: labelIcon, label: label, error: error, required: required, fullWidth: true, helperText: helperText, helperTextProps: { style: { marginLeft: 5 } }, style: { width: '100%' }, hidden: hidden, controlHeight: height, control: React.createElement(React.Fragment, null,
+            !initialized ? React.createElement(material.Skeleton, { variant: 'rectangular', width: '100%', height: height }) : null,
+            React.createElement(Editor, { ref: editorRef, value: value, disabled: readOnly || disabled, init: {
                     height: height,
                     menubar: menubar,
                     readonly: true,
@@ -7656,7 +7671,7 @@ FormTextEditor.displayName = 'FormTextEditor';
 FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDefaultProps = {
     formValueSeparator: ',',
     noOptionsText: '항목이 없습니다',
-};var FormAutocomplete = React__default["default"].forwardRef(function (_a, ref) {
+};var FormAutocomplete = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
@@ -7702,7 +7717,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         }
     }, [items]);
     var style = React.useMemo(function () {
-        var style = __assign$6({ minWidth: 120 }, initStyle);
+        var style = __assign$7({ minWidth: 120 }, initStyle);
         if (hidden) {
             style.display = 'none';
         }
@@ -8099,7 +8114,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         }
     }, [getOptionDisabled]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(material.Autocomplete, { options: items || [], className: classNames$1(className, 'FormValueItem', 'FormAutocomplete'), sx: sx, multiple: multiple, fullWidth: !width && fullWidth, openOnFocus: openOnFocus, disableClearable: disableClearable, disablePortal: disablePortal, noOptionsText: noOptionsText, value: componentValue, style: style, isOptionEqualToValue: function (option, value) { return option.value === value.value; }, getOptionDisabled: handleGetOptionDisabled, disabled: disabled, readOnly: readOnly, loading: loading || isOnGetItemLoading, loadingText: loadingText, limitTags: limitTags, onChange: function (e, value, reason, details) { return handleChange(value, reason, details); }, renderOption: function (props, option) { return (React__default["default"].createElement("li", __assign$6({}, props, { key: option.value }), onRenderItem ? onRenderItem(option) : option.label)); }, onInputChange: function (event, newInputValue, reason) {
+    return (React.createElement(material.Autocomplete, { options: items || [], className: classNames$1(className, 'FormValueItem', 'FormAutocomplete'), sx: sx, multiple: multiple, fullWidth: !width && fullWidth, openOnFocus: openOnFocus, disableClearable: disableClearable, disablePortal: disablePortal, noOptionsText: noOptionsText, value: componentValue, style: style, isOptionEqualToValue: function (option, value) { return option.value === value.value; }, getOptionDisabled: handleGetOptionDisabled, disabled: disabled, readOnly: readOnly, loading: loading || isOnGetItemLoading, loadingText: loadingText, limitTags: limitTags, onChange: function (e, value, reason, details) { return handleChange(value, reason, details); }, renderOption: function (props, option) { return (React.createElement("li", __assign$7({}, props, { key: option.value }), onRenderItem ? onRenderItem(option) : option.label)); }, onInputChange: function (event, newInputValue, reason) {
             if (reason === 'input') {
                 setInputValue(newInputValue);
             }
@@ -8107,13 +8122,16 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                 setInputValue(undefined);
             }
         }, renderTags: function (value, getTagProps) {
-            return value.map(function (option, index) { return (React__default["default"].createElement(material.Chip, __assign$6({ size: 'small', label: onRenderTag ? onRenderTag(option) : option.label }, getTagProps({ index: index })))); });
-        }, renderInput: function (params) { return (React__default["default"].createElement(FormTextField, __assign$6({}, params, { ref: textFieldRef, name: name, variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, labelShrink: labelShrink, required: required, focused: focused, error: error, readOnly: readOnly, helperText: helperText, placeholder: placeholder, noFormValueItem: true, InputProps: __assign$6(__assign$6({}, params.InputProps), { endAdornment: (React__default["default"].createElement(React__default["default"].Fragment, null,
-                    loading || isOnGetItemLoading ? React__default["default"].createElement(CircularProgress__default["default"], { color: 'inherit', size: 20 }) : null,
-                    params.InputProps.endAdornment)) }), inputProps: readOnly || disabled ? __assign$6(__assign$6({}, params.inputProps), { tabIndex: -1 }) : params.inputProps }))); } }));
+            return value.map(function (option, index) { return (React.createElement(material.Chip, __assign$7({ size: 'small', label: onRenderTag ? onRenderTag(option) : option.label }, getTagProps({ index: index })))); });
+        }, renderInput: function (params) { return (React.createElement(FormTextField, __assign$7({}, params, { ref: textFieldRef, name: name, variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, labelShrink: labelShrink, required: required, focused: focused, error: error, readOnly: readOnly, helperText: helperText, placeholder: placeholder, noFormValueItem: true, InputProps: __assign$7(__assign$7({}, params.InputProps), { endAdornment: (React.createElement(React.Fragment, null,
+                    loading || isOnGetItemLoading ? React.createElement(CircularProgress, { color: 'inherit', size: 20 }) : null,
+                    params.InputProps.endAdornment)) }), inputProps: readOnly || disabled ? __assign$7(__assign$7({}, params.inputProps), { tabIndex: -1 }) : params.inputProps }))); } }));
 });
 FormAutocomplete.displayName = 'FormAutocomplete';
-FormAutocomplete.defaultProps = FormAutocompleteDefaultProps;var FormDatePickerDefaultProps = {};var __assign$2 = function() {
+FormAutocomplete.defaultProps = FormAutocompleteDefaultProps;var FormDatePickerDefaultProps = {};/* global Reflect, Promise, SuppressedError, Symbol */
+
+
+var __assign$2 = function() {
     __assign$2 = Object.assign || function __assign(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -8134,6 +8152,13 @@ function __rest$1(s, e) {
                 t[p[i]] = s[p[i]];
         }
     return t;
+}
+
+typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+};function getDefaultExportFromCjs (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }var classnames = {exports: {}};/*!
 	Copyright (c) 2018 Jed Watson.
 	Licensed under the MIT License (MIT), see
@@ -8188,10 +8213,11 @@ function __rest$1(s, e) {
 		} else {
 			window.classNames = classNames;
 		}
-	}());
+	}()); 
 } (classnames));
 
-var classNames = classnames.exports;function useFirstSkipEffect(effect, deps) {
+var classnamesExports = classnames.exports;
+var classNames = /*@__PURE__*/getDefaultExportFromCjs(classnamesExports);function useFirstSkipEffect(effect, deps) {
     var firstRef = React.useRef(true);
     React.useEffect(function () {
         if (firstRef.current) {
@@ -8253,7 +8279,7 @@ var classNames = classnames.exports;function useFirstSkipEffect(effect, deps) {
         }
     }, []);
     return [_state.current, setState];
-}var IconDefaultProps = {};var Icon = React__default["default"].forwardRef(function (_a, ref) {
+}var IconDefaultProps = {};var Icon = React.forwardRef(function (_a, ref) {
     // State - children ------------------------------------------------------------------------------------------------
     var className = _a.className, initChildren = _a.children, initStyle = _a.style, props = __rest$1(_a, ["className", "children", "style"]);
     var children = useAutoUpdateState(React.useCallback(function () {
@@ -8263,7 +8289,7 @@ var classNames = classnames.exports;function useFirstSkipEffect(effect, deps) {
         return __assign$2({ verticalAlign: 'middle' }, initStyle);
     }, [initStyle]))[0];
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(material.Icon, __assign$2({ ref: ref }, props, { className: classNames('Icon', className), style: style }), children));
+    return (React.createElement(material.Icon, __assign$2({ ref: ref }, props, { className: classNames('Icon', className), style: style }), children));
 });
 Icon.displayName = 'Icon';
 Icon.defaultProps = IconDefaultProps;var IconTextDefaultProps = {
@@ -8276,16 +8302,16 @@ Icon.defaultProps = IconDefaultProps;var IconTextDefaultProps = {
     var textProps = useAutoUpdateState(React.useCallback(function () {
         return __assign$2(__assign$2({}, initTextProps), { style: __assign$2({ verticalAlign: 'middle' }, initTextProps === null || initTextProps === void 0 ? void 0 : initTextProps.style) });
     }, [initTextProps]))[0];
-    return (React__default["default"].createElement(material.Box, __assign$2({ component: 'span' }, otherProps),
-        icon && React__default["default"].createElement(Icon, __assign$2({}, iconProps), icon),
-        React__default["default"].createElement("span", __assign$2({}, textProps), children)));
+    return (React.createElement(material.Box, __assign$2({ component: 'span' }, otherProps),
+        icon && React.createElement(Icon, __assign$2({}, iconProps), icon),
+        React.createElement("span", __assign$2({}, textProps), children)));
 };
 IconText.defaultProps = IconTextDefaultProps;var PrivateDatePickerDefaultProps = {
     showDaysOutsideCurrentMonth: true,
     align: 'center',
 };var PrivateStaticDatePickerDefaultProps = {};var PrivateYearSelectDefaultProps = {};var css_248z$9 = ".PrivateYearSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateYearSelect button {\n  font-size: 14px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
-styleInject(css_248z$9);var PrivateToggleButtonDefaultProps = {};var PrivateToggleButton = React__default["default"].forwardRef(function (_a, ref) {
-    var children = _a.children, initClassName = _a.className, selected = _a.selected, activated = _a.activated, outlined = _a.outlined, props = __rest$3(_a, ["children", "className", "selected", "activated", "outlined"]);
+styleInject(css_248z$9);var PrivateToggleButtonDefaultProps = {};var PrivateToggleButton = React.forwardRef(function (_a, ref) {
+    var children = _a.children, initClassName = _a.className, selected = _a.selected, activated = _a.activated, outlined = _a.outlined, props = __rest$4(_a, ["children", "className", "selected", "activated", "outlined"]);
     var theme = material.useTheme();
     var className = React.useMemo(function () { return classNames$1(initClassName, selected && 'selected', activated && 'activated', outlined && 'outlined'); }, [activated, initClassName, outlined, selected]);
     var sx = React.useMemo(function () {
@@ -8310,7 +8336,7 @@ styleInject(css_248z$9);var PrivateToggleButtonDefaultProps = {};var PrivateTogg
         }
         return newSx;
     }, [activated, outlined, selected, theme]);
-    return (React__default["default"].createElement(material.Button, __assign$6({}, props, { ref: ref, sx: sx, variant: 'text', className: classNames$1(className, selected && 'selected') }), children));
+    return (React.createElement(material.Button, __assign$7({}, props, { ref: ref, sx: sx, variant: 'text', className: classNames$1(className, selected && 'selected') }), children));
 });
 PrivateToggleButton.displayName = 'PrivateToggleButton';
 PrivateToggleButton.defaultProps = PrivateToggleButtonDefaultProps;/** Detect free variable `global` from Node.js. */
@@ -8843,7 +8869,9 @@ function throttle(func, wait, options) {
   window.document.createElement
 );
 
-var canUseDom = canUseDOM;/**
+var canUseDom = canUseDOM;
+
+var canUseDOM$1 = /*@__PURE__*/getDefaultExportFromCjs$1(canUseDom);/**
  * simplebar-core - v1.2.4
  * Scrollbars, simpler.
  * https://grsmto.github.io/simplebar/
@@ -8851,6 +8879,7 @@ var canUseDom = canUseDOM;/**
  * Made by Adrien Denat from a fork by Jonathan Nicol
  * Under MIT License
  */
+
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -8880,7 +8909,7 @@ var __assign$1 = function() {
 
 var cachedScrollbarWidth = null;
 var cachedDevicePixelRatio = null;
-if (canUseDom) {
+if (canUseDOM$1) {
     window.addEventListener('resize', function () {
         if (cachedDevicePixelRatio !== window.devicePixelRatio) {
             cachedDevicePixelRatio = window.devicePixelRatio;
@@ -9303,7 +9332,7 @@ var SimpleBarCore = /** @class */ (function () {
     };
     SimpleBarCore.prototype.init = function () {
         // We stop here on server-side
-        if (canUseDom) {
+        if (canUseDOM$1) {
             this.initDOM();
             this.rtlHelpers = SimpleBarCore.getRtlHelpers();
             this.scrollbarWidth = this.getScrollbarWidth();
@@ -9763,6 +9792,7 @@ var SimpleBarCore = /** @class */ (function () {
  * Under MIT License
  */
 
+
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -9894,16 +9924,16 @@ var PrivateYearSelect = function (_a) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     // Render ----------------------------------------------------------------------------------------------------------
-    var today = dayjs__default["default"]().startOf('date');
-    return (React__default["default"].createElement("div", { ref: containerRef, className: 'PrivateYearSelect' },
-        React__default["default"].createElement(SimpleBar, { scrollableNodeProps: { ref: simpleBarRef }, style: { height: '100%' } },
-            React__default["default"].createElement(material.Grid, { container: true, style: { padding: '5px 10px' }, spacing: 1 }, YEARS$1.map(function (y) {
+    var today = dayjs().startOf('date');
+    return (React.createElement("div", { ref: containerRef, className: 'PrivateYearSelect' },
+        React.createElement(SimpleBar, { scrollableNodeProps: { ref: simpleBarRef }, style: { height: '100%' } },
+            React.createElement(material.Grid, { container: true, style: { padding: '5px 10px' }, spacing: 1 }, YEARS$1.map(function (y) {
                 var isToday = y === today.year();
                 var isActive = y === activeYear;
                 var isSelected = y === selectYear;
                 var disabled = (!!availableDate[0] && y < availableDate[0].year) || (!!availableDate[1] && y > availableDate[1].year);
-                return (React__default["default"].createElement(material.Grid, { key: y, item: true, xs: 3 },
-                    React__default["default"].createElement(PrivateToggleButton, { className: "private-year-select-value-".concat(y), fullWidth: true, selected: isSelected, activated: isActive, outlined: isToday, disabled: disabled, onClick: function () { return onSelect(y); } }, y)));
+                return (React.createElement(material.Grid, { key: y, item: true, xs: 3 },
+                    React.createElement(PrivateToggleButton, { className: "private-year-select-value-".concat(y), fullWidth: true, selected: isSelected, activated: isActive, outlined: isToday, disabled: disabled, onClick: function () { return onSelect(y); } }, y)));
             })))));
 };
 PrivateYearSelect.displayName = 'PrivateYearSelect';
@@ -9914,16 +9944,16 @@ for (var i$3 = 0; i$3 < 12; i$3 += 1) {
 }
 var PrivateMonthSelect = function (_a) {
     var year = _a.year, selectYear = _a.selectYear, selectMonth = _a.selectMonth, activeMonth = _a.activeMonth, availableDate = _a.availableDate, onSelect = _a.onSelect;
-    var today = dayjs__default["default"]().startOf('date');
-    return (React__default["default"].createElement("div", { className: 'PrivateMonthSelect' },
-        React__default["default"].createElement(material.Grid, { container: true, style: { padding: '5px 10px' }, spacing: 1 }, MONTHS$1.map(function (m) {
+    var today = dayjs().startOf('date');
+    return (React.createElement("div", { className: 'PrivateMonthSelect' },
+        React.createElement(material.Grid, { container: true, style: { padding: '5px 10px' }, spacing: 1 }, MONTHS$1.map(function (m) {
             var isToday = today.year() === year && m === today.month();
             var isActive = m === activeMonth;
             var isSelected = selectYear === year && m === selectMonth;
             var ym = year * 100 + (m + 1);
             var disabled = (!!availableDate[0] && ym < availableDate[0].month) || (!!availableDate[1] && ym > availableDate[1].month);
-            return (React__default["default"].createElement(material.Grid, { key: m, item: true, xs: 4 },
-                React__default["default"].createElement(PrivateToggleButton, { fullWidth: true, selected: isSelected, activated: isActive, outlined: isToday, disabled: disabled, onClick: function () { return onSelect(m); } },
+            return (React.createElement(material.Grid, { key: m, item: true, xs: 4 },
+                React.createElement(PrivateToggleButton, { fullWidth: true, selected: isSelected, activated: isActive, outlined: isToday, disabled: disabled, onClick: function () { return onSelect(m); } },
                     m + 1,
                     "\uC6D4")));
         }))));
@@ -9936,7 +9966,7 @@ styleInject(css_248z$7);var DEFAULT_MINUTES$1 = new Array(60).fill(0);
 for (var i$2 = 0; i$2 < DEFAULT_MINUTES$1.length; i$2 += 1) {
     DEFAULT_MINUTES$1[i$2] = i$2;
 }
-var PrivateTimeSelect = React__default["default"].forwardRef(function (_a, ref) {
+var PrivateTimeSelect = React.forwardRef(function (_a, ref) {
     // Ref -------------------------------------------------------------------------------------------------------------
     var list = _a.list, listInterval = _a.listInterval, unit = _a.unit, value = _a.value, cols = _a.cols, disableList = _a.disableList, onSelect = _a.onSelect;
     var containerRef = React.useRef(null);
@@ -10023,16 +10053,16 @@ var PrivateTimeSelect = React__default["default"].forwardRef(function (_a, ref) 
         }
     }, [ref, scrollToValue]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(React__default["default"].Fragment, null,
-        React__default["default"].createElement("div", { ref: containerRef, className: 'PrivateTimeSelect' },
-            React__default["default"].createElement(SimpleBar, { scrollableNodeProps: { ref: simpleBarRef }, style: { height: '100%' } },
-                React__default["default"].createElement(material.Grid, { container: true }, list
+    return (React.createElement(React.Fragment, null,
+        React.createElement("div", { ref: containerRef, className: 'PrivateTimeSelect' },
+            React.createElement(SimpleBar, { scrollableNodeProps: { ref: simpleBarRef }, style: { height: '100%' } },
+                React.createElement(material.Grid, { container: true }, list
                     .filter(function (v) { return (listInterval ? v % listInterval === 0 : true); })
                     .map(function (v) {
                     var isSelected = v === value;
                     var disabled = !!disableList && disableList.includes(v);
-                    return (React__default["default"].createElement(material.Grid, { item: true, key: v, xs: 12 / (cols || 1) },
-                        React__default["default"].createElement(PrivateToggleButton, { className: "private-time-select-value-".concat(v), fullWidth: true, disabled: disabled, selected: isSelected, onClick: function () { return onSelect && onSelect(v); } },
+                    return (React.createElement(material.Grid, { item: true, key: v, xs: 12 / (cols || 1) },
+                        React.createElement(PrivateToggleButton, { className: "private-time-select-value-".concat(v), fullWidth: true, disabled: disabled, selected: isSelected, onClick: function () { return onSelect && onSelect(v); } },
                             v,
                             unit)));
                 }))))));
@@ -10051,9 +10081,9 @@ var DEFAULT_SECONDS = new Array(60).fill(0);
 for (var i$1 = 0; i$1 < DEFAULT_SECONDS.length; i$1 += 1) {
     DEFAULT_SECONDS[i$1] = i$1;
 }
-var PrivateStaticDatePicker = React__default["default"].forwardRef(function (_a, ref) {
+var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
     // Ref -------------------------------------------------------------------------------------------------------------
-    var value = _a.value, initAvailableDate = _a.availableDate, defaultCalendarMonth = _a.defaultCalendarMonth, type = _a.type, time = _a.time, initHours = _a.hours, initMinutes = _a.minutes, initSeconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, inputFormat = _a.inputFormat, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest$3(_a, ["value", "availableDate", "defaultCalendarMonth", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "inputFormat", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
+    var value = _a.value, initAvailableDate = _a.availableDate, defaultCalendarMonth = _a.defaultCalendarMonth, type = _a.type, time = _a.time, initHours = _a.hours, initMinutes = _a.minutes, initSeconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest$4(_a, ["value", "availableDate", "defaultCalendarMonth", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
     var hourSelectRef = React.useRef(null);
     var minuteSelectRef = React.useRef(null);
     var secondSelectRef = React.useRef(null);
@@ -10064,7 +10094,7 @@ var PrivateStaticDatePicker = React__default["default"].forwardRef(function (_a,
         else if (defaultCalendarMonth)
             return defaultCalendarMonth;
         else
-            return dayjs__default["default"]();
+            return dayjs();
     }), month = _b[0], setMonth = _b[1];
     var _c = React.useState(null), activeMonthValue = _c[0], setActiveMonthValue = _c[1];
     var _d = React.useState(false), yearSelectOpen = _d[0], setYearSelectOpen = _d[1];
@@ -10125,21 +10155,17 @@ var PrivateStaticDatePicker = React__default["default"].forwardRef(function (_a,
     var LeftArrowButton = React.useState(function () {
         var ArrowButton = function (props) {
             leftArrowOnClickRef.current = props.onClick;
-            return React__default["default"].createElement(material.IconButton, __assign$6({}, props));
+            return React.createElement(material.IconButton, __assign$7({}, props));
         };
         return ArrowButton;
     })[0];
     var RightArrowButton = React.useState(function () {
         var ArrowButton = function (props) {
             rightArrowOnClickRef.current = props.onClick;
-            return React__default["default"].createElement(material.IconButton, __assign$6({}, props));
+            return React.createElement(material.IconButton, __assign$7({}, props));
         };
         return ArrowButton;
     })[0];
-    var components = React.useMemo(function () { return ({
-        LeftArrowButton: LeftArrowButton,
-        RightArrowButton: RightArrowButton,
-    }); }, [LeftArrowButton, RightArrowButton]);
     // Function --------------------------------------------------------------------------------------------------------
     var previousMonth = React.useCallback(function () {
         if (leftArrowOnClickRef.current) {
@@ -10172,8 +10198,8 @@ var PrivateStaticDatePicker = React__default["default"].forwardRef(function (_a,
         setActiveMonthValue(month.set('month', m));
         setMonthSelectOpen(false);
     }, [month]);
-    var handleRenderDay = React.useCallback(function (date, selectedDates, pickersDayProps) {
-        return React__default["default"].createElement(xDatePickers.PickersDay, __assign$6({}, pickersDayProps, { selected: date.isSame(value, 'date') }));
+    var handleRenderDay = React.useCallback(function (props) {
+        return React.createElement(xDatePickers.PickersDay, __assign$7({}, props, { selected: props.day.isSame(value, 'date') }));
     }, [value]);
     // Commands --------------------------------------------------------------------------------------------------------
     React.useLayoutEffect(function () {
@@ -10200,7 +10226,7 @@ var PrivateStaticDatePicker = React__default["default"].forwardRef(function (_a,
     // Render - Function -----------------------------------------------------------------------------------------------
     var getActionButton = React.useCallback(function (date, label) {
         var disabled = !isDateAvailable(date, availableDate, 'day');
-        return (React__default["default"].createElement(material.Button, { variant: 'text', className: disabled ? 'disabled' : undefined, disabled: disabled, onClick: function () {
+        return (React.createElement(material.Button, { variant: 'text', className: disabled ? 'disabled' : undefined, disabled: disabled, onClick: function () {
                 var finalDate = date;
                 var checkResult = checkDateAvailable(finalDate, availableDate, type, time);
                 if (checkResult !== 'available') {
@@ -10214,19 +10240,19 @@ var PrivateStaticDatePicker = React__default["default"].forwardRef(function (_a,
                             finalDate = availableDateDate[1];
                     }
                 }
-                onChange('action_date', finalDate, finalDate.format(inputFormat));
+                onChange('action_date', finalDate);
             } }, label));
-    }, [type, time, onChange, inputFormat, availableDate]);
+    }, [type, time, onChange, availableDate]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(material.Grid, { container: true, className: classNames$1('PrivateStaticDatePicker', type) },
-        type !== 'time' && (React__default["default"].createElement(material.Grid, { item: true },
-            React__default["default"].createElement(material.Grid, { container: true, direction: 'column' },
-                React__default["default"].createElement(material.Grid, { item: true, sx: { p: 2, width: '100%' } },
-                    React__default["default"].createElement(material.Grid, { container: true, className: 'month-change-arrow-wrap' },
-                        React__default["default"].createElement(material.Grid, { item: true, flex: 1, className: 'month-title-container' },
-                            React__default["default"].createElement("div", { className: 'month-title-wrap' },
-                                React__default["default"].createElement("div", { className: 'month-title' },
-                                    React__default["default"].createElement(material.Button, { variant: 'text', className: yearSelectOpen ? 'active' : undefined, onClick: function () {
+    return (React.createElement(material.Grid, { container: true, className: classNames$1('PrivateStaticDatePicker', type) },
+        type !== 'time' && (React.createElement(material.Grid, { item: true },
+            React.createElement(material.Grid, { container: true, direction: 'column' },
+                React.createElement(material.Grid, { item: true, sx: { p: 2, width: '100%' } },
+                    React.createElement(material.Grid, { container: true, className: 'month-change-arrow-wrap' },
+                        React.createElement(material.Grid, { item: true, flex: 1, className: 'month-title-container' },
+                            React.createElement("div", { className: 'month-title-wrap' },
+                                React.createElement("div", { className: 'month-title' },
+                                    React.createElement(material.Button, { variant: 'text', className: yearSelectOpen ? 'active' : undefined, onClick: function () {
                                             if (yearSelectOpen) {
                                                 setYearSelectOpen(false);
                                             }
@@ -10236,9 +10262,9 @@ var PrivateStaticDatePicker = React__default["default"].forwardRef(function (_a,
                                             }
                                         } },
                                         month.format('YYYY년'),
-                                        React__default["default"].createElement(material.Icon, null, yearSelectOpen ? 'arrow_drop_up' : 'arrow_drop_down'))),
-                                React__default["default"].createElement("div", { className: 'month-title' },
-                                    React__default["default"].createElement(material.Button, { variant: 'text', className: monthSelectOpen ? 'active' : undefined, onClick: function () {
+                                        React.createElement(material.Icon, null, yearSelectOpen ? 'arrow_drop_up' : 'arrow_drop_down'))),
+                                React.createElement("div", { className: 'month-title' },
+                                    React.createElement(material.Button, { variant: 'text', className: monthSelectOpen ? 'active' : undefined, onClick: function () {
                                             if (monthSelectOpen) {
                                                 setMonthSelectOpen(false);
                                             }
@@ -10248,78 +10274,82 @@ var PrivateStaticDatePicker = React__default["default"].forwardRef(function (_a,
                                             }
                                         } },
                                         month.format('M월'),
-                                        React__default["default"].createElement(material.Icon, null, monthSelectOpen ? 'arrow_drop_up' : 'arrow_drop_down'))))),
-                        !yearSelectOpen && !monthSelectOpen && (React__default["default"].createElement(material.Grid, { item: true, style: { textAlign: 'right' } },
-                            React__default["default"].createElement(material.IconButton, { onClick: previousMonth, sx: { mr: 1 } },
-                                React__default["default"].createElement(material.Icon, null, "keyboard_arrow_left")),
-                            React__default["default"].createElement(material.IconButton, { onClick: nextMonth },
-                                React__default["default"].createElement(material.Icon, null, "keyboard_arrow_right")))))),
-                React__default["default"].createElement(material.Grid, { item: true, style: { position: 'relative' } },
-                    React__default["default"].createElement(xDatePickers.StaticDatePicker, __assign$6({}, props, { value: activeMonthValue, defaultCalendarMonth: month, components: components, inputFormat: inputFormat, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, displayStaticWrapperAs: 'desktop', onChange: function (newValue, keyboardInputValue) {
+                                        React.createElement(material.Icon, null, monthSelectOpen ? 'arrow_drop_up' : 'arrow_drop_down'))))),
+                        !yearSelectOpen && !monthSelectOpen && (React.createElement(material.Grid, { item: true, style: { textAlign: 'right' } },
+                            React.createElement(material.IconButton, { onClick: previousMonth, sx: { mr: 1 } },
+                                React.createElement(material.Icon, null, "keyboard_arrow_left")),
+                            React.createElement(material.IconButton, { onClick: nextMonth },
+                                React.createElement(material.Icon, null, "keyboard_arrow_right")))))),
+                React.createElement(material.Grid, { item: true, style: { position: 'relative' } },
+                    React.createElement(xDatePickers.StaticDatePicker, __assign$7({}, props, { value: activeMonthValue, defaultCalendarMonth: month, slots: {
+                            previousIconButton: LeftArrowButton,
+                            nextIconButton: RightArrowButton,
+                            day: handleRenderDay,
+                        }, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, displayStaticWrapperAs: 'desktop', onChange: function (newValue) {
                             var finalValue = newValue
                                 ? value
                                     ? newValue.set('hour', value.hour()).set('minute', value.minute()).set('second', value.second())
                                     : newValue
                                 : newValue;
-                            onChange('date', finalValue, keyboardInputValue);
+                            onChange('date', finalValue);
                         }, onMonthChange: function (month) {
                             setMonth(month);
                             if (onMonthChange)
                                 onMonthChange(month);
-                        }, renderDay: handleRenderDay, renderInput: function (params) { return React__default["default"].createElement(material.TextField, __assign$6({}, params)); } })),
-                    yearSelectOpen && (React__default["default"].createElement(PrivateYearSelect, { selectYear: value && value.year(), activeYear: month.year(), availableDate: availableDate, onSelect: handleYearSelect })),
-                    monthSelectOpen && (React__default["default"].createElement(PrivateMonthSelect, { year: month.year(), selectYear: value && value.year(), selectMonth: value && value.month(), activeMonth: month.month(), availableDate: availableDate, onSelect: handleMonthSelect }))),
-                React__default["default"].createElement(material.Grid, { item: true, className: 'action-buttons' },
-                    getActionButton(dayjs__default["default"]()
+                        } })),
+                    yearSelectOpen && (React.createElement(PrivateYearSelect, { selectYear: value == null ? null : value.year(), activeYear: month.year(), availableDate: availableDate, onSelect: handleYearSelect })),
+                    monthSelectOpen && (React.createElement(PrivateMonthSelect, { year: month.year(), selectYear: value == null ? null : value.year(), selectMonth: value == null ? null : value.month(), activeMonth: month.month(), availableDate: availableDate, onSelect: handleMonthSelect }))),
+                React.createElement(material.Grid, { item: true, className: 'action-buttons' },
+                    getActionButton(dayjs()
                         .startOf('d')
                         .subtract(1, 'month')
                         .set('hour', value ? value.hour() : 0)
                         .set('minute', value ? value.minute() : 0)
                         .set('second', value ? value.second() : 0), '지난달'),
-                    getActionButton(dayjs__default["default"]()
+                    getActionButton(dayjs()
                         .startOf('d')
                         .subtract(7, 'd')
                         .set('hour', value ? value.hour() : 0)
                         .set('minute', value ? value.minute() : 0)
                         .set('second', value ? value.second() : 0), '지난주'),
-                    getActionButton(dayjs__default["default"]()
+                    getActionButton(dayjs()
                         .startOf('d')
                         .subtract(1, 'd')
                         .set('hour', value ? value.hour() : 0)
                         .set('minute', value ? value.minute() : 0)
                         .set('second', value ? value.second() : 0), '어제'),
-                    getActionButton(dayjs__default["default"]()
+                    getActionButton(dayjs()
                         .startOf('d')
                         .set('hour', value ? value.hour() : 0)
                         .set('minute', value ? value.minute() : 0)
                         .set('second', value ? value.second() : 0), '오늘'))))),
-        time && (React__default["default"].createElement(material.Grid, { item: true, className: 'time' },
-            React__default["default"].createElement(material.Grid, { container: true, direction: 'column', className: 'time-container' },
-                React__default["default"].createElement(material.Grid, { item: true, className: 'time-title' },
+        time && (React.createElement(material.Grid, { item: true, className: 'time' },
+            React.createElement(material.Grid, { container: true, direction: 'column', className: 'time-container' },
+                React.createElement(material.Grid, { item: true, className: 'time-title' },
                     time === 'hour' && (value ? value.format('HH시') : '00시'),
                     time === 'minute' && (value ? value.format('HH시 mm분') : '00시 00분'),
                     time === 'second' && (value ? value.format('HH시 mm분 ss초') : '00시 00분 00초')),
-                React__default["default"].createElement(material.Grid, { item: true, className: 'time-select-wrap' },
-                    React__default["default"].createElement(material.Grid, { container: true, style: { height: '100%' } },
-                        React__default["default"].createElement(material.Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
-                            React__default["default"].createElement(PrivateTimeSelect, { ref: hourSelectRef, value: value && value.hour(), unit: '\uC2DC', list: hours, disableList: disableHours, cols: type === 'time' ? 3 : 1, onSelect: function (newValue) {
-                                    onChange('hour', value ? value.set('hour', newValue) : dayjs__default["default"]().startOf('date').set('hour', newValue));
+                React.createElement(material.Grid, { item: true, className: 'time-select-wrap' },
+                    React.createElement(material.Grid, { container: true, style: { height: '100%' } },
+                        React.createElement(material.Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
+                            React.createElement(PrivateTimeSelect, { ref: hourSelectRef, value: value && value.hour(), unit: '\uC2DC', list: hours, disableList: disableHours, cols: type === 'time' ? 3 : 1, onSelect: function (newValue) {
+                                    onChange('hour', value ? value.set('hour', newValue) : dayjs().startOf('date').set('hour', newValue));
                                 } })),
-                        (time === 'minute' || time === 'second') && (React__default["default"].createElement(material.Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
-                            React__default["default"].createElement(PrivateTimeSelect, { ref: minuteSelectRef, value: value && value.minute(), unit: '\uBD84', list: minutes, disableList: disableMinutes, cols: type === 'time' ? 3 : 1, listInterval: minuteInterval, onSelect: function (newValue) {
-                                    onChange('minute', value ? value.set('minute', newValue) : dayjs__default["default"]().startOf('date').set('minute', newValue));
+                        (time === 'minute' || time === 'second') && (React.createElement(material.Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
+                            React.createElement(PrivateTimeSelect, { ref: minuteSelectRef, value: value && value.minute(), unit: '\uBD84', list: minutes, disableList: disableMinutes, cols: type === 'time' ? 3 : 1, listInterval: minuteInterval, onSelect: function (newValue) {
+                                    onChange('minute', value ? value.set('minute', newValue) : dayjs().startOf('date').set('minute', newValue));
                                 } }))),
-                        time === 'second' && (React__default["default"].createElement(material.Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
-                            React__default["default"].createElement(PrivateTimeSelect, { ref: secondSelectRef, value: value && value.second(), unit: '\uCD08', list: seconds, disableList: disableSeconds, cols: type === 'time' ? 3 : 1, listInterval: secondInterval, onSelect: function (newValue) {
-                                    onChange('second', value ? value.set('second', newValue) : dayjs__default["default"]().startOf('date').set('second', newValue));
+                        time === 'second' && (React.createElement(material.Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
+                            React.createElement(PrivateTimeSelect, { ref: secondSelectRef, value: value && value.second(), unit: '\uCD08', list: seconds, disableList: disableSeconds, cols: type === 'time' ? 3 : 1, listInterval: secondInterval, onSelect: function (newValue) {
+                                    onChange('second', value ? value.set('second', newValue) : dayjs().startOf('date').set('second', newValue));
                                 } }))))),
-                onClose && (React__default["default"].createElement(material.Grid, { item: true, className: 'action-buttons' },
-                    React__default["default"].createElement(material.Button, { variant: 'text', onClick: onClose }, "\uB2EB\uAE30"))))))));
+                onClose && (React.createElement(material.Grid, { item: true, className: 'action-buttons' },
+                    React.createElement(material.Button, { variant: 'text', onClick: onClose }, "\uB2EB\uAE30"))))))));
 });
 PrivateStaticDatePicker.displayName = 'PrivateStaticDatePicker';
 PrivateStaticDatePicker.defaultProps = PrivateStaticDatePickerDefaultProps;var PrivateStyledTooltip = material.styled(function (_a) {
-    var className = _a.className, props = __rest$3(_a, ["className"]);
-    return (React__default["default"].createElement(material.Tooltip, __assign$6({}, props, { classes: { popper: className } })));
+    var className = _a.className, props = __rest$4(_a, ["className"]);
+    return (React.createElement(material.Tooltip, __assign$7({}, props, { classes: { popper: className } })));
 })(function (_a) {
     var _b;
     var theme = _a.theme;
@@ -10337,13 +10367,13 @@ PrivateStaticDatePicker.defaultProps = PrivateStaticDatePickerDefaultProps;var P
         },
         _b);
 });var css_248z$5 = ".PrivateDatePicker .input-text-field.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.PrivateDatePicker .input-text-field.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.PrivateDatePicker .input-text-field.align-right .MuiInputBase-input {\n  text-align: right;\n}";
-styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwardRef(function (_a, ref) {
+styleInject(css_248z$5);var PrivateDatePicker = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
     name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, initHelperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     //--------------------------------------------------------------------------------------------------------------------
-    className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$3(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
+    className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$4(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = React.useId();
     // Ref -------------------------------------------------------------------------------------------------------------
     var privateStaticDatePickerRef = React.useRef(null);
@@ -10372,7 +10402,7 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwar
     // Memo --------------------------------------------------------------------------------------------------------------
     var label = React.useMemo(function () {
         if (labelIcon) {
-            return React__default["default"].createElement(IconText, { icon: labelIcon }, initLabel);
+            return React.createElement(IconText, { icon: labelIcon }, initLabel);
         }
         else {
             return initLabel;
@@ -10398,7 +10428,7 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwar
     // State - style ---------------------------------------------------------------------------------------------------
     var style = useAutoUpdateState$1(React.useCallback(function () {
         if (width != null) {
-            return __assign$6(__assign$6({}, initStyle), { width: width });
+            return __assign$7(__assign$7({}, initStyle), { width: width });
         }
         else {
             return initStyle;
@@ -10685,11 +10715,81 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwar
         }
         mouseDownTimeRef.current = new Date().getTime();
     }, []);
+    // Memo --------------------------------------------------------------------------------------------------------------
+    var slotProps = React.useMemo(function () {
+        var textFieldInputLabelProps = {};
+        if (labelShrink) {
+            textFieldInputLabelProps.shrink = labelShrink;
+        }
+        var readOnly = readOnlyInput;
+        var inputProps = {
+            readOnly: readOnly,
+        };
+        if (readOnly) {
+            inputProps.tabIndex = -1;
+            inputProps.className = classNames$1(inputProps.className, 'Mui-disabled');
+        }
+        var muiInputProps = { endAdornment: undefined };
+        if (startAdornment || icon || muiInputProps.startAdornment) {
+            muiInputProps.startAdornment = (React.createElement(React.Fragment, null,
+                icon && (React.createElement(material.InputAdornment, { position: 'start' },
+                    React.createElement(FormIcon, { fontSize: 'small' }, icon))),
+                startAdornment && React.createElement(material.InputAdornment, { position: 'start' }, startAdornment),
+                muiInputProps.startAdornment));
+        }
+        if (endAdornment) {
+            muiInputProps.endAdornment = (React.createElement(React.Fragment, null, endAdornment && React.createElement(material.InputAdornment, { position: 'end' }, endAdornment)));
+        }
+        return {
+            textField: {
+                className: classNames$1('input-text-field', "align-".concat(align)),
+                inputRef: function (ref) {
+                    textFieldInputRef.current = ref;
+                },
+                variant: variant,
+                size: size,
+                color: color,
+                focused: focused,
+                InputLabelProps: textFieldInputLabelProps,
+                InputProps: muiInputProps,
+                inputProps: inputProps,
+                required: required,
+                fullWidth: fullWidth,
+                helperText: undefined,
+                error: !!error || !!timeError,
+                style: style,
+                sx: sx,
+                onFocus: function () {
+                    setOpen(true);
+                },
+                onClick: function () {
+                    setOpen(true);
+                },
+            },
+        };
+    }, [
+        align,
+        color,
+        endAdornment,
+        error,
+        focused,
+        fullWidth,
+        icon,
+        labelShrink,
+        readOnlyInput,
+        required,
+        size,
+        startAdornment,
+        style,
+        sx,
+        timeError,
+        variant,
+    ]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs.AdapterDayjs, adapterLocale: dayjsLocale__default["default"] },
-        React__default["default"].createElement(material.ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
-            React__default["default"].createElement("div", { className: classNames$1(className, 'PrivateDatePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
-                React__default["default"].createElement(PrivateStyledTooltip, { open: disabled || readOnly ? false : open, PopperProps: {
+    return (React.createElement(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs.AdapterDayjs, adapterLocale: 'ko' },
+        React.createElement(material.ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
+            React.createElement("div", { className: classNames$1(className, 'PrivateDatePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
+                React.createElement(PrivateStyledTooltip, { open: disabled || readOnly ? false : open, PopperProps: {
                         modifiers: [
                             {
                                 name: 'offset',
@@ -10698,42 +10798,10 @@ styleInject(css_248z$5);var PrivateDatePicker = React__default["default"].forwar
                                 },
                             },
                         ],
-                    }, title: React__default["default"].createElement(PrivateStaticDatePicker, __assign$6({}, otherProps, { ref: privateStaticDatePickerRef, type: type, time: time, value: value, availableDate: availableDate, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, hours: hours, minutes: minutes, seconds: seconds, minuteInterval: minuteInterval, secondInterval: secondInterval, onChange: handleChange, onAccept: function () { return !time && setOpen(false); }, onClose: function () { return setOpen(false); } })) },
-                    React__default["default"].createElement("div", { style: { display: fullWidth ? 'block' : 'inline-block' } },
-                        React__default["default"].createElement(xDatePickers.DesktopDatePicker, __assign$6({ value: inputValue, label: label, open: false, inputFormat: format, disabled: disabled, readOnly: readOnly, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, onClose: function () { return setOpen(false); }, onError: function (reason) { return (datePickerErrorRef.current = reason); }, onChange: function (newValue, keyboardInputValue) { return handleChange('date', newValue, keyboardInputValue); }, renderInput: function (_a) {
-                                var initClassName = _a.className, initFocused = _a.focused, initError = _a.error, initStyle = _a.style, initInputProps = _a.inputProps, initMuiInputProps = _a.InputProps, InputLabelProps = _a.InputLabelProps, params = __rest$3(_a, ["className", "focused", "error", "style", "inputProps", "InputProps", "InputLabelProps"]);
-                                var textFieldInputLabelProps = __assign$6(__assign$6({}, InputLabelProps), { shrink: labelShrink ? true : InputLabelProps === null || InputLabelProps === void 0 ? void 0 : InputLabelProps.shrink });
-                                var readOnly = (initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.readOnly) || readOnlyInput;
-                                var inputProps = __assign$6(__assign$6({}, initInputProps), { readOnly: readOnly });
-                                if (readOnly) {
-                                    inputProps.tabIndex = -1;
-                                    inputProps.className = classNames$1(inputProps.className, 'Mui-disabled');
-                                }
-                                var muiInputProps = __assign$6(__assign$6({}, initMuiInputProps), { endAdornment: undefined });
-                                if (startAdornment || icon || muiInputProps.startAdornment) {
-                                    muiInputProps.startAdornment = (React__default["default"].createElement(React__default["default"].Fragment, null,
-                                        icon && (React__default["default"].createElement(material.InputAdornment, { position: 'start' },
-                                            React__default["default"].createElement(FormIcon, { fontSize: 'small' }, icon))),
-                                        startAdornment && React__default["default"].createElement(material.InputAdornment, { position: 'start' }, startAdornment),
-                                        muiInputProps.startAdornment));
-                                }
-                                if (endAdornment) {
-                                    muiInputProps.endAdornment = (React__default["default"].createElement(React__default["default"].Fragment, null, endAdornment && React__default["default"].createElement(material.InputAdornment, { position: 'end' }, endAdornment)));
-                                }
-                                return (React__default["default"].createElement(material.TextField, __assign$6({}, params, { className: classNames$1(initClassName, 'input-text-field', "align-".concat(align)), inputRef: function (ref) {
-                                        if (params.inputRef) {
-                                            if (typeof params.inputRef === 'function') {
-                                                params.inputRef(ref);
-                                            }
-                                        }
-                                        textFieldInputRef.current = ref;
-                                    }, variant: variant, size: size, color: color, focused: focused || initFocused, InputLabelProps: textFieldInputLabelProps, InputProps: muiInputProps, inputProps: inputProps, required: required, fullWidth: fullWidth, helperText: undefined, error: !!error || !!initError || !!timeError, style: __assign$6(__assign$6({}, style), initStyle), sx: sx, onFocus: function () {
-                                        setOpen(true);
-                                    }, onClick: function () {
-                                        setOpen(true);
-                                    } })));
-                            } }, otherProps)))),
-                !formColWithHelperText && helperText && (React__default["default"].createElement(material.FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, helperText))))));
+                    }, title: React.createElement(PrivateStaticDatePicker, __assign$7({}, otherProps, { ref: privateStaticDatePickerRef, type: type, time: time, value: value, availableDate: availableDate, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, hours: hours, minutes: minutes, seconds: seconds, minuteInterval: minuteInterval, secondInterval: secondInterval, onChange: handleChange, onAccept: function () { return !time && setOpen(false); }, onClose: function () { return setOpen(false); } })) },
+                    React.createElement("div", { style: { display: fullWidth ? 'block' : 'inline-block' } },
+                        React.createElement(xDatePickers.DesktopDatePicker, __assign$7({ value: inputValue, label: label, open: false, format: format, disabled: disabled, readOnly: readOnly, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, onClose: function () { return setOpen(false); }, onError: function (reason) { return (datePickerErrorRef.current = reason); }, onChange: function (newValue) { return handleChange('date', newValue); }, slotProps: slotProps }, otherProps)))),
+                !formColWithHelperText && helperText && (React.createElement(material.FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, helperText))))));
 });
 PrivateDatePicker.displayName = 'PrivateDatePicker';
 PrivateDatePicker.defaultProps = PrivateDatePickerDefaultProps;var PrivateAlertDialogDefaultProps = {
@@ -10743,53 +10811,53 @@ PrivateDatePicker.defaultProps = PrivateDatePickerDefaultProps;var PrivateAlertD
     var handleClose = React.useCallback(function () {
         onClose && onClose();
     }, [onClose]);
-    return (React__default["default"].createElement(material.Dialog, { className: "color-".concat(color), open: !!open, onClose: handleClose, "aria-labelledby": 'alert-dialog-title' },
-        title && React__default["default"].createElement(material.DialogTitle, { id: 'alert-dialog-title' }, title),
-        React__default["default"].createElement(material.DialogContent, null, content),
-        React__default["default"].createElement(material.DialogActions, null,
-            React__default["default"].createElement(material.Button, { variant: 'text', onClick: handleClose, autoFocus: true }, "\uD655\uC778"))));
+    return (React.createElement(material.Dialog, { className: "color-".concat(color), open: !!open, onClose: handleClose, "aria-labelledby": 'alert-dialog-title' },
+        title && React.createElement(material.DialogTitle, { id: 'alert-dialog-title' }, title),
+        React.createElement(material.DialogContent, null, content),
+        React.createElement(material.DialogActions, null,
+            React.createElement(material.Button, { variant: 'text', onClick: handleClose, autoFocus: true }, "\uD655\uC778"))));
 };
 PrivateAlertDialog.displayName = 'PrivateAlertDialog';
-PrivateAlertDialog.defaultProps = PrivateAlertDialogDefaultProps;var FormDatePicker = React__default["default"].forwardRef(function (_a, ref) {
+PrivateAlertDialog.defaultProps = PrivateAlertDialogDefaultProps;var FormDatePicker = React.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
-    var className = _a.className, props = __rest$3(_a, ["className"]);
-    var _b = useFormState(), onAddValueItem = _b.onAddValueItem, otherFormState = __rest$3(_b, ["onAddValueItem"]);
+    var className = _a.className, props = __rest$4(_a, ["className"]);
+    var _b = useFormState(), onAddValueItem = _b.onAddValueItem, otherFormState = __rest$4(_b, ["onAddValueItem"]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleAddValueItem = React.useCallback(function (id, commands) {
         commands.getType = function () { return 'FormDatePicker'; };
         onAddValueItem(id, commands);
     }, [onAddValueItem]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormContextProvider, { value: __assign$6({ onAddValueItem: handleAddValueItem }, otherFormState) },
-        React__default["default"].createElement(PrivateDatePicker, __assign$6({ className: classNames$1(className, 'FormDatePicker') }, props, { ref: ref, type: 'date' }))));
+    return (React.createElement(FormContextProvider, { value: __assign$7({ onAddValueItem: handleAddValueItem }, otherFormState) },
+        React.createElement(PrivateDatePicker, __assign$7({ className: classNames$1(className, 'FormDatePicker') }, props, { ref: ref, type: 'date' }))));
 });
 FormDatePicker.displayName = 'FormDatePicker';
-FormDatePicker.defaultProps = FormDatePickerDefaultProps;var FormDateTimePickerDefaultProps = {};var FormDateTimePicker = React__default["default"].forwardRef(function (_a, ref) {
+FormDatePicker.defaultProps = FormDatePickerDefaultProps;var FormDateTimePickerDefaultProps = {};var FormDateTimePicker = React.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
-    var className = _a.className, props = __rest$3(_a, ["className"]);
-    var _b = useFormState(), onAddValueItem = _b.onAddValueItem, otherFormState = __rest$3(_b, ["onAddValueItem"]);
+    var className = _a.className, props = __rest$4(_a, ["className"]);
+    var _b = useFormState(), onAddValueItem = _b.onAddValueItem, otherFormState = __rest$4(_b, ["onAddValueItem"]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleAddValueItem = React.useCallback(function (id, commands) {
         commands.getType = function () { return 'FormDateTimePicker'; };
         onAddValueItem(id, commands);
     }, [onAddValueItem]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormContextProvider, { value: __assign$6({ onAddValueItem: handleAddValueItem }, otherFormState) },
-        React__default["default"].createElement(PrivateDatePicker, __assign$6({ className: classNames$1(className, 'FormDateTimePicker') }, props, { ref: ref, type: 'date_time' }))));
+    return (React.createElement(FormContextProvider, { value: __assign$7({ onAddValueItem: handleAddValueItem }, otherFormState) },
+        React.createElement(PrivateDatePicker, __assign$7({ className: classNames$1(className, 'FormDateTimePicker') }, props, { ref: ref, type: 'date_time' }))));
 });
 FormDateTimePicker.displayName = 'FormDateTimePicker';
-FormDateTimePicker.defaultProps = FormDateTimePickerDefaultProps;var FormTimePickerDefaultProps = {};var FormTimePicker = React__default["default"].forwardRef(function (_a, ref) {
+FormDateTimePicker.defaultProps = FormDateTimePickerDefaultProps;var FormTimePickerDefaultProps = {};var FormTimePicker = React.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
-    var className = _a.className, props = __rest$3(_a, ["className"]);
-    var _b = useFormState(), onAddValueItem = _b.onAddValueItem, otherFormState = __rest$3(_b, ["onAddValueItem"]);
+    var className = _a.className, props = __rest$4(_a, ["className"]);
+    var _b = useFormState(), onAddValueItem = _b.onAddValueItem, otherFormState = __rest$4(_b, ["onAddValueItem"]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleAddValueItem = React.useCallback(function (id, commands) {
         commands.getType = function () { return 'FormTimePicker'; };
         onAddValueItem(id, commands);
     }, [onAddValueItem]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormContextProvider, { value: __assign$6({ onAddValueItem: handleAddValueItem }, otherFormState) },
-        React__default["default"].createElement(PrivateDatePicker, __assign$6({ className: classNames$1(className, 'FormTimePicker') }, props, { ref: ref, type: 'time' }))));
+    return (React.createElement(FormContextProvider, { value: __assign$7({ onAddValueItem: handleAddValueItem }, otherFormState) },
+        React.createElement(PrivateDatePicker, __assign$7({ className: classNames$1(className, 'FormTimePicker') }, props, { ref: ref, type: 'time' }))));
 });
 FormTimePicker.displayName = 'FormTimePicker';
 FormTimePicker.defaultProps = FormTimePickerDefaultProps;var FormDateRangePickerDefaultProps = {
@@ -10802,7 +10870,7 @@ FormTimePicker.defaultProps = FormTimePickerDefaultProps;var FormDateRangePicker
 };var CustomDatePickerContainerDefaultProps = {
     calendarCount: 2,
 };var CustomDatePickerDefaultProps = {};var css_248z$4 = ".CustomDatePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.CustomDatePicker .MuiDayPicker-header > span {\n  margin: 0;\n}\n.CustomDatePicker .MuiPickerStaticWrapper-content {\n  min-width: 292px;\n}\n.CustomDatePicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root > div {\n  width: 292px;\n}\n.CustomDatePicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root > div .MuiCalendarPicker-root {\n  width: 292px;\n}\n.CustomDatePicker .selected-bg {\n  display: none;\n  position: absolute;\n}\n.CustomDatePicker .selected-bg.sel {\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background-color: rgba(66, 165, 245, 0.6);\n}\n.CustomDatePicker .selected-bg.sel.ui-start, .CustomDatePicker .selected-bg.sel.s-start {\n  border-top-left-radius: 50%;\n  border-bottom-left-radius: 50%;\n}\n.CustomDatePicker .selected-bg.sel.ui-end, .CustomDatePicker .selected-bg.sel.s-end {\n  border-top-right-radius: 50%;\n  border-bottom-right-radius: 50%;\n}\n.CustomDatePicker .selected-bg.sel ~ .MuiPickersDay-root {\n  border: 0;\n}\n.CustomDatePicker .selected-bg.sel ~ .MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected) {\n  background-color: transparent;\n}\n.CustomDatePicker .focused-bg {\n  display: none;\n  position: absolute;\n}\n.CustomDatePicker .focused-bg.focused {\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  border: 2px solid #efefef;\n  border-left: 0;\n  border-right: 0;\n}\n.CustomDatePicker .focused-bg.focused.ui-start, .CustomDatePicker .focused-bg.focused.f-start {\n  border-left: 2px solid #efefef;\n  border-top-left-radius: 50%;\n  border-bottom-left-radius: 50%;\n}\n.CustomDatePicker .focused-bg.focused.ui-end, .CustomDatePicker .focused-bg.focused.f-end {\n  border-right: 2px solid #efefef;\n  border-top-right-radius: 50%;\n  border-bottom-right-radius: 50%;\n}\n.CustomDatePicker .focused-bg.focused ~ .MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected) {\n  background-color: transparent;\n}";
-styleInject(css_248z$4);var CustomDatePicker = React__default["default"].forwardRef(function (_a, ref) {
+styleInject(css_248z$4);var CustomDatePicker = React.forwardRef(function (_a, ref) {
     // State -----------------------------------------------------------------------------------------------------------
     var selectType = _a.selectType, initValue = _a.value, focusedDate = _a.focusedDate, month = _a.month, disableFuture = _a.disableFuture, disablePast = _a.disablePast, minDate = _a.minDate, maxDate = _a.maxDate, onValueChange = _a.onValueChange, onMouseEnterPickersDay = _a.onMouseEnterPickersDay, onMonthChange = _a.onMonthChange;
     var value = useAutoUpdateState$1(React.useCallback(function () {
@@ -10819,21 +10887,17 @@ styleInject(css_248z$4);var CustomDatePicker = React__default["default"].forward
     var LeftArrowButton = React.useState(function () {
         var ArrowButton = function (props) {
             leftArrowOnClickRef.current = props.onClick;
-            return React__default["default"].createElement(material.IconButton, __assign$6({}, props));
+            return React.createElement(material.IconButton, __assign$7({}, props));
         };
         return ArrowButton;
     })[0];
     var RightArrowButton = React.useState(function () {
         var ArrowButton = function (props) {
             rightArrowOnClickRef.current = props.onClick;
-            return React__default["default"].createElement(material.IconButton, __assign$6({}, props));
+            return React.createElement(material.IconButton, __assign$7({}, props));
         };
         return ArrowButton;
     })[0];
-    var components = React.useMemo(function () { return ({
-        LeftArrowButton: LeftArrowButton,
-        RightArrowButton: RightArrowButton,
-    }); }, [LeftArrowButton, RightArrowButton]);
     //--------------------------------------------------------------------------------------------------------------------
     var getDateVal = React.useCallback(function (date) {
         return Number(date.format('YYYYMMDD'));
@@ -10842,7 +10906,7 @@ styleInject(css_248z$4);var CustomDatePicker = React__default["default"].forward
     var baseClassNames = React.useMemo(function () {
         var newValue = {};
         var lastDayOfMonth = month.endOf('month').date();
-        var now = dayjs__default["default"](month);
+        var now = dayjs(month);
         for (var i = 1; i <= lastDayOfMonth; i += 1) {
             var className = '';
             now = now.set('date', i);
@@ -10861,7 +10925,7 @@ styleInject(css_248z$4);var CustomDatePicker = React__default["default"].forward
         var startDateVal = value[0] ? getDateVal(value[0]) : null;
         var endDateVal = value[1] ? getDateVal(value[1]) : null;
         var lastDayOfMonth = month.endOf('month').date();
-        var now = dayjs__default["default"](month);
+        var now = dayjs(month);
         for (var i = 1; i <= lastDayOfMonth; i += 1) {
             var className = '';
             now = now.set('date', i);
@@ -10888,7 +10952,7 @@ styleInject(css_248z$4);var CustomDatePicker = React__default["default"].forward
         var focusedDateVal = focusedDate ? getDateVal(focusedDate) : null;
         var lastDayOfMonth = month.endOf('month').date();
         if (focusedDateVal && ((selectType === 'start' && endDateVal) || (selectType === 'end' && startDateVal))) {
-            var now = dayjs__default["default"](month);
+            var now = dayjs(month);
             for (var i = 1; i <= lastDayOfMonth; i += 1) {
                 var className = '';
                 now = now.set('date', i);
@@ -10964,19 +11028,37 @@ styleInject(css_248z$4);var CustomDatePicker = React__default["default"].forward
         }
     }, [ref, previousMonth, nextMonth, activeMonth]);
     //--------------------------------------------------------------------------------------------------------------------
-    var handleRenderDay = React.useCallback(function (date, selectedDates, pickersDayProps) {
+    var handleRenderDay = React.useCallback(function (props) {
         var startDate = value[0];
         var endDate = value[1];
-        var dateVal = getDateVal(date);
+        var dateVal = getDateVal(props.day);
         var baseClassName = baseClassNames[dateVal];
         var selectedClassName = selectedClassNames[dateVal];
         var focusedClassName = focusedClassNames[dateVal];
-        return (React__default["default"].createElement("div", { key: pickersDayProps.key, style: { position: 'relative' } },
-            React__default["default"].createElement("div", { className: classNames$1('focused-bg', baseClassName, focusedClassName) }),
-            React__default["default"].createElement("div", { className: classNames$1('selected-bg', baseClassName, selectedClassName) }),
-            React__default["default"].createElement(xDatePickers.PickersDay, __assign$6({}, pickersDayProps, { disableMargin: true, selected: date.isSame(startDate, 'date') || date.isSame(endDate, 'date'), onMouseEnter: value[0] || value[1] ? function () { return onMouseEnterPickersDay && onMouseEnterPickersDay(date); } : undefined }))));
+        return (React.createElement("div", { key: props.key, style: { position: 'relative' } },
+            React.createElement("div", { className: classNames$1('focused-bg', baseClassName, focusedClassName) }),
+            React.createElement("div", { className: classNames$1('selected-bg', baseClassName, selectedClassName) }),
+            React.createElement(xDatePickers.PickersDay, __assign$7({}, props, { disableMargin: true, selected: props.day.isSame(startDate, 'date') || props.day.isSame(endDate, 'date'), onMouseEnter: value[0] || value[1] ? function () { return onMouseEnterPickersDay && onMouseEnterPickersDay(props.day); } : undefined }))));
     }, [value, getDateVal, baseClassNames, selectedClassNames, focusedClassNames, onMouseEnterPickersDay]);
-    return (React__default["default"].createElement(xDatePickers.StaticDatePicker, { className: 'CustomDatePicker', displayStaticWrapperAs: 'desktop', components: components, value: activeMonthValue, defaultCalendarMonth: month, disableFuture: disableFuture, disablePast: disablePast, minDate: minDate, maxDate: maxDate, onChange: function (newValue) { return onValueChange && onValueChange(selectType, newValue); }, renderDay: handleRenderDay, renderInput: function (params) { return React__default["default"].createElement(material.TextField, __assign$6({}, params)); }, inputFormat: 'YYYY-MM-DD HH:mm:ss', onMonthChange: function (month) {
+    // -------------------------------------------------------------------------------------------------------------------
+    // const slots = useMemo(
+    //   () => ({
+    //     previousIconButton: LeftArrowButton,
+    //     nextIconButton: RightArrowButton,
+    //     day: handleRenderDay,
+    //   }),
+    //   [LeftArrowButton, RightArrowButton, handleRenderDay]
+    // );
+    // Render ------------------------------------------------------------------------------------------------------------
+    return (React.createElement(xDatePickers.StaticDatePicker, { className: 'CustomDatePicker', displayStaticWrapperAs: 'desktop', slots: {
+            previousIconButton: LeftArrowButton,
+            nextIconButton: RightArrowButton,
+            day: handleRenderDay,
+        }, value: activeMonthValue, defaultCalendarMonth: month, disableFuture: disableFuture, disablePast: disablePast, minDate: minDate, maxDate: maxDate, onChange: function (newValue) { return onValueChange && onValueChange(selectType, newValue); }, 
+        // renderDay={handleRenderDay}
+        // renderInput={(params) => <TextField {...params} />}
+        // format='YYYY-MM-DD HH:mm:ss'
+        onMonthChange: function (month) {
             if (onMonthChange)
                 onMonthChange(month);
             setActiveMonthValue(null);
@@ -10992,7 +11074,7 @@ var MONTHS = new Array(12).fill(0);
 for (var i = 0; i < 12; i += 1) {
     MONTHS[i] = i;
 }
-var CustomDatePickerContainer = React__default["default"].forwardRef(function (_a, ref) {
+var CustomDatePickerContainer = React.forwardRef(function (_a, ref) {
     var selectType = _a.selectType, value = _a.value, calendarCount = _a.calendarCount, months = _a.months, disablePast = _a.disablePast, disableFuture = _a.disableFuture, maxDate = _a.maxDate, minDate = _a.minDate, onGetActionButtons = _a.onGetActionButtons, onChange = _a.onChange, onValueChange = _a.onValueChange, onMonthsChange = _a.onMonthsChange;
     var theme = material.useTheme();
     // Ref -------------------------------------------------------------------------------------------------------------
@@ -11116,13 +11198,13 @@ var CustomDatePickerContainer = React__default["default"].forwardRef(function (_
     }, [ref, previousMonth, nextMonth, activeMonth]);
     // Render Function -------------------------------------------------------------------------------------------------
     var getMonthTitle = React.useCallback(function (index) {
-        return (React__default["default"].createElement("div", { className: 'month-title' },
-            React__default["default"].createElement(material.Button, { variant: 'text', className: yearSelectOpen && yearMonthSelectIndex === index ? 'active' : undefined, onClick: function () { return handleYearSelectClick(index); } },
+        return (React.createElement("div", { className: 'month-title' },
+            React.createElement(material.Button, { variant: 'text', className: yearSelectOpen && yearMonthSelectIndex === index ? 'active' : undefined, onClick: function () { return handleYearSelectClick(index); } },
                 months[index].format('YYYY년'),
-                React__default["default"].createElement(material.Icon, null, yearSelectOpen && yearMonthSelectIndex === index ? 'arrow_drop_up' : 'arrow_drop_down')),
-            React__default["default"].createElement(material.Button, { variant: 'text', className: monthSelectOpen && yearMonthSelectIndex === index ? 'active' : undefined, onClick: function () { return handleMonthSelectClick(index); } },
+                React.createElement(material.Icon, null, yearSelectOpen && yearMonthSelectIndex === index ? 'arrow_drop_up' : 'arrow_drop_down')),
+            React.createElement(material.Button, { variant: 'text', className: monthSelectOpen && yearMonthSelectIndex === index ? 'active' : undefined, onClick: function () { return handleMonthSelectClick(index); } },
                 months[index].format('M월'),
-                React__default["default"].createElement(material.Icon, null, monthSelectOpen && yearMonthSelectIndex === index ? 'arrow_drop_up' : 'arrow_drop_down'))));
+                React.createElement(material.Icon, null, monthSelectOpen && yearMonthSelectIndex === index ? 'arrow_drop_up' : 'arrow_drop_down'))));
     }, [yearSelectOpen, yearMonthSelectIndex, months, monthSelectOpen, handleYearSelectClick, handleMonthSelectClick]);
     // Render - Function -----------------------------------------------------------------------------------------------
     var getActionButton = React.useCallback(function (startDate, endDate, label) {
@@ -11145,17 +11227,17 @@ var CustomDatePickerContainer = React__default["default"].forwardRef(function (_
                 }
             }
         }
-        return (React__default["default"].createElement(material.Button, { className: disabled ? 'disabled' : undefined, variant: 'text', disabled: disabled, onClick: function () {
+        return (React.createElement(material.Button, { className: disabled ? 'disabled' : undefined, variant: 'text', disabled: disabled, onClick: function () {
                 onChange([finalStartDate, finalEndDate]);
             } }, label));
     }, [onChange, availableDate]);
     // Render ----------------------------------------------------------------------------------------------------------
     var actionButtons = React.useMemo(function () {
         if (onGetActionButtons) {
-            return onGetActionButtons().map(function (info, idx) { return (React__default["default"].createElement(React__default["default"].Fragment, { key: idx }, getActionButton(info.start, info.end, info.label))); });
+            return onGetActionButtons().map(function (info, idx) { return (React.createElement(React.Fragment, { key: idx }, getActionButton(info.start, info.end, info.label))); });
         }
         else {
-            var now = dayjs__default["default"]().startOf('d');
+            var now = dayjs().startOf('d');
             var lastWeek = now.subtract(1, 'week');
             var dayOfWeek = now.day();
             var lastWeekDate = void 0;
@@ -11168,7 +11250,7 @@ var CustomDatePickerContainer = React__default["default"].forwardRef(function (_
                 lastWeekDate = [lastWeek.subtract(dayOfWeek - 1, 'd'), lastWeek.add(7 - dayOfWeek, 'd')];
                 thisWeekDate = [now.subtract(dayOfWeek - 1, 'd'), now.add(7 - dayOfWeek, 'd')];
             }
-            return (React__default["default"].createElement(React__default["default"].Fragment, null,
+            return (React.createElement(React.Fragment, null,
                 getActionButton(now.subtract(1, 'month').startOf('month'), now.subtract(1, 'month').endOf('month'), '지난달'),
                 getActionButton(now.startOf('month'), now.endOf('month'), '이번달'),
                 getActionButton(now.subtract(29, 'd'), now, '최근 30일'),
@@ -11179,39 +11261,39 @@ var CustomDatePickerContainer = React__default["default"].forwardRef(function (_
                 getActionButton(now, now, '오늘')));
         }
     }, [onGetActionButtons, getActionButton]);
-    return (React__default["default"].createElement("div", { className: 'CustomDatePickerContainer' },
-        React__default["default"].createElement(material.Grid, { container: true, direction: 'column' },
-            !yearSelectOpen && !monthSelectOpen && (React__default["default"].createElement(material.Grid, { item: true },
-                React__default["default"].createElement(material.Grid, { container: true, className: 'month-change-arrow-wrap' },
-                    React__default["default"].createElement(material.Grid, { item: true, xs: 6 },
-                        React__default["default"].createElement(material.IconButton, { onClick: previousMonth },
-                            React__default["default"].createElement(material.Icon, null, "keyboard_arrow_left"))),
-                    React__default["default"].createElement(material.Grid, { item: true, xs: 6 },
-                        React__default["default"].createElement(material.IconButton, { onClick: nextMonth },
-                            React__default["default"].createElement(material.Icon, null, "keyboard_arrow_right")))))),
-            React__default["default"].createElement(material.Grid, { item: true, onMouseLeave: function () { return setFocusedDate(undefined); } },
-                React__default["default"].createElement("div", { style: { display: 'flex' } },
-                    React__default["default"].createElement("div", { style: { flex: 1 } }, getMonthTitle(0)),
-                    React__default["default"].createElement("div", { style: { flex: 1, borderLeft: '1px solid #efefef' } }, getMonthTitle(1)),
-                    Number(calendarCount) >= 3 && (React__default["default"].createElement("div", { style: { flex: 1, borderLeft: '1px solid #efefef' } }, getMonthTitle(2)))),
-                React__default["default"].createElement("div", { className: 'date-picker-wrap' },
-                    React__default["default"].createElement(material.Grid, { container: true, flexWrap: 'nowrap' },
-                        React__default["default"].createElement(material.Grid, { item: true },
-                            React__default["default"].createElement(CustomDatePicker, __assign$6({}, customDatePickerProps, { ref: datePicker1Ref, focusedDate: focusedDate, month: months[0], onMouseEnterPickersDay: setFocusedDate, onMonthChange: handleFirstDatePickerMonthChange }))),
-                        React__default["default"].createElement(material.Grid, { item: true, style: { borderLeft: '1px solid #efefef' } },
-                            React__default["default"].createElement(CustomDatePicker, __assign$6({}, customDatePickerProps, { ref: datePicker2Ref, focusedDate: focusedDate, month: months[1], onMouseEnterPickersDay: setFocusedDate }))),
-                        Number(calendarCount) >= 3 && (React__default["default"].createElement(material.Grid, { item: true, style: { borderLeft: '1px solid #efefef' } },
-                            React__default["default"].createElement(CustomDatePicker, __assign$6({}, customDatePickerProps, { ref: datePicker3Ref, focusedDate: focusedDate, month: months[2], onMouseEnterPickersDay: setFocusedDate }))))),
-                    yearSelectOpen && (React__default["default"].createElement("div", { ref: yearSelectRef, className: 'year-select' },
-                        React__default["default"].createElement(material.Grid, { container: true, style: { padding: '5px 10px' }, spacing: 1 }, YEARS.map(function (y) {
+    return (React.createElement("div", { className: 'CustomDatePickerContainer' },
+        React.createElement(material.Grid, { container: true, direction: 'column' },
+            !yearSelectOpen && !monthSelectOpen && (React.createElement(material.Grid, { item: true },
+                React.createElement(material.Grid, { container: true, className: 'month-change-arrow-wrap' },
+                    React.createElement(material.Grid, { item: true, xs: 6 },
+                        React.createElement(material.IconButton, { onClick: previousMonth },
+                            React.createElement(material.Icon, null, "keyboard_arrow_left"))),
+                    React.createElement(material.Grid, { item: true, xs: 6 },
+                        React.createElement(material.IconButton, { onClick: nextMonth },
+                            React.createElement(material.Icon, null, "keyboard_arrow_right")))))),
+            React.createElement(material.Grid, { item: true, onMouseLeave: function () { return setFocusedDate(undefined); } },
+                React.createElement("div", { style: { display: 'flex' } },
+                    React.createElement("div", { style: { flex: 1 } }, getMonthTitle(0)),
+                    React.createElement("div", { style: { flex: 1, borderLeft: '1px solid #efefef' } }, getMonthTitle(1)),
+                    Number(calendarCount) >= 3 && (React.createElement("div", { style: { flex: 1, borderLeft: '1px solid #efefef' } }, getMonthTitle(2)))),
+                React.createElement("div", { className: 'date-picker-wrap' },
+                    React.createElement(material.Grid, { container: true, flexWrap: 'nowrap' },
+                        React.createElement(material.Grid, { item: true },
+                            React.createElement(CustomDatePicker, __assign$7({}, customDatePickerProps, { ref: datePicker1Ref, focusedDate: focusedDate, month: months[0], onMouseEnterPickersDay: setFocusedDate, onMonthChange: handleFirstDatePickerMonthChange }))),
+                        React.createElement(material.Grid, { item: true, style: { borderLeft: '1px solid #efefef' } },
+                            React.createElement(CustomDatePicker, __assign$7({}, customDatePickerProps, { ref: datePicker2Ref, focusedDate: focusedDate, month: months[1], onMouseEnterPickersDay: setFocusedDate }))),
+                        Number(calendarCount) >= 3 && (React.createElement(material.Grid, { item: true, style: { borderLeft: '1px solid #efefef' } },
+                            React.createElement(CustomDatePicker, __assign$7({}, customDatePickerProps, { ref: datePicker3Ref, focusedDate: focusedDate, month: months[2], onMouseEnterPickersDay: setFocusedDate }))))),
+                    yearSelectOpen && (React.createElement("div", { ref: yearSelectRef, className: 'year-select' },
+                        React.createElement(material.Grid, { container: true, style: { padding: '5px 10px' }, spacing: 1 }, YEARS.map(function (y) {
                             var _a;
-                            var today = dayjs__default["default"]();
+                            var today = dayjs();
                             var isToday = y === today.year();
                             var isActive = y === months[yearMonthSelectIndex].year();
                             var isSelected = y === ((_a = value[yearMonthSelectIndex]) === null || _a === void 0 ? void 0 : _a.year());
-                            var disabled = !isDateAvailable(dayjs__default["default"](y.toString(), 'YYYY'), availableDate, 'year');
-                            return (React__default["default"].createElement(material.Grid, { key: y, item: true, xs: 2 },
-                                React__default["default"].createElement(material.Button, { variant: 'text', fullWidth: true, disabled: disabled, className: classNames$1(isSelected && 'selected', isActive && 'active', isToday && 'today'), ref: isActive ? activeYearBtnRef : undefined, sx: {
+                            var disabled = !isDateAvailable(dayjs(y.toString(), 'YYYY'), availableDate, 'year');
+                            return (React.createElement(material.Grid, { key: y, item: true, xs: 2 },
+                                React.createElement(material.Button, { variant: 'text', fullWidth: true, disabled: disabled, className: classNames$1(isSelected && 'selected', isActive && 'active', isToday && 'today'), ref: isActive ? activeYearBtnRef : undefined, sx: {
                                         backgroundColor: isSelected ? theme.palette.primary.main : undefined,
                                         color: isSelected ? 'white' : 'unset',
                                         ':hover': {
@@ -11221,18 +11303,18 @@ var CustomDatePickerContainer = React__default["default"].forwardRef(function (_
                                         },
                                     }, onClick: function () { return handleYearSelect(y); } }, y)));
                         })))),
-                    monthSelectOpen && (React__default["default"].createElement("div", { className: 'month-select' },
-                        React__default["default"].createElement(material.Grid, { container: true, style: { padding: '5px 10px' }, spacing: 1 }, MONTHS.map(function (m) {
+                    monthSelectOpen && (React.createElement("div", { className: 'month-select' },
+                        React.createElement(material.Grid, { container: true, style: { padding: '5px 10px' }, spacing: 1 }, MONTHS.map(function (m) {
                             var _a, _b;
-                            var today = dayjs__default["default"]();
+                            var today = dayjs();
                             var isToday = today.year() === months[yearMonthSelectIndex].year() && m === today.month();
                             var isActive = m === months[yearMonthSelectIndex].month();
                             var isSelected = ((_a = value[yearMonthSelectIndex]) === null || _a === void 0 ? void 0 : _a.year()) === months[yearMonthSelectIndex].year() &&
                                 m === ((_b = value[yearMonthSelectIndex]) === null || _b === void 0 ? void 0 : _b.month());
                             var ym = months[yearMonthSelectIndex].year() * 100 + (m + 1);
-                            var disabled = !isDateAvailable(dayjs__default["default"](ym.toString(), 'YYYYMM'), availableDate, 'month');
-                            return (React__default["default"].createElement(material.Grid, { key: m, item: true, xs: 4 },
-                                React__default["default"].createElement(material.Button, { variant: 'text', fullWidth: true, disabled: disabled, className: classNames$1(isSelected && 'selected', isActive && 'active', isToday && 'today'), ref: isActive ? activeYearBtnRef : undefined, sx: {
+                            var disabled = !isDateAvailable(dayjs(ym.toString(), 'YYYYMM'), availableDate, 'month');
+                            return (React.createElement(material.Grid, { key: m, item: true, xs: 4 },
+                                React.createElement(material.Button, { variant: 'text', fullWidth: true, disabled: disabled, className: classNames$1(isSelected && 'selected', isActive && 'active', isToday && 'today'), ref: isActive ? activeYearBtnRef : undefined, sx: {
                                         backgroundColor: isSelected ? theme.palette.primary.main : undefined,
                                         color: isSelected ? 'white' : 'unset',
                                         ':hover': {
@@ -11244,7 +11326,7 @@ var CustomDatePickerContainer = React__default["default"].forwardRef(function (_
                                     m + 1,
                                     "\uC6D4")));
                         })))))),
-            React__default["default"].createElement(material.Grid, { className: 'action-buttons', item: true, style: { borderTop: '1px solid #efefef', padding: 10, textAlign: 'right' } }, actionButtons))));
+            React.createElement(material.Grid, { className: 'action-buttons', item: true, style: { borderTop: '1px solid #efefef', padding: 10, textAlign: 'right' } }, actionButtons))));
 });
 CustomDatePickerContainer.displayName = 'CustomDatePickerContainer';
 CustomDatePickerContainer.defaultProps = CustomDatePickerContainerDefaultProps;var InputDatePickerDefaultProps = {
@@ -11254,13 +11336,13 @@ styleInject(css_248z$2);var InputDatePicker = function (_a) {
     // ID --------------------------------------------------------------------------------------------------------------
     var variant = _a.variant, size = _a.size, color = _a.color, focused = _a.focused, fullWidth = _a.fullWidth, disabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, labelShrink = _a.labelShrink, 
     //--------------------------------------------------------------------------------------------------------------------
-    className = _a.className, style = _a.style, value = _a.value, initLabel = _a.label, labelIcon = _a.labelIcon, inputRef = _a.inputRef, format = _a.format, error = _a.error, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, readOnlyInput = _a.readOnlyInput, onFocus = _a.onFocus, onBlur = _a.onBlur, props = __rest$3(_a, ["variant", "size", "color", "focused", "fullWidth", "disabled", "readOnly", "required", "labelShrink", "className", "style", "value", "label", "labelIcon", "inputRef", "format", "error", "icon", "startAdornment", "endAdornment", "align", "readOnlyInput", "onFocus", "onBlur"]);
+    className = _a.className, style = _a.style, value = _a.value, initLabel = _a.label, labelIcon = _a.labelIcon, inputRef = _a.inputRef, format = _a.format, error = _a.error, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, readOnlyInput = _a.readOnlyInput, onFocus = _a.onFocus, onBlur = _a.onBlur, props = __rest$4(_a, ["variant", "size", "color", "focused", "fullWidth", "disabled", "readOnly", "required", "labelShrink", "className", "style", "value", "label", "labelIcon", "inputRef", "format", "error", "icon", "startAdornment", "endAdornment", "align", "readOnlyInput", "onFocus", "onBlur"]);
     var id = React.useId();
     // Memo --------------------------------------------------------------------------------------------------------------
     var label = React.useMemo(function () {
-        return labelIcon ? (React__default["default"].createElement(React__default["default"].Fragment, null,
-            React__default["default"].createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
-            React__default["default"].createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
+        return labelIcon ? (React.createElement(React.Fragment, null,
+            React.createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
+            React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
     }, [initLabel, labelIcon]);
     var inputLabelProps = React.useMemo(function () {
         if (labelShrink) {
@@ -11269,51 +11351,82 @@ styleInject(css_248z$2);var InputDatePicker = function (_a) {
             };
         }
     }, [labelShrink]);
-    // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(xDatePickers.DesktopDatePicker, __assign$6({}, props, { className: classNames$1(className, 'InputDatePicker', "align-".concat(align)), open: false, value: value, inputFormat: format, disabled: disabled, readOnly: readOnly || readOnlyInput, renderInput: function (_a) {
-            var inputStyle = _a.style, inputInputRef = _a.inputRef, inputInputProps = _a.InputProps, initInputProps = _a.inputProps, inputError = _a.error, inputOnFocus = _a.onFocus, inputOnBlur = _a.onBlur, params = __rest$3(_a, ["style", "inputRef", "InputProps", "inputProps", "error", "onFocus", "onBlur"]);
-            var muiInputProps = __assign$6(__assign$6({}, inputInputProps), { endAdornment: undefined });
-            if (startAdornment || icon || muiInputProps.startAdornment) {
-                muiInputProps.startAdornment = (React__default["default"].createElement(React__default["default"].Fragment, null,
-                    icon && (React__default["default"].createElement(material.InputAdornment, { position: 'start' },
-                        React__default["default"].createElement(FormIcon, { fontSize: 'small' }, icon))),
-                    startAdornment && React__default["default"].createElement(material.InputAdornment, { position: 'start' }, startAdornment),
-                    muiInputProps.startAdornment));
-            }
-            if (endAdornment) {
-                muiInputProps.endAdornment = (React__default["default"].createElement(React__default["default"].Fragment, null, endAdornment && React__default["default"].createElement(material.InputAdornment, { position: 'end' }, endAdornment)));
-            }
-            var inputProps = __assign$6({}, initInputProps);
-            if (readOnly) {
-                inputProps.tabIndex = -1;
-                inputProps.className = classNames$1(inputProps.className, 'Mui-disabled');
-            }
-            return (React__default["default"].createElement(material.TextField, __assign$6({}, params, { style: __assign$6(__assign$6({}, inputStyle), style), variant: variant, size: size, color: color, focused: focused, fullWidth: fullWidth, required: required, name: id, label: label, error: error || inputError, inputRef: function (ref) {
-                    if (inputInputRef) {
-                        if (typeof inputInputRef === 'function') {
-                            inputInputRef(ref);
-                        }
-                    }
+    var slotProps = React.useMemo(function () {
+        var muiInputProps = {
+            endAdornment: undefined,
+        };
+        if (startAdornment || icon || muiInputProps.startAdornment) {
+            muiInputProps.startAdornment = (React.createElement(React.Fragment, null,
+                icon && (React.createElement(material.InputAdornment, { position: 'start' },
+                    React.createElement(FormIcon, { fontSize: 'small' }, icon))),
+                startAdornment && React.createElement(material.InputAdornment, { position: 'start' }, startAdornment),
+                muiInputProps.startAdornment));
+        }
+        if (endAdornment) {
+            muiInputProps.endAdornment = (React.createElement(React.Fragment, null, endAdornment && React.createElement(material.InputAdornment, { position: 'end' }, endAdornment)));
+        }
+        var inputProps = {};
+        if (readOnly) {
+            inputProps.tabIndex = -1;
+            inputProps.className = classNames$1(inputProps.className, 'Mui-disabled');
+        }
+        return {
+            textField: {
+                variant: variant,
+                size: size,
+                color: color,
+                focused: focused,
+                fullWidth: fullWidth,
+                required: required,
+                name: id,
+                label: label,
+                style: style,
+                error: error,
+                InputProps: muiInputProps,
+                inputProps: inputProps,
+                inputRef: function (ref) {
                     if (inputRef) {
                         inputRef.current = ref;
                     }
-                }, InputProps: muiInputProps, InputLabelProps: inputLabelProps, inputProps: inputProps, onFocus: function (e) {
-                    if (inputOnFocus)
-                        inputOnFocus(e);
+                },
+                InputLabelProps: inputLabelProps,
+                onFocus: function (e) {
                     if (onFocus)
                         onFocus(e);
-                }, onBlur: function (e) {
-                    if (inputOnBlur)
-                        inputOnBlur(e);
+                },
+                onBlur: function (e) {
                     if (onBlur)
                         onBlur(e);
-                } })));
-        } })));
+                },
+            },
+        };
+    }, [
+        color,
+        endAdornment,
+        error,
+        focused,
+        fullWidth,
+        icon,
+        id,
+        inputLabelProps,
+        inputRef,
+        label,
+        onBlur,
+        onFocus,
+        readOnly,
+        required,
+        size,
+        startAdornment,
+        style,
+        variant,
+    ]);
+    // Render ----------------------------------------------------------------------------------------------------------
+    return (React.createElement(xDatePickers.DesktopDatePicker, __assign$7({}, props, { className: classNames$1(className, 'InputDatePicker', "align-".concat(align)), open: false, value: value, format: format, disabled: disabled, readOnly: readOnly || readOnlyInput, slotProps: slotProps })));
 };
 InputDatePicker.displayName = 'InputDatePicker';
 InputDatePicker.defaultProps = InputDatePickerDefaultProps;var DEFAULT_VALUE = [null, null];
 var DEFAULT_FORMAT = 'YYYY-MM-DD';
-var FormDateRangePicker = React__default["default"].forwardRef(function (_a, ref) {
+var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
@@ -11413,11 +11526,11 @@ var FormDateRangePicker = React__default["default"].forwardRef(function (_a, ref
         }
         var startInputValue = ((_a = startDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.value) || '';
         var endInputValue = ((_b = endDateTextFieldRef.current) === null || _b === void 0 ? void 0 : _b.value) || '';
-        if (notEmpty(startInputValue) && !dayjs__default["default"](startInputValue, format).isValid()) {
+        if (notEmpty(startInputValue) && !dayjs(startInputValue, format).isValid()) {
             setStartErrorHelperText(true, '형식이 일치하지 않습니다.');
             return false;
         }
-        if (notEmpty(endInputValue) && !dayjs__default["default"](endInputValue, format).isValid()) {
+        if (notEmpty(endInputValue) && !dayjs(endInputValue, format).isValid()) {
             setEndErrorHelperText(true, '형식이 일치하지 않습니다.');
             return false;
         }
@@ -11466,7 +11579,7 @@ var FormDateRangePicker = React__default["default"].forwardRef(function (_a, ref
     }, [initValue])), value = _l[0], setValue = _l[1];
     var calendarCount = useAutoUpdateState$1(initCalendarCount || 2)[0];
     var _m = React.useState(function () {
-        var now = dayjs__default["default"]();
+        var now = dayjs();
         return [now, now.add(1, 'month'), now.add(2, 'month')];
     }), months = _m[0], setMonths = _m[1];
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -11818,10 +11931,10 @@ var FormDateRangePicker = React__default["default"].forwardRef(function (_a, ref
         setData,
     ]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs.AdapterDayjs, adapterLocale: dayjsLocale__default["default"] },
-        React__default["default"].createElement(material.ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
-            React__default["default"].createElement("div", { className: classNames$1(className, 'FormDateRangePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
-                React__default["default"].createElement(PrivateStyledTooltip, { open: open, PopperProps: {
+    return (React.createElement(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs.AdapterDayjs, adapterLocale: 'ko' },
+        React.createElement(material.ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
+            React.createElement("div", { className: classNames$1(className, 'FormDateRangePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
+                React.createElement(PrivateStyledTooltip, { open: open, PopperProps: {
                         modifiers: [
                             {
                                 name: 'offset',
@@ -11830,15 +11943,15 @@ var FormDateRangePicker = React__default["default"].forwardRef(function (_a, ref
                                 },
                             },
                         ],
-                    }, title: React__default["default"].createElement("div", { style: { display: 'flex' } },
-                        React__default["default"].createElement(CustomDatePickerContainer, { ref: containerRef, calendarCount: calendarCount, selectType: selectType, value: value, months: months, disablePast: disablePast, disableFuture: disableFuture, minDate: minDate, maxDate: maxDate, onGetActionButtons: onGetActionButtons, onChange: handleChange, onValueChange: handleValueChange, onMonthsChange: setMonths })) },
-                    React__default["default"].createElement(material.Grid, { container: true, alignItems: 'center' },
-                        React__default["default"].createElement(material.Grid, { item: true, flex: 1 },
-                            React__default["default"].createElement(InputDatePicker, __assign$6({}, inputDatePickerProps, { style: inputStyle, value: value[0], label: startLabel, labelIcon: startLabelIcon, error: error || startError, focused: focused || (open && selectType === 'start'), required: required || requiredStart, readOnly: readOnly || readOnlyStart, readOnlyInput: readOnlyInput, icon: startIcon || icon, startAdornment: startStartAdornment || startAdornment, endAdornment: startEndAdornment || endAdornment, inputRef: startDateTextFieldRef, onChange: function (newValue) { return handleInputDatePickerChange('start', newValue); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); } }))),
-                        React__default["default"].createElement(material.Grid, { item: true, sx: { px: 1 } }, "~"),
-                        React__default["default"].createElement(material.Grid, { item: true, flex: 1 },
-                            React__default["default"].createElement(InputDatePicker, __assign$6({}, inputDatePickerProps, { style: inputStyle, value: value[1], label: endLabel, labelIcon: endLabelIcon, error: error || endError, focused: focused || (open && selectType === 'end'), required: required || requiredEnd, readOnly: readOnly || readOnlyEnd, readOnlyInput: readOnlyInput, icon: endIcon || icon, startAdornment: endStartAdornment || startAdornment, endAdornment: endEndAdornment || endAdornment, inputRef: endDateTextFieldRef, onChange: function (newValue) { return handleInputDatePickerChange('end', newValue); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); } }))))),
-                !formColWithHelperText && helperText && (React__default["default"].createElement(material.FormHelperText, { error: error || startError || endError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, helperText))))));
+                    }, title: React.createElement("div", { style: { display: 'flex' } },
+                        React.createElement(CustomDatePickerContainer, { ref: containerRef, calendarCount: calendarCount, selectType: selectType, value: value, months: months, disablePast: disablePast, disableFuture: disableFuture, minDate: minDate, maxDate: maxDate, onGetActionButtons: onGetActionButtons, onChange: handleChange, onValueChange: handleValueChange, onMonthsChange: setMonths })) },
+                    React.createElement(material.Grid, { container: true, alignItems: 'center' },
+                        React.createElement(material.Grid, { item: true, flex: 1 },
+                            React.createElement(InputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, value: value[0], label: startLabel, labelIcon: startLabelIcon, error: error || startError, focused: focused || (open && selectType === 'start'), required: required || requiredStart, readOnly: readOnly || readOnlyStart, readOnlyInput: readOnlyInput, icon: startIcon || icon, startAdornment: startStartAdornment || startAdornment, endAdornment: startEndAdornment || endAdornment, inputRef: startDateTextFieldRef, onChange: function (newValue) { return handleInputDatePickerChange('start', newValue); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); } }))),
+                        React.createElement(material.Grid, { item: true, sx: { px: 1 } }, "~"),
+                        React.createElement(material.Grid, { item: true, flex: 1 },
+                            React.createElement(InputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, value: value[1], label: endLabel, labelIcon: endLabelIcon, error: error || endError, focused: focused || (open && selectType === 'end'), required: required || requiredEnd, readOnly: readOnly || readOnlyEnd, readOnlyInput: readOnlyInput, icon: endIcon || icon, startAdornment: endStartAdornment || startAdornment, endAdornment: endEndAdornment || endAdornment, inputRef: endDateTextFieldRef, onChange: function (newValue) { return handleInputDatePickerChange('end', newValue); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); } }))))),
+                !formColWithHelperText && helperText && (React.createElement(material.FormHelperText, { error: error || startError || endError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, helperText))))));
 });
 FormDateRangePicker.displayName = 'FormDateRangePicker';
 FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var FormFileDefaultProps = {};var LinkDialogDefaultProps = {};var LinkDialog = function (_a) {
@@ -11869,30 +11982,30 @@ FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var FormFileD
         onClose && onClose();
     }, [onCancel, onClose]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(material.Dialog, { className: 'color-primary', open: !!open, maxWidth: 'sm', fullWidth: true, onClose: function (e, reason) {
+    return (React.createElement(material.Dialog, { className: 'color-primary', open: !!open, maxWidth: 'sm', fullWidth: true, onClose: function (e, reason) {
             if (reason === 'backdropClick') {
                 if (empty(value)) {
                     onClose && onClose();
                 }
             }
         } },
-        React__default["default"].createElement(material.DialogTitle, null, "\uD30C\uC77C \uB9C1\uD06C"),
-        React__default["default"].createElement(material.DialogContent, null,
-            React__default["default"].createElement(material.Box, null,
-                React__default["default"].createElement("div", null, "\uD30C\uC77C\uC758 \uB9C1\uD06C URL\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694."),
-                React__default["default"].createElement(FormUrl, { ref: function (ref) {
+        React.createElement(material.DialogTitle, null, "\uD30C\uC77C \uB9C1\uD06C"),
+        React.createElement(material.DialogContent, null,
+            React.createElement(material.Box, null,
+                React.createElement("div", null, "\uD30C\uC77C\uC758 \uB9C1\uD06C URL\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694."),
+                React.createElement(FormUrl, { ref: function (ref) {
                         if (inputRef.current == null && ref !== null) {
                             ref.focus();
                         }
                         inputRef.current = ref;
                     }, name: 'form-file-link-url', label: '\uB9C1\uD06C URL', value: value, required: true, style: { marginTop: 15 }, onChange: setValue }))),
-        React__default["default"].createElement(material.DialogActions, null,
-            React__default["default"].createElement(material.Button, { variant: 'text', onClick: handleCancel }, "\uCDE8\uC18C"),
-            React__default["default"].createElement(material.Button, { variant: 'text', onClick: handleSubmit }, "\uD655\uC778"))));
+        React.createElement(material.DialogActions, null,
+            React.createElement(material.Button, { variant: 'text', onClick: handleCancel }, "\uCDE8\uC18C"),
+            React.createElement(material.Button, { variant: 'text', onClick: handleSubmit }, "\uD655\uC778"))));
 };
 LinkDialog.displayName = 'LinkDialog';
 LinkDialog.defaultProps = LinkDialogDefaultProps;var css_248z$1 = ".FormFile .control-wrap {\n  display: inline-flex;\n}\n.FormFile .control-wrap .file-name-wrap .file-name {\n  min-width: 350px;\n}\n.FormFile .control-wrap .file-name-wrap .file-name .MuiInputBase-root {\n  padding-right: 7px;\n}\n.FormFile .control-wrap .input-file {\n  display: none;\n}\n.FormFile .control-wrap .form-file-btn {\n  min-width: 0;\n  padding: 0;\n}\n.FormFile .control-wrap .form-file-btn label {\n  cursor: pointer;\n  display: flex;\n  width: 100%;\n  height: 100%;\n  justify-content: center;\n  align-items: center;\n  padding: 0 10px;\n}\n.FormFile .control-wrap .form-file-btn label .FormIcon {\n  margin-right: 5px;\n}\n.FormFile .control-wrap .form-file-btn.hidden-label label .FormIcon {\n  margin-left: 0;\n  margin-right: 0;\n}\n.FormFile .control-wrap .input-file-wrap {\n  display: flex;\n}\n.FormFile .control-wrap .input-file-wrap .input-file-btn .FormIcon {\n  margin-left: -3px;\n}\n.FormFile .control-wrap .input-file-wrap .form-file-btn:first-of-type:not(:last-of-type) {\n  border-right: 0;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.FormFile .control-wrap .input-file-wrap .form-file-btn:last-of-type:not(:first-of-type) {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.FormFile .control-wrap .input-file-wrap .form-file-btn:not(:first-of-type):not(:last-of-type) {\n  border-right: 0;\n  border-radius: 0;\n}\n.FormFile.full-width .control-wrap {\n  display: flex;\n}\n.FormFile.full-width .control-wrap .file-name-wrap {\n  flex: 1;\n}\n.FormFile.variant-standard .file-name-wrap .file-name .MuiInputBase-root {\n  padding-right: 0;\n}\n\n.FormFile:not(.hide-file-name).variant-outlined .form-file-btn label, .FormFile:not(.hide-file-name).variant-filled .form-file-btn label {\n  padding-top: 10px;\n  padding-bottom: 10px;\n}\n.FormFile:not(.hide-file-name).variant-standard .form-file-btn label {\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n.FormFile:not(.hide-file-name).size-small .form-file-btn label {\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n\n.FormFile.hide-file-name:not(.with-label).variant-outlined .form-file-btn {\n  height: 52px;\n}\n.FormFile.hide-file-name:not(.with-label).variant-filled .form-file-btn {\n  height: 52px;\n}\n.FormFile.hide-file-name:not(.with-label).variant-standard .form-file-btn {\n  height: 28px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-filled .form-file-btn {\n  height: 44px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-standard .form-file-btn {\n  height: 26px;\n}\n.FormFile.hide-file-name.with-label.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name.with-label.variant-filled .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name.with-label.variant-standard .form-file-btn {\n  height: 28px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-outlined .form-file-btn {\n  height: 24px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-filled .form-file-btn {\n  height: 31px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-standard .form-file-btn {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-filled .form-file-btn {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-standard .form-file-btn {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-outlined .form-file-btn {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-filled .form-file-btn {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-standard .form-file-btn {\n  height: 26px;\n}";
-styleInject(css_248z$1);var FormFile = React__default["default"].forwardRef(function (_a, ref) {
+styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
@@ -11934,9 +12047,9 @@ styleInject(css_248z$1);var FormFile = React__default["default"].forwardRef(func
     var _j = React.useState({ open: false }), alertDialogProps = _j[0], setAlertDialogProps = _j[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var label = React.useMemo(function () {
-        return labelIcon ? (React__default["default"].createElement(React__default["default"].Fragment, null,
-            React__default["default"].createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
-            React__default["default"].createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
+        return labelIcon ? (React.createElement(React.Fragment, null,
+            React.createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
+            React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
     }, [initLabel, labelIcon]);
     // Function - focus ------------------------------------------------------------------------------------------------
     var focus = React.useCallback(function () {
@@ -12060,18 +12173,18 @@ styleInject(css_248z$1);var FormFile = React__default["default"].forwardRef(func
     var fileSizeCheck = React.useCallback(function (file) {
         if (maxFileSize) {
             return new Promise(function (resolve, reject) {
-                if (typeof file === 'object') {
+                if (file instanceof File) {
                     if (file.size > maxFileSize) {
                         setAlertDialogProps({
                             open: true,
                             color: 'error',
                             title: '파일 사이즈',
-                            content: (React__default["default"].createElement("div", null,
-                                React__default["default"].createElement("div", null,
-                                    React__default["default"].createElement(material.Typography, { color: 'error' },
+                            content: (React.createElement("div", null,
+                                React.createElement("div", null,
+                                    React.createElement(material.Typography, { color: 'error' },
                                         getFileSizeText(maxFileSize),
                                         " \uC774\uD558\uC758 \uD30C\uC77C\uB9CC \uC0AC\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4.")),
-                                React__default["default"].createElement("div", { style: { opacity: 0.7 } },
+                                React.createElement("div", { style: { opacity: 0.7 } },
                                     "(\uC120\uD0DD\uD55C \uD30C\uC77C \uC0AC\uC774\uC988 : ",
                                     getFileSizeText(file.size),
                                     ")"))),
@@ -12136,55 +12249,55 @@ styleInject(css_248z$1);var FormFile = React__default["default"].forwardRef(func
         }
     }, [name, onLink, onValueChangeByUser, setValue]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormFile', "variant-".concat(variant), "size-".concat(size), !!initLabel && 'with-label', !!fullWidth && 'full-width', !!hideUrl && 'hide-file-name', !!hideLink && 'hide-link', !!hideUpload && 'hide-upload', !!hideRemove && 'hide-remove', notEmpty(value) && 'with-value'), labelIcon: hideUrl ? labelIcon : undefined, label: hideUrl ? initLabel : undefined, error: error, required: required, fullWidth: fullWidth, hidden: hidden, helperText: React__default["default"].createElement("div", null,
+    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormFile', "variant-".concat(variant), "size-".concat(size), !!initLabel && 'with-label', !!fullWidth && 'full-width', !!hideUrl && 'hide-file-name', !!hideLink && 'hide-link', !!hideUpload && 'hide-upload', !!hideRemove && 'hide-remove', notEmpty(value) && 'with-value'), labelIcon: hideUrl ? labelIcon : undefined, label: hideUrl ? initLabel : undefined, error: error, required: required, fullWidth: fullWidth, hidden: hidden, helperText: React.createElement("div", null,
             preview,
-            React__default["default"].createElement("div", null, helperText)), hideLabel: !hideUrl, helperTextProps: {
+            React.createElement("div", null, helperText)), hideLabel: !hideUrl, helperTextProps: {
             style: {
                 marginLeft: !hideUrl && variant !== 'standard' ? 14 : undefined,
                 marginTop: !hideUrl && variant === 'standard' ? 19 : undefined,
             },
-        }, style: { width: fullWidth ? '100%' : undefined }, control: React__default["default"].createElement("div", { className: 'control-wrap' },
-            !hideUrl && (React__default["default"].createElement("div", { className: 'file-name-wrap' },
-                React__default["default"].createElement(material.TextField, { inputRef: textFieldRef, className: 'file-name', variant: variant, label: label, size: size, required: required, value: value || '', focused: focused, disabled: disabled, fullWidth: true, error: error, InputLabelProps: labelShrink ? { shrink: labelShrink } : undefined, inputProps: { readOnly: true }, InputProps: {
-                        endAdornment: (React__default["default"].createElement(material.InputAdornment, { position: 'end' },
-                            React__default["default"].createElement("div", { className: 'input-file-wrap' },
-                                !hideUpload && (React__default["default"].createElement(React__default["default"].Fragment, null,
-                                    React__default["default"].createElement(material.Button, { variant: 'text', tabIndex: uploadTabIndex == null ? -1 : uploadTabIndex, className: classNames$1('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, ref: fileUploadBtnRef },
-                                        React__default["default"].createElement("label", { htmlFor: id },
-                                            React__default["default"].createElement(FormIcon, null, "upload"),
+        }, style: { width: fullWidth ? '100%' : undefined }, control: React.createElement("div", { className: 'control-wrap' },
+            !hideUrl && (React.createElement("div", { className: 'file-name-wrap' },
+                React.createElement(material.TextField, { inputRef: textFieldRef, className: 'file-name', variant: variant, label: label, size: size, required: required, value: value || '', focused: focused, disabled: disabled, fullWidth: true, error: error, InputLabelProps: labelShrink ? { shrink: labelShrink } : undefined, inputProps: { readOnly: true }, InputProps: {
+                        endAdornment: (React.createElement(material.InputAdornment, { position: 'end' },
+                            React.createElement("div", { className: 'input-file-wrap' },
+                                !hideUpload && (React.createElement(React.Fragment, null,
+                                    React.createElement(material.Button, { variant: 'text', tabIndex: uploadTabIndex == null ? -1 : uploadTabIndex, className: classNames$1('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, ref: fileUploadBtnRef },
+                                        React.createElement("label", { htmlFor: id },
+                                            React.createElement(FormIcon, null, "upload"),
                                             !hideUploadLabel && (uploadLabel || '파일 업로드'))),
-                                    React__default["default"].createElement("input", { type: 'file', accept: accept, id: id, value: fileValue, className: 'input-file', onChange: handleFileChange }))),
-                                !hideLink && (React__default["default"].createElement(material.Button, { variant: 'text', tabIndex: linkTabIndex == null ? -1 : linkTabIndex, className: classNames$1('link-btn  form-file-btn', !!hideLinkLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, ref: linkBtnRef, onClick: handleLinkClick },
-                                    React__default["default"].createElement("label", null,
-                                        React__default["default"].createElement(FormIcon, null, "link"),
+                                    React.createElement("input", { type: 'file', accept: accept, id: id, value: fileValue, className: 'input-file', onChange: handleFileChange }))),
+                                !hideLink && (React.createElement(material.Button, { variant: 'text', tabIndex: linkTabIndex == null ? -1 : linkTabIndex, className: classNames$1('link-btn  form-file-btn', !!hideLinkLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, ref: linkBtnRef, onClick: handleLinkClick },
+                                    React.createElement("label", null,
+                                        React.createElement(FormIcon, null, "link"),
                                         !hideLinkLabel && (linkLabel || '링크')))),
-                                !hideRemove && notEmpty(value) && (React__default["default"].createElement(material.Button, { variant: 'text', tabIndex: removeTabIndex == null ? -1 : removeTabIndex, className: classNames$1('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, onClick: handleRemoveClick },
-                                    React__default["default"].createElement("label", null,
-                                        React__default["default"].createElement(FormIcon, null, "Close"),
+                                !hideRemove && notEmpty(value) && (React.createElement(material.Button, { variant: 'text', tabIndex: removeTabIndex == null ? -1 : removeTabIndex, className: classNames$1('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, onClick: handleRemoveClick },
+                                    React.createElement("label", null,
+                                        React.createElement(FormIcon, null, "Close"),
                                         !hideRemoveLabel && (removeLabel || '삭제'))))))),
                     }, placeholder: '\uD30C\uC77C\uC744 \uC120\uD0DD\uD558\uC138\uC694' }))),
-            !!hideUrl && (React__default["default"].createElement("div", { className: 'input-file-wrap' },
-                !hideUpload && (React__default["default"].createElement(React__default["default"].Fragment, null,
-                    React__default["default"].createElement(material.Button, { variant: 'outlined', tabIndex: uploadTabIndex, className: classNames$1('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label'), color: error ? 'error' : color, ref: fileUploadBtnRef, disabled: disabled },
-                        React__default["default"].createElement("label", { htmlFor: id },
-                            React__default["default"].createElement(FormIcon, null, "upload"),
+            !!hideUrl && (React.createElement("div", { className: 'input-file-wrap' },
+                !hideUpload && (React.createElement(React.Fragment, null,
+                    React.createElement(material.Button, { variant: 'outlined', tabIndex: uploadTabIndex, className: classNames$1('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label'), color: error ? 'error' : color, ref: fileUploadBtnRef, disabled: disabled },
+                        React.createElement("label", { htmlFor: id },
+                            React.createElement(FormIcon, null, "upload"),
                             !hideUploadLabel && (uploadLabel || '파일 업로드'))),
-                    React__default["default"].createElement("input", { type: 'file', accept: accept, id: id, value: fileValue, className: 'input-file', onChange: handleFileChange }))),
-                !hideLink && (React__default["default"].createElement(material.Button, { variant: 'outlined', tabIndex: linkTabIndex, className: classNames$1('link-btn form-file-btn', !!hideLinkLabel && 'hidden-label'), color: error ? 'error' : color, onClick: handleLinkClick, disabled: disabled, ref: linkBtnRef },
-                    React__default["default"].createElement("label", null,
-                        React__default["default"].createElement(FormIcon, null, "link"),
+                    React.createElement("input", { type: 'file', accept: accept, id: id, value: fileValue, className: 'input-file', onChange: handleFileChange }))),
+                !hideLink && (React.createElement(material.Button, { variant: 'outlined', tabIndex: linkTabIndex, className: classNames$1('link-btn form-file-btn', !!hideLinkLabel && 'hidden-label'), color: error ? 'error' : color, onClick: handleLinkClick, disabled: disabled, ref: linkBtnRef },
+                    React.createElement("label", null,
+                        React.createElement(FormIcon, null, "link"),
                         !hideLinkLabel && (linkLabel || '링크')))),
-                !hideRemove && notEmpty(value) && (React__default["default"].createElement(material.Button, { variant: 'outlined', tabIndex: removeTabIndex, className: classNames$1('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, disabled: disabled, onClick: handleRemoveClick },
-                    React__default["default"].createElement("label", null,
-                        React__default["default"].createElement(FormIcon, null, "Close"),
+                !hideRemove && notEmpty(value) && (React.createElement(material.Button, { variant: 'outlined', tabIndex: removeTabIndex, className: classNames$1('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, disabled: disabled, onClick: handleRemoveClick },
+                    React.createElement("label", null,
+                        React.createElement(FormIcon, null, "Close"),
                         !hideRemoveLabel && (removeLabel || '삭제')))))),
-            React__default["default"].createElement(PrivateAlertDialog, __assign$6({}, alertDialogProps, { onClose: function () { return setAlertDialogProps({ open: false }); } })),
-            React__default["default"].createElement(LinkDialog, { open: isOpenLinkDialog, onConfirm: handleLinkDialogConfirm, onClose: function () { return setIsOpenLinkDialog(false); } })) }));
+            React.createElement(PrivateAlertDialog, __assign$7({}, alertDialogProps, { onClose: function () { return setAlertDialogProps({ open: false }); } })),
+            React.createElement(LinkDialog, { open: isOpenLinkDialog, onConfirm: handleLinkDialogConfirm, onClose: function () { return setIsOpenLinkDialog(false); } })) }));
 });
 FormFile.displayName = 'FormFile';
-FormFile.defaultProps = FormFileDefaultProps;var FormImageFileDefaultProps = __assign$6(__assign$6({}, FormFileDefaultProps), { accept: '.jpg,.jpeg,.png' });var css_248z = ".FormImageFile .preview-img {\n  max-width: 100%;\n}\n.FormImageFile:not(.hide-file-name):not(.variant-standard) .preview-img {\n  padding-right: 14px;\n}";
-styleInject(css_248z);var FormImageFile = React__default["default"].forwardRef(function (_a, ref) {
-    var className = _a.className, imageSize = _a.imageSize, preview = _a.preview, previewMaxHeight = _a.previewMaxHeight, initValue = _a.value, onChange = _a.onChange, onFile = _a.onFile, onLink = _a.onLink, props = __rest$3(_a, ["className", "imageSize", "preview", "previewMaxHeight", "value", "onChange", "onFile", "onLink"]);
+FormFile.defaultProps = FormFileDefaultProps;var FormImageFileDefaultProps = __assign$7(__assign$7({}, FormFileDefaultProps), { accept: '.jpg,.jpeg,.png' });var css_248z = ".FormImageFile .preview-img {\n  max-width: 100%;\n}\n.FormImageFile:not(.hide-file-name):not(.variant-standard) .preview-img {\n  padding-right: 14px;\n}";
+styleInject(css_248z);var FormImageFile = React.forwardRef(function (_a, ref) {
+    var className = _a.className, imageSize = _a.imageSize, preview = _a.preview, previewMaxHeight = _a.previewMaxHeight, initValue = _a.value, onChange = _a.onChange, onFile = _a.onFile, onLink = _a.onLink, props = __rest$4(_a, ["className", "imageSize", "preview", "previewMaxHeight", "value", "onChange", "onFile", "onLink"]);
     var _b = useAutoUpdateState$1(initValue), value = _b[0], setValue = _b[1];
     var _c = React.useState({
         open: false,
@@ -12228,12 +12341,12 @@ styleInject(css_248z);var FormImageFile = React__default["default"].forwardRef(f
                             open: true,
                             color: 'error',
                             title: '이미지 사이즈',
-                            content: (React__default["default"].createElement(React__default["default"].Fragment, null,
-                                React__default["default"].createElement("div", null,
-                                    React__default["default"].createElement(material.Typography, { color: 'error' },
+                            content: (React.createElement(React.Fragment, null,
+                                React.createElement("div", null,
+                                    React.createElement(material.Typography, { color: 'error' },
                                         sizeText,
                                         " \uC0AC\uC774\uC988\uC758 \uC774\uBBF8\uC9C0\uB9CC \uC0AC\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4.")),
-                                React__default["default"].createElement("div", { style: { opacity: 0.7 } },
+                                React.createElement("div", { style: { opacity: 0.7 } },
                                     "(\uC120\uD0DD\uD55C \uC774\uBBF8\uC9C0 \uC0AC\uC774\uC988 : ",
                                     width,
                                     "*",
@@ -12247,10 +12360,12 @@ styleInject(css_248z);var FormImageFile = React__default["default"].forwardRef(f
                     setAlertDialogProps({ open: true, title: '이미지 사이즈', content: '이미지를 불러올 수 없습니다.' });
                     reject();
                 };
-                if (typeof file === 'object')
+                if (file instanceof File) {
                     img.src = urlKit.createObjectURL(file);
-                else
+                }
+                else {
                     img.src = file;
+                }
             });
         }
         return Promise.resolve();
@@ -12301,32 +12416,32 @@ styleInject(css_248z);var FormImageFile = React__default["default"].forwardRef(f
     // Memo --------------------------------------------------------------------------------------------------------------
     var previewNode = React.useMemo(function () {
         if (preview && value) {
-            return (React__default["default"].createElement("a", { href: value, target: '_blank' },
-                React__default["default"].createElement(material.Tooltip, { title: React__default["default"].createElement("div", { style: { paddingTop: 3, paddingBottom: 3 } },
-                        React__default["default"].createElement("img", { src: value, style: { maxWidth: '100%', verticalAlign: 'middle' } })) },
-                    React__default["default"].createElement("img", { className: 'preview-img', src: value, style: { maxHeight: previewMaxHeight || undefined }, alt: '' }))));
+            return (React.createElement("a", { href: value, target: '_blank' },
+                React.createElement(material.Tooltip, { title: React.createElement("div", { style: { paddingTop: 3, paddingBottom: 3 } },
+                        React.createElement("img", { src: value, style: { maxWidth: '100%', verticalAlign: 'middle' } })) },
+                    React.createElement("img", { className: 'preview-img', src: value, style: { maxHeight: previewMaxHeight || undefined }, alt: '' }))));
         }
     }, [preview, previewMaxHeight, value]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(React__default["default"].Fragment, null,
-        React__default["default"].createElement(FormFile, __assign$6({ ref: ref, className: classNames$1(className, 'FormImageFile'), value: value, preview: previewNode, onChange: handleChange, onFile: handleFile, onLink: handleLink }, props)),
-        React__default["default"].createElement(PrivateAlertDialog, __assign$6({}, alertDialogProps, { onClose: function () { return setAlertDialogProps({ open: false }); } }))));
+    return (React.createElement(React.Fragment, null,
+        React.createElement(FormFile, __assign$7({ ref: ref, className: classNames$1(className, 'FormImageFile'), value: value, preview: previewNode, onChange: handleChange, onFile: handleFile, onLink: handleLink }, props)),
+        React.createElement(PrivateAlertDialog, __assign$7({}, alertDialogProps, { onClose: function () { return setAlertDialogProps({ open: false }); } }))));
 });
 FormImageFile.displayName = 'FormImageFile';
 FormImageFile.defaultProps = FormImageFileDefaultProps;var SearchDefaultProps = {
     color: 'primary',
 };var SearchGroupRowDefaultProps = {};var SearchGroupRow = function (_a) {
-    var children = _a.children, props = __rest$3(_a, ["children"]);
-    return (React__default["default"].createElement(FormRow, __assign$6({}, props),
-        React__default["default"].createElement(FormCol, null,
-            React__default["default"].createElement(material.Grid, { container: true, spacing: 1, alignItems: 'center' }, children))));
+    var children = _a.children, props = __rest$4(_a, ["children"]);
+    return (React.createElement(FormRow, __assign$7({}, props),
+        React.createElement(FormCol, null,
+            React.createElement(material.Grid, { container: true, spacing: 1, alignItems: 'center' }, children))));
 };
 SearchGroupRow.displayName = 'SearchGroupRow';
-SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React__default["default"].forwardRef(function (_a, ref) {
+SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React.forwardRef(function (_a, ref) {
     // Ref -------------------------------------------------------------------------------------------------------------
     var children = _a.children, className = _a.className, style = _a.style, sx = _a.sx, 
     //----------------------------------------------------------------------------------------------------------------
-    color = _a.color, spacing = _a.spacing, focused = _a.focused, labelShrink = _a.labelShrink, autoSubmit = _a.autoSubmit, otherProps = __rest$3(_a, ["children", "className", "style", "sx", "color", "spacing", "focused", "labelShrink", "autoSubmit"]);
+    color = _a.color, spacing = _a.spacing, focused = _a.focused, labelShrink = _a.labelShrink, autoSubmit = _a.autoSubmit, otherProps = __rest$4(_a, ["children", "className", "style", "sx", "color", "spacing", "focused", "labelShrink", "autoSubmit"]);
     var formRef = React.useRef();
     // Effect ----------------------------------------------------------------------------------------------------------
     React.useEffect(function () {
@@ -12340,8 +12455,8 @@ SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React__def
     var renderChildren = React.useMemo(function () {
         var rowItems = [];
         var basicRowItems = [];
-        React__default["default"].Children.forEach(children, function (child) {
-            if (React__default["default"].isValidElement(child)) {
+        React.Children.forEach(children, function (child) {
+            if (React.isValidElement(child)) {
                 if (child.type.toString() === SearchGroupRow.toString()) {
                     rowItems.push(child);
                 }
@@ -12351,14 +12466,14 @@ SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React__def
             }
         });
         if (basicRowItems.length > 0) {
-            return __spreadArray([React__default["default"].createElement(SearchGroupRow, { key: '$basicRow$' }, basicRowItems)], rowItems, true);
+            return __spreadArray([React.createElement(SearchGroupRow, { key: '$basicRow$' }, basicRowItems)], rowItems, true);
         }
         else {
             return rowItems;
         }
     }, [children]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormContextProvider, { value: {
+    return (React.createElement(FormContextProvider, { value: {
             id: 'search',
             variant: 'outlined',
             size: 'small',
@@ -12382,8 +12497,8 @@ SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React__def
                 }
             },
         } },
-        React__default["default"].createElement(material.Paper, { variant: 'outlined', className: className, sx: __assign$6({ p: 1.5 }, sx), style: style },
-            React__default["default"].createElement(Form, __assign$6({ ref: function (commands) {
+        React.createElement(material.Paper, { variant: 'outlined', className: className, sx: __assign$7({ p: 1.5 }, sx), style: style },
+            React.createElement(Form, __assign$7({ ref: function (commands) {
                     if (ref) {
                         if (typeof ref === 'function') {
                             ref(commands);
@@ -12394,14 +12509,14 @@ SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React__def
                     }
                     formRef.current = commands || undefined;
                 }, className: 'Search', variant: 'outlined', size: 'small', color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: false }, otherProps),
-                React__default["default"].createElement(FormBody, null, renderChildren)))));
+                React.createElement(FormBody, null, renderChildren)))));
 });
 Search.displayName = 'Search';
 Search.defaultProps = SearchDefaultProps;var SearchGroupDefaultProps = {
     spacing: 1.5,
 };var isReactFragment = function (child) {
     try {
-        return child.type.toString() === React__default["default"].Fragment.toString();
+        return child.type.toString() === React.Fragment.toString();
     }
     catch (e) {
         return false;
@@ -12413,24 +12528,24 @@ var removeReactFragment = function (el) {
         if (children) {
             if (Array.isArray(children)) {
                 return children.map(function (child) {
-                    if (React__default["default"].isValidElement(child)) {
+                    if (React.isValidElement(child)) {
                         return removeReactFragment(child);
                     }
                     else {
-                        return (React__default["default"].createElement(material.Grid, { item: true, style: { display: child === FormHidden ? 'none' : undefined } }, child));
+                        return React.createElement(material.Grid, { item: true }, child);
                     }
                 });
             }
             else {
-                return (React__default["default"].createElement(material.Grid, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
+                return (React.createElement(material.Grid, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
             }
         }
         else {
-            return (React__default["default"].createElement(material.Grid, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
+            return (React.createElement(material.Grid, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
         }
     }
     else {
-        return (React__default["default"].createElement(material.Grid, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
+        return (React.createElement(material.Grid, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
     }
 };
 var SearchGroup = function (_a) {
@@ -12450,9 +12565,9 @@ var SearchGroup = function (_a) {
         }
     }, [align]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(material.Grid, { item: true, className: classNames$1(className, 'SearchGroup'), style: { flex: max ? 1 : undefined, display: hidden ? 'none' : undefined } },
-        React__default["default"].createElement(material.Grid, { container: true, wrap: 'wrap', spacing: spacing, justifyContent: justifyContent, alignItems: 'start', style: style, sx: sx }, React__default["default"].Children.map(children, function (child) {
-            if (React__default["default"].isValidElement(child)) {
+    return (React.createElement(material.Grid, { item: true, className: classNames$1(className, 'SearchGroup'), style: { flex: max ? 1 : undefined, display: hidden ? 'none' : undefined } },
+        React.createElement(material.Grid, { container: true, wrap: 'wrap', spacing: spacing, justifyContent: justifyContent, alignItems: 'start', style: style, sx: sx }, React.Children.map(children, function (child) {
+            if (React.isValidElement(child)) {
                 return removeReactFragment(child);
             }
             else {
@@ -12462,14 +12577,14 @@ var SearchGroup = function (_a) {
 };
 SearchGroup.defaultProps = SearchGroupDefaultProps;var SearchButtonDefaultProps = {};var SearchButton = function (_a) {
     // Memo --------------------------------------------------------------------------------------------------------------
-    var children = _a.children, className = _a.className, initSx = _a.sx, startIcon = _a.startIcon, endIcon = _a.endIcon, icon = _a.icon, props = __rest$3(_a, ["children", "className", "sx", "startIcon", "endIcon", "icon"]);
-    var sx = React.useMemo(function () { return (__assign$6({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7 }, initSx)); }, [endIcon, icon, initSx, startIcon]);
+    var children = _a.children, className = _a.className, initSx = _a.sx, startIcon = _a.startIcon, endIcon = _a.endIcon, icon = _a.icon, props = __rest$4(_a, ["children", "className", "sx", "startIcon", "endIcon", "icon"]);
+    var sx = React.useMemo(function () { return (__assign$7({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7 }, initSx)); }, [endIcon, icon, initSx, startIcon]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(FormButton, __assign$6({ className: classNames$1(className, 'SearchButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, endIcon: endIcon, icon: icon }, props), children));
+    return (React.createElement(FormButton, __assign$7({ className: classNames$1(className, 'SearchButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, endIcon: endIcon, icon: icon }, props), children));
 };
 SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefaultProps = {};var SearchMenuButton = function (_a) {
     // ID ----------------------------------------------------------------------------------------------------------------
-    var children = _a.children, className = _a.className, initSx = _a.sx, menuList = _a.menuList, startIcon = _a.startIcon, icon = _a.icon, placement = _a.placement, props = __rest$3(_a, ["children", "className", "sx", "menuList", "startIcon", "icon", "placement"]);
+    var children = _a.children, className = _a.className, initSx = _a.sx, menuList = _a.menuList, startIcon = _a.startIcon, icon = _a.icon, placement = _a.placement, props = __rest$4(_a, ["children", "className", "sx", "menuList", "startIcon", "icon", "placement"]);
     var buttonId = React.useId();
     var menuId = React.useId();
     // State -------------------------------------------------------------------------------------------------------------
@@ -12486,7 +12601,7 @@ SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefault
     }, []);
     // Memo --------------------------------------------------------------------------------------------------------------
     var open = React.useMemo(function () { return !!anchorEl; }, [anchorEl]);
-    var sx = React.useMemo(function () { return (__assign$6({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7 }, initSx)); }, [endIcon, icon, initSx, startIcon]);
+    var sx = React.useMemo(function () { return (__assign$7({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7 }, initSx)); }, [endIcon, icon, initSx, startIcon]);
     var anchorOrigin = React.useMemo(function () {
         switch (placement || 'bottom') {
             case 'bottom':
@@ -12544,10 +12659,10 @@ SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefault
         }
     }, [placement]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default["default"].createElement(React__default["default"].Fragment, null,
-        React__default["default"].createElement(FormButton, __assign$6({ className: classNames$1(className, 'SearchMenuButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, icon: icon }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, onClick: handleClick }), children),
-        React__default["default"].createElement(material.Menu, { id: menuId, "aria-labelledby": buttonId, anchorEl: anchorEl, open: open, onClose: handleClose, onClick: handleClose, anchorOrigin: anchorOrigin, transformOrigin: transformOrigin }, menuList)));
+    return (React.createElement(React.Fragment, null,
+        React.createElement(FormButton, __assign$7({ className: classNames$1(className, 'SearchMenuButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, icon: icon }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, onClick: handleClick }), children),
+        React.createElement(material.Menu, { id: menuId, "aria-labelledby": buttonId, anchorEl: anchorEl, open: open, onClose: handleClose, onClick: handleClose, anchorOrigin: anchorOrigin, transformOrigin: transformOrigin }, menuList)));
 };
-SearchMenuButton.defaultProps = SearchMenuButtonDefaultProps;dayjs__default["default"].extend(dayjsIsSameOrAfter__default["default"]);
-dayjs__default["default"].extend(dayjsIsSameOrBefore__default["default"]);
-dayjs__default["default"].extend(dayjsIsBetween__default["default"]);exports.Form=Form;exports.FormAutocomplete=FormAutocomplete;exports.FormAutocompleteDefaultProps=FormAutocompleteDefaultProps;exports.FormBlock=FormBlock;exports.FormBlockDefaultProps=FormBlockDefaultProps;exports.FormBody=FormBody;exports.FormBodyDefaultProps=FormBodyDefaultProps;exports.FormButton=FormButton;exports.FormButtonDefaultProps=FormButtonDefaultProps;exports.FormCheckbox=FormCheckbox;exports.FormCheckboxDefaultProps=FormCheckboxDefaultProps;exports.FormCol=FormCol;exports.FormColDefaultProps=FormColDefaultProps;exports.FormCompanyNo=FormCompanyNo;exports.FormCompanyNoDefaultProps=FormCompanyNoDefaultProps;exports.FormContext=FormContext;exports.FormContextDefaultValue=FormContextDefaultValue;exports.FormContextProvider=FormContextProvider;exports.FormDatePicker=FormDatePicker;exports.FormDatePickerDefaultProps=FormDatePickerDefaultProps;exports.FormDateRangePicker=FormDateRangePicker;exports.FormDateRangePickerDefaultProps=FormDateRangePickerDefaultProps;exports.FormDateTimePicker=FormDateTimePicker;exports.FormDateTimePickerDefaultProps=FormDateTimePickerDefaultProps;exports.FormDefaultProps=FormDefaultProps;exports.FormDivider=FormDivider;exports.FormDividerDefaultProps=FormDividerDefaultProps;exports.FormEmail=FormEmail;exports.FormEmailDefaultProps=FormEmailDefaultProps;exports.FormFile=FormFile;exports.FormFileDefaultProps=FormFileDefaultProps;exports.FormFooter=FormFooter;exports.FormFooterDefaultProps=FormFooterDefaultProps;exports.FormHidden=FormHidden;exports.FormHiddenDefaultProps=FormHiddenDefaultProps;exports.FormIcon=FormIcon;exports.FormIconDefaultProps=FormIconDefaultProps;exports.FormImageFile=FormImageFile;exports.FormImageFileDefaultProps=FormImageFileDefaultProps;exports.FormLabel=FormLabel;exports.FormLabelDefaultProps=FormLabelDefaultProps;exports.FormMobile=FormMobile;exports.FormMobileDefaultProps=FormMobileDefaultProps;exports.FormNumber=FormNumber;exports.FormNumberDefaultProps=FormNumberDefaultProps;exports.FormPassword=FormPassword;exports.FormPasswordDefaultProps=FormPasswordDefaultProps;exports.FormPersonalNo=FormPersonalNo;exports.FormPersonalNoDefaultProps=FormPersonalNoDefaultProps;exports.FormRadioGroup=FormRadioGroup;exports.FormRadioGroupDefaultProps=FormRadioGroupDefaultProps;exports.FormRating=FormRating;exports.FormRatingDefaultProps=FormRatingDefaultProps;exports.FormRow=FormRow;exports.FormRowDefaultProps=FormRowDefaultProps;exports.FormSearch=FormSearch;exports.FormSearchDefaultProps=FormSearchDefaultProps;exports.FormSelect=FormSelect;exports.FormSelectDefaultProps=FormSelectDefaultProps;exports.FormTag=FormTag;exports.FormTagDefaultProps=FormTagDefaultProps;exports.FormTel=FormTel;exports.FormTelDefaultProps=FormTelDefaultProps;exports.FormText=FormText;exports.FormTextDefaultProps=FormTextDefaultProps;exports.FormTextEditor=FormTextEditor;exports.FormTextEditorDefaultProps=FormTextEditorDefaultProps;exports.FormTextField=FormTextField;exports.FormTextFieldDefaultProps=FormTextFieldDefaultProps;exports.FormTextarea=FormTextarea;exports.FormTextareaDefaultProps=FormTextareaDefaultProps;exports.FormTimePicker=FormTimePicker;exports.FormTimePickerDefaultProps=FormTimePickerDefaultProps;exports.FormToggleButtonGroup=FormToggleButtonGroup;exports.FormToggleButtonGroupDefaultProps=FormToggleButtonGroupDefaultProps;exports.FormUrl=FormUrl;exports.FormUrlDefaultProps=FormUrlDefaultProps;exports.Search=Search;exports.SearchButton=SearchButton;exports.SearchButtonDefaultProps=SearchButtonDefaultProps;exports.SearchDefaultProps=SearchDefaultProps;exports.SearchGroup=SearchGroup;exports.SearchGroupDefaultProps=SearchGroupDefaultProps;exports.SearchGroupRow=SearchGroupRow;exports.SearchGroupRowDefaultProps=SearchGroupRowDefaultProps;exports.SearchMenuButton=SearchMenuButton;exports.SearchMenuButtonDefaultProps=SearchMenuButtonDefaultProps;exports.useFormState=useFormState;//# sourceMappingURL=index.js.map
+SearchMenuButton.defaultProps = SearchMenuButtonDefaultProps;dayjs.extend(dayjsIsSameOrAfter);
+dayjs.extend(dayjsIsSameOrBefore);
+dayjs.extend(dayjsIsBetween);exports.Form=Form;exports.FormAutocomplete=FormAutocomplete;exports.FormAutocompleteDefaultProps=FormAutocompleteDefaultProps;exports.FormBlock=FormBlock;exports.FormBlockDefaultProps=FormBlockDefaultProps;exports.FormBody=FormBody;exports.FormBodyDefaultProps=FormBodyDefaultProps;exports.FormButton=FormButton;exports.FormButtonDefaultProps=FormButtonDefaultProps;exports.FormCheckbox=FormCheckbox;exports.FormCheckboxDefaultProps=FormCheckboxDefaultProps;exports.FormCol=FormCol;exports.FormColDefaultProps=FormColDefaultProps;exports.FormCompanyNo=FormCompanyNo;exports.FormCompanyNoDefaultProps=FormCompanyNoDefaultProps;exports.FormContext=FormContext;exports.FormContextDefaultValue=FormContextDefaultValue;exports.FormContextProvider=FormContextProvider;exports.FormDatePicker=FormDatePicker;exports.FormDatePickerDefaultProps=FormDatePickerDefaultProps;exports.FormDateRangePicker=FormDateRangePicker;exports.FormDateRangePickerDefaultProps=FormDateRangePickerDefaultProps;exports.FormDateTimePicker=FormDateTimePicker;exports.FormDateTimePickerDefaultProps=FormDateTimePickerDefaultProps;exports.FormDefaultProps=FormDefaultProps;exports.FormDivider=FormDivider;exports.FormDividerDefaultProps=FormDividerDefaultProps;exports.FormEmail=FormEmail;exports.FormEmailDefaultProps=FormEmailDefaultProps;exports.FormFile=FormFile;exports.FormFileDefaultProps=FormFileDefaultProps;exports.FormFooter=FormFooter;exports.FormFooterDefaultProps=FormFooterDefaultProps;exports.FormHidden=FormHidden;exports.FormHiddenDefaultProps=FormHiddenDefaultProps;exports.FormIcon=FormIcon;exports.FormIconDefaultProps=FormIconDefaultProps;exports.FormImageFile=FormImageFile;exports.FormImageFileDefaultProps=FormImageFileDefaultProps;exports.FormLabel=FormLabel;exports.FormLabelDefaultProps=FormLabelDefaultProps;exports.FormMobile=FormMobile;exports.FormMobileDefaultProps=FormMobileDefaultProps;exports.FormNumber=FormNumber;exports.FormNumberDefaultProps=FormNumberDefaultProps;exports.FormPassword=FormPassword;exports.FormPasswordDefaultProps=FormPasswordDefaultProps;exports.FormPersonalNo=FormPersonalNo;exports.FormPersonalNoDefaultProps=FormPersonalNoDefaultProps;exports.FormRadioGroup=FormRadioGroup;exports.FormRadioGroupDefaultProps=FormRadioGroupDefaultProps;exports.FormRating=FormRating;exports.FormRatingDefaultProps=FormRatingDefaultProps;exports.FormRow=FormRow;exports.FormRowDefaultProps=FormRowDefaultProps;exports.FormSearch=FormSearch;exports.FormSearchDefaultProps=FormSearchDefaultProps;exports.FormSelect=FormSelect;exports.FormSelectDefaultProps=FormSelectDefaultProps;exports.FormTag=FormTag;exports.FormTagDefaultProps=FormTagDefaultProps;exports.FormTel=FormTel;exports.FormTelDefaultProps=FormTelDefaultProps;exports.FormText=FormText;exports.FormTextDefaultProps=FormTextDefaultProps;exports.FormTextEditor=FormTextEditor;exports.FormTextEditorDefaultProps=FormTextEditorDefaultProps;exports.FormTextField=FormTextField;exports.FormTextFieldDefaultProps=FormTextFieldDefaultProps;exports.FormTextarea=FormTextarea;exports.FormTextareaDefaultProps=FormTextareaDefaultProps;exports.FormTimePicker=FormTimePicker;exports.FormTimePickerDefaultProps=FormTimePickerDefaultProps;exports.FormToggleButtonGroup=FormToggleButtonGroup;exports.FormToggleButtonGroupDefaultProps=FormToggleButtonGroupDefaultProps;exports.FormUrl=FormUrl;exports.FormUrlDefaultProps=FormUrlDefaultProps;exports.Search=Search;exports.SearchButton=SearchButton;exports.SearchButtonDefaultProps=SearchButtonDefaultProps;exports.SearchDefaultProps=SearchDefaultProps;exports.SearchGroup=SearchGroup;exports.SearchGroupDefaultProps=SearchGroupDefaultProps;exports.SearchGroupRow=SearchGroupRow;exports.SearchGroupRowDefaultProps=SearchGroupRowDefaultProps;exports.SearchMenuButton=SearchMenuButton;exports.SearchMenuButtonDefaultProps=SearchMenuButtonDefaultProps;exports.useFormState=useFormState;//# sourceMappingURL=index.js.map

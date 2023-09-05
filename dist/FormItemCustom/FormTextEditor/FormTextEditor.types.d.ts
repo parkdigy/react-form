@@ -7,4 +7,4 @@ export interface FormTextEditorProps extends CommonSxProps, Omit<FormValueItemPr
     onImageUpload?(blob: Blob, success: (url: string) => void, failure: (err: string) => void, progress?: (percent: number) => void): void;
 }
 export declare const FormTextEditorDefaultProps: Pick<FormTextEditorProps, 'menubar' | 'height'>;
-export declare type FormTextEditorCommands = FormValueItemCommands;
+export type FormTextEditorCommands = FormValueItemCommands;

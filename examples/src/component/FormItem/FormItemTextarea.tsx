@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, FormButton, FormRow, FormCol, FormTextarea, FormValueMap, FormBody, FormFooter } from '@pdg/react-form';
+import { Form, FormButton, FormRow, FormCol, FormTextarea, FormValueMap, FormBody, FormFooter } from '../../../../src';
 
 const FormItemTextarea = () => {
   const [value] = useState(

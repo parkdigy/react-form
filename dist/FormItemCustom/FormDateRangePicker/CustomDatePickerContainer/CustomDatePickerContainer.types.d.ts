@@ -1,7 +1,7 @@
 import { CustomDatePickerDateValue, CustomDatePickerSelectType, CustomDatePickerValue } from './CustomDatePicker';
 import { Dayjs } from 'dayjs';
-export declare type CustomDatePickerContainerMonths = [Dayjs, Dayjs, Dayjs];
-export declare type CustomDatePickerContainerCalendarCount = 2 | 3;
+export type CustomDatePickerContainerMonths = [Dayjs, Dayjs, Dayjs];
+export type CustomDatePickerContainerCalendarCount = 2 | 3;
 export interface CustomDatePickerContainerProps {
     calendarCount?: CustomDatePickerContainerCalendarCount;
     selectType: CustomDatePickerSelectType;

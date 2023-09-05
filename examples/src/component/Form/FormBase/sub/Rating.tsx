@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormRating, FormCol, FormRow } from '@pdg/react-form';
+import { FormRating, FormCol, FormRow } from '../../../../../../src';
 
 const Rating = () => {
   return (

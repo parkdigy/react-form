@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useId, useCallback, useMemo } from 'react';
+import React, { useEffect, useLayoutEffect, useId, useCallback, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import { FormHelperText, Grid, Box } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
@@ -40,6 +40,10 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
 
     const id = useId();
 
+    // Ref ---------------------------------------------------------------------------------------------------------------
+
+    const gridRef = useRef<HTMLDivElement>(null);
+
     // FormState -------------------------------------------------------------------------------------------------------
 
     const {
@@ -79,7 +83,11 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
 
     // ResizeDetector --------------------------------------------------------------------------------------------------
 
-    const { width: formColWidth, ref: resizeDetectorRef } = useResizeDetector();
+    const { width: formColWidth } = useResizeDetector({
+      targetRef: gridRef,
+      handleWidth: true,
+      handleHeight: false,
+    });
 
     // State - style ---------------------------------------------------------------------------------------------------
 
@@ -108,9 +116,9 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
     useEffect(() => {
       if (ref) {
         if (typeof ref === 'function') {
-          ref(resizeDetectorRef.current);
+          ref(gridRef.current);
         } else {
-          ref.current = resizeDetectorRef.current;
+          ref.current = gridRef.current;
         }
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -136,7 +144,7 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
         }}
       >
         <Grid
-          ref={resizeDetectorRef}
+          ref={gridRef}
           item
           xs={xs || formColAutoXs || 12}
           className={classNames(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text')}

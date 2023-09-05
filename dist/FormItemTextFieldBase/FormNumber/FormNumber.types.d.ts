@@ -1,5 +1,5 @@
 import { FormTextProps } from '../FormText';
-export declare type FormNumberProps = Omit<FormTextProps, 'type'> & {
+export type FormNumberProps = Omit<FormTextProps, 'type'> & {
     allowLeadingZeros?: boolean;
     allowNegative?: boolean;
     thousandSeparator?: boolean;

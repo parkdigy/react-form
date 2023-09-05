@@ -7,7 +7,7 @@ import {
   TimeSelectScrollToDateUnit,
 } from './PrivateStaticDatePicker.types';
 import { PickersDay, PickersDayProps, StaticDatePicker } from '@mui/x-date-pickers';
-import { Button, Grid, Icon, IconButton, IconButtonProps, TextField } from '@mui/material';
+import { Button, Grid, Icon, IconButton, IconButtonProps } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { PrivateYearSelect } from '../PrivateYearSelect';
 import { PrivateMonthSelect } from '../PrivateMonthSelect';
@@ -43,7 +43,6 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
       seconds: initSeconds,
       minuteInterval,
       secondInterval,
-      inputFormat,
       minDate,
       maxDate,
       disablePast,
@@ -156,14 +155,6 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
       return ArrowButton;
     });
 
-    const components = useMemo(
-      () => ({
-        LeftArrowButton,
-        RightArrowButton,
-      }),
-      [LeftArrowButton, RightArrowButton]
-    );
-
     // Function --------------------------------------------------------------------------------------------------------
 
     const previousMonth = useCallback(() => {
@@ -206,8 +197,8 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
     );
 
     const handleRenderDay = useCallback(
-      (date: Dayjs, selectedDates: Array<Dayjs | null>, pickersDayProps: PickersDayProps<Dayjs>) => {
-        return <PickersDay {...pickersDayProps} selected={date.isSame(value, 'date')} />;
+      (props: PickersDayProps<Dayjs>) => {
+        return <PickersDay {...props} selected={props.day.isSame(value, 'date')} />;
       },
       [value]
     );
@@ -258,14 +249,14 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
                 }
               }
 
-              onChange('action_date', finalDate, finalDate.format(inputFormat));
+              onChange('action_date', finalDate);
             }}
           >
             {label}
           </Button>
         );
       },
-      [type, time, onChange, inputFormat, availableDate]
+      [type, time, onChange, availableDate]
     );
 
     // Render ----------------------------------------------------------------------------------------------------------
@@ -332,32 +323,33 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
                   {...props}
                   value={activeMonthValue}
                   defaultCalendarMonth={month}
-                  components={components}
-                  inputFormat={inputFormat}
+                  slots={{
+                    previousIconButton: LeftArrowButton,
+                    nextIconButton: RightArrowButton,
+                    day: handleRenderDay,
+                  }}
                   minDate={minDate}
                   maxDate={maxDate}
                   disablePast={disablePast}
                   disableFuture={disableFuture}
                   displayStaticWrapperAs='desktop'
-                  onChange={(newValue, keyboardInputValue) => {
+                  onChange={(newValue) => {
                     const finalValue = newValue
                       ? value
                         ? newValue.set('hour', value.hour()).set('minute', value.minute()).set('second', value.second())
                         : newValue
                       : newValue;
 
-                    onChange('date', finalValue, keyboardInputValue);
+                    onChange('date', finalValue);
                   }}
                   onMonthChange={(month: Dayjs) => {
                     setMonth(month);
                     if (onMonthChange) onMonthChange(month);
                   }}
-                  renderDay={handleRenderDay}
-                  renderInput={(params) => <TextField {...params} />}
                 />
                 {yearSelectOpen && (
                   <PrivateYearSelect
-                    selectYear={value && value.year()}
+                    selectYear={value == null ? null : value.year()}
                     activeYear={month.year()}
                     availableDate={availableDate}
                     onSelect={handleYearSelect}
@@ -366,8 +358,8 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
                 {monthSelectOpen && (
                   <PrivateMonthSelect
                     year={month.year()}
-                    selectYear={value && value.year()}
-                    selectMonth={value && value.month()}
+                    selectYear={value == null ? null : value.year()}
+                    selectMonth={value == null ? null : value.month()}
                     activeMonth={month.month()}
                     availableDate={availableDate}
                     onSelect={handleMonthSelect}

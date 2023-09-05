@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormCheckbox, FormRow, FormCol, FormButton, FormValueMap, FormBody, FormFooter } from '@pdg/react-form';
+import { Form, FormCheckbox, FormRow, FormCol, FormButton, FormValueMap, FormBody, FormFooter } from '../../../../src';
 
 const FormItemCheckbox = () => {
   function handleSubmit(data: FormValueMap) {

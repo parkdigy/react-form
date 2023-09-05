@@ -29,7 +29,7 @@ import {
   FormProps,
   FormBody,
   FormFooter,
-} from '@pdg/react-form';
+} from '../../../../../src';
 import { OutlinedPaper } from '#ccomp';
 import { BasicBlock, IconAdornmentBlock, NumberBlock, TextareaBlock, WidthBlock, ColorBlock, RatingBlock } from './sub';
 

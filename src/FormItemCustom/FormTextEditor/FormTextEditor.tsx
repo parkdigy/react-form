@@ -257,13 +257,21 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
     }, []);
 
     const handleImageUpload = useCallback(
-      (
-        blobInfo: BlobInfo,
-        success: (url: string) => void,
-        failure: (err: string) => void,
-        progress?: (percent: number) => void
-      ) => {
-        if (onImageUpload) onImageUpload(blobInfo.blob(), success, failure, progress);
+      (blobInfo: BlobInfo, progress: (percent: number) => void) => {
+        return new Promise<string>((resolve, reject) => {
+          if (onImageUpload) {
+            onImageUpload(
+              blobInfo.blob(),
+              (url) => {
+                resolve(url);
+              },
+              (err) => reject(err),
+              progress
+            );
+          } else {
+            reject('onImageUpload not implemented.');
+          }
+        });
       },
       [onImageUpload]
     );

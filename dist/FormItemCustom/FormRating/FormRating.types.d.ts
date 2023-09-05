@@ -1,7 +1,7 @@
 import { RatingProps } from '@mui/material';
 import { PartialPick, FormValueItemProps, FormValueItemBaseCommands } from '../../@types';
 import { CommonSxProps } from '../../@types';
-export declare type FormRatingValue = number;
+export type FormRatingValue = number;
 export interface FormRatingProps extends CommonSxProps, PartialPick<RatingProps, 'highlightSelectedOnly' | 'max' | 'precision'>, Omit<FormValueItemProps, 'value' | 'fullWidth' | 'onChange'> {
     value?: FormRatingValue;
     required?: boolean;

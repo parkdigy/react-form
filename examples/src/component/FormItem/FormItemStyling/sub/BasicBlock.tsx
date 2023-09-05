@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormBlock, FormCol, FormRow, FormSelect } from '@pdg/react-form';
+import { FormBlock, FormCol, FormRow, FormSelect } from '../../../../../../src';
 
 const BasicBlock: React.FC<{
   component: React.ForwardRefExoticComponent<any>;

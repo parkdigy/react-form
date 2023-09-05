@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { NumberFormatProps } from 'react-number-format';
+import { NumericFormatProps } from 'react-number-format';
 import NumberFormatCustom from './NumberFormatCustom';
 import FormText from '../FormText';
 import { FormNumberProps as Props, FormNumberDefaultProps } from './FormNumber.types';
@@ -28,7 +28,7 @@ const FormNumber = React.forwardRef<FormValueItemBaseCommands, Props>(
     // Memo --------------------------------------------------------------------------------------------------------------
 
     const muiInputProps = useMemo(() => {
-      const inputProps: NumberFormatProps = {
+      const inputProps: NumericFormatProps = {
         className: readOnly ? 'Mui-disabled' : undefined,
         allowLeadingZeros: !!allowLeadingZeros,
         allowNegative: !!allowNegative,
@@ -49,7 +49,7 @@ const FormNumber = React.forwardRef<FormValueItemBaseCommands, Props>(
       return {
         ...initMuiInputProps,
         inputComponent: NumberFormatCustom as React.ElementType<InputBaseComponentProps>,
-        inputProps,
+        inputProps: inputProps as any,
       };
     }, [
       allowDecimal,

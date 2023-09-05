@@ -1,4 +1,4 @@
-import { DateValidationError } from '@mui/x-date-pickers/internals';
+import { DateValidationError } from '@mui/x-date-pickers';
 import { FormDateType, FormTimeType } from '../@types';
 import { FormAvailableDate, FormAvailableDateType } from '../@private/@types';
 import { Dayjs } from 'dayjs';
@@ -17,6 +17,6 @@ export declare function getAvailableDateVal(availableDate: FormAvailableDate, ty
 export declare function getDateValForAvailableDate(date: Dayjs, type: FormDateType, time?: FormTimeType): number;
 export declare function isDateAvailable(date: Dayjs, availableDate: FormAvailableDate, type: FormAvailableDateType): boolean;
 export declare function isDateAvailable(date: Dayjs, availableDate: FormAvailableDate, type: FormDateType, time?: FormTimeType): boolean;
-export declare type checkDateAvailableResult = 'available' | 'min' | 'max';
+export type checkDateAvailableResult = 'available' | 'min' | 'max';
 export declare function checkDateAvailable(date: Dayjs, availableDate: FormAvailableDate, type: FormAvailableDateType): checkDateAvailableResult;
 export declare function checkDateAvailable(date: Dayjs, availableDate: FormAvailableDate, type: FormDateType, time?: FormTimeType): checkDateAvailableResult;

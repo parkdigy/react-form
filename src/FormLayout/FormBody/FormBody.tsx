@@ -1,4 +1,4 @@
-import React, { CSSProperties, useMemo, useState } from 'react';
+import React, { CSSProperties, useMemo, useRef, useState } from 'react';
 import { FormBodyProps as Props, FormBodyDefaultProps } from './FormBody.types';
 import { useResizeDetector } from 'react-resize-detector';
 import { useFormState } from '../../FormContext';
@@ -6,16 +6,23 @@ import { Grid } from '@mui/material';
 import { StyledContainerDiv, StyledContentDiv } from './FormBody.style';
 
 const FormBody: React.FC<Props> = ({ children, hidden }) => {
+  // Ref ---------------------------------------------------------------------------------------------------------------
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // State -------------------------------------------------------------------------------------------------------------
+
   const { spacing, fullHeight } = useFormState();
   const [height, setHeight] = useState(0);
 
   // -------------------------------------------------------------------------------------------------------------------
 
-  const { ref: resizeDetectorRef } = useResizeDetector({
-    handleHeight: true,
+  useResizeDetector({
+    targetRef: containerRef,
     handleWidth: false,
+    handleHeight: true,
     onResize() {
-      setHeight(resizeDetectorRef.current.getBoundingClientRect().height);
+      setHeight(containerRef.current?.getBoundingClientRect()?.height || 0);
     },
   });
 
@@ -38,7 +45,7 @@ const FormBody: React.FC<Props> = ({ children, hidden }) => {
   );
 
   return (
-    <StyledContainerDiv ref={fullHeight ? resizeDetectorRef : undefined} className='FormBody' style={style}>
+    <StyledContainerDiv ref={fullHeight ? containerRef : undefined} className='FormBody' style={style}>
       <StyledContentDiv style={contentStyle}>
         <Grid container spacing={spacing} direction='column'>
           {children}
