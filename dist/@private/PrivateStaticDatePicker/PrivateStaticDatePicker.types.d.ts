@@ -16,7 +16,5 @@ export interface PrivateStaticDatePickerProps extends Omit<StaticDatePickerProps
     onClose?(): void;
 }
 export declare const PrivateStaticDatePickerDefaultProps: {};
-export type TimeSelectScrollToDateUnit = 'hour' | 'minute' | 'second';
 export interface PrivateStaticDatePickerCommands {
-    timeSelectScrollToDate(date: Dayjs, times?: TimeSelectScrollToDateUnit[]): void;
 }

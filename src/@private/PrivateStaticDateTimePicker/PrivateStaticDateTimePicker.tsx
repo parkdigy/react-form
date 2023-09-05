@@ -328,6 +328,7 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
                     nextIconButton: RightArrowButton,
                     day: handleRenderDay,
                   }}
+                  viewRenderers={{ hours: null, minutes: null, seconds: null }}
                   minDate={minDate}
                   maxDate={maxDate}
                   disablePast={disablePast}

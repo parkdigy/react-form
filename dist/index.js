@@ -2193,8 +2193,8 @@ FormFooter.defaultProps = FormFooterDefaultProps;var FormTextFieldDefaultProps =
   } else {
     style.appendChild(document.createTextNode(css));
   }
-}var css_248z$j = ".FormTextField {\n  min-width: 200px;\n}\n.FormTextField .clear-icon-button-wrap {\n  visibility: hidden;\n}\n.FormTextField.variant-filled .clear-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormTextField:hover .clear-icon-button-wrap.show,\n.FormTextField .MuiInputBase-root.Mui-focused .clear-icon-button-wrap.show {\n  visibility: visible;\n}";
-styleInject(css_248z$j);var FormTextField = React.forwardRef(function (_a, ref) {
+}var css_248z$l = ".FormTextField {\n  min-width: 200px;\n}\n.FormTextField .clear-icon-button-wrap {\n  visibility: hidden;\n}\n.FormTextField.variant-filled .clear-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormTextField:hover .clear-icon-button-wrap.show,\n.FormTextField .MuiInputBase-root.Mui-focused .clear-icon-button-wrap.show {\n  visibility: visible;\n}";
+styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var _b;
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
@@ -2514,14 +2514,14 @@ FormTextField.defaultProps = FormTextFieldDefaultProps;var FormTextDefaultProps 
     return (React.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormText'), disableReturnKey: true, onValue: handleValue }, props)));
 });
 FormText.displayName = 'FormText';
-FormText.defaultProps = FormTextDefaultProps;var FormHiddenDefaultProps = {};var css_248z$i = ".FormHidden {\n  display: none !important;\n}";
-styleInject(css_248z$i);var FormHidden = React.forwardRef(function (_a, ref) {
+FormText.defaultProps = FormTextDefaultProps;var FormHiddenDefaultProps = {};var css_248z$k = ".FormHidden {\n  display: none !important;\n}";
+styleInject(css_248z$k);var FormHidden = React.forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest$4(_a, ["className"]);
     return (React.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormHidden'), type: 'hidden', variant: 'standard' }, props)));
 });
 FormHidden.displayName = 'FormHidden';
-FormHidden.defaultProps = FormHiddenDefaultProps;var FormTagDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { value: [], clear: true, formValueSeparator: ',' });var css_248z$h = ".FormTag.FormTextField {\n  min-width: 200px;\n}";
-styleInject(css_248z$h);var FormTag = React.forwardRef(function (_a, ref) {
+FormHidden.defaultProps = FormHiddenDefaultProps;var FormTagDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { value: [], clear: true, formValueSeparator: ',' });var css_248z$j = ".FormTag.FormTextField {\n  min-width: 200px;\n}";
+styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var className = _a.className, name = _a.name, initValue = _a.value, exceptValue = _a.exceptValue, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, disabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, initHelperText = _a.helperText, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest$4(_a, ["className", "name", "value", "exceptValue", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
     var _b = useFormState(), formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit, otherFormState = __rest$4(_b, ["fullWidth", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
@@ -2714,8 +2714,8 @@ FormTag.defaultProps = FormTagDefaultProps;var FormEmailDefaultProps = __assign$
     return React.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormEmail'), type: 'email' }, props));
 });
 FormEmail.displayName = 'FormEmail';
-FormEmail.defaultProps = FormEmailDefaultProps;var FormPasswordDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: false, eye: true });var css_248z$g = ".FormPassword .eye-icon-button-wrap {\n  visibility: hidden;\n}\n.FormPassword.variant-filled .eye-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormPassword:hover .eye-icon-button-wrap.show,\n.FormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show {\n  visibility: visible;\n}";
-styleInject(css_248z$g);var StyledEyeInputAdornment = material.styled(material.InputAdornment)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  visibility: hidden;\n"], ["\n  visibility: hidden;\n"])));
+FormEmail.defaultProps = FormEmailDefaultProps;var FormPasswordDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: false, eye: true });var css_248z$i = ".FormPassword .eye-icon-button-wrap {\n  visibility: hidden;\n}\n.FormPassword.variant-filled .eye-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormPassword:hover .eye-icon-button-wrap.show,\n.FormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show {\n  visibility: visible;\n}";
+styleInject(css_248z$i);var StyledEyeInputAdornment = material.styled(material.InputAdornment)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  visibility: hidden;\n"], ["\n  visibility: hidden;\n"])));
 var FormPassword = React.forwardRef(function (_a, ref) {
     // State -----------------------------------------------------------------------------------------------------------
     var className = _a.className, initMuiInputProps = _a.InputProps, eye = _a.eye, onChange = _a.onChange, props = __rest$4(_a, ["className", "InputProps", "eye", "onChange"]);
@@ -4052,14 +4052,14 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
     return (React.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormNumber'), InputProps: muiInputProps, readOnly: readOnly }, props)));
 });
 FormNumber.displayName = 'FormNumber';
-FormNumber.defaultProps = FormNumberDefaultProps;var FormSearchDefaultProps = __assign$7({}, FormTextDefaultProps);var css_248z$f = ".FormSearch input[type=search]::-webkit-search-decoration,\n.FormSearch input[type=search]::-webkit-search-cancel-button,\n.FormSearch input[type=search]::-webkit-search-results-button,\n.FormSearch input[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n}";
-styleInject(css_248z$f);var FormSearch = React.forwardRef(function (_a, ref) {
+FormNumber.defaultProps = FormNumberDefaultProps;var FormSearchDefaultProps = __assign$7({}, FormTextDefaultProps);var css_248z$h = ".FormSearch input[type=search]::-webkit-search-decoration,\n.FormSearch input[type=search]::-webkit-search-cancel-button,\n.FormSearch input[type=search]::-webkit-search-results-button,\n.FormSearch input[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n}";
+styleInject(css_248z$h);var FormSearch = React.forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest$4(_a, ["className"]);
     return React.createElement(FormText, __assign$7({ className: classNames$1(className, 'FormSearch'), ref: ref, type: 'search' }, props));
 });
 FormSearch.displayName = 'FormSearch';
-FormSearch.defaultProps = FormSearchDefaultProps;var FormTextareaDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: false, rows: 3, value: '' });var css_248z$e = ".FormTextarea .MuiInputBase-root .MuiInputBase-input {\n  overflow-y: scroll;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar {\n  width: 8px;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n}";
-styleInject(css_248z$e);var FormTextarea = React.forwardRef(function (_a, ref) {
+FormSearch.defaultProps = FormSearchDefaultProps;var FormTextareaDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: false, rows: 3, value: '' });var css_248z$g = ".FormTextarea .MuiInputBase-root .MuiInputBase-input {\n  overflow-y: scroll;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar {\n  width: 8px;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n}";
+styleInject(css_248z$g);var FormTextarea = React.forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest$4(_a, ["className"]);
     return React.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormTextarea') }, props, { multiline: true }));
 });
@@ -4069,8 +4069,8 @@ FormTextarea.defaultProps = FormTextareaDefaultProps;var FormUrlDefaultProps = _
     return React.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormUrl'), type: 'url' }, props));
 });
 FormUrl.displayName = 'FormUrl';
-FormUrl.defaultProps = FormUrlDefaultProps;var FormSelectDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { formValueSeparator: ',', minWidth: 120 });var css_248z$d = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
-styleInject(css_248z$d);var FormSelect = React.forwardRef(function (_a, ref) {
+FormUrl.defaultProps = FormUrlDefaultProps;var FormSelectDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { formValueSeparator: ',', minWidth: 120 });var css_248z$f = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
+styleInject(css_248z$f);var FormSelect = React.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var className = _a.className, name = _a.name, initItems = _a.items, initFullWidth = _a.fullWidth, onLoadItems = _a.onLoadItems, readOnly = _a.readOnly, multiple = _a.multiple, checkbox = _a.checkbox, placeholder = _a.placeholder, initStartAdornment = _a.startAdornment, initValue = _a.value, initInputLabelProps = _a.InputLabelProps, initSelectProps = _a.SelectProps, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, width = _a.width, minWidth = _a.minWidth, initLoading = _a.loading, onChange = _a.onChange, onValue = _a.onValue, props = __rest$4(_a, ["className", "name", "items", "fullWidth", "onLoadItems", "readOnly", "multiple", "checkbox", "placeholder", "startAdornment", "value", "InputLabelProps", "SelectProps", "formValueSeparator", "formValueSort", "width", "minWidth", "loading", "onChange", "onValue"]);
     var _b = useFormState(), formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, otherFormState = __rest$4(_b, ["fullWidth", "onAddValueItem", "onValueChange"]);
@@ -4403,8 +4403,8 @@ function autoDash(personalNo) {
     checked: false,
     value: 1,
     uncheckedValue: 0,
-};var css_248z$c = ".FormItemBase .FormItemBase-InputLabel {\n  overflow: visible;\n  padding-left: 5px;\n}\n.FormItemBase .FormItemBase-InputLabel.MuiInputLabel-sizeSmall {\n  transform: translate(0, -1.5px) scale(0.7);\n}\n.FormItemBase .FormItemBase-Control-wrap {\n  position: relative;\n}\n.FormItemBase .FormItemBase-Control {\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n.FormItemBase.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 16px;\n}";
-styleInject(css_248z$c);var FormItemBase = React.forwardRef(function (_a, ref) {
+};var css_248z$e = ".FormItemBase .FormItemBase-InputLabel {\n  overflow: visible;\n  padding-left: 5px;\n}\n.FormItemBase .FormItemBase-InputLabel.MuiInputLabel-sizeSmall {\n  transform: translate(0, -1.5px) scale(0.7);\n}\n.FormItemBase .FormItemBase-Control-wrap {\n  position: relative;\n}\n.FormItemBase .FormItemBase-Control {\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n.FormItemBase.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 16px;\n}";
+styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
     // Ref ---------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
@@ -5023,8 +5023,8 @@ FormRadioGroup.displayName = 'FormRadioGroup';
 FormRadioGroup.defaultProps = FormRadioGroupDefaultProps;var FormToggleButtonGroupDefaultProps = {
     type: 'button',
     formValueSeparator: ',',
-};var css_248z$b = ".FormToggleButtonGroup .ToggleButton {\n  display: inline-block;\n  padding: 0 10px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton, .FormToggleButtonGroup.type-radio .ToggleButton {\n  padding-left: 3px;\n  padding-right: 5px;\n  border: 0 !important;\n  margin-left: 0 !important;\n  justify-content: flex-start;\n  display: flex;\n  background-color: transparent !important;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton:not(:last-child), .FormToggleButtonGroup.type-radio .ToggleButton:not(:last-child) {\n  margin-right: 5px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-unchecked__ {\n  margin-right: 3px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__ {\n  display: none;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-checked__ {\n  display: block;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-unchecked__ {\n  display: none;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 15px;\n  margin-bottom: -15px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .FormItemBase-Control-wrap {\n  margin-top: 15px;\n  margin-bottom: -15px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 13px;\n  margin-bottom: -13px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 13px;\n  margin-bottom: -13px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}";
-styleInject(css_248z$b);var FormToggleButtonGroup = React.forwardRef(function (_a, ref) {
+};var css_248z$d = ".FormToggleButtonGroup .ToggleButton {\n  display: inline-block;\n  padding: 0 10px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton, .FormToggleButtonGroup.type-radio .ToggleButton {\n  padding-left: 3px;\n  padding-right: 5px;\n  border: 0 !important;\n  margin-left: 0 !important;\n  justify-content: flex-start;\n  display: flex;\n  background-color: transparent !important;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton:not(:last-child), .FormToggleButtonGroup.type-radio .ToggleButton:not(:last-child) {\n  margin-right: 5px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-unchecked__ {\n  margin-right: 3px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__ {\n  display: none;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-checked__ {\n  display: block;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-unchecked__ {\n  display: none;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 15px;\n  margin-bottom: -15px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .FormItemBase-Control-wrap {\n  margin-top: 15px;\n  margin-bottom: -15px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 13px;\n  margin-bottom: -13px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 13px;\n  margin-bottom: -13px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}";
+styleInject(css_248z$d);var FormToggleButtonGroup = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
@@ -7466,8 +7466,8 @@ var Editor = /** @class */ (function (_super) {
 }(React__namespace.Component));var FormTextEditorDefaultProps = {
     menubar: true,
     height: 500,
-};var css_248z$a = ".FormTextEditor.initializing textarea {\n  display: none;\n}\n.FormTextEditor.error .tox-tinymce {\n  border-color: #d32f2f;\n}\n\n.tox-menu.tox-collection.tox-collection--list .tox-collection__group .tox-menu-nav__js.tox-collection__item {\n  padding-right: 20px !important;\n}\n\n.tox-notifications-container {\n  display: none;\n}";
-styleInject(css_248z$a);var FormTextEditor = React.forwardRef(function (_a, ref) {
+};var css_248z$c = ".FormTextEditor.initializing textarea {\n  display: none;\n}\n.FormTextEditor.error .tox-tinymce {\n  border-color: #d32f2f;\n}\n\n.tox-menu.tox-collection.tox-collection--list .tox-collection__group .tox-menu-nav__js.tox-collection__item {\n  padding-right: 20px !important;\n}\n\n.tox-notifications-container {\n  display: none;\n}";
+styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
@@ -8309,8 +8309,8 @@ Icon.defaultProps = IconDefaultProps;var IconTextDefaultProps = {
 IconText.defaultProps = IconTextDefaultProps;var PrivateDatePickerDefaultProps = {
     showDaysOutsideCurrentMonth: true,
     align: 'center',
-};var PrivateStaticDatePickerDefaultProps = {};var PrivateYearSelectDefaultProps = {};var css_248z$9 = ".PrivateYearSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateYearSelect button {\n  font-size: 14px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
-styleInject(css_248z$9);var PrivateToggleButtonDefaultProps = {};var PrivateToggleButton = React.forwardRef(function (_a, ref) {
+};var PrivateStaticDatePickerDefaultProps = {};var PrivateYearSelectDefaultProps = {};var css_248z$b = ".PrivateYearSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateYearSelect button {\n  font-size: 14px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
+styleInject(css_248z$b);var PrivateToggleButtonDefaultProps = {};var PrivateToggleButton = React.forwardRef(function (_a, ref) {
     var children = _a.children, initClassName = _a.className, selected = _a.selected, activated = _a.activated, outlined = _a.outlined, props = __rest$4(_a, ["children", "className", "selected", "activated", "outlined"]);
     var theme = material.useTheme();
     var className = React.useMemo(function () { return classNames$1(initClassName, selected && 'selected', activated && 'activated', outlined && 'outlined'); }, [activated, initClassName, outlined, selected]);
@@ -9896,8 +9896,8 @@ var SimpleBar = React__namespace.forwardRef(function (_a, ref) {
             React__namespace.createElement("div", { className: classNames.scrollbar }))));
 });
 SimpleBar.displayName = 'SimpleBar';var YEARS$1 = new Array(200).fill(0);
-for (var i$4 = 0; i$4 < 200; i$4 += 1) {
-    YEARS$1[i$4] = 1900 + i$4;
+for (var i$5 = 0; i$5 < 200; i$5 += 1) {
+    YEARS$1[i$5] = 1900 + i$5;
 }
 var PrivateYearSelect = function (_a) {
     // Ref -------------------------------------------------------------------------------------------------------------
@@ -9937,10 +9937,10 @@ var PrivateYearSelect = function (_a) {
             })))));
 };
 PrivateYearSelect.displayName = 'PrivateYearSelect';
-PrivateYearSelect.defaultProps = PrivateYearSelectDefaultProps;var PrivateMonthSelectDefaultProps = {};var css_248z$8 = ".PrivateMonthSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateMonthSelect button {\n  font-size: 15px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
-styleInject(css_248z$8);var MONTHS$1 = new Array(12).fill(0);
-for (var i$3 = 0; i$3 < 12; i$3 += 1) {
-    MONTHS$1[i$3] = i$3;
+PrivateYearSelect.defaultProps = PrivateYearSelectDefaultProps;var PrivateMonthSelectDefaultProps = {};var css_248z$a = ".PrivateMonthSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateMonthSelect button {\n  font-size: 15px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
+styleInject(css_248z$a);var MONTHS$1 = new Array(12).fill(0);
+for (var i$4 = 0; i$4 < 12; i$4 += 1) {
+    MONTHS$1[i$4] = i$4;
 }
 var PrivateMonthSelect = function (_a) {
     var year = _a.year, selectYear = _a.selectYear, selectMonth = _a.selectMonth, activeMonth = _a.activeMonth, availableDate = _a.availableDate, onSelect = _a.onSelect;
@@ -9961,10 +9961,10 @@ var PrivateMonthSelect = function (_a) {
 PrivateMonthSelect.displayName = 'PrivateMonthSelect';
 PrivateMonthSelect.defaultProps = PrivateMonthSelectDefaultProps;var PrivateTimeSelectDefaultProps = {
     cols: 1,
-};var css_248z$7 = ".PrivateTimeSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n}\n.PrivateTimeSelect button {\n  border-radius: 0;\n}";
-styleInject(css_248z$7);var DEFAULT_MINUTES$1 = new Array(60).fill(0);
-for (var i$2 = 0; i$2 < DEFAULT_MINUTES$1.length; i$2 += 1) {
-    DEFAULT_MINUTES$1[i$2] = i$2;
+};var css_248z$9 = ".PrivateTimeSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n}\n.PrivateTimeSelect button {\n  border-radius: 0;\n}";
+styleInject(css_248z$9);var DEFAULT_MINUTES$2 = new Array(60).fill(0);
+for (var i$3 = 0; i$3 < DEFAULT_MINUTES$2.length; i$3 += 1) {
+    DEFAULT_MINUTES$2[i$3] = i$3;
 }
 var PrivateTimeSelect = React.forwardRef(function (_a, ref) {
     // Ref -------------------------------------------------------------------------------------------------------------
@@ -10068,8 +10068,720 @@ var PrivateTimeSelect = React.forwardRef(function (_a, ref) {
                 }))))));
 });
 PrivateTimeSelect.displayName = 'PrivateTimeSelect';
-PrivateTimeSelect.defaultProps = PrivateTimeSelectDefaultProps;var css_248z$6 = ".PrivateStaticDatePicker.time {\n  height: 400px;\n}\n.PrivateStaticDatePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDatePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDatePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDatePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDatePicker .action-buttons button:not(:first-child) {\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDatePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDatePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDatePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDatePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDatePicker.time .time .time-container .time-select-wrap > div > div:not(:first-child) {\n  border-left: 1px solid #efefef;\n}";
-styleInject(css_248z$6);var DEFAULT_HOURS = new Array(24).fill(0);
+PrivateTimeSelect.defaultProps = PrivateTimeSelectDefaultProps;var css_248z$8 = ".PrivateStaticDatePicker.time {\n  height: 400px;\n}\n.PrivateStaticDatePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDatePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDatePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDatePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDatePicker .action-buttons button:not(:first-child) {\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDatePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDatePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDatePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDatePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDatePicker.time .time .time-container .time-select-wrap > div > div:not(:first-child) {\n  border-left: 1px solid #efefef;\n}";
+styleInject(css_248z$8);var DEFAULT_HOURS$1 = new Array(24).fill(0);
+for (var i$2 = 0; i$2 < DEFAULT_HOURS$1.length; i$2 += 1) {
+    DEFAULT_HOURS$1[i$2] = i$2;
+}
+var DEFAULT_MINUTES$1 = new Array(60).fill(0);
+for (var i$2 = 0; i$2 < DEFAULT_MINUTES$1.length; i$2 += 1) {
+    DEFAULT_MINUTES$1[i$2] = i$2;
+}
+var DEFAULT_SECONDS$1 = new Array(60).fill(0);
+for (var i$2 = 0; i$2 < DEFAULT_SECONDS$1.length; i$2 += 1) {
+    DEFAULT_SECONDS$1[i$2] = i$2;
+}
+var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
+    // Ref -------------------------------------------------------------------------------------------------------------
+    var value = _a.value, initAvailableDate = _a.availableDate, defaultCalendarMonth = _a.defaultCalendarMonth, type = _a.type, time = _a.time, initHours = _a.hours, initMinutes = _a.minutes, initSeconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest$4(_a, ["value", "availableDate", "defaultCalendarMonth", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
+    var hourSelectRef = React.useRef(null);
+    var minuteSelectRef = React.useRef(null);
+    var secondSelectRef = React.useRef(null);
+    // State -----------------------------------------------------------------------------------------------------------
+    var _b = React.useState(function () {
+        if (value)
+            return value;
+        else if (defaultCalendarMonth)
+            return defaultCalendarMonth;
+        else
+            return dayjs();
+    }), month = _b[0], setMonth = _b[1];
+    var _c = React.useState(null), activeMonthValue = _c[0], setActiveMonthValue = _c[1];
+    var _d = React.useState(false), yearSelectOpen = _d[0], setYearSelectOpen = _d[1];
+    var _e = React.useState(false), monthSelectOpen = _e[0], setMonthSelectOpen = _e[1];
+    // Memo --------------------------------------------------------------------------------------------------------------
+    var hours = React.useMemo(function () { return initHours || DEFAULT_HOURS$1; }, [initHours]);
+    var minutes = React.useMemo(function () { return initMinutes || DEFAULT_MINUTES$1; }, [initMinutes]);
+    var seconds = React.useMemo(function () { return initSeconds || DEFAULT_SECONDS$1; }, [initSeconds]);
+    var availableDate = React.useMemo(function () {
+        return initAvailableDate ? initAvailableDate : makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture);
+    }, [initAvailableDate, minDate, maxDate, disablePast, disableFuture]);
+    var disableHours = React.useMemo(function () {
+        var newDisableHours = [];
+        if (time && value && (availableDate[0] || availableDate[1])) {
+            hours.forEach(function (h) {
+                if (!isDateAvailable(value.set('hour', h), availableDate, 'hour')) {
+                    newDisableHours.push(h);
+                }
+            });
+        }
+        return newDisableHours;
+    }, [time, value, availableDate, hours]);
+    var disableMinutes = React.useMemo(function () {
+        var newDisableMinutes = [];
+        if (time === 'minute' || time === 'second') {
+            if (value && (availableDate[0] || availableDate[1])) {
+                minutes.forEach(function (m) {
+                    if (!isDateAvailable(value.set('minute', m), availableDate, 'minute')) {
+                        newDisableMinutes.push(m);
+                    }
+                });
+            }
+        }
+        return newDisableMinutes;
+    }, [time, value, availableDate, minutes]);
+    var disableSeconds = React.useMemo(function () {
+        var newDisableSeconds = [];
+        if (time === 'second') {
+            if (value && (availableDate[0] || availableDate[1])) {
+                seconds.forEach(function (s) {
+                    if (!isDateAvailable(value.set('second', s), availableDate, 'second')) {
+                        newDisableSeconds.push(s);
+                    }
+                });
+            }
+        }
+        return newDisableSeconds;
+    }, [time, value, availableDate, seconds]);
+    // Effect ----------------------------------------------------------------------------------------------------------
+    React.useEffect(function () {
+        if (!yearSelectOpen) {
+            setActiveMonthValue(null);
+        }
+    }, [yearSelectOpen]);
+    //--------------------------------------------------------------------------------------------------------------------
+    var leftArrowOnClickRef = React.useRef();
+    var rightArrowOnClickRef = React.useRef();
+    var LeftArrowButton = React.useState(function () {
+        var ArrowButton = function (props) {
+            leftArrowOnClickRef.current = props.onClick;
+            return React.createElement(material.IconButton, __assign$7({}, props));
+        };
+        return ArrowButton;
+    })[0];
+    var RightArrowButton = React.useState(function () {
+        var ArrowButton = function (props) {
+            rightArrowOnClickRef.current = props.onClick;
+            return React.createElement(material.IconButton, __assign$7({}, props));
+        };
+        return ArrowButton;
+    })[0];
+    // Function --------------------------------------------------------------------------------------------------------
+    var previousMonth = React.useCallback(function () {
+        if (leftArrowOnClickRef.current) {
+            leftArrowOnClickRef.current({});
+        }
+    }, []);
+    var nextMonth = React.useCallback(function () {
+        if (rightArrowOnClickRef.current) {
+            rightArrowOnClickRef.current({});
+        }
+    }, []);
+    // Event Handler ---------------------------------------------------------------------------------------------------
+    var handleYearSelect = React.useCallback(function (year) {
+        setMonth(month.set('year', year));
+        setActiveMonthValue(month.set('year', year));
+        setYearSelectOpen(false);
+        setMonthSelectOpen(true);
+    }, [month]);
+    var handleMonthSelect = React.useCallback(function (m) {
+        setMonth(month.set('month', m));
+        setActiveMonthValue(month.set('month', m));
+        setMonthSelectOpen(false);
+    }, [month]);
+    var handleRenderDay = React.useCallback(function (props) {
+        return React.createElement(xDatePickers.PickersDay, __assign$7({}, props, { selected: props.day.isSame(value, 'date') }));
+    }, [value]);
+    // Commands --------------------------------------------------------------------------------------------------------
+    React.useLayoutEffect(function () {
+        if (ref) {
+            var commands = {};
+            if (typeof ref === 'function') {
+                ref(commands);
+            }
+            else {
+                ref.current = commands;
+            }
+            return function () {
+                if (typeof ref === 'function') {
+                    ref(null);
+                }
+                else {
+                    ref.current = null;
+                }
+            };
+        }
+    }, [ref]);
+    // Render - Function -----------------------------------------------------------------------------------------------
+    var getActionButton = React.useCallback(function (date, label) {
+        var disabled = !isDateAvailable(date, availableDate, 'day');
+        return (React.createElement(material.Button, { variant: 'text', className: disabled ? 'disabled' : undefined, disabled: disabled, onClick: function () {
+                var finalDate = date;
+                var checkResult = checkDateAvailable(finalDate, availableDate, type, time);
+                if (checkResult !== 'available') {
+                    var availableDateDate = getAvailableDate(availableDate, type, time);
+                    if (checkResult === 'min') {
+                        if (availableDateDate[0])
+                            finalDate = availableDateDate[0];
+                    }
+                    else if (checkResult === 'max') {
+                        if (availableDateDate[1])
+                            finalDate = availableDateDate[1];
+                    }
+                }
+                onChange('action_date', finalDate);
+            } }, label));
+    }, [type, time, onChange, availableDate]);
+    // Render ----------------------------------------------------------------------------------------------------------
+    return (React.createElement(material.Grid, { container: true, className: classNames$1('PrivateStaticDatePicker', type) },
+        type !== 'time' && (React.createElement(material.Grid, { item: true },
+            React.createElement(material.Grid, { container: true, direction: 'column' },
+                React.createElement(material.Grid, { item: true, sx: { p: 2, width: '100%' } },
+                    React.createElement(material.Grid, { container: true, className: 'month-change-arrow-wrap' },
+                        React.createElement(material.Grid, { item: true, flex: 1, className: 'month-title-container' },
+                            React.createElement("div", { className: 'month-title-wrap' },
+                                React.createElement("div", { className: 'month-title' },
+                                    React.createElement(material.Button, { variant: 'text', className: yearSelectOpen ? 'active' : undefined, onClick: function () {
+                                            if (yearSelectOpen) {
+                                                setYearSelectOpen(false);
+                                            }
+                                            else {
+                                                setYearSelectOpen(true);
+                                                setMonthSelectOpen(false);
+                                            }
+                                        } },
+                                        month.format('YYYY년'),
+                                        React.createElement(material.Icon, null, yearSelectOpen ? 'arrow_drop_up' : 'arrow_drop_down'))),
+                                React.createElement("div", { className: 'month-title' },
+                                    React.createElement(material.Button, { variant: 'text', className: monthSelectOpen ? 'active' : undefined, onClick: function () {
+                                            if (monthSelectOpen) {
+                                                setMonthSelectOpen(false);
+                                            }
+                                            else {
+                                                setMonthSelectOpen(true);
+                                                setYearSelectOpen(false);
+                                            }
+                                        } },
+                                        month.format('M월'),
+                                        React.createElement(material.Icon, null, monthSelectOpen ? 'arrow_drop_up' : 'arrow_drop_down'))))),
+                        !yearSelectOpen && !monthSelectOpen && (React.createElement(material.Grid, { item: true, style: { textAlign: 'right' } },
+                            React.createElement(material.IconButton, { onClick: previousMonth, sx: { mr: 1 } },
+                                React.createElement(material.Icon, null, "keyboard_arrow_left")),
+                            React.createElement(material.IconButton, { onClick: nextMonth },
+                                React.createElement(material.Icon, null, "keyboard_arrow_right")))))),
+                React.createElement(material.Grid, { item: true, style: { position: 'relative' } },
+                    React.createElement(xDatePickers.StaticDatePicker, __assign$7({}, props, { value: activeMonthValue, defaultCalendarMonth: month, slots: {
+                            previousIconButton: LeftArrowButton,
+                            nextIconButton: RightArrowButton,
+                            day: handleRenderDay,
+                        }, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, displayStaticWrapperAs: 'desktop', onChange: function (newValue) {
+                            var finalValue = newValue
+                                ? value
+                                    ? newValue.set('hour', value.hour()).set('minute', value.minute()).set('second', value.second())
+                                    : newValue
+                                : newValue;
+                            onChange('date', finalValue);
+                        }, onMonthChange: function (month) {
+                            setMonth(month);
+                            if (onMonthChange)
+                                onMonthChange(month);
+                        } })),
+                    yearSelectOpen && (React.createElement(PrivateYearSelect, { selectYear: value == null ? null : value.year(), activeYear: month.year(), availableDate: availableDate, onSelect: handleYearSelect })),
+                    monthSelectOpen && (React.createElement(PrivateMonthSelect, { year: month.year(), selectYear: value == null ? null : value.year(), selectMonth: value == null ? null : value.month(), activeMonth: month.month(), availableDate: availableDate, onSelect: handleMonthSelect }))),
+                React.createElement(material.Grid, { item: true, className: 'action-buttons' },
+                    getActionButton(dayjs()
+                        .startOf('d')
+                        .subtract(1, 'month')
+                        .set('hour', value ? value.hour() : 0)
+                        .set('minute', value ? value.minute() : 0)
+                        .set('second', value ? value.second() : 0), '지난달'),
+                    getActionButton(dayjs()
+                        .startOf('d')
+                        .subtract(7, 'd')
+                        .set('hour', value ? value.hour() : 0)
+                        .set('minute', value ? value.minute() : 0)
+                        .set('second', value ? value.second() : 0), '지난주'),
+                    getActionButton(dayjs()
+                        .startOf('d')
+                        .subtract(1, 'd')
+                        .set('hour', value ? value.hour() : 0)
+                        .set('minute', value ? value.minute() : 0)
+                        .set('second', value ? value.second() : 0), '어제'),
+                    getActionButton(dayjs()
+                        .startOf('d')
+                        .set('hour', value ? value.hour() : 0)
+                        .set('minute', value ? value.minute() : 0)
+                        .set('second', value ? value.second() : 0), '오늘'))))),
+        time && (React.createElement(material.Grid, { item: true, className: 'time' },
+            React.createElement(material.Grid, { container: true, direction: 'column', className: 'time-container' },
+                React.createElement(material.Grid, { item: true, className: 'time-title' },
+                    time === 'hour' && (value ? value.format('HH시') : '00시'),
+                    time === 'minute' && (value ? value.format('HH시 mm분') : '00시 00분'),
+                    time === 'second' && (value ? value.format('HH시 mm분 ss초') : '00시 00분 00초')),
+                React.createElement(material.Grid, { item: true, className: 'time-select-wrap' },
+                    React.createElement(material.Grid, { container: true, style: { height: '100%' } },
+                        React.createElement(material.Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
+                            React.createElement(PrivateTimeSelect, { ref: hourSelectRef, value: value && value.hour(), unit: '\uC2DC', list: hours, disableList: disableHours, cols: type === 'time' ? 3 : 1, onSelect: function (newValue) {
+                                    onChange('hour', value ? value.set('hour', newValue) : dayjs().startOf('date').set('hour', newValue));
+                                } })),
+                        (time === 'minute' || time === 'second') && (React.createElement(material.Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
+                            React.createElement(PrivateTimeSelect, { ref: minuteSelectRef, value: value && value.minute(), unit: '\uBD84', list: minutes, disableList: disableMinutes, cols: type === 'time' ? 3 : 1, listInterval: minuteInterval, onSelect: function (newValue) {
+                                    onChange('minute', value ? value.set('minute', newValue) : dayjs().startOf('date').set('minute', newValue));
+                                } }))),
+                        time === 'second' && (React.createElement(material.Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
+                            React.createElement(PrivateTimeSelect, { ref: secondSelectRef, value: value && value.second(), unit: '\uCD08', list: seconds, disableList: disableSeconds, cols: type === 'time' ? 3 : 1, listInterval: secondInterval, onSelect: function (newValue) {
+                                    onChange('second', value ? value.set('second', newValue) : dayjs().startOf('date').set('second', newValue));
+                                } }))))),
+                onClose && (React.createElement(material.Grid, { item: true, className: 'action-buttons' },
+                    React.createElement(material.Button, { variant: 'text', onClick: onClose }, "\uB2EB\uAE30"))))))));
+});
+PrivateStaticDatePicker.displayName = 'PrivateStaticDatePicker';
+PrivateStaticDatePicker.defaultProps = PrivateStaticDatePickerDefaultProps;var PrivateStyledTooltip = material.styled(function (_a) {
+    var className = _a.className, props = __rest$4(_a, ["className"]);
+    return (React.createElement(material.Tooltip, __assign$7({}, props, { classes: { popper: className } })));
+})(function (_a) {
+    var _b;
+    var theme = _a.theme;
+    return (_b = {},
+        _b["& .".concat(material.tooltipClasses.tooltip)] = {
+            backgroundColor: 'white',
+            color: 'rgba(0, 0, 0, 0.87)',
+            border: '1px solid #dadde9',
+            padding: 0,
+            borderRadius: 0,
+            margin: 0,
+            width: 'auto',
+            maxWidth: 'inherit !important',
+            boxShadow: theme.shadows[8],
+        },
+        _b);
+});var css_248z$7 = ".PrivateDatePicker .input-text-field.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.PrivateDatePicker .input-text-field.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.PrivateDatePicker .input-text-field.align-right .MuiInputBase-input {\n  text-align: right;\n}";
+styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, ref) {
+    // ID --------------------------------------------------------------------------------------------------------------
+    var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
+    //--------------------------------------------------------------------------------------------------------------------
+    name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, initHelperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
+    //--------------------------------------------------------------------------------------------------------------------
+    className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$4(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
+    var id = React.useId();
+    // Ref -------------------------------------------------------------------------------------------------------------
+    var privateStaticDatePickerRef = React.useRef(null);
+    var textFieldInputRef = React.useRef();
+    var closeTimeoutRef = React.useRef();
+    var mouseDownTimeRef = React.useRef();
+    var datePickerErrorRef = React.useRef(null);
+    var openValueRef = React.useRef(null);
+    // FormState -------------------------------------------------------------------------------------------------------
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    // Memo - FormState ------------------------------------------------------------------------------------------------
+    var variant = React.useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
+    var size = React.useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
+    var color = React.useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
+    var focused = React.useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
+    var labelShrink = React.useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
+    var fullWidth = React.useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    // State - open ----------------------------------------------------------------------------------------------------
+    var _c = React.useState(false), open = _c[0], setOpen = _c[1];
+    // State -----------------------------------------------------------------------------------------------------------
+    var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
+    var _e = React.useState(null), timeError = _e[0], setTimeError = _e[1];
+    var _f = useAutoUpdateState$1(initHelperText), helperText = _f[0], setHelperText = _f[1];
+    var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
+    var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
+    // Memo --------------------------------------------------------------------------------------------------------------
+    var label = React.useMemo(function () {
+        if (labelIcon) {
+            return React.createElement(IconText, { icon: labelIcon }, initLabel);
+        }
+        else {
+            return initLabel;
+        }
+    }, [initLabel, labelIcon]);
+    var format = React.useMemo(function () {
+        if (initFormat) {
+            return initFormat;
+        }
+        else {
+            return getDateTimeFormat(type, time);
+        }
+    }, [initFormat, time, type]);
+    var formValueFormat = React.useMemo(function () {
+        if (initFormValueFormat) {
+            return initFormValueFormat;
+        }
+        else {
+            return getDateTimeFormValueFormat(type, time);
+        }
+    }, [initFormValueFormat, time, type]);
+    var availableDate = React.useMemo(function () { return makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture); }, [disableFuture, disablePast, maxDate, minDate]);
+    // State - style ---------------------------------------------------------------------------------------------------
+    var style = useAutoUpdateState$1(React.useCallback(function () {
+        if (width != null) {
+            return __assign$7(__assign$7({}, initStyle), { width: width });
+        }
+        else {
+            return initStyle;
+        }
+    }, [initStyle, width]))[0];
+    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    var getFinalValue = React.useCallback(function (value) {
+        return value;
+    }, []);
+    // State - value ---------------------------------------------------------------------------------------------------
+    var _j = useAutoUpdateState$1(initValue || null, getFinalValue), value = _j[0], setValue = _j[1];
+    var _k = React.useState(null), inputValue = _k[0], setInputValue = _k[1];
+    // Effect ----------------------------------------------------------------------------------------------------------
+    React.useEffect(function () {
+        if (value !== initValue) {
+            if (onChange)
+                onChange(value);
+            onValueChange(name, value);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    useFirstSkipEffect$1(function () {
+        if (error)
+            validate(value);
+        if (onChange)
+            onChange(value);
+        onValueChange(name, value);
+    }, [value]);
+    React.useEffect(function () {
+        setInputValue(value);
+    }, [value]);
+    useFirstSkipEffect$1(function () {
+        if (error && !timeError)
+            validate(value);
+    }, [timeError]);
+    useFirstSkipEffect$1(function () {
+        if (open) {
+            openValueRef.current = value;
+        }
+        else {
+            if (openValueRef.current !== value) {
+                var runOnRequestSearchSubmit = void 0;
+                if (openValueRef.current && value) {
+                    runOnRequestSearchSubmit = !openValueRef.current.isSame(value, 'second');
+                }
+                else {
+                    runOnRequestSearchSubmit = true;
+                }
+                if (runOnRequestSearchSubmit) {
+                    onRequestSearchSubmit(name, value);
+                }
+            }
+        }
+    }, [open]);
+    React.useEffect(function () {
+        if (type !== 'time' && time && value && (availableDate[0] || availableDate[1])) {
+            var availableDateVal = getAvailableDateVal(availableDate, type, time);
+            var valueVal = getDateValForAvailableDate(value, type, time);
+            var timeError_1 = null;
+            if (availableDateVal[0] && valueVal < availableDateVal[0]) {
+                timeError_1 = 'minDate';
+            }
+            if (timeError_1 == null && availableDateVal[1] && valueVal > availableDateVal[1]) {
+                timeError_1 = 'maxDate';
+            }
+            setTimeError(timeError_1);
+        }
+        else {
+            setTimeError(null);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]);
+    // Memo --------------------------------------------------------------------------------------------------------------
+    var wrapStyle = React.useMemo(function () { return ({
+        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+        flex: fullWidth ? 1 : undefined,
+    }); }, [hidden, fullWidth]);
+    // Function - focus ------------------------------------------------------------------------------------------------
+    var focus = React.useCallback(function () {
+        var _a;
+        (_a = textFieldInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+    }, [textFieldInputRef]);
+    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+    var setErrorHelperText = React.useCallback(function (error, helperText) {
+        setError(error);
+        setHelperText(helperText);
+    }, [setError, setHelperText]);
+    // Function - validate ---------------------------------------------------------------------------------------------
+    var validate = React.useCallback(function (value) {
+        if (required && empty(value)) {
+            setErrorHelperText(true, '필수 입력 항목입니다.');
+            return false;
+        }
+        if (value && !value.isValid()) {
+            setErrorHelperText(true, '형식이 일치하지 않습니다.');
+            return false;
+        }
+        if (datePickerErrorRef.current) {
+            setErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
+            return false;
+        }
+        if (timeError) {
+            setErrorHelperText(true, getDateValidationErrorText(timeError));
+            return false;
+        }
+        if (onValidate) {
+            var onValidateResult = onValidate(value);
+            if (onValidateResult != null && onValidateResult !== true) {
+                setErrorHelperText(true, onValidateResult);
+                return false;
+            }
+        }
+        setErrorHelperText(false, initHelperText);
+        return true;
+    }, [required, timeError, onValidate, setErrorHelperText, initHelperText]);
+    // Commands --------------------------------------------------------------------------------------------------------
+    React.useLayoutEffect(function () {
+        if (ref || onAddValueItem) {
+            var lastValue_1 = value;
+            var lastData_1 = data;
+            var lastDisabled_1 = !!disabled;
+            var commands = {
+                getType: function () { return 'default'; },
+                getName: function () { return name; },
+                getReset: function () { return getFinalValue(initValue || null); },
+                reset: function () {
+                    lastValue_1 = getFinalValue(initValue || null);
+                    setValue(lastValue_1);
+                },
+                getValue: function () { return lastValue_1; },
+                setValue: function (value) {
+                    lastValue_1 = getFinalValue(value);
+                    setValue(lastValue_1);
+                },
+                getData: function () { return lastData_1; },
+                setData: function (data) {
+                    lastData_1 = data;
+                    setData(data);
+                },
+                isExceptValue: function () { return !!exceptValue; },
+                isDisabled: function () { return lastDisabled_1; },
+                setDisabled: function (disabled) {
+                    lastDisabled_1 = disabled;
+                    setDisabled(disabled);
+                },
+                focus: focus,
+                focusValidate: focus,
+                validate: function () { return validate(value); },
+                setError: function (error, errorText) {
+                    return setErrorHelperText(error, error ? errorText : initHelperText);
+                },
+                getFormValueFormat: function () { return formValueFormat; },
+            };
+            if (ref) {
+                if (typeof ref === 'function') {
+                    ref(commands);
+                }
+                else {
+                    ref.current = commands;
+                }
+            }
+            if (onAddValueItem)
+                onAddValueItem(id, commands);
+            return function () {
+                if (ref) {
+                    if (typeof ref === 'function') {
+                        ref(null);
+                    }
+                    else {
+                        ref.current = null;
+                    }
+                }
+                if (onRemoveValueItem)
+                    onRemoveValueItem(id);
+            };
+        }
+    }, [
+        name,
+        initValue,
+        value,
+        getFinalValue,
+        exceptValue,
+        disabled,
+        focus,
+        validate,
+        formValueFormat,
+        ref,
+        onAddValueItem,
+        onRemoveValueItem,
+        id,
+        setValue,
+        setDisabled,
+        setErrorHelperText,
+        initHelperText,
+        data,
+        setData,
+    ]);
+    // Event Handler ---------------------------------------------------------------------------------------------------
+    var handleChange = React.useCallback(function (unit, newValue, keyboardInputValue) {
+        var updateValue = true;
+        if (notEmpty(keyboardInputValue)) {
+            if (newValue) {
+                if (!newValue.isValid()) {
+                    updateValue = false;
+                }
+            }
+        }
+        var finalValue = newValue;
+        if (updateValue) {
+            if (type !== 'time' && finalValue != null && keyboardInputValue == null) {
+                var checkResult = checkDateAvailable(finalValue, availableDate, type, time);
+                if (checkResult !== 'available') {
+                    var availableDateDate = getAvailableDate(availableDate, type, time);
+                    if (checkResult === 'min') {
+                        if (availableDateDate[0])
+                            finalValue = availableDateDate[0];
+                    }
+                    else if (checkResult === 'max') {
+                        if (availableDateDate[1])
+                            finalValue = availableDateDate[1];
+                    }
+                }
+            }
+            var runOnRequestSearchSubmit_1 = false;
+            if (notEmpty(keyboardInputValue)) {
+                if (!time || unit !== 'action_date') {
+                    runOnRequestSearchSubmit_1 = !open; // 팝업창 열리지 않은 상태에서 날짜 키보드로 변경
+                    setOpen(false);
+                }
+            }
+            else if (time) {
+                if (time === unit)
+                    setOpen(false);
+            }
+            setValue(finalValue);
+            nextTick(function () {
+                onValueChangeByUser(name, finalValue);
+                if (runOnRequestSearchSubmit_1) {
+                    onRequestSearchSubmit(name, finalValue);
+                }
+            });
+        }
+        setInputValue(finalValue);
+    }, [type, time, setValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]);
+    var handleContainerFocus = React.useCallback(function () {
+        if (closeTimeoutRef.current) {
+            clearTimeout(closeTimeoutRef.current);
+            closeTimeoutRef.current = undefined;
+        }
+    }, []);
+    var handleContainerBlur = React.useCallback(function () {
+        if (closeTimeoutRef.current) {
+            clearTimeout(closeTimeoutRef.current);
+            closeTimeoutRef.current = undefined;
+        }
+        if (!mouseDownTimeRef.current || new Date().getTime() - mouseDownTimeRef.current > 100) {
+            closeTimeoutRef.current = setTimeout(function () {
+                closeTimeoutRef.current = undefined;
+                setOpen(false);
+            }, 10);
+        }
+    }, []);
+    var handleContainerMouseDown = React.useCallback(function () {
+        if (closeTimeoutRef.current) {
+            clearTimeout(closeTimeoutRef.current);
+            closeTimeoutRef.current = undefined;
+        }
+        mouseDownTimeRef.current = new Date().getTime();
+    }, []);
+    // Memo --------------------------------------------------------------------------------------------------------------
+    var slotProps = React.useMemo(function () {
+        var textFieldInputLabelProps = {};
+        if (labelShrink) {
+            textFieldInputLabelProps.shrink = labelShrink;
+        }
+        var readOnly = readOnlyInput;
+        var inputProps = {
+            readOnly: readOnly,
+        };
+        if (readOnly) {
+            inputProps.tabIndex = -1;
+            inputProps.className = classNames$1(inputProps.className, 'Mui-disabled');
+        }
+        var muiInputProps = { endAdornment: undefined };
+        if (startAdornment || icon || muiInputProps.startAdornment) {
+            muiInputProps.startAdornment = (React.createElement(React.Fragment, null,
+                icon && (React.createElement(material.InputAdornment, { position: 'start' },
+                    React.createElement(FormIcon, { fontSize: 'small' }, icon))),
+                startAdornment && React.createElement(material.InputAdornment, { position: 'start' }, startAdornment),
+                muiInputProps.startAdornment));
+        }
+        if (endAdornment) {
+            muiInputProps.endAdornment = (React.createElement(React.Fragment, null, endAdornment && React.createElement(material.InputAdornment, { position: 'end' }, endAdornment)));
+        }
+        return {
+            textField: {
+                className: classNames$1('input-text-field', "align-".concat(align)),
+                inputRef: function (ref) {
+                    textFieldInputRef.current = ref;
+                },
+                variant: variant,
+                size: size,
+                color: color,
+                focused: focused,
+                InputLabelProps: textFieldInputLabelProps,
+                InputProps: muiInputProps,
+                inputProps: inputProps,
+                required: required,
+                fullWidth: fullWidth,
+                helperText: undefined,
+                error: !!error || !!timeError,
+                style: style,
+                sx: sx,
+                onFocus: function () {
+                    setOpen(true);
+                },
+                onClick: function () {
+                    setOpen(true);
+                },
+            },
+        };
+    }, [
+        align,
+        color,
+        endAdornment,
+        error,
+        focused,
+        fullWidth,
+        icon,
+        labelShrink,
+        readOnlyInput,
+        required,
+        size,
+        startAdornment,
+        style,
+        sx,
+        timeError,
+        variant,
+    ]);
+    // Render ----------------------------------------------------------------------------------------------------------
+    return (React.createElement(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs.AdapterDayjs },
+        React.createElement(material.ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
+            React.createElement("div", { className: classNames$1(className, 'PrivateDatePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
+                React.createElement(PrivateStyledTooltip, { open: disabled || readOnly ? false : open, PopperProps: {
+                        modifiers: [
+                            {
+                                name: 'offset',
+                                options: {
+                                    offset: [0, error && helperText ? 8 : -14],
+                                },
+                            },
+                        ],
+                    }, title: React.createElement(PrivateStaticDatePicker, __assign$7({}, otherProps, { ref: privateStaticDatePickerRef, type: type, time: time, value: value, availableDate: availableDate, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, hours: hours, minutes: minutes, seconds: seconds, minuteInterval: minuteInterval, secondInterval: secondInterval, onChange: handleChange, onAccept: function () { return !time && setOpen(false); }, onClose: function () { return setOpen(false); } })) },
+                    React.createElement("div", { style: { display: fullWidth ? 'block' : 'inline-block' } },
+                        React.createElement(xDatePickers.DesktopDatePicker, __assign$7({ value: inputValue, label: label, open: false, format: format, disabled: disabled, readOnly: readOnly, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, onClose: function () { return setOpen(false); }, onError: function (reason) { return (datePickerErrorRef.current = reason); }, onChange: function (newValue) { return handleChange('date', newValue); }, slotProps: slotProps }, otherProps)))),
+                !formColWithHelperText && helperText && (React.createElement(material.FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, helperText))))));
+});
+PrivateDatePicker.displayName = 'PrivateDatePicker';
+PrivateDatePicker.defaultProps = PrivateDatePickerDefaultProps;var PrivateDateTimePickerDefaultProps = {
+    showDaysOutsideCurrentMonth: true,
+    align: 'center',
+};var css_248z$6 = ".PrivateDateTimePicker .input-text-field.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.PrivateDateTimePicker .input-text-field.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.PrivateDateTimePicker .input-text-field.align-right .MuiInputBase-input {\n  text-align: right;\n}";
+styleInject(css_248z$6);var PrivateStaticDateTimePickerDefaultProps = {};var css_248z$5 = ".PrivateStaticDateTimePicker.time {\n  height: 400px;\n}\n.PrivateStaticDateTimePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDateTimePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDateTimePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDateTimePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDateTimePicker .action-buttons button:not(:first-child) {\n  margin-left: 5px;\n}\n.PrivateStaticDateTimePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDateTimePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDateTimePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDateTimePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDateTimePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDateTimePicker.time .time .time-container .time-select-wrap > div > div:not(:first-child) {\n  border-left: 1px solid #efefef;\n}";
+styleInject(css_248z$5);var DEFAULT_HOURS = new Array(24).fill(0);
 for (var i$1 = 0; i$1 < DEFAULT_HOURS.length; i$1 += 1) {
     DEFAULT_HOURS[i$1] = i$1;
 }
@@ -10081,7 +10793,7 @@ var DEFAULT_SECONDS = new Array(60).fill(0);
 for (var i$1 = 0; i$1 < DEFAULT_SECONDS.length; i$1 += 1) {
     DEFAULT_SECONDS[i$1] = i$1;
 }
-var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
+var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
     // Ref -------------------------------------------------------------------------------------------------------------
     var value = _a.value, initAvailableDate = _a.availableDate, defaultCalendarMonth = _a.defaultCalendarMonth, type = _a.type, time = _a.time, initHours = _a.hours, initMinutes = _a.minutes, initSeconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest$4(_a, ["value", "availableDate", "defaultCalendarMonth", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
     var hourSelectRef = React.useRef(null);
@@ -10244,7 +10956,7 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
             } }, label));
     }, [type, time, onChange, availableDate]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React.createElement(material.Grid, { container: true, className: classNames$1('PrivateStaticDatePicker', type) },
+    return (React.createElement(material.Grid, { container: true, className: classNames$1('PrivateStaticDateTimePicker', type) },
         type !== 'time' && (React.createElement(material.Grid, { item: true },
             React.createElement(material.Grid, { container: true, direction: 'column' },
                 React.createElement(material.Grid, { item: true, sx: { p: 2, width: '100%' } },
@@ -10281,11 +10993,11 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
                             React.createElement(material.IconButton, { onClick: nextMonth },
                                 React.createElement(material.Icon, null, "keyboard_arrow_right")))))),
                 React.createElement(material.Grid, { item: true, style: { position: 'relative' } },
-                    React.createElement(xDatePickers.StaticDatePicker, __assign$7({}, props, { value: activeMonthValue, defaultCalendarMonth: month, slots: {
+                    React.createElement(xDatePickers.StaticDateTimePicker, __assign$7({}, props, { value: activeMonthValue, defaultCalendarMonth: month, slots: {
                             previousIconButton: LeftArrowButton,
                             nextIconButton: RightArrowButton,
                             day: handleRenderDay,
-                        }, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, displayStaticWrapperAs: 'desktop', onChange: function (newValue) {
+                        }, viewRenderers: { hours: null, minutes: null, seconds: null }, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, displayStaticWrapperAs: 'desktop', onChange: function (newValue) {
                             var finalValue = newValue
                                 ? value
                                     ? newValue.set('hour', value.hour()).set('minute', value.minute()).set('second', value.second())
@@ -10346,28 +11058,8 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
                 onClose && (React.createElement(material.Grid, { item: true, className: 'action-buttons' },
                     React.createElement(material.Button, { variant: 'text', onClick: onClose }, "\uB2EB\uAE30"))))))));
 });
-PrivateStaticDatePicker.displayName = 'PrivateStaticDatePicker';
-PrivateStaticDatePicker.defaultProps = PrivateStaticDatePickerDefaultProps;var PrivateStyledTooltip = material.styled(function (_a) {
-    var className = _a.className, props = __rest$4(_a, ["className"]);
-    return (React.createElement(material.Tooltip, __assign$7({}, props, { classes: { popper: className } })));
-})(function (_a) {
-    var _b;
-    var theme = _a.theme;
-    return (_b = {},
-        _b["& .".concat(material.tooltipClasses.tooltip)] = {
-            backgroundColor: 'white',
-            color: 'rgba(0, 0, 0, 0.87)',
-            border: '1px solid #dadde9',
-            padding: 0,
-            borderRadius: 0,
-            margin: 0,
-            width: 'auto',
-            maxWidth: 'inherit !important',
-            boxShadow: theme.shadows[8],
-        },
-        _b);
-});var css_248z$5 = ".PrivateDatePicker .input-text-field.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.PrivateDatePicker .input-text-field.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.PrivateDatePicker .input-text-field.align-right .MuiInputBase-input {\n  text-align: right;\n}";
-styleInject(css_248z$5);var PrivateDatePicker = React.forwardRef(function (_a, ref) {
+PrivateStaticDateTimePicker.displayName = 'PrivateStaticDateTimePicker';
+PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultProps;var PrivateDateTimePicker = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
@@ -10376,7 +11068,7 @@ styleInject(css_248z$5);var PrivateDatePicker = React.forwardRef(function (_a, r
     className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$4(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = React.useId();
     // Ref -------------------------------------------------------------------------------------------------------------
-    var privateStaticDatePickerRef = React.useRef(null);
+    var privateStaticDateTimePickerRef = React.useRef(null);
     var textFieldInputRef = React.useRef();
     var closeTimeoutRef = React.useRef();
     var mouseDownTimeRef = React.useRef();
@@ -10676,13 +11368,13 @@ styleInject(css_248z$5);var PrivateDatePicker = React.forwardRef(function (_a, r
                     switch (unit) {
                         case 'date':
                         case 'action_date':
-                            (_a = privateStaticDatePickerRef.current) === null || _a === void 0 ? void 0 : _a.timeSelectScrollToDate(finalValue);
+                            (_a = privateStaticDateTimePickerRef.current) === null || _a === void 0 ? void 0 : _a.timeSelectScrollToDate(finalValue);
                             break;
                         case 'hour':
-                            (_b = privateStaticDatePickerRef.current) === null || _b === void 0 ? void 0 : _b.timeSelectScrollToDate(finalValue, ['minute', 'second']);
+                            (_b = privateStaticDateTimePickerRef.current) === null || _b === void 0 ? void 0 : _b.timeSelectScrollToDate(finalValue, ['minute', 'second']);
                             break;
                         case 'minute':
-                            (_c = privateStaticDatePickerRef.current) === null || _c === void 0 ? void 0 : _c.timeSelectScrollToDate(finalValue, ['second']);
+                            (_c = privateStaticDateTimePickerRef.current) === null || _c === void 0 ? void 0 : _c.timeSelectScrollToDate(finalValue, ['second']);
                             break;
                     }
                 }
@@ -10788,7 +11480,7 @@ styleInject(css_248z$5);var PrivateDatePicker = React.forwardRef(function (_a, r
     // Render ----------------------------------------------------------------------------------------------------------
     return (React.createElement(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs.AdapterDayjs },
         React.createElement(material.ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
-            React.createElement("div", { className: classNames$1(className, 'PrivateDatePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
+            React.createElement("div", { className: classNames$1(className, 'PrivateDateTimePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
                 React.createElement(PrivateStyledTooltip, { open: disabled || readOnly ? false : open, PopperProps: {
                         modifiers: [
                             {
@@ -10798,13 +11490,13 @@ styleInject(css_248z$5);var PrivateDatePicker = React.forwardRef(function (_a, r
                                 },
                             },
                         ],
-                    }, title: React.createElement(PrivateStaticDatePicker, __assign$7({}, otherProps, { ref: privateStaticDatePickerRef, type: type, time: time, value: value, availableDate: availableDate, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, hours: hours, minutes: minutes, seconds: seconds, minuteInterval: minuteInterval, secondInterval: secondInterval, onChange: handleChange, onAccept: function () { return !time && setOpen(false); }, onClose: function () { return setOpen(false); } })) },
+                    }, title: React.createElement(PrivateStaticDateTimePicker, __assign$7({}, otherProps, { ref: privateStaticDateTimePickerRef, type: type, time: time, value: value, availableDate: availableDate, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, hours: hours, minutes: minutes, seconds: seconds, minuteInterval: minuteInterval, secondInterval: secondInterval, onChange: handleChange, onAccept: function () { return !time && setOpen(false); }, onClose: function () { return setOpen(false); } })) },
                     React.createElement("div", { style: { display: fullWidth ? 'block' : 'inline-block' } },
-                        React.createElement(xDatePickers.DesktopDatePicker, __assign$7({ value: inputValue, label: label, open: false, format: format, disabled: disabled, readOnly: readOnly, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, onClose: function () { return setOpen(false); }, onError: function (reason) { return (datePickerErrorRef.current = reason); }, onChange: function (newValue) { return handleChange('date', newValue); }, slotProps: slotProps }, otherProps)))),
+                        React.createElement(xDatePickers.DesktopDateTimePicker, __assign$7({ value: inputValue, label: label, open: false, format: format, disabled: disabled, readOnly: readOnly, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, onClose: function () { return setOpen(false); }, onError: function (reason) { return (datePickerErrorRef.current = reason); }, onChange: function (newValue) { return handleChange('date', newValue); }, slotProps: slotProps }, otherProps)))),
                 !formColWithHelperText && helperText && (React.createElement(material.FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, helperText))))));
 });
-PrivateDatePicker.displayName = 'PrivateDatePicker';
-PrivateDatePicker.defaultProps = PrivateDatePickerDefaultProps;var PrivateAlertDialogDefaultProps = {
+PrivateDateTimePicker.displayName = 'PrivateDateTimePicker';
+PrivateDateTimePicker.defaultProps = PrivateDateTimePickerDefaultProps;var PrivateAlertDialogDefaultProps = {
     color: 'primary',
 };var PrivateAlertDialog = function (_a) {
     var color = _a.color, open = _a.open, title = _a.title, content = _a.content, onClose = _a.onClose;
@@ -10843,7 +11535,7 @@ FormDatePicker.defaultProps = FormDatePickerDefaultProps;var FormDateTimePickerD
     }, [onAddValueItem]);
     // Render ----------------------------------------------------------------------------------------------------------
     return (React.createElement(FormContextProvider, { value: __assign$7({ onAddValueItem: handleAddValueItem }, otherFormState) },
-        React.createElement(PrivateDatePicker, __assign$7({ className: classNames$1(className, 'FormDateTimePicker') }, props, { ref: ref, type: 'date_time' }))));
+        React.createElement(PrivateDateTimePicker, __assign$7({ className: classNames$1(className, 'FormDateTimePicker') }, props, { ref: ref, type: 'date_time' }))));
 });
 FormDateTimePicker.displayName = 'FormDateTimePicker';
 FormDateTimePicker.defaultProps = FormDateTimePickerDefaultProps;var FormTimePickerDefaultProps = {};var FormTimePicker = React.forwardRef(function (_a, ref) {
@@ -10857,7 +11549,7 @@ FormDateTimePicker.defaultProps = FormDateTimePickerDefaultProps;var FormTimePic
     }, [onAddValueItem]);
     // Render ----------------------------------------------------------------------------------------------------------
     return (React.createElement(FormContextProvider, { value: __assign$7({ onAddValueItem: handleAddValueItem }, otherFormState) },
-        React.createElement(PrivateDatePicker, __assign$7({ className: classNames$1(className, 'FormTimePicker') }, props, { ref: ref, type: 'time' }))));
+        React.createElement(PrivateDateTimePicker, __assign$7({ className: classNames$1(className, 'FormTimePicker') }, props, { ref: ref, type: 'time' }))));
 });
 FormTimePicker.displayName = 'FormTimePicker';
 FormTimePicker.defaultProps = FormTimePickerDefaultProps;var FormDateRangePickerDefaultProps = {
