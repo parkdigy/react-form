@@ -679,7 +679,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     // Render ----------------------------------------------------------------------------------------------------------
 
     return (
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ko'>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
           <div
             className={classNames(className, 'FormDateRangePicker')}

@@ -593,7 +593,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     // Render ----------------------------------------------------------------------------------------------------------
 
     return (
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ko'>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
           <div
             className={classNames(className, 'PrivateDatePicker')}

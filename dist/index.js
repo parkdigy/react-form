@@ -10786,7 +10786,7 @@ styleInject(css_248z$5);var PrivateDatePicker = React.forwardRef(function (_a, r
         variant,
     ]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React.createElement(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs.AdapterDayjs, adapterLocale: 'ko' },
+    return (React.createElement(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs.AdapterDayjs },
         React.createElement(material.ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
             React.createElement("div", { className: classNames$1(className, 'PrivateDatePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
                 React.createElement(PrivateStyledTooltip, { open: disabled || readOnly ? false : open, PopperProps: {
@@ -11931,7 +11931,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
         setData,
     ]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React.createElement(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs.AdapterDayjs, adapterLocale: 'ko' },
+    return (React.createElement(xDatePickers.LocalizationProvider, { dateAdapter: AdapterDayjs.AdapterDayjs },
         React.createElement(material.ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
             React.createElement("div", { className: classNames$1(className, 'FormDateRangePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
                 React.createElement(PrivateStyledTooltip, { open: open, PopperProps: {
