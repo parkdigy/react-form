@@ -1,18 +1,19 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
-  PrivateStaticDatePickerProps as Props,
-  PrivateStaticDatePickerDefaultProps,
-  PrivateStaticDatePickerCommands,
-} from './PrivateStaticDatePicker.types';
-import { PickersDay, PickersDayProps, StaticDatePicker } from '@mui/x-date-pickers';
+  PrivateStaticDateTimePickerProps as Props,
+  PrivateStaticDateTimePickerDefaultProps,
+  PrivateStaticDateTimePickerCommands,
+  TimeSelectScrollToDateUnit,
+} from './PrivateStaticDateTimePicker.types';
+import { PickersDay, PickersDayProps, StaticDateTimePicker } from '@mui/x-date-pickers';
 import { Button, Grid, Icon, IconButton, IconButtonProps } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { PrivateYearSelect } from '../PrivateYearSelect';
 import { PrivateMonthSelect } from '../PrivateMonthSelect';
 import { PrivateTimeSelect, PrivateTimeSelectCommands } from '../PrivateTimeSelect';
 import { checkDateAvailable, getAvailableDate, isDateAvailable, makeAvailableDate } from '../../@util';
-import './PrivateStaticDatePicker.scss';
+import './PrivateStaticDateTimePicker.scss';
 
 const DEFAULT_HOURS: number[] = new Array(24).fill(0);
 for (let i = 0; i < DEFAULT_HOURS.length; i += 1) {
@@ -29,7 +30,7 @@ for (let i = 0; i < DEFAULT_SECONDS.length; i += 1) {
   DEFAULT_SECONDS[i] = i;
 }
 
-const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands, Props>(
+const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePickerCommands, Props>(
   (
     {
       value,
@@ -168,6 +169,12 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
       }
     }, []);
 
+    const timeSelectScrollToDate = useCallback((date: Dayjs, times?: TimeSelectScrollToDateUnit[]) => {
+      if (!times || times?.includes('hour')) hourSelectRef.current?.scrollToValue(date.hour());
+      if (!times || times?.includes('minute')) minuteSelectRef.current?.scrollToValue(date.minute());
+      if (!times || times?.includes('second')) secondSelectRef.current?.scrollToValue(date.second());
+    }, []);
+
     // Event Handler ---------------------------------------------------------------------------------------------------
 
     const handleYearSelect = useCallback(
@@ -200,7 +207,9 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
 
     useLayoutEffect(() => {
       if (ref) {
-        const commands: PrivateStaticDatePickerCommands = {};
+        const commands: PrivateStaticDateTimePickerCommands = {
+          timeSelectScrollToDate,
+        };
 
         if (typeof ref === 'function') {
           ref(commands);
@@ -216,7 +225,7 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
           }
         };
       }
-    }, [ref]);
+    }, [ref, timeSelectScrollToDate]);
 
     // Render - Function -----------------------------------------------------------------------------------------------
 
@@ -253,7 +262,7 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
     // Render ----------------------------------------------------------------------------------------------------------
 
     return (
-      <Grid container className={classNames('PrivateStaticDatePicker', type)}>
+      <Grid container className={classNames('PrivateStaticDateTimePicker', type)}>
         {type !== 'time' && (
           <Grid item>
             <Grid container direction='column'>
@@ -310,7 +319,7 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
                 </Grid>
               </Grid>
               <Grid item style={{ position: 'relative' }}>
-                <StaticDatePicker
+                <StaticDateTimePicker
                   {...props}
                   value={activeMonthValue}
                   defaultCalendarMonth={month}
@@ -478,7 +487,7 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
   }
 );
 
-PrivateStaticDatePicker.displayName = 'PrivateStaticDatePicker';
-PrivateStaticDatePicker.defaultProps = PrivateStaticDatePickerDefaultProps;
+PrivateStaticDateTimePicker.displayName = 'PrivateStaticDateTimePicker';
+PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultProps;
 
-export default PrivateStaticDatePicker;
+export default PrivateStaticDateTimePicker;

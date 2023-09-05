@@ -1,0 +1,70 @@
+import { ReactNode } from 'react';
+import { DesktopDateTimePickerProps } from '@mui/x-date-pickers';
+import {
+  CommonSxProps,
+  FormDateType,
+  FormDateValueItemCommands,
+  FormTimeType,
+  FormValueItemBaseCommands,
+  FormValueItemProps,
+} from '../../@types';
+import { Dayjs } from 'dayjs';
+
+export type PrivateDateTimePickerValue = Dayjs | null;
+
+export interface PrivateDateTimePickerProps
+  extends CommonSxProps,
+    Partial<
+      Omit<
+        DesktopDateTimePickerProps<Dayjs>,
+        | 'children'
+        | 'className'
+        | 'style'
+        | 'sx'
+        | 'value'
+        | 'inputFormat'
+        | 'views'
+        | 'onChange'
+        | 'openTo'
+        | 'view'
+        | 'viewRenderers'
+        | 'components'
+        | 'componentsProps'
+        | 'slots'
+        | 'slotProps'
+      >
+    >,
+    Omit<FormValueItemProps, 'value' | 'onChange'> {
+  type: FormDateType;
+  time?: FormTimeType;
+  value?: PrivateDateTimePickerValue;
+  hours?: number[];
+  minutes?: number[];
+  seconds?: number[];
+  minuteInterval?: number;
+  secondInterval?: number;
+  required?: boolean;
+  labelShrink?: boolean;
+  format?: string;
+  formValueFormat?: string;
+  icon?: string;
+  startAdornment?: ReactNode;
+  endAdornment?: ReactNode;
+  align?: 'left' | 'center' | 'right';
+  readOnlyInput?: boolean;
+  hidden?: boolean;
+  onChange?(value: PrivateDateTimePickerValue): void;
+  onValidate?(value: PrivateDateTimePickerValue): boolean | string;
+}
+
+export const PrivateDateTimePickerDefaultProps: Pick<
+  PrivateDateTimePickerProps,
+  'showDaysOutsideCurrentMonth' | 'align'
+> = {
+  showDaysOutsideCurrentMonth: true,
+  align: 'center',
+};
+
+export interface PrivateDateTimePickerCommands
+  extends FormValueItemBaseCommands<PrivateDateTimePickerValue>,
+    FormDateValueItemCommands {}

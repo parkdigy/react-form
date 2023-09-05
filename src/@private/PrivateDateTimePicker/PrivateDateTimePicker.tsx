@@ -1,16 +1,21 @@
 import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider, DesktopDatePicker, DateValidationError } from '@mui/x-date-pickers';
+import {
+  LocalizationProvider,
+  DateTimeValidationError,
+  DesktopDateTimePicker,
+  DesktopDateTimePickerSlotsComponentsProps,
+} from '@mui/x-date-pickers';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
 import { IconText } from '@pdg/react-component';
 import {
-  PrivateDatePickerProps as Props,
-  PrivateDatePickerDefaultProps,
-  PrivateDatePickerCommands,
-  PrivateDatePickerValue,
-} from './PrivateDatePicker.types';
+  PrivateDateTimePickerProps as Props,
+  PrivateDateTimePickerDefaultProps,
+  PrivateDateTimePickerCommands,
+  PrivateDateTimePickerValue,
+} from './PrivateDateTimePicker.types';
 import { useFormState } from '../../FormContext';
 import {
   checkDateAvailable,
@@ -25,19 +30,15 @@ import {
   nextTick,
   notEmpty,
 } from '../../@util';
-import {
-  PrivateStaticDatePicker,
-  PrivateStaticDatePickerCommands,
-  PrivateStaticDatePickerUnit,
-} from '../PrivateStaticDatePicker';
+import { PrivateStaticDateTimePickerCommands, PrivateStaticDateTimePickerUnit } from '../PrivateStaticDateTimePicker';
 import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
 import { FormIcon } from '../../FormCommon';
 import { InputBaseProps } from '@mui/material/InputBase';
-import './PrivateDatePicker.scss';
-import { DesktopDatePickerSlotsComponentsProps } from '@mui/x-date-pickers/DesktopDatePicker/DesktopDatePicker.types';
+import './PrivateDateTimePicker.scss';
 import { Dayjs } from 'dayjs';
+import PrivateStaticDateTimePicker from '../PrivateStaticDateTimePicker';
 
-const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
+const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Props>(
   (
     {
       variant: initVariant,
@@ -94,12 +95,12 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
     // Ref -------------------------------------------------------------------------------------------------------------
 
-    const privateStaticDatePickerRef = useRef<PrivateStaticDatePickerCommands>(null);
+    const privateStaticDateTimePickerRef = useRef<PrivateStaticDateTimePickerCommands>(null);
     const textFieldInputRef = useRef<HTMLInputElement>();
     const closeTimeoutRef = useRef<NodeJS.Timeout>();
     const mouseDownTimeRef = useRef<number>();
-    const datePickerErrorRef = useRef<DateValidationError>(null);
-    const openValueRef = useRef<PrivateDatePickerValue>(null);
+    const datePickerErrorRef = useRef<DateTimeValidationError>(null);
+    const openValueRef = useRef<PrivateDateTimePickerValue>(null);
 
     // FormState -------------------------------------------------------------------------------------------------------
 
@@ -140,7 +141,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     // State -----------------------------------------------------------------------------------------------------------
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [timeError, setTimeError] = useState<DateValidationError>(null);
+    const [timeError, setTimeError] = useState<DateTimeValidationError>(null);
     const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
@@ -190,14 +191,14 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
-    const getFinalValue = useCallback((value: PrivateDatePickerValue): PrivateDatePickerValue => {
+    const getFinalValue = useCallback((value: PrivateDateTimePickerValue): PrivateDateTimePickerValue => {
       return value;
     }, []);
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<PrivateDatePickerValue>(initValue || null, getFinalValue);
-    const [inputValue, setInputValue] = useState<PrivateDatePickerValue>(null);
+    const [value, setValue] = useAutoUpdateState<PrivateDateTimePickerValue>(initValue || null, getFinalValue);
+    const [inputValue, setInputValue] = useState<PrivateDateTimePickerValue>(null);
 
     // Effect ----------------------------------------------------------------------------------------------------------
 
@@ -246,7 +247,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       if (type !== 'time' && time && value && (availableDate[0] || availableDate[1])) {
         const availableDateVal = getAvailableDateVal(availableDate, type, time);
         const valueVal = getDateValForAvailableDate(value, type, time);
-        let timeError: DateValidationError = null;
+        let timeError: DateTimeValidationError = null;
 
         if (availableDateVal[0] && valueVal < availableDateVal[0]) {
           timeError = 'minDate';
@@ -291,7 +292,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     // Function - validate ---------------------------------------------------------------------------------------------
 
     const validate = useCallback(
-      (value: PrivateDatePickerValue) => {
+      (value: PrivateDateTimePickerValue) => {
         if (required && empty(value)) {
           setErrorHelperText(true, '필수 입력 항목입니다.');
           return false;
@@ -331,7 +332,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
         let lastData = data;
         let lastDisabled = !!disabled;
 
-        const commands: PrivateDatePickerCommands = {
+        const commands: PrivateDateTimePickerCommands = {
           getType: () => 'default',
           getName: () => name,
           getReset: () => getFinalValue(initValue || null),
@@ -411,7 +412,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     // Event Handler ---------------------------------------------------------------------------------------------------
 
     const handleChange = useCallback(
-      (unit: PrivateStaticDatePickerUnit, newValue: PrivateDatePickerValue, keyboardInputValue?: string) => {
+      (unit: PrivateStaticDateTimePickerUnit, newValue: PrivateDateTimePickerValue, keyboardInputValue?: string) => {
         let updateValue = true;
         if (notEmpty(keyboardInputValue)) {
           if (newValue) {
@@ -460,13 +461,13 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
               switch (unit) {
                 case 'date':
                 case 'action_date':
-                  // privateStaticDatePickerRef.current?.timeSelectScrollToDate(finalValue);
+                  privateStaticDateTimePickerRef.current?.timeSelectScrollToDate(finalValue);
                   break;
                 case 'hour':
-                  // privateStaticDatePickerRef.current?.timeSelectScrollToDate(finalValue, ['minute', 'second']);
+                  privateStaticDateTimePickerRef.current?.timeSelectScrollToDate(finalValue, ['minute', 'second']);
                   break;
                 case 'minute':
-                  // privateStaticDatePickerRef.current?.timeSelectScrollToDate(finalValue, ['second']);
+                  privateStaticDateTimePickerRef.current?.timeSelectScrollToDate(finalValue, ['second']);
                   break;
               }
             }
@@ -509,7 +510,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
     // Memo --------------------------------------------------------------------------------------------------------------
 
-    const slotProps = useMemo<DesktopDatePickerSlotsComponentsProps<Dayjs>>(() => {
+    const slotProps = useMemo<DesktopDateTimePickerSlotsComponentsProps<Dayjs>>(() => {
       const textFieldInputLabelProps: Partial<InputLabelProps> = {};
       if (labelShrink) {
         textFieldInputLabelProps.shrink = labelShrink;
@@ -596,7 +597,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
           <div
-            className={classNames(className, 'PrivateDatePicker')}
+            className={classNames(className, 'PrivateDateTimePicker')}
             style={wrapStyle}
             onMouseDown={handleContainerMouseDown}
             onFocus={handleContainerFocus}
@@ -615,9 +616,9 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
                 ],
               }}
               title={
-                <PrivateStaticDatePicker
+                <PrivateStaticDateTimePicker
                   {...otherProps}
-                  ref={privateStaticDatePickerRef}
+                  ref={privateStaticDateTimePickerRef}
                   type={type}
                   time={time}
                   value={value}
@@ -638,7 +639,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
               }
             >
               <div style={{ display: fullWidth ? 'block' : 'inline-block' }}>
-                <DesktopDatePicker
+                <DesktopDateTimePicker
                   value={inputValue}
                   label={label}
                   open={false}
@@ -669,7 +670,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
   }
 );
 
-PrivateDatePicker.displayName = 'PrivateDatePicker';
-PrivateDatePicker.defaultProps = PrivateDatePickerDefaultProps;
+PrivateDateTimePicker.displayName = 'PrivateDateTimePicker';
+PrivateDateTimePicker.defaultProps = PrivateDateTimePickerDefaultProps;
 
-export default PrivateDatePicker;
+export default PrivateDateTimePicker;

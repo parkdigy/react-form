@@ -1,9 +1,9 @@
-import { DateValidationError } from '@mui/x-date-pickers';
+import { DateTimeValidationError, DateValidationError } from '@mui/x-date-pickers';
 import { FormDateType, FormTimeType } from '../@types';
 import { FormAvailableDate, FormAvailableDateItem, FormAvailableDateType } from '../@private/@types';
 import dayjs, { Dayjs } from 'dayjs';
 
-export function getDateValidationErrorText(error: DateValidationError) {
+export function getDateValidationErrorText(error: DateValidationError | DateTimeValidationError) {
   switch (error) {
     case 'invalidDate':
       return '형식이 일치하지 않습니다.';

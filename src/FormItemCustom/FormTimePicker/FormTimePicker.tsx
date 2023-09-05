@@ -5,7 +5,7 @@ import {
   FormTimePickerDefaultProps,
   FormTimePickerCommands,
 } from './FormTimePicker.types';
-import { PrivateDatePicker, PrivateDatePickerCommands } from '../../@private';
+import { PrivateDateTimePicker, PrivateDateTimePickerCommands } from '../../@private';
 import FormContextProvider from '../../FormContextProvider';
 import { useFormState } from '../../FormContext';
 
@@ -17,7 +17,7 @@ const FormTimePicker = React.forwardRef<FormTimePickerCommands, Props>(({ classN
   // Event Handler ---------------------------------------------------------------------------------------------------
 
   const handleAddValueItem = useCallback(
-    (id: string, commands: PrivateDatePickerCommands) => {
+    (id: string, commands: PrivateDateTimePickerCommands) => {
       commands.getType = () => 'FormTimePicker';
       onAddValueItem(id, commands);
     },
@@ -33,7 +33,7 @@ const FormTimePicker = React.forwardRef<FormTimePickerCommands, Props>(({ classN
         ...otherFormState,
       }}
     >
-      <PrivateDatePicker className={classNames(className, 'FormTimePicker')} {...props} ref={ref} type='time' />
+      <PrivateDateTimePicker className={classNames(className, 'FormTimePicker')} {...props} ref={ref} type='time' />
     </FormContextProvider>
   );
 });
