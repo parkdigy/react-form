@@ -10,12 +10,13 @@ import {
   FormValueMap,
   FormBody,
   FormFooter,
+  FormRadioGroupItems,
 } from '../../../../src';
 
-const DEFAULT_ITEMS: FormRadioGroupItem[] = [lv('Item 1', 1), lv('Item 2', 2), lv('Item 3', 3)];
+const DEFAULT_ITEMS: FormRadioGroupItem<number>[] = [lv('Item 1', 1), lv('Item 2', 2), lv('Item 3', 3)];
 
 const FormItemRadioGroup = () => {
-  const asyncLoadRadioGroupRef = useRef<FormRadioGroupCommands>(null);
+  const asyncLoadRadioGroupRef = useRef<FormRadioGroupCommands<number>>(null);
 
   //--------------------------------------------------------------------------------------------------------------------
 
@@ -44,7 +45,7 @@ const FormItemRadioGroup = () => {
   //--------------------------------------------------------------------------------------------------------------------
 
   function handleLoadItems() {
-    return new Promise<FormRadioGroupItem[]>((resolve) => {
+    return new Promise<FormRadioGroupItems<number>>((resolve) => {
       setTimeout(() => {
         resolve(DEFAULT_ITEMS);
       }, 2000);
@@ -62,7 +63,7 @@ const FormItemRadioGroup = () => {
       <FormBody>
         <FormRow>
           <FormCol>
-            <FormRadioGroup
+            <FormRadioGroup<number>
               name='label'
               items={items}
               labelIcon='RadioButtonChecked'
@@ -71,19 +72,37 @@ const FormItemRadioGroup = () => {
             />
           </FormCol>
           <FormCol>
-            <FormRadioGroup name='required' items={items} label='FormRadioGroup' required helperText='required=true' />
+            <FormRadioGroup<number>
+              name='required'
+              items={items}
+              label='FormRadioGroup'
+              required
+              helperText='required=true'
+            />
           </FormCol>
           <FormCol>
-            <FormRadioGroup name='readOnly' items={items} label='FormRadioGroup' readOnly helperText='readOnly=true' />
+            <FormRadioGroup<number>
+              name='readOnly'
+              items={items}
+              label='FormRadioGroup'
+              readOnly
+              helperText='readOnly=true'
+            />
           </FormCol>
           <FormCol>
-            <FormRadioGroup name='disabled' items={items} label='FormRadioGroup' disabled helperText='disabled=true' />
+            <FormRadioGroup<number>
+              name='disabled'
+              items={items}
+              label='FormRadioGroup'
+              disabled
+              helperText='disabled=true'
+            />
           </FormCol>
         </FormRow>
 
         <FormRow line>
           <FormCol xs={3}>
-            <FormRadioGroup
+            <FormRadioGroup<number>
               name='onLoadItems'
               label='FormRadioGroup'
               helperText='onLoadItems'
@@ -91,7 +110,7 @@ const FormItemRadioGroup = () => {
             />
           </FormCol>
           <FormCol xs={3}>
-            <FormRadioGroup
+            <FormRadioGroup<number>
               ref={asyncLoadRadioGroupRef}
               name='asyncLoadItems'
               label='FormRadioGroup'
@@ -102,7 +121,7 @@ const FormItemRadioGroup = () => {
 
         <FormRow line>
           <FormCol>
-            <FormRadioGroup
+            <FormRadioGroup<number>
               name='inline'
               items={items}
               inline={false}

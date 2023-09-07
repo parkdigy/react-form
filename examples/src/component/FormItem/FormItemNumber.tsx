@@ -83,7 +83,7 @@ const FormItemNumber = () => {
                   labelShrink
                   disabled={!allowDecimal}
                   value={decimalScale}
-                  onChange={(value) => setDecimalScale(value)}
+                  onChange={(value) => setDecimalScale(value.toString())}
                 />
               </FormCol>
             </FormRow>

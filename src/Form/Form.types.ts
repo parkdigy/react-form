@@ -3,7 +3,6 @@ import { FormControlProps, GridProps, InputLabelProps } from '@mui/material';
 import {
   PartialPick,
   CommonSxProps,
-  FormItemValue,
   FormValue,
   FormValueMap,
   FormValueItemCommands,
@@ -12,7 +11,7 @@ import {
 
 export interface FormInvalidItemInfo {
   name: string;
-  commands: FormValueItemCommands;
+  commands: FormValueItemCommands<any>;
 }
 
 export type FormInvalidItems = FormInvalidItemInfo[];
@@ -28,8 +27,8 @@ export interface FormProps
   //--------------------------------------------------------------------------------------------------------------------
   onSubmit?(data: FormValueMap): void;
   onInvalid?(invalidItems: FormInvalidItems): void;
-  onValueChange?(name: string, value: FormItemValue): void;
-  onValueChangeByUser?(name: string, value: FormItemValue): void;
+  onValueChange?(name: string, value: any): void;
+  onValueChangeByUser?(name: string, value: any): void;
 }
 
 export const FormDefaultProps: Pick<
@@ -51,14 +50,14 @@ export interface FormCommands {
   submit(): void;
   getAllFormValue(): FormValueMap;
   resetAll(): void;
-  getItem<T extends FormValueItemBaseCommands = FormValueItemCommands>(name: string): T | undefined;
+  getItem<T extends FormValueItemBaseCommands<any, true> = FormValueItemCommands<any>>(name: string): T | undefined;
   exists(name: string): boolean;
-  getReset(name: string): FormItemValue;
+  getReset(name: string): any;
   getFormReset(name: string, subKey?: string): FormValue;
   reset(name: string): void;
-  getValue(name: string): FormItemValue;
+  getValue(name: string): any;
   getFormValue(name: string, subKey?: string): FormValue;
-  setValue(name: string, value: FormItemValue): void;
+  setValue(name: string, value: any): void;
   isExceptValue(name: string): boolean;
   isDisabled(name: string): boolean;
   setDisabled(name: string, disabled: boolean): void;

@@ -1,19 +1,20 @@
-import { FormTextProps, FormTextDefaultProps } from '../FormText';
-import { FormArrayValueItemCommands, FormValueItemBaseCommands } from '../../@types';
+import { FormArrayValueItemCommands } from '../../@types';
+import { FormTextFieldCommands, FormTextFieldDefaultProps, FormTextFieldProps } from '../FormTextField';
 
-export type FormTagProps = Omit<FormTextProps, 'type' | 'value'> & {
-  value?: string[];
+export type FormTagValue = string[];
+
+export type FormTagExtraCommands = FormArrayValueItemCommands;
+
+export type FormTagCommands = FormTextFieldCommands<FormTagValue, false> & FormTagExtraCommands;
+
+export type FormTagProps = Omit<FormTextFieldProps<FormTagValue, false>, 'type'> & {
   formValueSeparator?: string;
   formValueSort?: boolean;
 };
 
 export const FormTagDefaultProps: Pick<FormTagProps, 'value' | 'clear' | 'formValueSeparator'> = {
-  ...FormTextDefaultProps,
+  ...FormTextFieldDefaultProps,
   value: [],
   clear: true,
   formValueSeparator: ',',
 };
-
-export interface FormTagExtraCommands extends FormArrayValueItemCommands {}
-
-export interface FormTagCommands extends FormValueItemBaseCommands, FormTagExtraCommands {}

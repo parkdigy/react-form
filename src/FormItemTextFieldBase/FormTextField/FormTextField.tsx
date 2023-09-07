@@ -3,13 +3,25 @@ import classNames from 'classnames';
 import { IconButton, InputAdornment, InputProps, TextField } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { nextTick, empty, notEmpty } from '../../@util';
-import { FormTextFieldProps as Props, FormTextFieldDefaultProps, FormTextFieldCommands } from './FormTextField.types';
+import {
+  FormTextFieldProps,
+  FormTextFieldDefaultProps,
+  FormTextFieldCommands,
+  FormTextFieldValue,
+} from './FormTextField.types';
 import { useFormState } from '../../FormContext';
 import { FormIcon } from '../../FormCommon';
-import { FormItemValue } from '../../@types';
 import './FormTextField.scss';
 
-const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
+interface WithForwardRefType<T = FormTextFieldValue, AllowUndefinedValue extends boolean = true>
+  extends React.FC<FormTextFieldProps<T, AllowUndefinedValue>> {
+  <T = FormTextFieldValue, AllowUndefinedValue extends boolean = true>(
+    props: FormTextFieldProps<T, AllowUndefinedValue> &
+      React.RefAttributes<FormTextFieldCommands<T, AllowUndefinedValue>>
+  ): ReturnType<React.FC<FormTextFieldProps<T, AllowUndefinedValue>>>;
+}
+
+const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands, FormTextFieldProps>(
   (
     {
       variant: initVariant,
@@ -106,11 +118,11 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [error, setError] = useAutoUpdateState<FormTextFieldProps['error']>(initError);
+    const [helperText, setHelperText] = useAutoUpdateState<FormTextFieldProps['helperText']>(initHelperText);
     const [showClear, setShowClear] = useState<boolean>(false);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
-    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
+    const [disabled, setDisabled] = useAutoUpdateState<FormTextFieldProps['disabled']>(initDisabled);
+    const [data, setData] = useAutoUpdateState<FormTextFieldProps['data']>(initData);
 
     // Memo - muiInputLabelProps ---------------------------------------------------------------------------------------
 
@@ -177,7 +189,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
     const getFinalValue = useCallback(
-      function (value: Props['value']): Props['value'] {
+      function (value: FormTextFieldProps['value']): FormTextFieldProps['value'] {
         return onValue ? onValue(value) : value;
       },
       [onValue]
@@ -185,7 +197,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateState<FormTextFieldProps['value']>(initValue, getFinalValue);
 
     useEffect(() => {
       setShowClear(clear ? notEmpty(value) : false);
@@ -226,7 +238,7 @@ const FormTextField = React.forwardRef<FormTextFieldCommands, Props>(
     // Function - validate ---------------------------------------------------------------------------------------------
 
     const validate = useCallback(
-      (value: FormItemValue) => {
+      (value: FormTextFieldValue) => {
         if (required && empty(value)) {
           setErrorHelperText(true, '필수 입력 항목입니다.');
           return false;

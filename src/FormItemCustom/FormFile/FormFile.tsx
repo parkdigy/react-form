@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Button, InputAdornment, TextField, Typography } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, notEmpty, nextTick, getFileSizeText } from '../../@util';
-import { FormFileProps as Props, FormFileDefaultProps, FormFileCommands } from './FormFile.types';
+import { FormFileProps as Props, FormFileDefaultProps, FormFileCommands, FormFileValue } from './FormFile.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
 import { FormIcon } from '../../FormCommon';
@@ -76,7 +76,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       onValueChange,
       onRemoveValueItem,
       onValueChangeByUser,
-    } = useFormState();
+    } = useFormState<FormFileValue, false>();
 
     // Memo - FormState ------------------------------------------------------------------------------------------------
 
@@ -101,7 +101,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue);
+    const [value, setValue] = useAutoUpdateState<FormFileValue>(initValue || '');
     const [fileValue] = useState('');
 
     useFirstSkipEffect(() => {
@@ -164,7 +164,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
     // Function - validate ---------------------------------------------------------------------------------------------
 
     const validate = useCallback(
-      function (value: Props['value']) {
+      function (value: FormFileValue) {
         let isEmptyValue = false;
         if (value) {
           const d = document.createElement('div');
@@ -202,9 +202,9 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       const commands: FormFileCommands = {
         getType: () => 'FormFile',
         getName: () => name,
-        getReset: () => initValue,
+        getReset: () => initValue || '',
         reset: () => {
-          lastValue = initValue;
+          lastValue = initValue || '';
           setValue(lastValue);
         },
         getValue: () => lastValue,

@@ -1,16 +1,9 @@
 import React from 'react';
-import { FormValueItemCommands } from '../../@types';
-import { FormSelectItem, FormSelectValue } from './FormSelect.types';
+import { FormSelectProps, FormSelectCommands } from './FormSelect.types';
 import './FormSelect.scss';
-declare const FormSelect: React.ForwardRefExoticComponent<Omit<import("../FormText").FormTextProps, "type" | "value" | "clear"> & {
-    items?: FormSelectItem[] | undefined;
-    value?: FormSelectValue;
-    multiple?: boolean | undefined;
-    checkbox?: boolean | undefined;
-    formValueSeparator?: string | undefined;
-    formValueSort?: boolean | undefined;
-    minWidth?: string | number | undefined;
-    loading?: boolean | undefined;
-    onLoadItems?: (() => Promise<FormSelectItem[]>) | undefined;
-} & React.RefAttributes<FormValueItemCommands<FormSelectItem, any>>>;
+import { FormValueType } from '../../@types';
+interface WithForwardRefType<T, VT extends FormValueType = 'single'> extends React.FC<FormSelectProps<T, VT>> {
+    <T, VT extends FormValueType = 'single'>(props: FormSelectProps<T, VT> & React.RefAttributes<FormSelectCommands<T, VT>>): ReturnType<React.FC<FormSelectProps<T, VT>>>;
+}
+declare const FormSelect: WithForwardRefType<any, 'any'>;
 export default FormSelect;

@@ -16,7 +16,7 @@ import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick } from '../../@util';
 import {
-  FormRadioGroupProps as Props,
+  FormRadioGroupProps,
   FormRadioGroupDefaultProps,
   FormRadioGroupCommands,
   FormRadioGroupValue,
@@ -26,7 +26,16 @@ import FormItemBase from '../FormItemBase';
 
 const PADDING_LEFT = 3;
 
-const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
+type Props = FormRadioGroupProps<any>;
+type Commands = FormRadioGroupCommands<any>;
+
+interface WithForwardRefType<T> extends React.FC<FormRadioGroupProps<T>> {
+  <T>(
+    props: FormRadioGroupProps<T> & React.RefAttributes<FormRadioGroupCommands<T>>
+  ): ReturnType<React.FC<FormRadioGroupProps<T>>>;
+}
+
+const FormRadioGroup: WithForwardRefType<any> = React.forwardRef<Commands, Props>(
   (
     {
       variant: initVariant,
@@ -137,7 +146,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
     const getFinalValue = useCallback(
-      (value: Props['value']): Props['value'] => {
+      (value: FormRadioGroupValue<any>): FormRadioGroupValue<any> => {
         return onValue ? onValue(value) : value;
       },
       [onValue]
@@ -145,7 +154,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateState<FormRadioGroupValue<any>>(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
       if (error) validate(value);
@@ -248,7 +257,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
     // Function - validate ---------------------------------------------------------------------------------------------
 
     const validate = useCallback(
-      function (value: FormRadioGroupValue) {
+      function (value: FormRadioGroupValue<any>) {
         if (required && empty(value)) {
           setErrorHelperText(true, '필수 선택 항목입니다.');
           return false;
@@ -277,7 +286,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
       let lastLoading = loading;
       let lastDisabled = !!disabled;
 
-      const commands: FormRadioGroupCommands = {
+      const commands: FormRadioGroupCommands<any> = {
         getType: () => 'FormRadioGroup',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
@@ -286,7 +295,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
           setValue(lastValue);
         },
         getValue: () => lastValue,
-        setValue: (value: Props['value']) => {
+        setValue: (value: FormRadioGroupValue<any>) => {
           lastValue = getFinalValue(value);
           setValue(lastValue);
         },
@@ -382,7 +391,7 @@ const FormRadioGroup = React.forwardRef<FormRadioGroupCommands, Props>(
         if (readOnly) {
           e.preventDefault();
         } else {
-          let finalValue: Props['value'] = e.target.value;
+          let finalValue: FormRadioGroupValue<any> = e.target.value;
           if (items) {
             const item = items.find(({ value }) => value.toString() === finalValue);
             if (item) {

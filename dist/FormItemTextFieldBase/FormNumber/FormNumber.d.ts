@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormValueItemBaseCommands } from '../../@types';
-declare const FormNumber: React.ForwardRefExoticComponent<Omit<import("../FormText").FormTextProps, "type"> & {
+import { FormNumberCommands, FormNumberValue } from './FormNumber.types';
+declare const FormNumber: React.ForwardRefExoticComponent<Omit<import("../FormTextField").FormTextFieldProps<FormNumberValue, false, FormNumberValue>, "type"> & {
     allowLeadingZeros?: boolean | undefined;
     allowNegative?: boolean | undefined;
     thousandSeparator?: boolean | undefined;
@@ -8,5 +8,5 @@ declare const FormNumber: React.ForwardRefExoticComponent<Omit<import("../FormTe
     decimalScale?: number | undefined;
     prefix?: string | undefined;
     suffix?: string | undefined;
-} & React.RefAttributes<FormValueItemBaseCommands<any>>>;
+} & React.RefAttributes<FormNumberCommands>>;
 export default FormNumber;

@@ -44,11 +44,11 @@ const _components: React.ForwardRefExoticComponent<any>[] = [
   FormSearch,
   FormTag,
   FormTextarea,
-  FormSelect,
-  FormAutocomplete,
+  FormSelect as React.ForwardRefExoticComponent<any>,
+  FormAutocomplete as React.ForwardRefExoticComponent<any>,
   FormCheckbox,
-  FormRadioGroup,
-  FormToggleButtonGroup,
+  FormRadioGroup as React.ForwardRefExoticComponent<any>,
+  FormToggleButtonGroup as React.ForwardRefExoticComponent<any>,
   FormRating,
   FormDatePicker,
 ];
@@ -57,11 +57,11 @@ function makeLabelValueItems<T>(count: number, leadText: string): T[] {
   return new Array(count).fill(0).map((v, idx) => ({ label: `${leadText}${idx + 1}`, value: `${idx + 1}` })) as T[];
 }
 
-const DefaultSelectItems = makeLabelValueItems<FormSelectItem>(50, 'Item ');
+const DefaultSelectItems = makeLabelValueItems<FormSelectItem<number>>(50, 'Item ');
 
-const DefaultRadioGroupItems = makeLabelValueItems<FormRadioGroupItem>(5, 'R ');
+const DefaultRadioGroupItems = makeLabelValueItems<FormRadioGroupItem<string>>(5, 'R ');
 
-const DefaultToggleGroupItems = makeLabelValueItems<FormToggleButtonGroupItem>(3, 'Btn ');
+const DefaultToggleGroupItems = makeLabelValueItems<FormToggleButtonGroupItem<string>>(3, 'Btn ');
 
 const FormItemStyling = () => {
   const formRef = useRef(null);
@@ -132,7 +132,7 @@ const FormItemStyling = () => {
           <FormBody>
             <FormRow>
               <FormCol>
-                <FormToggleButtonGroup
+                <FormToggleButtonGroup<string>
                   name='type'
                   label='Component'
                   items={_components.map((component) =>
@@ -148,7 +148,7 @@ const FormItemStyling = () => {
             <FormRow>
               <FormCol>
                 <Box sx={{ ml: -1, mt: -1 }}>
-                  <FormToggleButtonGroup
+                  <FormToggleButtonGroup<Exclude<FormProps['variant'], undefined>>
                     name='variant'
                     label='Variant'
                     value={variant}
@@ -158,7 +158,7 @@ const FormItemStyling = () => {
                     notAllowEmptyValue
                     sx={{ ml: 1, mt: 1 }}
                   />
-                  <FormToggleButtonGroup
+                  <FormToggleButtonGroup<Exclude<FormProps['size'], undefined>>
                     name='size'
                     label='size'
                     value={size}
@@ -168,7 +168,7 @@ const FormItemStyling = () => {
                     notAllowEmptyValue
                     sx={{ ml: 1, mt: 1 }}
                   />
-                  <FormToggleButtonGroup
+                  <FormToggleButtonGroup<Exclude<FormProps['color'], undefined>>
                     name='color'
                     label='color'
                     value={color}
@@ -191,7 +191,7 @@ const FormItemStyling = () => {
             <FormRow>
               <FormCol>
                 <Box sx={{ ml: -1, mt: -1 }}>
-                  <FormSelect
+                  <FormSelect<number>
                     name='spacing'
                     label='spacing'
                     value={Number(spacing)}

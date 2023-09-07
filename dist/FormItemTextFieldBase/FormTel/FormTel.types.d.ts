@@ -1,5 +1,5 @@
-import { FormTextProps } from '../FormText';
-export type FormTelProps = Omit<FormTextProps, 'type' | 'value' | 'maxLength'> & {
-    value?: string;
-};
-export declare const FormTelDefaultProps: Pick<FormTextProps, 'validPattern'>;
+import { FormTextProps, FormTextCommands, FormTextValue } from '../FormText';
+export type FormTelValue = FormTextValue;
+export type FormTelCommands = FormTextCommands;
+export type FormTelProps = Omit<FormTextProps, 'type' | 'maxLength'>;
+export declare const FormTelDefaultProps: Pick<FormTelProps, 'validPattern'>;

@@ -1,7 +1,7 @@
 import React from 'react';
-import { FormCol, FormRow, FormToggleButtonGroup, FormToggleButtonGroupItem } from '../../../../../../src';
+import { FormCol, FormRow, FormToggleButtonGroup, FormToggleButtonGroupItems } from '../../../../../../src';
 
-const DEFAULT_ITEMS: FormToggleButtonGroupItem[] = [
+const DEFAULT_ITEMS: FormToggleButtonGroupItems<number> = [
   lv('Btn1', 1),
   lv('Btn2', 2),
   lv('Btn3', 3),
@@ -16,7 +16,7 @@ const ToggleButtonGroup = () => {
   return (
     <FormRow>
       <FormCol>
-        <FormToggleButtonGroup
+        <FormToggleButtonGroup<number, 'multiple'>
           name={getName('FormToggleButtonGroup', true)}
           label='FormToggleButtonGroup'
           labelIcon='Workspaces'
@@ -27,13 +27,13 @@ const ToggleButtonGroup = () => {
         />
       </FormCol>
       <FormCol fullWidth={false}>
-        <FormToggleButtonGroup
+        <FormToggleButtonGroup<number>
           name={getName('FormToggleButtonGroup')}
           label='FormToggleButtonGroup'
           items={DEFAULT_ITEMS}
           helperText='AAAAAA'
         />
-        <FormToggleButtonGroup
+        <FormToggleButtonGroup<number>
           name={getName('FormToggleButtonGroup')}
           label='FormToggleButtonGroup'
           items={DEFAULT_ITEMS}
@@ -41,8 +41,8 @@ const ToggleButtonGroup = () => {
         />
       </FormCol>
       <FormCol fullWidth={false} label='FormToggleButtonGroup' helperText='AAAAAA'>
-        <FormToggleButtonGroup name={getName('FormToggleButtonGroup')} items={DEFAULT_ITEMS} />
-        <FormToggleButtonGroup name={getName('FormToggleButtonGroup')} items={DEFAULT_ITEMS} />
+        <FormToggleButtonGroup<number> name={getName('FormToggleButtonGroup')} items={DEFAULT_ITEMS} />
+        <FormToggleButtonGroup<number> name={getName('FormToggleButtonGroup')} items={DEFAULT_ITEMS} />
       </FormCol>
     </FormRow>
   );

@@ -1,4 +1,3 @@
-import { FormTextProps, FormTextDefaultProps } from '../FormText';
 import { ReactNode } from 'react';
 import {
   FormArrayValueItemCommands,
@@ -6,40 +5,50 @@ import {
   FormLoadingValueItemCommands,
   FormValueItemBaseCommands,
   FormMultipleValueItemCommands,
+  FormValueType,
 } from '../../@types';
+import { FormTextFieldDefaultProps, FormTextFieldProps } from '../FormTextField';
 
-export type FormSelectItemValue = string | number;
+export type FormSelectValue<
+  T,
+  VT extends FormValueType = 'single',
+  V = VT extends 'single' ? T : VT extends 'multiple' ? T[] : T | T[],
+> = V | undefined;
 
-export interface FormSelectItem {
+export interface FormSelectExtraCommands<T>
+  extends FormArrayValueItemCommands,
+    FormItemsValueItemCommands<FormSelectItem<T>>,
+    FormMultipleValueItemCommands,
+    FormLoadingValueItemCommands {}
+
+export interface FormSelectCommands<T, VT extends FormValueType = 'single'>
+  extends FormValueItemBaseCommands<FormSelectValue<T, VT>, true>,
+    FormSelectExtraCommands<T> {}
+
+export interface FormSelectItem<T> {
   label: ReactNode;
-  value: FormSelectItemValue;
+  value: T;
   disabled?: boolean;
 }
 
-export type FormSelectValue = FormSelectItemValue | FormSelectItemValue[] | undefined;
+export type FormSelectItems<T> = FormSelectItem<T>[];
 
-export type FormSelectProps = Omit<FormTextProps, 'type' | 'value' | 'clear'> & {
-  items?: FormSelectItem[];
-  value?: FormSelectValue;
+export type FormSelectProps<T, VT extends FormValueType = 'single'> = Omit<
+  FormTextFieldProps<FormSelectValue<T, VT>>,
+  'type' | 'clear'
+> & {
+  items?: FormSelectItems<T>;
   multiple?: boolean;
   checkbox?: boolean;
   formValueSeparator?: string;
   formValueSort?: boolean;
   minWidth?: string | number;
   loading?: boolean;
-  onLoadItems?: () => Promise<FormSelectItem[]>;
+  onLoadItems?: () => Promise<FormSelectItem<T>[]>;
 };
 
-export const FormSelectDefaultProps: Pick<FormSelectProps, 'formValueSeparator' | 'minWidth'> = {
-  ...FormTextDefaultProps,
+export const FormSelectDefaultProps: Pick<FormSelectProps<any>, 'formValueSeparator' | 'minWidth'> = {
+  ...FormTextFieldDefaultProps,
   formValueSeparator: ',',
   minWidth: 120,
 };
-
-export interface FormSelectExtraCommands
-  extends FormArrayValueItemCommands,
-    FormItemsValueItemCommands<FormSelectItem>,
-    FormMultipleValueItemCommands,
-    FormLoadingValueItemCommands {}
-
-export interface FormSelectCommands extends FormValueItemBaseCommands, FormSelectExtraCommands {}

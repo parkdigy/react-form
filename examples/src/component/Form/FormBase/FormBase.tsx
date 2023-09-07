@@ -70,7 +70,7 @@ const FormBase = () => {
           <FormBody>
             <FormRow>
               <FormCol xs={3}>
-                <FormToggleButtonGroup
+                <FormToggleButtonGroup<Exclude<FormProps['variant'], undefined>>
                   name='variant'
                   label='variant'
                   value={variant}
@@ -81,7 +81,7 @@ const FormBase = () => {
                 />
               </FormCol>
               <FormCol xs={3}>
-                <FormToggleButtonGroup
+                <FormToggleButtonGroup<Exclude<FormProps['size'], undefined>>
                   name='size'
                   label='size'
                   value={size}
@@ -92,7 +92,7 @@ const FormBase = () => {
                 />
               </FormCol>
               <FormCol>
-                <FormToggleButtonGroup
+                <FormToggleButtonGroup<Exclude<FormProps['color'], undefined>>
                   name='color'
                   label='color'
                   value={color}
@@ -112,7 +112,7 @@ const FormBase = () => {
             </FormRow>
             <FormRow>
               <FormCol>
-                <FormSelect
+                <FormSelect<number>
                   name='spacing'
                   label='spacing'
                   value={Number(spacing)}
@@ -120,7 +120,7 @@ const FormBase = () => {
                   items={[lv('0', 0), lv('1', 1), lv('2 (Default)', 2), lv('3', 3), lv('4', 4), lv('5', 5)]}
                   fullWidth={false}
                 />
-                <FormSelect
+                <FormSelect<number>
                   name='formColGap'
                   label='formColGap'
                   value={Number(formColGap)}
@@ -232,7 +232,7 @@ const FormBase = () => {
 
             <FormRow>
               <FormCol>
-                <FormSelect
+                <FormSelect<number>
                   name='FormSelect'
                   label='FormSelect'
                   placeholder='선택하세요.'
@@ -240,7 +240,7 @@ const FormBase = () => {
                 />
               </FormCol>
               <FormCol>
-                <FormAutocomplete
+                <FormAutocomplete<number>
                   name='FormAutocomplete'
                   label='FormAutocomplete'
                   multiple

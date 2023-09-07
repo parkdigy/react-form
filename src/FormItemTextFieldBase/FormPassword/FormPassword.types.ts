@@ -1,10 +1,15 @@
-import { FormTextFieldProps, FormTextFieldDefaultProps } from '../FormTextField';
+import { FormTextFieldDefaultProps } from '../FormTextField';
+import { FormTextCommands, FormTextProps, FormTextValue } from '../FormText';
 
-export interface FormPasswordProps extends Omit<FormTextFieldProps, 'disableReturnKey' | 'type'> {
+export type FormPasswordValue = FormTextValue;
+
+export type FormPasswordCommands = FormTextCommands;
+
+export interface FormPasswordProps extends Omit<FormTextProps, 'disableReturnKey' | 'type'> {
   eye?: boolean;
 }
 
-export const FormPasswordDefaultProps: Pick<FormPasswordProps, 'clear' | 'eye'> = {
+export const FormPasswordDefaultProps: Pick<FormPasswordProps, 'clear' | 'eye' | 'value'> = {
   ...FormTextFieldDefaultProps,
   clear: false,
   eye: true,

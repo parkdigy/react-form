@@ -11,13 +11,19 @@ import {
   FormValueMap,
   FormBody,
   FormFooter,
+  FormToggleButtonGroupItems,
 } from '../../../../src';
 import { OutlinedPaper } from '#ccomp';
 
-const DEFAULT_ITEMS: FormToggleButtonGroupItem[] = [lv('Item 1', 1), lv('Item 2', 2), lv('Item 3', 3), lv('Item 4', 4)];
+const DEFAULT_ITEMS: FormToggleButtonGroupItem<number>[] = [
+  lv('Item 1', 1),
+  lv('Item 2', 2),
+  lv('Item 3', 3),
+  lv('Item 4', 4),
+];
 
 const FormItemToggleButtonGroup = () => {
-  const asyncLoadToggleButtonGroupRef = useRef<FormToggleButtonGroupCommands>(null);
+  const asyncLoadToggleButtonGroupRef = useRef<FormToggleButtonGroupCommands<number, 'any'>>(null);
 
   //--------------------------------------------------------------------------------------------------------------------
 
@@ -48,7 +54,7 @@ const FormItemToggleButtonGroup = () => {
   //--------------------------------------------------------------------------------------------------------------------
 
   function handleLoadItems() {
-    return new Promise<FormToggleButtonGroupItem[]>((resolve) => {
+    return new Promise<FormToggleButtonGroupItems<number>>((resolve) => {
       setTimeout(() => {
         resolve(DEFAULT_ITEMS);
       }, 2000);
@@ -92,7 +98,7 @@ const FormItemToggleButtonGroup = () => {
         <FormBody>
           <FormRow>
             <FormCol>
-              <FormToggleButtonGroup
+              <FormToggleButtonGroup<number, 'any'>
                 {...additionalProps}
                 name='label'
                 items={items}
@@ -102,7 +108,7 @@ const FormItemToggleButtonGroup = () => {
               />
             </FormCol>
             <FormCol>
-              <FormToggleButtonGroup
+              <FormToggleButtonGroup<number, 'any'>
                 {...additionalProps}
                 name='required'
                 items={items}
@@ -112,7 +118,7 @@ const FormItemToggleButtonGroup = () => {
               />
             </FormCol>
             <FormCol>
-              <FormToggleButtonGroup
+              <FormToggleButtonGroup<number, 'any'>
                 {...additionalProps}
                 name='readOnly'
                 items={items}
@@ -122,7 +128,7 @@ const FormItemToggleButtonGroup = () => {
               />
             </FormCol>
             <FormCol>
-              <FormToggleButtonGroup
+              <FormToggleButtonGroup<number, 'any'>
                 {...additionalProps}
                 name='disabled'
                 items={items}
@@ -134,7 +140,7 @@ const FormItemToggleButtonGroup = () => {
           </FormRow>
           <FormRow>
             <FormCol xs={3}>
-              <FormToggleButtonGroup
+              <FormToggleButtonGroup<number, 'any'>
                 {...additionalProps}
                 type='checkbox'
                 name='checkbox'
@@ -145,7 +151,7 @@ const FormItemToggleButtonGroup = () => {
               />
             </FormCol>
             <FormCol xs={3}>
-              <FormToggleButtonGroup
+              <FormToggleButtonGroup<number, 'any'>
                 {...additionalProps}
                 type='radio'
                 name='radio'
@@ -155,7 +161,7 @@ const FormItemToggleButtonGroup = () => {
               />
             </FormCol>
             <FormCol xs={3}>
-              <FormToggleButtonGroup
+              <FormToggleButtonGroup<number, 'any'>
                 {...additionalProps}
                 type='checkbox'
                 name='radio'
@@ -169,7 +175,7 @@ const FormItemToggleButtonGroup = () => {
 
           <FormRow line>
             <FormCol xs={3}>
-              <FormToggleButtonGroup
+              <FormToggleButtonGroup<number, 'any'>
                 {...additionalProps}
                 name='onLoadItems'
                 label='FormToggleButtonGroup'
@@ -178,7 +184,7 @@ const FormItemToggleButtonGroup = () => {
               />
             </FormCol>
             <FormCol xs={3}>
-              <FormToggleButtonGroup
+              <FormToggleButtonGroup<number, 'any'>
                 {...additionalProps}
                 ref={asyncLoadToggleButtonGroupRef}
                 name='asyncLoadItems'

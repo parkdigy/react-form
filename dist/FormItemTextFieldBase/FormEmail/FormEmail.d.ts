@@ -1,5 +1,4 @@
 import React from 'react';
 import { FormEmailProps } from './FormEmail.types';
-import { FormValueItemBaseCommands } from '../../@types';
-declare const FormEmail: React.ForwardRefExoticComponent<FormEmailProps & React.RefAttributes<FormValueItemBaseCommands<any>>>;
+declare const FormEmail: React.ForwardRefExoticComponent<FormEmailProps & React.RefAttributes<import("../FormText").FormTextCommands>>;
 export default FormEmail;

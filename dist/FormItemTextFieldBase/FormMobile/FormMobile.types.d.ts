@@ -1,3 +1,5 @@
-import { FormTelProps } from '../FormTel';
+import { FormTelProps, FormTelCommands, FormTelValue } from '../FormTel';
+export type FormMobileValue = FormTelValue;
+export type FormMobileCommands = FormTelCommands;
 export type FormMobileProps = FormTelProps;
 export declare const FormMobileDefaultProps: Pick<FormMobileProps, 'validPattern'>;

@@ -4,7 +4,12 @@ import { useResizeDetector } from 'react-resize-detector';
 import { Rating } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick } from '../../@util';
-import { FormRatingProps as Props, FormRatingDefaultProps, FormRatingCommands } from './FormRating.types';
+import {
+  FormRatingProps as Props,
+  FormRatingDefaultProps,
+  FormRatingCommands,
+  FormRatingValue,
+} from './FormRating.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
 import { FormIcon } from '../../FormCommon';
@@ -148,7 +153,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
     );
 
     const validate = useCallback(
-      function (value: Props['value']) {
+      function (value: FormRatingValue) {
         if (required && (empty(value) || value === 0)) {
           setErrorHelperText(true, '필수 선택 항목입니다.');
           return false;

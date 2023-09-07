@@ -1,31 +1,14 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import FormTextField from '../FormTextField';
-import { FormTextProps as Props, FormTextDefaultProps } from './FormText.types';
-import { FormItemValue, FormValueItemBaseCommands } from '../../@types';
+import { FormTextProps, FormTextDefaultProps, FormTextValue, FormTextCommands } from './FormText.types';
 
-const FormText = React.forwardRef<FormValueItemBaseCommands, Props>(({ className, onValue, ...props }, ref) => {
-  // Event Handler ---------------------------------------------------------------------------------------------------
-
-  const handleValue = useCallback(
-    (value: FormItemValue) => {
-      let finalValue = value == null ? '' : value;
-      if (onValue) {
-        finalValue = onValue(finalValue);
-      }
-      return finalValue;
-    },
-    [onValue]
-  );
-
-  // Render ----------------------------------------------------------------------------------------------------------
-
+const FormText = React.forwardRef<FormTextCommands, FormTextProps>(({ className, ...props }, ref) => {
   return (
-    <FormTextField
+    <FormTextField<FormTextValue, false>
       ref={ref}
       className={classNames(className, 'FormText')}
       disableReturnKey
-      onValue={handleValue}
       {...props}
     />
   );

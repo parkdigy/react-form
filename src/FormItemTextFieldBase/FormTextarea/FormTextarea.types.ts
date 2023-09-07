@@ -1,7 +1,11 @@
-import { FormTextFieldProps, FormTextFieldDefaultProps } from '../FormTextField';
+import { FormTextFieldProps, FormTextFieldDefaultProps, FormTextFieldCommands } from '../FormTextField';
+
+export type FormTextareaValue = string;
+
+export type FormTextareaCommands = FormTextFieldCommands<FormTextareaValue, false>;
 
 export type FormTextareaProps = Omit<
-  FormTextFieldProps,
+  FormTextFieldProps<FormTextareaValue, false>,
   'disableReturnKey' | 'type' | 'multiline' | 'minRows' | 'maxRows'
 >;
 

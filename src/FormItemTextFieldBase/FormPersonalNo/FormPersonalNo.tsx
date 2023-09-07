@@ -2,27 +2,27 @@ import React, { useCallback } from 'react';
 import FormText from '../FormText';
 import classNames from 'classnames';
 import { notEmpty } from '../../@util';
-import { FormValueItemBaseCommands } from '../../@types';
-import { FormPersonalNoProps as Props, FormPersonalNoDefaultProps } from './FormPersonalNo.types';
+import {
+  FormPersonalNoProps as Props,
+  FormPersonalNoDefaultProps,
+  FormPersonalNoCommands,
+  FormPersonalNoValue,
+} from './FormPersonalNo.types';
 
-const FormPersonalNo = React.forwardRef<FormValueItemBaseCommands, Props>(
+const FormPersonalNo = React.forwardRef<FormPersonalNoCommands, Props>(
   ({ className, onValue, onValidate, ...props }, ref) => {
     // Event Handler ---------------------------------------------------------------------------------------------------
 
-    const handleOnValue = useCallback(
-      (value: Props['value']) => {
-        let newValue = value;
-        if (newValue && notEmpty(newValue)) {
-          newValue = newValue.replace(/[^0-9]/gi, '');
-        }
-        newValue = autoDash(newValue);
+    const handleValue = useCallback(
+      (value: FormPersonalNoValue) => {
+        const newValue = autoDash(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
       },
       [onValue]
     );
 
     const handleValidate = useCallback(
-      (value: string) => {
+      (value: FormPersonalNoValue) => {
         if (notEmpty(value) && value.length === 14 && value.includes('-')) {
           const jumin: number[] = value
             .replace(/-/g, '')
@@ -65,8 +65,8 @@ const FormPersonalNo = React.forwardRef<FormValueItemBaseCommands, Props>(
       <FormText
         ref={ref}
         className={classNames(className, 'FormPersonalNo')}
-        onValue={handleOnValue}
         maxLength={14}
+        onValue={handleValue}
         onValidate={handleValidate}
         {...props}
       />
@@ -79,9 +79,7 @@ FormPersonalNo.defaultProps = FormPersonalNoDefaultProps;
 
 export default FormPersonalNo;
 
-function autoDash(personalNo: string | undefined): string | undefined {
-  if (personalNo == null) return undefined;
-
+function autoDash(personalNo: string): string {
   const str = personalNo.replace(/[^0-9]/g, '');
   let tmp = '';
 

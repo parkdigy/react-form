@@ -7,7 +7,7 @@ import { InputDatePickerProps } from './InputDatePicker';
 export type FormDateRangePickerDateValue = CustomDatePickerDateValue;
 export type FormDateRangePickerValue = [FormDateRangePickerDateValue, FormDateRangePickerDateValue];
 export type FormDateRangePickerCalendarCount = CustomDatePickerContainerCalendarCount;
-export interface FormDateRangePickerProps extends CommonSxProps, Omit<FormValueItemProps, 'label' | 'labelIcon' | 'value' | 'width' | 'onChange'>, Pick<InputDatePickerProps, 'align'> {
+export interface FormDateRangePickerProps extends CommonSxProps, Omit<FormValueItemProps<FormDateRangePickerValue>, 'label' | 'labelIcon' | 'value' | 'width' | 'onChange'>, Pick<InputDatePickerProps, 'align'> {
     value?: FormDateRangePickerValue;
     startLabel?: ReactNode;
     startLabelIcon?: string;
@@ -47,8 +47,8 @@ export interface FormDateRangePickerProps extends CommonSxProps, Omit<FormValueI
         end: Dayjs;
     }[];
     onChange?(value: FormDateRangePickerValue): void;
-    onValidate?(value: FormDateRangePickerValue): boolean | string;
+    onValidate?(value: FormDateRangePickerValue): true | string;
 }
 export declare const FormDateRangePickerDefaultProps: Required<Pick<FormDateRangePickerProps, 'calendarCount' | 'format' | 'formValueFormat' | 'formValueStartNameSuffix' | 'formValueEndNameSuffix' | 'align'>>;
-export interface FormDateRangePickerCommands extends FormValueItemBaseCommands<FormDateRangePickerValue>, FormDateValueItemCommands, FormDateRangeValueItemCommands {
+export interface FormDateRangePickerCommands extends FormValueItemBaseCommands<FormDateRangePickerValue, false>, FormDateValueItemCommands, FormDateRangeValueItemCommands {
 }

@@ -1,6 +1,4 @@
 import React from 'react';
-import { FormValueItemBaseCommands } from '../../@types';
-declare const FormCompanyNo: React.ForwardRefExoticComponent<Omit<import("../FormText").FormTextProps, "type" | "value" | "maxLength"> & {
-    value?: string | undefined;
-} & React.RefAttributes<FormValueItemBaseCommands<any>>>;
+import { FormCompanyNoProps as Props } from './FormCompanyNo.types';
+declare const FormCompanyNo: React.ForwardRefExoticComponent<Props & React.RefAttributes<import("../FormText").FormTextCommands>>;
 export default FormCompanyNo;

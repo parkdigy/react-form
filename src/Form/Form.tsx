@@ -87,12 +87,12 @@ const Form = React.forwardRef<FormCommands, Props>(
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [valueItems] = useState<FormValueItemCommandsMap>({});
+    const [valueItems] = useState<FormValueItemCommandsMap<any>>({});
 
     // Function - getItemFormValue -----------------------------------------------------------------------------------------
 
     const getItemFormValue = useCallback(
-      (commands: FormValueItemCommands, reset?: boolean): FormValue | FormValue[] => {
+      (commands: FormValueItemCommands<any>, reset?: boolean): FormValue | FormValue[] => {
         const type = commands.getType();
 
         let value;
@@ -156,7 +156,7 @@ const Form = React.forwardRef<FormCommands, Props>(
     }, [valueItems]);
 
     const appendFormValueData = useCallback(
-      (data: FormValueMap, itemCommands: FormValueItemCommands) => {
+      (data: FormValueMap, itemCommands: FormValueItemCommands<any>) => {
         switch (itemCommands.getType()) {
           case 'FormDateRangePicker':
             {
@@ -236,7 +236,7 @@ const Form = React.forwardRef<FormCommands, Props>(
 
     useLayoutEffect(() => {
       if (ref) {
-        const findValueItem = function <T extends FormValueItemBaseCommands = FormValueItemCommands>(
+        const findValueItem = function <T extends FormValueItemBaseCommands<any, true> = FormValueItemCommands<any>>(
           name: string
         ): T | undefined {
           return Object.values(valueItems).find((commands) => {
@@ -258,7 +258,7 @@ const Form = React.forwardRef<FormCommands, Props>(
           submit,
           getAllFormValue,
           resetAll,
-          getItem<T extends FormValueItemBaseCommands = FormValueItemCommands>(name: string) {
+          getItem<T extends FormValueItemBaseCommands<any, true> = FormValueItemCommands<any>>(name: string) {
             return findValueItem<T>(name);
           },
           exists(name) {

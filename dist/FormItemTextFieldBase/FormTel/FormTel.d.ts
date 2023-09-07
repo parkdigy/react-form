@@ -1,6 +1,4 @@
 import React from 'react';
-import { FormValueItemBaseCommands } from '../../@types';
-declare const FormTel: React.ForwardRefExoticComponent<Omit<import("../FormText").FormTextProps, "type" | "value" | "maxLength"> & {
-    value?: string | undefined;
-} & React.RefAttributes<FormValueItemBaseCommands<any>>>;
+import { FormTelProps as Props } from './FormTel.types';
+declare const FormTel: React.ForwardRefExoticComponent<Props & React.RefAttributes<import("../FormText").FormTextCommands>>;
 export default FormTel;

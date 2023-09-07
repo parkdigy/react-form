@@ -1,5 +1,7 @@
-import { FormTextProps } from '../FormText';
-export type FormNumberProps = Omit<FormTextProps, 'type'> & {
+import { FormTextFieldCommands, FormTextFieldProps } from '../FormTextField';
+export type FormNumberValue = string | number;
+export type FormNumberCommands = FormTextFieldCommands<FormNumberValue, false>;
+export type FormNumberProps = Omit<FormTextFieldProps<FormNumberValue, false>, 'type'> & {
     allowLeadingZeros?: boolean;
     allowNegative?: boolean;
     thousandSeparator?: boolean;
@@ -8,7 +10,4 @@ export type FormNumberProps = Omit<FormTextProps, 'type'> & {
     prefix?: string;
     suffix?: string;
 };
-export declare const FormNumberDefaultProps: {
-    value?: unknown;
-    clear?: boolean | undefined;
-};
+export declare const FormNumberDefaultProps: Pick<FormNumberProps, 'value' | 'clear'>;

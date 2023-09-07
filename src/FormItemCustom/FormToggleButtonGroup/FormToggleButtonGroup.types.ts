@@ -9,27 +9,32 @@ import {
   FormLoadingValueItemCommands,
   FormValueItemBaseCommands,
   FormValueItemProps,
+  FormValueType,
 } from '../../@types';
 import { FormItemBaseProps } from '../FormItemBase';
 
-export type FormToggleButtonGroupItemValue = string | number;
-
-export interface FormToggleButtonGroupItem {
+export interface FormToggleButtonGroupItem<T> {
   label: ReactNode;
-  value: FormToggleButtonGroupItemValue;
+  value: T;
   disabled?: boolean;
   color?: ToggleButtonProps['color'];
 }
 
-export type FormToggleButtonGroupValue = FormToggleButtonGroupItemValue | FormToggleButtonGroupItemValue[] | undefined;
+export type FormToggleButtonGroupItems<T> = FormToggleButtonGroupItem<T>[];
 
-export interface FormToggleButtonGroupProps
+export type FormToggleButtonGroupValue<
+  T,
+  VT extends FormValueType = 'single',
+  V = VT extends 'single' ? T : VT extends 'multiple' ? T[] : T | T[],
+> = V | undefined;
+
+export interface FormToggleButtonGroupProps<T, VT extends FormValueType = 'single'>
   extends CommonSxProps,
-    Omit<FormValueItemProps, 'value'>,
+    Omit<FormValueItemProps<FormToggleButtonGroupValue<T, VT>>, 'value'>,
     PartialPick<FormItemBaseProps, 'required' | 'focused'> {
   type?: 'button' | 'checkbox' | 'radio';
-  value?: FormToggleButtonGroupValue;
-  items?: FormToggleButtonGroupItem[];
+  value?: FormToggleButtonGroupValue<T, VT>;
+  items?: FormToggleButtonGroupItem<T>[];
   multiple?: boolean;
   notAllowEmptyValue?: boolean;
   formValueSeparator?: string;
@@ -37,21 +42,24 @@ export interface FormToggleButtonGroupProps
   loading?: boolean;
   hidden?: boolean;
   itemWidth?: number | string;
-  onLoadItems?: () => Promise<FormToggleButtonGroupItem[]>;
-  onValue?: (value: FormToggleButtonGroupValue) => FormToggleButtonGroupValue;
+  onLoadItems?: () => Promise<FormToggleButtonGroupItem<T>[]>;
+  onValue?: (value: FormToggleButtonGroupValue<T, VT>) => FormToggleButtonGroupValue<T, VT>;
 }
 
-export const FormToggleButtonGroupDefaultProps: Pick<FormToggleButtonGroupProps, 'type' | 'formValueSeparator'> = {
+export const FormToggleButtonGroupDefaultProps: Pick<
+  FormToggleButtonGroupProps<any, 'any'>,
+  'type' | 'formValueSeparator'
+> = {
   type: 'button',
   formValueSeparator: ',',
 };
 
-export interface FormToggleButtonGroupExtraCommands
+export interface FormToggleButtonGroupExtraCommands<T>
   extends FormArrayValueItemCommands,
-    FormItemsValueItemCommands<FormToggleButtonGroupItem>,
+    FormItemsValueItemCommands<FormToggleButtonGroupItem<T>>,
     FormMultipleValueItemCommands,
     FormLoadingValueItemCommands {}
 
-export interface FormToggleButtonGroupCommands
-  extends FormValueItemBaseCommands<FormToggleButtonGroupValue>,
-    FormToggleButtonGroupExtraCommands {}
+export interface FormToggleButtonGroupCommands<T, VT extends FormValueType = 'single'>
+  extends FormValueItemBaseCommands<FormToggleButtonGroupValue<T, VT>, true>,
+    FormToggleButtonGroupExtraCommands<T> {}

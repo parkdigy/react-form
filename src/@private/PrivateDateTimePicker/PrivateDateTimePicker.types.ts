@@ -34,10 +34,9 @@ export interface PrivateDateTimePickerProps
         | 'slotProps'
       >
     >,
-    Omit<FormValueItemProps, 'value' | 'onChange'> {
+    FormValueItemProps<PrivateDateTimePickerValue, false> {
   type: FormDateType;
   time?: FormTimeType;
-  value?: PrivateDateTimePickerValue;
   hours?: number[];
   minutes?: number[];
   seconds?: number[];
@@ -53,18 +52,17 @@ export interface PrivateDateTimePickerProps
   align?: 'left' | 'center' | 'right';
   readOnlyInput?: boolean;
   hidden?: boolean;
-  onChange?(value: PrivateDateTimePickerValue): void;
-  onValidate?(value: PrivateDateTimePickerValue): boolean | string;
 }
 
 export const PrivateDateTimePickerDefaultProps: Pick<
   PrivateDateTimePickerProps,
-  'showDaysOutsideCurrentMonth' | 'align'
+  'showDaysOutsideCurrentMonth' | 'align' | 'value'
 > = {
   showDaysOutsideCurrentMonth: true,
   align: 'center',
+  value: null,
 };
 
 export interface PrivateDateTimePickerCommands
-  extends FormValueItemBaseCommands<PrivateDateTimePickerValue>,
+  extends FormValueItemBaseCommands<PrivateDateTimePickerValue, false>,
     FormDateValueItemCommands {}

@@ -1,10 +1,12 @@
-import { FormTextProps, FormTextDefaultProps } from '../FormText';
+import { FormTextProps, FormTextDefaultProps, FormTextCommands, FormTextValue } from '../FormText';
 
-export type FormTelProps = Omit<FormTextProps, 'type' | 'value' | 'maxLength'> & {
-  value?: string;
-};
+export type FormTelValue = FormTextValue;
 
-export const FormTelDefaultProps: Pick<FormTextProps, 'validPattern'> = {
+export type FormTelCommands = FormTextCommands;
+
+export type FormTelProps = Omit<FormTextProps, 'type' | 'maxLength'>;
+
+export const FormTelDefaultProps: Pick<FormTelProps, 'validPattern'> = {
   ...FormTextDefaultProps,
   validPattern:
     /(^([0-9]{2,3})([0-9]{3,4})([0-9]{4})$)|(^([0-9]{2,3})-([0-9]{3,4})-([0-9]{4})$)|(^([0-9]{4})-([0-9]{4})$)|(^\+(?:[-]?[0-9]){8,}$)/,

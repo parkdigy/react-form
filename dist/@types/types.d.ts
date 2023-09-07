@@ -13,19 +13,19 @@ export interface CommonProps {
 export interface CommonSxProps extends CommonProps {
     sx?: SxProps<Theme>;
 }
-export type FormItemValue = any;
 export type FormValue = string | number | boolean;
 export interface FormValueMap {
     [key: string]: FormValue;
 }
+export type FormValueType = 'single' | 'multiple' | 'any';
 export type FormValueItemData = Record<string, any>;
-export interface FormValueItemBaseCommands<ValueType = FormItemValue> {
+export interface FormValueItemBaseCommands<T, AllowUndefinedValue extends boolean, V = AllowUndefinedValue extends true ? T | undefined : T> {
     getType(): 'default' | 'FormCheckbox' | 'FormToggleButtonGroup' | 'FormRadioGroup' | 'FormRating' | 'FormTextEditor' | 'FormAutocomplete' | 'FormDatePicker' | 'FormDateTimePicker' | 'FormTimePicker' | 'FormDateRangePicker' | 'FormFile';
     getName(): string;
-    getReset(): ValueType;
+    getReset(): V;
     reset(): void;
-    getValue(): ValueType;
-    setValue(value: ValueType): void;
+    getValue(): V;
+    setValue(value: V): void;
     getData(): FormValueItemData | undefined;
     setData(data?: FormValueItemData): void;
     isExceptValue(): boolean;
@@ -40,15 +40,15 @@ export interface FormArrayValueItemCommands {
     isFormValueSort(): boolean;
     getFormValueSeparator(): string | undefined;
 }
-export interface FormItemsValueItemCommands<ItemType> {
-    getItems(): ItemType[] | undefined;
-    setItems(items: ItemType[]): void;
+export interface FormItemsValueItemCommands<T> {
+    getItems(): T[] | undefined;
+    setItems(items: T[] | undefined): void;
 }
-export interface FormCheckValueItemCommands {
+export interface FormCheckValueItemCommands<T> {
     getChecked(): boolean;
     setChecked(checked: boolean): void;
-    getUncheckedValue(): FormItemValue;
-    setUncheckedValue(uncheckedValue: FormItemValue): void;
+    getUncheckedValue(): T;
+    setUncheckedValue(uncheckedValue: T): void;
 }
 export interface FormMultipleValueItemCommands {
     isMultiple(): boolean;
@@ -70,14 +70,14 @@ export interface FormDateRangeValueItemCommands {
     getFormValueStartName(): string;
     getFormValueEndName(): string;
 }
-export interface FormValueItemCommands<ValueType = FormItemValue, ItemType = any> extends FormValueItemBaseCommands<ValueType>, Partial<FormArrayValueItemCommands>, Partial<FormItemsValueItemCommands<ItemType>>, Partial<FormCheckValueItemCommands>, Partial<FormMultipleValueItemCommands>, Partial<FormLoadingValueItemCommands>, Partial<FormDateValueItemCommands>, Partial<FormDateRangeValueItemCommands> {
+export interface FormValueItemCommands<T, AllowUndefinedValue extends boolean = true, ItemType = any> extends FormValueItemBaseCommands<T, AllowUndefinedValue>, Partial<FormArrayValueItemCommands>, Partial<FormItemsValueItemCommands<ItemType>>, Partial<FormCheckValueItemCommands<T>>, Partial<FormMultipleValueItemCommands>, Partial<FormLoadingValueItemCommands>, Partial<FormDateValueItemCommands>, Partial<FormDateRangeValueItemCommands> {
 }
-export interface FormValueItemCommandsMap<ValueType = FormItemValue, ItemType = any> {
-    [key: string]: FormValueItemCommands<ValueType, ItemType> | undefined;
+export interface FormValueItemCommandsMap<T, AllowUndefinedValue extends boolean = true, ItemType = any> {
+    [key: string]: FormValueItemCommands<T, AllowUndefinedValue, ItemType> | undefined;
 }
-export interface FormValueItemProps extends PartialPick<FormContextValue, 'variant' | 'size' | 'color' | 'focused'> {
+export interface FormValueItemProps<T, AllowUndefinedValue extends boolean = true, V = AllowUndefinedValue extends true ? T | undefined : T> extends PartialPick<FormContextValue<T>, 'variant' | 'size' | 'color' | 'focused'> {
     name: string;
-    value?: FormItemValue;
+    value?: T;
     labelIcon?: string;
     label?: ReactNode;
     width?: string | number;
@@ -88,6 +88,6 @@ export interface FormValueItemProps extends PartialPick<FormContextValue, 'varia
     exceptValue?: boolean;
     helperText?: ReactNode;
     data?: FormValueItemData;
-    onChange?(value: FormItemValue): void;
-    onValidate?(value: FormItemValue): boolean | string;
+    onChange?(value: V): void;
+    onValidate?(value: V): true | string;
 }

@@ -81,10 +81,10 @@ const FormItemText = () => {
         <Form size='small'>
           <FormRow>
             <FormCol>
-              <FormToggleButtonGroup
+              <FormToggleButtonGroup<string>
                 name='type'
                 label='Component'
-                items={_components.map<FormToggleButtonGroupItem>((component) =>
+                items={_components.map<FormToggleButtonGroupItem<string>>((component) =>
                   lv(component.displayName?.substring(4), component.displayName || '')
                 )}
                 value={componentName}

@@ -3,24 +3,32 @@ import classNames from 'classnames';
 import { Box, Checkbox, Chip, CircularProgress, MenuItem } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, notEmpty, isSame } from '../../@util';
-import { FormValueItemBaseCommands, FormValueItemCommands } from '../../@types';
 import {
-  FormSelectItem,
-  FormSelectProps as Props,
+  FormSelectProps,
   FormSelectDefaultProps,
-  FormSelectValue,
   FormSelectExtraCommands,
+  FormSelectCommands,
 } from './FormSelect.types';
-import FormText from '../FormText';
 import { useFormState } from '../../FormContext';
 import FormContextProvider from '../../FormContextProvider';
 import './FormSelect.scss';
+import FormTextField from '../FormTextField';
+import { FormValueType } from '../../@types';
 
 interface ItemValueLabelMap {
   [key: string]: ReactNode;
 }
 
-const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props>(
+type Props = FormSelectProps<any, 'any'>;
+type Commands = FormSelectCommands<any, 'any'>;
+
+interface WithForwardRefType<T, VT extends FormValueType = 'single'> extends React.FC<FormSelectProps<T, VT>> {
+  <T, VT extends FormValueType = 'single'>(
+    props: FormSelectProps<T, VT> & React.RefAttributes<FormSelectCommands<T, VT>>
+  ): ReturnType<React.FC<FormSelectProps<T, VT>>>;
+}
+
+const FormSelect: WithForwardRefType<any, 'any'> = React.forwardRef<Commands, Props>(
   (
     {
       className,
@@ -134,8 +142,8 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
     const getFinalValue = useCallback(
-      (value?: FormSelectValue): FormSelectValue => {
-        let finalValue: FormSelectValue = value == null ? '' : value;
+      (value?: any): any => {
+        let finalValue: any = value == null ? '' : value;
         if (multiple) {
           if (!Array.isArray(finalValue)) {
             if (empty(finalValue)) {
@@ -165,7 +173,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
                 finalValue = finalValue.map((v) => {
                   const realValue = itemsValues[v.toString()];
                   return realValue != null ? realValue : v;
-                }) as FormSelectValue;
+                });
               }
             } else {
               const realValue = itemsValues[finalValue.toString()];
@@ -253,7 +261,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
 
     // Function - getExtraCommands -------------------------------------------------------------------------------------
 
-    const getBaseCommands = useCallback((): Partial<FormValueItemBaseCommands> => {
+    const getBaseCommands = useCallback((): Partial<Commands> => {
       let lastValue = value;
 
       return {
@@ -270,7 +278,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
       };
     }, [value, getFinalValue, initValue, setValue]);
 
-    const getExtraCommands = useCallback((): FormSelectExtraCommands => {
+    const getExtraCommands = useCallback((): FormSelectExtraCommands<any> => {
       let lastItems = items;
       let lastLoading = loading;
 
@@ -294,9 +302,9 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
     // Event Handler ---------------------------------------------------------------------------------------------------
 
     const handleRef = useCallback(
-      (commands: FormValueItemBaseCommands | null) => {
+      (commands: Commands | null) => {
         if (ref) {
-          const finalCommands: FormValueItemCommands | null = commands
+          const finalCommands: Commands | null = commands
             ? {
                 ...commands,
                 ...getBaseCommands(),
@@ -315,7 +323,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
     );
 
     const handleAddValueItem = useCallback(
-      (id: string, commands: FormValueItemBaseCommands) => {
+      (id: string, commands: Commands) => {
         onAddValueItem(id, {
           ...commands,
           ...getBaseCommands(),
@@ -325,12 +333,12 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
       [onAddValueItem, getBaseCommands, getExtraCommands]
     );
 
-    const handleChange = (newValue: FormSelectValue) => {
+    const handleChange = (newValue: any) => {
       setValue(newValue);
     };
 
     const handleValue = useCallback(
-      (value: FormSelectValue) => {
+      (value: any) => {
         return getFinalValue(value);
       },
       [getFinalValue]
@@ -355,7 +363,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
           ...otherFormState,
         }}
       >
-        <FormText
+        <FormTextField<any>
           select
           ref={handleRef}
           name={name}
@@ -387,7 +395,7 @@ const FormSelect = React.forwardRef<FormValueItemCommands<FormSelectItem>, Props
           ) : (
             <MenuItem value='' />
           )}
-        </FormText>
+        </FormTextField>
       </FormContextProvider>
     );
   }

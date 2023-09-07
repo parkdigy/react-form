@@ -154,7 +154,7 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
             <Tooltip
               title={
                 <div style={{ paddingTop: 3, paddingBottom: 3 }}>
-                  <img src={value} style={{ maxWidth: '100%', verticalAlign: 'middle' }} />
+                  <img src={value} style={{ maxWidth: '100%', verticalAlign: 'middle' }} alt='' />
                 </div>
               }
             >

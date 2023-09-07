@@ -1,6 +1,11 @@
 import { CommonSxProps, FormValueItemCommands, FormValueItemProps } from '../../@types';
 
-export interface FormTextEditorProps extends CommonSxProps, Omit<FormValueItemProps, 'fullWidth'> {
+export type FormTextEditorValue = string;
+export type FormTextEditorCommands = FormValueItemCommands<FormTextEditorValue, false>;
+
+export interface FormTextEditorProps
+  extends CommonSxProps,
+    Omit<FormValueItemProps<FormTextEditorValue, false>, 'fullWidth'> {
   required?: boolean;
   menubar?: boolean;
   height?: number;
@@ -13,9 +18,8 @@ export interface FormTextEditorProps extends CommonSxProps, Omit<FormValueItemPr
   ): void;
 }
 
-export const FormTextEditorDefaultProps: Pick<FormTextEditorProps, 'menubar' | 'height'> = {
+export const FormTextEditorDefaultProps: Pick<FormTextEditorProps, 'value' | 'menubar' | 'height'> = {
   menubar: true,
   height: 500,
+  value: '',
 };
-
-export type FormTextEditorCommands = FormValueItemCommands;

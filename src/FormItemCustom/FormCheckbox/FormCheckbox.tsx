@@ -4,11 +4,15 @@ import { useResizeDetector } from 'react-resize-detector';
 import { FormControlLabel, Checkbox, Typography, ButtonBaseActions, useTheme } from '@mui/material';
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { FormCheckboxProps as Props, FormCheckboxDefaultProps, FormCheckboxCommands } from './FormCheckbox.types';
+import {
+  FormCheckboxProps as Props,
+  FormCheckboxDefaultProps,
+  FormCheckboxCommands,
+  FormCheckboxValue,
+} from './FormCheckbox.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
 import { nextTick } from '../../@util';
-import { FormItemValue } from '../../@types';
 
 const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
   (
@@ -104,12 +108,12 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
 
     // State - checked -------------------------------------------------------------------------------------------------
 
-    const [checked, setChecked] = useAutoUpdateState<Props['checked']>(initChecked);
+    const [checked, setChecked] = useAutoUpdateState<boolean>(!!initChecked);
 
     useFirstSkipEffect(() => {
       if (error) validate(checked);
-      if (onChange) onChange(!!checked);
-      onValueChange(name, !!checked);
+      if (onChange) onChange(checked);
+      onValueChange(name, checked);
     }, [checked]);
 
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -150,7 +154,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
     // Function - validate ---------------------------------------------------------------------------------------------
 
     const validate = useCallback(
-      function (checked: Props['checked']) {
+      function (checked: boolean) {
         if (onValidate) {
           const onValidateResult = onValidate(checked);
           if (onValidateResult != null && onValidateResult !== true) {
@@ -169,18 +173,18 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
     // Commands --------------------------------------------------------------------------------------------------------
 
     useLayoutEffect(() => {
-      let lastChecked: Props['checked'] = checked;
-      let lastValue: FormItemValue = value;
+      let lastChecked: boolean = checked;
+      let lastValue: FormCheckboxValue = value == null ? 1 : value;
       let lastData = data;
-      let lastUncheckedValue: FormItemValue = uncheckedValue;
+      let lastUncheckedValue: FormCheckboxValue = uncheckedValue == null ? 0 : uncheckedValue;
       let lastDisabled = !!disabled;
 
       const commands: FormCheckboxCommands = {
         getType: () => 'FormCheckbox',
         getName: () => name,
-        getReset: () => initChecked,
+        getReset: () => !!initChecked,
         reset: () => {
-          lastChecked = initChecked;
+          lastChecked = !!initChecked;
           setChecked(lastChecked);
         },
         getValue: () => lastValue,
@@ -198,7 +202,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
           lastUncheckedValue = uncheckedValue;
           setUncheckedValue(lastUncheckedValue);
         },
-        getChecked: () => !!lastChecked,
+        getChecked: () => lastChecked,
         setChecked: (checked: boolean) => {
           lastChecked = checked;
           setChecked(lastChecked);
@@ -309,7 +313,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
                 size={size}
                 inputRef={initInputRef ? initInputRef : inputRef}
                 action={initAction ? initAction : actionRef}
-                checked={!!checked}
+                checked={checked}
                 checkedIcon={<CheckBox color={error ? 'error' : undefined} />}
                 icon={<CheckBoxOutlineBlank color={error ? 'error' : undefined} />}
                 onChange={handleChange}

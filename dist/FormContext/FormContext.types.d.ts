@@ -1,13 +1,13 @@
-import { PartialPick, FormValueItemCommands, FormItemValue } from '../@types';
+import { PartialPick, FormValueItemCommands } from '../@types';
 import { FormProps } from '../Form/Form.types';
-export interface FormContextValue extends PartialPick<FormProps, 'variant' | 'size' | 'color' | 'spacing' | 'formColGap' | 'focused' | 'labelShrink' | 'fullWidth'> {
+export interface FormContextValue<T = any, AllowUndefinedValue extends boolean = true> extends PartialPick<FormProps, 'variant' | 'size' | 'color' | 'spacing' | 'formColGap' | 'focused' | 'labelShrink' | 'fullWidth'> {
     id: string;
     fullHeight?: boolean;
-    onAddValueItem(id: string, commands: FormValueItemCommands): void;
+    onAddValueItem(id: string, commands: FormValueItemCommands<T, AllowUndefinedValue>): void;
     onRemoveValueItem(id: string): void;
-    onValueChange(name: string, value: FormItemValue): void;
-    onValueChangeByUser(name: string, value: FormItemValue): void;
-    onRequestSearchSubmit(name: string, value: FormItemValue): void;
+    onValueChange(name: string, value: T): void;
+    onValueChangeByUser(name: string, value: T): void;
+    onRequestSearchSubmit(name: string, value: T): void;
     formColAutoXs?: number;
     formColWidth?: number;
     onAddFormCol?(id: string, xs: number | undefined): void;

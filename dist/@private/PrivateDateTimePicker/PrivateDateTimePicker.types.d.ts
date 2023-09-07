@@ -3,10 +3,9 @@ import { DesktopDateTimePickerProps } from '@mui/x-date-pickers';
 import { CommonSxProps, FormDateType, FormDateValueItemCommands, FormTimeType, FormValueItemBaseCommands, FormValueItemProps } from '../../@types';
 import { Dayjs } from 'dayjs';
 export type PrivateDateTimePickerValue = Dayjs | null;
-export interface PrivateDateTimePickerProps extends CommonSxProps, Partial<Omit<DesktopDateTimePickerProps<Dayjs>, 'children' | 'className' | 'style' | 'sx' | 'value' | 'inputFormat' | 'views' | 'onChange' | 'openTo' | 'view' | 'viewRenderers' | 'components' | 'componentsProps' | 'slots' | 'slotProps'>>, Omit<FormValueItemProps, 'value' | 'onChange'> {
+export interface PrivateDateTimePickerProps extends CommonSxProps, Partial<Omit<DesktopDateTimePickerProps<Dayjs>, 'children' | 'className' | 'style' | 'sx' | 'value' | 'inputFormat' | 'views' | 'onChange' | 'openTo' | 'view' | 'viewRenderers' | 'components' | 'componentsProps' | 'slots' | 'slotProps'>>, FormValueItemProps<PrivateDateTimePickerValue, false> {
     type: FormDateType;
     time?: FormTimeType;
-    value?: PrivateDateTimePickerValue;
     hours?: number[];
     minutes?: number[];
     seconds?: number[];
@@ -22,9 +21,7 @@ export interface PrivateDateTimePickerProps extends CommonSxProps, Partial<Omit<
     align?: 'left' | 'center' | 'right';
     readOnlyInput?: boolean;
     hidden?: boolean;
-    onChange?(value: PrivateDateTimePickerValue): void;
-    onValidate?(value: PrivateDateTimePickerValue): boolean | string;
 }
-export declare const PrivateDateTimePickerDefaultProps: Pick<PrivateDateTimePickerProps, 'showDaysOutsideCurrentMonth' | 'align'>;
-export interface PrivateDateTimePickerCommands extends FormValueItemBaseCommands<PrivateDateTimePickerValue>, FormDateValueItemCommands {
+export declare const PrivateDateTimePickerDefaultProps: Pick<PrivateDateTimePickerProps, 'showDaysOutsideCurrentMonth' | 'align' | 'value'>;
+export interface PrivateDateTimePickerCommands extends FormValueItemBaseCommands<PrivateDateTimePickerValue, false>, FormDateValueItemCommands {
 }

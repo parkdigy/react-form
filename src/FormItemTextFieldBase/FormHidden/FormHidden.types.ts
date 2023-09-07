@@ -1,11 +1,14 @@
-import { FormTextProps } from '../FormText';
-import { FormValueItemBaseCommands } from '../../@types';
+import { FormTextFieldCommands, FormTextFieldDefaultProps, FormTextFieldProps } from '../FormTextField';
+
+export type FormHiddenValue = any;
+
+export type FormHiddenCommands = FormTextFieldCommands<FormHiddenValue>;
 
 export type FormHiddenProps = Pick<
-  FormTextProps,
-  'className' | 'name' | 'value' | 'error' | 'required' | 'exceptValue' | 'onChange' | 'onValidate'
+  FormTextFieldProps<FormHiddenValue>,
+  'className' | 'name' | 'value' | 'error' | 'required' | 'exceptValue' | 'onChange' | 'onValue' | 'onValidate'
 >;
 
-export const FormHiddenDefaultProps = {};
-
-export interface FormHiddenCommands extends FormValueItemBaseCommands {}
+export const FormHiddenDefaultProps = {
+  ...FormTextFieldDefaultProps,
+};

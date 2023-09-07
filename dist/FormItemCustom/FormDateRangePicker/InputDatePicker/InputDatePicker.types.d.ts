@@ -4,7 +4,7 @@ import { TextFieldProps } from '@mui/material';
 import { FormValueItemProps } from '../../../@types';
 import { DateValidationError } from '@mui/x-date-pickers';
 export type InputDatePickerValue = Dayjs | null;
-export interface InputDatePickerProps extends Pick<FormValueItemProps, 'variant' | 'size' | 'color' | 'focused' | 'fullWidth' | 'readOnly' | 'label' | 'labelIcon' | 'error'> {
+export interface InputDatePickerProps extends Pick<FormValueItemProps<InputDatePickerValue>, 'variant' | 'size' | 'color' | 'focused' | 'fullWidth' | 'readOnly' | 'label' | 'labelIcon' | 'error'> {
     className?: string;
     style?: CSSProperties;
     value: InputDatePickerValue;

@@ -4,18 +4,29 @@ import { Autocomplete, Chip, AutocompleteChangeReason, AutocompleteChangeDetails
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick, notEmpty, isSame } from '../../@util';
 import {
-  FormAutocompleteProps as Props,
+  FormAutocompleteProps,
   FormAutocompleteDefaultProps,
   FormAutocompleteCommands,
   FormAutocompleteItem,
-  FormAutocompleteValue,
   FormAutocompleteComponentValue,
+  FormAutocompleteItems,
 } from './FormAutocomplete.types';
 import { useFormState } from '../../FormContext';
 import { FormTextField, FormTextFieldCommands } from '../../FormItemTextFieldBase';
 import CircularProgress from '@mui/material/CircularProgress';
+import { FormValueType } from '../../@types';
 
-const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
+type Props = FormAutocompleteProps<any, 'any'>;
+type Commands = FormAutocompleteCommands<any, 'any'>;
+type ComponentValue = FormAutocompleteComponentValue<any, 'any'>;
+
+interface WithForwardRefType<T, VT extends FormValueType = 'single'> extends React.FC<FormAutocompleteProps<T, VT>> {
+  <T, VT extends FormValueType = 'single'>(
+    props: FormAutocompleteProps<T, VT> & React.RefAttributes<FormAutocompleteCommands<T, VT>>
+  ): ReturnType<React.FC<FormAutocompleteProps<T, VT>>>;
+}
+
+const FormAutocomplete: WithForwardRefType<any, 'any'> = React.forwardRef<Commands, Props>(
   (
     {
       variant: initVariant,
@@ -76,7 +87,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
 
     const textFieldRef = useRef<FormTextFieldCommands>(null);
     const asyncTimerRef = useRef<NodeJS.Timeout | null>(null);
-    const oldComponentValueRef = useRef<FormAutocompleteComponentValue>(null);
+    const oldComponentValueRef = useRef<ComponentValue>(null);
 
     // FormState -------------------------------------------------------------------------------------------------------
 
@@ -125,7 +136,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
 
     const itemsValues = useMemo(() => {
       if (items) {
-        return items.reduce<Record<string, string | number>>((res, { value }) => {
+        return items.reduce<Record<string, any>>((res, { value }) => {
           res[value.toString()] = value;
           return res;
         }, {});
@@ -151,7 +162,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
     const getFinalValue = useCallback(
-      (value: Props['value']): Props['value'] => {
+      (value: any): any => {
         let finalValue = value;
         if (multiple) {
           if (!Array.isArray(finalValue)) {
@@ -200,11 +211,11 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue, getFinalValue);
-    const [valueItem, setValueItem] = useState<FormAutocompleteComponentValue>(null);
+    const [value, setValue] = useAutoUpdateState<any>(initValue, getFinalValue);
+    const [valueItem, setValueItem] = useState<ComponentValue>(null);
 
     const componentValue = useMemo(() => {
-      let finalValue: Props['value'] = value;
+      let finalValue: any = value;
       if (finalValue != null) {
         if (multiple) {
           if (!Array.isArray(finalValue)) {
@@ -219,14 +230,14 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
         finalValue = multiple ? [] : undefined;
       }
 
-      let newComponentValue: FormAutocompleteComponentValue = multiple ? [] : null;
+      let newComponentValue: ComponentValue = multiple ? [] : null;
 
       if (notEmpty(finalValue)) {
         if (items) {
           if (Array.isArray(finalValue)) {
             newComponentValue = items.filter(
               (info) => Array.isArray(finalValue) && finalValue.includes(info.value)
-            ) as FormAutocompleteComponentValue;
+            ) as ComponentValue;
           } else {
             newComponentValue = items.find((info) => info.value === value) || (multiple ? [] : null);
           }
@@ -236,7 +247,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
             if (Array.isArray(valueItem)) {
               newComponentValue = valueItem.filter(
                 (info) => Array.isArray(finalValue) && finalValue.includes(info.value)
-              ) as FormAutocompleteComponentValue;
+              );
             }
           } else {
             if (!Array.isArray(valueItem) && finalValue === valueItem.value) {
@@ -246,7 +257,11 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
         }
       }
 
-      if ((oldComponentValueRef.current, newComponentValue, isSame(oldComponentValueRef.current, newComponentValue))) {
+      if (
+        oldComponentValueRef.current &&
+        newComponentValue &&
+        isSame(oldComponentValueRef.current, newComponentValue)
+      ) {
         return oldComponentValueRef.current;
       } else {
         oldComponentValueRef.current = newComponentValue;
@@ -383,7 +398,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
     // Function - validate ---------------------------------------------------------------------------------------------
 
     const validate = useCallback(
-      (value: Props['value']) => {
+      (value: any) => {
         if (required && empty(value)) {
           setErrorHelperText(true, '필수 선택 항목입니다.');
           return false;
@@ -413,7 +428,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
         let lastLoading = loading;
         let lastDisabled = !!disabled;
 
-        const commands: FormAutocompleteCommands = {
+        const commands: Commands = {
           getType: () => 'FormAutocomplete',
           getName: () => name,
           getReset: () => getFinalValue(initValue),
@@ -511,12 +526,12 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
 
     const handleChange = useCallback(
       (
-        componentValue: FormAutocompleteItem | FormAutocompleteItem[] | null,
+        componentValue: ComponentValue,
         reason: AutocompleteChangeReason,
-        details?: AutocompleteChangeDetails<FormAutocompleteItem>
+        details?: AutocompleteChangeDetails<FormAutocompleteItem<any>>
       ) => {
         const go = () => {
-          let newValue: FormAutocompleteValue;
+          let newValue: any;
 
           if (componentValue) {
             if (componentValue) {
@@ -560,7 +575,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
     );
 
     const handleGetOptionDisabled = useCallback(
-      (option: FormAutocompleteItem) => {
+      (option: FormAutocompleteItem<any>) => {
         if (getOptionDisabled) {
           return option.disabled || getOptionDisabled(option);
         } else {
@@ -605,7 +620,7 @@ const FormAutocomplete = React.forwardRef<FormAutocompleteCommands, Props>(
             setInputValue(undefined);
           }
         }}
-        renderTags={(value: FormAutocompleteItem[], getTagProps) =>
+        renderTags={(value: FormAutocompleteItems<any>, getTagProps) =>
           value.map((option, index) => (
             <Chip size='small' label={onRenderTag ? onRenderTag(option) : option.label} {...getTagProps({ index })} />
           ))

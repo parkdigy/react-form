@@ -13,13 +13,18 @@ import {
   FormValueMap,
   FormBody,
   FormFooter,
+  FormAutocompleteItems,
 } from '../../../../src';
 import { OutlinedPaper } from '#ccomp';
 
-const DEFAULT_ITEMS: FormAutocompleteItem[] = [lv('Item 1', 1), lv('Item 2', 2), lv('Item 3', 3, { disabled: true })];
+const DEFAULT_ITEMS: FormAutocompleteItem<number>[] = [
+  lv('Item 1', 1),
+  lv('Item 2', 2),
+  lv('Item 3', 3, { disabled: true }),
+];
 
 const FormItemAutocomplete = () => {
-  const asyncLoadAutocompleteRef = useRef<FormAutocompleteCommands>(null);
+  const asyncLoadAutocompleteRef = useRef<FormAutocompleteCommands<number, 'any'>>(null);
 
   //--------------------------------------------------------------------------------------------------------------------
 
@@ -50,7 +55,7 @@ const FormItemAutocomplete = () => {
   //--------------------------------------------------------------------------------------------------------------------
 
   const handleLoadItems = useCallback((keyword?: string) => {
-    return new Promise<FormAutocompleteItem[]>((resolve) => {
+    return new Promise<FormAutocompleteItems<number>>((resolve) => {
       setTimeout(() => {
         if (keyword) {
           resolve(DEFAULT_ITEMS.filter((info) => info.label.includes(keyword)));
@@ -61,8 +66,8 @@ const FormItemAutocomplete = () => {
     });
   }, []);
 
-  const handleAsyncLoadValueItem = useCallback((value: FormAutocompleteValue) => {
-    return new Promise<FormAutocompleteComponentValue>((resolve) => {
+  const handleAsyncLoadValueItem = useCallback((value: FormAutocompleteValue<number, 'any'>) => {
+    return new Promise<FormAutocompleteComponentValue<number, 'any'>>((resolve) => {
       if (Array.isArray(value)) {
         resolve(DEFAULT_ITEMS.filter((info) => value.includes(info.value)));
       } else {
@@ -108,7 +113,7 @@ const FormItemAutocomplete = () => {
         <FormBody>
           <FormRow>
             <FormCol>
-              <FormAutocomplete
+              <FormAutocomplete<number, 'any'>
                 {...additionalProps}
                 name='label'
                 items={items}
@@ -120,7 +125,7 @@ const FormItemAutocomplete = () => {
               />
             </FormCol>
             <FormCol>
-              <FormAutocomplete
+              <FormAutocomplete<number, 'any'>
                 {...additionalProps}
                 name='required'
                 items={items}
@@ -130,7 +135,7 @@ const FormItemAutocomplete = () => {
               />
             </FormCol>
             <FormCol>
-              <FormAutocomplete
+              <FormAutocomplete<number, 'any'>
                 {...additionalProps}
                 name='readOnly'
                 items={items}
@@ -141,7 +146,7 @@ const FormItemAutocomplete = () => {
               />
             </FormCol>
             <FormCol>
-              <FormAutocomplete
+              <FormAutocomplete<number, 'any'>
                 {...additionalProps}
                 name='disabled'
                 items={items}
@@ -153,7 +158,7 @@ const FormItemAutocomplete = () => {
           </FormRow>
           <FormRow>
             <FormCol xs={3}>
-              <FormAutocomplete
+              <FormAutocomplete<number, 'any'>
                 {...additionalProps}
                 name='onLoadItems'
                 label='FormAutocomplete'
@@ -162,7 +167,7 @@ const FormItemAutocomplete = () => {
               />
             </FormCol>
             <FormCol xs={3}>
-              <FormAutocomplete
+              <FormAutocomplete<number, 'any'>
                 {...additionalProps}
                 ref={asyncLoadAutocompleteRef}
                 name='asyncLoadItems'
@@ -171,7 +176,7 @@ const FormItemAutocomplete = () => {
               />
             </FormCol>{' '}
             <FormCol xs={3}>
-              <FormAutocomplete
+              <FormAutocomplete<number, 'any'>
                 {...additionalProps}
                 name='onLoadItems'
                 label='FormAutocomplete'

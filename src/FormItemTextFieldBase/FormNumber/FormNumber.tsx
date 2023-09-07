@@ -2,12 +2,16 @@ import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { NumericFormatProps } from 'react-number-format';
 import NumberFormatCustom from './NumberFormatCustom';
-import FormText from '../FormText';
-import { FormNumberProps as Props, FormNumberDefaultProps } from './FormNumber.types';
-import { FormValueItemBaseCommands } from '../../@types';
+import {
+  FormNumberProps as Props,
+  FormNumberDefaultProps,
+  FormNumberCommands,
+  FormNumberValue,
+} from './FormNumber.types';
 import { InputBaseComponentProps } from '@mui/material/InputBase/InputBase';
+import FormTextField from '../FormTextField';
 
-const FormNumber = React.forwardRef<FormValueItemBaseCommands, Props>(
+const FormNumber = React.forwardRef<FormNumberCommands, Props>(
   (
     {
       className,
@@ -67,9 +71,10 @@ const FormNumber = React.forwardRef<FormValueItemBaseCommands, Props>(
     // Render ----------------------------------------------------------------------------------------------------------
 
     return (
-      <FormText
+      <FormTextField<FormNumberValue, false>
         ref={ref}
         className={classNames(className, 'FormNumber')}
+        disableReturnKey
         InputProps={muiInputProps}
         readOnly={readOnly}
         {...props}

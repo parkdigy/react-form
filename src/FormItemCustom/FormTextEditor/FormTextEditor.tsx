@@ -8,6 +8,7 @@ import {
   FormTextEditorProps as Props,
   FormTextEditorDefaultProps,
   FormTextEditorCommands,
+  FormTextEditorValue,
 } from './FormTextEditor.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
@@ -69,7 +70,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       onValueChange,
       onRemoveValueItem,
       onValueChangeByUser,
-    } = useFormState();
+    } = useFormState<FormTextEditorValue, false>();
 
     // Memo - FormState ------------------------------------------------------------------------------------------------
 
@@ -88,7 +89,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue);
+    const [value, setValue] = useAutoUpdateState<FormTextEditorValue>(initValue || '');
 
     useFirstSkipEffect(() => {
       if (error) validate(value);
@@ -131,7 +132,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
     // Function - validate ---------------------------------------------------------------------------------------------
 
     const validate = useCallback(
-      function (value: Props['value']) {
+      function (value: FormTextEditorValue) {
         let isEmptyValue = false;
         if (value) {
           const d = document.createElement('div');
@@ -169,9 +170,9 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       const commands: FormTextEditorCommands = {
         getType: () => 'FormTextEditor',
         getName: () => name,
-        getReset: () => initValue,
+        getReset: () => initValue || '',
         reset: () => {
-          lastValue = initValue;
+          lastValue = initValue || '';
           setValue(lastValue);
         },
         getValue: () => lastValue,

@@ -1,11 +1,18 @@
 import { ReactNode } from 'react';
 import { TextFieldProps } from '@mui/material';
-import { FormItemValue, FormValueItemBaseCommands, FormValueItemProps } from '../../@types';
+import { FormValueItemBaseCommands, FormValueItemProps } from '../../@types';
 
-export interface FormTextFieldCommands extends FormValueItemBaseCommands {}
+export type FormTextFieldValue = any;
 
-export type FormTextFieldProps = Omit<TextFieldProps, 'ref' | 'name' | 'onChange'> &
-  Omit<FormValueItemProps, 'value' | 'label' | 'fullWidth' | 'disabled' | 'error'> & {
+export interface FormTextFieldCommands<T = FormTextFieldValue, AllowUndefinedValue extends boolean = true>
+  extends FormValueItemBaseCommands<T, AllowUndefinedValue> {}
+
+export type FormTextFieldProps<
+  T = FormTextFieldValue,
+  AllowUndefinedValue extends boolean = true,
+  V = AllowUndefinedValue extends true ? T | undefined : T,
+> = Omit<TextFieldProps, 'ref' | 'name' | 'value' | 'onChange'> &
+  Omit<FormValueItemProps<T, AllowUndefinedValue>, 'label' | 'fullWidth' | 'disabled' | 'error'> & {
     icon?: string;
     clear?: boolean;
     maxLength?: number;
@@ -17,7 +24,7 @@ export type FormTextFieldProps = Omit<TextFieldProps, 'ref' | 'name' | 'onChange
     noFormValueItem?: boolean;
     hidden?: boolean;
     disableReturnKey?: boolean;
-    onValue?(value: FormItemValue): FormItemValue;
+    onValue?(value: V): V;
   };
 
 export const FormTextFieldDefaultProps = {};

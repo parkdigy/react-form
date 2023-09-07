@@ -10,11 +10,11 @@ import {
   FormSelect,
   FormToggleButtonGroup,
   FormValueMap,
-  FormToggleButtonGroupItem,
   FormDateTimePicker,
   FormDatePicker,
   FormDateRangePicker,
   SearchCommands,
+  FormToggleButtonGroupItems,
 } from '../../../../src';
 import { FormHelperText, Grid, MenuItem, MenuList } from '@mui/material';
 import dayjs from 'dayjs';
@@ -27,7 +27,7 @@ const Search = () => {
   };
 
   const handleToggleButtonGroupLoadItems = useCallback(() => {
-    return new Promise<FormToggleButtonGroupItem[]>((resolve) => {
+    return new Promise<FormToggleButtonGroupItems<'' | number>>((resolve) => {
       setTimeout(() => {
         resolve([lv('전체', ''), lv('1', 1), lv('2', 2), lv('3', 3)]);
       }, 3000);
@@ -39,7 +39,7 @@ const Search = () => {
   const leftSearchGroup = (
     <SearchGroup max>
       <FormText name='FormText' label='검색어' />
-      <FormSelect
+      <FormSelect<'' | number>
         name='FormSelect'
         label='검색옵션'
         items={[
@@ -54,7 +54,7 @@ const Search = () => {
       <FormDatePicker name='FormDatePicker' readOnlyInput disablePast />
       <FormDateTimePicker name='FormDateTimePicker' time='minute' disablePast maxDate={dayjs().add(1, 'day')} />
       <FormDateRangePicker name='search_date' readOnlyInput minDate={dayjs().subtract(20, 'day')} />
-      <FormToggleButtonGroup
+      <FormToggleButtonGroup<'' | number>
         name='FormToggleButtonGroup'
         value=''
         notAllowEmptyValue

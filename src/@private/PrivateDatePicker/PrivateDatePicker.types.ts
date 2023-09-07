@@ -20,10 +20,9 @@ export interface PrivateDatePickerProps
         'children' | 'className' | 'style' | 'sx' | 'value' | 'inputFormat' | 'views' | 'onChange'
       >
     >,
-    Omit<FormValueItemProps, 'value' | 'onChange'> {
+    FormValueItemProps<PrivateDatePickerValue, false> {
   type: FormDateType;
   time?: FormTimeType;
-  value?: PrivateDatePickerValue;
   hours?: number[];
   minutes?: number[];
   seconds?: number[];
@@ -39,15 +38,17 @@ export interface PrivateDatePickerProps
   align?: 'left' | 'center' | 'right';
   readOnlyInput?: boolean;
   hidden?: boolean;
-  onChange?(value: PrivateDatePickerValue): void;
-  onValidate?(value: PrivateDatePickerValue): boolean | string;
 }
 
-export const PrivateDatePickerDefaultProps: Pick<PrivateDatePickerProps, 'showDaysOutsideCurrentMonth' | 'align'> = {
+export const PrivateDatePickerDefaultProps: Pick<
+  PrivateDatePickerProps,
+  'showDaysOutsideCurrentMonth' | 'align' | 'value'
+> = {
   showDaysOutsideCurrentMonth: true,
   align: 'center',
+  value: null,
 };
 
 export interface PrivateDatePickerCommands
-  extends FormValueItemBaseCommands<PrivateDatePickerValue>,
+  extends FormValueItemBaseCommands<PrivateDatePickerValue, false>,
     FormDateValueItemCommands {}

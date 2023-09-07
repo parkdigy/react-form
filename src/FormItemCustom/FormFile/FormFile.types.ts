@@ -1,7 +1,9 @@
 import { CommonSxProps, FormValueItemCommands, FormValueItemProps } from '../../@types';
 import { ReactNode } from 'react';
 
-export interface FormFileProps extends CommonSxProps, FormValueItemProps {
+export type FormFileValue = string;
+
+export interface FormFileProps extends CommonSxProps, FormValueItemProps<FormFileValue, false> {
   required?: boolean;
   accept?: string;
   hideUrl?: boolean;
@@ -25,6 +27,8 @@ export interface FormFileProps extends CommonSxProps, FormValueItemProps {
   onLink?(url: string): Promise<string>;
 }
 
-export const FormFileDefaultProps = {};
+export const FormFileDefaultProps: Pick<FormFileProps, 'value'> = {
+  value: '',
+};
 
-export type FormFileCommands = FormValueItemCommands;
+export type FormFileCommands = FormValueItemCommands<FormFileValue, false>;

@@ -8,7 +8,7 @@ export type InputDatePickerValue = Dayjs | null;
 
 export interface InputDatePickerProps
   extends Pick<
-    FormValueItemProps,
+    FormValueItemProps<InputDatePickerValue>,
     'variant' | 'size' | 'color' | 'focused' | 'fullWidth' | 'readOnly' | 'label' | 'labelIcon' | 'error'
   > {
   className?: string;

@@ -1,18 +1,8 @@
 import React from 'react';
-import { FormTextFieldCommands } from './FormTextField.types';
+import { FormTextFieldProps, FormTextFieldCommands, FormTextFieldValue } from './FormTextField.types';
 import './FormTextField.scss';
-declare const FormTextField: React.ForwardRefExoticComponent<Omit<import("@mui/material").FilledTextFieldProps | import("@mui/material").OutlinedTextFieldProps | import("@mui/material").StandardTextFieldProps, "ref" | "name" | "onChange"> & Omit<import("../../@types").FormValueItemProps, "disabled" | "error" | "fullWidth" | "label" | "value"> & {
-    icon?: string | undefined;
-    clear?: boolean | undefined;
-    maxLength?: number | undefined;
-    labelShrink?: boolean | undefined;
-    validPattern?: RegExp | undefined;
-    invalidPattern?: RegExp | undefined;
-    startAdornment?: React.ReactNode;
-    endAdornment?: React.ReactNode;
-    noFormValueItem?: boolean | undefined;
-    hidden?: boolean | undefined;
-    disableReturnKey?: boolean | undefined;
-    onValue?(value: any): any;
-} & React.RefAttributes<FormTextFieldCommands>>;
+interface WithForwardRefType<T = FormTextFieldValue, AllowUndefinedValue extends boolean = true> extends React.FC<FormTextFieldProps<T, AllowUndefinedValue>> {
+    <T = FormTextFieldValue, AllowUndefinedValue extends boolean = true>(props: FormTextFieldProps<T, AllowUndefinedValue> & React.RefAttributes<FormTextFieldCommands<T, AllowUndefinedValue>>): ReturnType<React.FC<FormTextFieldProps<T, AllowUndefinedValue>>>;
+}
+declare const FormTextField: WithForwardRefType;
 export default FormTextField;

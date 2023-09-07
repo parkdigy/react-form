@@ -2,9 +2,14 @@ import React, { useEffect, useState, useCallback, ReactNode } from 'react';
 import classNames from 'classnames';
 import { Autocomplete, Chip, InputLabelProps } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { FormTagProps, FormTagDefaultProps, FormTagExtraCommands, FormTagCommands } from './FormTag.types';
-import FormText from '../FormText';
-import { FormItemValue, FormValueItemBaseCommands } from '../../@types';
+import {
+  FormTagProps,
+  FormTagDefaultProps,
+  FormTagExtraCommands,
+  FormTagCommands,
+  FormTagValue,
+} from './FormTag.types';
+import FormText, { FormTextCommands } from '../FormText';
 import { empty, nextTick, notEmpty, isSame } from '../../@util';
 import { useFormState } from '../../FormContext';
 import FormContextProvider from '../../FormContextProvider';
@@ -55,13 +60,13 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
     const getFinalValue = useCallback(
-      (value: FormTagProps['value'] | Set<string>): FormTagProps['value'] => {
+      (value: FormTagValue | Set<string>): FormTagValue => {
         let finalValue;
 
         if (value instanceof Set) {
           finalValue = Array.from(value);
         } else {
-          const valueSet = new Set();
+          const valueSet = new Set<string>();
           (value || []).forEach((value) => valueSet.add(value));
           finalValue = Array.from(valueSet);
         }
@@ -74,9 +79,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     // State - value ---------------------------------------------------------------------------------------------------
 
     const [valueSet, setValueSet] = useState<Set<string>>(() => {
-      return new Set<string>(getFinalValue(initValue));
+      return new Set<string>(getFinalValue(initValue || []));
     });
-    const [value, setValue] = useAutoUpdateState<FormTagProps['value']>(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateState<FormTagValue>(initValue || [], getFinalValue);
 
     useFirstSkipEffect(() => {
       if (error) validate(value);
@@ -113,7 +118,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     // Function - validate ---------------------------------------------------------------------------------------------
 
     const validate = useCallback(
-      (value: FormTagProps['value']) => {
+      (value: FormTagValue) => {
         if (required && empty(value)) {
           setErrorHelperText(true, '필수 입력 항목입니다.');
           return false;
@@ -146,18 +151,18 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     // Function - getCommands ------------------------------------------------------------------------------------------
 
     const getCommands = useCallback(
-      (baseCommands: FormValueItemBaseCommands) => {
+      (baseCommands: FormTextCommands) => {
         let lastValue = value;
 
         return {
           ...baseCommands,
-          getReset: () => getFinalValue(initValue),
+          getReset: () => getFinalValue(initValue || []),
           reset: () => {
-            lastValue = getFinalValue(initValue);
+            lastValue = getFinalValue(initValue || []);
             setValue(lastValue);
           },
           getValue: () => lastValue,
-          setValue: (newValue: FormTagProps['value']) => {
+          setValue: (newValue: FormTagValue) => {
             const finalValue = getFinalValue(newValue);
             if (!isSame(lastValue, finalValue)) {
               lastValue = finalValue;
@@ -211,14 +216,14 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     // Event Handler ---------------------------------------------------------------------------------------------------
 
     const handleAddValueItem = useCallback(
-      (id: string, commands: FormValueItemBaseCommands) => {
+      (id: string, commands: FormTextCommands) => {
         onAddValueItem(id, getCommands(commands));
       },
       [onAddValueItem, getCommands]
     );
 
     const handleRef = useCallback(
-      (commands: FormValueItemBaseCommands) => {
+      (commands: FormTextCommands) => {
         if (ref) {
           const finalCommands = getCommands(commands);
 
@@ -248,7 +253,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       [inputValue, appendTag, onKeyDown]
     );
 
-    const handleInputChange = useCallback((value: FormItemValue) => {
+    const handleInputChange = useCallback((value: string) => {
       setInputValue(value.replace(/ /g, '').replace(/,/g, ''));
     }, []);
 

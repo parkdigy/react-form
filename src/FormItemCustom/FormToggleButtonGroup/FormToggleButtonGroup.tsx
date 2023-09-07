@@ -4,9 +4,9 @@ import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick, notEmpty, isSame } from '../../@util';
-import { PartialPick } from '../../@types';
+import { FormValueType, PartialPick } from '../../@types';
 import {
-  FormToggleButtonGroupProps as Props,
+  FormToggleButtonGroupProps,
   FormToggleButtonGroupDefaultProps,
   FormToggleButtonGroupCommands,
 } from './FormToggleButtonGroup.types';
@@ -14,7 +14,17 @@ import { useFormState } from '../../FormContext';
 import FormItemBase, { FormItemBaseProps } from '../FormItemBase';
 import './FormToggleButtonGroup.scss';
 
-const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Props>(
+type Props = FormToggleButtonGroupProps<any, 'any'>;
+type Commands = FormToggleButtonGroupCommands<any, 'any'>;
+
+interface WithForwardRefType<T, VT extends FormValueType = 'single'>
+  extends React.FC<FormToggleButtonGroupProps<T, VT>> {
+  <T, VT extends FormValueType = 'single'>(
+    props: FormToggleButtonGroupProps<T, VT> & React.RefAttributes<FormToggleButtonGroupCommands<T, VT>>
+  ): ReturnType<React.FC<FormToggleButtonGroupProps<T, VT>>>;
+}
+
+const FormToggleButtonGroup: WithForwardRefType<any, 'any'> = React.forwardRef<Commands, Props>(
   (
     {
       variant: initVariant,
@@ -328,7 +338,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
         let lastLoading = loading;
         let lastDisabled = !!disabled;
 
-        const commands: FormToggleButtonGroupCommands = {
+        const commands: FormToggleButtonGroupCommands<any, 'any'> = {
           getType: () => 'FormToggleButtonGroup',
           getName: () => name,
           getReset: () => getFinalValue(initValue),
@@ -490,7 +500,7 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
       return (
         items &&
         items.map(({ value, label, disabled: itemDisabled, color: itemColor }, idx) => {
-          const button = (
+          return (
             <ToggleButton
               ref={idx === 0 ? refForButtonResizeHeightDetect : undefined}
               key={idx}
@@ -521,8 +531,6 @@ const FormToggleButtonGroup = React.forwardRef<FormToggleButtonGroupCommands, Pr
               {label}
             </ToggleButton>
           );
-
-          return button;
         })
       );
     }, [

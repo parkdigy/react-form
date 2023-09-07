@@ -1,12 +1,23 @@
 import React from 'react';
 import classNames from 'classnames';
-import FormText from '../FormText';
-import { FormHiddenProps as Props, FormHiddenDefaultProps, FormHiddenCommands } from './FormHidden.types';
+import {
+  FormHiddenProps as Props,
+  FormHiddenDefaultProps,
+  FormHiddenCommands,
+  FormHiddenValue,
+} from './FormHidden.types';
 import './FormHidden.scss';
+import FormTextField from '../FormTextField';
 
 const FormHidden = React.forwardRef<FormHiddenCommands, Props>(({ className, ...props }, ref) => {
   return (
-    <FormText ref={ref} className={classNames(className, 'FormHidden')} type='hidden' variant='standard' {...props} />
+    <FormTextField<FormHiddenValue>
+      ref={ref}
+      className={classNames(className, 'FormHidden')}
+      type='hidden'
+      variant='standard'
+      {...props}
+    />
   );
 });
 

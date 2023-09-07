@@ -2500,27 +2500,18 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
     return (React__default.createElement(TextField, __assign$7({}, props, { variant: variant, size: size, color: color, focused: focused || undefined, name: name, label: label, placeholder: placeholder, className: classNames$1(className, 'FormValueItem', 'FormTextField', "variant-".concat(variant)), inputRef: initInputRef ? initInputRef : inputRef, value: value, required: required, fullWidth: !width && fullWidth, error: error, helperText: formColWithHelperText ? undefined : helperText, FormHelperTextProps: { component: 'div' }, disabled: disabled, InputProps: muiInputProps, InputLabelProps: muiInputLabelProps, inputProps: ((_b = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _b === void 0 ? void 0 : _b.includes('FormTag-Input')) ? initInputProps : inputProps, style: style, select: select, SelectProps: SelectProps, multiline: multiline, onChange: handleChange, onBlur: handleBlur, onKeyDown: handleKeyDown })));
 });
 FormTextField.displayName = 'FormText';
-FormTextField.defaultProps = FormTextFieldDefaultProps;var FormTextDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: true, value: '' });var FormText = React__default.forwardRef(function (_a, ref) {
-    // Event Handler ---------------------------------------------------------------------------------------------------
-    var className = _a.className, onValue = _a.onValue, props = __rest$4(_a, ["className", "onValue"]);
-    var handleValue = useCallback(function (value) {
-        var finalValue = value == null ? '' : value;
-        if (onValue) {
-            finalValue = onValue(finalValue);
-        }
-        return finalValue;
-    }, [onValue]);
-    // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormText'), disableReturnKey: true, onValue: handleValue }, props)));
-});
-FormText.displayName = 'FormText';
-FormText.defaultProps = FormTextDefaultProps;var FormHiddenDefaultProps = {};var css_248z$k = ".FormHidden {\n  display: none !important;\n}";
+FormTextField.defaultProps = FormTextFieldDefaultProps;var FormHiddenDefaultProps = __assign$7({}, FormTextFieldDefaultProps);var css_248z$k = ".FormHidden {\n  display: none !important;\n}";
 styleInject(css_248z$k);var FormHidden = React__default.forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest$4(_a, ["className"]);
-    return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormHidden'), type: 'hidden', variant: 'standard' }, props)));
+    return (React__default.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormHidden'), type: 'hidden', variant: 'standard' }, props)));
 });
 FormHidden.displayName = 'FormHidden';
-FormHidden.defaultProps = FormHiddenDefaultProps;var FormTagDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { value: [], clear: true, formValueSeparator: ',' });var css_248z$j = ".FormTag.FormTextField {\n  min-width: 200px;\n}";
+FormHidden.defaultProps = FormHiddenDefaultProps;var FormTagDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { value: [], clear: true, formValueSeparator: ',' });var FormTextDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: true, value: '' });var FormText = React__default.forwardRef(function (_a, ref) {
+    var className = _a.className, props = __rest$4(_a, ["className"]);
+    return (React__default.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormText'), disableReturnKey: true }, props)));
+});
+FormText.displayName = 'FormText';
+FormText.defaultProps = FormTextDefaultProps;var css_248z$j = ".FormTag.FormTextField {\n  min-width: 200px;\n}";
 styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var className = _a.className, name = _a.name, initValue = _a.value, exceptValue = _a.exceptValue, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, disabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, initHelperText = _a.helperText, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest$4(_a, ["className", "name", "value", "exceptValue", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
@@ -2542,9 +2533,9 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
     }, [onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
     var _c = useState(function () {
-        return new Set(getFinalValue(initValue));
+        return new Set(getFinalValue(initValue || []));
     }), valueSet = _c[0], setValueSet = _c[1];
-    var _d = useAutoUpdateState$1(initValue, getFinalValue), value = _d[0], setValue = _d[1];
+    var _d = useAutoUpdateState$1(initValue || [], getFinalValue), value = _d[0], setValue = _d[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(value);
@@ -2596,8 +2587,8 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
     // Function - getCommands ------------------------------------------------------------------------------------------
     var getCommands = useCallback(function (baseCommands) {
         var lastValue = value;
-        return __assign$7(__assign$7(__assign$7({}, baseCommands), { getReset: function () { return getFinalValue(initValue); }, reset: function () {
-                lastValue = getFinalValue(initValue);
+        return __assign$7(__assign$7(__assign$7({}, baseCommands), { getReset: function () { return getFinalValue(initValue || []); }, reset: function () {
+                lastValue = getFinalValue(initValue || []);
                 setValue(lastValue);
             }, getValue: function () { return lastValue; }, setValue: function (newValue) {
                 var finalValue = getFinalValue(newValue);
@@ -2710,8 +2701,13 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
 });
 FormTag.displayName = 'FormTag';
 FormTag.defaultProps = FormTagDefaultProps;var FormEmailDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/g });var FormEmail = React__default.forwardRef(function (_a, ref) {
-    var className = _a.className, props = __rest$4(_a, ["className"]);
-    return React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormEmail'), type: 'email' }, props));
+    var className = _a.className, onValue = _a.onValue, props = __rest$4(_a, ["className", "onValue"]);
+    var handleValue = useCallback(function (value) {
+        var newValue = value.replace(/ /gi, '');
+        return onValue ? onValue(newValue) : newValue;
+    }, [onValue]);
+    // Render ------------------------------------------------------------------------------------------------------------
+    return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormEmail'), type: 'email', onValue: handleValue }, props)));
 });
 FormEmail.displayName = 'FormEmail';
 FormEmail.defaultProps = FormEmailDefaultProps;var FormPasswordDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: false, eye: true });var css_248z$i = ".FormPassword .eye-icon-button-wrap {\n  visibility: hidden;\n}\n.FormPassword.variant-filled .eye-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormPassword:hover .eye-icon-button-wrap.show,\n.FormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show {\n  visibility: visible;\n}";
@@ -2741,8 +2737,7 @@ var FormPassword = React__default.forwardRef(function (_a, ref) {
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (value) {
         setShowEye(notEmpty(value));
-        if (onChange)
-            onChange(value);
+        onChange && onChange(value);
     }, [onChange]);
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormPassword'), onChange: handleChange, type: type, InputProps: muiInputProps }, props)));
@@ -2752,22 +2747,16 @@ FormPassword.defaultProps = FormPasswordDefaultProps;
 var templateObject_1;var FormTelDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /(^([0-9]{2,3})([0-9]{3,4})([0-9]{4})$)|(^([0-9]{2,3})-([0-9]{3,4})-([0-9]{4})$)|(^([0-9]{4})-([0-9]{4})$)|(^\+(?:[-]?[0-9]){8,}$)/ });var FormTel = React__default.forwardRef(function (_a, ref) {
     // Event Handler ---------------------------------------------------------------------------------------------------
     var className = _a.className, onValue = _a.onValue, props = __rest$4(_a, ["className", "onValue"]);
-    var handleOnValue = useCallback(function (value) {
-        var newValue = value;
-        if (newValue && notEmpty(newValue)) {
-            newValue = newValue.replace(/[^0-9]/gi, '');
-        }
-        newValue = autoDash$2(newValue);
+    var handleValue = useCallback(function (value) {
+        var newValue = autoDash$2(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormTel'), onValue: handleOnValue, maxLength: 13 }, props)));
+    return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormTel'), onValue: handleValue, maxLength: 13 }, props)));
 });
 FormTel.displayName = 'FormTel';
 FormTel.defaultProps = FormTelDefaultProps;
 function autoDash$2(tel) {
-    if (tel == null)
-        return undefined;
     var str = tel.replace(/[^0-9*]/g, '');
     var isLastDash = tel.substring(tel.length - 1, tel.length) === '-';
     if (str.substring(0, 1) !== '0' && !['15', '16', '18'].includes(str.substring(0, 2))) {
@@ -4013,7 +4002,7 @@ function NumericFormat(props) {
                 onChange({ target: { value: values.value } });
         } })));
 });
-NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps = __assign$7({}, FormTextDefaultProps);var FormNumber = React__default.forwardRef(function (_a, ref) {
+NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: true, value: '' });var FormNumber = React__default.forwardRef(function (_a, ref) {
     // Memo --------------------------------------------------------------------------------------------------------------
     var className = _a.className, allowLeadingZeros = _a.allowLeadingZeros, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initMuiInputProps = _a.InputProps, props = __rest$4(_a, ["className", "allowLeadingZeros", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "InputProps"]);
     var muiInputProps = useMemo(function () {
@@ -4049,7 +4038,7 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
         thousandSeparator,
     ]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormNumber'), InputProps: muiInputProps, readOnly: readOnly }, props)));
+    return (React__default.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormNumber'), disableReturnKey: true, InputProps: muiInputProps, readOnly: readOnly }, props)));
 });
 FormNumber.displayName = 'FormNumber';
 FormNumber.defaultProps = FormNumberDefaultProps;var FormSearchDefaultProps = __assign$7({}, FormTextDefaultProps);var css_248z$h = ".FormSearch input[type=search]::-webkit-search-decoration,\n.FormSearch input[type=search]::-webkit-search-cancel-button,\n.FormSearch input[type=search]::-webkit-search-results-button,\n.FormSearch input[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n}";
@@ -4061,15 +4050,21 @@ FormSearch.displayName = 'FormSearch';
 FormSearch.defaultProps = FormSearchDefaultProps;var FormTextareaDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: false, rows: 3, value: '' });var css_248z$g = ".FormTextarea .MuiInputBase-root .MuiInputBase-input {\n  overflow-y: scroll;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar {\n  width: 8px;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n}";
 styleInject(css_248z$g);var FormTextarea = React__default.forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest$4(_a, ["className"]);
-    return React__default.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormTextarea') }, props, { multiline: true }));
+    return (React__default.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormTextarea') }, props, { multiline: true })));
 });
 FormTextarea.displayName = 'FormTextarea';
 FormTextarea.defaultProps = FormTextareaDefaultProps;var FormUrlDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'%()*+,;=.]+$/gim });var FormUrl = React__default.forwardRef(function (_a, ref) {
-    var className = _a.className, props = __rest$4(_a, ["className"]);
-    return React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormUrl'), type: 'url' }, props));
+    // Event Handler -----------------------------------------------------------------------------------------------------
+    var className = _a.className, onValue = _a.onValue, props = __rest$4(_a, ["className", "onValue"]);
+    var handleValue = useCallback(function (value) {
+        var newValue = value.replace(/ /gi, '');
+        return onValue ? onValue(newValue) : newValue;
+    }, [onValue]);
+    // Render ------------------------------------------------------------------------------------------------------------
+    return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormUrl'), type: 'url', onValue: handleValue }, props)));
 });
 FormUrl.displayName = 'FormUrl';
-FormUrl.defaultProps = FormUrlDefaultProps;var FormSelectDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { formValueSeparator: ',', minWidth: 120 });var css_248z$f = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
+FormUrl.defaultProps = FormUrlDefaultProps;var FormSelectDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { formValueSeparator: ',', minWidth: 120 });var css_248z$f = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
 styleInject(css_248z$f);var FormSelect = React__default.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var className = _a.className, name = _a.name, initItems = _a.items, initFullWidth = _a.fullWidth, onLoadItems = _a.onLoadItems, readOnly = _a.readOnly, multiple = _a.multiple, checkbox = _a.checkbox, placeholder = _a.placeholder, initStartAdornment = _a.startAdornment, initValue = _a.value, initInputLabelProps = _a.InputLabelProps, initSelectProps = _a.SelectProps, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, width = _a.width, minWidth = _a.minWidth, initLoading = _a.loading, onChange = _a.onChange, onValue = _a.onValue, props = __rest$4(_a, ["className", "name", "items", "fullWidth", "onLoadItems", "readOnly", "multiple", "checkbox", "placeholder", "startAdornment", "value", "InputLabelProps", "SelectProps", "formValueSeparator", "formValueSort", "width", "minWidth", "loading", "onChange", "onValue"]);
@@ -4304,7 +4299,7 @@ styleInject(css_248z$f);var FormSelect = React__default.forwardRef(function (_a,
     return (React__default.createElement(FormContextProvider, { value: __assign$7({ fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, 
             // eslint-disable-next-line
             onValueChange: function () { } }, otherFormState) },
-        React__default.createElement(FormText, __assign$7({ select: true, ref: handleRef, name: name, className: classNames$1(className, 'FormSelect', isSelectedPlaceholder && 'is-selected-placeholder'), fullWidth: fullWidth }, props, { startAdornment: startAdornment, value: finalValue, clear: false, readOnly: readOnly || empty(items), InputLabelProps: inputLabelProps, SelectProps: selectProps, onChange: handleChange, onValue: handleValue }),
+        React__default.createElement(FormTextField, __assign$7({ select: true, ref: handleRef, name: name, className: classNames$1(className, 'FormSelect', isSelectedPlaceholder && 'is-selected-placeholder'), fullWidth: fullWidth }, props, { startAdornment: startAdornment, value: finalValue, clear: false, readOnly: readOnly || empty(items), InputLabelProps: inputLabelProps, SelectProps: selectProps, onChange: handleChange, onValue: handleValue }),
             isSelectedPlaceholder && (React__default.createElement(MenuItem, { key: '$$$EmptyValuePlaceholder$$$', value: '', disabled: true, sx: { display: 'none' } }, placeholder)),
             items && notEmpty(items) ? (items.map(function (_a) {
                 var itemLabel = _a.label, itemValue = _a.value, disabled = _a.disabled;
@@ -4317,22 +4312,16 @@ FormSelect.displayName = 'FormSelect';
 FormSelect.defaultProps = FormSelectDefaultProps;var FormCompanyNoDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /(([0-9]{3})([0-9]{2})([0-9]{5}))|(([0-9]{3})-([0-9]{2})-([0-9]{5}))/ });var FormCompanyNo = React__default.forwardRef(function (_a, ref) {
     // Event Handler ---------------------------------------------------------------------------------------------------
     var className = _a.className, onValue = _a.onValue, props = __rest$4(_a, ["className", "onValue"]);
-    var handleOnValue = useCallback(function (value) {
-        var newValue = value;
-        if (newValue && notEmpty(newValue)) {
-            newValue = newValue.replace(/[^0-9]/gi, '');
-        }
-        newValue = autoDash$1(newValue);
+    var handleValue = useCallback(function (value) {
+        var newValue = autoDash$1(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormCompanyNo'), onValue: handleOnValue, maxLength: 12 }, props)));
+    return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormCompanyNo'), maxLength: 12, onValue: handleValue }, props)));
 });
 FormCompanyNo.displayName = 'FormCompanyNo';
 FormCompanyNo.defaultProps = FormCompanyNoDefaultProps;
 function autoDash$1(companyNo) {
-    if (companyNo == null)
-        return undefined;
     var str = companyNo.replace(/[^0-9]/g, '');
     var tmp = '';
     for (var i = 0; i < str.length; i += 1) {
@@ -4345,12 +4334,8 @@ function autoDash$1(companyNo) {
 }var FormPersonalNoDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /(([0-9]{6})([0-9]{7}))|(([0-9]{6})-([0-9]{7}))/ });var FormPersonalNo = React__default.forwardRef(function (_a, ref) {
     // Event Handler ---------------------------------------------------------------------------------------------------
     var className = _a.className, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest$4(_a, ["className", "onValue", "onValidate"]);
-    var handleOnValue = useCallback(function (value) {
-        var newValue = value;
-        if (newValue && notEmpty(newValue)) {
-            newValue = newValue.replace(/[^0-9]/gi, '');
-        }
-        newValue = autoDash(newValue);
+    var handleValue = useCallback(function (value) {
+        var newValue = autoDash(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     var handleValidate = useCallback(function (value) {
@@ -4383,13 +4368,11 @@ function autoDash$1(companyNo) {
         }
     }, [onValidate]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormPersonalNo'), onValue: handleOnValue, maxLength: 14, onValidate: handleValidate }, props)));
+    return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormPersonalNo'), maxLength: 14, onValue: handleValue, onValidate: handleValidate }, props)));
 });
 FormPersonalNo.displayName = 'FormPersonalNo';
 FormPersonalNo.defaultProps = FormPersonalNoDefaultProps;
 function autoDash(personalNo) {
-    if (personalNo == null)
-        return undefined;
     var str = personalNo.replace(/[^0-9]/g, '');
     var tmp = '';
     for (var i = 0; i < str.length; i += 1) {
@@ -4556,13 +4539,13 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
     var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
     var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
     // State - checked -------------------------------------------------------------------------------------------------
-    var _k = useAutoUpdateState$1(initChecked), checked = _k[0], setChecked = _k[1];
+    var _k = useAutoUpdateState$1(!!initChecked), checked = _k[0], setChecked = _k[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(checked);
         if (onChange)
-            onChange(!!checked);
-        onValueChange(name, !!checked);
+            onChange(checked);
+        onValueChange(name, checked);
     }, [checked]);
     // Memo --------------------------------------------------------------------------------------------------------------
     var style = useMemo(function () { return (__assign$7({ width: fullWidth ? '100%' : width || 100, paddingLeft: 3 }, initStyle)); }, [initStyle, fullWidth, width]);
@@ -4602,16 +4585,16 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
     // Commands --------------------------------------------------------------------------------------------------------
     useLayoutEffect(function () {
         var lastChecked = checked;
-        var lastValue = value;
+        var lastValue = value == null ? 1 : value;
         var lastData = data;
-        var lastUncheckedValue = uncheckedValue;
+        var lastUncheckedValue = uncheckedValue == null ? 0 : uncheckedValue;
         var lastDisabled = !!disabled;
         var commands = {
             getType: function () { return 'FormCheckbox'; },
             getName: function () { return name; },
-            getReset: function () { return initChecked; },
+            getReset: function () { return !!initChecked; },
             reset: function () {
-                lastChecked = initChecked;
+                lastChecked = !!initChecked;
                 setChecked(lastChecked);
             },
             getValue: function () { return lastValue; },
@@ -4629,7 +4612,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
                 lastUncheckedValue = uncheckedValue;
                 setUncheckedValue(lastUncheckedValue);
             },
-            getChecked: function () { return !!lastChecked; },
+            getChecked: function () { return lastChecked; },
             setChecked: function (checked) {
                 lastChecked = checked;
                 setChecked(lastChecked);
@@ -4704,7 +4687,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
         }
     }, [readOnly, setChecked, onValueChangeByUser, name, onRequestSearchSubmit]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormCheckbox'), labelIcon: labelIcon, label: label, error: error, fullWidth: fullWidth, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React__default.createElement(FormControlLabel, { ref: labelRef, control: React__default.createElement(Checkbox, __assign$7({ name: name, color: color, size: size, inputRef: initInputRef ? initInputRef : inputRef, action: initAction ? initAction : actionRef, checked: !!checked, checkedIcon: React__default.createElement(CheckBox, { color: error ? 'error' : undefined }), icon: React__default.createElement(CheckBoxOutlineBlank, { color: error ? 'error' : undefined }), onChange: handleChange, disabled: disabled || readOnly }, props)), label: React__default.createElement(Typography, { color: error ? 'error' : readOnly || disabled ? theme.palette.text.disabled : undefined, whiteSpace: 'nowrap' }, text) }) }));
+    return (React__default.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormCheckbox'), labelIcon: labelIcon, label: label, error: error, fullWidth: fullWidth, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React__default.createElement(FormControlLabel, { ref: labelRef, control: React__default.createElement(Checkbox, __assign$7({ name: name, color: color, size: size, inputRef: initInputRef ? initInputRef : inputRef, action: initAction ? initAction : actionRef, checked: checked, checkedIcon: React__default.createElement(CheckBox, { color: error ? 'error' : undefined }), icon: React__default.createElement(CheckBoxOutlineBlank, { color: error ? 'error' : undefined }), onChange: handleChange, disabled: disabled || readOnly }, props)), label: React__default.createElement(Typography, { color: error ? 'error' : readOnly || disabled ? theme.palette.text.disabled : undefined, whiteSpace: 'nowrap' }, text) }) }));
 });
 FormCheckbox.displayName = 'FormCheckbox';
 FormCheckbox.defaultProps = FormCheckboxDefaultProps;var FormRadioGroupDefaultProps = {
@@ -5406,7 +5389,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = React__default.forwardRef(fu
         return (items &&
             items.map(function (_a, idx) {
                 var value = _a.value, label = _a.label, itemDisabled = _a.disabled, itemColor = _a.color;
-                var button = (React__default.createElement(ToggleButton, { ref: idx === 0 ? refForButtonResizeHeightDetect : undefined, key: idx, size: size, className: 'ToggleButton', value: value, color: itemColor || color, disabled: disabled || readOnly || itemDisabled, style: buttonStyle, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } },
+                return (React__default.createElement(ToggleButton, { ref: idx === 0 ? refForButtonResizeHeightDetect : undefined, key: idx, size: size, className: 'ToggleButton', value: value, color: itemColor || color, disabled: disabled || readOnly || itemDisabled, style: buttonStyle, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } },
                     type === 'checkbox' ? (React__default.createElement(React__default.Fragment, null,
                         React__default.createElement(Icon$1, { className: '__checkbox-unchecked__' }, "check_box_outline_blank"),
                         React__default.createElement(Icon$1, { className: '__checkbox-checked__' }, "check_box"))) : (type === 'radio' && (React__default.createElement(React__default.Fragment, null,
@@ -5414,7 +5397,6 @@ styleInject(css_248z$d);var FormToggleButtonGroup = React__default.forwardRef(fu
                             React__default.createElement(Icon$1, { className: '__checkbox-unchecked__' }, "radio_button_unchecked"),
                             React__default.createElement(Icon$1, { className: '__checkbox-checked__' }, "radio_button_checked"))))),
                     label));
-                return button;
             }));
     }, [
         color,
@@ -7466,6 +7448,7 @@ var Editor = /** @class */ (function (_super) {
 }(React.Component));var FormTextEditorDefaultProps = {
     menubar: true,
     height: 500,
+    value: '',
 };var css_248z$c = ".FormTextEditor.initializing textarea {\n  display: none;\n}\n.FormTextEditor.error .tox-tinymce {\n  border-color: #d32f2f;\n}\n\n.tox-menu.tox-collection.tox-collection--list .tox-collection__group .tox-menu-nav__js.tox-collection__item {\n  padding-right: 20px !important;\n}\n\n.tox-notifications-container {\n  display: none;\n}";
 styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
@@ -7489,7 +7472,7 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
     var editorRef = useRef(null);
     var keyDownTime = useRef(0);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _d = useAutoUpdateState$1(initValue), value = _d[0], setValue = _d[1];
+    var _d = useAutoUpdateState$1(initValue || ''), value = _d[0], setValue = _d[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(value);
@@ -7549,9 +7532,9 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
         var commands = {
             getType: function () { return 'FormTextEditor'; },
             getName: function () { return name; },
-            getReset: function () { return initValue; },
+            getReset: function () { return initValue || ''; },
             reset: function () {
-                lastValue = initValue;
+                lastValue = initValue || '';
                 setValue(lastValue);
             },
             getValue: function () { return lastValue; },
@@ -7817,7 +7800,9 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                 }
             }
         }
-        if ((oldComponentValueRef.current, isSame$2(oldComponentValueRef.current, newComponentValue))) {
+        if (oldComponentValueRef.current &&
+            newComponentValue &&
+            isSame$2(oldComponentValueRef.current, newComponentValue)) {
             return oldComponentValueRef.current;
         }
         else {
@@ -8309,6 +8294,7 @@ Icon.defaultProps = IconDefaultProps;var IconTextDefaultProps = {
 IconText.defaultProps = IconTextDefaultProps;var PrivateDatePickerDefaultProps = {
     showDaysOutsideCurrentMonth: true,
     align: 'center',
+    value: null,
 };var PrivateStaticDatePickerDefaultProps = {};var PrivateYearSelectDefaultProps = {};var css_248z$b = ".PrivateYearSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateYearSelect button {\n  font-size: 14px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
 styleInject(css_248z$b);var PrivateToggleButtonDefaultProps = {};var PrivateToggleButton = React__default.forwardRef(function (_a, ref) {
     var children = _a.children, initClassName = _a.className, selected = _a.selected, activated = _a.activated, outlined = _a.outlined, props = __rest$4(_a, ["children", "className", "selected", "activated", "outlined"]);
@@ -10779,6 +10765,7 @@ PrivateDatePicker.displayName = 'PrivateDatePicker';
 PrivateDatePicker.defaultProps = PrivateDatePickerDefaultProps;var PrivateDateTimePickerDefaultProps = {
     showDaysOutsideCurrentMonth: true,
     align: 'center',
+    value: null,
 };var css_248z$6 = ".PrivateDateTimePicker .input-text-field.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.PrivateDateTimePicker .input-text-field.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.PrivateDateTimePicker .input-text-field.align-right .MuiInputBase-input {\n  text-align: right;\n}";
 styleInject(css_248z$6);var PrivateStaticDateTimePickerDefaultProps = {};var css_248z$5 = ".PrivateStaticDateTimePicker.time {\n  height: 400px;\n}\n.PrivateStaticDateTimePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDateTimePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDateTimePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDateTimePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDateTimePicker .action-buttons button:not(:first-child) {\n  margin-left: 5px;\n}\n.PrivateStaticDateTimePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDateTimePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDateTimePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDateTimePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDateTimePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDateTimePicker.time .time .time-container .time-select-wrap > div > div:not(:first-child) {\n  border-left: 1px solid #efefef;\n}";
 styleInject(css_248z$5);var DEFAULT_HOURS = new Array(24).fill(0);
@@ -12646,7 +12633,9 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
                 !formColWithHelperText && helperText && (React__default.createElement(FormHelperText, { error: error || startError || endError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, helperText))))));
 });
 FormDateRangePicker.displayName = 'FormDateRangePicker';
-FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var FormFileDefaultProps = {};var LinkDialogDefaultProps = {};var LinkDialog = function (_a) {
+FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var FormFileDefaultProps = {
+    value: '',
+};var LinkDialogDefaultProps = {};var LinkDialog = function (_a) {
     // Ref -------------------------------------------------------------------------------------------------------------
     var open = _a.open, onConfirm = _a.onConfirm, onCancel = _a.onCancel, onClose = _a.onClose;
     var inputRef = useRef();
@@ -12721,7 +12710,7 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     var fileUploadBtnRef = useRef(null);
     var linkBtnRef = useRef(null);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _c = useAutoUpdateState$1(initValue), value = _c[0], setValue = _c[1];
+    var _c = useAutoUpdateState$1(initValue || ''), value = _c[0], setValue = _c[1];
     var fileValue = useState('')[0];
     useFirstSkipEffect$1(function () {
         if (error)
@@ -12794,9 +12783,9 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
         var commands = {
             getType: function () { return 'FormFile'; },
             getName: function () { return name; },
-            getReset: function () { return initValue; },
+            getReset: function () { return initValue || ''; },
             reset: function () {
-                lastValue = initValue;
+                lastValue = initValue || '';
                 setValue(lastValue);
             },
             getValue: function () { return lastValue; },
@@ -13110,7 +13099,7 @@ styleInject(css_248z);var FormImageFile = React__default.forwardRef(function (_a
         if (preview && value) {
             return (React__default.createElement("a", { href: value, target: '_blank' },
                 React__default.createElement(Tooltip, { title: React__default.createElement("div", { style: { paddingTop: 3, paddingBottom: 3 } },
-                        React__default.createElement("img", { src: value, style: { maxWidth: '100%', verticalAlign: 'middle' } })) },
+                        React__default.createElement("img", { src: value, style: { maxWidth: '100%', verticalAlign: 'middle' }, alt: '' })) },
                     React__default.createElement("img", { className: 'preview-img', src: value, style: { maxHeight: previewMaxHeight || undefined }, alt: '' }))));
         }
     }, [preview, previewMaxHeight, value]);

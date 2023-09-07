@@ -1,20 +1,19 @@
 import React, { useCallback } from 'react';
 import FormText from '../FormText';
 import classNames from 'classnames';
-import { notEmpty } from '../../@util';
-import { FormValueItemBaseCommands } from '../../@types';
-import { FormCompanyNoProps as Props, FormCompanyNoDefaultProps } from './FormCompanyNo.types';
+import {
+  FormCompanyNoProps as Props,
+  FormCompanyNoDefaultProps,
+  FormCompanyNoCommands,
+  FormCompanyNoValue,
+} from './FormCompanyNo.types';
 
-const FormCompanyNo = React.forwardRef<FormValueItemBaseCommands, Props>(({ className, onValue, ...props }, ref) => {
+const FormCompanyNo = React.forwardRef<FormCompanyNoCommands, Props>(({ className, onValue, ...props }, ref) => {
   // Event Handler ---------------------------------------------------------------------------------------------------
 
-  const handleOnValue = useCallback(
-    (value: Props['value']) => {
-      let newValue = value;
-      if (newValue && notEmpty(newValue)) {
-        newValue = newValue.replace(/[^0-9]/gi, '');
-      }
-      newValue = autoDash(newValue);
+  const handleValue = useCallback(
+    (value: FormCompanyNoValue) => {
+      const newValue = autoDash(value.replace(/[^0-9]/gi, ''));
       return onValue ? onValue(newValue) : newValue;
     },
     [onValue]
@@ -26,8 +25,8 @@ const FormCompanyNo = React.forwardRef<FormValueItemBaseCommands, Props>(({ clas
     <FormText
       ref={ref}
       className={classNames(className, 'FormCompanyNo')}
-      onValue={handleOnValue}
       maxLength={12}
+      onValue={handleValue}
       {...props}
     />
   );
@@ -38,9 +37,7 @@ FormCompanyNo.defaultProps = FormCompanyNoDefaultProps;
 
 export default FormCompanyNo;
 
-function autoDash(companyNo: string | undefined): string | undefined {
-  if (companyNo == null) return undefined;
-
+function autoDash(companyNo: string): string {
   const str = companyNo.replace(/[^0-9]/g, '');
   let tmp = '';
 

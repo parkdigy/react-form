@@ -1,20 +1,14 @@
 import React, { useCallback } from 'react';
 import FormText from '../FormText';
 import classNames from 'classnames';
-import { notEmpty } from '../../@util';
-import { FormValueItemBaseCommands } from '../../@types';
-import { FormTelProps as Props, FormTelDefaultProps } from './FormTel.types';
+import { FormTelProps as Props, FormTelDefaultProps, FormTelCommands, FormTelValue } from './FormTel.types';
 
-const FormTel = React.forwardRef<FormValueItemBaseCommands, Props>(({ className, onValue, ...props }, ref) => {
+const FormTel = React.forwardRef<FormTelCommands, Props>(({ className, onValue, ...props }, ref) => {
   // Event Handler ---------------------------------------------------------------------------------------------------
 
-  const handleOnValue = useCallback(
-    (value: Props['value']) => {
-      let newValue = value;
-      if (newValue && notEmpty(newValue)) {
-        newValue = newValue.replace(/[^0-9]/gi, '');
-      }
-      newValue = autoDash(newValue);
+  const handleValue = useCallback(
+    (value: FormTelValue) => {
+      const newValue = autoDash(value.replace(/[^0-9]/gi, ''));
       return onValue ? onValue(newValue) : newValue;
     },
     [onValue]
@@ -23,13 +17,7 @@ const FormTel = React.forwardRef<FormValueItemBaseCommands, Props>(({ className,
   // Render ----------------------------------------------------------------------------------------------------------
 
   return (
-    <FormText
-      ref={ref}
-      className={classNames(className, 'FormTel')}
-      onValue={handleOnValue}
-      maxLength={13}
-      {...props}
-    />
+    <FormText ref={ref} className={classNames(className, 'FormTel')} onValue={handleValue} maxLength={13} {...props} />
   );
 });
 
@@ -38,9 +26,7 @@ FormTel.defaultProps = FormTelDefaultProps;
 
 export default FormTel;
 
-function autoDash(tel: string | undefined): string | undefined {
-  if (tel == null) return undefined;
-
+function autoDash(tel: string): string {
   const str = tel.replace(/[^0-9*]/g, '');
   const isLastDash = tel.substring(tel.length - 1, tel.length) === '-';
 

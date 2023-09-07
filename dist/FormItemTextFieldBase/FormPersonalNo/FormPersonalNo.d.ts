@@ -1,6 +1,5 @@
 import React from 'react';
-import { FormValueItemBaseCommands } from '../../@types';
-declare const FormPersonalNo: React.ForwardRefExoticComponent<Omit<import("../FormText").FormTextProps, "type" | "value" | "maxLength"> & {
+declare const FormPersonalNo: React.ForwardRefExoticComponent<Omit<import("../FormText").FormTextProps, "value" | "type" | "maxLength"> & {
     value?: string | undefined;
-} & React.RefAttributes<FormValueItemBaseCommands<any>>>;
+} & React.RefAttributes<import("../FormText").FormTextCommands>>;
 export default FormPersonalNo;

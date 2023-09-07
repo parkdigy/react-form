@@ -7,14 +7,12 @@ export type FormRatingValue = number;
 export interface FormRatingProps
   extends CommonSxProps,
     PartialPick<RatingProps, 'highlightSelectedOnly' | 'max' | 'precision'>,
-    Omit<FormValueItemProps, 'value' | 'fullWidth' | 'onChange'> {
-  value?: FormRatingValue;
+    Omit<FormValueItemProps<FormRatingValue, false>, 'fullWidth'> {
   required?: boolean;
   icon?: string;
   emptyIcon?: string;
   hidden?: boolean;
-  onChange?(value: number): void;
-  onValue?(value: number): number;
+  onValue?(value: FormRatingValue): FormRatingValue;
 }
 
 export const FormRatingDefaultProps: Pick<FormRatingProps, 'value' | 'precision'> = {
@@ -22,4 +20,4 @@ export const FormRatingDefaultProps: Pick<FormRatingProps, 'value' | 'precision'
   precision: 1,
 };
 
-export interface FormRatingCommands extends FormValueItemBaseCommands<FormRatingValue> {}
+export interface FormRatingCommands extends FormValueItemBaseCommands<FormRatingValue, false> {}
