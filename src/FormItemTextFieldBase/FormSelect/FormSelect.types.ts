@@ -12,8 +12,9 @@ import { FormTextFieldDefaultProps, FormTextFieldProps } from '../FormTextField'
 export type FormSelectValue<
   T,
   VT extends FormValueType = 'single',
+  AllowUndefinedValue extends boolean = true,
   V = VT extends 'single' ? T : VT extends 'multiple' ? T[] : T | T[],
-> = V | undefined;
+> = V | (AllowUndefinedValue extends true ? undefined : never);
 
 export interface FormSelectExtraCommands<T>
   extends FormArrayValueItemCommands,
@@ -21,8 +22,8 @@ export interface FormSelectExtraCommands<T>
     FormMultipleValueItemCommands,
     FormLoadingValueItemCommands {}
 
-export interface FormSelectCommands<T, VT extends FormValueType = 'single'>
-  extends FormValueItemBaseCommands<FormSelectValue<T, VT>, true>,
+export interface FormSelectCommands<T, VT extends FormValueType = 'single', AllowUndefinedValue extends boolean = true>
+  extends FormValueItemBaseCommands<FormSelectValue<T, VT, AllowUndefinedValue>, AllowUndefinedValue>,
     FormSelectExtraCommands<T> {}
 
 export interface FormSelectItem<T> {
@@ -33,8 +34,8 @@ export interface FormSelectItem<T> {
 
 export type FormSelectItems<T> = FormSelectItem<T>[];
 
-export type FormSelectProps<T, VT extends FormValueType = 'single'> = Omit<
-  FormTextFieldProps<FormSelectValue<T, VT>>,
+export type FormSelectProps<T, VT extends FormValueType = 'single', AllowUndefinedValue extends boolean = true> = Omit<
+  FormTextFieldProps<FormSelectValue<T, VT, AllowUndefinedValue>, AllowUndefinedValue>,
   'type' | 'clear'
 > & {
   items?: FormSelectItems<T>;

@@ -215,7 +215,7 @@ const FormBase = () => {
                 <FormMobile name='FormMobile' label='FormMobile' />
               </FormCol>
               <FormCol>
-                <FormNumber name='FormNumber' label='FormNumber' thousandSeparator />
+                <FormNumber name='FormNumber' label='FormNumber' thousandSeparator onChange={(v) => ll(v, typeof v)} />
               </FormCol>
               <FormCol>
                 <FormUrl name='FormUrl' label='FormUrl' />
@@ -232,7 +232,7 @@ const FormBase = () => {
 
             <FormRow>
               <FormCol>
-                <FormSelect<number>
+                <FormSelect<number, 'single'>
                   name='FormSelect'
                   label='FormSelect'
                   placeholder='선택하세요.'
@@ -240,7 +240,7 @@ const FormBase = () => {
                 />
               </FormCol>
               <FormCol>
-                <FormAutocomplete<number>
+                <FormAutocomplete<number, 'multiple'>
                   name='FormAutocomplete'
                   label='FormAutocomplete'
                   multiple
