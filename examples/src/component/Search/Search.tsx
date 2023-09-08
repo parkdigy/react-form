@@ -39,7 +39,7 @@ const Search = () => {
   const leftSearchGroup = (
     <SearchGroup max>
       <FormText name='FormText' label='검색어' />
-      <FormSelect<'' | number>
+      <FormSelect
         name='FormSelect'
         label='검색옵션'
         items={[
@@ -54,7 +54,7 @@ const Search = () => {
       <FormDatePicker name='FormDatePicker' readOnlyInput disablePast />
       <FormDateTimePicker name='FormDateTimePicker' time='minute' disablePast maxDate={dayjs().add(1, 'day')} />
       <FormDateRangePicker name='search_date' readOnlyInput minDate={dayjs().subtract(20, 'day')} />
-      <FormToggleButtonGroup<'' | number>
+      <FormToggleButtonGroup
         name='FormToggleButtonGroup'
         value=''
         notAllowEmptyValue

@@ -1,9 +1,5 @@
 import React from 'react';
-import { FormValueType } from '../../@types';
-import { FormToggleButtonGroupProps, FormToggleButtonGroupCommands } from './FormToggleButtonGroup.types';
+import { FormToggleButtonGroupProps, FormToggleButtonGroupCommands, FormToggleButtonGroupSingleValue } from './FormToggleButtonGroup.types';
 import './FormToggleButtonGroup.scss';
-interface WithForwardRefType<T, VT extends FormValueType = 'single'> extends React.FC<FormToggleButtonGroupProps<T, VT>> {
-    <T, VT extends FormValueType = 'single'>(props: FormToggleButtonGroupProps<T, VT> & React.RefAttributes<FormToggleButtonGroupCommands<T, VT>>): ReturnType<React.FC<FormToggleButtonGroupProps<T, VT>>>;
-}
-declare const FormToggleButtonGroup: WithForwardRefType<any, 'any'>;
+declare const FormToggleButtonGroup: (<T extends FormToggleButtonGroupSingleValue, Multiple extends boolean | undefined>(props: FormToggleButtonGroupProps<T, Multiple> & React.RefAttributes<FormToggleButtonGroupCommands<T, Multiple>>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & Pick<React.ForwardRefExoticComponent<any>, "displayName" | "propTypes" | "defaultProps" | "$$typeof">;
 export default FormToggleButtonGroup;

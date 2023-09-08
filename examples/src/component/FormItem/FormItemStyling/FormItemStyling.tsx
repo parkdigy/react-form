@@ -132,7 +132,7 @@ const FormItemStyling = () => {
           <FormBody>
             <FormRow>
               <FormCol>
-                <FormToggleButtonGroup<string>
+                <FormToggleButtonGroup
                   name='type'
                   label='Component'
                   items={_components.map((component) =>
@@ -148,7 +148,7 @@ const FormItemStyling = () => {
             <FormRow>
               <FormCol>
                 <Box sx={{ ml: -1, mt: -1 }}>
-                  <FormToggleButtonGroup<Exclude<FormProps['variant'], undefined>>
+                  <FormToggleButtonGroup
                     name='variant'
                     label='Variant'
                     value={variant}
@@ -158,7 +158,7 @@ const FormItemStyling = () => {
                     notAllowEmptyValue
                     sx={{ ml: 1, mt: 1 }}
                   />
-                  <FormToggleButtonGroup<Exclude<FormProps['size'], undefined>>
+                  <FormToggleButtonGroup
                     name='size'
                     label='size'
                     value={size}
@@ -168,7 +168,7 @@ const FormItemStyling = () => {
                     notAllowEmptyValue
                     sx={{ ml: 1, mt: 1 }}
                   />
-                  <FormToggleButtonGroup<Exclude<FormProps['color'], undefined>>
+                  <FormToggleButtonGroup
                     name='color'
                     label='color'
                     value={color}
@@ -191,11 +191,11 @@ const FormItemStyling = () => {
             <FormRow>
               <FormCol>
                 <Box sx={{ ml: -1, mt: -1 }}>
-                  <FormSelect<number>
+                  <FormSelect
                     name='spacing'
                     label='spacing'
                     value={Number(spacing)}
-                    onChange={setSpacing}
+                    onChange={(v) => (v === '' ? 1.5 : setSpacing(v))}
                     items={[lv('0', 0), lv('1', 1), lv('2 (Default)', 2), lv('3', 3), lv('4', 4), lv('5', 5)]}
                     fullWidth={false}
                     sx={{ ml: 1, mt: 1 }}

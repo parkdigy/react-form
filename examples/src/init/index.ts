@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 declare global {
   type PartialPick<T, K extends keyof T> = Partial<Pick<T, K>>;
   type PartialOmit<T, K extends keyof T> = Partial<Omit<T, K>>;
@@ -5,13 +7,11 @@ declare global {
   function ll(message?: any, ...optionalParams: any[]): void;
   function empty(v: any): boolean;
   function notEmpty(v: any): boolean;
-  function lv<T extends Record<'label', T['label']> & Record<'value', T['value']>>(
-    label: T['label'],
-    value: T['value'],
-    other?: { [K in keyof Omit<T, 'label' | 'value'>]: T[K] }
-  ): {
-    [K in keyof T]: T[K];
-  };
+  function lv<L extends ReactNode, V>(
+    label: L,
+    value: V,
+    other?: { [key: string]: any }
+  ): { label: L; value: V } & { [key: string]: any };
   function getName(prefix: string, resetSeq?: boolean): string;
 }
 
@@ -39,14 +39,12 @@ globalThis.notEmpty = function (v: any) {
   return !empty(v);
 };
 
-globalThis.lv = <T extends Record<'label', T['label']> & Record<'value', T['value']>>(
-  label: T['label'],
-  value: T['value'],
-  other?: { [K in keyof Omit<T, 'label' | 'value'>]: T[K] }
-): {
-  [K in keyof T]: T[K];
-} => {
-  return { label, value, ...other } as { [K in keyof T]: T[K] };
+globalThis.lv = <L extends ReactNode, V>(
+  label: L,
+  value: V,
+  other?: { [key: string]: any }
+): { label: L; value: V } & { [key: string]: any } => {
+  return { label, value, ...other };
 };
 
 let nameSeq = 0;

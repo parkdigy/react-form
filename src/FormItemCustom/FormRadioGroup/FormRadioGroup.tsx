@@ -14,29 +14,21 @@ import { useResizeDetector } from 'react-resize-detector';
 import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from '@mui/material';
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, nextTick } from '../../@util';
+import { AutoTypeForwardRef, empty, nextTick, ToForwardRefExoticComponent } from '../../@util';
 import {
   FormRadioGroupProps,
   FormRadioGroupDefaultProps,
   FormRadioGroupCommands,
   FormRadioGroupValue,
+  FormRadioGroupSingleValue,
 } from './FormRadioGroup.types';
 import { useFormState } from '../../FormContext';
 import FormItemBase from '../FormItemBase';
 
 const PADDING_LEFT = 3;
 
-type Props = FormRadioGroupProps<any>;
-type Commands = FormRadioGroupCommands<any>;
-
-interface WithForwardRefType<T> extends React.FC<FormRadioGroupProps<T>> {
-  <T>(
-    props: FormRadioGroupProps<T> & React.RefAttributes<FormRadioGroupCommands<T>>
-  ): ReturnType<React.FC<FormRadioGroupProps<T>>>;
-}
-
-const FormRadioGroup: WithForwardRefType<any> = React.forwardRef<Commands, Props>(
-  (
+const FormRadioGroup = ToForwardRefExoticComponent(
+  AutoTypeForwardRef(function <T extends FormRadioGroupSingleValue>(
     {
       variant: initVariant,
       size: initSize,
@@ -71,9 +63,15 @@ const FormRadioGroup: WithForwardRefType<any> = React.forwardRef<Commands, Props
       sx,
       //----------------------------------------------------------------------------------------------------------------
       ...props
-    },
-    ref
-  ) => {
+    }: FormRadioGroupProps<T>,
+    ref: React.ForwardedRef<FormRadioGroupCommands<T>>
+  ) {
+    // type ------------------------------------------------------------------------------------------------------------
+
+    type Props = FormRadioGroupProps<T>;
+    type Commands = FormRadioGroupCommands<T>;
+    type Value = FormRadioGroupValue<T>;
+
     // ID --------------------------------------------------------------------------------------------------------------
 
     const id = useId();
@@ -146,7 +144,7 @@ const FormRadioGroup: WithForwardRefType<any> = React.forwardRef<Commands, Props
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
     const getFinalValue = useCallback(
-      (value: FormRadioGroupValue<any>): FormRadioGroupValue<any> => {
+      (value: Value): Value => {
         return onValue ? onValue(value) : value;
       },
       [onValue]
@@ -154,7 +152,7 @@ const FormRadioGroup: WithForwardRefType<any> = React.forwardRef<Commands, Props
 
     // State - value ---------------------------------------------------------------------------------------------------
 
-    const [value, setValue] = useAutoUpdateState<FormRadioGroupValue<any>>(initValue, getFinalValue);
+    const [value, setValue] = useAutoUpdateState<Value>(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
       if (error) validate(value);
@@ -257,7 +255,7 @@ const FormRadioGroup: WithForwardRefType<any> = React.forwardRef<Commands, Props
     // Function - validate ---------------------------------------------------------------------------------------------
 
     const validate = useCallback(
-      function (value: FormRadioGroupValue<any>) {
+      function (value: Value) {
         if (required && empty(value)) {
           setErrorHelperText(true, '필수 선택 항목입니다.');
           return false;
@@ -286,7 +284,7 @@ const FormRadioGroup: WithForwardRefType<any> = React.forwardRef<Commands, Props
       let lastLoading = loading;
       let lastDisabled = !!disabled;
 
-      const commands: FormRadioGroupCommands<any> = {
+      const commands: Commands = {
         getType: () => 'FormRadioGroup',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
@@ -295,7 +293,7 @@ const FormRadioGroup: WithForwardRefType<any> = React.forwardRef<Commands, Props
           setValue(lastValue);
         },
         getValue: () => lastValue,
-        setValue: (value: FormRadioGroupValue<any>) => {
+        setValue: (value: Value) => {
           lastValue = getFinalValue(value);
           setValue(lastValue);
         },
@@ -391,7 +389,7 @@ const FormRadioGroup: WithForwardRefType<any> = React.forwardRef<Commands, Props
         if (readOnly) {
           e.preventDefault();
         } else {
-          let finalValue: FormRadioGroupValue<any> = e.target.value;
+          let finalValue: Value = e.target.value as Value;
           if (items) {
             const item = items.find(({ value }) => value.toString() === finalValue);
             if (item) {
@@ -531,7 +529,7 @@ const FormRadioGroup: WithForwardRefType<any> = React.forwardRef<Commands, Props
         }
       />
     );
-  }
+  })
 );
 
 FormRadioGroup.displayName = 'FormRadioGroup';

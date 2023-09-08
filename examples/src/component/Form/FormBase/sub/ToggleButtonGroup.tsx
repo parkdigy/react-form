@@ -16,7 +16,7 @@ const ToggleButtonGroup = () => {
   return (
     <FormRow>
       <FormCol>
-        <FormToggleButtonGroup<number, 'multiple'>
+        <FormToggleButtonGroup
           name={getName('FormToggleButtonGroup', true)}
           label='FormToggleButtonGroup'
           labelIcon='Workspaces'
@@ -27,13 +27,13 @@ const ToggleButtonGroup = () => {
         />
       </FormCol>
       <FormCol fullWidth={false}>
-        <FormToggleButtonGroup<number>
+        <FormToggleButtonGroup
           name={getName('FormToggleButtonGroup')}
           label='FormToggleButtonGroup'
           items={DEFAULT_ITEMS}
           helperText='AAAAAA'
         />
-        <FormToggleButtonGroup<number>
+        <FormToggleButtonGroup
           name={getName('FormToggleButtonGroup')}
           label='FormToggleButtonGroup'
           items={DEFAULT_ITEMS}
@@ -41,8 +41,8 @@ const ToggleButtonGroup = () => {
         />
       </FormCol>
       <FormCol fullWidth={false} label='FormToggleButtonGroup' helperText='AAAAAA'>
-        <FormToggleButtonGroup<number> name={getName('FormToggleButtonGroup')} items={DEFAULT_ITEMS} />
-        <FormToggleButtonGroup<number> name={getName('FormToggleButtonGroup')} items={DEFAULT_ITEMS} />
+        <FormToggleButtonGroup name={getName('FormToggleButtonGroup')} items={DEFAULT_ITEMS} />
+        <FormToggleButtonGroup name={getName('FormToggleButtonGroup')} items={DEFAULT_ITEMS} />
       </FormCol>
     </FormRow>
   );

@@ -1,9 +1,14 @@
 import React from 'react';
-import { FormSelectProps, FormSelectCommands } from './FormSelect.types';
+import { FormSelectCommands, FormSelectSingleValue } from './FormSelect.types';
 import './FormSelect.scss';
-import { FormValueType } from '../../@types';
-interface WithForwardRefType<T, VT extends FormValueType = 'single', AllowUndefinedValue extends boolean = true> extends React.FC<FormSelectProps<T, VT, AllowUndefinedValue>> {
-    <T, VT extends FormValueType = 'single', AllowUndefinedValue extends boolean = true>(props: FormSelectProps<T, VT, AllowUndefinedValue> & React.RefAttributes<FormSelectCommands<T, VT, AllowUndefinedValue>>): ReturnType<React.FC<FormSelectProps<T, VT, AllowUndefinedValue>>>;
-}
-declare const FormSelect: WithForwardRefType<any, 'any'>;
+declare const FormSelect: (<T extends FormSelectSingleValue, Multiple extends boolean | undefined>(props: Omit<import("../FormTextField").FormTextFieldProps<import("./FormSelect.types").FormSelectValue<T, Multiple>, false, import("./FormSelect.types").FormSelectValue<T, Multiple>>, "type" | "clear"> & {
+    items?: import("./FormSelect.types").FormSelectItems<T> | undefined;
+    multiple?: Multiple | undefined;
+    checkbox?: boolean | undefined;
+    formValueSeparator?: string | undefined;
+    formValueSort?: boolean | undefined;
+    minWidth?: string | number | undefined;
+    loading?: boolean | undefined;
+    onLoadItems?: (() => Promise<import("./FormSelect.types").FormSelectItem<T>[]>) | undefined;
+} & React.RefAttributes<FormSelectCommands<T, Multiple>>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & Pick<React.ForwardRefExoticComponent<any>, "displayName" | "propTypes" | "defaultProps" | "$$typeof">;
 export default FormSelect;

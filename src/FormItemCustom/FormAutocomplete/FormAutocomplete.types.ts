@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { CommonSxProps, FormMultipleValueItemCommands, FormValueType } from '../../@types';
+import { CommonSxProps, FormMultipleValueItemCommands } from '../../@types';
 import {
   FormArrayValueItemCommands,
   FormItemsValueItemCommands,
@@ -9,38 +9,35 @@ import {
 } from '../../@types';
 import { FormTextFieldProps } from '../../FormItemTextFieldBase';
 
-export interface FormAutocompleteItem<T> {
+export type FormAutocompleteSingleValue = string | number;
+
+export interface FormAutocompleteItem<T extends FormAutocompleteSingleValue> {
   label: string;
   value: T;
   disabled?: boolean;
   [key: string]: any;
 }
 
-export type FormAutocompleteItems<T> = FormAutocompleteItem<T>[];
+export type FormAutocompleteItems<T extends FormAutocompleteSingleValue> = FormAutocompleteItem<T>[];
 
-export type FormAutocompleteValue<
-  T,
-  VT extends FormValueType = 'single',
-  V = VT extends 'single' ? T : VT extends 'multiple' ? T[] : T | T[],
-> = V | undefined;
+export type FormAutocompleteValue<T extends FormAutocompleteSingleValue, Multiple extends boolean | undefined> =
+  | ([Multiple] extends [true] ? T[] : T)
+  | undefined;
 
 export type FormAutocompleteComponentValue<
-  T,
-  VT extends FormValueType = 'single',
-  V = VT extends 'single'
-    ? FormAutocompleteItem<T>
-    : VT extends 'multiple'
-    ? FormAutocompleteItem<T>[]
-    : FormAutocompleteItem<T> | FormAutocompleteItem<T>[],
-> = V | null;
+  T extends FormAutocompleteSingleValue,
+  Multiple extends boolean | undefined,
+> = ([Multiple] extends [true] ? FormAutocompleteItem<T>[] : FormAutocompleteItem<T>) | null;
 
-export interface FormAutocompleteProps<T, VT extends FormValueType = 'single'>
-  extends CommonSxProps,
-    Omit<FormValueItemProps<FormAutocompleteValue<T, VT>>, 'value'>,
+export interface FormAutocompleteProps<
+  T extends FormAutocompleteSingleValue,
+  Multiple extends boolean | undefined = undefined,
+> extends CommonSxProps,
+    Omit<FormValueItemProps<FormAutocompleteValue<T, Multiple>>, 'value'>,
     Pick<FormTextFieldProps<T>, 'required' | 'focused' | 'labelShrink'> {
-  value?: FormAutocompleteValue<T, VT>;
+  value?: FormAutocompleteValue<T, Multiple>;
   items?: FormAutocompleteItems<T>;
-  multiple?: boolean;
+  multiple?: Multiple;
   formValueSeparator?: string;
   formValueSort?: boolean;
   loading?: boolean;
@@ -54,10 +51,12 @@ export interface FormAutocompleteProps<T, VT extends FormValueType = 'single'>
   async?: boolean;
   hidden?: boolean;
   onLoadItems?: (inputValue?: string) => Promise<FormAutocompleteItems<T>>;
-  onAsyncLoadValueItem?: (value: FormAutocompleteValue<T, VT>) => Promise<FormAutocompleteComponentValue<T, VT>>;
+  onAsyncLoadValueItem?: (
+    value: FormAutocompleteValue<T, Multiple>
+  ) => Promise<FormAutocompleteComponentValue<T, Multiple>>;
   onRenderItem?: (item: FormAutocompleteItem<T>) => ReactNode;
   onRenderTag?: (item: FormAutocompleteItem<T>) => ReactNode;
-  onValue?: (value: FormAutocompleteValue<T, VT>) => FormAutocompleteValue<T, VT>;
+  onValue?: (value: FormAutocompleteValue<T, Multiple>) => FormAutocompleteValue<T, Multiple>;
   onAddItem?: (item: FormAutocompleteItem<T>) => boolean | Promise<boolean>;
   getOptionDisabled?: (item: FormAutocompleteItem<T>) => boolean;
 }
@@ -67,8 +66,10 @@ export const FormAutocompleteDefaultProps: Pick<FormAutocompleteProps<any>, 'for
   noOptionsText: '항목이 없습니다',
 };
 
-export interface FormAutocompleteCommands<T, VT extends FormValueType = 'single'>
-  extends FormValueItemBaseCommands<FormAutocompleteValue<T, VT>, true>,
+export interface FormAutocompleteCommands<
+  T extends FormAutocompleteSingleValue,
+  Multiple extends boolean | undefined = undefined,
+> extends FormValueItemBaseCommands<FormAutocompleteValue<T, Multiple>, true>,
     FormArrayValueItemCommands,
     FormItemsValueItemCommands<FormAutocompleteItem<T>>,
     FormMultipleValueItemCommands,

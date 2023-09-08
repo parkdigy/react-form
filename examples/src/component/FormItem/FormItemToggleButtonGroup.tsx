@@ -23,7 +23,7 @@ const DEFAULT_ITEMS: FormToggleButtonGroupItem<number>[] = [
 ];
 
 const FormItemToggleButtonGroup = () => {
-  const asyncLoadToggleButtonGroupRef = useRef<FormToggleButtonGroupCommands<number, 'any'>>(null);
+  const asyncLoadToggleButtonGroupRef = useRef<FormToggleButtonGroupCommands<number>>(null);
 
   //--------------------------------------------------------------------------------------------------------------------
 
@@ -98,7 +98,7 @@ const FormItemToggleButtonGroup = () => {
         <FormBody>
           <FormRow>
             <FormCol>
-              <FormToggleButtonGroup<number, 'any'>
+              <FormToggleButtonGroup
                 {...additionalProps}
                 name='label'
                 items={items}
@@ -108,7 +108,7 @@ const FormItemToggleButtonGroup = () => {
               />
             </FormCol>
             <FormCol>
-              <FormToggleButtonGroup<number, 'any'>
+              <FormToggleButtonGroup
                 {...additionalProps}
                 name='required'
                 items={items}
@@ -118,7 +118,7 @@ const FormItemToggleButtonGroup = () => {
               />
             </FormCol>
             <FormCol>
-              <FormToggleButtonGroup<number, 'any'>
+              <FormToggleButtonGroup
                 {...additionalProps}
                 name='readOnly'
                 items={items}
@@ -128,7 +128,7 @@ const FormItemToggleButtonGroup = () => {
               />
             </FormCol>
             <FormCol>
-              <FormToggleButtonGroup<number, 'any'>
+              <FormToggleButtonGroup
                 {...additionalProps}
                 name='disabled'
                 items={items}
@@ -140,7 +140,7 @@ const FormItemToggleButtonGroup = () => {
           </FormRow>
           <FormRow>
             <FormCol xs={3}>
-              <FormToggleButtonGroup<number, 'any'>
+              <FormToggleButtonGroup
                 {...additionalProps}
                 type='checkbox'
                 name='checkbox'
@@ -151,7 +151,7 @@ const FormItemToggleButtonGroup = () => {
               />
             </FormCol>
             <FormCol xs={3}>
-              <FormToggleButtonGroup<number, 'any'>
+              <FormToggleButtonGroup
                 {...additionalProps}
                 type='radio'
                 name='radio'
@@ -161,7 +161,7 @@ const FormItemToggleButtonGroup = () => {
               />
             </FormCol>
             <FormCol xs={3}>
-              <FormToggleButtonGroup<number, 'any'>
+              <FormToggleButtonGroup
                 {...additionalProps}
                 type='checkbox'
                 name='radio'
@@ -175,7 +175,7 @@ const FormItemToggleButtonGroup = () => {
 
           <FormRow line>
             <FormCol xs={3}>
-              <FormToggleButtonGroup<number, 'any'>
+              <FormToggleButtonGroup
                 {...additionalProps}
                 name='onLoadItems'
                 label='FormToggleButtonGroup'
@@ -184,7 +184,7 @@ const FormItemToggleButtonGroup = () => {
               />
             </FormCol>
             <FormCol xs={3}>
-              <FormToggleButtonGroup<number, 'any'>
+              <FormToggleButtonGroup
                 {...additionalProps}
                 ref={asyncLoadToggleButtonGroupRef}
                 name='asyncLoadItems'

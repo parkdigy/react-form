@@ -81,7 +81,7 @@ const FormItemText = () => {
         <Form size='small'>
           <FormRow>
             <FormCol>
-              <FormToggleButtonGroup<string>
+              <FormToggleButtonGroup
                 name='type'
                 label='Component'
                 items={_components.map<FormToggleButtonGroupItem<string>>((component) =>

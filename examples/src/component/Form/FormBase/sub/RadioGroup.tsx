@@ -5,7 +5,7 @@ const RadioGroup = () => {
   return (
     <FormRow>
       <FormCol>
-        <FormRadioGroup<number>
+        <FormRadioGroup
           name={getName('FormRadioGroup', true)}
           label='FormRadioGroup'
           value={1}
@@ -14,14 +14,14 @@ const RadioGroup = () => {
         />
       </FormCol>
       <FormCol fullWidth={false}>
-        <FormRadioGroup<number>
+        <FormRadioGroup
           name={getName('FormRadioGroup')}
           label='FormRadioGroup'
           value={1}
           items={[lv('Item1', 1), lv('Item2', 2)]}
           helperText='AAAAAA'
         />
-        <FormRadioGroup<number>
+        <FormRadioGroup
           name={getName('FormRadioGroup')}
           label='FormRadioGroup'
           value={1}
@@ -30,8 +30,8 @@ const RadioGroup = () => {
         />
       </FormCol>
       <FormCol fullWidth={false} label='FormRadioGroup' helperText='AAAAAA'>
-        <FormRadioGroup<number> name={getName('FormRadioGroup')} value={1} items={[lv('Item1', 1), lv('Item2', 2)]} />
-        <FormRadioGroup<number> name={getName('FormRadioGroup')} value={1} items={[lv('Item1', 1), lv('Item2', 2)]} />
+        <FormRadioGroup name={getName('FormRadioGroup')} value={1} items={[lv('Item1', 1), lv('Item2', 2)]} />
+        <FormRadioGroup name={getName('FormRadioGroup')} value={1} items={[lv('Item1', 1), lv('Item2', 2)]} />
       </FormCol>
     </FormRow>
   );

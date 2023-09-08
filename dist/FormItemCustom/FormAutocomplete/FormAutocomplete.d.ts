@@ -1,8 +1,4 @@
 import React from 'react';
-import { FormAutocompleteProps, FormAutocompleteCommands } from './FormAutocomplete.types';
-import { FormValueType } from '../../@types';
-interface WithForwardRefType<T, VT extends FormValueType = 'single'> extends React.FC<FormAutocompleteProps<T, VT>> {
-    <T, VT extends FormValueType = 'single'>(props: FormAutocompleteProps<T, VT> & React.RefAttributes<FormAutocompleteCommands<T, VT>>): ReturnType<React.FC<FormAutocompleteProps<T, VT>>>;
-}
-declare const FormAutocomplete: WithForwardRefType<any, 'any'>;
+import { FormAutocompleteProps, FormAutocompleteCommands, FormAutocompleteSingleValue } from './FormAutocomplete.types';
+declare const FormAutocomplete: (<T extends FormAutocompleteSingleValue, Multiple extends boolean | undefined>(props: FormAutocompleteProps<T, Multiple> & React.RefAttributes<FormAutocompleteCommands<T, Multiple>>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & Pick<React.ForwardRefExoticComponent<any>, "displayName" | "propTypes" | "defaultProps" | "$$typeof">;
 export default FormAutocomplete;

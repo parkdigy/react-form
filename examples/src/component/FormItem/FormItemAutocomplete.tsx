@@ -24,7 +24,7 @@ const DEFAULT_ITEMS: FormAutocompleteItem<number>[] = [
 ];
 
 const FormItemAutocomplete = () => {
-  const asyncLoadAutocompleteRef = useRef<FormAutocompleteCommands<number, 'any'>>(null);
+  const asyncLoadAutocompleteRef = useRef<FormAutocompleteCommands<number>>(null);
 
   //--------------------------------------------------------------------------------------------------------------------
 
@@ -66,13 +66,15 @@ const FormItemAutocomplete = () => {
     });
   }, []);
 
-  const handleAsyncLoadValueItem = useCallback((value: FormAutocompleteValue<number, 'any'>) => {
-    return new Promise<FormAutocompleteComponentValue<number, 'any'>>((resolve) => {
-      if (Array.isArray(value)) {
-        resolve(DEFAULT_ITEMS.filter((info) => value.includes(info.value)));
-      } else {
-        resolve(DEFAULT_ITEMS.find((info) => info.value === value) || null);
-      }
+  const handleAsyncLoadMultipleValueItem = useCallback((value: FormAutocompleteValue<number, true>) => {
+    return new Promise<FormAutocompleteComponentValue<number, true>>((resolve) => {
+      resolve(DEFAULT_ITEMS.filter((info) => !!value && value.includes(info.value)));
+    });
+  }, []);
+
+  const handleAsyncLoadValueItem = useCallback((value: FormAutocompleteValue<number, false>) => {
+    return new Promise<FormAutocompleteComponentValue<number, false>>((resolve) => {
+      resolve(DEFAULT_ITEMS.find((info) => info.value === value) || null);
     });
   }, []);
 
@@ -81,8 +83,6 @@ const FormItemAutocomplete = () => {
   }, []);
 
   //--------------------------------------------------------------------------------------------------------------------
-
-  const additionalProps = { multiple, openOnFocus };
 
   return (
     <>
@@ -113,8 +113,9 @@ const FormItemAutocomplete = () => {
         <FormBody>
           <FormRow>
             <FormCol>
-              <FormAutocomplete<number, 'any'>
-                {...additionalProps}
+              <FormAutocomplete
+                multiple={multiple}
+                openOnFocus={openOnFocus}
                 name='label'
                 items={items}
                 value={1}
@@ -125,8 +126,9 @@ const FormItemAutocomplete = () => {
               />
             </FormCol>
             <FormCol>
-              <FormAutocomplete<number, 'any'>
-                {...additionalProps}
+              <FormAutocomplete
+                multiple={multiple}
+                openOnFocus={openOnFocus}
                 name='required'
                 items={items}
                 label='FormAutocomplete'
@@ -135,8 +137,9 @@ const FormItemAutocomplete = () => {
               />
             </FormCol>
             <FormCol>
-              <FormAutocomplete<number, 'any'>
-                {...additionalProps}
+              <FormAutocomplete
+                multiple={multiple}
+                openOnFocus={openOnFocus}
                 name='readOnly'
                 items={items}
                 label='FormAutocomplete'
@@ -146,8 +149,9 @@ const FormItemAutocomplete = () => {
               />
             </FormCol>
             <FormCol>
-              <FormAutocomplete<number, 'any'>
-                {...additionalProps}
+              <FormAutocomplete
+                multiple={multiple}
+                openOnFocus={openOnFocus}
                 name='disabled'
                 items={items}
                 label='FormAutocomplete'
@@ -158,8 +162,9 @@ const FormItemAutocomplete = () => {
           </FormRow>
           <FormRow>
             <FormCol xs={3}>
-              <FormAutocomplete<number, 'any'>
-                {...additionalProps}
+              <FormAutocomplete
+                multiple={multiple}
+                openOnFocus={openOnFocus}
                 name='onLoadItems'
                 label='FormAutocomplete'
                 helperText='onLoadItems'
@@ -167,8 +172,9 @@ const FormItemAutocomplete = () => {
               />
             </FormCol>
             <FormCol xs={3}>
-              <FormAutocomplete<number, 'any'>
-                {...additionalProps}
+              <FormAutocomplete
+                multiple={multiple}
+                openOnFocus={openOnFocus}
                 ref={asyncLoadAutocompleteRef}
                 name='asyncLoadItems'
                 label='FormAutocomplete'
@@ -176,15 +182,28 @@ const FormItemAutocomplete = () => {
               />
             </FormCol>{' '}
             <FormCol xs={3}>
-              <FormAutocomplete<number, 'any'>
-                {...additionalProps}
-                name='onLoadItems'
-                label='FormAutocomplete'
-                helperText='async=true'
-                async
-                onLoadItems={handleLoadItems}
-                onAsyncLoadValueItem={handleAsyncLoadValueItem}
-              />
+              {multiple ? (
+                <FormAutocomplete
+                  multiple
+                  openOnFocus={openOnFocus}
+                  name='onLoadItems'
+                  label='FormAutocomplete'
+                  helperText='async=true'
+                  async
+                  onLoadItems={handleLoadItems}
+                  onAsyncLoadValueItem={handleAsyncLoadMultipleValueItem}
+                />
+              ) : (
+                <FormAutocomplete
+                  openOnFocus={openOnFocus}
+                  name='onLoadItems'
+                  label='FormAutocomplete'
+                  helperText='async=true'
+                  async
+                  onLoadItems={handleLoadItems}
+                  onAsyncLoadValueItem={handleAsyncLoadValueItem}
+                />
+              )}
             </FormCol>
           </FormRow>
         </FormBody>

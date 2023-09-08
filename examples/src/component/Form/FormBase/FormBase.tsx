@@ -70,7 +70,7 @@ const FormBase = () => {
           <FormBody>
             <FormRow>
               <FormCol xs={3}>
-                <FormToggleButtonGroup<Exclude<FormProps['variant'], undefined>>
+                <FormToggleButtonGroup
                   name='variant'
                   label='variant'
                   value={variant}
@@ -81,7 +81,7 @@ const FormBase = () => {
                 />
               </FormCol>
               <FormCol xs={3}>
-                <FormToggleButtonGroup<Exclude<FormProps['size'], undefined>>
+                <FormToggleButtonGroup
                   name='size'
                   label='size'
                   value={size}
@@ -92,7 +92,7 @@ const FormBase = () => {
                 />
               </FormCol>
               <FormCol>
-                <FormToggleButtonGroup<Exclude<FormProps['color'], undefined>>
+                <FormToggleButtonGroup
                   name='color'
                   label='color'
                   value={color}
@@ -112,7 +112,7 @@ const FormBase = () => {
             </FormRow>
             <FormRow>
               <FormCol>
-                <FormSelect<number>
+                <FormSelect
                   name='spacing'
                   label='spacing'
                   value={Number(spacing)}
@@ -120,11 +120,11 @@ const FormBase = () => {
                   items={[lv('0', 0), lv('1', 1), lv('2 (Default)', 2), lv('3', 3), lv('4', 4), lv('5', 5)]}
                   fullWidth={false}
                 />
-                <FormSelect<number>
+                <FormSelect
                   name='formColGap'
                   label='formColGap'
                   value={Number(formColGap)}
-                  onChange={setFormColGap}
+                  onChange={(v) => (v === '' ? 1.5 : setFormColGap(v))}
                   items={[lv('0', 0), lv('1', 1), lv('1.5 (Default)', 1.5), lv('2', 2), lv('3', 3), lv('4', 4)]}
                   fullWidth={false}
                 />
@@ -232,7 +232,7 @@ const FormBase = () => {
 
             <FormRow>
               <FormCol>
-                <FormSelect<number, 'single'>
+                <FormSelect
                   name='FormSelect'
                   label='FormSelect'
                   placeholder='선택하세요.'
@@ -240,7 +240,7 @@ const FormBase = () => {
                 />
               </FormCol>
               <FormCol>
-                <FormAutocomplete<number, 'multiple'>
+                <FormAutocomplete
                   name='FormAutocomplete'
                   label='FormAutocomplete'
                   multiple

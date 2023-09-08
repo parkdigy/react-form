@@ -63,7 +63,7 @@ const FormItemRadioGroup = () => {
       <FormBody>
         <FormRow>
           <FormCol>
-            <FormRadioGroup<number>
+            <FormRadioGroup
               name='label'
               items={items}
               labelIcon='RadioButtonChecked'
@@ -72,37 +72,19 @@ const FormItemRadioGroup = () => {
             />
           </FormCol>
           <FormCol>
-            <FormRadioGroup<number>
-              name='required'
-              items={items}
-              label='FormRadioGroup'
-              required
-              helperText='required=true'
-            />
+            <FormRadioGroup name='required' items={items} label='FormRadioGroup' required helperText='required=true' />
           </FormCol>
           <FormCol>
-            <FormRadioGroup<number>
-              name='readOnly'
-              items={items}
-              label='FormRadioGroup'
-              readOnly
-              helperText='readOnly=true'
-            />
+            <FormRadioGroup name='readOnly' items={items} label='FormRadioGroup' readOnly helperText='readOnly=true' />
           </FormCol>
           <FormCol>
-            <FormRadioGroup<number>
-              name='disabled'
-              items={items}
-              label='FormRadioGroup'
-              disabled
-              helperText='disabled=true'
-            />
+            <FormRadioGroup name='disabled' items={items} label='FormRadioGroup' disabled helperText='disabled=true' />
           </FormCol>
         </FormRow>
 
         <FormRow line>
           <FormCol xs={3}>
-            <FormRadioGroup<number>
+            <FormRadioGroup
               name='onLoadItems'
               label='FormRadioGroup'
               helperText='onLoadItems'
@@ -110,7 +92,7 @@ const FormItemRadioGroup = () => {
             />
           </FormCol>
           <FormCol xs={3}>
-            <FormRadioGroup<number>
+            <FormRadioGroup
               ref={asyncLoadRadioGroupRef}
               name='asyncLoadItems'
               label='FormRadioGroup'
@@ -121,7 +103,7 @@ const FormItemRadioGroup = () => {
 
         <FormRow line>
           <FormCol>
-            <FormRadioGroup<number>
+            <FormRadioGroup
               name='inline'
               items={items}
               inline={false}

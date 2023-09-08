@@ -2,36 +2,25 @@ import React, { useState, useEffect, ReactNode, useCallback, useMemo } from 'rea
 import classNames from 'classnames';
 import { Box, Checkbox, Chip, CircularProgress, MenuItem } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, notEmpty, isSame } from '../../@util';
+import { empty, notEmpty, isSame, AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util';
 import {
   FormSelectProps,
   FormSelectDefaultProps,
   FormSelectExtraCommands,
   FormSelectCommands,
+  FormSelectSingleValue,
 } from './FormSelect.types';
 import { useFormState } from '../../FormContext';
 import FormContextProvider from '../../FormContextProvider';
 import './FormSelect.scss';
 import FormTextField from '../FormTextField';
-import { FormValueType } from '../../@types';
 
 interface ItemValueLabelMap {
   [key: string]: ReactNode;
 }
 
-type Props = FormSelectProps<any, 'any'>;
-type Commands = FormSelectCommands<any, 'any'>;
-
-interface WithForwardRefType<T, VT extends FormValueType = 'single', AllowUndefinedValue extends boolean = true>
-  extends React.FC<FormSelectProps<T, VT, AllowUndefinedValue>> {
-  <T, VT extends FormValueType = 'single', AllowUndefinedValue extends boolean = true>(
-    props: FormSelectProps<T, VT, AllowUndefinedValue> &
-      React.RefAttributes<FormSelectCommands<T, VT, AllowUndefinedValue>>
-  ): ReturnType<React.FC<FormSelectProps<T, VT, AllowUndefinedValue>>>;
-}
-
-const FormSelect: WithForwardRefType<any, 'any'> = React.forwardRef<Commands, Props>(
-  (
+const FormSelect = ToForwardRefExoticComponent(
+  AutoTypeForwardRef(function <T extends FormSelectSingleValue, Multiple extends boolean | undefined>(
     {
       className,
       name,
@@ -54,9 +43,14 @@ const FormSelect: WithForwardRefType<any, 'any'> = React.forwardRef<Commands, Pr
       onChange,
       onValue,
       ...props
-    },
-    ref
-  ) => {
+    }: FormSelectProps<T, Multiple>,
+    ref: React.ForwardedRef<FormSelectCommands<T, Multiple>>
+  ) {
+    // types -------------------------------------------------------------------------------------------------------------
+
+    type Props = FormSelectProps<T, Multiple>;
+    type Commands = FormSelectCommands<T, Multiple>;
+
     // FormState -------------------------------------------------------------------------------------------------------
 
     const { fullWidth: formFullWidth, onAddValueItem, onValueChange, ...otherFormState } = useFormState();
@@ -400,7 +394,7 @@ const FormSelect: WithForwardRefType<any, 'any'> = React.forwardRef<Commands, Pr
         </FormTextField>
       </FormContextProvider>
     );
-  }
+  })
 );
 
 FormSelect.displayName = 'FormSelect';

@@ -3,29 +3,20 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, nextTick, notEmpty, isSame } from '../../@util';
-import { FormValueType, PartialPick } from '../../@types';
+import { empty, nextTick, notEmpty, isSame, ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util';
+import { PartialPick } from '../../@types';
 import {
   FormToggleButtonGroupProps,
   FormToggleButtonGroupDefaultProps,
   FormToggleButtonGroupCommands,
+  FormToggleButtonGroupSingleValue,
 } from './FormToggleButtonGroup.types';
 import { useFormState } from '../../FormContext';
 import FormItemBase, { FormItemBaseProps } from '../FormItemBase';
 import './FormToggleButtonGroup.scss';
 
-type Props = FormToggleButtonGroupProps<any, 'any'>;
-type Commands = FormToggleButtonGroupCommands<any, 'any'>;
-
-interface WithForwardRefType<T, VT extends FormValueType = 'single'>
-  extends React.FC<FormToggleButtonGroupProps<T, VT>> {
-  <T, VT extends FormValueType = 'single'>(
-    props: FormToggleButtonGroupProps<T, VT> & React.RefAttributes<FormToggleButtonGroupCommands<T, VT>>
-  ): ReturnType<React.FC<FormToggleButtonGroupProps<T, VT>>>;
-}
-
-const FormToggleButtonGroup: WithForwardRefType<any, 'any'> = React.forwardRef<Commands, Props>(
-  (
+const FormToggleButtonGroup = ToForwardRefExoticComponent(
+  AutoTypeForwardRef(function <T extends FormToggleButtonGroupSingleValue, Multiple extends boolean | undefined>(
     {
       variant: initVariant,
       size: initSize,
@@ -63,9 +54,14 @@ const FormToggleButtonGroup: WithForwardRefType<any, 'any'> = React.forwardRef<C
       className,
       style: initStyle,
       sx,
-    },
-    ref
-  ) => {
+    }: FormToggleButtonGroupProps<T, Multiple>,
+    ref: React.ForwardedRef<FormToggleButtonGroupCommands<T, Multiple>>
+  ) {
+    // type ------------------------------------------------------------------------------------------------------------
+
+    type Props = FormToggleButtonGroupProps<T, Multiple>;
+    type Commands = FormToggleButtonGroupCommands<T, Multiple>;
+
     // ID --------------------------------------------------------------------------------------------------------------
 
     const id = useId();
@@ -197,18 +193,18 @@ const FormToggleButtonGroup: WithForwardRefType<any, 'any'> = React.forwardRef<C
           if (!Array.isArray(finalValue)) {
             if (finalValue != null && notEmpty(finalValue)) {
               if (typeof finalValue === 'string') {
-                finalValue = Array.from(new Set(finalValue.split(formValueSeparator || ',')));
+                finalValue = Array.from(new Set(finalValue.split(formValueSeparator || ','))) as Props['value'];
               } else {
-                finalValue = [finalValue];
+                finalValue = [finalValue] as unknown as Props['value'];
               }
             } else {
-              finalValue = [];
+              finalValue = [] as unknown as Props['value'];
             }
           }
         } else {
           if (Array.isArray(finalValue)) {
             if (notEmpty(finalValue)) {
-              finalValue = finalValue[0];
+              finalValue = finalValue[0] as Props['value'];
             } else {
               finalValue = undefined;
             }
@@ -222,12 +218,12 @@ const FormToggleButtonGroup: WithForwardRefType<any, 'any'> = React.forwardRef<C
                 finalValue = finalValue.map((v) => {
                   const realValue = itemsValues[v.toString()];
                   return realValue != null ? realValue : v;
-                });
+                }) as Props['value'];
               }
             } else {
               const realValue = itemsValues[finalValue.toString()];
               if (realValue != null && finalValue !== realValue) {
-                finalValue = realValue;
+                finalValue = realValue as Props['value'];
               }
             }
           }
@@ -282,7 +278,7 @@ const FormToggleButtonGroup: WithForwardRefType<any, 'any'> = React.forwardRef<C
           }
 
           if (setFirstItem) {
-            setValue(multiple ? [items[0].value] : items[0].value);
+            setValue((multiple ? [items[0].value] : items[0].value) as Props['value']);
           }
         }
       }
@@ -338,7 +334,7 @@ const FormToggleButtonGroup: WithForwardRefType<any, 'any'> = React.forwardRef<C
         let lastLoading = loading;
         let lastDisabled = !!disabled;
 
-        const commands: FormToggleButtonGroupCommands<any, 'any'> = {
+        const commands: Commands = {
           getType: () => 'FormToggleButtonGroup',
           getName: () => name,
           getReset: () => getFinalValue(initValue),
@@ -444,7 +440,7 @@ const FormToggleButtonGroup: WithForwardRefType<any, 'any'> = React.forwardRef<C
             if (multiple) {
               if (empty(finalValue)) {
                 if (Array.isArray(value) && value.length > 0) {
-                  finalValue = [value[0]];
+                  finalValue = [value[0]] as Props['value'];
                 }
               }
             } else {
@@ -632,7 +628,7 @@ const FormToggleButtonGroup: WithForwardRefType<any, 'any'> = React.forwardRef<C
         }
       />
     );
-  }
+  })
 );
 
 FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';

@@ -17,7 +17,6 @@ export type FormValue = string | number | boolean;
 export interface FormValueMap {
     [key: string]: FormValue;
 }
-export type FormValueType = 'single' | 'multiple' | 'any';
 export type FormValueItemData = Record<string, any>;
 export interface FormValueItemBaseCommands<T, AllowUndefinedValue extends boolean, V = AllowUndefinedValue extends true ? T | undefined : T> {
     getType(): 'default' | 'FormCheckbox' | 'FormToggleButtonGroup' | 'FormRadioGroup' | 'FormRating' | 'FormTextEditor' | 'FormAutocomplete' | 'FormDatePicker' | 'FormDateTimePicker' | 'FormTimePicker' | 'FormDateRangePicker' | 'FormFile';

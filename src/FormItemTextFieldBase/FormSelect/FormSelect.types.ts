@@ -5,41 +5,42 @@ import {
   FormLoadingValueItemCommands,
   FormValueItemBaseCommands,
   FormMultipleValueItemCommands,
-  FormValueType,
 } from '../../@types';
 import { FormTextFieldDefaultProps, FormTextFieldProps } from '../FormTextField';
 
-export type FormSelectValue<
-  T,
-  VT extends FormValueType = 'single',
-  AllowUndefinedValue extends boolean = true,
-  V = VT extends 'single' ? T : VT extends 'multiple' ? T[] : T | T[],
-> = V | (AllowUndefinedValue extends true ? undefined : never);
+export type FormSelectSingleValue = string | number;
 
-export interface FormSelectExtraCommands<T>
+export type FormSelectValue<T extends FormSelectSingleValue, Multiple extends boolean | undefined> = [
+  Multiple,
+] extends [true]
+  ? T[]
+  : '' | T;
+
+export interface FormSelectExtraCommands<T extends FormSelectSingleValue>
   extends FormArrayValueItemCommands,
     FormItemsValueItemCommands<FormSelectItem<T>>,
     FormMultipleValueItemCommands,
     FormLoadingValueItemCommands {}
 
-export interface FormSelectCommands<T, VT extends FormValueType = 'single', AllowUndefinedValue extends boolean = true>
-  extends FormValueItemBaseCommands<FormSelectValue<T, VT, AllowUndefinedValue>, AllowUndefinedValue>,
+export interface FormSelectCommands<T extends FormSelectSingleValue, Multiple extends boolean | undefined = undefined>
+  extends FormValueItemBaseCommands<FormSelectValue<T, Multiple>, false>,
     FormSelectExtraCommands<T> {}
 
-export interface FormSelectItem<T> {
+export interface FormSelectItem<T extends FormSelectSingleValue> {
   label: ReactNode;
-  value: T;
+  value: '' | T;
   disabled?: boolean;
+  [key: string]: any;
 }
 
-export type FormSelectItems<T> = FormSelectItem<T>[];
+export type FormSelectItems<T extends FormSelectSingleValue> = FormSelectItem<T>[];
 
-export type FormSelectProps<T, VT extends FormValueType = 'single', AllowUndefinedValue extends boolean = true> = Omit<
-  FormTextFieldProps<FormSelectValue<T, VT, AllowUndefinedValue>, AllowUndefinedValue>,
+export type FormSelectProps<T extends FormSelectSingleValue, Multiple extends boolean | undefined = undefined> = Omit<
+  FormTextFieldProps<FormSelectValue<T, Multiple>, false>,
   'type' | 'clear'
 > & {
   items?: FormSelectItems<T>;
-  multiple?: boolean;
+  multiple?: Multiple;
   checkbox?: boolean;
   formValueSeparator?: string;
   formValueSort?: boolean;
@@ -48,7 +49,10 @@ export type FormSelectProps<T, VT extends FormValueType = 'single', AllowUndefin
   onLoadItems?: () => Promise<FormSelectItem<T>[]>;
 };
 
-export const FormSelectDefaultProps: Pick<FormSelectProps<any>, 'formValueSeparator' | 'minWidth'> = {
+export const FormSelectDefaultProps: Pick<
+  FormSelectProps<FormSelectSingleValue, false>,
+  'formValueSeparator' | 'minWidth'
+> = {
   ...FormTextFieldDefaultProps,
   formValueSeparator: ',',
   minWidth: 120,

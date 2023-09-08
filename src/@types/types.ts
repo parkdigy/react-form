@@ -23,15 +23,11 @@ export interface CommonSxProps extends CommonProps {
 
 //--------------------------------------------------------------------------------------------------------------------
 
-// export type FormItemValue = any;
-
 export type FormValue = string | number | boolean;
 
 export interface FormValueMap {
   [key: string]: FormValue;
 }
-
-export type FormValueType = 'single' | 'multiple' | 'any';
 
 export type FormValueItemData = Record<string, any>;
 

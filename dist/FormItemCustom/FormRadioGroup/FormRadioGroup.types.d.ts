@@ -1,13 +1,14 @@
 import { ReactNode } from 'react';
 import { CommonSxProps, FormItemsValueItemCommands, FormLoadingValueItemCommands, FormValueItemBaseCommands, FormValueItemProps } from '../../@types';
-export interface FormRadioGroupItem<T> {
+export type FormRadioGroupSingleValue = string | number;
+export interface FormRadioGroupItem<T extends FormRadioGroupSingleValue> {
     label: ReactNode;
     value: T;
     disabled?: boolean;
 }
-export type FormRadioGroupItems<T> = FormRadioGroupItem<T>[];
-export type FormRadioGroupValue<T> = T | undefined;
-export interface FormRadioGroupProps<T> extends CommonSxProps, Omit<FormValueItemProps<T>, 'value'> {
+export type FormRadioGroupItems<T extends FormRadioGroupSingleValue> = FormRadioGroupItem<T>[];
+export type FormRadioGroupValue<T extends FormRadioGroupSingleValue> = T | undefined;
+export interface FormRadioGroupProps<T extends FormRadioGroupSingleValue> extends CommonSxProps, Omit<FormValueItemProps<T>, 'value'> {
     value?: T;
     items?: FormRadioGroupItem<T>[];
     required?: boolean;
@@ -19,5 +20,5 @@ export interface FormRadioGroupProps<T> extends CommonSxProps, Omit<FormValueIte
     onValue?(value: FormRadioGroupValue<T>): FormRadioGroupValue<T>;
 }
 export declare const FormRadioGroupDefaultProps: Pick<FormRadioGroupProps<any>, 'inline'>;
-export interface FormRadioGroupCommands<T> extends FormValueItemBaseCommands<T, true>, FormItemsValueItemCommands<FormRadioGroupItem<T>>, FormLoadingValueItemCommands {
+export interface FormRadioGroupCommands<T extends FormRadioGroupSingleValue> extends FormValueItemBaseCommands<T, true>, FormItemsValueItemCommands<FormRadioGroupItem<T>>, FormLoadingValueItemCommands {
 }

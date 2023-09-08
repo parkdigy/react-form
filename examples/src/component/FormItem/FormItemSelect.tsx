@@ -6,23 +6,23 @@ import {
   FormCol,
   FormSelect,
   FormCheckbox,
-  FormSelectItem,
   FormValueMap,
   FormSelectCommands,
   FormBody,
   FormFooter,
   FormSelectItems,
+  FormText,
 } from '../../../../src';
 import { OutlinedPaper } from '#ccomp';
 
 const FormItemSelect = () => {
-  const asyncLoadSelectRef = useRef<FormSelectCommands<number, 'any'>>(null);
-  const selectRef = useRef<FormSelectCommands<number, 'any'>>(null);
+  const asyncLoadSelectRef = useRef<FormSelectCommands<number>>(null);
+  const selectRef = useRef<FormSelectCommands<number>>(null);
 
   //--------------------------------------------------------------------------------------------------------------------
 
   const [items] = useState<FormSelectItems<number>>(() =>
-    new Array(5).fill(0).map<FormSelectItem<number>>((v, idx) => lv(`Item ${idx + 1}`, idx + 1))
+    new Array(5).fill(0).map((v, idx) => lv(idx === 0 ? 'None' : `Item ${idx}`, idx === 0 ? '' : idx))
   );
   const [isMultiple, setIsMultiple] = useState(false);
   const [isCheckbox, setIsCheckbox] = useState(false);
@@ -94,7 +94,7 @@ const FormItemSelect = () => {
         <FormBody>
           <FormRow>
             <FormCol helperText='aaa bbb ccc ddd eee'>
-              <FormSelect<number, 'any'>
+              <FormSelect
                 ref={selectRef}
                 name='required'
                 items={items}
@@ -105,11 +105,14 @@ const FormItemSelect = () => {
               />
             </FormCol>
             <FormCol>
-              <FormSelect<number, 'any'>
+              <FormText name='asdf' />
+
+              <FormSelect name='123' items={items} />
+              <FormSelect
                 name='readOnly'
                 items={items}
                 label='FormSelect'
-                value={1}
+                // value={1}
                 readOnly
                 helperText='readOnly=true'
                 multiple={isMultiple}
@@ -117,11 +120,11 @@ const FormItemSelect = () => {
               />
             </FormCol>
             <FormCol>
-              <FormSelect<number, 'any'>
+              <FormSelect
                 name='disabled'
                 items={items}
                 label='FormSelect'
-                value={1}
+                // value={1}
                 disabled
                 helperText='disabled=true'
                 multiple={isMultiple}
@@ -132,7 +135,7 @@ const FormItemSelect = () => {
 
           <FormRow line>
             <FormCol helperText='하나의 FormCol 에 여러개의 Select' helperTextShift fullWidth={false}>
-              <FormSelect<number, 'any'>
+              <FormSelect
                 name='onLoadItems'
                 label='FormSelect'
                 placeholder='선택하세요'
@@ -143,7 +146,7 @@ const FormItemSelect = () => {
               />
             </FormCol>
             <FormCol>
-              <FormSelect<number, 'any'>
+              <FormSelect
                 name='onLoadItems'
                 label='FormSelect'
                 placeholder='선택하세요'
@@ -154,11 +157,11 @@ const FormItemSelect = () => {
               />
             </FormCol>
             <FormCol>
-              <FormSelect<number, 'any'>
+              <FormSelect
                 ref={asyncLoadSelectRef}
                 name='AsyncLoadItems'
                 label='FormSelect'
-                value={1}
+                // value={1}
                 helperText='Async Load Items'
                 multiple={isMultiple}
                 checkbox={isCheckbox}
