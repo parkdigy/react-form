@@ -1,7 +1,6 @@
 import React from 'react';
-import { FormNumberCommands, FormNumberValue } from './FormNumber.types';
-declare const FormNumber: React.ForwardRefExoticComponent<Omit<import("../FormTextField").FormTextFieldProps<FormNumberValue, false, FormNumberValue>, "type"> & {
-    allowLeadingZeros?: boolean | undefined;
+import { FormNumberCommands } from './FormNumber.types';
+declare const FormNumber: React.ForwardRefExoticComponent<Omit<import("../FormTextField").FormTextFieldProps<number, true, number | undefined>, "type"> & {
     allowNegative?: boolean | undefined;
     thousandSeparator?: boolean | undefined;
     allowDecimal?: boolean | undefined;

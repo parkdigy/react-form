@@ -34,15 +34,6 @@ const NumberBlock: React.FC<{
             helperText='allowDecimal=true'
           />
         </FormCol>
-        <FormCol>
-          <FormNumber
-            {...componentProps}
-            name='FormNumber_allowLeadingZeros'
-            allowLeadingZeros
-            value={'0123'}
-            helperText='allowLeadingZeros=true'
-          />
-        </FormCol>
       </FormRow>
     </FormBlock>
   );

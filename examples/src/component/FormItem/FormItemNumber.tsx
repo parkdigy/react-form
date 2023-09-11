@@ -15,10 +15,9 @@ import { OutlinedPaper } from '#ccomp';
 
 const FormItemNumber = () => {
   const [thousandSeparator, setThousandSeparator] = useState(false);
-  const [allowLeadingZeros, setAllowLeadingZeros] = useState(false);
   const [allowNegative, setAllowNegative] = useState(false);
   const [allowDecimal, setAllowDecimal] = useState(false);
-  const [decimalScale, setDecimalScale] = useState('');
+  const [decimalScale, setDecimalScale] = useState<number>();
 
   const [value] = useState(1234567890);
 
@@ -32,7 +31,6 @@ const FormItemNumber = () => {
 
   const numberProps: Partial<FormNumberProps> = {
     thousandSeparator,
-    allowLeadingZeros,
     allowNegative,
     allowDecimal,
   };
@@ -53,13 +51,6 @@ const FormItemNumber = () => {
                   helperText='천단위 콤마(,) 표시'
                   checked={thousandSeparator}
                   onChange={(checked) => setThousandSeparator(checked)}
-                />
-                <FormCheckbox
-                  name='allowLeadingZeros'
-                  text='allowLeadingZeros'
-                  helperText='0 으로 시작 허용'
-                  checked={allowLeadingZeros}
-                  onChange={(checked) => setAllowLeadingZeros(checked)}
                 />
                 <FormCheckbox
                   name='allowNegative'
@@ -83,7 +74,7 @@ const FormItemNumber = () => {
                   labelShrink
                   disabled={!allowDecimal}
                   value={decimalScale}
-                  onChange={(value) => setDecimalScale(value.toString())}
+                  onChange={setDecimalScale}
                 />
               </FormCol>
             </FormRow>

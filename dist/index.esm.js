@@ -4010,13 +4010,18 @@ function NumericFormat(props) {
                 onChange({ target: { value: values.value } });
         } })));
 });
-NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: true, value: '' });var FormNumber = React__default.forwardRef(function (_a, ref) {
+NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: true });var FormNumber = React__default.forwardRef(function (_a, ref) {
+    // State -------------------------------------------------------------------------------------------------------------
+    var className = _a.className, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initMuiInputProps = _a.InputProps, initValue = _a.value, onChange = _a.onChange, props = __rest$4(_a, ["className", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "InputProps", "value", "onChange"]);
+    var _b = useState(function () { return (empty(initValue) ? '' : "".concat(initValue)); }), strValue = _b[0], setStrValue = _b[1];
+    // Effect ------------------------------------------------------------------------------------------------------------
+    useEffect(function () {
+        setStrValue(empty(initValue) ? '' : "".concat(initValue));
+    }, [initValue]);
     // Memo --------------------------------------------------------------------------------------------------------------
-    var className = _a.className, allowLeadingZeros = _a.allowLeadingZeros, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initMuiInputProps = _a.InputProps, props = __rest$4(_a, ["className", "allowLeadingZeros", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "InputProps"]);
     var muiInputProps = useMemo(function () {
         var inputProps = {
             className: readOnly ? 'Mui-disabled' : undefined,
-            allowLeadingZeros: !!allowLeadingZeros,
             allowNegative: !!allowNegative,
             thousandSeparator: thousandSeparator,
             prefix: prefix,
@@ -4035,7 +4040,6 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
         return __assign$7(__assign$7({}, initMuiInputProps), { inputComponent: NumberFormatCustom, inputProps: inputProps });
     }, [
         allowDecimal,
-        allowLeadingZeros,
         allowNegative,
         decimalScale,
         initMuiInputProps,
@@ -4045,8 +4049,14 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
         suffix,
         thousandSeparator,
     ]);
+    // Event Handler -----------------------------------------------------------------------------------------------------
+    var handleChange = useCallback(function (value) {
+        var newValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
+        onChange && onChange(newValue);
+        setStrValue(value);
+    }, [onChange]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormNumber'), disableReturnKey: true, InputProps: muiInputProps, readOnly: readOnly }, props)));
+    return (React__default.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormNumber'), disableReturnKey: true, InputProps: muiInputProps, readOnly: readOnly, value: strValue, onChange: handleChange }, props)));
 });
 FormNumber.displayName = 'FormNumber';
 FormNumber.defaultProps = FormNumberDefaultProps;var FormSearchDefaultProps = __assign$7({}, FormTextDefaultProps);var css_248z$h = ".FormSearch input[type=search]::-webkit-search-decoration,\n.FormSearch input[type=search]::-webkit-search-cancel-button,\n.FormSearch input[type=search]::-webkit-search-results-button,\n.FormSearch input[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n}";
