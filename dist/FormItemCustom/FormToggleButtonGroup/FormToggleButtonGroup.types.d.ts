@@ -15,7 +15,7 @@ export interface FormToggleButtonGroupProps<T extends FormToggleButtonGroupSingl
     type?: 'button' | 'checkbox' | 'radio';
     value?: FormToggleButtonGroupValue<T, Multiple>;
     items?: FormToggleButtonGroupItem<T>[];
-    multiple?: boolean;
+    multiple?: Multiple;
     notAllowEmptyValue?: boolean;
     formValueSeparator?: string;
     formValueSort?: boolean;
