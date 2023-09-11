@@ -12,7 +12,7 @@ import { FormTextFieldProps } from '../../FormItemTextFieldBase';
 export type FormAutocompleteSingleValue = string | number | boolean;
 
 export interface FormAutocompleteItem<T extends FormAutocompleteSingleValue> {
-  label: string;
+  label: ReactNode;
   value: T;
   disabled?: boolean;
   [key: string]: any;

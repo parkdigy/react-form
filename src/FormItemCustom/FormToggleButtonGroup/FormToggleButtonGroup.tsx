@@ -153,8 +153,8 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
 
     const itemsValues = useMemo(() => {
       if (items) {
-        return items.reduce<Record<string, string | number>>((res, { value }) => {
-          res[value.toString()] = value;
+        return items.reduce<Record<string, string | number | boolean>>((res, { value }) => {
+          res[`${value}`] = value;
           return res;
         }, {});
       } else {
@@ -216,12 +216,12 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
             if (multiple) {
               if (Array.isArray(finalValue)) {
                 finalValue = finalValue.map((v) => {
-                  const realValue = itemsValues[v.toString()];
+                  const realValue = itemsValues[`${v}`];
                   return realValue != null ? realValue : v;
                 }) as Props['value'];
               }
             } else {
-              const realValue = itemsValues[finalValue.toString()];
+              const realValue = itemsValues[`${finalValue}`];
               if (realValue != null && finalValue !== realValue) {
                 finalValue = realValue as Props['value'];
               }

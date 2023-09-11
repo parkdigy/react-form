@@ -58,7 +58,12 @@ const FormItemAutocomplete = () => {
     return new Promise<FormAutocompleteItems<number>>((resolve) => {
       setTimeout(() => {
         if (keyword) {
-          resolve(DEFAULT_ITEMS.filter((info) => info.label.includes(keyword)));
+          resolve(
+            DEFAULT_ITEMS.filter(
+              (info) =>
+                info.label && ['string', 'number'].includes(typeof info.label) && `${info.label}`.includes(keyword)
+            )
+          );
         } else {
           resolve([]);
         }

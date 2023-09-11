@@ -606,7 +606,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
         limitTags={limitTags}
         onChange={(e, value, reason, details) => handleChange(value as any, reason, details)}
         renderOption={(props, option) => (
-          <li {...props} key={option.value}>
+          <li {...props} key={`${option.value}`}>
             {onRenderItem ? onRenderItem(option) : option.label}
           </li>
         )}

@@ -11,7 +11,6 @@ import {
   FormBody,
   FormFooter,
   FormSelectItems,
-  FormText,
 } from '../../../../src';
 import { OutlinedPaper } from '#ccomp';
 
@@ -105,8 +104,6 @@ const FormItemSelect = () => {
               />
             </FormCol>
             <FormCol>
-              <FormText name='asdf' />
-
               <FormSelect name='123' items={items} />
               <FormSelect
                 name='readOnly'

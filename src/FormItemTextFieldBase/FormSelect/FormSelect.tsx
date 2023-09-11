@@ -99,7 +99,7 @@ const FormSelect = ToForwardRefExoticComponent(
       if (items) {
         setItemValueLabels(
           items.reduce<ItemValueLabelMap>((res, item) => {
-            res[item.value] = item.label;
+            res[`${item.value}`] = item.label;
             return res;
           }, {})
         );
@@ -114,8 +114,8 @@ const FormSelect = ToForwardRefExoticComponent(
 
     const itemsValues = useMemo(() => {
       if (items) {
-        return items.reduce<Record<string, string | number>>((res, { value }) => {
-          res[value.toString()] = value;
+        return items.reduce<Record<string, string | number | boolean>>((res, { value }) => {
+          res[`${value}`] = value;
           return res;
         }, {});
       } else {
@@ -167,12 +167,12 @@ const FormSelect = ToForwardRefExoticComponent(
             if (multiple) {
               if (Array.isArray(finalValue)) {
                 finalValue = finalValue.map((v) => {
-                  const realValue = itemsValues[v.toString()];
+                  const realValue = itemsValues[`${v}`];
                   return realValue != null ? realValue : v;
                 });
               }
             } else {
-              const realValue = itemsValues[finalValue.toString()];
+              const realValue = itemsValues[`${finalValue}`];
               if (realValue != null && finalValue !== realValue) {
                 finalValue = realValue;
               }
@@ -236,7 +236,7 @@ const FormSelect = ToForwardRefExoticComponent(
                     if (isSelectedPlaceholder) {
                       return <Chip key={value || '$$$EmptyValuePlaceholder$$$'} label='hahaha' size='small' />;
                     } else {
-                      return <Chip key={value} label={itemValueLabels[value]} size='small' />;
+                      return <Chip key={value} label={itemValueLabels[`${value}`]} size='small' />;
                     }
                   })}
               </Box>
@@ -383,7 +383,11 @@ const FormSelect = ToForwardRefExoticComponent(
 
           {items && notEmpty(items) ? (
             items.map(({ label: itemLabel, value: itemValue, disabled }) => (
-              <MenuItem key={empty(itemValue) ? '$$$EmptyValue$$$' : itemValue} value={itemValue} disabled={disabled}>
+              <MenuItem
+                key={empty(itemValue) ? '$$$EmptyValue$$$' : `${itemValue}`}
+                value={typeof itemValue === 'boolean' ? `${itemValue}` : itemValue}
+                disabled={disabled}
+              >
                 {multiple && checkbox && Array.isArray(value) && <Checkbox checked={value.includes(itemValue)} />}
                 {itemLabel}
               </MenuItem>

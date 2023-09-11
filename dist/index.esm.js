@@ -4102,7 +4102,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
     useEffect(function () {
         if (items) {
             setItemValueLabels(items.reduce(function (res, item) {
-                res[item.value] = item.label;
+                res["".concat(item.value)] = item.label;
                 return res;
             }, {}));
             setHasEmptyValue(!!items.find(function (_a) {
@@ -4120,7 +4120,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
         if (items) {
             return items.reduce(function (res, _a) {
                 var value = _a.value;
-                res[value.toString()] = value;
+                res["".concat(value)] = value;
                 return res;
             }, {});
         }
@@ -4170,13 +4170,13 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
                 if (multiple) {
                     if (Array.isArray(finalValue)) {
                         finalValue = finalValue.map(function (v) {
-                            var realValue = itemsValues[v.toString()];
+                            var realValue = itemsValues["".concat(v)];
                             return realValue != null ? realValue : v;
                         });
                     }
                 }
                 else {
-                    var realValue = itemsValues[finalValue.toString()];
+                    var realValue = itemsValues["".concat(finalValue)];
                     if (realValue != null && finalValue !== realValue) {
                         finalValue = realValue;
                     }
@@ -4228,7 +4228,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
                                 return React__default.createElement(Chip, { key: value || '$$$EmptyValuePlaceholder$$$', label: 'hahaha', size: 'small' });
                             }
                             else {
-                                return React__default.createElement(Chip, { key: value, label: itemValueLabels[value], size: 'small' });
+                                return React__default.createElement(Chip, { key: value, label: itemValueLabels["".concat(value)], size: 'small' });
                             }
                         })));
                 }
@@ -4312,7 +4312,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
             isSelectedPlaceholder && (React__default.createElement(MenuItem, { key: '$$$EmptyValuePlaceholder$$$', value: '', disabled: true, sx: { display: 'none' } }, placeholder)),
             items && notEmpty(items) ? (items.map(function (_a) {
                 var itemLabel = _a.label, itemValue = _a.value, disabled = _a.disabled;
-                return (React__default.createElement(MenuItem, { key: empty(itemValue) ? '$$$EmptyValue$$$' : itemValue, value: itemValue, disabled: disabled },
+                return (React__default.createElement(MenuItem, { key: empty(itemValue) ? '$$$EmptyValue$$$' : "".concat(itemValue), value: typeof itemValue === 'boolean' ? "".concat(itemValue) : itemValue, disabled: disabled },
                     multiple && checkbox && Array.isArray(value) && React__default.createElement(Checkbox, { checked: value.includes(itemValue) }),
                     itemLabel));
             })) : (React__default.createElement(MenuItem, { value: '' })))));
@@ -5085,7 +5085,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         if (items) {
             return items.reduce(function (res, _a) {
                 var value = _a.value;
-                res[value.toString()] = value;
+                res["".concat(value)] = value;
                 return res;
             }, {});
         }
@@ -5149,13 +5149,13 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                 if (multiple) {
                     if (Array.isArray(finalValue)) {
                         finalValue = finalValue.map(function (v) {
-                            var realValue = itemsValues[v.toString()];
+                            var realValue = itemsValues["".concat(v)];
                             return realValue != null ? realValue : v;
                         });
                     }
                 }
                 else {
-                    var realValue = itemsValues[finalValue.toString()];
+                    var realValue = itemsValues["".concat(finalValue)];
                     if (realValue != null && finalValue !== realValue) {
                         finalValue = realValue;
                     }
@@ -8112,7 +8112,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         }
     }, [getOptionDisabled]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React__default.createElement(Autocomplete, { options: items || [], className: classNames$1(className, 'FormValueItem', 'FormAutocomplete'), sx: sx, multiple: multiple, fullWidth: !width && fullWidth, openOnFocus: openOnFocus, disableClearable: disableClearable, disablePortal: disablePortal, noOptionsText: noOptionsText, value: componentValue, style: style, isOptionEqualToValue: function (option, value) { return option.value === value.value; }, getOptionDisabled: handleGetOptionDisabled, disabled: disabled, readOnly: readOnly, loading: loading || isOnGetItemLoading, loadingText: loadingText, limitTags: limitTags, onChange: function (e, value, reason, details) { return handleChange(value, reason, details); }, renderOption: function (props, option) { return (React__default.createElement("li", __assign$7({}, props, { key: option.value }), onRenderItem ? onRenderItem(option) : option.label)); }, onInputChange: function (event, newInputValue, reason) {
+    return (React__default.createElement(Autocomplete, { options: items || [], className: classNames$1(className, 'FormValueItem', 'FormAutocomplete'), sx: sx, multiple: multiple, fullWidth: !width && fullWidth, openOnFocus: openOnFocus, disableClearable: disableClearable, disablePortal: disablePortal, noOptionsText: noOptionsText, value: componentValue, style: style, isOptionEqualToValue: function (option, value) { return option.value === value.value; }, getOptionDisabled: handleGetOptionDisabled, disabled: disabled, readOnly: readOnly, loading: loading || isOnGetItemLoading, loadingText: loadingText, limitTags: limitTags, onChange: function (e, value, reason, details) { return handleChange(value, reason, details); }, renderOption: function (props, option) { return (React__default.createElement("li", __assign$7({}, props, { key: "".concat(option.value) }), onRenderItem ? onRenderItem(option) : option.label)); }, onInputChange: function (event, newInputValue, reason) {
             if (reason === 'input') {
                 setInputValue(newInputValue);
             }
