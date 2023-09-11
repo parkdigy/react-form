@@ -8,7 +8,7 @@ import {
 } from '../../@types';
 import { FormTextFieldDefaultProps, FormTextFieldProps } from '../FormTextField';
 
-export type FormSelectSingleValue = string | number;
+export type FormSelectSingleValue = string | number | boolean;
 
 export type FormSelectValue<T extends FormSelectSingleValue, Multiple extends boolean | undefined> = [
   Multiple,

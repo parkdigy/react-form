@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { FormArrayValueItemCommands, FormItemsValueItemCommands, FormLoadingValueItemCommands, FormValueItemBaseCommands, FormMultipleValueItemCommands } from '../../@types';
 import { FormTextFieldProps } from '../FormTextField';
-export type FormSelectSingleValue = string | number;
+export type FormSelectSingleValue = string | number | boolean;
 export type FormSelectValue<T extends FormSelectSingleValue, Multiple extends boolean | undefined> = [
     Multiple
 ] extends [true] ? T[] : '' | T;

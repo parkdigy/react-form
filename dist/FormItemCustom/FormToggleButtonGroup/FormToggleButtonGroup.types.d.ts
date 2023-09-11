@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { ToggleButtonProps } from '@mui/material';
 import { PartialPick, CommonSxProps, FormMultipleValueItemCommands, FormArrayValueItemCommands, FormItemsValueItemCommands, FormLoadingValueItemCommands, FormValueItemBaseCommands, FormValueItemProps } from '../../@types';
 import { FormItemBaseProps } from '../FormItemBase';
-export type FormToggleButtonGroupSingleValue = string | number;
+export type FormToggleButtonGroupSingleValue = string | number | boolean;
 export interface FormToggleButtonGroupItem<T extends FormToggleButtonGroupSingleValue> {
     label: ReactNode;
     value: T;

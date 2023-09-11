@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { CommonSxProps, FormMultipleValueItemCommands } from '../../@types';
 import { FormArrayValueItemCommands, FormItemsValueItemCommands, FormLoadingValueItemCommands, FormValueItemBaseCommands, FormValueItemProps } from '../../@types';
 import { FormTextFieldProps } from '../../FormItemTextFieldBase';
-export type FormAutocompleteSingleValue = string | number;
+export type FormAutocompleteSingleValue = string | number | boolean;
 export interface FormAutocompleteItem<T extends FormAutocompleteSingleValue> {
     label: string;
     value: T;

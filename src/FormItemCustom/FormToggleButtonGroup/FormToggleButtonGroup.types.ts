@@ -12,7 +12,7 @@ import {
 } from '../../@types';
 import { FormItemBaseProps } from '../FormItemBase';
 
-export type FormToggleButtonGroupSingleValue = string | number;
+export type FormToggleButtonGroupSingleValue = string | number | boolean;
 
 export interface FormToggleButtonGroupItem<T extends FormToggleButtonGroupSingleValue> {
   label: ReactNode;

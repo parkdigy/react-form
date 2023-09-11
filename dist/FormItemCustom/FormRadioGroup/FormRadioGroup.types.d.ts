@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { CommonSxProps, FormItemsValueItemCommands, FormLoadingValueItemCommands, FormValueItemBaseCommands, FormValueItemProps } from '../../@types';
-export type FormRadioGroupSingleValue = string | number;
+export type FormRadioGroupSingleValue = string | number | boolean;
 export interface FormRadioGroupItem<T extends FormRadioGroupSingleValue> {
     label: ReactNode;
     value: T;
