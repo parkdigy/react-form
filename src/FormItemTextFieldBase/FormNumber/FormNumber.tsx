@@ -20,6 +20,7 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
       readOnly,
       tabIndex,
       InputProps: initMuiInputProps,
+      inputProps: initInputProps,
       value: initValue,
       onChange,
       ...props
@@ -59,18 +60,19 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
       return {
         ...initMuiInputProps,
         inputComponent: NumberFormatCustom as React.ElementType<InputBaseComponentProps>,
-        inputProps: inputProps as any,
+        inputProps: { ...initInputProps, ...inputProps } as any,
       };
     }, [
-      allowDecimal,
-      allowNegative,
-      decimalScale,
-      initMuiInputProps,
-      prefix,
       readOnly,
-      tabIndex,
-      suffix,
+      allowNegative,
       thousandSeparator,
+      prefix,
+      suffix,
+      tabIndex,
+      allowDecimal,
+      initMuiInputProps,
+      initInputProps,
+      decimalScale,
     ]);
 
     // Event Handler -----------------------------------------------------------------------------------------------------

@@ -4012,7 +4012,7 @@ function NumericFormat(props) {
 });
 NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: true });var FormNumber = React__default.forwardRef(function (_a, ref) {
     // State -------------------------------------------------------------------------------------------------------------
-    var className = _a.className, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initMuiInputProps = _a.InputProps, initValue = _a.value, onChange = _a.onChange, props = __rest$4(_a, ["className", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "InputProps", "value", "onChange"]);
+    var className = _a.className, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initMuiInputProps = _a.InputProps, initInputProps = _a.inputProps, initValue = _a.value, onChange = _a.onChange, props = __rest$4(_a, ["className", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "InputProps", "inputProps", "value", "onChange"]);
     var _b = useState(function () { return (empty(initValue) ? '' : "".concat(initValue)); }), strValue = _b[0], setStrValue = _b[1];
     // Effect ------------------------------------------------------------------------------------------------------------
     useEffect(function () {
@@ -4037,17 +4037,18 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
         else {
             inputProps.decimalScale = 0;
         }
-        return __assign$7(__assign$7({}, initMuiInputProps), { inputComponent: NumberFormatCustom, inputProps: inputProps });
+        return __assign$7(__assign$7({}, initMuiInputProps), { inputComponent: NumberFormatCustom, inputProps: __assign$7(__assign$7({}, initInputProps), inputProps) });
     }, [
-        allowDecimal,
-        allowNegative,
-        decimalScale,
-        initMuiInputProps,
-        prefix,
         readOnly,
-        tabIndex,
-        suffix,
+        allowNegative,
         thousandSeparator,
+        prefix,
+        suffix,
+        tabIndex,
+        allowDecimal,
+        initMuiInputProps,
+        initInputProps,
+        decimalScale,
     ]);
     // Event Handler -----------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (value) {
