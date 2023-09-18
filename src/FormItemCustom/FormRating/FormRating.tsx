@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { Rating } from '@mui/material';
@@ -36,7 +36,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       required,
       disabled: initDisabled,
       error: initError,
-      helperText: initHelperText,
+      helperText,
       value: initValue,
       data: initData,
       exceptValue,
@@ -86,7 +86,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
     // State -----------------------------------------------------------------------------------------------------------
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
@@ -144,34 +144,34 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       });
     }, []);
 
-    const setErrorHelperText = useCallback(
-      function (error: Props['error'], helperText: Props['helperText']) {
+    const setErrorErrorHelperText = useCallback(
+      function (error: Props['error'], errorHelperText: Props['helperText']) {
         setError(error);
-        setHelperText(helperText);
+        setErrorHelperText(errorHelperText);
       },
-      [setError, setHelperText]
+      [setError]
     );
 
     const validate = useCallback(
       function (value: FormRatingValue) {
         if (required && (empty(value) || value === 0)) {
-          setErrorHelperText(true, '필수 선택 항목입니다.');
+          setErrorErrorHelperText(true, '필수 선택 항목입니다.');
           return false;
         }
 
         if (onValidate) {
           const onValidateResult = onValidate(value);
           if (onValidateResult != null && onValidateResult !== true) {
-            setErrorHelperText(true, onValidateResult);
+            setErrorErrorHelperText(true, onValidateResult);
             return false;
           }
         }
 
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
 
         return true;
       },
-      [required, onValidate, setErrorHelperText, initHelperText]
+      [required, onValidate, setErrorErrorHelperText]
     );
 
     // Commands --------------------------------------------------------------------------------------------------------
@@ -208,8 +208,8 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         focus,
         focusValidate: focus,
         validate: () => validate(value),
-        setError: (error: Props['error'], helperText: Props['helperText']) =>
-          setErrorHelperText(error, error ? helperText : initHelperText),
+        setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
+          setErrorErrorHelperText(error, error ? errorHelperText : undefined),
       };
 
       onAddValueItem(id, commands);
@@ -242,14 +242,13 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       disabled,
       focus,
       validate,
-      initHelperText,
       ref,
       onAddValueItem,
       onRemoveValueItem,
       id,
       setValue,
       setDisabled,
-      setErrorHelperText,
+      setErrorErrorHelperText,
       data,
       setData,
     ]);
@@ -286,7 +285,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         error={error}
         fullWidth={false}
         required={required}
-        helperText={helperText}
+        helperText={error ? errorHelperText : helperText}
         helperTextProps={{ style: { marginLeft: 5 } }}
         style={style}
         sx={sx}

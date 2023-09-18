@@ -44,7 +44,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       required,
       disabled: initDisabled,
       error: initError,
-      helperText: initHelperText,
+      helperText: helperText,
       value: initValue,
       data: initData,
       exceptValue,
@@ -100,7 +100,8 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
     // State -----------------------------------------------------------------------------------------------------------
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
+
     const [initialized, setInitialized] = useState(false);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
@@ -119,14 +120,14 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       [editorRef]
     );
 
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
 
-    const setErrorHelperText = useCallback(
-      function (error: Props['error'], helperText: Props['helperText']) {
+    const setErrorErrorHelperText = useCallback(
+      function (error: Props['error'], errorHelperText: Props['helperText']) {
         setError(error);
-        setHelperText(helperText);
+        setErrorHelperText(errorHelperText);
       },
-      [setError, setHelperText]
+      [setError]
     );
 
     // Function - validate ---------------------------------------------------------------------------------------------
@@ -141,23 +142,23 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
           isEmptyValue = empty(text.trim());
         }
         if (required && (isEmptyValue || empty(value))) {
-          setErrorHelperText(true, '필수 입력 항목입니다.');
+          setErrorErrorHelperText(true, '필수 입력 항목입니다.');
           return false;
         }
 
         if (onValidate) {
           const onValidateResult = onValidate(value);
           if (onValidateResult != null && onValidateResult !== true) {
-            setErrorHelperText(true, onValidateResult);
+            setErrorErrorHelperText(true, onValidateResult);
             return false;
           }
         }
 
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
 
         return true;
       },
-      [required, onValidate, setErrorHelperText, initHelperText]
+      [required, onValidate, setErrorErrorHelperText]
     );
 
     // Commands --------------------------------------------------------------------------------------------------------
@@ -194,8 +195,8 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
         focus,
         focusValidate: focus,
         validate: () => validate(value),
-        setError: (error: Props['error'], helperText: Props['helperText']) =>
-          setErrorHelperText(error, error ? helperText : initHelperText),
+        setError: (error: Props['error'], errorText: Props['helperText']) =>
+          setErrorErrorHelperText(error, error ? errorText : undefined),
       };
 
       onAddValueItem(id, commands);
@@ -226,17 +227,16 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       exceptValue,
       disabled,
       focus,
-      validate,
-      initHelperText,
       ref,
       onAddValueItem,
       onRemoveValueItem,
       id,
       setValue,
       setDisabled,
-      setErrorHelperText,
+      setErrorErrorHelperText,
       data,
       setData,
+      validate,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
@@ -291,7 +291,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
         error={error}
         required={required}
         fullWidth={true}
-        helperText={helperText}
+        helperText={error ? errorHelperText : helperText}
         helperTextProps={{ style: { marginLeft: 5 } }}
         style={{ width: '100%' }}
         hidden={hidden}

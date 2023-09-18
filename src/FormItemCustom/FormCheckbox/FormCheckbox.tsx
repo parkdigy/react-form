@@ -1,4 +1,4 @@
-import React, { useCallback, useId, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { FormControlLabel, Checkbox, Typography, ButtonBaseActions, useTheme } from '@mui/material';
@@ -33,7 +33,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       disabled: initDisabled,
       text,
       error: initError,
-      helperText: initHelperText,
+      helperText,
       value: initValue,
       data: initData,
       uncheckedValue: initUncheckedValue,
@@ -102,7 +102,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
     const [value, setValue] = useAutoUpdateState<Props['value']>(initValue);
     const [uncheckedValue, setUncheckedValue] = useAutoUpdateState<Props['uncheckedValue']>(initUncheckedValue);
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
@@ -141,14 +141,14 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       [initInputRef, inputRef, initAction, actionRef]
     );
 
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
 
-    const setErrorHelperText = useCallback(
-      function (error: Props['error'], helperText: Props['helperText']) {
+    const setErrorErrorHelperText = useCallback(
+      function (error: Props['error'], errorHelperText: Props['helperText']) {
         setError(error);
-        setHelperText(helperText);
+        setErrorHelperText(errorHelperText);
       },
-      [setError, setHelperText]
+      [setError]
     );
 
     // Function - validate ---------------------------------------------------------------------------------------------
@@ -158,16 +158,16 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         if (onValidate) {
           const onValidateResult = onValidate(checked);
           if (onValidateResult != null && onValidateResult !== true) {
-            setErrorHelperText(true, onValidateResult);
+            setErrorErrorHelperText(true, onValidateResult);
             return false;
           }
         }
 
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
 
         return true;
       },
-      [onValidate, setErrorHelperText, initHelperText]
+      [onValidate, setErrorErrorHelperText]
     );
 
     // Commands --------------------------------------------------------------------------------------------------------
@@ -216,8 +216,8 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         focus,
         focusValidate: focus,
         validate: () => validate(checked),
-        setError: (error: Props['error'], helperText: Props['helperText']) =>
-          setErrorHelperText(error, error ? helperText : initHelperText),
+        setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
+          setErrorErrorHelperText(error, error ? errorHelperText : undefined),
       };
 
       onAddValueItem(id, commands);
@@ -254,13 +254,12 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       exceptValue,
       disabled,
       validate,
-      initHelperText,
       id,
       setChecked,
       setValue,
       setUncheckedValue,
       setDisabled,
-      setErrorHelperText,
+      setErrorErrorHelperText,
       data,
       setData,
     ]);
@@ -295,7 +294,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         label={label}
         error={error}
         fullWidth={fullWidth}
-        helperText={helperText}
+        helperText={error ? errorHelperText : helperText}
         helperTextProps={{ style: { marginLeft: 2 } }}
         style={style}
         sx={sx}

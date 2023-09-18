@@ -28,7 +28,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       disabled,
       fullWidth: initFullWidth,
       error: initError,
-      helperText: initHelperText,
+      helperText,
       formValueSeparator,
       formValueSort,
       onValidate,
@@ -93,7 +93,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
 
     const [inputValue, setInputValue] = useState<string>('');
     const [error, setError] = useAutoUpdateState<FormTagProps['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<FormTagProps['helperText']>(initHelperText);
+    const [errorHelperText, setErrorHelperText] = useState<FormTagProps['helperText']>();
 
     // Effect ----------------------------------------------------------------------------------------------------------
 
@@ -105,14 +105,14 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
 
-    const setErrorHelperText = useCallback(
-      function (error: boolean, helperText: ReactNode) {
+    const setErrorErrorHelperText = useCallback(
+      function (error: boolean, errorHelperText: ReactNode) {
         setError(error);
-        setHelperText(helperText);
+        setErrorHelperText(errorHelperText);
       },
-      [setError, setHelperText]
+      [setError]
     );
 
     // Function - validate ---------------------------------------------------------------------------------------------
@@ -120,23 +120,23 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     const validate = useCallback(
       (value: FormTagValue) => {
         if (required && empty(value)) {
-          setErrorHelperText(true, '필수 입력 항목입니다.');
+          setErrorErrorHelperText(true, '필수 입력 항목입니다.');
           return false;
         }
 
         if (onValidate) {
           const onValidateResult = onValidate(value);
           if (onValidateResult != null && onValidateResult !== true) {
-            setErrorHelperText(true, onValidateResult);
+            setErrorErrorHelperText(true, onValidateResult);
             return false;
           }
         }
 
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
 
         return true;
       },
-      [required, onValidate, setErrorHelperText, initHelperText]
+      [required, onValidate, setErrorErrorHelperText]
     );
 
     // Function - getExtraCommands -------------------------------------------------------------------------------------
@@ -356,7 +356,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
                 required={required}
                 value={inputValue}
                 exceptValue={exceptValue}
-                helperText={helperText}
+                helperText={error ? errorHelperText : helperText}
                 onKeyDown={handleInputKeyDown}
                 onChange={handleInputChange}
                 onBlur={handleBlur}

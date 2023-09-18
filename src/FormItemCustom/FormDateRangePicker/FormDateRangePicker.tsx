@@ -65,7 +65,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       inputWidth,
       exceptValue,
       error: initError,
-      helperText: initHelperText,
+      helperText,
       formValueStartNameSuffix,
       formValueEndNameSuffix,
       icon,
@@ -143,7 +143,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     const [startError, setStartError] = useState(false);
     const [endError, setEndError] = useState(false);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
+    const [startErrorHelperText, setStartErrorHelperText] = useState<Props['helperText']>();
+    const [endErrorHelperText, setEndErrorHelperText] = useState<Props['helperText']>();
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -170,31 +172,25 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       }
     }, [endError, startDateTextFieldRef, endDateTextFieldRef]);
 
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
 
-    const setErrorHelperText = useCallback(
-      (error: boolean, helperText: ReactNode) => {
+    const setErrorErrorHelperText = useCallback(
+      (error: boolean, errorHelperText: ReactNode) => {
         setError(error);
-        setHelperText(helperText);
+        setErrorHelperText(errorHelperText);
       },
-      [setError, setHelperText]
+      [setError]
     );
 
-    const setStartErrorHelperText = useCallback(
-      (error: boolean, helperText: ReactNode) => {
-        setStartError(error);
-        setHelperText(helperText);
-      },
-      [setHelperText]
-    );
+    const setStartErrorErrorHelperText = useCallback((error: boolean, startErrorHelperText: ReactNode) => {
+      setStartError(error);
+      setStartErrorHelperText(startErrorHelperText);
+    }, []);
 
-    const setEndErrorHelperText = useCallback(
-      (error: boolean, helperText: ReactNode) => {
-        setEndError(error);
-        setHelperText(helperText);
-      },
-      [setHelperText]
-    );
+    const setEndErrorErrorHelperText = useCallback((error: boolean, endErrorHelperText: ReactNode) => {
+      setEndError(error);
+      setEndErrorHelperText(endErrorHelperText);
+    }, []);
 
     // Function - validate ---------------------------------------------------------------------------------------------
 
@@ -202,27 +198,27 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       (value: FormDateRangePickerValue) => {
         if (required && (value[0] == null || value[1] == null)) {
           if (value[0] == null && value[1] == null) {
-            setErrorHelperText(true, '필수 입력 항목입니다.');
+            setErrorErrorHelperText(true, '필수 입력 항목입니다.');
           } else if (value[0] == null) {
-            setStartErrorHelperText(true, '필수 입력 항목입니다.');
+            setStartErrorErrorHelperText(true, '필수 입력 항목입니다.');
           } else {
-            setEndErrorHelperText(true, '필수 입력 항목입니다.');
+            setEndErrorErrorHelperText(true, '필수 입력 항목입니다.');
           }
           return false;
         }
         if (requiredStart && value[0] == null) {
-          setStartErrorHelperText(true, '필수 입력 항목입니다.');
+          setStartErrorErrorHelperText(true, '필수 입력 항목입니다.');
           return false;
         }
         if (requiredEnd && value[1] == null) {
-          setEndErrorHelperText(true, '필수 입력 항목입니다.');
+          setEndErrorErrorHelperText(true, '필수 입력 항목입니다.');
           return false;
         }
         if (!allowSingleSelect && (value[0] || value[1]) && (value[0] == null || value[1] == null)) {
           if (value[0] == null) {
-            setStartErrorHelperText(true, '필수 입력 항목입니다.');
+            setStartErrorErrorHelperText(true, '필수 입력 항목입니다.');
           } else {
-            setEndErrorHelperText(true, '필수 입력 항목입니다.');
+            setEndErrorErrorHelperText(true, '필수 입력 항목입니다.');
           }
           return false;
         }
@@ -231,31 +227,31 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
         const endInputValue = endDateTextFieldRef.current?.value || '';
 
         if (notEmpty(startInputValue) && !dayjs(startInputValue, format).isValid()) {
-          setStartErrorHelperText(true, '형식이 일치하지 않습니다.');
+          setStartErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
           return false;
         }
         if (notEmpty(endInputValue) && !dayjs(endInputValue, format).isValid()) {
-          setEndErrorHelperText(true, '형식이 일치하지 않습니다.');
+          setEndErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
           return false;
         }
         if (startInputDatePickerErrorRef.current) {
-          setStartErrorHelperText(true, getDateValidationErrorText(startInputDatePickerErrorRef.current));
+          setStartErrorErrorHelperText(true, getDateValidationErrorText(startInputDatePickerErrorRef.current));
           return false;
         }
         if (endInputDatePickerErrorRef.current) {
-          setEndErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
+          setEndErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
           return false;
         }
 
         if (onValidate) {
           const onValidateResult = onValidate(value);
           if (onValidateResult != null && onValidateResult !== true) {
-            setErrorHelperText(true, onValidateResult);
+            setErrorErrorHelperText(true, onValidateResult);
             return false;
           }
         }
 
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
         setStartError(false);
         setEndError(false);
 
@@ -268,10 +264,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
         allowSingleSelect,
         format,
         onValidate,
-        setErrorHelperText,
-        initHelperText,
-        setStartErrorHelperText,
-        setEndErrorHelperText,
+        setErrorErrorHelperText,
+        setStartErrorErrorHelperText,
+        setEndErrorErrorHelperText,
       ]
     );
 
@@ -392,10 +387,10 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       (newValue: CustomDatePickerValue) => {
         setValue(newValue);
         setOpen(false);
-        setStartErrorHelperText(false, initHelperText);
-        setEndErrorHelperText(false, initHelperText);
+        setStartErrorErrorHelperText(false, undefined);
+        setEndErrorErrorHelperText(false, undefined);
       },
-      [initHelperText, setEndErrorHelperText, setStartErrorHelperText, setValue]
+      [setEndErrorErrorHelperText, setStartErrorErrorHelperText, setValue]
     );
 
     const handleValueChange = useCallback(
@@ -422,7 +417,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
                 }
               }
             }
-            setStartErrorHelperText(false, initHelperText);
+            setStartErrorErrorHelperText(false, undefined);
             if (fromInput && newValue) {
               activeMonth(newValue);
             }
@@ -433,7 +428,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
               if (fromInput && newValue) {
                 activeMonth(newValue.subtract(calendarCount - 1, 'month'));
               }
-              setStartErrorHelperText(false, initHelperText);
+              setStartErrorErrorHelperText(false, undefined);
             } else {
               finalValue = [value[0], newValue];
               if (fromInput && newValue) {
@@ -452,7 +447,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
                   startDateTextFieldRef.current?.focus();
                 });
               }
-              setEndErrorHelperText(false, initHelperText);
+              setEndErrorErrorHelperText(false, undefined);
             }
             break;
         }
@@ -466,11 +461,10 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       [
         setValue,
         value,
-        setStartErrorHelperText,
-        initHelperText,
+        setStartErrorErrorHelperText,
         activeMonth,
         calendarCount,
-        setEndErrorHelperText,
+        setEndErrorErrorHelperText,
         open,
         onRequestSearchSubmit,
         name,
@@ -615,7 +609,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
           focusValidate,
           validate: () => validate(value),
           setError: (error: boolean, errorText: ReactNode | undefined) =>
-            setErrorHelperText(error, error ? errorText : initHelperText),
+            setErrorErrorHelperText(error, error ? errorText : undefined),
           getFormValueFormat: () => formValueFormat || FormDateRangePickerDefaultProps.format,
           getFormValueStartNameSuffix: () =>
             formValueStartNameSuffix || FormDateRangePickerDefaultProps.formValueStartNameSuffix,
@@ -670,8 +664,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       id,
       setValue,
       setDisabled,
-      setErrorHelperText,
-      initHelperText,
+      setErrorErrorHelperText,
       data,
       setData,
     ]);
@@ -695,7 +688,14 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
                   {
                     name: 'offset',
                     options: {
-                      offset: [0, (error || startError || endError) && helperText ? 8 : -14],
+                      offset: [
+                        0,
+                        (error && errorHelperText) ||
+                        (startError && startErrorHelperText) ||
+                        (endError && endErrorHelperText)
+                          ? 8
+                          : -14,
+                      ],
                     },
                   },
                 ],
@@ -768,14 +768,24 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
                 </Grid>
               </Grid>
             </PrivateStyledTooltip>
-            {!formColWithHelperText && helperText && (
-              <FormHelperText
-                error={error || startError || endError}
-                style={{ marginLeft: variant === 'standard' ? 0 : 14 }}
-              >
-                {helperText}
-              </FormHelperText>
-            )}
+            {!formColWithHelperText &&
+              (helperText ||
+                (error && errorHelperText) ||
+                (startError && startErrorHelperText) ||
+                (endError && endErrorHelperText)) && (
+                <FormHelperText
+                  error={error || startError || endError}
+                  style={{ marginLeft: variant === 'standard' ? 0 : 14 }}
+                >
+                  {error
+                    ? errorHelperText
+                    : startError
+                    ? startErrorHelperText
+                    : endError
+                    ? endErrorHelperText
+                    : helperText}
+                </FormHelperText>
+              )}
           </div>
         </ClickAwayListener>
       </LocalizationProvider>

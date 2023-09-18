@@ -61,7 +61,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       disabled: initDisabled,
       width,
       error: initError,
-      helperText: initHelperText,
+      helperText,
       minDate,
       maxDate,
       disableFuture,
@@ -141,7 +141,8 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [timeError, setTimeError] = useState<DateValidationError>(null);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
+
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
@@ -278,14 +279,14 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       textFieldInputRef.current?.focus();
     }, [textFieldInputRef]);
 
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
 
-    const setErrorHelperText = useCallback(
+    const setErrorErrorHelperText = useCallback(
       (error: boolean, helperText: ReactNode) => {
         setError(error);
-        setHelperText(helperText);
+        setErrorHelperText(helperText);
       },
-      [setError, setHelperText]
+      [setError]
     );
 
     // Function - validate ---------------------------------------------------------------------------------------------
@@ -293,34 +294,34 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     const validate = useCallback(
       (value: PrivateDatePickerValue) => {
         if (required && empty(value)) {
-          setErrorHelperText(true, '필수 입력 항목입니다.');
+          setErrorErrorHelperText(true, '필수 입력 항목입니다.');
           return false;
         }
         if (value && !value.isValid()) {
-          setErrorHelperText(true, '형식이 일치하지 않습니다.');
+          setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
           return false;
         }
         if (datePickerErrorRef.current) {
-          setErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
+          setErrorErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
           return false;
         }
         if (timeError) {
-          setErrorHelperText(true, getDateValidationErrorText(timeError));
+          setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
           return false;
         }
         if (onValidate) {
           const onValidateResult = onValidate(value);
           if (onValidateResult != null && onValidateResult !== true) {
-            setErrorHelperText(true, onValidateResult);
+            setErrorErrorHelperText(true, onValidateResult);
             return false;
           }
         }
 
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
 
         return true;
       },
-      [required, timeError, onValidate, setErrorHelperText, initHelperText]
+      [required, timeError, onValidate, setErrorErrorHelperText]
     );
 
     // Commands --------------------------------------------------------------------------------------------------------
@@ -360,7 +361,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
           focusValidate: focus,
           validate: () => validate(value),
           setError: (error: boolean, errorText: ReactNode | undefined) =>
-            setErrorHelperText(error, error ? errorText : initHelperText),
+            setErrorErrorHelperText(error, error ? errorText : undefined),
           getFormValueFormat: () => formValueFormat,
         };
 
@@ -402,8 +403,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       id,
       setValue,
       setDisabled,
-      setErrorHelperText,
-      initHelperText,
+      setErrorErrorHelperText,
       data,
       setData,
     ]);
@@ -609,7 +609,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
                   {
                     name: 'offset',
                     options: {
-                      offset: [0, error && helperText ? 8 : -14],
+                      offset: [0, error && errorHelperText ? 8 : -14],
                     },
                   },
                 ],
@@ -657,9 +657,9 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
                 />
               </div>
             </PrivateStyledTooltip>
-            {!formColWithHelperText && helperText && (
+            {!formColWithHelperText && (helperText || (error && errorHelperText)) && (
               <FormHelperText error={error} style={{ marginLeft: variant === 'standard' ? 0 : 14 }}>
-                {helperText}
+                {error ? errorHelperText : helperText}
               </FormHelperText>
             )}
           </div>

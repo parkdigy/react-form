@@ -39,7 +39,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       labelIcon,
       label: initLabel,
       error: initError,
-      helperText: initHelperText,
+      helperText,
       exceptValue,
       readOnly,
       tabIndex,
@@ -119,7 +119,8 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     // State -----------------------------------------------------------------------------------------------------------
 
     const [error, setError] = useAutoUpdateState<FormTextFieldProps['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<FormTextFieldProps['helperText']>(initHelperText);
+    const [errorHelperText, setErrorHelperText] = useState<FormTextFieldProps['helperText']>();
+
     const [showClear, setShowClear] = useState<boolean>(false);
     const [disabled, setDisabled] = useAutoUpdateState<FormTextFieldProps['disabled']>(initDisabled);
     const [data, setData] = useAutoUpdateState<FormTextFieldProps['data']>(initData);
@@ -225,14 +226,14 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       [initInputRef, inputRef]
     );
 
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
 
-    const setErrorHelperText = useCallback(
-      function (error: boolean, helperText: ReactNode) {
+    const setErrorErrorHelperText = useCallback(
+      function (error: boolean, errorHelperText: ReactNode) {
         setError(error);
-        setHelperText(helperText);
+        setErrorHelperText(errorHelperText);
       },
-      [setError, setHelperText]
+      [setError]
     );
 
     // Function - validate ---------------------------------------------------------------------------------------------
@@ -240,35 +241,35 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     const validate = useCallback(
       (value: FormTextFieldValue) => {
         if (required && empty(value)) {
-          setErrorHelperText(true, '필수 입력 항목입니다.');
+          setErrorErrorHelperText(true, '필수 입력 항목입니다.');
           return false;
         }
 
         if (notEmpty(value) && validPattern) {
           if (!new RegExp(validPattern).test(value)) {
-            setErrorHelperText(true, '형식이 일치하지 않습니다.');
+            setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
             return false;
           }
         }
         if (notEmpty(value) && invalidPattern) {
           if (new RegExp(invalidPattern).test(value)) {
-            setErrorHelperText(true, '형식이 일치하지 않습니다.');
+            setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
             return false;
           }
         }
         if (onValidate) {
           const validateResult = onValidate(value);
           if (validateResult != null && validateResult !== true) {
-            setErrorHelperText(true, validateResult);
+            setErrorErrorHelperText(true, validateResult);
             return false;
           }
         }
 
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
 
         return true;
       },
-      [required, validPattern, invalidPattern, onValidate, setErrorHelperText, initHelperText]
+      [required, validPattern, invalidPattern, onValidate, setErrorErrorHelperText]
     );
 
     // Memo - muiInputProps --------------------------------------------------------------------------------------------
@@ -384,7 +385,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
           focusValidate: focus,
           validate: () => validate(lastValue),
           setError: (error: boolean, errorText: ReactNode | undefined) =>
-            setErrorHelperText(error, error ? errorText : initHelperText),
+            setErrorErrorHelperText(error, error ? errorText : undefined),
         };
 
         if (ref) {
@@ -426,8 +427,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       id,
       setValue,
       setDisabled,
-      setErrorHelperText,
-      initHelperText,
+      setErrorErrorHelperText,
       setData,
     ]);
 
@@ -492,7 +492,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
         required={required}
         fullWidth={!width && fullWidth}
         error={error}
-        helperText={formColWithHelperText ? undefined : helperText}
+        helperText={formColWithHelperText ? undefined : error ? errorHelperText : helperText}
         FormHelperTextProps={{ component: 'div' } as any}
         disabled={disabled}
         InputProps={muiInputProps}

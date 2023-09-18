@@ -48,7 +48,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
       value: initValue,
       data: initData,
       error: initError,
-      helperText: initHelperText,
+      helperText,
       disabled: initDisabled,
       readOnly,
       required,
@@ -117,7 +117,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
 
     const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
     const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
@@ -242,14 +242,14 @@ const FormRadioGroup = ToForwardRefExoticComponent(
       firstInputRef.current?.focus();
     }, []);
 
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
 
-    const setErrorHelperText = useCallback(
-      function (error: boolean, helperText: ReactNode) {
+    const setErrorErrorHelperText = useCallback(
+      function (error: boolean, errorHelperText: ReactNode) {
         setError(error);
-        setHelperText(helperText);
+        setErrorHelperText(errorHelperText);
       },
-      [setError, setHelperText]
+      [setError]
     );
 
     // Function - validate ---------------------------------------------------------------------------------------------
@@ -257,22 +257,22 @@ const FormRadioGroup = ToForwardRefExoticComponent(
     const validate = useCallback(
       function (value: Value) {
         if (required && empty(value)) {
-          setErrorHelperText(true, '필수 선택 항목입니다.');
+          setErrorErrorHelperText(true, '필수 선택 항목입니다.');
           return false;
         }
         if (onValidate) {
           const onValidateResult = onValidate(value);
           if (onValidateResult != null && onValidateResult !== true) {
-            setErrorHelperText(true, onValidateResult);
+            setErrorErrorHelperText(true, onValidateResult);
             return false;
           }
         }
 
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
 
         return true;
       },
-      [required, onValidate, setErrorHelperText, initHelperText]
+      [required, onValidate, setErrorErrorHelperText]
     );
 
     // Commands --------------------------------------------------------------------------------------------------------
@@ -311,8 +311,8 @@ const FormRadioGroup = ToForwardRefExoticComponent(
         focus,
         focusValidate: focus,
         validate: () => validate(value),
-        setError: (error: boolean, helperText: ReactNode) =>
-          setErrorHelperText(error, error ? helperText : initHelperText),
+        setError: (error: boolean, errorHelperText: ReactNode) =>
+          setErrorErrorHelperText(error, error ? errorHelperText : undefined),
         getItems: () => lastItems,
         setItems: (items: Props['items']) => {
           lastItems = items;
@@ -363,8 +363,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
       id,
       setValue,
       setDisabled,
-      setErrorHelperText,
-      initHelperText,
+      setErrorErrorHelperText,
       setItems,
       setLoading,
       data,
@@ -424,7 +423,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
         fullWidth={fullWidth}
         required={required}
         error={error}
-        helperText={helperText}
+        helperText={error ? errorHelperText : helperText}
         helperTextProps={{ style: { marginLeft: 2 } }}
         style={style}
         sx={sx}

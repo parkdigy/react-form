@@ -2207,7 +2207,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     var _b;
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, required = _a.required, initValue = _a.value, initData = _a.data, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, initHelperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, hidden = _a.hidden, disableReturnKey = _a.disableReturnKey, 
+    name = _a.name, required = _a.required, initValue = _a.value, initData = _a.data, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, helperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, hidden = _a.hidden, disableReturnKey = _a.disableReturnKey, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, onBlur = _a.onBlur, onKeyDown = _a.onKeyDown, 
     //----------------------------------------------------------------------------------------------------------------
@@ -2228,7 +2228,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     var fullWidth = React.useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
     // State -----------------------------------------------------------------------------------------------------------
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
-    var _e = useAutoUpdateState$1(initHelperText), helperText = _e[0], setHelperText = _e[1];
+    var _e = React.useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
     var _f = React.useState(false), showClear = _f[0], setShowClear = _f[1];
     var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
     var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
@@ -2304,39 +2304,39 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
             (_b = inputRef.current) === null || _b === void 0 ? void 0 : _b.focus();
         }
     }, [initInputRef, inputRef]);
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-    var setErrorHelperText = React.useCallback(function (error, helperText) {
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
-        setHelperText(helperText);
-    }, [setError, setHelperText]);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
     // Function - validate ---------------------------------------------------------------------------------------------
     var validate = React.useCallback(function (value) {
         if (required && empty(value)) {
-            setErrorHelperText(true, '필수 입력 항목입니다.');
+            setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
         if (notEmpty(value) && validPattern) {
             if (!new RegExp(validPattern).test(value)) {
-                setErrorHelperText(true, '형식이 일치하지 않습니다.');
+                setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
                 return false;
             }
         }
         if (notEmpty(value) && invalidPattern) {
             if (new RegExp(invalidPattern).test(value)) {
-                setErrorHelperText(true, '형식이 일치하지 않습니다.');
+                setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
                 return false;
             }
         }
         if (onValidate) {
             var validateResult = onValidate(value);
             if (validateResult != null && validateResult !== true) {
-                setErrorHelperText(true, validateResult);
+                setErrorErrorHelperText(true, validateResult);
                 return false;
             }
         }
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
         return true;
-    }, [required, validPattern, invalidPattern, onValidate, setErrorHelperText, initHelperText]);
+    }, [required, validPattern, invalidPattern, onValidate, setErrorErrorHelperText]);
     // Memo - muiInputProps --------------------------------------------------------------------------------------------
     var muiInputProps = React.useMemo(function () {
         var muiInputProps = __assign$7({}, initMuiInputProps);
@@ -2426,7 +2426,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
                 focusValidate: focus,
                 validate: function () { return validate(lastValue_1); },
                 setError: function (error, errorText) {
-                    return setErrorHelperText(error, error ? errorText : initHelperText);
+                    return setErrorErrorHelperText(error, error ? errorText : undefined);
                 },
             };
             if (ref) {
@@ -2469,8 +2469,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
         id,
         setValue,
         setDisabled,
-        setErrorHelperText,
-        initHelperText,
+        setErrorErrorHelperText,
         setData,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
@@ -2505,7 +2504,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
             onKeyDown(e);
     }, [select, multiline, disableReturnKey, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, value]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React.createElement(material.TextField, __assign$7({}, props, { variant: variant, size: size, color: color, focused: focused || undefined, name: name, label: label, placeholder: placeholder, className: classNames$1(className, 'FormValueItem', 'FormTextField', "variant-".concat(variant)), inputRef: initInputRef ? initInputRef : inputRef, value: value, required: required, fullWidth: !width && fullWidth, error: error, helperText: formColWithHelperText ? undefined : helperText, FormHelperTextProps: { component: 'div' }, disabled: disabled, InputProps: muiInputProps, InputLabelProps: muiInputLabelProps, inputProps: ((_b = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _b === void 0 ? void 0 : _b.includes('FormTag-Input')) ? initInputProps : inputProps, style: style, select: select, SelectProps: SelectProps, multiline: multiline, onChange: handleChange, onBlur: handleBlur, onKeyDown: handleKeyDown })));
+    return (React.createElement(material.TextField, __assign$7({}, props, { variant: variant, size: size, color: color, focused: focused || undefined, name: name, label: label, placeholder: placeholder, className: classNames$1(className, 'FormValueItem', 'FormTextField', "variant-".concat(variant)), inputRef: initInputRef ? initInputRef : inputRef, value: value, required: required, fullWidth: !width && fullWidth, error: error, helperText: formColWithHelperText ? undefined : error ? errorHelperText : helperText, FormHelperTextProps: { component: 'div' }, disabled: disabled, InputProps: muiInputProps, InputLabelProps: muiInputLabelProps, inputProps: ((_b = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _b === void 0 ? void 0 : _b.includes('FormTag-Input')) ? initInputProps : inputProps, style: style, select: select, SelectProps: SelectProps, multiline: multiline, onChange: handleChange, onBlur: handleBlur, onKeyDown: handleKeyDown })));
 });
 FormTextField.displayName = 'FormText';
 FormTextField.defaultProps = FormTextFieldDefaultProps;var FormHiddenDefaultProps = __assign$7({}, FormTextFieldDefaultProps);var css_248z$k = ".FormHidden {\n  display: none !important;\n}";
@@ -2522,7 +2521,7 @@ FormText.displayName = 'FormText';
 FormText.defaultProps = FormTextDefaultProps;var css_248z$j = ".FormTag.FormTextField {\n  min-width: 200px;\n}";
 styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
-    var className = _a.className, name = _a.name, initValue = _a.value, exceptValue = _a.exceptValue, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, disabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, initHelperText = _a.helperText, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest$4(_a, ["className", "name", "value", "exceptValue", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
+    var className = _a.className, name = _a.name, initValue = _a.value, exceptValue = _a.exceptValue, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, disabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest$4(_a, ["className", "name", "value", "exceptValue", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
     var _b = useFormState(), formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit, otherFormState = __rest$4(_b, ["fullWidth", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
     // State - FormState -----------------------------------------------------------------------------------------------
     var fullWidth = useAutoUpdateState$1(initFullWidth == null ? formFullWidth : initFullWidth)[0];
@@ -2554,7 +2553,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
     //------------------------------------------------------------------------------------------------------------------
     var _e = React.useState(''), inputValue = _e[0], setInputValue = _e[1];
     var _f = useAutoUpdateState$1(initError), error = _f[0], setError = _f[1];
-    var _g = useAutoUpdateState$1(initHelperText), helperText = _g[0], setHelperText = _g[1];
+    var _g = React.useState(), errorHelperText = _g[0], setErrorHelperText = _g[1];
     // Effect ----------------------------------------------------------------------------------------------------------
     React.useEffect(function () {
         if (!isSame$2(value, initValue)) {
@@ -2564,27 +2563,27 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-    var setErrorHelperText = React.useCallback(function (error, helperText) {
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
-        setHelperText(helperText);
-    }, [setError, setHelperText]);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
     // Function - validate ---------------------------------------------------------------------------------------------
     var validate = React.useCallback(function (value) {
         if (required && empty(value)) {
-            setErrorHelperText(true, '필수 입력 항목입니다.');
+            setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
         if (onValidate) {
             var onValidateResult = onValidate(value);
             if (onValidateResult != null && onValidateResult !== true) {
-                setErrorHelperText(true, onValidateResult);
+                setErrorErrorHelperText(true, onValidateResult);
                 return false;
             }
         }
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
         return true;
-    }, [required, onValidate, setErrorHelperText, initHelperText]);
+    }, [required, onValidate, setErrorErrorHelperText]);
     // Function - getExtraCommands -------------------------------------------------------------------------------------
     var getExtraCommands = React.useCallback(function () {
         return {
@@ -2704,7 +2703,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
                 if (readOnly) {
                     renderProps.inputProps.className = classNames$1(renderProps.inputProps.className, 'Mui-disabled');
                 }
-                return (React.createElement(FormText, __assign$7({}, renderProps, { ref: handleRef, name: name, className: classNames$1(className, 'FormValueItem', 'FormTag'), error: error, disabled: disabled, fullWidth: fullWidth, required: required, value: inputValue, exceptValue: exceptValue, helperText: helperText, onKeyDown: handleInputKeyDown, onChange: handleInputChange, onBlur: handleBlur })));
+                return (React.createElement(FormText, __assign$7({}, renderProps, { ref: handleRef, name: name, className: classNames$1(className, 'FormValueItem', 'FormTag'), error: error, disabled: disabled, fullWidth: fullWidth, required: required, value: inputValue, exceptValue: exceptValue, helperText: error ? errorHelperText : helperText, onKeyDown: handleInputKeyDown, onChange: handleInputChange, onBlur: handleBlur })));
             } })));
 });
 FormTag.displayName = 'FormTag';
@@ -4359,32 +4358,37 @@ function autoDash$1(companyNo) {
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     var handleValidate = React.useCallback(function (value) {
-        if (notEmpty(value) && value.length === 14 && value.includes('-')) {
-            var jumin = value
-                .replace(/-/g, '')
-                .split('')
-                .map(function (v) { return Number(v); });
-            var ckarr = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5];
-            for (var i = 0; i < jumin.length - 1; i += 1) {
-                jumin[i] = jumin[i] * ckarr[i];
+        if (notEmpty(value)) {
+            if (value.length === 14 && value.includes('-')) {
+                var jumin = value
+                    .replace(/-/g, '')
+                    .split('')
+                    .map(function (v) { return Number(v); });
+                var ckarr = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5];
+                for (var i = 0; i < jumin.length - 1; i += 1) {
+                    jumin[i] = jumin[i] * ckarr[i];
+                }
+                var juminlast = jumin[jumin.length - 1];
+                var sum = 0;
+                for (var i = 0; i < jumin.length - 1; i += 1) {
+                    sum += jumin[i];
+                }
+                sum = sum % 11;
+                sum = 11 - sum;
+                if (sum > 9) {
+                    sum = sum % 10;
+                }
+                if (sum != juminlast && juminlast != undefined) {
+                    return '유효하지 않은 값입니다.';
+                }
+                return onValidate ? onValidate(value) : true;
             }
-            var juminlast = jumin[jumin.length - 1];
-            var sum = 0;
-            for (var i = 0; i < jumin.length - 1; i += 1) {
-                sum += jumin[i];
-            }
-            sum = sum % 11;
-            sum = 11 - sum;
-            if (sum > 9) {
-                sum = sum % 10;
-            }
-            if (sum != juminlast && juminlast != undefined) {
+            else {
                 return '유효하지 않은 값입니다.';
             }
-            return onValidate ? onValidate(value) : true;
         }
         else {
-            return '유효하지 않은 값입니다.';
+            return onValidate ? onValidate(value) : true;
         }
     }, [onValidate]);
     // Render ----------------------------------------------------------------------------------------------------------
@@ -4527,7 +4531,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initChecked = _a.checked, initInputRef = _a.inputRef, initAction = _a.action, readOnly = _a.readOnly, initDisabled = _a.disabled, text = _a.text, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initData = _a.data, initUncheckedValue = _a.uncheckedValue, exceptValue = _a.exceptValue, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initChecked = _a.checked, initInputRef = _a.inputRef, initAction = _a.action, readOnly = _a.readOnly, initDisabled = _a.disabled, text = _a.text, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, initUncheckedValue = _a.uncheckedValue, exceptValue = _a.exceptValue, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, props = __rest$4(_a, ["variant", "size", "color", "focused", "fullWidth", "name", "labelIcon", "label", "checked", "inputRef", "action", "readOnly", "disabled", "text", "error", "helperText", "value", "data", "uncheckedValue", "exceptValue", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = React.useId();
@@ -4555,7 +4559,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
     var _d = useAutoUpdateState$1(initValue), value = _d[0], setValue = _d[1];
     var _e = useAutoUpdateState$1(initUncheckedValue), uncheckedValue = _e[0], setUncheckedValue = _e[1];
     var _f = useAutoUpdateState$1(initError), error = _f[0], setError = _f[1];
-    var _g = useAutoUpdateState$1(initHelperText), helperText = _g[0], setHelperText = _g[1];
+    var _g = React.useState(), errorHelperText = _g[0], setErrorHelperText = _g[1];
     var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
     var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
     // State - checked -------------------------------------------------------------------------------------------------
@@ -4585,23 +4589,23 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
             (_d = actionRef.current) === null || _d === void 0 ? void 0 : _d.focusVisible();
         }
     }, [initInputRef, inputRef, initAction, actionRef]);
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-    var setErrorHelperText = React.useCallback(function (error, helperText) {
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
-        setHelperText(helperText);
-    }, [setError, setHelperText]);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
     // Function - validate ---------------------------------------------------------------------------------------------
     var validate = React.useCallback(function (checked) {
         if (onValidate) {
             var onValidateResult = onValidate(checked);
             if (onValidateResult != null && onValidateResult !== true) {
-                setErrorHelperText(true, onValidateResult);
+                setErrorErrorHelperText(true, onValidateResult);
                 return false;
             }
         }
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
         return true;
-    }, [onValidate, setErrorHelperText, initHelperText]);
+    }, [onValidate, setErrorErrorHelperText]);
     // Commands --------------------------------------------------------------------------------------------------------
     React.useLayoutEffect(function () {
         var lastChecked = checked;
@@ -4646,8 +4650,8 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
             focus: focus,
             focusValidate: focus,
             validate: function () { return validate(checked); },
-            setError: function (error, helperText) {
-                return setErrorHelperText(error, error ? helperText : initHelperText);
+            setError: function (error, errorHelperText) {
+                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
             },
         };
         onAddValueItem(id, commands);
@@ -4683,13 +4687,12 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
         exceptValue,
         disabled,
         validate,
-        initHelperText,
         id,
         setChecked,
         setValue,
         setUncheckedValue,
         setDisabled,
-        setErrorHelperText,
+        setErrorErrorHelperText,
         data,
         setData,
     ]);
@@ -4707,7 +4710,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
         }
     }, [readOnly, setChecked, onValueChangeByUser, name, onRequestSearchSubmit]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormCheckbox'), labelIcon: labelIcon, label: label, error: error, fullWidth: fullWidth, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React.createElement(material.FormControlLabel, { ref: labelRef, control: React.createElement(material.Checkbox, __assign$7({ name: name, color: color, size: size, inputRef: initInputRef ? initInputRef : inputRef, action: initAction ? initAction : actionRef, checked: checked, checkedIcon: React.createElement(iconsMaterial.CheckBox, { color: error ? 'error' : undefined }), icon: React.createElement(iconsMaterial.CheckBoxOutlineBlank, { color: error ? 'error' : undefined }), onChange: handleChange, disabled: disabled || readOnly }, props)), label: React.createElement(material.Typography, { color: error ? 'error' : readOnly || disabled ? theme.palette.text.disabled : undefined, whiteSpace: 'nowrap' }, text) }) }));
+    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormCheckbox'), labelIcon: labelIcon, label: label, error: error, fullWidth: fullWidth, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React.createElement(material.FormControlLabel, { ref: labelRef, control: React.createElement(material.Checkbox, __assign$7({ name: name, color: color, size: size, inputRef: initInputRef ? initInputRef : inputRef, action: initAction ? initAction : actionRef, checked: checked, checkedIcon: React.createElement(iconsMaterial.CheckBox, { color: error ? 'error' : undefined }), icon: React.createElement(iconsMaterial.CheckBoxOutlineBlank, { color: error ? 'error' : undefined }), onChange: handleChange, disabled: disabled || readOnly }, props)), label: React.createElement(material.Typography, { color: error ? 'error' : readOnly || disabled ? theme.palette.text.disabled : undefined, whiteSpace: 'nowrap' }, text) }) }));
 });
 FormCheckbox.displayName = 'FormCheckbox';
 FormCheckbox.defaultProps = FormCheckboxDefaultProps;var FormRadioGroupDefaultProps = {
@@ -4717,7 +4720,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
     // type ------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, hidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, initWidth = _a.width, labelIcon = _a.labelIcon, label = _a.label, inline = _a.inline, initLoading = _a.loading, nowrap = _a.nowrap, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, onLoadItems = _a.onLoadItems, onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
+    name = _a.name, initWidth = _a.width, labelIcon = _a.labelIcon, label = _a.label, inline = _a.inline, initLoading = _a.loading, nowrap = _a.nowrap, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, helperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, onLoadItems = _a.onLoadItems, onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, 
     //----------------------------------------------------------------------------------------------------------------
@@ -4741,7 +4744,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
     // State -----------------------------------------------------------------------------------------------------------
     var _d = useAutoUpdateState$1(initItems), items = _d[0], setItems = _d[1];
     var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
-    var _f = useAutoUpdateState$1(initHelperText), helperText = _f[0], setHelperText = _f[1];
+    var _f = React.useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
     var _h = React.useState(false), isOnGetItemLoading = _h[0], setIsOnGetItemLoading = _h[1];
     var _j = useAutoUpdateState$1(initLoading), loading = _j[0], setLoading = _j[1];
@@ -4846,27 +4849,27 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         var _a;
         (_a = firstInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, []);
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-    var setErrorHelperText = React.useCallback(function (error, helperText) {
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
-        setHelperText(helperText);
-    }, [setError, setHelperText]);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
     // Function - validate ---------------------------------------------------------------------------------------------
     var validate = React.useCallback(function (value) {
         if (required && empty(value)) {
-            setErrorHelperText(true, '필수 선택 항목입니다.');
+            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
             return false;
         }
         if (onValidate) {
             var onValidateResult = onValidate(value);
             if (onValidateResult != null && onValidateResult !== true) {
-                setErrorHelperText(true, onValidateResult);
+                setErrorErrorHelperText(true, onValidateResult);
                 return false;
             }
         }
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
         return true;
-    }, [required, onValidate, setErrorHelperText, initHelperText]);
+    }, [required, onValidate, setErrorErrorHelperText]);
     // Commands --------------------------------------------------------------------------------------------------------
     React.useLayoutEffect(function () {
         var lastValue = value;
@@ -4901,8 +4904,8 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
             focus: focus,
             focusValidate: focus,
             validate: function () { return validate(value); },
-            setError: function (error, helperText) {
-                return setErrorHelperText(error, error ? helperText : initHelperText);
+            setError: function (error, errorHelperText) {
+                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
             },
             getItems: function () { return lastItems; },
             setItems: function (items) {
@@ -4952,8 +4955,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         id,
         setValue,
         setDisabled,
-        setErrorHelperText,
-        initHelperText,
+        setErrorErrorHelperText,
         setItems,
         setLoading,
         data,
@@ -4996,7 +4998,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         }
     }, [readOnly, items, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React.createElement(FormItemBase, { focused: focused, ref: baseRef, className: classNames$1(className, 'FormValueItem', 'FormRadioGroup'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, fullWidth: fullWidth, required: required, error: error, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React.createElement(React.Fragment, null,
+    return (React.createElement(FormItemBase, { focused: focused, ref: baseRef, className: classNames$1(className, 'FormValueItem', 'FormRadioGroup'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, fullWidth: fullWidth, required: required, error: error, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React.createElement(React.Fragment, null,
             !fullWidth && !isOnGetItemLoading && !loading && items && (React.createElement("div", { ref: resizeWidthDetectorRef, style: {
                     display: 'grid',
                     position: 'absolute',
@@ -5032,7 +5034,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
     // type ------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, type = _a.type, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, notAllowEmptyValue = _a.notAllowEmptyValue, exceptValue = _a.exceptValue, initWidth = _a.width, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, hidden = _a.hidden, itemWidth = _a.itemWidth, onLoadItems = _a.onLoadItems, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, type = _a.type, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, helperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, notAllowEmptyValue = _a.notAllowEmptyValue, exceptValue = _a.exceptValue, initWidth = _a.width, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, hidden = _a.hidden, itemWidth = _a.itemWidth, onLoadItems = _a.onLoadItems, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -5087,7 +5089,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
     var _f = React.useState(false), isOnGetItemLoading = _f[0], setIsOnGetItemLoading = _f[1];
     var _g = useAutoUpdateState$1(initItems), items = _g[0], setItems = _g[1];
     var _h = useAutoUpdateState$1(initError), error = _h[0], setError = _h[1];
-    var _j = useAutoUpdateState$1(initHelperText), helperText = _j[0], setHelperText = _j[1];
+    var _j = React.useState(), errorHelperText = _j[0], setErrorHelperText = _j[1];
     var _k = useAutoUpdateState$1(initLoading), loading = _k[0], setLoading = _k[1];
     var _l = useAutoUpdateState$1(initDisabled), disabled = _l[0], setDisabled = _l[1];
     var _m = useAutoUpdateState$1(initData), data = _m[0], setData = _m[1];
@@ -5226,27 +5228,27 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         var _a;
         (_a = refForButtonResizeHeightDetect.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [refForButtonResizeHeightDetect]);
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-    var setErrorHelperText = React.useCallback(function (error, helperText) {
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
-        setHelperText(helperText);
-    }, [setError, setHelperText]);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
     // Function - validate ---------------------------------------------------------------------------------------------
     var validate = React.useCallback(function (value) {
         if (required && empty(value)) {
-            setErrorHelperText(true, '필수 선택 항목입니다.');
+            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
             return false;
         }
         if (onValidate) {
             var onValidateResult = onValidate(value);
             if (onValidateResult != null && onValidateResult !== true) {
-                setErrorHelperText(true, onValidateResult);
+                setErrorErrorHelperText(true, onValidateResult);
                 return false;
             }
         }
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
         return true;
-    }, [required, onValidate, setErrorHelperText, initHelperText]);
+    }, [required, onValidate, setErrorErrorHelperText]);
     // Commands --------------------------------------------------------------------------------------------------------
     React.useLayoutEffect(function () {
         if (ref || onAddValueItem) {
@@ -5283,7 +5285,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                 focusValidate: focus,
                 validate: function () { return validate(value); },
                 setError: function (error, errorText) {
-                    return setErrorHelperText(error, error ? errorText : initHelperText);
+                    return setErrorErrorHelperText(error, error ? errorText : undefined);
                 },
                 getFormValueSeparator: function () { return formValueSeparator; },
                 isFormValueSort: function () { return !!formValueSort; },
@@ -5342,8 +5344,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         id,
         setValue,
         setDisabled,
-        setErrorHelperText,
-        initHelperText,
+        setErrorErrorHelperText,
         setItems,
         setLoading,
         data,
@@ -5434,7 +5435,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         theme.palette.error.main,
         type,
     ]);
-    return (React.createElement(FormItemBase, __assign$7({}, formControlBaseProps, { className: classNames$1(className, 'FormValueItem', 'FormToggleButtonGroup', "variant-".concat(variant), "size-".concat(size), !!label && 'with-label', !!fullWidth && 'full-width', "type-".concat(type)), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, required: required, fullWidth: fullWidth, error: error, helperText: helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || 0, controlVerticalCenter: isOnGetItemLoading || loading, control: isOnGetItemLoading || loading ? (React.createElement("div", { style: { opacity: 0.54 }, ref: refForLoadingResizeHeightDetect },
+    return (React.createElement(FormItemBase, __assign$7({}, formControlBaseProps, { className: classNames$1(className, 'FormValueItem', 'FormToggleButtonGroup', "variant-".concat(variant), "size-".concat(size), !!label && 'with-label', !!fullWidth && 'full-width', "type-".concat(type)), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, required: required, fullWidth: fullWidth, error: error, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || 0, controlVerticalCenter: isOnGetItemLoading || loading, control: isOnGetItemLoading || loading ? (React.createElement("div", { style: { opacity: 0.54 }, ref: refForLoadingResizeHeightDetect },
             React.createElement(material.CircularProgress, { size: 16, color: 'inherit' }))) : (React.createElement(React.Fragment, null,
             !fullWidth && !isOnGetItemLoading && !loading && items && (React.createElement("div", { ref: refForResizeWidthDetect, style: {
                     display: 'grid',
@@ -5460,7 +5461,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     //----------------------------------------------------------------------------------------------------------------
     precision = _a.precision, highlightSelectedOnly = _a.highlightSelectedOnly, icon = _a.icon, emptyIcon = _a.emptyIcon, max = _a.max, hidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, onValue = _a.onValue, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, onValue = _a.onValue, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = React.useId();
@@ -5477,7 +5478,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     var inputRef = React.useRef();
     // State -----------------------------------------------------------------------------------------------------------
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
-    var _e = useAutoUpdateState$1(initHelperText), helperText = _e[0], setHelperText = _e[1];
+    var _e = React.useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
     var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
     var _g = useAutoUpdateState$1(initData), data = _g[0], setData = _g[1];
     // State - width, height -------------------------------------------------------------------------------------------
@@ -5522,25 +5523,25 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
             (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
         });
     }, []);
-    var setErrorHelperText = React.useCallback(function (error, helperText) {
+    var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
-        setHelperText(helperText);
-    }, [setError, setHelperText]);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
     var validate = React.useCallback(function (value) {
         if (required && (empty(value) || value === 0)) {
-            setErrorHelperText(true, '필수 선택 항목입니다.');
+            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
             return false;
         }
         if (onValidate) {
             var onValidateResult = onValidate(value);
             if (onValidateResult != null && onValidateResult !== true) {
-                setErrorHelperText(true, onValidateResult);
+                setErrorErrorHelperText(true, onValidateResult);
                 return false;
             }
         }
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
         return true;
-    }, [required, onValidate, setErrorHelperText, initHelperText]);
+    }, [required, onValidate, setErrorErrorHelperText]);
     // Commands --------------------------------------------------------------------------------------------------------
     React.useLayoutEffect(function () {
         var lastValue = value;
@@ -5573,8 +5574,8 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
             focus: focus,
             focusValidate: focus,
             validate: function () { return validate(value); },
-            setError: function (error, helperText) {
-                return setErrorHelperText(error, error ? helperText : initHelperText);
+            setError: function (error, errorHelperText) {
+                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
             },
         };
         onAddValueItem(id, commands);
@@ -5606,14 +5607,13 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         disabled,
         focus,
         validate,
-        initHelperText,
         ref,
         onAddValueItem,
         onRemoveValueItem,
         id,
         setValue,
         setDisabled,
-        setErrorHelperText,
+        setErrorErrorHelperText,
         data,
         setData,
     ]);
@@ -5632,7 +5632,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         }
     }, [readOnly, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormRating'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, required: required, helperText: helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 21 : 26), controlVerticalCenter: true, control: React.createElement(material.Rating, { ref: ratingRef, size: size === 'medium' ? 'large' : 'medium', name: name, precision: precision, highlightSelectedOnly: highlightSelectedOnly, value: value, disabled: disabled || readOnly, max: max, icon: React.createElement(FormIcon, { color: color, fontSize: 'inherit' }, icon ? icon : 'Star'), emptyIcon: React.createElement(FormIcon, { fontSize: 'inherit' }, emptyIcon ? emptyIcon : 'StarBorder'), onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } }) }));
+    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormRating'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, required: required, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 21 : 26), controlVerticalCenter: true, control: React.createElement(material.Rating, { ref: ratingRef, size: size === 'medium' ? 'large' : 'medium', name: name, precision: precision, highlightSelectedOnly: highlightSelectedOnly, value: value, disabled: disabled || readOnly, max: max, icon: React.createElement(FormIcon, { color: color, fontSize: 'inherit' }, icon ? icon : 'Star'), emptyIcon: React.createElement(FormIcon, { fontSize: 'inherit' }, emptyIcon ? emptyIcon : 'StarBorder'), onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } }) }));
 });
 FormRating.displayName = 'FormRating';
 FormRating.defaultProps = FormRatingDefaultProps;var propTypes = {exports: {}};var reactIs = {exports: {}};var reactIs_production_min = {};/** @license React v16.13.1
@@ -7478,7 +7478,7 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
     //----------------------------------------------------------------------------------------------------------------
     menubar = _a.menubar, height = _a.height, hidden = _a.hidden, onImageUpload = _a.onImageUpload, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = React.useId();
@@ -7504,7 +7504,7 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
     }, [value]);
     // State -----------------------------------------------------------------------------------------------------------
     var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
-    var _f = useAutoUpdateState$1(initHelperText), helperText = _f[0], setHelperText = _f[1];
+    var _f = React.useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = React.useState(false), initialized = _g[0], setInitialized = _g[1];
     var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
     var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
@@ -7518,11 +7518,11 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
             textarea.style.display = 'none';
         }
     }, [editorRef]);
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-    var setErrorHelperText = React.useCallback(function (error, helperText) {
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
-        setHelperText(helperText);
-    }, [setError, setHelperText]);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
     // Function - validate ---------------------------------------------------------------------------------------------
     var validate = React.useCallback(function (value) {
         var isEmptyValue = false;
@@ -7533,19 +7533,19 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
             isEmptyValue = empty(text.trim());
         }
         if (required && (isEmptyValue || empty(value))) {
-            setErrorHelperText(true, '필수 입력 항목입니다.');
+            setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
         if (onValidate) {
             var onValidateResult = onValidate(value);
             if (onValidateResult != null && onValidateResult !== true) {
-                setErrorHelperText(true, onValidateResult);
+                setErrorErrorHelperText(true, onValidateResult);
                 return false;
             }
         }
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
         return true;
-    }, [required, onValidate, setErrorHelperText, initHelperText]);
+    }, [required, onValidate, setErrorErrorHelperText]);
     // Commands --------------------------------------------------------------------------------------------------------
     React.useLayoutEffect(function () {
         var lastValue = value;
@@ -7578,8 +7578,8 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
             focus: focus,
             focusValidate: focus,
             validate: function () { return validate(value); },
-            setError: function (error, helperText) {
-                return setErrorHelperText(error, error ? helperText : initHelperText);
+            setError: function (error, errorText) {
+                return setErrorErrorHelperText(error, error ? errorText : undefined);
             },
         };
         onAddValueItem(id, commands);
@@ -7609,17 +7609,16 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
         exceptValue,
         disabled,
         focus,
-        validate,
-        initHelperText,
         ref,
         onAddValueItem,
         onRemoveValueItem,
         id,
         setValue,
         setDisabled,
-        setErrorHelperText,
+        setErrorErrorHelperText,
         data,
         setData,
+        validate,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleEditorChange = React.useCallback(function (value) {
@@ -7647,7 +7646,7 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
         });
     }, [onImageUpload]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormTextEditor', !initialized && 'initializing'), labelIcon: labelIcon, label: label, error: error, required: required, fullWidth: true, helperText: helperText, helperTextProps: { style: { marginLeft: 5 } }, style: { width: '100%' }, hidden: hidden, controlHeight: height, control: React.createElement(React.Fragment, null,
+    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormTextEditor', !initialized && 'initializing'), labelIcon: labelIcon, label: label, error: error, required: required, fullWidth: true, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: { width: '100%' }, hidden: hidden, controlHeight: height, control: React.createElement(React.Fragment, null,
             !initialized ? React.createElement(material.Skeleton, { variant: 'rectangular', width: '100%', height: height }) : null,
             React.createElement(Editor, { ref: editorRef, value: value, disabled: readOnly || disabled, init: {
                     height: height,
@@ -7680,7 +7679,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     // type ------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, initHelperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, width = _a.width, placeholder = _a.placeholder, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, disablePortal = _a.disablePortal, noOptionsText = _a.noOptionsText, loadingText = _a.loadingText, limitTags = _a.limitTags, openOnFocus = _a.openOnFocus, disableClearable = _a.disableClearable, async = _a.async, hidden = _a.hidden, onLoadItems = _a.onLoadItems, onAsyncLoadValueItem = _a.onAsyncLoadValueItem, onRenderItem = _a.onRenderItem, onRenderTag = _a.onRenderTag, onAddItem = _a.onAddItem, getOptionDisabled = _a.getOptionDisabled, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, helperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, width = _a.width, placeholder = _a.placeholder, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, disablePortal = _a.disablePortal, noOptionsText = _a.noOptionsText, loadingText = _a.loadingText, limitTags = _a.limitTags, openOnFocus = _a.openOnFocus, disableClearable = _a.disableClearable, async = _a.async, hidden = _a.hidden, onLoadItems = _a.onLoadItems, onAsyncLoadValueItem = _a.onAsyncLoadValueItem, onRenderItem = _a.onRenderItem, onRenderTag = _a.onRenderTag, onAddItem = _a.onAddItem, getOptionDisabled = _a.getOptionDisabled, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -7704,7 +7703,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     var _c = React.useState(false), isOnGetItemLoading = _c[0], setIsOnGetItemLoading = _c[1];
     var _d = useAutoUpdateState$1(initItems), items = _d[0], setItems = _d[1];
     var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
-    var _f = useAutoUpdateState$1(initHelperText), helperText = _f[0], setHelperText = _f[1];
+    var _f = React.useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useAutoUpdateState$1(initLoading), loading = _g[0], setLoading = _g[1];
     var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
     var _j = React.useState(undefined), inputValue = _j[0], setInputValue = _j[1];
@@ -7946,27 +7945,27 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         var _a;
         (_a = textFieldRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [textFieldRef]);
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-    var setErrorHelperText = React.useCallback(function (error, helperText) {
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
-        setHelperText(helperText);
-    }, [setError, setHelperText]);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
     // Function - validate ---------------------------------------------------------------------------------------------
     var validate = React.useCallback(function (value) {
         if (required && empty(value)) {
-            setErrorHelperText(true, '필수 선택 항목입니다.');
+            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
             return false;
         }
         if (onValidate) {
             var onValidateResult = onValidate(value);
             if (onValidateResult != null && onValidateResult !== true) {
-                setErrorHelperText(true, onValidateResult);
+                setErrorErrorHelperText(true, onValidateResult);
                 return false;
             }
         }
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
         return true;
-    }, [required, onValidate, setErrorHelperText, initHelperText]);
+    }, [required, onValidate, setErrorErrorHelperText]);
     // Commands --------------------------------------------------------------------------------------------------------
     React.useLayoutEffect(function () {
         if (ref || onAddValueItem) {
@@ -8003,7 +8002,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                 focusValidate: focus,
                 validate: function () { return validate(value); },
                 setError: function (error, errorText) {
-                    return setErrorHelperText(error, error ? errorText : initHelperText);
+                    return setErrorErrorHelperText(error, error ? errorText : undefined);
                 },
                 getFormValueSeparator: function () { return formValueSeparator; },
                 isFormValueSort: function () { return !!formValueSort; },
@@ -8062,8 +8061,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         id,
         setValue,
         setDisabled,
-        setErrorHelperText,
-        initHelperText,
+        setErrorErrorHelperText,
         setItems,
         setLoading,
         data,
@@ -8132,7 +8130,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
             }
         }, renderTags: function (value, getTagProps) {
             return value.map(function (option, index) { return (React.createElement(material.Chip, __assign$7({ size: 'small', label: onRenderTag ? onRenderTag(option) : option.label }, getTagProps({ index: index })))); });
-        }, renderInput: function (params) { return (React.createElement(FormTextField, __assign$7({}, params, { ref: textFieldRef, name: name, variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, labelShrink: labelShrink, required: required, focused: focused, error: error, readOnly: readOnly, helperText: helperText, placeholder: placeholder, noFormValueItem: true, InputProps: __assign$7(__assign$7({}, params.InputProps), { endAdornment: (React.createElement(React.Fragment, null,
+        }, renderInput: function (params) { return (React.createElement(FormTextField, __assign$7({}, params, { ref: textFieldRef, name: name, variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, labelShrink: labelShrink, required: required, focused: focused, error: error, readOnly: readOnly, helperText: error ? errorHelperText : helperText, placeholder: placeholder, noFormValueItem: true, InputProps: __assign$7(__assign$7({}, params.InputProps), { endAdornment: (React.createElement(React.Fragment, null,
                     loading || isOnGetItemLoading ? React.createElement(CircularProgress, { color: 'inherit', size: 20 }) : null,
                     params.InputProps.endAdornment)) }), inputProps: readOnly || disabled ? __assign$7(__assign$7({}, params.inputProps), { tabIndex: -1 }) : params.inputProps }))); } }));
 }));
@@ -10370,7 +10368,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, initHelperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, helperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     //--------------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$4(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = React.useId();
@@ -10395,7 +10393,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
     // State -----------------------------------------------------------------------------------------------------------
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = React.useState(null), timeError = _e[0], setTimeError = _e[1];
-    var _f = useAutoUpdateState$1(initHelperText), helperText = _f[0], setHelperText = _f[1];
+    var _f = React.useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
     var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -10510,39 +10508,39 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
         var _a;
         (_a = textFieldInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [textFieldInputRef]);
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-    var setErrorHelperText = React.useCallback(function (error, helperText) {
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    var setErrorErrorHelperText = React.useCallback(function (error, helperText) {
         setError(error);
-        setHelperText(helperText);
-    }, [setError, setHelperText]);
+        setErrorHelperText(helperText);
+    }, [setError]);
     // Function - validate ---------------------------------------------------------------------------------------------
     var validate = React.useCallback(function (value) {
         if (required && empty(value)) {
-            setErrorHelperText(true, '필수 입력 항목입니다.');
+            setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
         if (value && !value.isValid()) {
-            setErrorHelperText(true, '형식이 일치하지 않습니다.');
+            setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
             return false;
         }
         if (datePickerErrorRef.current) {
-            setErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
+            setErrorErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
             return false;
         }
         if (timeError) {
-            setErrorHelperText(true, getDateValidationErrorText(timeError));
+            setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
             return false;
         }
         if (onValidate) {
             var onValidateResult = onValidate(value);
             if (onValidateResult != null && onValidateResult !== true) {
-                setErrorHelperText(true, onValidateResult);
+                setErrorErrorHelperText(true, onValidateResult);
                 return false;
             }
         }
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
         return true;
-    }, [required, timeError, onValidate, setErrorHelperText, initHelperText]);
+    }, [required, timeError, onValidate, setErrorErrorHelperText]);
     // Commands --------------------------------------------------------------------------------------------------------
     React.useLayoutEffect(function () {
         if (ref || onAddValueItem) {
@@ -10577,7 +10575,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
                 focusValidate: focus,
                 validate: function () { return validate(value); },
                 setError: function (error, errorText) {
-                    return setErrorHelperText(error, error ? errorText : initHelperText);
+                    return setErrorErrorHelperText(error, error ? errorText : undefined);
                 },
                 getFormValueFormat: function () { return formValueFormat; },
             };
@@ -10620,8 +10618,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
         id,
         setValue,
         setDisabled,
-        setErrorHelperText,
-        initHelperText,
+        setErrorErrorHelperText,
         data,
         setData,
     ]);
@@ -10776,14 +10773,14 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
                             {
                                 name: 'offset',
                                 options: {
-                                    offset: [0, error && helperText ? 8 : -14],
+                                    offset: [0, error && errorHelperText ? 8 : -14],
                                 },
                             },
                         ],
                     }, title: React.createElement(PrivateStaticDatePicker, __assign$7({}, otherProps, { ref: privateStaticDatePickerRef, type: type, time: time, value: value, availableDate: availableDate, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, hours: hours, minutes: minutes, seconds: seconds, minuteInterval: minuteInterval, secondInterval: secondInterval, onChange: handleChange, onAccept: function () { return !time && setOpen(false); }, onClose: function () { return setOpen(false); } })) },
                     React.createElement("div", { style: { display: fullWidth ? 'block' : 'inline-block' } },
                         React.createElement(xDatePickers.DesktopDatePicker, __assign$7({ value: inputValue, label: label, open: false, format: format, disabled: disabled, readOnly: readOnly, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, onClose: function () { return setOpen(false); }, onError: function (reason) { return (datePickerErrorRef.current = reason); }, onChange: function (newValue) { return handleChange('date', newValue); }, slotProps: slotProps }, otherProps)))),
-                !formColWithHelperText && helperText && (React.createElement(material.FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, helperText))))));
+                !formColWithHelperText && (helperText || (error && errorHelperText)) && (React.createElement(material.FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error ? errorHelperText : helperText))))));
 });
 PrivateDatePicker.displayName = 'PrivateDatePicker';
 PrivateDatePicker.defaultProps = PrivateDatePickerDefaultProps;var PrivateDateTimePickerDefaultProps = {
@@ -11074,7 +11071,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, initHelperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, helperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     //--------------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$4(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = React.useId();
@@ -11099,7 +11096,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
     // State -----------------------------------------------------------------------------------------------------------
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = React.useState(null), timeError = _e[0], setTimeError = _e[1];
-    var _f = useAutoUpdateState$1(initHelperText), helperText = _f[0], setHelperText = _f[1];
+    var _f = React.useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
     var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -11214,39 +11211,39 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         var _a;
         (_a = textFieldInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [textFieldInputRef]);
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-    var setErrorHelperText = React.useCallback(function (error, helperText) {
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
-        setHelperText(helperText);
-    }, [setError, setHelperText]);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
     // Function - validate ---------------------------------------------------------------------------------------------
     var validate = React.useCallback(function (value) {
         if (required && empty(value)) {
-            setErrorHelperText(true, '필수 입력 항목입니다.');
+            setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
         if (value && !value.isValid()) {
-            setErrorHelperText(true, '형식이 일치하지 않습니다.');
+            setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
             return false;
         }
         if (datePickerErrorRef.current) {
-            setErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
+            setErrorErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
             return false;
         }
         if (timeError) {
-            setErrorHelperText(true, getDateValidationErrorText(timeError));
+            setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
             return false;
         }
         if (onValidate) {
             var onValidateResult = onValidate(value);
             if (onValidateResult != null && onValidateResult !== true) {
-                setErrorHelperText(true, onValidateResult);
+                setErrorErrorHelperText(true, onValidateResult);
                 return false;
             }
         }
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
         return true;
-    }, [required, timeError, onValidate, setErrorHelperText, initHelperText]);
+    }, [required, timeError, onValidate, setErrorErrorHelperText]);
     // Commands --------------------------------------------------------------------------------------------------------
     React.useLayoutEffect(function () {
         if (ref || onAddValueItem) {
@@ -11281,7 +11278,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
                 focusValidate: focus,
                 validate: function () { return validate(value); },
                 setError: function (error, errorText) {
-                    return setErrorHelperText(error, error ? errorText : initHelperText);
+                    return setErrorErrorHelperText(error, error ? errorText : undefined);
                 },
                 getFormValueFormat: function () { return formValueFormat; },
             };
@@ -11324,8 +11321,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         id,
         setValue,
         setDisabled,
-        setErrorHelperText,
-        initHelperText,
+        setErrorErrorHelperText,
         data,
         setData,
     ]);
@@ -11504,7 +11500,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
                     }, title: React.createElement(PrivateStaticDateTimePicker, __assign$7({}, otherProps, { ref: privateStaticDateTimePickerRef, type: type, time: time, value: value, availableDate: availableDate, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, hours: hours, minutes: minutes, seconds: seconds, minuteInterval: minuteInterval, secondInterval: secondInterval, onChange: handleChange, onAccept: function () { return !time && setOpen(false); }, onClose: function () { return setOpen(false); } })) },
                     React.createElement("div", { style: { display: fullWidth ? 'block' : 'inline-block' } },
                         React.createElement(xDatePickers.DesktopDateTimePicker, __assign$7({ value: inputValue, label: label, open: false, format: format, disabled: disabled, readOnly: readOnly, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, onClose: function () { return setOpen(false); }, onError: function (reason) { return (datePickerErrorRef.current = reason); }, onChange: function (newValue) { return handleChange('date', newValue); }, slotProps: slotProps }, otherProps)))),
-                !formColWithHelperText && helperText && (React.createElement(material.FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, helperText))))));
+                !formColWithHelperText && (helperText || (error && errorHelperText)) && (React.createElement(material.FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error ? errorHelperText : helperText))))));
 });
 PrivateDateTimePicker.displayName = 'PrivateDateTimePicker';
 PrivateDateTimePicker.defaultProps = PrivateDateTimePickerDefaultProps;var PrivateAlertDialogDefaultProps = {
@@ -12133,7 +12129,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, initValue = _a.value, initData = _a.data, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, initCalendarCount = _a.calendarCount, initFormat = _a.format, formValueFormat = _a.formValueFormat, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, initHelperText = _a.helperText, formValueStartNameSuffix = _a.formValueStartNameSuffix, formValueEndNameSuffix = _a.formValueEndNameSuffix, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, hidden = _a.hidden, onGetActionButtons = _a.onGetActionButtons, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, initValue = _a.value, initData = _a.data, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, initCalendarCount = _a.calendarCount, initFormat = _a.format, formValueFormat = _a.formValueFormat, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, helperText = _a.helperText, formValueStartNameSuffix = _a.formValueStartNameSuffix, formValueEndNameSuffix = _a.formValueEndNameSuffix, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, hidden = _a.hidden, onGetActionButtons = _a.onGetActionButtons, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = React.useId();
@@ -12160,8 +12156,10 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     var _d = React.useState(false), startError = _d[0], setStartError = _d[1];
     var _e = React.useState(false), endError = _e[0], setEndError = _e[1];
     var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
-    var _g = useAutoUpdateState$1(initHelperText), helperText = _g[0], setHelperText = _g[1];
-    var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
+    var _g = React.useState(), errorHelperText = _g[0], setErrorHelperText = _g[1];
+    var _h = React.useState(), startErrorHelperText = _h[0], setStartErrorHelperText = _h[1];
+    var _j = React.useState(), endErrorHelperText = _j[0], setEndErrorHelperText = _j[1];
+    var _k = useAutoUpdateState$1(initData), data = _k[0], setData = _k[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var format = React.useMemo(function () { return initFormat || DEFAULT_FORMAT; }, [initFormat]);
     // Function - getFinalValue ----------------------------------------------------------------------------------------
@@ -12182,77 +12180,77 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
             (_b = startDateTextFieldRef.current) === null || _b === void 0 ? void 0 : _b.focus();
         }
     }, [endError, startDateTextFieldRef, endDateTextFieldRef]);
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-    var setErrorHelperText = React.useCallback(function (error, helperText) {
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
-        setHelperText(helperText);
-    }, [setError, setHelperText]);
-    var setStartErrorHelperText = React.useCallback(function (error, helperText) {
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
+    var setStartErrorErrorHelperText = React.useCallback(function (error, startErrorHelperText) {
         setStartError(error);
-        setHelperText(helperText);
-    }, [setHelperText]);
-    var setEndErrorHelperText = React.useCallback(function (error, helperText) {
+        setStartErrorHelperText(startErrorHelperText);
+    }, []);
+    var setEndErrorErrorHelperText = React.useCallback(function (error, endErrorHelperText) {
         setEndError(error);
-        setHelperText(helperText);
-    }, [setHelperText]);
+        setEndErrorHelperText(endErrorHelperText);
+    }, []);
     // Function - validate ---------------------------------------------------------------------------------------------
     var validate = React.useCallback(function (value) {
         var _a, _b;
         if (required && (value[0] == null || value[1] == null)) {
             if (value[0] == null && value[1] == null) {
-                setErrorHelperText(true, '필수 입력 항목입니다.');
+                setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             else if (value[0] == null) {
-                setStartErrorHelperText(true, '필수 입력 항목입니다.');
+                setStartErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             else {
-                setEndErrorHelperText(true, '필수 입력 항목입니다.');
+                setEndErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             return false;
         }
         if (requiredStart && value[0] == null) {
-            setStartErrorHelperText(true, '필수 입력 항목입니다.');
+            setStartErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
         if (requiredEnd && value[1] == null) {
-            setEndErrorHelperText(true, '필수 입력 항목입니다.');
+            setEndErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
         if (!allowSingleSelect && (value[0] || value[1]) && (value[0] == null || value[1] == null)) {
             if (value[0] == null) {
-                setStartErrorHelperText(true, '필수 입력 항목입니다.');
+                setStartErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             else {
-                setEndErrorHelperText(true, '필수 입력 항목입니다.');
+                setEndErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             return false;
         }
         var startInputValue = ((_a = startDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.value) || '';
         var endInputValue = ((_b = endDateTextFieldRef.current) === null || _b === void 0 ? void 0 : _b.value) || '';
         if (notEmpty(startInputValue) && !dayjs(startInputValue, format).isValid()) {
-            setStartErrorHelperText(true, '형식이 일치하지 않습니다.');
+            setStartErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
             return false;
         }
         if (notEmpty(endInputValue) && !dayjs(endInputValue, format).isValid()) {
-            setEndErrorHelperText(true, '형식이 일치하지 않습니다.');
+            setEndErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
             return false;
         }
         if (startInputDatePickerErrorRef.current) {
-            setStartErrorHelperText(true, getDateValidationErrorText(startInputDatePickerErrorRef.current));
+            setStartErrorErrorHelperText(true, getDateValidationErrorText(startInputDatePickerErrorRef.current));
             return false;
         }
         if (endInputDatePickerErrorRef.current) {
-            setEndErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
+            setEndErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
             return false;
         }
         if (onValidate) {
             var onValidateResult = onValidate(value);
             if (onValidateResult != null && onValidateResult !== true) {
-                setErrorHelperText(true, onValidateResult);
+                setErrorErrorHelperText(true, onValidateResult);
                 return false;
             }
         }
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
         setStartError(false);
         setEndError(false);
         return true;
@@ -12263,10 +12261,9 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
         allowSingleSelect,
         format,
         onValidate,
-        setErrorHelperText,
-        initHelperText,
-        setStartErrorHelperText,
-        setEndErrorHelperText,
+        setErrorErrorHelperText,
+        setStartErrorErrorHelperText,
+        setEndErrorErrorHelperText,
     ]);
     // Function activeMonth --------------------------------------------------------------------------------------------
     var activeMonth = React.useCallback(function (month) {
@@ -12275,16 +12272,16 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
         (_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.activeMonth(month);
     }, [containerRef]);
     // State -----------------------------------------------------------------------------------------------------------
-    var _j = React.useState(false), open = _j[0], setOpen = _j[1];
-    var _k = React.useState('start'), selectType = _k[0], setSelectType = _k[1];
-    var _l = useAutoUpdateState$1(React.useCallback(function () {
+    var _l = React.useState(false), open = _l[0], setOpen = _l[1];
+    var _m = React.useState('start'), selectType = _m[0], setSelectType = _m[1];
+    var _o = useAutoUpdateState$1(React.useCallback(function () {
         return initValue || DEFAULT_VALUE;
-    }, [initValue])), value = _l[0], setValue = _l[1];
+    }, [initValue])), value = _o[0], setValue = _o[1];
     var calendarCount = useAutoUpdateState$1(initCalendarCount || 2)[0];
-    var _m = React.useState(function () {
+    var _p = React.useState(function () {
         var now = dayjs();
         return [now, now.add(1, 'month'), now.add(2, 'month')];
-    }), months = _m[0], setMonths = _m[1];
+    }), months = _p[0], setMonths = _p[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var inputDatePickerProps = React.useMemo(function () { return ({
         variant: variant,
@@ -12360,9 +12357,9 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     var handleChange = React.useCallback(function (newValue) {
         setValue(newValue);
         setOpen(false);
-        setStartErrorHelperText(false, initHelperText);
-        setEndErrorHelperText(false, initHelperText);
-    }, [initHelperText, setEndErrorHelperText, setStartErrorHelperText, setValue]);
+        setStartErrorErrorHelperText(false, undefined);
+        setEndErrorErrorHelperText(false, undefined);
+    }, [setEndErrorErrorHelperText, setStartErrorErrorHelperText, setValue]);
     var handleValueChange = React.useCallback(function (selectType, newValue, fromInput) {
         var _a;
         var finalValue;
@@ -12391,7 +12388,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                         }
                     }
                 }
-                setStartErrorHelperText(false, initHelperText);
+                setStartErrorErrorHelperText(false, undefined);
                 if (fromInput && newValue) {
                     activeMonth(newValue);
                 }
@@ -12402,7 +12399,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                     if (fromInput && newValue) {
                         activeMonth(newValue.subtract(calendarCount - 1, 'month'));
                     }
-                    setStartErrorHelperText(false, initHelperText);
+                    setStartErrorErrorHelperText(false, undefined);
                 }
                 else {
                     finalValue = [value[0], newValue];
@@ -12423,7 +12420,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                             (_a = startDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.focus();
                         });
                     }
-                    setEndErrorHelperText(false, initHelperText);
+                    setEndErrorErrorHelperText(false, undefined);
                 }
                 break;
         }
@@ -12434,11 +12431,10 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     }, [
         setValue,
         value,
-        setStartErrorHelperText,
-        initHelperText,
+        setStartErrorErrorHelperText,
         activeMonth,
         calendarCount,
-        setEndErrorHelperText,
+        setEndErrorErrorHelperText,
         open,
         onRequestSearchSubmit,
         name,
@@ -12570,7 +12566,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                 focusValidate: focusValidate,
                 validate: function () { return validate(value); },
                 setError: function (error, errorText) {
-                    return setErrorHelperText(error, error ? errorText : initHelperText);
+                    return setErrorErrorHelperText(error, error ? errorText : undefined);
                 },
                 getFormValueFormat: function () { return formValueFormat || FormDateRangePickerDefaultProps.format; },
                 getFormValueStartNameSuffix: function () {
@@ -12628,8 +12624,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
         id,
         setValue,
         setDisabled,
-        setErrorHelperText,
-        initHelperText,
+        setErrorErrorHelperText,
         data,
         setData,
     ]);
@@ -12642,7 +12637,14 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                             {
                                 name: 'offset',
                                 options: {
-                                    offset: [0, (error || startError || endError) && helperText ? 8 : -14],
+                                    offset: [
+                                        0,
+                                        (error && errorHelperText) ||
+                                            (startError && startErrorHelperText) ||
+                                            (endError && endErrorHelperText)
+                                            ? 8
+                                            : -14,
+                                    ],
                                 },
                             },
                         ],
@@ -12654,7 +12656,17 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                         React.createElement(material.Grid, { item: true, sx: { px: 1 } }, "~"),
                         React.createElement(material.Grid, { item: true, flex: 1 },
                             React.createElement(InputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, value: value[1], label: endLabel, labelIcon: endLabelIcon, error: error || endError, focused: focused || (open && selectType === 'end'), required: required || requiredEnd, readOnly: readOnly || readOnlyEnd, readOnlyInput: readOnlyInput, icon: endIcon || icon, startAdornment: endStartAdornment || startAdornment, endAdornment: endEndAdornment || endAdornment, inputRef: endDateTextFieldRef, onChange: function (newValue) { return handleInputDatePickerChange('end', newValue); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); } }))))),
-                !formColWithHelperText && helperText && (React.createElement(material.FormHelperText, { error: error || startError || endError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, helperText))))));
+                !formColWithHelperText &&
+                    (helperText ||
+                        (error && errorHelperText) ||
+                        (startError && startErrorHelperText) ||
+                        (endError && endErrorHelperText)) && (React.createElement(material.FormHelperText, { error: error || startError || endError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error
+                    ? errorHelperText
+                    : startError
+                        ? startErrorHelperText
+                        : endError
+                            ? endErrorHelperText
+                            : helperText))))));
 });
 FormDateRangePicker.displayName = 'FormDateRangePicker';
 FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var FormFileDefaultProps = {
@@ -12716,7 +12728,7 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
     //----------------------------------------------------------------------------------------------------------------
     accept = _a.accept, hideUrl = _a.hideUrl, uploadLabel = _a.uploadLabel, uploadTabIndex = _a.uploadTabIndex, hideUpload = _a.hideUpload, hideUploadLabel = _a.hideUploadLabel, linkLabel = _a.linkLabel, linkTabIndex = _a.linkTabIndex, hideLink = _a.hideLink, hideLinkLabel = _a.hideLinkLabel, removeLabel = _a.removeLabel, removeTabIndex = _a.removeTabIndex, hideRemove = _a.hideRemove, hideRemoveLabel = _a.hideRemoveLabel, maxFileSize = _a.maxFileSize, preview = _a.preview, hidden = _a.hidden, onFile = _a.onFile, onLink = _a.onLink, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, initLabel = _a.label, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, initError = _a.error, initHelperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, labelIcon = _a.labelIcon, initLabel = _a.label, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = React.useId();
@@ -12745,7 +12757,7 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
     }, [value]);
     // State -----------------------------------------------------------------------------------------------------------
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
-    var _e = useAutoUpdateState$1(initHelperText), helperText = _e[0], setHelperText = _e[1];
+    var _e = React.useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
     var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
     var _g = React.useState(false), isOpenLinkDialog = _g[0], setIsOpenLinkDialog = _g[1];
     var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
@@ -12771,11 +12783,11 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
             (_c = textFieldRef.current) === null || _c === void 0 ? void 0 : _c.focus();
         }
     }, [hideUpload, hideUrl]);
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
-    var setErrorHelperText = React.useCallback(function (error, helperText) {
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
-        setHelperText(helperText);
-    }, [setError, setHelperText]);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
     // Function - validate ---------------------------------------------------------------------------------------------
     var validate = React.useCallback(function (value) {
         var isEmptyValue = false;
@@ -12786,19 +12798,19 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
             isEmptyValue = empty(text.trim());
         }
         if (required && (isEmptyValue || empty(value))) {
-            setErrorHelperText(true, '필수 선택 항목입니다.');
+            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
             return false;
         }
         if (onValidate) {
             var onValidateResult = onValidate(value);
             if (onValidateResult != null && onValidateResult !== true) {
-                setErrorHelperText(true, onValidateResult);
+                setErrorErrorHelperText(true, onValidateResult);
                 return false;
             }
         }
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
         return true;
-    }, [required, onValidate, setErrorHelperText, initHelperText]);
+    }, [required, onValidate, setErrorErrorHelperText]);
     // Commands --------------------------------------------------------------------------------------------------------
     React.useLayoutEffect(function () {
         var lastValue = value;
@@ -12831,8 +12843,8 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
             focus: focus,
             focusValidate: focus,
             validate: function () { return validate(value); },
-            setError: function (error, helperText) {
-                return setErrorHelperText(error, error ? helperText : initHelperText);
+            setError: function (error, errorHelperText) {
+                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
             },
         };
         onAddValueItem(id, commands);
@@ -12863,14 +12875,13 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
         disabled,
         focus,
         validate,
-        initHelperText,
         ref,
         onAddValueItem,
         onRemoveValueItem,
         id,
         setValue,
         setDisabled,
-        setErrorHelperText,
+        setErrorErrorHelperText,
         data,
         setData,
     ]);
@@ -12956,7 +12967,7 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
     // Render ----------------------------------------------------------------------------------------------------------
     return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormFile', "variant-".concat(variant), "size-".concat(size), !!initLabel && 'with-label', !!fullWidth && 'full-width', !!hideUrl && 'hide-file-name', !!hideLink && 'hide-link', !!hideUpload && 'hide-upload', !!hideRemove && 'hide-remove', notEmpty(value) && 'with-value'), labelIcon: hideUrl ? labelIcon : undefined, label: hideUrl ? initLabel : undefined, error: error, required: required, fullWidth: fullWidth, hidden: hidden, helperText: React.createElement("div", null,
             preview,
-            React.createElement("div", null, helperText)), hideLabel: !hideUrl, helperTextProps: {
+            React.createElement("div", null, error ? errorHelperText : helperText)), hideLabel: !hideUrl, helperTextProps: {
             style: {
                 marginLeft: !hideUrl && variant !== 'standard' ? 14 : undefined,
                 marginTop: !hideUrl && variant === 'standard' ? 19 : undefined,

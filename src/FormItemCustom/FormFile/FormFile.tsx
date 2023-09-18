@@ -48,7 +48,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       readOnly,
       disabled: initDisabled,
       error: initError,
-      helperText: initHelperText,
+      helperText,
       value: initValue,
       data: initData,
       exceptValue,
@@ -113,7 +113,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
     // State -----------------------------------------------------------------------------------------------------------
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [isOpenLinkDialog, setIsOpenLinkDialog] = useState(false);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
@@ -151,14 +151,14 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       }
     }, [hideUpload, hideUrl]);
 
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
 
-    const setErrorHelperText = useCallback(
-      function (error: Props['error'], helperText: Props['helperText']) {
+    const setErrorErrorHelperText = useCallback(
+      function (error: Props['error'], errorHelperText: Props['helperText']) {
         setError(error);
-        setHelperText(helperText);
+        setErrorHelperText(errorHelperText);
       },
-      [setError, setHelperText]
+      [setError]
     );
 
     // Function - validate ---------------------------------------------------------------------------------------------
@@ -173,23 +173,23 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
           isEmptyValue = empty(text.trim());
         }
         if (required && (isEmptyValue || empty(value))) {
-          setErrorHelperText(true, '필수 선택 항목입니다.');
+          setErrorErrorHelperText(true, '필수 선택 항목입니다.');
           return false;
         }
 
         if (onValidate) {
           const onValidateResult = onValidate(value);
           if (onValidateResult != null && onValidateResult !== true) {
-            setErrorHelperText(true, onValidateResult);
+            setErrorErrorHelperText(true, onValidateResult);
             return false;
           }
         }
 
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
 
         return true;
       },
-      [required, onValidate, setErrorHelperText, initHelperText]
+      [required, onValidate, setErrorErrorHelperText]
     );
 
     // Commands --------------------------------------------------------------------------------------------------------
@@ -227,8 +227,8 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
         focus,
         focusValidate: focus,
         validate: () => validate(value),
-        setError: (error: Props['error'], helperText: Props['helperText']) =>
-          setErrorHelperText(error, error ? helperText : initHelperText),
+        setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
+          setErrorErrorHelperText(error, error ? errorHelperText : undefined),
       };
 
       onAddValueItem(id, commands);
@@ -260,14 +260,13 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       disabled,
       focus,
       validate,
-      initHelperText,
       ref,
       onAddValueItem,
       onRemoveValueItem,
       id,
       setValue,
       setDisabled,
-      setErrorHelperText,
+      setErrorErrorHelperText,
       data,
       setData,
     ]);
@@ -391,7 +390,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
         helperText={
           <div>
             {preview}
-            <div>{helperText}</div>
+            <div>{error ? errorHelperText : helperText}</div>
           </div>
         }
         hideLabel={!hideUrl}

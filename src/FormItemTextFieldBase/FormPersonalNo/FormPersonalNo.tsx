@@ -23,37 +23,41 @@ const FormPersonalNo = React.forwardRef<FormPersonalNoCommands, Props>(
 
     const handleValidate = useCallback(
       (value: FormPersonalNoValue) => {
-        if (notEmpty(value) && value.length === 14 && value.includes('-')) {
-          const jumin: number[] = value
-            .replace(/-/g, '')
-            .split('')
-            .map((v) => Number(v));
-          const ckarr = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5];
+        if (notEmpty(value)) {
+          if (value.length === 14 && value.includes('-')) {
+            const jumin: number[] = value
+              .replace(/-/g, '')
+              .split('')
+              .map((v) => Number(v));
+            const ckarr = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5];
 
-          for (let i = 0; i < jumin.length - 1; i += 1) {
-            jumin[i] = jumin[i] * ckarr[i];
-          }
-          const juminlast = jumin[jumin.length - 1];
+            for (let i = 0; i < jumin.length - 1; i += 1) {
+              jumin[i] = jumin[i] * ckarr[i];
+            }
+            const juminlast = jumin[jumin.length - 1];
 
-          let sum = 0;
-          for (let i = 0; i < jumin.length - 1; i += 1) {
-            sum += jumin[i];
-          }
+            let sum = 0;
+            for (let i = 0; i < jumin.length - 1; i += 1) {
+              sum += jumin[i];
+            }
 
-          sum = sum % 11;
+            sum = sum % 11;
 
-          sum = 11 - sum;
+            sum = 11 - sum;
 
-          if (sum > 9) {
-            sum = sum % 10;
-          }
+            if (sum > 9) {
+              sum = sum % 10;
+            }
 
-          if (sum != juminlast && juminlast != undefined) {
+            if (sum != juminlast && juminlast != undefined) {
+              return '유효하지 않은 값입니다.';
+            }
+            return onValidate ? onValidate(value) : true;
+          } else {
             return '유효하지 않은 값입니다.';
           }
-          return onValidate ? onValidate(value) : true;
         } else {
-          return '유효하지 않은 값입니다.';
+          return onValidate ? onValidate(value) : true;
         }
       },
       [onValidate]

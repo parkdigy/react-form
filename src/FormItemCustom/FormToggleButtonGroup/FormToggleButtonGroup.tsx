@@ -33,7 +33,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       value: initValue,
       data: initData,
       error: initError,
-      helperText: initHelperText,
+      helperText,
       disabled: initDisabled,
       readOnly,
       required,
@@ -144,7 +144,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
 
     const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [helperText, setHelperText] = useAutoUpdateState<Props['helperText']>(initHelperText);
+    const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
@@ -291,14 +291,14 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       refForButtonResizeHeightDetect.current?.focus();
     }, [refForButtonResizeHeightDetect]);
 
-    // Function - setErrorHelperText -----------------------------------------------------------------------------------
+    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
 
-    const setErrorHelperText = useCallback(
-      (error: boolean, helperText: ReactNode) => {
+    const setErrorErrorHelperText = useCallback(
+      (error: boolean, errorHelperText: ReactNode) => {
         setError(error);
-        setHelperText(helperText);
+        setErrorHelperText(errorHelperText);
       },
-      [setError, setHelperText]
+      [setError]
     );
 
     // Function - validate ---------------------------------------------------------------------------------------------
@@ -306,22 +306,22 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
     const validate = useCallback(
       (value: Props['value']) => {
         if (required && empty(value)) {
-          setErrorHelperText(true, '필수 선택 항목입니다.');
+          setErrorErrorHelperText(true, '필수 선택 항목입니다.');
           return false;
         }
         if (onValidate) {
           const onValidateResult = onValidate(value);
           if (onValidateResult != null && onValidateResult !== true) {
-            setErrorHelperText(true, onValidateResult);
+            setErrorErrorHelperText(true, onValidateResult);
             return false;
           }
         }
 
-        setErrorHelperText(false, initHelperText);
+        setErrorErrorHelperText(false, undefined);
 
         return true;
       },
-      [required, onValidate, setErrorHelperText, initHelperText]
+      [required, onValidate, setErrorErrorHelperText]
     );
 
     // Commands --------------------------------------------------------------------------------------------------------
@@ -362,7 +362,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           focusValidate: focus,
           validate: () => validate(value),
           setError: (error: boolean, errorText: ReactNode | undefined) =>
-            setErrorHelperText(error, error ? errorText : initHelperText),
+            setErrorErrorHelperText(error, error ? errorText : undefined),
           getFormValueSeparator: () => formValueSeparator,
           isFormValueSort: () => !!formValueSort,
           getItems: () => lastItems,
@@ -420,8 +420,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       id,
       setValue,
       setDisabled,
-      setErrorHelperText,
-      initHelperText,
+      setErrorErrorHelperText,
       setItems,
       setLoading,
       data,
@@ -565,7 +564,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
         required={required}
         fullWidth={fullWidth}
         error={error}
-        helperText={helperText}
+        helperText={error ? errorHelperText : helperText}
         helperTextProps={{ style: { marginLeft: 2 } }}
         style={style}
         sx={sx}
