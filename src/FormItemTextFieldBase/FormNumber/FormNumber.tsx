@@ -23,6 +23,8 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
       inputProps: initInputProps,
       value: initValue,
       onChange,
+      onValue,
+      onValidate,
       ...props
     },
     ref
@@ -87,6 +89,29 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
       [onChange]
     );
 
+    const handleValue = useCallback(
+      (value: string | undefined) => {
+        let finalValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
+        if (onValue) {
+          finalValue = onValue(finalValue);
+        }
+        return finalValue !== undefined ? finalValue.toString() : undefined;
+      },
+      [onValue]
+    );
+
+    const handleValidate = useCallback(
+      (value: string | undefined) => {
+        if (onValidate) {
+          const finalValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
+          return onValidate(finalValue);
+        } else {
+          return true;
+        }
+      },
+      [onValidate]
+    );
+
     // Render ----------------------------------------------------------------------------------------------------------
 
     return (
@@ -98,6 +123,8 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
         readOnly={readOnly}
         value={strValue}
         onChange={handleChange}
+        onValue={handleValue}
+        onValidate={handleValidate}
         {...props}
       />
     );

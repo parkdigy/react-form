@@ -4011,7 +4011,7 @@ function NumericFormat(props) {
 });
 NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: true });var FormNumber = React.forwardRef(function (_a, ref) {
     // State -------------------------------------------------------------------------------------------------------------
-    var className = _a.className, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initMuiInputProps = _a.InputProps, initInputProps = _a.inputProps, initValue = _a.value, onChange = _a.onChange, props = __rest$4(_a, ["className", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "InputProps", "inputProps", "value", "onChange"]);
+    var className = _a.className, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initMuiInputProps = _a.InputProps, initInputProps = _a.inputProps, initValue = _a.value, onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest$4(_a, ["className", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "InputProps", "inputProps", "value", "onChange", "onValue", "onValidate"]);
     var _b = React.useState(function () { return (empty(initValue) ? '' : "".concat(initValue)); }), strValue = _b[0], setStrValue = _b[1];
     // Effect ------------------------------------------------------------------------------------------------------------
     React.useEffect(function () {
@@ -4055,8 +4055,24 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
         onChange && onChange(newValue);
         setStrValue(value);
     }, [onChange]);
+    var handleValue = React.useCallback(function (value) {
+        var finalValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
+        if (onValue) {
+            finalValue = onValue(finalValue);
+        }
+        return finalValue !== undefined ? finalValue.toString() : undefined;
+    }, [onValue]);
+    var handleValidate = React.useCallback(function (value) {
+        if (onValidate) {
+            var finalValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
+            return onValidate(finalValue);
+        }
+        else {
+            return true;
+        }
+    }, [onValidate]);
     // Render ----------------------------------------------------------------------------------------------------------
-    return (React.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormNumber'), disableReturnKey: true, InputProps: muiInputProps, readOnly: readOnly, value: strValue, onChange: handleChange }, props)));
+    return (React.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormNumber'), disableReturnKey: true, InputProps: muiInputProps, readOnly: readOnly, value: strValue, onChange: handleChange, onValue: handleValue, onValidate: handleValidate }, props)));
 });
 FormNumber.displayName = 'FormNumber';
 FormNumber.defaultProps = FormNumberDefaultProps;var FormSearchDefaultProps = __assign$7({}, FormTextDefaultProps);var css_248z$h = ".FormSearch input[type=search]::-webkit-search-decoration,\n.FormSearch input[type=search]::-webkit-search-cancel-button,\n.FormSearch input[type=search]::-webkit-search-results-button,\n.FormSearch input[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n}";
