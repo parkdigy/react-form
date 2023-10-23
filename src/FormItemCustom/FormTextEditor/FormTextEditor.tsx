@@ -31,6 +31,9 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       size: initSize,
       color: initColor,
       focused: initFocused,
+      // ---------------------------------------------------------------------------------------------------------------
+      apiKey,
+      toolbar,
       //----------------------------------------------------------------------------------------------------------------
       menubar,
       height,
@@ -301,6 +304,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
             {!initialized ? <Skeleton variant='rectangular' width='100%' height={height} /> : null}
             <Editor
               ref={editorRef}
+              apiKey={apiKey}
               value={value}
               disabled={readOnly || disabled}
               init={{
@@ -312,13 +316,24 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
                 content_style:
                   'body {font-size: 0.875rem; font-weight: 400; line-height: 1.5; color: hsl(0,0%,20%);} p {padding:0; margin:0}',
                 plugins: [
+                  'lists',
                   'advlist',
-                  'advlist autolink lists link image',
-                  'charmap print preview anchor',
-                  'searchreplace visualblocks code',
-                  'insertdatetime media table paste wordcount',
+                  'image',
+                  'autolink',
+                  'link',
+                  'charmap',
+                  'preview',
+                  'anchor',
+                  'searchreplace',
+                  'visualblocks',
+                  'code',
+                  'insertdatetime',
+                  'media',
+                  'table',
+                  'wordcount',
                 ],
                 toolbar:
+                  toolbar ||
                   'undo redo | \
                    formatselect bullist numlist outdent indent | \
                    bold italic | align | forecolor backcolor | \

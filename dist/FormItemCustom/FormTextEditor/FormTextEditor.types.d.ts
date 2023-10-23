@@ -1,7 +1,8 @@
 import { CommonSxProps, FormValueItemCommands, FormValueItemProps } from '../../@types';
+import { IAllProps } from '@tinymce/tinymce-react';
 export type FormTextEditorValue = string;
 export type FormTextEditorCommands = FormValueItemCommands<FormTextEditorValue, false>;
-export interface FormTextEditorProps extends CommonSxProps, Omit<FormValueItemProps<FormTextEditorValue, false>, 'fullWidth'> {
+export interface FormTextEditorProps extends CommonSxProps, Omit<FormValueItemProps<FormTextEditorValue, false>, 'fullWidth'>, Partial<Pick<IAllProps, 'apiKey' | 'toolbar'>> {
     required?: boolean;
     menubar?: boolean;
     height?: number;

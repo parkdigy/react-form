@@ -7491,6 +7491,8 @@ var Editor = /** @class */ (function (_super) {
 styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
+    // ---------------------------------------------------------------------------------------------------------------
+    apiKey = _a.apiKey, toolbar = _a.toolbar, 
     //----------------------------------------------------------------------------------------------------------------
     menubar = _a.menubar, height = _a.height, hidden = _a.hidden, onImageUpload = _a.onImageUpload, 
     //----------------------------------------------------------------------------------------------------------------
@@ -7664,7 +7666,7 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
     // Render ----------------------------------------------------------------------------------------------------------
     return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormTextEditor', !initialized && 'initializing'), labelIcon: labelIcon, label: label, error: error, required: required, fullWidth: true, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: { width: '100%' }, hidden: hidden, controlHeight: height, control: React.createElement(React.Fragment, null,
             !initialized ? React.createElement(material.Skeleton, { variant: 'rectangular', width: '100%', height: height }) : null,
-            React.createElement(Editor, { ref: editorRef, value: value, disabled: readOnly || disabled, init: {
+            React.createElement(Editor, { ref: editorRef, apiKey: apiKey, value: value, disabled: readOnly || disabled, init: {
                     height: height,
                     menubar: menubar,
                     readonly: true,
@@ -7672,13 +7674,24 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
                     contextmenu: false,
                     content_style: 'body {font-size: 0.875rem; font-weight: 400; line-height: 1.5; color: hsl(0,0%,20%);} p {padding:0; margin:0}',
                     plugins: [
+                        'lists',
                         'advlist',
-                        'advlist autolink lists link image',
-                        'charmap print preview anchor',
-                        'searchreplace visualblocks code',
-                        'insertdatetime media table paste wordcount',
+                        'image',
+                        'autolink',
+                        'link',
+                        'charmap',
+                        'preview',
+                        'anchor',
+                        'searchreplace',
+                        'visualblocks',
+                        'code',
+                        'insertdatetime',
+                        'media',
+                        'table',
+                        'wordcount',
                     ],
-                    toolbar: 'undo redo | \
+                    toolbar: toolbar ||
+                        'undo redo | \
                    formatselect bullist numlist outdent indent | \
                    bold italic | align | forecolor backcolor | \
                    link image media | advtable | code',
