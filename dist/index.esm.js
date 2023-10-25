@@ -7509,7 +7509,7 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
     // State - FormState -----------------------------------------------------------------------------------------------
     var _c = useAutoUpdateState$1(initFocused == null ? formFocused : initFocused), focused = _c[0], setFocused = _c[1];
     // Ref -------------------------------------------------------------------------------------------------------------
-    var editorRef = useRef(null);
+    var editorRef = useRef();
     var keyDownTime = useRef(0);
     // State - value ---------------------------------------------------------------------------------------------------
     var _d = useAutoUpdateState$1(initValue || ''), value = _d[0], setValue = _d[1];
@@ -7528,13 +7528,8 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
     var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
     // Function - focus ------------------------------------------------------------------------------------------------
     var focus = useCallback(function () {
-        var _a, _b;
-        var textarea = (_b = (_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.elementRef) === null || _b === void 0 ? void 0 : _b.current;
-        if (textarea) {
-            textarea.style.display = 'block';
-            textarea.focus();
-            textarea.style.display = 'none';
-        }
+        var _a;
+        (_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [editorRef]);
     // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
@@ -7543,14 +7538,8 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
     }, [setError]);
     // Function - validate ---------------------------------------------------------------------------------------------
     var validate = useCallback(function (value) {
-        var isEmptyValue = false;
-        if (value) {
-            var d = document.createElement('div');
-            d.innerHTML = value;
-            var text = d.textContent || d.innerText;
-            isEmptyValue = empty(text.trim());
-        }
-        if (required && (isEmptyValue || empty(value))) {
+        var _a;
+        if (required && empty((_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.getContent())) {
             setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
@@ -7666,7 +7655,7 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormTextEditor', !initialized && 'initializing'), labelIcon: labelIcon, label: label, error: error, required: required, fullWidth: true, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: { width: '100%' }, hidden: hidden, controlHeight: height, control: React__default.createElement(React__default.Fragment, null,
             !initialized ? React__default.createElement(Skeleton, { variant: 'rectangular', width: '100%', height: height }) : null,
-            React__default.createElement(Editor, { ref: editorRef, apiKey: apiKey, value: value, disabled: readOnly || disabled, init: {
+            React__default.createElement(Editor, { apiKey: apiKey, value: value, disabled: readOnly || disabled, init: {
                     height: height,
                     menubar: menubar,
                     readonly: true,
@@ -7696,7 +7685,8 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
                    bold italic | align | forecolor backcolor | \
                    link image media | advtable | code',
                     images_upload_handler: handleImageUpload,
-                }, onInit: function () {
+                }, onInit: function (evt, editor) {
+                    editorRef.current = editor;
                     setTimeout(function () { return setInitialized(true); }, 10);
                 }, onEditorChange: handleEditorChange, onKeyDown: handleKeyDown, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } })) }));
 });

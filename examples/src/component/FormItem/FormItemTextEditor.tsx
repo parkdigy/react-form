@@ -46,7 +46,13 @@ const FormItemTextEditor = () => {
         <FormBody>
           <FormRow>
             <FormCol>
-              <FormTextEditor name='FormTextEditor' label='FormTextEditor' readOnly={readOnly} disabled={disabled} />
+              <FormTextEditor
+                required
+                name='FormTextEditor'
+                label='FormTextEditor'
+                readOnly={readOnly}
+                disabled={disabled}
+              />
             </FormCol>
           </FormRow>
         </FormBody>

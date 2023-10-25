@@ -1,6 +1,7 @@
 import React, { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Editor } from '@tinymce/tinymce-react';
+import { Editor as TinyMCEEditor } from 'tinymce';
 import { Skeleton } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick } from '../../@util';
@@ -87,7 +88,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
 
     // Ref -------------------------------------------------------------------------------------------------------------
 
-    const editorRef = useRef<any>(null);
+    const editorRef = useRef<TinyMCEEditor | null>();
     const keyDownTime = useRef(0);
 
     // State - value ---------------------------------------------------------------------------------------------------
@@ -113,12 +114,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
 
     const focus = useCallback(
       function () {
-        const textarea = editorRef.current?.elementRef?.current;
-        if (textarea) {
-          textarea.style.display = 'block';
-          textarea.focus();
-          textarea.style.display = 'none';
-        }
+        editorRef.current?.focus();
       },
       [editorRef]
     );
@@ -137,14 +133,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
 
     const validate = useCallback(
       function (value: FormTextEditorValue) {
-        let isEmptyValue = false;
-        if (value) {
-          const d = document.createElement('div');
-          d.innerHTML = value;
-          const text = d.textContent || d.innerText;
-          isEmptyValue = empty(text.trim());
-        }
-        if (required && (isEmptyValue || empty(value))) {
+        if (required && empty(editorRef.current?.getContent())) {
           setErrorErrorHelperText(true, '필수 입력 항목입니다.');
           return false;
         }
@@ -303,7 +292,6 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
           <>
             {!initialized ? <Skeleton variant='rectangular' width='100%' height={height} /> : null}
             <Editor
-              ref={editorRef}
               apiKey={apiKey}
               value={value}
               disabled={readOnly || disabled}
@@ -340,7 +328,8 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
                    link image media | advtable | code',
                 images_upload_handler: handleImageUpload,
               }}
-              onInit={() => {
+              onInit={(evt, editor) => {
+                editorRef.current = editor;
                 setTimeout(() => setInitialized(true), 10);
               }}
               onEditorChange={handleEditorChange}
