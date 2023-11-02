@@ -255,6 +255,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
 
     const handleInputChange = useCallback((value: string) => {
       setInputValue(value.replace(/ /g, '').replace(/,/g, ''));
+      setInputValue(value);
     }, []);
 
     const handleBlur = useCallback(
@@ -343,6 +344,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
             if (readOnly) {
               renderProps.inputProps.className = classNames(renderProps.inputProps.className, 'Mui-disabled');
             }
+
+            delete renderProps.inputProps.onChange;
+            delete renderProps.inputProps.value;
 
             return (
               <FormText

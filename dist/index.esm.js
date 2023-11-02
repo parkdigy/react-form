@@ -2664,6 +2664,7 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
     }, [inputValue, appendTag, onKeyDown]);
     var handleInputChange = useCallback(function (value) {
         setInputValue(value.replace(/ /g, '').replace(/,/g, ''));
+        setInputValue(value);
     }, []);
     var handleBlur = useCallback(function (e) {
         if (notEmpty(inputValue)) {
@@ -2703,6 +2704,8 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
                 if (readOnly) {
                     renderProps.inputProps.className = classNames$1(renderProps.inputProps.className, 'Mui-disabled');
                 }
+                delete renderProps.inputProps.onChange;
+                delete renderProps.inputProps.value;
                 return (React__default.createElement(FormText, __assign$7({}, renderProps, { ref: handleRef, name: name, className: classNames$1(className, 'FormValueItem', 'FormTag'), error: error, disabled: disabled, fullWidth: fullWidth, required: required, value: inputValue, exceptValue: exceptValue, helperText: error ? errorHelperText : helperText, onKeyDown: handleInputKeyDown, onChange: handleInputChange, onBlur: handleBlur })));
             } })));
 });
