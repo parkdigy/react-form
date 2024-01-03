@@ -8,6 +8,8 @@ export function getDateValidationErrorText(error: DateValidationError | DateTime
     case 'invalidDate':
       return '형식이 일치하지 않습니다.';
     case 'shouldDisableDate':
+    case 'shouldDisableMonth':
+    case 'shouldDisableYear':
     case 'disableFuture':
     case 'disablePast':
     case 'minDate':

@@ -12,19 +12,18 @@ import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
-import { PrivateStyledTooltip } from '../../@private';
+import { PrivateInputDatePicker, PrivateInputDatePickerValue, PrivateStyledTooltip } from '../../@private';
 
 import {
-  CustomDatePickerContainer,
-  CustomDatePickerContainerCommands,
-  CustomDatePickerContainerMonths,
-} from './CustomDatePickerContainer';
+  FormDateRangePickerTooltipPickerContainer,
+  FormDateRangePickerTooltipPickerContainerCommands,
+  FormDateRangePickerTooltipPickerContainerMonths,
+} from './FormDateRangePickerTooltipPickerContainer';
 import {
-  CustomDatePickerDateValue,
-  CustomDatePickerSelectType,
-  CustomDatePickerValue,
-} from './CustomDatePickerContainer/CustomDatePicker';
-import InputDatePicker, { InputDatePickerValue } from './InputDatePicker';
+  FormDateRangePickerTooltipPickerDateValue,
+  FormDateRangePickerTooltipPickerSelectType,
+  FormDateRangePickerTooltipPickerValue,
+} from './FormDateRangePickerTooltipPickerContainer/FormDateRangePickerTooltipPicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { useFormState } from '../../FormContext';
 import { getDateValidationErrorText, nextTick, notEmpty } from '../../@util';
@@ -66,6 +65,8 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       exceptValue,
       error: initError,
       helperText,
+      formValueStartName,
+      formValueEndName,
       formValueStartNameSuffix,
       formValueEndNameSuffix,
       icon,
@@ -82,6 +83,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       minDate,
       maxDate,
       hidden,
+      align,
       onGetActionButtons,
       onChange,
       onValidate,
@@ -128,7 +130,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
     // Ref -------------------------------------------------------------------------------------------------------------
 
-    const containerRef = useRef<CustomDatePickerContainerCommands>(null);
+    const containerRef = useRef<FormDateRangePickerTooltipPickerContainerCommands>(null);
     const startDateTextFieldRef = useRef<HTMLInputElement>();
     const endDateTextFieldRef = useRef<HTMLInputElement>();
     const closeTimeoutRef = useRef<NodeJS.Timeout>();
@@ -139,12 +141,12 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
-    const [startError, setStartError] = useState(false);
-    const [endError, setEndError] = useState(false);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
+    const [startError, setStartError] = useState(false);
     const [startErrorHelperText, setStartErrorHelperText] = useState<Props['helperText']>();
+    const [endError, setEndError] = useState(false);
     const [endErrorHelperText, setEndErrorHelperText] = useState<Props['helperText']>();
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
@@ -283,7 +285,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     // State -----------------------------------------------------------------------------------------------------------
 
     const [open, setOpen] = useState(false);
-    const [selectType, setSelectType] = useState<CustomDatePickerSelectType>('start');
+    const [selectType, setSelectType] = useState<FormDateRangePickerTooltipPickerSelectType>('start');
     const [value, setValue] = useAutoUpdateState<FormDateRangePickerValue>(
       useCallback(() => {
         return initValue || DEFAULT_VALUE;
@@ -291,7 +293,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     );
 
     const [calendarCount] = useAutoUpdateState<FormDateRangePickerCalendarCount>(initCalendarCount || 2);
-    const [months, setMonths] = useState<CustomDatePickerContainerMonths>(() => {
+    const [months, setMonths] = useState<FormDateRangePickerTooltipPickerContainerMonths>(() => {
       const now = dayjs();
       return [now, now.add(1, 'month'), now.add(2, 'month')];
     });
@@ -300,6 +302,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
     const inputDatePickerProps = useMemo(
       () => ({
+        align,
         variant,
         size,
         color,
@@ -312,7 +315,20 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
         minDate,
         maxDate,
       }),
-      [variant, size, color, labelShrink, fullWidth, disabled, format, disablePast, disableFuture, minDate, maxDate]
+      [
+        align,
+        variant,
+        size,
+        color,
+        labelShrink,
+        fullWidth,
+        disabled,
+        format,
+        disablePast,
+        disableFuture,
+        minDate,
+        maxDate,
+      ]
     );
 
     const inputStyle = useMemo(
@@ -384,7 +400,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     // Event Handler ---------------------------------------------------------------------------------------------------
 
     const handleChange = useCallback(
-      (newValue: CustomDatePickerValue) => {
+      (newValue: FormDateRangePickerTooltipPickerValue) => {
         setValue(newValue);
         setOpen(false);
         setStartErrorErrorHelperText(false, undefined);
@@ -394,7 +410,11 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     );
 
     const handleValueChange = useCallback(
-      (selectType: CustomDatePickerSelectType, newValue: CustomDatePickerDateValue, fromInput?: boolean) => {
+      (
+        selectType: FormDateRangePickerTooltipPickerSelectType,
+        newValue: FormDateRangePickerTooltipPickerDateValue,
+        fromInput?: boolean
+      ) => {
         let finalValue: Props['value'];
         switch (selectType) {
           case 'start':
@@ -473,7 +493,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     );
 
     const handleInputDatePickerChange = useCallback(
-      (selectType: CustomDatePickerSelectType, newValue: FormDateRangePickerDateValue) => {
+      (selectType: FormDateRangePickerTooltipPickerSelectType, newValue: FormDateRangePickerDateValue) => {
         let error = false;
         if (newValue) {
           if (newValue.isValid()) {
@@ -529,7 +549,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     }, []);
 
     const handleInputDatePickerFocus = useCallback(
-      (selectType: CustomDatePickerSelectType) => {
+      (selectType: FormDateRangePickerTooltipPickerSelectType) => {
         if (readOnly || disabled) return;
 
         const startValue = value[0];
@@ -616,10 +636,16 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
           getFormValueEndNameSuffix: () =>
             formValueEndNameSuffix || FormDateRangePickerDefaultProps.formValueEndNameSuffix,
           getFormValueStartName: () => {
-            return `${name}${formValueStartNameSuffix || FormDateRangePickerDefaultProps.formValueStartNameSuffix}`;
+            return (
+              formValueStartName ||
+              `${name}${formValueStartNameSuffix || FormDateRangePickerDefaultProps.formValueStartNameSuffix}`
+            );
           },
           getFormValueEndName: () => {
-            return `${name}${formValueEndNameSuffix || FormDateRangePickerDefaultProps.formValueEndNameSuffix}`;
+            return (
+              formValueEndName ||
+              `${name}${formValueEndNameSuffix || FormDateRangePickerDefaultProps.formValueEndNameSuffix}`
+            );
           },
         };
 
@@ -667,6 +693,8 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       setErrorErrorHelperText,
       data,
       setData,
+      formValueStartName,
+      formValueEndName,
     ]);
 
     // Render ----------------------------------------------------------------------------------------------------------
@@ -702,7 +730,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
               }}
               title={
                 <div style={{ display: 'flex' }}>
-                  <CustomDatePickerContainer
+                  <FormDateRangePickerTooltipPickerContainer
                     ref={containerRef}
                     calendarCount={calendarCount}
                     selectType={selectType}
@@ -722,7 +750,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
             >
               <Grid container alignItems='center'>
                 <Grid item flex={1}>
-                  <InputDatePicker
+                  <PrivateInputDatePicker
                     {...inputDatePickerProps}
                     style={inputStyle}
                     value={value[0]}
@@ -737,7 +765,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
                     startAdornment={startStartAdornment || startAdornment}
                     endAdornment={startEndAdornment || endAdornment}
                     inputRef={startDateTextFieldRef}
-                    onChange={(newValue: InputDatePickerValue) => handleInputDatePickerChange('start', newValue)}
+                    onChange={(newValue: PrivateInputDatePickerValue) => handleInputDatePickerChange('start', newValue)}
                     onFocus={() => handleInputDatePickerFocus('start')}
                     onError={(reason) => (startInputDatePickerErrorRef.current = reason)}
                   />
@@ -746,7 +774,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
                   ~
                 </Grid>
                 <Grid item flex={1}>
-                  <InputDatePicker
+                  <PrivateInputDatePicker
                     {...inputDatePickerProps}
                     style={inputStyle}
                     value={value[1]}
@@ -761,7 +789,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
                     startAdornment={endStartAdornment || startAdornment}
                     endAdornment={endEndAdornment || endAdornment}
                     inputRef={endDateTextFieldRef}
-                    onChange={(newValue: InputDatePickerValue) => handleInputDatePickerChange('end', newValue)}
+                    onChange={(newValue: PrivateInputDatePickerValue) => handleInputDatePickerChange('end', newValue)}
                     onFocus={() => handleInputDatePickerFocus('end')}
                     onError={(reason) => (endInputDatePickerErrorRef.current = reason)}
                   />

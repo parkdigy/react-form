@@ -1,0 +1,17 @@
+.PrivateInputDatePicker {
+  &.align-left {
+    .MuiInputBase-input {
+      text-align: left;
+    }
+  }
+  &.align-center {
+    .MuiInputBase-input {
+      text-align: center;
+    }
+  }
+  &.align-right {
+    .MuiInputBase-input {
+      text-align: right;
+    }
+  }
+}

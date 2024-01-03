@@ -2,7 +2,6 @@ import { CSSProperties, ReactNode } from 'react';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import { FormContextValue } from '../FormContext';
-import { Dayjs } from 'dayjs';
 
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -29,6 +28,8 @@ export interface FormValueMap {
   [key: string]: FormValue;
 }
 
+export type FormYearMonthValue = { year: number; month: number };
+
 export type FormValueItemData = Record<string, any>;
 
 export interface FormValueItemBaseCommands<
@@ -48,6 +49,10 @@ export interface FormValueItemBaseCommands<
     | 'FormDateTimePicker'
     | 'FormTimePicker'
     | 'FormDateRangePicker'
+    | 'FormMonthPicker'
+    | 'FormMonthRangePicker'
+    | 'FormYearPicker'
+    | 'FormYearRangePicker'
     | 'FormFile';
   getName(): string;
   getReset(): V;
@@ -95,15 +100,22 @@ export interface FormDateValueItemCommands {
   getFormValueFormat(): string;
 }
 
-export interface FormDateRangeValueItemCommands {
-  getStartValue(): Dayjs | null;
-  setStartValue(value: Dayjs | null): void;
-  getEndValue(): Dayjs | null;
-  setEndValue(value: Dayjs | null): void;
+export interface FormRangeValueItemCommands<T> {
+  getStartValue(): T | null;
+  setStartValue(value: T | null): void;
+  getEndValue(): T | null;
+  setEndValue(value: T | null): void;
   getFormValueStartNameSuffix(): string;
   getFormValueEndNameSuffix(): string;
   getFormValueStartName(): string;
   getFormValueEndName(): string;
+}
+
+export interface FormYearMonthValueItemCommands {
+  getFormValueYearNameSuffix(): string;
+  getFormValueMonthNameSuffix(): string;
+  getFormValueYearName(): string;
+  getFormValueMonthName(): string;
 }
 
 export interface FormValueItemCommands<T, AllowUndefinedValue extends boolean = true, ItemType = any>
@@ -114,7 +126,8 @@ export interface FormValueItemCommands<T, AllowUndefinedValue extends boolean = 
     Partial<FormMultipleValueItemCommands>,
     Partial<FormLoadingValueItemCommands>,
     Partial<FormDateValueItemCommands>,
-    Partial<FormDateRangeValueItemCommands> {}
+    Partial<FormRangeValueItemCommands<T>>,
+    Partial<FormYearMonthValueItemCommands> {}
 
 export interface FormValueItemCommandsMap<T, AllowUndefinedValue extends boolean = true, ItemType = any> {
   [key: string]: FormValueItemCommands<T, AllowUndefinedValue, ItemType> | undefined;
