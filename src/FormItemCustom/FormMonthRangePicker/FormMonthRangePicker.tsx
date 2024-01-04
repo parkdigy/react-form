@@ -339,9 +339,11 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
           setValue(lastValue);
         },
         getFromYear: () => (lastValue[0] ? lastValue[0].year : null),
-        setFromYear: (year: number) => {
+        setFromYear: (year: number | null) => {
           lastValue = getFinalValue([
-            lastValue[0]
+            year === null
+              ? null
+              : lastValue[0]
               ? { year, month: lastValue[0].month }
               : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
             lastValue[1],
@@ -349,28 +351,38 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
           setValue(lastValue);
         },
         getFromMonth: () => (lastValue[0] ? lastValue[0].month : null),
-        setFromMonth: (month: number) => {
+        setFromMonth: (month: number | null) => {
           lastValue = getFinalValue([
-            lastValue[0] ? { year: lastValue[0].year, month } : { year: new Date().getFullYear(), month },
+            month === null
+              ? null
+              : lastValue[0]
+              ? { year: lastValue[0].year, month }
+              : { year: new Date().getFullYear(), month },
             lastValue[1],
           ]);
           setValue(lastValue);
         },
         getToYear: () => (lastValue[1] ? lastValue[1].year : null),
-        setToYear: (year: number) => {
+        setToYear: (year: number | null) => {
           lastValue = getFinalValue([
             lastValue[0],
-            lastValue[1]
+            year === null
+              ? null
+              : lastValue[1]
               ? { year, month: lastValue[1].month }
               : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
           ]);
           setValue(lastValue);
         },
         getToMonth: () => (lastValue[1] ? lastValue[1].month : null),
-        setToMonth: (month: number) => {
+        setToMonth: (month: number | null) => {
           lastValue = getFinalValue([
             lastValue[0],
-            lastValue[1] ? { year: lastValue[1].year, month } : { year: new Date().getFullYear(), month },
+            month === null
+              ? null
+              : lastValue[1]
+              ? { year: lastValue[1].year, month }
+              : { year: new Date().getFullYear(), month },
           ]);
           setValue(lastValue);
         },

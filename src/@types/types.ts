@@ -116,9 +116,9 @@ export interface FormRangeValueItemNameCommands {
 
 export interface FormYearMonthValueItemCommands {
   getYear(): number | null;
-  setYear(year: number): void;
+  setYear(year: number | null): void;
   getMonth(): number | null;
-  setMonth(month: number): void;
+  setMonth(month: number | null): void;
 }
 
 export interface FormYearMonthValueItemNameCommands {
@@ -130,13 +130,13 @@ export interface FormYearMonthValueItemNameCommands {
 
 export interface FormYearMonthRangeValueItemCommands {
   getFromYear(): number | null;
-  setFromYear(year: number): void;
+  setFromYear(year: number | null): void;
   getFromMonth(): number | null;
-  setFromMonth(month: number): void;
+  setFromMonth(month: number | null): void;
   getToYear(): number | null;
-  setToYear(year: number): void;
+  setToYear(year: number | null): void;
   getToMonth(): number | null;
-  setToMonth(month: number): void;
+  setToMonth(month: number | null): void;
 }
 
 export interface FormYearMonthRangeValueItemNameCommands {
