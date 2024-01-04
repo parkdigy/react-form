@@ -352,11 +352,11 @@ const Form = React.forwardRef<FormCommands, Props>(
                 const value = getItemFormValue(valueItem, !!isReset) as FormYearMonthValue;
                 if (notEmpty(subKey)) {
                   if (subKey === (valueItem as FormYearMonthValueItemNameCommands).getFormValueYearNameSuffix()) {
-                    return value;
+                    return value.year;
                   } else if (
                     subKey === (valueItem as FormYearMonthValueItemNameCommands).getFormValueMonthNameSuffix()
                   ) {
-                    return value;
+                    return value.month;
                   } else {
                     throw new Error(`Form::getFormReset - ${valueItem.getType()} 의 subKey 값을 찾을 수 없습니다.`);
                   }

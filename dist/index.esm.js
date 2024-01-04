@@ -739,10 +739,10 @@ function AutoTypeForwardRef(render) {
                             var value = getItemFormValue(valueItem, !!isReset);
                             if (notEmpty(subKey)) {
                                 if (subKey === valueItem.getFormValueYearNameSuffix()) {
-                                    return value;
+                                    return value.year;
                                 }
                                 else if (subKey === valueItem.getFormValueMonthNameSuffix()) {
-                                    return value;
+                                    return value.month;
                                 }
                                 else {
                                     throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 subKey \uAC12\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."));
