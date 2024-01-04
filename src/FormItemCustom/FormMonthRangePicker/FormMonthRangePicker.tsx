@@ -21,7 +21,7 @@ import {
   PrivateYearRangePickerSelectType,
 } from '../../@private';
 import { FormDateRangePickerDefaultProps } from '../FormDateRangePicker';
-import { FormMonthPickerBaseValue, FormMonthPickerDefaultProps } from '../FormMonthPicker';
+import { FormMonthPickerBaseValue } from '../FormMonthPicker';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 
@@ -66,14 +66,14 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       readOnlyInput,
       startAdornment,
       endAdornment,
-      formValueStartName,
-      formValueEndName,
-      formValueStartNameSuffix,
-      formValueEndNameSuffix,
-      formValueYearNameSuffix,
-      formValueMonthNameSuffix,
-      formValueYearName,
-      formValueMonthName,
+      formValueFromYearName,
+      formValueFromMonthName,
+      formValueToYearName,
+      formValueToMonthName,
+      formValueFromYearNameSuffix,
+      formValueFromMonthNameSuffix,
+      formValueToYearNameSuffix,
+      formValueToMonthNameSuffix,
       align,
       //----------------------------------------------------------------------------------------------------------------
       className,
@@ -136,8 +136,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
     const [endErrorHelperText, setEndErrorHelperText] = useState<Props['helperText']>();
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
-    const [open, setOpen] = useState(true);
-    const [selectType, setSelectType] = useState<PrivateYearRangePickerSelectType>('start');
+    const [open, setOpen] = useState(false);
 
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
@@ -167,7 +166,9 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
 
     // Memo --------------------------------------------------------------------------------------------------------------
 
-    const nowYear = useMemo(() => new Date().getFullYear(), []);
+    const nowDate = useMemo(() => dayjs(), []);
+    const nowValue = useMemo(() => dateToValue(nowDate), [dateToValue, nowDate]);
+    const nowYm = useMemo(() => valueToYm(nowValue), [nowValue, valueToYm]);
 
     const valueDate = useMemo(
       () => [
@@ -180,11 +181,28 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
     const minValue = useMemo(() => initMinValue || FormMonthRangePickerDefaultProps.minValue, [initMinValue]);
     const maxValue = useMemo(() => initMaxValue || FormMonthRangePickerDefaultProps.maxValue, [initMaxValue]);
 
-    const minYm = useMemo(() => valueToYm(minValue), [minValue, valueToYm]);
-    const maxYm = useMemo(() => valueToYm(maxValue), [maxValue, valueToYm]);
-
     const minDate = useMemo(() => (minValue ? valueToDate(minValue) : undefined), [minValue, valueToDate]);
     const maxDate = useMemo(() => (maxValue ? valueToDate(maxValue) : undefined), [maxValue, valueToDate]);
+
+    const minAvailableValue = useMemo(() => {
+      if (disablePast) {
+        const minYm = valueToYm(minValue);
+        return nowYm > minYm ? nowValue : minValue;
+      } else {
+        return minValue;
+      }
+    }, [disablePast, valueToYm, minValue, nowYm, nowValue]);
+    const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue, valueToYm]);
+
+    const maxAvailableValue = useMemo(() => {
+      if (disableFuture) {
+        const maxYm = valueToYm(maxValue);
+        return nowYm < maxYm ? nowValue : maxValue;
+      } else {
+        return maxValue;
+      }
+    }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
+    const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue, valueToYm]);
 
     // Memo --------------------------------------------------------------------------------------------------------------
 
@@ -258,6 +276,9 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
 
         if (startInputDatePickerErrorRef.current) {
           setStartErrorErrorHelperText(true, getDateValidationErrorText(startInputDatePickerErrorRef.current));
+          if (endInputDatePickerErrorRef.current) {
+            setEndErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
+          }
           return false;
         }
         if (endInputDatePickerErrorRef.current) {
@@ -307,13 +328,13 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
           lastData = data;
           setData(data);
         },
-        getStartValue: () => lastValue[0],
-        setStartValue: (value) => {
+        getFromValue: () => lastValue[0],
+        setFromValue: (value) => {
           lastValue = [value, lastValue[1]];
           setValue(lastValue);
         },
-        getEndValue: () => lastValue[1],
-        setEndValue: (value) => {
+        getToValue: () => lastValue[1],
+        setToValue: (value) => {
           lastValue = [lastValue[0], value];
           setValue(lastValue);
         },
@@ -328,36 +349,36 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
         validate: () => validate(value),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
-        getFormValueStartNameSuffix: () =>
-          formValueStartNameSuffix || FormDateRangePickerDefaultProps.formValueStartNameSuffix,
-        getFormValueEndNameSuffix: () =>
-          formValueEndNameSuffix || FormDateRangePickerDefaultProps.formValueEndNameSuffix,
-        getFormValueStartName: () => {
+        getFormValueFromYearNameSuffix: () =>
+          formValueFromYearNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix,
+        getFormValueFromMonthNameSuffix: () =>
+          formValueFromMonthNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix,
+        getFormValueToYearNameSuffix: () =>
+          formValueToYearNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix,
+        getFormValueToMonthNameSuffix: () =>
+          formValueToMonthNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix,
+        getFormValueFromYearName: () => {
           return (
-            formValueStartName ||
-            `${name}${formValueStartNameSuffix || FormDateRangePickerDefaultProps.formValueStartNameSuffix}`
+            formValueFromYearName ||
+            `${name}${formValueFromYearNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`
           );
         },
-        getFormValueEndName: () => {
+        getFormValueFromMonthName: () => {
           return (
-            formValueEndName ||
-            `${name}${formValueEndNameSuffix || FormDateRangePickerDefaultProps.formValueEndNameSuffix}`
+            formValueFromMonthName ||
+            `${name}${formValueFromMonthNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`
           );
         },
-        getFormValueYearNameSuffix: () =>
-          formValueYearNameSuffix || FormMonthPickerDefaultProps.formValueYearNameSuffix,
-        getFormValueMonthNameSuffix: () =>
-          formValueMonthNameSuffix || FormMonthPickerDefaultProps.formValueMonthNameSuffix,
-        getFormValueYearName: () => {
+        getFormValueToYearName: () => {
           return (
-            formValueYearName ||
-            `${name}${formValueYearNameSuffix || FormMonthPickerDefaultProps.formValueYearNameSuffix}`
+            formValueToYearName ||
+            `${name}${formValueToYearNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`
           );
         },
-        getFormValueMonthName: () => {
+        getFormValueToMonthName: () => {
           return (
-            formValueMonthName ||
-            `${name}${formValueMonthNameSuffix || FormMonthPickerDefaultProps.formValueMonthNameSuffix}`
+            formValueToMonthName ||
+            `${name}${formValueToMonthNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`
           );
         },
       };
@@ -401,14 +422,14 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       setErrorErrorHelperText,
       data,
       setData,
-      formValueStartNameSuffix,
-      formValueEndNameSuffix,
-      formValueStartName,
-      formValueEndName,
-      formValueYearNameSuffix,
-      formValueMonthNameSuffix,
-      formValueYearName,
-      formValueMonthName,
+      formValueFromYearNameSuffix,
+      formValueFromMonthNameSuffix,
+      formValueToYearNameSuffix,
+      formValueToMonthNameSuffix,
+      formValueFromYearName,
+      formValueFromMonthName,
+      formValueToYearName,
+      formValueToMonthName,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
@@ -418,7 +439,6 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
         setValue(newValue);
         if (selectType === 'start' && isMonthSelect) {
           nextTick(() => {
-            setSelectType('end');
             endInputRef.current?.focus();
           });
         } else if (selectType === 'end' && isMonthSelect) {
@@ -438,7 +458,11 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
           if (selectType === 'start') {
             setValue((old) => {
               const newValue: FormMonthRangePickerValue = [date ? dateToValue(date) : null, old[1]];
-              if (newValue[0] !== null && valueToYm(newValue[0]) >= minYm && valueToYm(newValue[0]) <= maxYm) {
+              if (
+                newValue[0] !== null &&
+                valueToYm(newValue[0]) >= minAvailableYm &&
+                valueToYm(newValue[0]) <= maxAvailableYm
+              ) {
                 if (newValue[1] !== null && newValue[1] < newValue[0]) {
                   newValue[1] = newValue[0];
                 }
@@ -455,7 +479,11 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
           } else {
             setValue((old) => {
               const newValue: FormMonthRangePickerValue = [old[0], date ? dateToValue(date) : null];
-              if (newValue[1] !== null && valueToYm(newValue[1]) >= minYm && valueToYm(newValue[1]) <= maxYm) {
+              if (
+                newValue[1] !== null &&
+                valueToYm(newValue[1]) >= minAvailableYm &&
+                valueToYm(newValue[1]) <= maxAvailableYm
+              ) {
                 if (newValue[0] !== null && newValue[0] > newValue[1]) {
                   newValue[0] = newValue[1];
                 }
@@ -471,7 +499,18 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
           }
         }
       },
-      [dateToValue, endError, maxYm, minYm, name, onValueChangeByUser, setValue, startError, validate, valueToYm]
+      [
+        dateToValue,
+        endError,
+        maxAvailableYm,
+        minAvailableYm,
+        name,
+        onValueChangeByUser,
+        setValue,
+        startError,
+        validate,
+        valueToYm,
+      ]
     );
 
     const handleInputDatePickerFocus = useCallback(
@@ -481,7 +520,6 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
         if (selectType === 'end' && value[0] == null) {
           startInputRef.current?.focus();
         } else {
-          setSelectType(selectType);
           setOpen(true);
         }
       },
@@ -489,10 +527,11 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
     );
 
     const handleInputDatePickerShouldDisableYear = useCallback(
-      (year: Dayjs) => {
-        return (!!disablePast && year.year() < nowYear) || (!!disableFuture && year.year() > nowYear);
+      (dt: Dayjs) => {
+        const ym = dt.year() * 100 + (dt.month() + 1);
+        return ym < minAvailableYm || ym > maxAvailableYm;
       },
-      [disableFuture, disablePast, nowYear]
+      [maxAvailableYm, minAvailableYm]
     );
 
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -547,7 +586,6 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
               title={
                 <div style={{ display: 'flex' }}>
                   <PrivateMonthRangePicker
-                    selectType={selectType}
                     minValue={minValue}
                     maxValue={maxValue}
                     disablePast={disablePast}

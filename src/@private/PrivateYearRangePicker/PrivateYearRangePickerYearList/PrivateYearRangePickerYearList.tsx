@@ -3,8 +3,8 @@ import {
   PrivateYearRangePickerYearListProps as Props,
   PrivateYearRangePickerYearListDefaultProps,
 } from './PrivateYearRangePickerYearList.types';
-import { Grid } from '@mui/material';
 import PrivateYearRangePickerYear from '../PrivateYearRangePickerYear';
+import { StyledContainer } from './PrivateYearRangePickerYearList.style';
 
 let _lastCloseTime = 0;
 
@@ -100,17 +100,19 @@ const PrivateYearRangePickerYearList: React.FC<Props> = ({
   const years = useMemo(() => {
     const newYears: {
       year: number;
-      selected: boolean;
-      selectedStart: boolean;
-      selectedEnd: boolean;
-      selectedTemp: boolean;
+      isDefault?: boolean;
+      selected?: boolean;
+      selectedStart?: boolean;
+      selectedEnd?: boolean;
+      selectedTemp?: boolean;
       disabled?: boolean;
     }[] = [];
     for (let i = minYear; i <= maxYear; i += 1) {
       newYears.push({
         year: i,
+        isDefault: !value[0] && !value[1] && i === displayValue[0],
         selected: !!value[0] && !!value[1] && i >= value[0] && i <= value[1],
-        selectedStart: !value[0] && !value[1] ? i === displayValue[0] : i === value[0],
+        selectedStart: i === value[0],
         selectedEnd: i === value[1],
         selectedTemp:
           (selectType === 'start' && !!value[1] && !!mouseOverYear && i < value[1] && i >= mouseOverYear) ||
@@ -141,7 +143,7 @@ const PrivateYearRangePickerYearList: React.FC<Props> = ({
   // Render ------------------------------------------------------------------------------------------------------------
 
   return (
-    <Grid container className='MuiYearCalendar-root' ref={yearsContainerRef}>
+    <StyledContainer className='PrivateYearRangePickerYearList' container ref={yearsContainerRef}>
       {years.map((info) => (
         <PrivateYearRangePickerYear
           key={info.year}
@@ -156,6 +158,7 @@ const PrivateYearRangePickerYearList: React.FC<Props> = ({
             }
           }}
           year={info.year}
+          isDefault={info.isDefault}
           selected={info.selected}
           selectedStart={info.selectedStart}
           selectedEnd={info.selectedEnd}
@@ -166,7 +169,7 @@ const PrivateYearRangePickerYearList: React.FC<Props> = ({
           onMouseLeave={() => mouseOver(undefined)}
         />
       ))}
-    </Grid>
+    </StyledContainer>
   );
 };
 

@@ -5,9 +5,9 @@ import {
   PrivateYearRangePickerValue,
 } from './PrivateYearRangePicker.types';
 import dayjs from 'dayjs';
-import './PrivateYearRangePicker.scss';
 import { useAutoUpdateState } from '@pdg/react-hook';
 import PrivateYearRangePickerYearList from './PrivateYearRangePickerYearList';
+import { StyledTitleContainer, StyledTitleGap, StyledYear, StyledYearError } from './PrivateYearRangePicker.style';
 
 const DEFAULT_VALUE = [null, null];
 
@@ -27,6 +27,8 @@ const PrivateYearRangePicker: React.FC<Props> = ({
 
   // Memo --------------------------------------------------------------------------------------------------------------
 
+  const nowYear = useMemo(() => new Date().getFullYear(), []);
+
   const minYear = useMemo(
     () => (initMinYear === undefined ? PrivateYearRangePickerDefaultProps.minYear : initMinYear),
     [initMinYear]
@@ -36,12 +38,28 @@ const PrivateYearRangePicker: React.FC<Props> = ({
     [initMaxYear]
   );
 
+  const minAvailableYear = useMemo(() => {
+    if (disablePast) {
+      return nowYear > minYear ? nowYear : minYear;
+    } else {
+      return minYear;
+    }
+  }, [disablePast, minYear, nowYear]);
+
+  const maxAvailableYear = useMemo(() => {
+    if (disableFuture) {
+      return nowYear < maxYear ? nowYear : maxYear;
+    } else {
+      return maxYear;
+    }
+  }, [disableFuture, maxYear, nowYear]);
+
   const displayValue = useMemo(() => {
     let defaultYear = dayjs().year();
-    if (minYear > defaultYear) {
+    if (minAvailableYear > defaultYear) {
       defaultYear = minYear;
-    } else if (maxYear < defaultYear) {
-      defaultYear = maxYear;
+    } else if (maxAvailableYear < defaultYear) {
+      defaultYear = maxAvailableYear;
     }
 
     if (value) {
@@ -49,7 +67,15 @@ const PrivateYearRangePicker: React.FC<Props> = ({
     } else {
       return [defaultYear, defaultYear];
     }
-  }, [maxYear, minYear, value]);
+  }, [maxAvailableYear, minAvailableYear, minYear, value]);
+
+  const displayValueError = useMemo(
+    () => [
+      displayValue[0] < minAvailableYear || displayValue[0] > maxAvailableYear,
+      displayValue[1] < minAvailableYear || displayValue[1] > maxAvailableYear,
+    ],
+    [displayValue, minAvailableYear, maxAvailableYear]
+  );
 
   // Event Handler -----------------------------------------------------------------------------------------------------
 
@@ -57,10 +83,10 @@ const PrivateYearRangePicker: React.FC<Props> = ({
     (valueYear: number) => {
       const newValue: PrivateYearRangePickerValue = [...value];
 
-      if (minYear && valueYear < minYear) {
-        valueYear = minYear;
-      } else if (maxYear && valueYear > maxYear) {
-        valueYear = maxYear;
+      if (minAvailableYear && valueYear < minAvailableYear) {
+        valueYear = minAvailableYear;
+      } else if (maxAvailableYear && valueYear > maxAvailableYear) {
+        valueYear = maxAvailableYear;
       }
 
       if (selectType === 'start') {
@@ -87,7 +113,7 @@ const PrivateYearRangePicker: React.FC<Props> = ({
 
       setValue(newValue);
     },
-    [selectType, value, minYear, maxYear, setValue, onChange]
+    [value, minAvailableYear, maxAvailableYear, selectType, setValue, onChange]
   );
 
   // Render ------------------------------------------------------------------------------------------------------------
@@ -95,13 +121,19 @@ const PrivateYearRangePicker: React.FC<Props> = ({
   return (
     <div className='PrivateYearRangePicker'>
       {!hideHeader && (
-        <div className='title-wrap'>
-          <div className='year-month-wrap'>
-            <div className='year'>
-              {displayValue[0]}년 ~ {displayValue[1]}년
-            </div>
-          </div>
-        </div>
+        <StyledTitleContainer>
+          {displayValueError[0] ? (
+            <StyledYearError>{displayValue[0]}년</StyledYearError>
+          ) : (
+            <StyledYear>{displayValue[0]}년</StyledYear>
+          )}
+          <StyledTitleGap>~</StyledTitleGap>
+          {displayValueError[1] ? (
+            <StyledYearError>{displayValue[1]}년</StyledYearError>
+          ) : (
+            <StyledYear>{displayValue[1]}년</StyledYear>
+          )}
+        </StyledTitleContainer>
       )}
       <div>
         <PrivateYearRangePickerYearList

@@ -1,26 +1,23 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   PrivateMonthPickerMonthListProps as Props,
   PrivateMonthPickerMonthListDefaultProps,
 } from './PrivateMonthPickerMonthList.types';
-import { Button, Grid } from '@mui/material';
 import PrivateMonthPickerMonth from '../PrivateMonthPickerMonth';
 import { FormMonthPickerBaseValue } from '../../../FormItemCustom';
 import dayjs, { Dayjs } from 'dayjs';
+import { StyledContainer } from './PrivateMonthPickerMonthList.style';
 
 const PrivateMonthPickerMonthList: React.FC<Props> = ({
   value,
-  minValue,
-  maxValue,
+  minAvailableValue,
+  maxAvailableValue,
   disablePast,
   disableFuture,
+  selectFromValue,
+  selectToValue,
   onChange,
 }) => {
-  // Ref ---------------------------------------------------------------------------------------------------------------
-
-  const startButtonRef = useRef<HTMLDivElement | null>(null);
-  const endButtonRef = useRef<HTMLDivElement | null>(null);
-
   // Function ----------------------------------------------------------------------------------------------------------
 
   const valueToYm = useCallback((v: FormMonthPickerBaseValue) => v.year * 100 + v.month, []);
@@ -28,71 +25,97 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
 
   // Memo --------------------------------------------------------------------------------------------------------------
 
-  const minYm = useMemo(() => valueToYm(minValue), [minValue, valueToYm]);
-  const maxYm = useMemo(() => valueToYm(maxValue), [maxValue, valueToYm]);
+  const nowDate = useMemo(() => dayjs(), []);
+  const nowValue = useMemo(() => dateToValue(nowDate), [dateToValue, nowDate]);
+  const nowYm = useMemo(() => Number(nowDate.format('YYYYMM')), [nowDate]);
+
+  const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue, valueToYm]);
+  const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue, valueToYm]);
 
   const defaultValue = useMemo(() => {
-    const nowYm = new Date().getFullYear() * 100 + new Date().getMonth() + 1;
-    if (nowYm < minYm) {
-      return minValue;
-    } else if (nowYm > maxYm) {
-      return maxValue;
+    if (nowYm < minAvailableYm) {
+      return minAvailableValue;
+    } else if (nowYm > maxAvailableYm) {
+      return maxAvailableValue;
     } else {
-      return dateToValue(dayjs());
+      return nowValue;
     }
-  }, [minYm, maxYm, minValue, maxValue, dateToValue]);
+  }, [nowYm, minAvailableYm, maxAvailableYm, minAvailableValue, maxAvailableValue, nowValue]);
 
   const defaultYear = useMemo(() => defaultValue.year, [defaultValue]);
   const defaultMonth = useMemo(() => defaultValue.month, [defaultValue]);
 
+  const currentYear = useMemo(() => (value ? value.year : defaultYear), [value, defaultYear]);
+
   const months = useMemo(() => {
     const newMonths: {
       month: number;
+      isDefault?: boolean;
+      active?: boolean;
       selected?: boolean;
       selectedStart?: boolean;
       selectedEnd?: boolean;
       selectedTemp?: boolean;
       disabled?: boolean;
     }[] = [];
+    const startYm = selectFromValue ? valueToYm(selectFromValue) : value ? valueToYm(value) : 0;
+    const endYm = selectToValue ? valueToYm(selectToValue) : value ? valueToYm(value) : 0;
+
     for (let i = 1; i <= 12; i += 1) {
-      const ym = value ? value.year * 100 + i : defaultYear * 100 + i;
+      const ym = currentYear * 100 + i;
+
       newMonths.push({
         month: i,
-        selectedStart: value ? i === value.month : i === defaultMonth,
-        disabled: ym < minYm || ym > maxYm || (disablePast && i < defaultYear) || (disableFuture && i > defaultYear),
+        isDefault: !value && i === defaultMonth,
+        active: (!!selectFromValue || !!selectToValue) && !!value && ym === valueToYm(value),
+        selected: !!value && ym >= startYm && ym <= endYm,
+        selectedStart: !!value && ym === startYm,
+        selectedEnd: !!value && ym === endYm,
+        disabled:
+          ym < minAvailableYm || ym > maxAvailableYm || (disablePast && ym < nowYm) || (disableFuture && ym > nowYm),
       });
     }
     return newMonths;
-  }, [disableFuture, disablePast, maxYm, minYm, defaultMonth, defaultYear, value]);
+  }, [
+    selectFromValue,
+    valueToYm,
+    value,
+    selectToValue,
+    currentYear,
+    defaultMonth,
+    minAvailableYm,
+    maxAvailableYm,
+    disablePast,
+    nowYm,
+    disableFuture,
+  ]);
+
+  const handleMonthChange = useCallback(
+    (month: number) => {
+      onChange({ year: currentYear, month });
+    },
+    [currentYear, onChange]
+  );
 
   // Render ------------------------------------------------------------------------------------------------------------
 
   return (
-    <Grid container className='MuiMonthCalendar-root'>
+    <StyledContainer className='PrivateMonthPickerMonthList' container>
       {months.map((info) => (
         <PrivateMonthPickerMonth
           key={info.month}
-          ref={
-            info.selectedStart || info.selectedEnd
-              ? (ref) => {
-                  if (info.selectedStart) {
-                    startButtonRef.current = ref;
-                  } else if (info.selectedEnd) {
-                    endButtonRef.current = ref;
-                  }
-                }
-              : undefined
-          }
           month={info.month}
+          isDefault={info.isDefault}
+          active={info.active}
           selected={info.selected}
           selectedStart={info.selectedStart}
           selectedEnd={info.selectedEnd}
           selectedTemp={info.selectedTemp}
           disabled={info.disabled}
-          onClick={() => onChange({ year: value?.year || defaultYear, month: info.month })}
+          onClick={handleMonthChange}
         />
       ))}
-    </Grid>
+    </StyledContainer>
   );
 };
 

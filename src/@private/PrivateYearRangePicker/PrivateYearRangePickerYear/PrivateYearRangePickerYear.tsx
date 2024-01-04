@@ -4,29 +4,40 @@ import {
   PrivateYearRangePickerYearDefaultProps,
 } from './PrivateYearRangePickerYear.types';
 import classNames from 'classnames';
-import { Button, Grid } from '@mui/material';
+import { StyledContainer, StyledButton } from './PrivateYearRangePickerYear.style';
 
 const PrivateYearRangePickerYear = React.forwardRef<HTMLDivElement, Props>(
   (
-    { year, disabled, selected, selectedStart, selectedEnd, selectedTemp, onClick, onMouseEnter, onMouseLeave },
+    {
+      year,
+      disabled,
+      isDefault,
+      selected,
+      selectedStart,
+      selectedEnd,
+      selectedTemp,
+      onClick,
+      onMouseEnter,
+      onMouseLeave,
+    },
     ref
   ) => {
     const className = useMemo(
       () =>
         classNames(
-          'MuiPickersYear-yearButton',
+          isDefault && 'default',
           selected && 'selected',
           selectedStart && 'selected-start',
           selectedEnd && 'selected-end',
           selectedTemp && 'selected-temp',
           disabled && 'disabled'
         ),
-      [selected, selectedStart, selectedEnd, selectedTemp, disabled]
+      [isDefault, selected, selectedStart, selectedEnd, selectedTemp, disabled]
     );
 
     return (
-      <Grid ref={ref} item xs={4} className='MuiPickersYear-root'>
-        <Button
+      <StyledContainer className='PrivateYearRangePickerYear' ref={ref} item xs={4}>
+        <StyledButton
           className={className}
           disabled={disabled}
           onClick={onClick}
@@ -34,8 +45,8 @@ const PrivateYearRangePickerYear = React.forwardRef<HTMLDivElement, Props>(
           onMouseLeave={onMouseLeave}
         >
           {year}
-        </Button>
-      </Grid>
+        </StyledButton>
+      </StyledContainer>
     );
   }
 );

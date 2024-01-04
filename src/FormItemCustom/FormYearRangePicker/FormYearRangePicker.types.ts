@@ -1,4 +1,9 @@
-import { FormValueItemProps, FormValueItemBaseCommands, FormRangeValueItemCommands } from '../../@types';
+import {
+  FormValueItemProps,
+  FormValueItemBaseCommands,
+  FormRangeValueItemCommands,
+  FormRangeValueItemNameCommands,
+} from '../../@types';
 import { CommonSxProps } from '../../@types';
 import { ReactNode } from 'react';
 import {
@@ -32,25 +37,23 @@ export interface FormYearRangePickerProps
   readOnlyInput?: boolean;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
-  formValueStartName?: string;
-  formValueEndName?: string;
-  formValueStartNameSuffix?: string;
-  formValueEndNameSuffix?: string;
+  formValueFromName?: string;
+  formValueToName?: string;
+  formValueFromNameSuffix?: string;
+  formValueToNameSuffix?: string;
 }
 
 export const FormYearRangePickerDefaultProps: Required<
-  Pick<
-    FormYearRangePickerProps,
-    'format' | 'minYear' | 'maxYear' | 'formValueStartNameSuffix' | 'formValueEndNameSuffix'
-  >
+  Pick<FormYearRangePickerProps, 'format' | 'minYear' | 'maxYear' | 'formValueFromNameSuffix' | 'formValueToNameSuffix'>
 > = {
   format: 'YYYY년',
-  minYear: 2000,
-  maxYear: 2100,
-  formValueStartNameSuffix: '_from',
-  formValueEndNameSuffix: '_to',
+  minYear: 2020,
+  maxYear: 2050,
+  formValueFromNameSuffix: '_from',
+  formValueToNameSuffix: '_to',
 };
 
 export interface FormYearRangePickerCommands
   extends FormValueItemBaseCommands<FormYearRangePickerValue, false>,
-    FormRangeValueItemCommands<FormYearRangePickerBaseValue> {}
+    FormRangeValueItemCommands<FormYearRangePickerBaseValue>,
+    FormRangeValueItemNameCommands {}

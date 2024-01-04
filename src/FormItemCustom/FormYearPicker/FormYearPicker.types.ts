@@ -25,8 +25,8 @@ export interface FormYearPickerProps extends CommonSxProps, FormValueItemProps<F
 
 export const FormYearPickerDefaultProps: Required<Pick<FormYearPickerProps, 'format' | 'minYear' | 'maxYear'>> = {
   format: 'YYYY년',
-  minYear: 2000,
-  maxYear: 2100,
+  minYear: 2020,
+  maxYear: 2050,
 };
 
 export interface FormYearPickerCommands extends FormValueItemBaseCommands<FormYearPickerValue, false> {}

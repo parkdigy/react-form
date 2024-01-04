@@ -65,10 +65,10 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       exceptValue,
       error: initError,
       helperText,
-      formValueStartName,
-      formValueEndName,
-      formValueStartNameSuffix,
-      formValueEndNameSuffix,
+      formValueFromName,
+      formValueToName,
+      formValueFromNameSuffix,
+      formValueToNameSuffix,
       icon,
       startIcon,
       endIcon,
@@ -609,13 +609,13 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
             setData(data);
           },
 
-          getStartValue: () => lastValue[0],
-          setStartValue: (value) => {
+          getFromValue: () => lastValue[0],
+          setFromValue: (value) => {
             lastValue = [value, lastValue[1]];
             setValue(lastValue);
           },
-          getEndValue: () => lastValue[1],
-          setEndValue: (value) => {
+          getToValue: () => lastValue[1],
+          setToValue: (value) => {
             lastValue = [lastValue[0], value];
             setValue(lastValue);
           },
@@ -631,20 +631,20 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
           setError: (error: boolean, errorText: ReactNode | undefined) =>
             setErrorErrorHelperText(error, error ? errorText : undefined),
           getFormValueFormat: () => formValueFormat || FormDateRangePickerDefaultProps.format,
-          getFormValueStartNameSuffix: () =>
-            formValueStartNameSuffix || FormDateRangePickerDefaultProps.formValueStartNameSuffix,
-          getFormValueEndNameSuffix: () =>
-            formValueEndNameSuffix || FormDateRangePickerDefaultProps.formValueEndNameSuffix,
-          getFormValueStartName: () => {
+          getFormValueFromNameSuffix: () =>
+            formValueFromNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix,
+          getFormValueToNameSuffix: () =>
+            formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix,
+          getFormValueFromName: () => {
             return (
-              formValueStartName ||
-              `${name}${formValueStartNameSuffix || FormDateRangePickerDefaultProps.formValueStartNameSuffix}`
+              formValueFromName ||
+              `${name}${formValueFromNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`
             );
           },
-          getFormValueEndName: () => {
+          getFormValueToName: () => {
             return (
-              formValueEndName ||
-              `${name}${formValueEndNameSuffix || FormDateRangePickerDefaultProps.formValueEndNameSuffix}`
+              formValueToName ||
+              `${name}${formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`
             );
           },
         };
@@ -682,8 +682,8 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       focusValidate,
       validate,
       formValueFormat,
-      formValueStartNameSuffix,
-      formValueEndNameSuffix,
+      formValueFromNameSuffix,
+      formValueToNameSuffix,
       ref,
       onAddValueItem,
       onRemoveValueItem,
@@ -693,8 +693,8 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       setErrorErrorHelperText,
       data,
       setData,
-      formValueStartName,
-      formValueEndName,
+      formValueFromName,
+      formValueToName,
     ]);
 
     // Render ----------------------------------------------------------------------------------------------------------

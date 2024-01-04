@@ -1,41 +1,58 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   PrivateMonthPickerMonthProps as Props,
   PrivateMonthPickerMonthDefaultProps,
 } from './PrivateMonthPickerMonth.types';
 import classNames from 'classnames';
-import { Button, Grid } from '@mui/material';
+import { StyledButton, StyledContainer } from './PrivateMonthPickerMonth.style';
 
 const PrivateMonthPickerMonth = React.forwardRef<HTMLDivElement, Props>(
   (
-    { month, disabled, selected, selectedStart, selectedEnd, selectedTemp, onClick, onMouseEnter, onMouseLeave },
+    {
+      month,
+      disabled,
+      isDefault,
+      active,
+      selected,
+      selectedStart,
+      selectedEnd,
+      selectedTemp,
+      onClick,
+      onMouseEnter,
+      onMouseLeave,
+    },
     ref
   ) => {
     const className = useMemo(
       () =>
         classNames(
-          'MuiPickersMonth-monthButton',
+          isDefault && 'default',
+          active && 'active',
           selected && 'selected',
           selectedStart && 'selected-start',
           selectedEnd && 'selected-end',
           selectedTemp && 'selected-temp',
           disabled && 'disabled'
         ),
-      [selected, selectedStart, selectedEnd, selectedTemp, disabled]
+      [isDefault, active, selected, selectedStart, selectedEnd, selectedTemp, disabled]
     );
 
+    const handleClick = useCallback(() => {
+      onClick && onClick(month);
+    }, [month, onClick]);
+
     return (
-      <Grid ref={ref} item xs={4} className='MuiPickersMonth-root'>
-        <Button
+      <StyledContainer className='PrivateMonthPickerMonth' ref={ref} item xs={4}>
+        <StyledButton
           className={className}
           disabled={disabled}
-          onClick={onClick}
+          onClick={handleClick}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
           {month}월
-        </Button>
-      </Grid>
+        </StyledButton>
+      </StyledContainer>
     );
   }
 );

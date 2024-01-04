@@ -1,8 +1,12 @@
 import { PrivateMonthPickerBaseValue, PrivateMonthPickerProps } from '../PrivateMonthPicker.types';
 
 export interface PrivateMonthPickerMonthListProps
-  extends Pick<PrivateMonthPickerProps, 'value' | 'disablePast' | 'disableFuture'>,
-    Required<Pick<PrivateMonthPickerProps, 'minValue' | 'maxValue'>> {
+  extends Pick<
+    PrivateMonthPickerProps,
+    'value' | 'disablePast' | 'disableFuture' | 'selectFromValue' | 'selectToValue'
+  > {
+  minAvailableValue: PrivateMonthPickerBaseValue;
+  maxAvailableValue: PrivateMonthPickerBaseValue;
   onChange(value: PrivateMonthPickerBaseValue): void;
 }
 

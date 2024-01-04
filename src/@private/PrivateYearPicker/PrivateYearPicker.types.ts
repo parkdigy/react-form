@@ -1,8 +1,11 @@
+import { CSSProperties } from 'react';
+
 export type PrivateYearPickerBaseValue = number;
 
 export type PrivateYearPickerValue = PrivateYearPickerBaseValue | null;
 
 export interface PrivateYearPickerProps {
+  style?: CSSProperties;
   value: PrivateYearPickerValue;
   minYear?: PrivateYearPickerBaseValue;
   maxYear?: PrivateYearPickerBaseValue;
@@ -15,6 +18,6 @@ export interface PrivateYearPickerProps {
 }
 
 export const PrivateYearPickerDefaultProps: Required<Pick<PrivateYearPickerProps, 'minYear' | 'maxYear'>> = {
-  minYear: 2000,
-  maxYear: 2100,
+  minYear: 2020,
+  maxYear: 2050,
 };

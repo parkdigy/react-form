@@ -15,11 +15,11 @@ export interface PrivateMonthPickerProps {
 
 export const PrivateMonthPickerDefaultProps: Required<Pick<PrivateMonthPickerProps, 'minValue' | 'maxValue'>> = {
   minValue: {
-    year: 2000,
+    year: 2020,
     month: 1,
   },
   maxValue: {
-    year: 2100,
+    year: 2050,
     month: 12,
   },
 };

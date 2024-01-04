@@ -5,15 +5,19 @@ import {
   PrivateMonthPickerValue,
   PrivateMonthPickerBaseValue,
 } from './PrivateMonthPicker.types';
-import { MonthCalendar } from '@mui/x-date-pickers';
-import { IconButton } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
-import './PrivateMonthPicker.scss';
 import { useAutoUpdateState } from '@pdg/react-hook';
 import { FormIcon } from '../../FormCommon';
 import PrivateYearPicker from '../PrivateYearPicker';
 import { FormMonthPickerBaseValue } from '../../FormItemCustom';
 import PrivateMonthPickerMonthList from './PrivateMonthPickerMonthList';
+import {
+  StyledContainer,
+  StyledIconButton,
+  StyledYearMonth,
+  StyledYearMonthError,
+  TitleContainer,
+} from './PrivateMonthPicker.style';
 
 const PrivateMonthPicker: React.FC<Props> = ({
   value: initValue,
@@ -26,6 +30,7 @@ const PrivateMonthPicker: React.FC<Props> = ({
   onChange,
 }) => {
   // State -------------------------------------------------------------------------------------------------------------
+
   const [value, setValue] = useAutoUpdateState<PrivateMonthPickerValue>(initValue || null);
 
   // Function ----------------------------------------------------------------------------------------------------------
@@ -36,88 +41,77 @@ const PrivateMonthPicker: React.FC<Props> = ({
 
   // Memo --------------------------------------------------------------------------------------------------------------
 
-  const valueDate = useMemo(() => (value ? valueToDate(value) : null), [value, valueToDate]);
+  const nowValue = useMemo(() => dateToValue(dayjs()), [dateToValue]);
+  const nowYm = useMemo(() => valueToYm(nowValue), [nowValue, valueToYm]);
 
   const minValue = useMemo(() => initMinValue || PrivateMonthPickerDefaultProps.minValue, [initMinValue]);
   const maxValue = useMemo(() => initMaxValue || PrivateMonthPickerDefaultProps.maxValue, [initMaxValue]);
 
-  const minDate = useMemo(() => valueToDate(minValue), [minValue, valueToDate]);
-  const maxDate = useMemo(() => valueToDate(maxValue), [maxValue, valueToDate]);
+  const minAvailableValue = useMemo(() => {
+    if (disablePast) {
+      const minYm = valueToYm(minValue);
+      return nowYm > minYm ? nowValue : minValue;
+    } else {
+      return minValue;
+    }
+  }, [disablePast, valueToYm, minValue, nowYm, nowValue]);
+  const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue, valueToYm]);
 
-  const minYm = useMemo(() => valueToYm(minValue), [minValue, valueToYm]);
-  const maxYm = useMemo(() => valueToYm(maxValue), [maxValue, valueToYm]);
+  const maxAvailableValue = useMemo(() => {
+    if (disableFuture) {
+      const maxYm = valueToYm(maxValue);
+      return nowYm < maxYm ? nowValue : maxValue;
+    } else {
+      return maxValue;
+    }
+  }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
+  const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue, valueToYm]);
 
   const displayValue = useMemo(() => {
-    if (value) {
+    if (value && !Number.isNaN(value.year) && !Number.isNaN(value.month)) {
       return value;
     } else {
-      const nowDate = new Date();
-      const nowYm = nowDate.getFullYear() * 100 + (nowDate.getMonth() + 1);
-      if (minDate && minYm > nowYm) {
-        return dateToValue(minDate);
-      } else if (maxDate && maxYm < nowYm) {
-        return dateToValue(maxDate);
+      if (nowYm < minAvailableYm) {
+        return minAvailableValue;
+      } else if (nowYm > maxAvailableYm) {
+        return maxAvailableValue;
       } else {
-        return dateToValue(dayjs(nowDate));
+        return nowValue;
       }
     }
-  }, [dateToValue, maxDate, maxYm, minDate, minYm, value]);
+  }, [maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm, nowValue, nowYm, value]);
   const displayValueDate = useMemo(() => valueToDate(displayValue), [displayValue, valueToDate]);
   const displayValueYm = useMemo(() => displayValue.year * 100 + displayValue.month, [displayValue]);
+  const displayValueError = useMemo(
+    () => displayValueYm < minAvailableYm || displayValueYm > maxAvailableYm,
+    [displayValueYm, maxAvailableYm, minAvailableYm]
+  );
 
-  const prevBtnDisabled = useMemo(() => displayValueYm <= minYm, [displayValueYm, minYm]);
-  const nextBtnDisabled = useMemo(() => displayValueYm >= maxYm, [displayValueYm, maxYm]);
+  const prevBtnDisabled = useMemo(() => displayValueYm <= minAvailableYm, [displayValueYm, minAvailableYm]);
+  const nextBtnDisabled = useMemo(() => displayValueYm >= maxAvailableYm, [displayValueYm, maxAvailableYm]);
 
   const selectFromYear = useMemo(() => (selectFromValue ? selectFromValue.year : undefined), [selectFromValue]);
   const selectToYear = useMemo(() => (selectToValue ? selectToValue.year : undefined), [selectToValue]);
 
   // Event Handler -----------------------------------------------------------------------------------------------------
 
-  // const handleYearChange = useCallback(
-  //   (value: Dayjs) => {
-  //     const valueYm = Number(value.format('YYYYMM'));
-  //
-  //     if (minValue && valueYm < minYm) {
-  //       setValue(minValue);
-  //       onChange(minValue, false);
-  //     } else if (maxValue && valueYm > maxYm) {
-  //       setValue(maxValue);
-  //       onChange(maxValue, false);
-  //     } else {
-  //       const newValue = { year: value.year(), month: value.month() + 1 };
-  //       setValue(newValue);
-  //       onChange(newValue, false);
-  //     }
-  //   },
-  //   [maxValue, maxYm, minValue, minYm, onChange, setValue]
-  // );
-
   const handleYearChange = useCallback(
     (year: number) => {
       const newValue = { ...displayValue, year };
       const valueYm = valueToYm(newValue);
-      if (minValue && valueYm < minYm) {
-        setValue(minValue);
-        onChange(minValue, false);
-      } else if (maxValue && valueYm > maxYm) {
-        setValue(maxValue);
-        onChange(maxValue, false);
+      if (valueYm < minAvailableYm) {
+        setValue(minAvailableValue);
+        onChange(minAvailableValue, false);
+      } else if (valueYm > maxAvailableYm) {
+        setValue(maxAvailableValue);
+        onChange(maxAvailableValue, false);
       } else {
         setValue(newValue);
         onChange(newValue, false);
       }
     },
-    [displayValue, maxValue, maxYm, minValue, minYm, onChange, setValue, valueToYm]
+    [displayValue, maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm, onChange, setValue, valueToYm]
   );
-
-  // const handleMonthChange = useCallback(
-  //   (value: Dayjs) => {
-  //     const newValue = { year: value.year(), month: value.month() + 1 };
-  //     setValue(newValue);
-  //     onChange(newValue, true);
-  //   },
-  //   [onChange, setValue]
-  // );
 
   const handleMonthChange = useCallback(
     (newValue: PrivateMonthPickerBaseValue) => {
@@ -142,19 +136,24 @@ const PrivateMonthPicker: React.FC<Props> = ({
   // Render ------------------------------------------------------------------------------------------------------------
 
   return (
-    <div className='PrivateMonthPicker'>
-      <div className='title-wrap'>
-        <IconButton disabled={prevBtnDisabled} onClick={handlePrevClick}>
+    <StyledContainer className='PrivateMonthPicker'>
+      <TitleContainer>
+        <StyledIconButton disabled={prevBtnDisabled} onClick={handlePrevClick}>
           <FormIcon>KeyboardArrowLeft</FormIcon>
-        </IconButton>
-        <div className='year-month-wrap'>
-          <div className='year'>{displayValue.year}년</div>
-          <div className='month'>{displayValue.month}월</div>
-        </div>
-        <IconButton disabled={nextBtnDisabled} onClick={handleNextClick}>
+        </StyledIconButton>
+        {displayValueError ? (
+          <StyledYearMonthError>
+            {displayValue.year}년 {displayValue.month}월
+          </StyledYearMonthError>
+        ) : (
+          <StyledYearMonth>
+            {displayValue.year}년 {displayValue.month}월
+          </StyledYearMonth>
+        )}
+        <StyledIconButton disabled={nextBtnDisabled} onClick={handleNextClick}>
           <FormIcon>KeyboardArrowRight</FormIcon>
-        </IconButton>
-      </div>
+        </StyledIconButton>
+      </TitleContainer>
       <div>
         <PrivateYearPicker
           value={value?.year || null}
@@ -171,14 +170,16 @@ const PrivateMonthPicker: React.FC<Props> = ({
       <div style={{ borderTop: '1px solid #efefef' }}>
         <PrivateMonthPickerMonthList
           value={value}
-          minValue={minValue}
-          maxValue={maxValue}
+          minAvailableValue={minAvailableValue}
+          maxAvailableValue={maxAvailableValue}
           disablePast={disablePast}
           disableFuture={disableFuture}
+          selectFromValue={selectFromValue}
+          selectToValue={selectToValue}
           onChange={handleMonthChange}
         />
       </div>
-    </div>
+    </StyledContainer>
   );
 };
 

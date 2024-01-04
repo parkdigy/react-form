@@ -3,8 +3,8 @@ import {
   PrivateYearPickerYearListProps as Props,
   PrivateYearPickerYearListDefaultProps,
 } from './PrivateYearPickerYearList.types';
-import { Grid } from '@mui/material';
 import PrivateYearPickerYear from '../PrivateYearPickerYear';
+import { StyledContainer } from './PrivateYearPickerYearList.style';
 
 let _lastCloseTime = 0;
 
@@ -21,6 +21,7 @@ const PrivateYearPickerYearList: React.FC<Props> = ({
   // Ref ---------------------------------------------------------------------------------------------------------------
 
   const yearsContainerRef = useRef<HTMLDivElement>(null);
+  const defaultButtonRef = useRef<HTMLDivElement | null>(null);
   const startButtonRef = useRef<HTMLDivElement | null>(null);
   const endButtonRef = useRef<HTMLDivElement | null>(null);
   const mouseOverTimer = useRef<NodeJS.Timeout>();
@@ -40,20 +41,11 @@ const PrivateYearPickerYearList: React.FC<Props> = ({
     };
   }, []);
 
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // useEffect(() => {
-  //   if (!displayValue[0]) {
-  //     startButtonRef.current = null;
-  //   }
-  //   if (!value) {
-  //     endButtonRef.current = null;
-  //   }
-  // }, [displayValue, value]);
-
   useEffect(() => {
     const container = yearsContainerRef.current;
     const startButton = startButtonRef.current;
     const endButton = endButtonRef.current;
+    const defaultButton = defaultButtonRef.current;
 
     if (container) {
       const containerScrollTop = container.scrollTop;
@@ -86,6 +78,11 @@ const PrivateYearPickerYearList: React.FC<Props> = ({
       } else if (endButton) {
         const endButtonBottom = endButton.offsetTop + endButton.offsetHeight - containerTop + 4;
         container.scrollTo(0, endButtonBottom - containerHeight);
+      } else if (defaultButton) {
+        const defaultButtonTop = defaultButton.offsetTop - containerTop - 4;
+        const defaultButtonBottom = defaultButtonTop + defaultButton.offsetHeight + 8;
+        const center = defaultButtonTop + (defaultButtonBottom - defaultButtonTop) / 2;
+        container.scrollTo(0, center - containerHalf);
       }
     }
 
@@ -96,8 +93,10 @@ const PrivateYearPickerYearList: React.FC<Props> = ({
 
   // Memo --------------------------------------------------------------------------------------------------------------
 
+  const nowYear = useMemo(() => new Date().getFullYear(), []);
+
   const defaultYear = useMemo(() => {
-    const newDefaultYear = new Date().getFullYear();
+    const newDefaultYear = nowYear;
     if (newDefaultYear < minYear) {
       return minYear;
     } else if (newDefaultYear > maxYear) {
@@ -105,34 +104,49 @@ const PrivateYearPickerYearList: React.FC<Props> = ({
     } else {
       return newDefaultYear;
     }
-  }, [minYear, maxYear]);
+  }, [nowYear, minYear, maxYear]);
 
   const years = useMemo(() => {
     const newYears: {
       year: number;
+      isDefault?: boolean;
+      active?: boolean;
       selected?: boolean;
       selectedStart?: boolean;
       selectedEnd?: boolean;
       selectedTemp?: boolean;
       disabled?: boolean;
     }[] = [];
-    const startYear = selectFromYear ? selectFromYear : value ? value : defaultYear;
-    const endYear = selectToYear ? selectToYear : value ? value : defaultYear;
+    const startYear = selectFromYear ? selectFromYear : value ? value : 0;
+    const endYear = selectToYear ? selectToYear : value ? value : 0;
 
     for (let i = minYear; i <= maxYear; i += 1) {
       newYears.push({
         year: i,
+        isDefault: !value && !selectFromYear && !selectToYear && i === defaultYear,
+        active: (!!selectFromYear || !!selectToYear) && i === value,
         selected: i >= startYear && i <= endYear,
         selectedStart: i === startYear,
         selectedEnd: i === endYear,
         selectedTemp:
           (!!selectToYear && !!mouseOverYear && i < endYear && i >= mouseOverYear) ||
           (!!selectFromYear && !!mouseOverYear && i > startYear && i <= mouseOverYear),
-        // disabled: (disablePast && i < nowYear) || (disableFuture && i > nowYear),
+        disabled: (disablePast && i < nowYear) || (disableFuture && i > nowYear),
       });
     }
     return newYears;
-  }, [selectFromYear, value, defaultYear, selectToYear, minYear, maxYear, mouseOverYear]);
+  }, [
+    selectFromYear,
+    value,
+    selectToYear,
+    minYear,
+    maxYear,
+    defaultYear,
+    mouseOverYear,
+    disablePast,
+    nowYear,
+    disableFuture,
+  ]);
 
   // Function ----------------------------------------------------------------------------------------------------------
 
@@ -154,7 +168,7 @@ const PrivateYearPickerYearList: React.FC<Props> = ({
   // Render ------------------------------------------------------------------------------------------------------------
 
   return (
-    <Grid container className='MuiYearCalendar-root' ref={yearsContainerRef}>
+    <StyledContainer className='PrivateYearPickerYearList' container ref={yearsContainerRef}>
       {years.map((info) => (
         <PrivateYearPickerYear
           key={info.year}
@@ -166,9 +180,13 @@ const PrivateYearPickerYearList: React.FC<Props> = ({
               }
             } else if (info.selectedEnd) {
               endButtonRef.current = ref;
+            } else if (info.isDefault) {
+              defaultButtonRef.current = ref;
             }
           }}
           year={info.year}
+          isDefault={info.isDefault}
+          active={info.active}
           selected={info.selected}
           selectedStart={info.selectedStart}
           selectedEnd={info.selectedEnd}
@@ -179,7 +197,7 @@ const PrivateYearPickerYearList: React.FC<Props> = ({
           onMouseLeave={() => mouseOver(undefined)}
         />
       ))}
-    </Grid>
+    </StyledContainer>
   );
 };
 

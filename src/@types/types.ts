@@ -22,13 +22,13 @@ export interface CommonSxProps extends CommonProps {
 
 //--------------------------------------------------------------------------------------------------------------------
 
-export type FormValue = string | number | boolean;
+export type FormYearMonthValue = { year: number; month: number };
+
+export type FormValue = string | number | boolean | FormYearMonthValue;
 
 export interface FormValueMap {
   [key: string]: FormValue;
 }
-
-export type FormYearMonthValue = { year: number; month: number };
 
 export type FormValueItemData = Record<string, any>;
 
@@ -101,21 +101,35 @@ export interface FormDateValueItemCommands {
 }
 
 export interface FormRangeValueItemCommands<T> {
-  getStartValue(): T | null;
-  setStartValue(value: T | null): void;
-  getEndValue(): T | null;
-  setEndValue(value: T | null): void;
-  getFormValueStartNameSuffix(): string;
-  getFormValueEndNameSuffix(): string;
-  getFormValueStartName(): string;
-  getFormValueEndName(): string;
+  getFromValue(): T | null;
+  setFromValue(value: T | null): void;
+  getToValue(): T | null;
+  setToValue(value: T | null): void;
 }
 
-export interface FormYearMonthValueItemCommands {
+export interface FormRangeValueItemNameCommands {
+  getFormValueFromNameSuffix(): string;
+  getFormValueToNameSuffix(): string;
+  getFormValueFromName(): string;
+  getFormValueToName(): string;
+}
+
+export interface FormYearMonthValueItemNameCommands {
   getFormValueYearNameSuffix(): string;
   getFormValueMonthNameSuffix(): string;
   getFormValueYearName(): string;
   getFormValueMonthName(): string;
+}
+
+export interface FormYearMonthRangeValueItemNameCommands {
+  getFormValueFromYearNameSuffix(): string;
+  getFormValueFromMonthNameSuffix(): string;
+  getFormValueToYearNameSuffix(): string;
+  getFormValueToMonthNameSuffix(): string;
+  getFormValueFromYearName(): string;
+  getFormValueFromMonthName(): string;
+  getFormValueToYearName(): string;
+  getFormValueToMonthName(): string;
 }
 
 export interface FormValueItemCommands<T, AllowUndefinedValue extends boolean = true, ItemType = any>
@@ -127,7 +141,9 @@ export interface FormValueItemCommands<T, AllowUndefinedValue extends boolean = 
     Partial<FormLoadingValueItemCommands>,
     Partial<FormDateValueItemCommands>,
     Partial<FormRangeValueItemCommands<T>>,
-    Partial<FormYearMonthValueItemCommands> {}
+    Partial<FormRangeValueItemNameCommands>,
+    Partial<FormYearMonthValueItemNameCommands>,
+    Partial<FormYearMonthRangeValueItemNameCommands> {}
 
 export interface FormValueItemCommandsMap<T, AllowUndefinedValue extends boolean = true, ItemType = any> {
   [key: string]: FormValueItemCommands<T, AllowUndefinedValue, ItemType> | undefined;

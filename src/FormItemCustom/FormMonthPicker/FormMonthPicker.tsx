@@ -50,8 +50,8 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
       labelShrink: initLabelShrink,
       disablePast,
       disableFuture,
-      minValue,
-      maxValue,
+      minValue: initMinValue,
+      maxValue: initMaxValue,
       inputWidth,
       readOnlyInput,
       startAdornment,
@@ -118,7 +118,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     // Function - getFinalValue ----------------------------------------------------------------------------------------
 
@@ -143,14 +143,42 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
     // Function ----------------------------------------------------------------------------------------------------------
 
     const valueToDate = useCallback((v: FormMonthPickerBaseValue) => dayjs(`${v.year}-${v.month}-01`), []);
+    const valueToYm = useCallback((v: FormMonthPickerBaseValue) => v.year * 100 + v.month, []);
     const dateToValue = useCallback((v: Dayjs) => ({ year: v.year(), month: v.month() + 1 }), []);
 
     // Memo --------------------------------------------------------------------------------------------------------------
 
-    const nowYm = useMemo(() => Number(dayjs().format('YYYYMM')), []);
+    const nowDate = useMemo(() => dayjs(), []);
+    const nowValue = useMemo(() => dateToValue(nowDate), [dateToValue, nowDate]);
+    const nowYm = useMemo(() => valueToYm(nowValue), [nowValue, valueToYm]);
+
     const valueDate = useMemo(() => (value ? valueToDate(value) : null), [value, valueToDate]);
-    const minDate = useMemo(() => (minValue ? valueToDate(minValue) : undefined), [minValue, valueToDate]);
-    const maxDate = useMemo(() => (maxValue ? valueToDate(maxValue) : undefined), [maxValue, valueToDate]);
+
+    const minValue = useMemo(() => initMinValue || FormMonthPickerDefaultProps.minValue, [initMinValue]);
+    const maxValue = useMemo(() => initMaxValue || FormMonthPickerDefaultProps.maxValue, [initMaxValue]);
+
+    const minDate = useMemo(() => valueToDate(minValue), [minValue, valueToDate]);
+    const maxDate = useMemo(() => valueToDate(maxValue), [maxValue, valueToDate]);
+
+    const minAvailableValue = useMemo(() => {
+      if (disablePast) {
+        const minYm = valueToYm(minValue);
+        return nowYm > minYm ? nowValue : minValue;
+      } else {
+        return minValue;
+      }
+    }, [disablePast, valueToYm, minValue, nowYm, nowValue]);
+    const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue, valueToYm]);
+
+    const maxAvailableValue = useMemo(() => {
+      if (disableFuture) {
+        const maxYm = valueToYm(maxValue);
+        return nowYm < maxYm ? nowValue : maxValue;
+      } else {
+        return maxValue;
+      }
+    }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
+    const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue, valueToYm]);
 
     // Memo --------------------------------------------------------------------------------------------------------------
 
@@ -385,9 +413,9 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
     const handleInputDatePickerShouldDisableYear = useCallback(
       (date: Dayjs) => {
         const dateYm = Number(date.format('YYYYMM'));
-        return (!!disablePast && dateYm < nowYm) || (!!disableFuture && dateYm > nowYm);
+        return dateYm < minAvailableYm || dateYm > maxAvailableYm;
       },
-      [disableFuture, disablePast, nowYm]
+      [maxAvailableYm, minAvailableYm]
     );
 
     // Memo --------------------------------------------------------------------------------------------------------------

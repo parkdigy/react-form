@@ -18,6 +18,6 @@ export interface PrivateYearRangePickerProps {
 }
 
 export const PrivateYearRangePickerDefaultProps: Required<Pick<PrivateYearRangePickerProps, 'minYear' | 'maxYear'>> = {
-  minYear: 2000,
-  maxYear: 2100,
+  minYear: 2020,
+  maxYear: 2050,
 };

@@ -2,7 +2,7 @@ import {
   FormValueItemProps,
   FormValueItemBaseCommands,
   FormRangeValueItemCommands,
-  FormYearMonthValueItemCommands,
+  FormYearMonthRangeValueItemNameCommands,
 } from '../../@types';
 import { CommonSxProps } from '../../@types';
 import { ReactNode } from 'react';
@@ -10,8 +10,6 @@ import {
   PrivateInputDatePickerProps,
   PrivateMonthRangePickerBaseValue,
   PrivateMonthRangePickerValue,
-  PrivateYearRangePickerBaseValue,
-  PrivateYearRangePickerValue,
 } from '../../@private';
 
 export type FormMonthRangePickerBaseValue = PrivateMonthRangePickerBaseValue;
@@ -39,14 +37,14 @@ export interface FormMonthRangePickerProps
   readOnlyInput?: boolean;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
-  formValueStartName?: string;
-  formValueEndName?: string;
-  formValueStartNameSuffix?: string;
-  formValueEndNameSuffix?: string;
-  formValueYearName?: string;
-  formValueMonthName?: string;
-  formValueYearNameSuffix?: string;
-  formValueMonthNameSuffix?: string;
+  formValueFromYearName?: string;
+  formValueFromMonthName?: string;
+  formValueToYearName?: string;
+  formValueToMonthName?: string;
+  formValueFromYearNameSuffix?: string;
+  formValueFromMonthNameSuffix?: string;
+  formValueToYearNameSuffix?: string;
+  formValueToMonthNameSuffix?: string;
 }
 
 export const FormMonthRangePickerDefaultProps: Required<
@@ -55,28 +53,28 @@ export const FormMonthRangePickerDefaultProps: Required<
     | 'format'
     | 'minValue'
     | 'maxValue'
-    | 'formValueStartNameSuffix'
-    | 'formValueEndNameSuffix'
-    | 'formValueYearNameSuffix'
-    | 'formValueMonthNameSuffix'
+    | 'formValueFromYearNameSuffix'
+    | 'formValueFromMonthNameSuffix'
+    | 'formValueToYearNameSuffix'
+    | 'formValueToMonthNameSuffix'
   >
 > = {
   format: 'YYYY년 MM월',
   minValue: {
-    year: 2000,
+    year: 2020,
     month: 1,
   },
   maxValue: {
-    year: 2100,
+    year: 2050,
     month: 12,
   },
-  formValueStartNameSuffix: '_from',
-  formValueEndNameSuffix: '_to',
-  formValueYearNameSuffix: '_year',
-  formValueMonthNameSuffix: '_month',
+  formValueFromYearNameSuffix: '_from_year',
+  formValueFromMonthNameSuffix: '_from_month',
+  formValueToYearNameSuffix: '_to_year',
+  formValueToMonthNameSuffix: '_to_month',
 };
 
 export interface FormMonthRangePickerCommands
   extends FormValueItemBaseCommands<FormMonthRangePickerValue, false>,
     FormRangeValueItemCommands<FormMonthRangePickerBaseValue>,
-    FormYearMonthValueItemCommands {}
+    FormYearMonthRangeValueItemNameCommands {}

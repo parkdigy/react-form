@@ -7,6 +7,7 @@ import {
   FormDateValueItemCommands,
   FormValueItemBaseCommands,
   FormValueItemProps,
+  FormRangeValueItemNameCommands,
 } from '../../@types';
 import { Dayjs } from 'dayjs';
 import { PrivateInputDatePickerProps } from '../../@private';
@@ -36,10 +37,10 @@ export interface FormDateRangePickerProps
   calendarCount?: FormDateRangePickerCalendarCount;
   format?: string;
   formValueFormat?: string;
-  formValueStartName?: string;
-  formValueEndName?: string;
-  formValueStartNameSuffix?: string;
-  formValueEndNameSuffix?: string;
+  formValueFromName?: string;
+  formValueToName?: string;
+  formValueFromNameSuffix?: string;
+  formValueToNameSuffix?: string;
   icon?: string;
   startIcon?: string;
   endIcon?: string;
@@ -61,18 +62,19 @@ export interface FormDateRangePickerProps
 export const FormDateRangePickerDefaultProps: Required<
   Pick<
     FormDateRangePickerProps,
-    'calendarCount' | 'format' | 'formValueFormat' | 'formValueStartNameSuffix' | 'formValueEndNameSuffix' | 'align'
+    'calendarCount' | 'format' | 'formValueFormat' | 'formValueFromNameSuffix' | 'formValueToNameSuffix' | 'align'
   >
 > = {
   calendarCount: 2,
   format: 'YYYY-MM-DD',
   formValueFormat: 'YYYY-MM-DD',
-  formValueStartNameSuffix: '_from',
-  formValueEndNameSuffix: '_to',
+  formValueFromNameSuffix: '_from',
+  formValueToNameSuffix: '_to',
   align: 'center',
 };
 
 export interface FormDateRangePickerCommands
   extends FormValueItemBaseCommands<FormDateRangePickerValue, false>,
     FormDateValueItemCommands,
-    FormRangeValueItemCommands<Dayjs> {}
+    FormRangeValueItemCommands<Dayjs>,
+    FormRangeValueItemNameCommands {}

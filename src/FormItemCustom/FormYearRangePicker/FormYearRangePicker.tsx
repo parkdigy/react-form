@@ -64,10 +64,10 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       readOnlyInput,
       startAdornment,
       endAdornment,
-      formValueStartName,
-      formValueEndName,
-      formValueStartNameSuffix,
-      formValueEndNameSuffix,
+      formValueFromName,
+      formValueToName,
+      formValueFromNameSuffix,
+      formValueToNameSuffix,
       align,
       //----------------------------------------------------------------------------------------------------------------
       className,
@@ -254,6 +254,9 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
 
         if (startInputDatePickerErrorRef.current) {
           setStartErrorErrorHelperText(true, getDateValidationErrorText(startInputDatePickerErrorRef.current));
+          if (endInputDatePickerErrorRef.current) {
+            setEndErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
+          }
           return false;
         }
         if (endInputDatePickerErrorRef.current) {
@@ -303,13 +306,13 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
           lastData = data;
           setData(data);
         },
-        getStartValue: () => lastValue[0],
-        setStartValue: (value) => {
+        getFromValue: () => lastValue[0],
+        setFromValue: (value) => {
           lastValue = [value, lastValue[1]];
           setValue(lastValue);
         },
-        getEndValue: () => lastValue[1],
-        setEndValue: (value) => {
+        getToValue: () => lastValue[1],
+        setToValue: (value) => {
           lastValue = [lastValue[0], value];
           setValue(lastValue);
         },
@@ -324,20 +327,19 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
         validate: () => validate(value),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
-        getFormValueStartNameSuffix: () =>
-          formValueStartNameSuffix || FormDateRangePickerDefaultProps.formValueStartNameSuffix,
-        getFormValueEndNameSuffix: () =>
-          formValueEndNameSuffix || FormDateRangePickerDefaultProps.formValueEndNameSuffix,
-        getFormValueStartName: () => {
+        getFormValueFromNameSuffix: () =>
+          formValueFromNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix,
+        getFormValueToNameSuffix: () => formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix,
+        getFormValueFromName: () => {
           return (
-            formValueStartName ||
-            `${name}${formValueStartNameSuffix || FormDateRangePickerDefaultProps.formValueStartNameSuffix}`
+            formValueFromName ||
+            `${name}${formValueFromNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`
           );
         },
-        getFormValueEndName: () => {
+        getFormValueToName: () => {
           return (
-            formValueEndName ||
-            `${name}${formValueEndNameSuffix || FormDateRangePickerDefaultProps.formValueEndNameSuffix}`
+            formValueToName ||
+            `${name}${formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`
           );
         },
       };
@@ -381,10 +383,10 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       setErrorErrorHelperText,
       data,
       setData,
-      formValueStartNameSuffix,
-      formValueEndNameSuffix,
-      formValueStartName,
-      formValueEndName,
+      formValueFromNameSuffix,
+      formValueToNameSuffix,
+      formValueFromName,
+      formValueToName,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

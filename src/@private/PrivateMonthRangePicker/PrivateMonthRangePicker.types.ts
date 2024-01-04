@@ -7,7 +7,6 @@ export type PrivateMonthRangePickerDataValue = PrivateMonthRangePickerBaseValue 
 export type PrivateMonthRangePickerValue = [PrivateMonthRangePickerDataValue, PrivateMonthRangePickerDataValue];
 
 export interface PrivateMonthRangePickerProps {
-  selectType: PrivateMonthRangePickerSelectType;
   value: PrivateMonthRangePickerValue;
   minValue?: PrivateMonthRangePickerBaseValue;
   maxValue?: PrivateMonthRangePickerBaseValue;
@@ -24,11 +23,11 @@ export const PrivateMonthRangePickerDefaultProps: Required<
   Pick<PrivateMonthRangePickerProps, 'minValue' | 'maxValue'>
 > = {
   minValue: {
-    year: 2000,
+    year: 2020,
     month: 1,
   },
   maxValue: {
-    year: 2100,
+    year: 2050,
     month: 12,
   },
 };
