@@ -26,8 +26,6 @@ export interface FormMonthPickerProps extends CommonSxProps, FormValueItemProps<
   readOnlyInput?: boolean;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
-  formValueYearName?: string;
-  formValueMonthName?: string;
   formValueYearNameSuffix?: string;
   formValueMonthNameSuffix?: string;
 }

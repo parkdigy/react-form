@@ -37,8 +37,6 @@ export interface FormYearRangePickerProps
   readOnlyInput?: boolean;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
-  formValueFromName?: string;
-  formValueToName?: string;
   formValueFromNameSuffix?: string;
   formValueToNameSuffix?: string;
 }

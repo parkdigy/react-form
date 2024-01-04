@@ -58,8 +58,6 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
       endAdornment,
       formValueYearNameSuffix,
       formValueMonthNameSuffix,
-      formValueYearName,
-      formValueMonthName,
       //----------------------------------------------------------------------------------------------------------------
       className,
       style: initStyle,
@@ -325,16 +323,10 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
         getFormValueMonthNameSuffix: () =>
           formValueMonthNameSuffix || FormMonthPickerDefaultProps.formValueMonthNameSuffix,
         getFormValueYearName: () => {
-          return (
-            formValueYearName ||
-            `${name}${formValueYearNameSuffix || FormMonthPickerDefaultProps.formValueYearNameSuffix}`
-          );
+          return `${name}${formValueYearNameSuffix || FormMonthPickerDefaultProps.formValueYearNameSuffix}`;
         },
         getFormValueMonthName: () => {
-          return (
-            formValueMonthName ||
-            `${name}${formValueMonthNameSuffix || FormMonthPickerDefaultProps.formValueMonthNameSuffix}`
-          );
+          return `${name}${formValueMonthNameSuffix || FormMonthPickerDefaultProps.formValueMonthNameSuffix}`;
         },
       };
 
@@ -379,8 +371,6 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
       setData,
       formValueYearNameSuffix,
       formValueMonthNameSuffix,
-      formValueYearName,
-      formValueMonthName,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

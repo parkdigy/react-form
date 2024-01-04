@@ -66,10 +66,6 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       readOnlyInput,
       startAdornment,
       endAdornment,
-      formValueFromYearName,
-      formValueFromMonthName,
-      formValueToYearName,
-      formValueToMonthName,
       formValueFromYearNameSuffix,
       formValueFromMonthNameSuffix,
       formValueToYearNameSuffix,
@@ -406,28 +402,16 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
         getFormValueToMonthNameSuffix: () =>
           formValueToMonthNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix,
         getFormValueFromYearName: () => {
-          return (
-            formValueFromYearName ||
-            `${name}${formValueFromYearNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`
-          );
+          return `${name}${formValueFromYearNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`;
         },
         getFormValueFromMonthName: () => {
-          return (
-            formValueFromMonthName ||
-            `${name}${formValueFromMonthNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`
-          );
+          return `${name}${formValueFromMonthNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`;
         },
         getFormValueToYearName: () => {
-          return (
-            formValueToYearName ||
-            `${name}${formValueToYearNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`
-          );
+          return `${name}${formValueToYearNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`;
         },
         getFormValueToMonthName: () => {
-          return (
-            formValueToMonthName ||
-            `${name}${formValueToMonthNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`
-          );
+          return `${name}${formValueToMonthNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`;
         },
       };
 
@@ -474,10 +458,6 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       formValueFromMonthNameSuffix,
       formValueToYearNameSuffix,
       formValueToMonthNameSuffix,
-      formValueFromYearName,
-      formValueFromMonthName,
-      formValueToYearName,
-      formValueToMonthName,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

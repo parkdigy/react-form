@@ -23,8 +23,6 @@ export interface FormDateRangePickerProps extends CommonSxProps, Omit<FormValueI
     calendarCount?: FormDateRangePickerCalendarCount;
     format?: string;
     formValueFormat?: string;
-    formValueFromName?: string;
-    formValueToName?: string;
     formValueFromNameSuffix?: string;
     formValueToNameSuffix?: string;
     icon?: string;

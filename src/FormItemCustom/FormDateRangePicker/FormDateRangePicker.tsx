@@ -65,8 +65,6 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       exceptValue,
       error: initError,
       helperText,
-      formValueFromName,
-      formValueToName,
       formValueFromNameSuffix,
       formValueToNameSuffix,
       icon,
@@ -636,16 +634,10 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
           getFormValueToNameSuffix: () =>
             formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix,
           getFormValueFromName: () => {
-            return (
-              formValueFromName ||
-              `${name}${formValueFromNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`
-            );
+            return `${name}${formValueFromNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`;
           },
           getFormValueToName: () => {
-            return (
-              formValueToName ||
-              `${name}${formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`
-            );
+            return `${name}${formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`;
           },
         };
 
@@ -693,8 +685,6 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       setErrorErrorHelperText,
       data,
       setData,
-      formValueFromName,
-      formValueToName,
     ]);
 
     // Render ----------------------------------------------------------------------------------------------------------

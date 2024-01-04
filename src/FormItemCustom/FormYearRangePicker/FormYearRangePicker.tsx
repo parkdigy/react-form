@@ -64,8 +64,6 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       readOnlyInput,
       startAdornment,
       endAdornment,
-      formValueFromName,
-      formValueToName,
       formValueFromNameSuffix,
       formValueToNameSuffix,
       align,
@@ -331,16 +329,10 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
           formValueFromNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix,
         getFormValueToNameSuffix: () => formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix,
         getFormValueFromName: () => {
-          return (
-            formValueFromName ||
-            `${name}${formValueFromNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`
-          );
+          return `${name}${formValueFromNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`;
         },
         getFormValueToName: () => {
-          return (
-            formValueToName ||
-            `${name}${formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`
-          );
+          return `${name}${formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`;
         },
       };
 
@@ -385,8 +377,6 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       setData,
       formValueFromNameSuffix,
       formValueToNameSuffix,
-      formValueFromName,
-      formValueToName,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
