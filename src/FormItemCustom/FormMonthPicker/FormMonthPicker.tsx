@@ -287,6 +287,22 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
           lastData = data;
           setData(data);
         },
+        getYear: () => (lastValue ? lastValue.year : null),
+        setYear: (year: number) => {
+          lastValue = getFinalValue(
+            lastValue
+              ? { year, month: lastValue.month }
+              : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 }
+          );
+          setValue(lastValue);
+        },
+        getMonth: () => (lastValue ? lastValue.month : null),
+        setMonth: (month: number) => {
+          lastValue = getFinalValue(
+            lastValue ? { year: lastValue.year, month } : { year: new Date().getFullYear(), month }
+          );
+          setValue(lastValue);
+        },
         isExceptValue: () => !!exceptValue,
         isDisabled: () => lastDisabled,
         setDisabled: (disabled) => {

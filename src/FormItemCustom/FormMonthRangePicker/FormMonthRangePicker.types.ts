@@ -3,6 +3,7 @@ import {
   FormValueItemBaseCommands,
   FormRangeValueItemCommands,
   FormYearMonthRangeValueItemNameCommands,
+  FormYearMonthRangeValueItemCommands,
 } from '../../@types';
 import { CommonSxProps } from '../../@types';
 import { ReactNode } from 'react';
@@ -77,4 +78,5 @@ export const FormMonthRangePickerDefaultProps: Required<
 export interface FormMonthRangePickerCommands
   extends FormValueItemBaseCommands<FormMonthRangePickerValue, false>,
     FormRangeValueItemCommands<FormMonthRangePickerBaseValue>,
+    FormYearMonthRangeValueItemCommands,
     FormYearMonthRangeValueItemNameCommands {}

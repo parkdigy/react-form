@@ -14238,6 +14238,18 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
                 lastData = data;
                 setData(data);
             },
+            getYear: function () { return (lastValue ? lastValue.year : null); },
+            setYear: function (year) {
+                lastValue = getFinalValue(lastValue
+                    ? { year: year, month: lastValue.month }
+                    : { year: year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 });
+                setValue(lastValue);
+            },
+            getMonth: function () { return (lastValue ? lastValue.month : null); },
+            setMonth: function (month) {
+                lastValue = getFinalValue(lastValue ? { year: lastValue.year, month: month } : { year: new Date().getFullYear(), month: month });
+                setValue(lastValue);
+            },
             isExceptValue: function () { return !!exceptValue; },
             isDisabled: function () { return lastDisabled; },
             setDisabled: function (disabled) {
@@ -14606,6 +14618,42 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
             getToValue: function () { return lastValue[1]; },
             setToValue: function (value) {
                 lastValue = [lastValue[0], value];
+                setValue(lastValue);
+            },
+            getFromYear: function () { return (lastValue[0] ? lastValue[0].year : null); },
+            setFromYear: function (year) {
+                lastValue = getFinalValue([
+                    lastValue[0]
+                        ? { year: year, month: lastValue[0].month }
+                        : { year: year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
+                    lastValue[1],
+                ]);
+                setValue(lastValue);
+            },
+            getFromMonth: function () { return (lastValue[0] ? lastValue[0].month : null); },
+            setFromMonth: function (month) {
+                lastValue = getFinalValue([
+                    lastValue[0] ? { year: lastValue[0].year, month: month } : { year: new Date().getFullYear(), month: month },
+                    lastValue[1],
+                ]);
+                setValue(lastValue);
+            },
+            getToYear: function () { return (lastValue[1] ? lastValue[1].year : null); },
+            setToYear: function (year) {
+                lastValue = getFinalValue([
+                    lastValue[0],
+                    lastValue[1]
+                        ? { year: year, month: lastValue[1].month }
+                        : { year: year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
+                ]);
+                setValue(lastValue);
+            },
+            getToMonth: function () { return (lastValue[1] ? lastValue[1].month : null); },
+            setToMonth: function (month) {
+                lastValue = getFinalValue([
+                    lastValue[0],
+                    lastValue[1] ? { year: lastValue[1].year, month: month } : { year: new Date().getFullYear(), month: month },
+                ]);
                 setValue(lastValue);
             },
             isExceptValue: function () { return !!exceptValue; },

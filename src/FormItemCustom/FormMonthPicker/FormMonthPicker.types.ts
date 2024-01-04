@@ -1,4 +1,9 @@
-import { FormValueItemProps, FormValueItemBaseCommands, FormYearMonthValueItemNameCommands } from '../../@types';
+import {
+  FormValueItemProps,
+  FormValueItemBaseCommands,
+  FormYearMonthValueItemNameCommands,
+  FormYearMonthValueItemCommands,
+} from '../../@types';
 import { CommonSxProps } from '../../@types';
 import { ReactNode } from 'react';
 import { PrivateMonthPickerBaseValue, PrivateMonthPickerValue } from '../../@private';
@@ -48,4 +53,5 @@ export const FormMonthPickerDefaultProps: Required<
 
 export interface FormMonthPickerCommands
   extends FormValueItemBaseCommands<FormMonthPickerValue, false>,
+    FormYearMonthValueItemCommands,
     FormYearMonthValueItemNameCommands {}

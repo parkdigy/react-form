@@ -1,4 +1,4 @@
-import { FormValueItemProps, FormValueItemBaseCommands, FormRangeValueItemCommands, FormYearMonthRangeValueItemNameCommands } from '../../@types';
+import { FormValueItemProps, FormValueItemBaseCommands, FormRangeValueItemCommands, FormYearMonthRangeValueItemNameCommands, FormYearMonthRangeValueItemCommands } from '../../@types';
 import { CommonSxProps } from '../../@types';
 import { ReactNode } from 'react';
 import { PrivateInputDatePickerProps, PrivateMonthRangePickerBaseValue, PrivateMonthRangePickerValue } from '../../@private';
@@ -32,5 +32,5 @@ export interface FormMonthRangePickerProps extends CommonSxProps, Omit<FormValue
     formValueToMonthNameSuffix?: string;
 }
 export declare const FormMonthRangePickerDefaultProps: Required<Pick<FormMonthRangePickerProps, 'format' | 'minValue' | 'maxValue' | 'formValueFromYearNameSuffix' | 'formValueFromMonthNameSuffix' | 'formValueToYearNameSuffix' | 'formValueToMonthNameSuffix'>>;
-export interface FormMonthRangePickerCommands extends FormValueItemBaseCommands<FormMonthRangePickerValue, false>, FormRangeValueItemCommands<FormMonthRangePickerBaseValue>, FormYearMonthRangeValueItemNameCommands {
+export interface FormMonthRangePickerCommands extends FormValueItemBaseCommands<FormMonthRangePickerValue, false>, FormRangeValueItemCommands<FormMonthRangePickerBaseValue>, FormYearMonthRangeValueItemCommands, FormYearMonthRangeValueItemNameCommands {
 }
