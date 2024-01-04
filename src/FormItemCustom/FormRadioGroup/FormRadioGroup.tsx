@@ -35,7 +35,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
       color: initColor,
       focused: initFocused,
       fullWidth: initFullWidth,
-      hidden,
+      hidden: initHidden,
       //----------------------------------------------------------------------------------------------------------------
       name,
       width: initWidth,
@@ -119,6 +119,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
     const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
     const [width, setWidth] = useAutoUpdateState<Props['width']>(initWidth || '100%');
@@ -283,6 +284,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
       let lastItems = items;
       let lastLoading = loading;
       let lastDisabled = !!disabled;
+      let lastHidden = !!hidden;
 
       const commands: Commands = {
         getType: () => 'FormRadioGroup',
@@ -307,6 +309,11 @@ const FormRadioGroup = ToForwardRefExoticComponent(
         setDisabled: (disabled) => {
           lastDisabled = disabled;
           setDisabled(disabled);
+        },
+        isHidden: () => lastHidden,
+        setHidden: (hidden) => {
+          lastHidden = hidden;
+          setHidden(hidden);
         },
         focus,
         focusValidate: focus,
@@ -368,6 +375,8 @@ const FormRadioGroup = ToForwardRefExoticComponent(
       setLoading,
       data,
       setData,
+      hidden,
+      setHidden,
     ]);
 
     useEffect(() => {

@@ -28,7 +28,6 @@ export interface FormRadioGroupProps<T extends FormRadioGroupSingleValue>
   inline?: boolean;
   loading?: boolean;
   nowrap?: boolean;
-  hidden?: boolean;
   onLoadItems?(): Promise<FormRadioGroupItem<T>[]>;
   onValue?(value: FormRadioGroupValue<T>): FormRadioGroupValue<T>;
 }

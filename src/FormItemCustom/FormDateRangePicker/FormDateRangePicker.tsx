@@ -80,7 +80,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       disableFuture,
       minDate,
       maxDate,
-      hidden,
+      hidden: initHidden,
       align,
       onGetActionButtons,
       onChange,
@@ -140,6 +140,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     // State -----------------------------------------------------------------------------------------------------------
 
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [startError, setStartError] = useState(false);
@@ -587,6 +588,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
         let lastValue = value;
         let lastData = data;
         let lastDisabled = !!disabled;
+        let lastHidden = !!hidden;
 
         const commands: FormDateRangePickerCommands = {
           getType: () => 'FormDateRangePicker',
@@ -622,6 +624,11 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
           setDisabled: (disabled) => {
             lastDisabled = disabled;
             setDisabled(disabled);
+          },
+          isHidden: () => lastHidden,
+          setHidden: (hidden) => {
+            lastHidden = hidden;
+            setHidden(hidden);
           },
           focus,
           focusValidate,
@@ -685,6 +692,8 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       setErrorErrorHelperText,
       data,
       setData,
+      hidden,
+      setHidden,
     ]);
 
     // Render ----------------------------------------------------------------------------------------------------------

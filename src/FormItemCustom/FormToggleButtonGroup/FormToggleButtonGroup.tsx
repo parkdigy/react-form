@@ -43,7 +43,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       multiple,
       formValueSeparator,
       formValueSort,
-      hidden,
+      hidden: initHidden,
       itemWidth,
       onLoadItems,
       //----------------------------------------------------------------------------------------------------------------
@@ -147,6 +147,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -333,6 +334,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
         let lastItems = items;
         let lastLoading = loading;
         let lastDisabled = !!disabled;
+        let lastHidden = !!hidden;
 
         const commands: Commands = {
           getType: () => 'FormToggleButtonGroup',
@@ -357,6 +359,11 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           setDisabled: (disabled) => {
             lastDisabled = disabled;
             setDisabled(disabled);
+          },
+          isHidden: () => lastHidden,
+          setHidden: (hidden) => {
+            lastHidden = hidden;
+            setHidden(hidden);
           },
           focus,
           focusValidate: focus,
@@ -425,6 +432,8 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       setLoading,
       data,
       setData,
+      hidden,
+      setHidden,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

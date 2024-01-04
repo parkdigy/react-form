@@ -26,7 +26,6 @@ export interface FormMonthRangePickerProps
   endLabel?: ReactNode;
   endLabelIcon?: string;
   required?: boolean;
-  hidden?: boolean;
   icon?: string;
   format?: string;
   labelShrink?: boolean;

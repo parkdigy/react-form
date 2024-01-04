@@ -33,6 +33,8 @@ export interface FormValueItemBaseCommands<T, AllowUndefinedValue extends boolea
     isExceptValue(): boolean;
     isDisabled(): boolean;
     setDisabled(disabled: boolean): void;
+    isHidden(): boolean;
+    setHidden(hidden: boolean): void;
     focus(): void;
     focusValidate(): void;
     validate(): boolean;
@@ -121,6 +123,7 @@ export interface FormValueItemProps<T, AllowUndefinedValue extends boolean = tru
     disabled?: boolean;
     readOnly?: boolean;
     error?: boolean;
+    hidden?: boolean;
     exceptValue?: boolean;
     helperText?: ReactNode;
     data?: FormValueItemData;

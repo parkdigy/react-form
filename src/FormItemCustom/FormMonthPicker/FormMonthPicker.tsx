@@ -28,7 +28,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
       color: initColor,
       focused: initFocused,
       //----------------------------------------------------------------------------------------------------------------
-      hidden,
+      hidden: initHidden,
       //----------------------------------------------------------------------------------------------------------------
       name,
       labelIcon,
@@ -115,6 +115,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
     const [open, setOpen] = useState(false);
 
@@ -266,6 +267,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
       let lastValue = value;
       let lastData = data;
       let lastDisabled = !!disabled;
+      let lastHidden = !!hidden;
 
       const commands: FormMonthPickerCommands = {
         getType: () => 'FormMonthPicker',
@@ -312,6 +314,11 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
         setDisabled: (disabled) => {
           lastDisabled = disabled;
           setDisabled(disabled);
+        },
+        isHidden: () => lastHidden,
+        setHidden: (hidden) => {
+          lastHidden = hidden;
+          setHidden(hidden);
         },
         focus,
         focusValidate: focus,
@@ -371,6 +378,8 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
       setData,
       formValueYearNameSuffix,
       formValueMonthNameSuffix,
+      hidden,
+      setHidden,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

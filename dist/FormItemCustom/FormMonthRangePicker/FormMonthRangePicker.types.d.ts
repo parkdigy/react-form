@@ -10,7 +10,6 @@ export interface FormMonthRangePickerProps extends CommonSxProps, Omit<FormValue
     endLabel?: ReactNode;
     endLabelIcon?: string;
     required?: boolean;
-    hidden?: boolean;
     icon?: string;
     format?: string;
     labelShrink?: boolean;

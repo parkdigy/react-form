@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { SearchGroupDefaultProps as Props, SearchGroupProps } from './SearchGroup.types';
 import { Grid } from '@mui/material';
 import { FormHidden } from '../../FormItemTextFieldBase';
+import { StyledItem } from './SearchGroup.style';
 
 const isReactFragment = (child: ReactElement) => {
   try {
@@ -26,23 +27,23 @@ const removeReactFragment = (el: ReactElement): any => {
         });
       } else {
         return (
-          <Grid item style={{ display: el.type === FormHidden ? 'none' : undefined }}>
+          <StyledItem item style={{ display: el.type === FormHidden ? 'none' : undefined }}>
             {el}
-          </Grid>
+          </StyledItem>
         );
       }
     } else {
       return (
-        <Grid item style={{ display: el.type === FormHidden ? 'none' : undefined }}>
+        <StyledItem item style={{ display: el.type === FormHidden ? 'none' : undefined }}>
           {el}
-        </Grid>
+        </StyledItem>
       );
     }
   } else {
     return (
-      <Grid item style={{ display: el.type === FormHidden ? 'none' : undefined }}>
+      <StyledItem item style={{ display: el.type === FormHidden ? 'none' : undefined }}>
         {el}
-      </Grid>
+      </StyledItem>
     );
   }
 };

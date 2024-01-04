@@ -51,7 +51,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
       openOnFocus,
       disableClearable,
       async,
-      hidden,
+      hidden: initHidden,
       onLoadItems,
       onAsyncLoadValueItem,
       onRenderItem,
@@ -126,6 +126,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
 
     const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [inputValue, setInputValue] = useState<string | undefined>(undefined);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
@@ -425,6 +426,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
         let lastItems = items;
         let lastLoading = loading;
         let lastDisabled = !!disabled;
+        let lastHidden = !!hidden;
 
         const commands: Commands = {
           getType: () => 'FormAutocomplete',
@@ -449,6 +451,11 @@ const FormAutocomplete = ToForwardRefExoticComponent(
           setDisabled: (disabled) => {
             lastDisabled = disabled;
             setDisabled(disabled);
+          },
+          isHidden: () => lastHidden,
+          setHidden: (hidden) => {
+            lastHidden = hidden;
+            setHidden(hidden);
           },
           focus,
           focusValidate: focus,
@@ -517,6 +524,8 @@ const FormAutocomplete = ToForwardRefExoticComponent(
       setLoading,
       data,
       setData,
+      hidden,
+      setHidden,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

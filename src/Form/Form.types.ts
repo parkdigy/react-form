@@ -61,6 +61,8 @@ export interface FormCommands {
   isExceptValue(name: string): boolean;
   isDisabled(name: string): boolean;
   setDisabled(name: string, disabled: boolean): void;
+  isHidden(name: string): boolean;
+  setHidden(name: string, hidden: boolean): void;
   focus(name: string): void;
   validate(name: string): boolean;
   setError(name: string, error: boolean, helperText: ReactNode): void;

@@ -9,7 +9,6 @@ export type FormYearPickerValue = PrivateYearPickerValue;
 
 export interface FormYearPickerProps extends CommonSxProps, FormValueItemProps<FormYearPickerValue, false> {
   required?: boolean;
-  hidden?: boolean;
   icon?: string;
   format?: string;
   labelShrink?: boolean;

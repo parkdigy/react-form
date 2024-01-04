@@ -37,7 +37,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       hideRemoveLabel,
       maxFileSize,
       preview,
-      hidden,
+      hidden: initHidden,
       onFile,
       onLink,
       //----------------------------------------------------------------------------------------------------------------
@@ -115,6 +115,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [isOpenLinkDialog, setIsOpenLinkDialog] = useState(false);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
     const [alertDialogProps, setAlertDialogProps] = useState<{
@@ -198,6 +199,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       let lastValue = value;
       let lastData = data;
       let lastDisabled = !!disabled;
+      let lastHidden = !!hidden;
 
       const commands: FormFileCommands = {
         getType: () => 'FormFile',
@@ -217,12 +219,16 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
           lastData = data;
           setData(data);
         },
-
         isExceptValue: () => !!exceptValue,
         isDisabled: () => lastDisabled,
         setDisabled: (disabled: boolean) => {
           lastDisabled = disabled;
           setDisabled(disabled);
+        },
+        isHidden: () => lastHidden,
+        setHidden: (hidden) => {
+          lastHidden = hidden;
+          setHidden(hidden);
         },
         focus,
         focusValidate: focus,
@@ -269,6 +275,8 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       setErrorErrorHelperText,
       data,
       setData,
+      hidden,
+      setHidden,
     ]);
 
     // Function --------------------------------------------------------------------------------------------------------

@@ -849,6 +849,20 @@ function AutoTypeForwardRef(render) {
                     else
                         throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
                 },
+                isHidden: function (name) {
+                    var valueItem = findValueItem_1(name);
+                    if (valueItem)
+                        return valueItem.isHidden();
+                    else
+                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+                },
+                setHidden: function (name, hidden) {
+                    var valueItem = findValueItem_1(name);
+                    if (valueItem)
+                        valueItem.setHidden(hidden);
+                    else
+                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+                },
                 focus: function (name) {
                     var valueItem = findValueItem_1(name);
                     if (valueItem)
@@ -962,9 +976,9 @@ FormIcon.defaultProps = FormIconDefaultProps;var FormButton = React__default.for
         children));
 });
 FormButton.displayName = 'FormButton';
-FormButton.defaultProps = FormButtonDefaultProps;var FormLabelDefaultProps = {};var IconFormIcon = styled(FormIcon)(templateObject_1$f || (templateObject_1$f = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
+FormButton.defaultProps = FormButtonDefaultProps;var FormLabelDefaultProps = {};var IconFormIcon = styled(FormIcon)(templateObject_1$g || (templateObject_1$g = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
 var ChildrenSpan = styled('span')(templateObject_2$7 || (templateObject_2$7 = __makeTemplateObject(["\n  vertical-align: middle;\n"], ["\n  vertical-align: middle;\n"])));
-var templateObject_1$f, templateObject_2$7;var FormLabel = React__default.forwardRef(function (_a, ref) {
+var templateObject_1$g, templateObject_2$7;var FormLabel = React__default.forwardRef(function (_a, ref) {
     // Use ---------------------------------------------------------------------------------------------------------------
     var children = _a.children, icon = _a.icon, size = _a.size, style = _a.style, error = _a.error, warning = _a.warning, props = __rest$4(_a, ["children", "icon", "size", "style", "error", "warning"]);
     var theme = useTheme();
@@ -984,7 +998,7 @@ var templateObject_1$f, templateObject_2$7;var FormLabel = React__default.forwar
 FormLabel.displayName = 'FormLabel';
 FormLabel.defaultProps = FormLabelDefaultProps;var FormBlockDefaultProps = {};var FormDividerDefaultProps = {
     lineVerticalMargin: 9,
-};var StyledLineBox = styled(Box)(templateObject_1$e || (templateObject_1$e = __makeTemplateObject(["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"], ["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"])));
+};var StyledLineBox = styled(Box)(templateObject_1$f || (templateObject_1$f = __makeTemplateObject(["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"], ["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"])));
 var StyledErrorLineBox = styled(Box)(function (_a) {
     var theme = _a.theme;
     return ({
@@ -1007,7 +1021,7 @@ var StyledWarningLineBox = styled(Box)(function (_a) {
         opacity: 0.4,
     });
 });
-var templateObject_1$e;var DEFAULT_LINE_STYLE = { flex: 1, position: 'relative' };
+var templateObject_1$f;var DEFAULT_LINE_STYLE = { flex: 1, position: 'relative' };
 var FormDivider = React__default.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var initSize = _a.size, 
@@ -1124,8 +1138,8 @@ FormDivider.defaultProps = FormDividerDefaultProps;function useFirstSkipEffect$1
         }
     }, []);
     return [_state.current, setState];
-}var StyledWrapGrid$1 = styled(Grid)(templateObject_1$d || (templateObject_1$d = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
-var templateObject_1$d;var FormBlock = React__default.forwardRef(function (_a, ref) {
+}var StyledWrapGrid$1 = styled(Grid)(templateObject_1$e || (templateObject_1$e = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
+var templateObject_1$e;var FormBlock = React__default.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
@@ -1177,8 +1191,8 @@ var templateObject_1$d;var FormBlock = React__default.forwardRef(function (_a, r
                                 React__default.createElement(Grid, { className: 'FormBlock-content', container: true, spacing: spacing }, children)))))))));
 });
 FormBlock.displayName = 'FormBlock';
-FormBlock.defaultProps = FormBlockDefaultProps;var FormRowDefaultProps = {};var StyledWrapGrid = styled(Grid)(templateObject_1$c || (templateObject_1$c = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
-var templateObject_1$c;var FormRow = React__default.forwardRef(function (_a, ref) {
+FormBlock.defaultProps = FormBlockDefaultProps;var FormRowDefaultProps = {};var StyledWrapGrid = styled(Grid)(templateObject_1$d || (templateObject_1$d = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
+var templateObject_1$d;var FormRow = React__default.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
@@ -2211,9 +2225,9 @@ var isDOMElement = function (element) {
                     React__default.createElement(FormHelperText, { component: 'div', error: error, style: { marginLeft: helperTextShift ? 14 : 5 } }, helperText)))))));
 });
 FormCol.displayName = 'FormCol';
-FormCol.defaultProps = FormColDefaultProps;var FormBodyDefaultProps = {};var StyledContainerDiv = styled('div')(templateObject_1$b || (templateObject_1$b = __makeTemplateObject(["\n  flex: 1;\n  position: relative;\n"], ["\n  flex: 1;\n  position: relative;\n"])));
+FormCol.defaultProps = FormColDefaultProps;var FormBodyDefaultProps = {};var StyledContainerDiv = styled('div')(templateObject_1$c || (templateObject_1$c = __makeTemplateObject(["\n  flex: 1;\n  position: relative;\n"], ["\n  flex: 1;\n  position: relative;\n"])));
 var StyledContentDiv = styled('div')(templateObject_2$6 || (templateObject_2$6 = __makeTemplateObject(["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"], ["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"])));
-var templateObject_1$b, templateObject_2$6;var FormBody = function (_a) {
+var templateObject_1$c, templateObject_2$6;var FormBody = function (_a) {
     // Ref ---------------------------------------------------------------------------------------------------------------
     var children = _a.children, hidden = _a.hidden;
     var containerRef = useRef(null);
@@ -2290,7 +2304,7 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
     var _b;
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, required = _a.required, initValue = _a.value, initData = _a.data, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, helperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, hidden = _a.hidden, disableReturnKey = _a.disableReturnKey, 
+    name = _a.name, required = _a.required, initValue = _a.value, initData = _a.data, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, helperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, initHidden = _a.hidden, disableReturnKey = _a.disableReturnKey, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, onBlur = _a.onBlur, onKeyDown = _a.onKeyDown, 
     //----------------------------------------------------------------------------------------------------------------
@@ -2314,7 +2328,8 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
     var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
     var _f = useState(false), showClear = _f[0], setShowClear = _f[1];
     var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
-    var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
+    var _h = useAutoUpdateState$1(initHidden), hidden = _h[0], setHidden = _h[1];
+    var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
     // Memo - muiInputLabelProps ---------------------------------------------------------------------------------------
     var muiInputLabelProps = useMemo(function () {
         if (labelShrink || placeholder) {
@@ -2363,7 +2378,7 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
         return onValue ? onValue(value) : value;
     }, [onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _j = useAutoUpdateState$1(initValue, getFinalValue), value = _j[0], setValue = _j[1];
+    var _k = useAutoUpdateState$1(initValue, getFinalValue), value = _k[0], setValue = _k[1];
     useEffect(function () {
         setShowClear(clear ? notEmpty(value) : false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -2481,6 +2496,7 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
             var lastValue_1 = value;
             var lastData_1 = data;
             var lastDisabled_1 = !!disabled;
+            var lastHidden_1 = !!hidden;
             var commands = {
                 getType: function () { return 'default'; },
                 getName: function () { return name; },
@@ -2504,6 +2520,11 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
                 setDisabled: function (disabled) {
                     lastDisabled_1 = disabled;
                     setDisabled(disabled);
+                },
+                isHidden: function () { return lastHidden_1; },
+                setHidden: function (hidden) {
+                    lastHidden_1 = hidden;
+                    setHidden(hidden);
                 },
                 focus: focus,
                 focusValidate: focus,
@@ -2554,6 +2575,8 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
         setDisabled,
         setErrorErrorHelperText,
         setData,
+        hidden,
+        setHidden,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (e) {
@@ -2804,7 +2827,7 @@ FormTag.defaultProps = FormTagDefaultProps;var FormEmailDefaultProps = __assign$
 });
 FormEmail.displayName = 'FormEmail';
 FormEmail.defaultProps = FormEmailDefaultProps;var FormPasswordDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: false, eye: true });var css_248z$i = ".FormPassword .eye-icon-button-wrap {\n  visibility: hidden;\n}\n.FormPassword.variant-filled .eye-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormPassword:hover .eye-icon-button-wrap.show,\n.FormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show {\n  visibility: visible;\n}";
-styleInject(css_248z$i);var StyledEyeInputAdornment = styled(InputAdornment)(templateObject_1$a || (templateObject_1$a = __makeTemplateObject(["\n  visibility: hidden;\n"], ["\n  visibility: hidden;\n"])));
+styleInject(css_248z$i);var StyledEyeInputAdornment = styled(InputAdornment)(templateObject_1$b || (templateObject_1$b = __makeTemplateObject(["\n  visibility: hidden;\n"], ["\n  visibility: hidden;\n"])));
 var FormPassword = React__default.forwardRef(function (_a, ref) {
     // State -----------------------------------------------------------------------------------------------------------
     var className = _a.className, initMuiInputProps = _a.InputProps, eye = _a.eye, onChange = _a.onChange, props = __rest$4(_a, ["className", "InputProps", "eye", "onChange"]);
@@ -2837,7 +2860,7 @@ var FormPassword = React__default.forwardRef(function (_a, ref) {
 });
 FormPassword.displayName = 'FormPassword';
 FormPassword.defaultProps = FormPasswordDefaultProps;
-var templateObject_1$a;var FormTelDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /(^([0-9]{2,3})([0-9]{3,4})([0-9]{4})$)|(^([0-9]{2,3})-([0-9]{3,4})-([0-9]{4})$)|(^([0-9]{4})-([0-9]{4})$)|(^\+(?:[-]?[0-9]){8,}$)/ });var FormTel = React__default.forwardRef(function (_a, ref) {
+var templateObject_1$b;var FormTelDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /(^([0-9]{2,3})([0-9]{3,4})([0-9]{4})$)|(^([0-9]{2,3})-([0-9]{3,4})-([0-9]{4})$)|(^([0-9]{4})-([0-9]{4})$)|(^\+(?:[-]?[0-9]){8,}$)/ });var FormTel = React__default.forwardRef(function (_a, ref) {
     // Event Handler ---------------------------------------------------------------------------------------------------
     var className = _a.className, onValue = _a.onValue, props = __rest$4(_a, ["className", "onValue"]);
     var handleValue = useCallback(function (value) {
@@ -4633,9 +4656,9 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initChecked = _a.checked, initInputRef = _a.inputRef, initAction = _a.action, readOnly = _a.readOnly, initDisabled = _a.disabled, text = _a.text, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, initUncheckedValue = _a.uncheckedValue, exceptValue = _a.exceptValue, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initChecked = _a.checked, initInputRef = _a.inputRef, initAction = _a.action, readOnly = _a.readOnly, initDisabled = _a.disabled, initHidden = _a.hidden, text = _a.text, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, initUncheckedValue = _a.uncheckedValue, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
-    className = _a.className, initStyle = _a.style, sx = _a.sx, props = __rest$4(_a, ["variant", "size", "color", "focused", "fullWidth", "name", "labelIcon", "label", "checked", "inputRef", "action", "readOnly", "disabled", "text", "error", "helperText", "value", "data", "uncheckedValue", "exceptValue", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
+    className = _a.className, initStyle = _a.style, sx = _a.sx, props = __rest$4(_a, ["variant", "size", "color", "focused", "fullWidth", "name", "labelIcon", "label", "checked", "inputRef", "action", "readOnly", "disabled", "hidden", "text", "error", "helperText", "value", "data", "uncheckedValue", "exceptValue", "onChange", "onValidate", "className", "style", "sx"]);
     var id = useId();
     // Use ---------------------------------------------------------------------------------------------------------------
     var theme = useTheme();
@@ -4663,9 +4686,10 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
     var _f = useAutoUpdateState$1(initError), error = _f[0], setError = _f[1];
     var _g = useState(), errorHelperText = _g[0], setErrorHelperText = _g[1];
     var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
-    var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
+    var _j = useAutoUpdateState$1(initHidden), hidden = _j[0], setHidden = _j[1];
+    var _k = useAutoUpdateState$1(initData), data = _k[0], setData = _k[1];
     // State - checked -------------------------------------------------------------------------------------------------
-    var _k = useAutoUpdateState$1(!!initChecked), checked = _k[0], setChecked = _k[1];
+    var _l = useAutoUpdateState$1(!!initChecked), checked = _l[0], setChecked = _l[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(checked);
@@ -4715,6 +4739,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
         var lastData = data;
         var lastUncheckedValue = uncheckedValue == null ? 0 : uncheckedValue;
         var lastDisabled = !!disabled;
+        var lastHidden = !!hidden;
         var commands = {
             getType: function () { return 'FormCheckbox'; },
             getName: function () { return name; },
@@ -4748,6 +4773,11 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
             setDisabled: function (disabled) {
                 lastDisabled = disabled;
                 setDisabled(disabled);
+            },
+            isHidden: function () { return lastHidden; },
+            setHidden: function (hidden) {
+                lastHidden = hidden;
+                setHidden(hidden);
             },
             focus: focus,
             focusValidate: focus,
@@ -4797,6 +4827,8 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
         setErrorErrorHelperText,
         data,
         setData,
+        hidden,
+        setHidden,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (e, checked) {
@@ -4820,7 +4852,7 @@ FormCheckbox.defaultProps = FormCheckboxDefaultProps;var FormRadioGroupDefaultPr
 };var PADDING_LEFT = 3;
 var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
     // type ------------------------------------------------------------------------------------------------------------
-    var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, hidden = _a.hidden, 
+    var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, initHidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, initWidth = _a.width, labelIcon = _a.labelIcon, label = _a.label, inline = _a.inline, initLoading = _a.loading, nowrap = _a.nowrap, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, helperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, onLoadItems = _a.onLoadItems, onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -4848,13 +4880,14 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
     var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
-    var _h = useState(false), isOnGetItemLoading = _h[0], setIsOnGetItemLoading = _h[1];
-    var _j = useAutoUpdateState$1(initLoading), loading = _j[0], setLoading = _j[1];
-    var _k = useAutoUpdateState$1(initWidth || '100%'), width = _k[0], setWidth = _k[1];
-    var _l = useState(), formColWrapRect = _l[0], setFormColWrapRect = _l[1];
-    var _m = useAutoUpdateState$1(initData), data = _m[0], setData = _m[1];
+    var _h = useAutoUpdateState$1(initHidden), hidden = _h[0], setHidden = _h[1];
+    var _j = useState(false), isOnGetItemLoading = _j[0], setIsOnGetItemLoading = _j[1];
+    var _k = useAutoUpdateState$1(initLoading), loading = _k[0], setLoading = _k[1];
+    var _l = useAutoUpdateState$1(initWidth || '100%'), width = _l[0], setWidth = _l[1];
+    var _m = useState(), formColWrapRect = _m[0], setFormColWrapRect = _m[1];
+    var _o = useAutoUpdateState$1(initData), data = _o[0], setData = _o[1];
     // State - radioGroupNoWrapRect (ResizeDetector) -------------------------------------------------------------------
-    var _o = useState(), radioGroupNoWrapRect = _o[0], setRadioGroupNoWrapRect = _o[1];
+    var _p = useState(), radioGroupNoWrapRect = _p[0], setRadioGroupNoWrapRect = _p[1];
     var resizeWidthDetectorRef = useResizeDetector({
         handleWidth: true,
         handleHeight: false,
@@ -4864,13 +4897,13 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         },
     }).ref;
     // State - height (ResizeDetector) ---------------------------------------------------------------------------------
-    var _p = useResizeDetector(), height = _p.height, resizeHeightDetectorRef = _p.ref;
+    var _q = useResizeDetector(), height = _q.height, resizeHeightDetectorRef = _q.ref;
     // Function - getFinalValue ----------------------------------------------------------------------------------------
     var getFinalValue = useCallback(function (value) {
         return onValue ? onValue(value) : value;
     }, [onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _q = useAutoUpdateState$1(initValue, getFinalValue), value = _q[0], setValue = _q[1];
+    var _r = useAutoUpdateState$1(initValue, getFinalValue), value = _r[0], setValue = _r[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(value);
@@ -4979,6 +5012,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         var lastItems = items;
         var lastLoading = loading;
         var lastDisabled = !!disabled;
+        var lastHidden = !!hidden;
         var commands = {
             getType: function () { return 'FormRadioGroup'; },
             getName: function () { return name; },
@@ -5002,6 +5036,11 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
             setDisabled: function (disabled) {
                 lastDisabled = disabled;
                 setDisabled(disabled);
+            },
+            isHidden: function () { return lastHidden; },
+            setHidden: function (hidden) {
+                lastHidden = hidden;
+                setHidden(hidden);
             },
             focus: focus,
             focusValidate: focus,
@@ -5062,6 +5101,8 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         setLoading,
         data,
         setData,
+        hidden,
+        setHidden,
     ]);
     useEffect(function () {
         if (onLoadItems) {
@@ -5136,7 +5177,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
     // type ------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, type = _a.type, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, helperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, notAllowEmptyValue = _a.notAllowEmptyValue, exceptValue = _a.exceptValue, initWidth = _a.width, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, hidden = _a.hidden, itemWidth = _a.itemWidth, onLoadItems = _a.onLoadItems, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, type = _a.type, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, helperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, notAllowEmptyValue = _a.notAllowEmptyValue, exceptValue = _a.exceptValue, initWidth = _a.width, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, initHidden = _a.hidden, itemWidth = _a.itemWidth, onLoadItems = _a.onLoadItems, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -5194,7 +5235,8 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
     var _j = useState(), errorHelperText = _j[0], setErrorHelperText = _j[1];
     var _k = useAutoUpdateState$1(initLoading), loading = _k[0], setLoading = _k[1];
     var _l = useAutoUpdateState$1(initDisabled), disabled = _l[0], setDisabled = _l[1];
-    var _m = useAutoUpdateState$1(initData), data = _m[0], setData = _m[1];
+    var _m = useAutoUpdateState$1(initHidden), hidden = _m[0], setHidden = _m[1];
+    var _o = useAutoUpdateState$1(initData), data = _o[0], setData = _o[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var itemsValues = useMemo(function () {
         if (items) {
@@ -5280,7 +5322,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         return onValue ? onValue(finalValue) : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _o = useAutoUpdateState$1(initValue, getFinalValue), value = _o[0], setValue = _o[1];
+    var _p = useAutoUpdateState$1(initValue, getFinalValue), value = _p[0], setValue = _p[1];
     // Effect ----------------------------------------------------------------------------------------------------------
     useEffect(function () {
         if (value !== initValue) {
@@ -5359,6 +5401,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
             var lastItems_1 = items;
             var lastLoading_1 = loading;
             var lastDisabled_1 = !!disabled;
+            var lastHidden_1 = !!hidden;
             var commands = {
                 getType: function () { return 'FormToggleButtonGroup'; },
                 getName: function () { return name; },
@@ -5382,6 +5425,11 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                 setDisabled: function (disabled) {
                     lastDisabled_1 = disabled;
                     setDisabled(disabled);
+                },
+                isHidden: function () { return lastHidden_1; },
+                setHidden: function (hidden) {
+                    lastHidden_1 = hidden;
+                    setHidden(hidden);
                 },
                 focus: focus,
                 focusValidate: focus,
@@ -5451,6 +5499,8 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         setLoading,
         data,
         setData,
+        hidden,
+        setHidden,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (e, newValue) {
@@ -5561,7 +5611,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
-    precision = _a.precision, highlightSelectedOnly = _a.highlightSelectedOnly, icon = _a.icon, emptyIcon = _a.emptyIcon, max = _a.max, hidden = _a.hidden, 
+    precision = _a.precision, highlightSelectedOnly = _a.highlightSelectedOnly, icon = _a.icon, emptyIcon = _a.emptyIcon, max = _a.max, initHidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, onValue = _a.onValue, 
     //----------------------------------------------------------------------------------------------------------------
@@ -5582,19 +5632,20 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
     var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
-    var _g = useAutoUpdateState$1(initData), data = _g[0], setData = _g[1];
+    var _g = useAutoUpdateState$1(initHidden), hidden = _g[0], setHidden = _g[1];
+    var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
     // State - width, height -------------------------------------------------------------------------------------------
-    var _h = useResizeDetector({
+    var _j = useResizeDetector({
         targetRef: ratingRef,
         handleWidth: true,
         handleHeight: true,
-    }), width = _h.width, height = _h.height;
+    }), width = _j.width, height = _j.height;
     // Function - getFinalValue ----------------------------------------------------------------------------------------
     var getFinalValue = useCallback(function (value) {
         return onValue ? onValue(value) : value;
     }, [onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _j = useAutoUpdateState$1(initValue || 0, getFinalValue), value = _j[0], setValue = _j[1];
+    var _k = useAutoUpdateState$1(initValue || 0, getFinalValue), value = _k[0], setValue = _k[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(value);
@@ -5649,6 +5700,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         var lastValue = value;
         var lastData = data;
         var lastDisabled = !!disabled;
+        var lastHidden = !!hidden;
         var commands = {
             getType: function () { return 'FormRating'; },
             getName: function () { return name; },
@@ -5672,6 +5724,11 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
             setDisabled: function (disabled) {
                 lastDisabled = disabled;
                 setDisabled(disabled);
+            },
+            isHidden: function () { return lastHidden; },
+            setHidden: function (hidden) {
+                lastHidden = hidden;
+                setHidden(hidden);
             },
             focus: focus,
             focusValidate: focus,
@@ -5718,6 +5775,8 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         setErrorErrorHelperText,
         data,
         setData,
+        hidden,
+        setHidden,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (e, value) {
@@ -7580,7 +7639,7 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
     // ---------------------------------------------------------------------------------------------------------------
     apiKey = _a.apiKey, toolbar = _a.toolbar, 
     //----------------------------------------------------------------------------------------------------------------
-    menubar = _a.menubar, height = _a.height, hidden = _a.hidden, onImageUpload = _a.onImageUpload, 
+    menubar = _a.menubar, height = _a.height, initHidden = _a.hidden, onImageUpload = _a.onImageUpload, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -7611,7 +7670,8 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useState(false), initialized = _g[0], setInitialized = _g[1];
     var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
-    var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
+    var _j = useAutoUpdateState$1(initHidden), hidden = _j[0], setHidden = _j[1];
+    var _k = useAutoUpdateState$1(initData), data = _k[0], setData = _k[1];
     // Function - focus ------------------------------------------------------------------------------------------------
     var focus = useCallback(function () {
         var _a;
@@ -7644,6 +7704,7 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
         var lastValue = value;
         var lastData = data;
         var lastDisabled = !!disabled;
+        var lastHidden = !!hidden;
         var commands = {
             getType: function () { return 'FormTextEditor'; },
             getName: function () { return name; },
@@ -7667,6 +7728,11 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
             setDisabled: function (disabled) {
                 lastDisabled = disabled;
                 setDisabled(disabled);
+            },
+            isHidden: function () { return lastHidden; },
+            setHidden: function (hidden) {
+                lastHidden = hidden;
+                setHidden(hidden);
             },
             focus: focus,
             focusValidate: focus,
@@ -7712,6 +7778,8 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
         data,
         setData,
         validate,
+        hidden,
+        setHidden,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleEditorChange = useCallback(function (value) {
@@ -7784,7 +7852,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     // type ------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, helperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, width = _a.width, placeholder = _a.placeholder, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, disablePortal = _a.disablePortal, noOptionsText = _a.noOptionsText, loadingText = _a.loadingText, limitTags = _a.limitTags, openOnFocus = _a.openOnFocus, disableClearable = _a.disableClearable, async = _a.async, hidden = _a.hidden, onLoadItems = _a.onLoadItems, onAsyncLoadValueItem = _a.onAsyncLoadValueItem, onRenderItem = _a.onRenderItem, onRenderTag = _a.onRenderTag, onAddItem = _a.onAddItem, getOptionDisabled = _a.getOptionDisabled, 
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, helperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, width = _a.width, placeholder = _a.placeholder, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, disablePortal = _a.disablePortal, noOptionsText = _a.noOptionsText, loadingText = _a.loadingText, limitTags = _a.limitTags, openOnFocus = _a.openOnFocus, disableClearable = _a.disableClearable, async = _a.async, initHidden = _a.hidden, onLoadItems = _a.onLoadItems, onAsyncLoadValueItem = _a.onAsyncLoadValueItem, onRenderItem = _a.onRenderItem, onRenderTag = _a.onRenderTag, onAddItem = _a.onAddItem, getOptionDisabled = _a.getOptionDisabled, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -7811,8 +7879,9 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useAutoUpdateState$1(initLoading), loading = _g[0], setLoading = _g[1];
     var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
-    var _j = useState(undefined), inputValue = _j[0], setInputValue = _j[1];
-    var _k = useAutoUpdateState$1(initData), data = _k[0], setData = _k[1];
+    var _j = useAutoUpdateState$1(initHidden), hidden = _j[0], setHidden = _j[1];
+    var _k = useState(undefined), inputValue = _k[0], setInputValue = _k[1];
+    var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var itemsValues = useMemo(function () {
         if (items) {
@@ -7885,8 +7954,8 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         return onValue ? onValue(finalValue) : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _l = useAutoUpdateState$1(initValue, getFinalValue), value = _l[0], setValue = _l[1];
-    var _m = useState(null), valueItem = _m[0], setValueItem = _m[1];
+    var _m = useAutoUpdateState$1(initValue, getFinalValue), value = _m[0], setValue = _m[1];
+    var _o = useState(null), valueItem = _o[0], setValueItem = _o[1];
     var componentValue = useMemo(function () {
         var finalValue = value;
         if (finalValue != null) {
@@ -8079,6 +8148,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
             var lastItems_1 = items;
             var lastLoading_1 = loading;
             var lastDisabled_1 = !!disabled;
+            var lastHidden_1 = !!hidden;
             var commands = {
                 getType: function () { return 'FormAutocomplete'; },
                 getName: function () { return name; },
@@ -8102,6 +8172,11 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                 setDisabled: function (disabled) {
                     lastDisabled_1 = disabled;
                     setDisabled(disabled);
+                },
+                isHidden: function () { return lastHidden_1; },
+                setHidden: function (hidden) {
+                    lastHidden_1 = hidden;
+                    setHidden(hidden);
                 },
                 focus: focus,
                 focusValidate: focus,
@@ -8171,6 +8246,8 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         setLoading,
         data,
         setData,
+        hidden,
+        setHidden,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (componentValue, reason, details) {
@@ -10473,7 +10550,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, helperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, helperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, initHidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     //--------------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$4(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = useId();
@@ -10500,7 +10577,8 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
     var _e = useState(null), timeError = _e[0], setTimeError = _e[1];
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
-    var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
+    var _h = useAutoUpdateState$1(initHidden), hidden = _h[0], setHidden = _h[1];
+    var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var label = useMemo(function () {
         if (labelIcon) {
@@ -10541,8 +10619,8 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
         return value;
     }, []);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _j = useAutoUpdateState$1(initValue || null, getFinalValue), value = _j[0], setValue = _j[1];
-    var _k = useState(null), inputValue = _k[0], setInputValue = _k[1];
+    var _k = useAutoUpdateState$1(initValue || null, getFinalValue), value = _k[0], setValue = _k[1];
+    var _l = useState(null), inputValue = _l[0], setInputValue = _l[1];
     // Effect ----------------------------------------------------------------------------------------------------------
     useEffect(function () {
         if (value !== initValue) {
@@ -10652,6 +10730,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
             var lastValue_1 = value;
             var lastData_1 = data;
             var lastDisabled_1 = !!disabled;
+            var lastHidden_1 = !!hidden;
             var commands = {
                 getType: function () { return 'default'; },
                 getName: function () { return name; },
@@ -10675,6 +10754,11 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
                 setDisabled: function (disabled) {
                     lastDisabled_1 = disabled;
                     setDisabled(disabled);
+                },
+                isHidden: function () { return lastHidden_1; },
+                setHidden: function (hidden) {
+                    lastHidden_1 = hidden;
+                    setHidden(hidden);
                 },
                 focus: focus,
                 focusValidate: focus,
@@ -10726,6 +10810,8 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
         setErrorErrorHelperText,
         data,
         setData,
+        hidden,
+        setHidden,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (unit, newValue, keyboardInputValue) {
@@ -11176,7 +11262,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, helperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, hidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, helperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, initHidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     //--------------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$4(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = useId();
@@ -11203,7 +11289,8 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
     var _e = useState(null), timeError = _e[0], setTimeError = _e[1];
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
-    var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
+    var _h = useAutoUpdateState$1(initHidden), hidden = _h[0], setHidden = _h[1];
+    var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var label = useMemo(function () {
         if (labelIcon) {
@@ -11244,8 +11331,8 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         return value;
     }, []);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _j = useAutoUpdateState$1(initValue || null, getFinalValue), value = _j[0], setValue = _j[1];
-    var _k = useState(null), inputValue = _k[0], setInputValue = _k[1];
+    var _k = useAutoUpdateState$1(initValue || null, getFinalValue), value = _k[0], setValue = _k[1];
+    var _l = useState(null), inputValue = _l[0], setInputValue = _l[1];
     // Effect ----------------------------------------------------------------------------------------------------------
     useEffect(function () {
         if (value !== initValue) {
@@ -11355,6 +11442,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
             var lastValue_1 = value;
             var lastData_1 = data;
             var lastDisabled_1 = !!disabled;
+            var lastHidden_1 = !!hidden;
             var commands = {
                 getType: function () { return 'default'; },
                 getName: function () { return name; },
@@ -11378,6 +11466,11 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
                 setDisabled: function (disabled) {
                     lastDisabled_1 = disabled;
                     setDisabled(disabled);
+                },
+                isHidden: function () { return lastHidden_1; },
+                setHidden: function (hidden) {
+                    lastHidden_1 = hidden;
+                    setHidden(hidden);
                 },
                 focus: focus,
                 focusValidate: focus,
@@ -11429,6 +11522,8 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         setErrorErrorHelperText,
         data,
         setData,
+        hidden,
+        setHidden,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleChange = useCallback(function (unit, newValue, keyboardInputValue) {
@@ -11722,9 +11817,9 @@ PrivateInputDatePicker.displayName = 'PrivateInputDatePicker';
 PrivateInputDatePicker.defaultProps = PrivateInputDatePickerDefaultProps;var PrivateYearRangePickerDefaultProps = {
     minYear: 2020,
     maxYear: 2050,
-};var PrivateYearRangePickerYearListDefaultProps = {};var PrivateYearRangePickerYearDefaultProps = {};var StyledContainer$6 = styled(Grid)(templateObject_1$9 || (templateObject_1$9 = __makeTemplateObject(["\n  padding: 4px;\n  position: relative;\n"], ["\n  padding: 4px;\n  position: relative;\n"])));
+};var PrivateYearRangePickerYearListDefaultProps = {};var PrivateYearRangePickerYearDefaultProps = {};var StyledContainer$6 = styled(Grid)(templateObject_1$a || (templateObject_1$a = __makeTemplateObject(["\n  padding: 4px;\n  position: relative;\n"], ["\n  padding: 4px;\n  position: relative;\n"])));
 var StyledButton$2 = styled(Button)(templateObject_2$5 || (templateObject_2$5 = __makeTemplateObject(["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"], ["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"])));
-var templateObject_1$9, templateObject_2$5;var PrivateYearRangePickerYear = React__default.forwardRef(function (_a, ref) {
+var templateObject_1$a, templateObject_2$5;var PrivateYearRangePickerYear = React__default.forwardRef(function (_a, ref) {
     var year = _a.year, disabled = _a.disabled, isDefault = _a.isDefault, selected = _a.selected, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, selectedTemp = _a.selectedTemp, onClick = _a.onClick, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
     var className = useMemo(function () {
         return classNames$1(isDefault && 'default', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', disabled && 'disabled');
@@ -11733,8 +11828,8 @@ var templateObject_1$9, templateObject_2$5;var PrivateYearRangePickerYear = Reac
         React__default.createElement(StyledButton$2, { className: className, disabled: disabled, onClick: onClick, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave }, year)));
 });
 PrivateYearRangePickerYear.displayName = 'PrivateYearRangePickerYear';
-PrivateYearRangePickerYear.defaultProps = PrivateYearRangePickerYearDefaultProps;var StyledContainer$5 = styled(Grid)(templateObject_1$8 || (templateObject_1$8 = __makeTemplateObject(["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"], ["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"])));
-var templateObject_1$8;var _lastCloseTime$1 = 0;
+PrivateYearRangePickerYear.defaultProps = PrivateYearRangePickerYearDefaultProps;var StyledContainer$5 = styled(Grid)(templateObject_1$9 || (templateObject_1$9 = __makeTemplateObject(["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"], ["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"])));
+var templateObject_1$9;var _lastCloseTime$1 = 0;
 var PrivateYearRangePickerYearList = function (_a) {
     // Ref ---------------------------------------------------------------------------------------------------------------
     var value = _a.value, displayValue = _a.displayValue, selectType = _a.selectType, minYear = _a.minYear, maxYear = _a.maxYear, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange;
@@ -11850,14 +11945,14 @@ var PrivateYearRangePickerYearList = function (_a) {
         }, year: info.year, isDefault: info.isDefault, selected: info.selected, selectedStart: info.selectedStart, selectedEnd: info.selectedEnd, selectedTemp: info.selectedTemp, disabled: info.disabled, onClick: function () { return onChange(info.year); }, onMouseEnter: function () { return mouseOver(info.year); }, onMouseLeave: function () { return mouseOver(undefined); } })); })));
 };
 PrivateYearRangePickerYearList.displayName = 'PrivateYearRangePickerYearList';
-PrivateYearRangePickerYearList.defaultProps = PrivateYearRangePickerYearListDefaultProps;var StyledTitleContainer$1 = styled('div')(templateObject_1$7 || (templateObject_1$7 = __makeTemplateObject(["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"], ["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"])));
+PrivateYearRangePickerYearList.defaultProps = PrivateYearRangePickerYearListDefaultProps;var StyledTitleContainer$1 = styled('div')(templateObject_1$8 || (templateObject_1$8 = __makeTemplateObject(["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"], ["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"])));
 var StyledYear = styled('span')(templateObject_2$4 || (templateObject_2$4 = __makeTemplateObject([""], [""])));
 var StyledYearError = styled('span')(templateObject_3$2 || (templateObject_3$2 = __makeTemplateObject(["\n  color: ", ";\n"], ["\n  color: ", ";\n"])), function (_a) {
     var theme = _a.theme;
     return theme.palette.error.main;
 });
 var StyledTitleGap = styled('span')(templateObject_4$2 || (templateObject_4$2 = __makeTemplateObject(["\n  padding: 0 7px;\n  opacity: 0.5;\n"], ["\n  padding: 0 7px;\n  opacity: 0.5;\n"])));
-var templateObject_1$7, templateObject_2$4, templateObject_3$2, templateObject_4$2;var DEFAULT_VALUE$5 = [null, null];
+var templateObject_1$8, templateObject_2$4, templateObject_3$2, templateObject_4$2;var DEFAULT_VALUE$5 = [null, null];
 var PrivateYearRangePicker = function (_a) {
     // State -------------------------------------------------------------------------------------------------------------
     var selectType = _a.selectType, initValue = _a.value, initMinYear = _a.minYear, initMaxYear = _a.maxYear, disablePast = _a.disablePast, disableFuture = _a.disableFuture, hideHeader = _a.hideHeader, onChange = _a.onChange;
@@ -11957,9 +12052,9 @@ PrivateYearRangePicker.displayName = 'PrivateYearRangePicker';
 PrivateYearRangePicker.defaultProps = PrivateYearRangePickerDefaultProps;var PrivateYearPickerDefaultProps = {
     minYear: 2020,
     maxYear: 2050,
-};var PrivateYearPickerYearListDefaultProps = {};var PrivateYearPickerYearDefaultProps = {};var StyledContainer$4 = styled(Grid)(templateObject_1$6 || (templateObject_1$6 = __makeTemplateObject(["\n  padding: 4px;\n  position: relative;\n"], ["\n  padding: 4px;\n  position: relative;\n"])));
+};var PrivateYearPickerYearListDefaultProps = {};var PrivateYearPickerYearDefaultProps = {};var StyledContainer$4 = styled(Grid)(templateObject_1$7 || (templateObject_1$7 = __makeTemplateObject(["\n  padding: 4px;\n  position: relative;\n"], ["\n  padding: 4px;\n  position: relative;\n"])));
 var StyledButton$1 = styled(Button)(templateObject_2$3 || (templateObject_2$3 = __makeTemplateObject(["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"], ["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"])));
-var templateObject_1$6, templateObject_2$3;var PrivateYearPickerYear = React__default.forwardRef(function (_a, ref) {
+var templateObject_1$7, templateObject_2$3;var PrivateYearPickerYear = React__default.forwardRef(function (_a, ref) {
     var year = _a.year, disabled = _a.disabled, active = _a.active, isDefault = _a.isDefault, selected = _a.selected, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, selectedTemp = _a.selectedTemp, onClick = _a.onClick, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
     var className = useMemo(function () {
         return classNames$1(isDefault && 'default', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', active && 'active', disabled && 'disabled');
@@ -11968,8 +12063,8 @@ var templateObject_1$6, templateObject_2$3;var PrivateYearPickerYear = React__de
         React__default.createElement(StyledButton$1, { className: className, disabled: disabled, onClick: onClick, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave }, year)));
 });
 PrivateYearPickerYear.displayName = 'PrivateYearPickerYear';
-PrivateYearPickerYear.defaultProps = PrivateYearPickerYearDefaultProps;var StyledContainer$3 = styled(Grid)(templateObject_1$5 || (templateObject_1$5 = __makeTemplateObject(["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"], ["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"])));
-var templateObject_1$5;var _lastCloseTime = 0;
+PrivateYearPickerYear.defaultProps = PrivateYearPickerYearDefaultProps;var StyledContainer$3 = styled(Grid)(templateObject_1$6 || (templateObject_1$6 = __makeTemplateObject(["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"], ["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"])));
+var templateObject_1$6;var _lastCloseTime = 0;
 var PrivateYearPickerYearList = function (_a) {
     // Ref ---------------------------------------------------------------------------------------------------------------
     var value = _a.value, minYear = _a.minYear, maxYear = _a.maxYear, disablePast = _a.disablePast, disableFuture = _a.disableFuture, selectFromYear = _a.selectFromYear, selectToYear = _a.selectToYear, onChange = _a.onChange;
@@ -12114,14 +12209,14 @@ var PrivateYearPickerYearList = function (_a) {
         }, year: info.year, isDefault: info.isDefault, active: info.active, selected: info.selected, selectedStart: info.selectedStart, selectedEnd: info.selectedEnd, selectedTemp: info.selectedTemp, disabled: info.disabled, onClick: function () { return onChange(info.year); }, onMouseEnter: function () { return mouseOver(info.year); }, onMouseLeave: function () { return mouseOver(undefined); } })); })));
 };
 PrivateYearPickerYearList.displayName = 'PrivateYearPickerYearList';
-PrivateYearPickerYearList.defaultProps = PrivateYearPickerYearListDefaultProps;var StyledTitleContainer = styled('div')(templateObject_1$4 || (templateObject_1$4 = __makeTemplateObject(["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"], ["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"])));
+PrivateYearPickerYearList.defaultProps = PrivateYearPickerYearListDefaultProps;var StyledTitleContainer = styled('div')(templateObject_1$5 || (templateObject_1$5 = __makeTemplateObject(["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"], ["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"])));
 var StyledIconButton$1 = styled(IconButton)(templateObject_2$2 || (templateObject_2$2 = __makeTemplateObject(["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"], ["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"])));
 var StyledYearMonth$1 = styled('div')(templateObject_3$1 || (templateObject_3$1 = __makeTemplateObject(["\n  flex: 1;\n  text-align: center;\n"], ["\n  flex: 1;\n  text-align: center;\n"])));
 var StyledYearMonthError$1 = styled('div')(templateObject_4$1 || (templateObject_4$1 = __makeTemplateObject(["\n  flex: 1;\n  text-align: center;\n  color: ", ";\n"], ["\n  flex: 1;\n  text-align: center;\n  color: ", ";\n"])), function (_a) {
     var theme = _a.theme;
     return theme.palette.error.main;
 });
-var templateObject_1$4, templateObject_2$2, templateObject_3$1, templateObject_4$1;var PrivateYearPicker = function (_a) {
+var templateObject_1$5, templateObject_2$2, templateObject_3$1, templateObject_4$1;var PrivateYearPicker = function (_a) {
     // State -------------------------------------------------------------------------------------------------------------
     var initValue = _a.value, initMinYear = _a.minYear, initMaxYear = _a.maxYear, disablePast = _a.disablePast, disableFuture = _a.disableFuture, hideHeader = _a.hideHeader, selectFromYear = _a.selectFromYear, selectToYear = _a.selectToYear, onChange = _a.onChange;
     var _b = useAutoUpdateState$1(initValue || null), value = _b[0], setValue = _b[1];
@@ -12217,9 +12312,9 @@ PrivateYearPicker.defaultProps = PrivateYearPickerDefaultProps;var PrivateMonthP
         year: 2050,
         month: 12,
     },
-};var PrivateMonthPickerMonthListDefaultProps = {};var PrivateMonthPickerMonthDefaultProps = {};var StyledContainer$2 = styled(Grid)(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  padding: 4px;\n  position: relative;\n"], ["\n  padding: 4px;\n  position: relative;\n"])));
+};var PrivateMonthPickerMonthListDefaultProps = {};var PrivateMonthPickerMonthDefaultProps = {};var StyledContainer$2 = styled(Grid)(templateObject_1$4 || (templateObject_1$4 = __makeTemplateObject(["\n  padding: 4px;\n  position: relative;\n"], ["\n  padding: 4px;\n  position: relative;\n"])));
 var StyledButton = styled(Button)(templateObject_2$1 || (templateObject_2$1 = __makeTemplateObject(["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    background-color: rgba(66, 165, 245, 0.3);\n    border: 1px solid transparent;\n  }\n"], ["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    background-color: rgba(66, 165, 245, 0.3);\n    border: 1px solid transparent;\n  }\n"])));
-var templateObject_1$3, templateObject_2$1;var PrivateMonthPickerMonth = React__default.forwardRef(function (_a, ref) {
+var templateObject_1$4, templateObject_2$1;var PrivateMonthPickerMonth = React__default.forwardRef(function (_a, ref) {
     var month = _a.month, disabled = _a.disabled, isDefault = _a.isDefault, active = _a.active, selected = _a.selected, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, selectedTemp = _a.selectedTemp, onClick = _a.onClick, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
     var className = useMemo(function () {
         return classNames$1(isDefault && 'default', active && 'active', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', disabled && 'disabled');
@@ -12233,8 +12328,8 @@ var templateObject_1$3, templateObject_2$1;var PrivateMonthPickerMonth = React__
             "\uC6D4")));
 });
 PrivateMonthPickerMonth.displayName = 'PrivateMonthPickerMonth';
-PrivateMonthPickerMonth.defaultProps = PrivateMonthPickerMonthDefaultProps;var StyledContainer$1 = styled(Grid)(templateObject_1$2 || (templateObject_1$2 = __makeTemplateObject(["\n  width: 240px;\n  padding: 4px;\n"], ["\n  width: 240px;\n  padding: 4px;\n"])));
-var templateObject_1$2;var PrivateMonthPickerMonthList = function (_a) {
+PrivateMonthPickerMonth.defaultProps = PrivateMonthPickerMonthDefaultProps;var StyledContainer$1 = styled(Grid)(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  width: 240px;\n  padding: 4px;\n"], ["\n  width: 240px;\n  padding: 4px;\n"])));
+var templateObject_1$3;var PrivateMonthPickerMonthList = function (_a) {
     // Function ----------------------------------------------------------------------------------------------------------
     var value = _a.value, initDefaultValue = _a.defaultValue, minAvailableValue = _a.minAvailableValue, maxAvailableValue = _a.maxAvailableValue, disablePast = _a.disablePast, disableFuture = _a.disableFuture, selectFromValue = _a.selectFromValue, selectToValue = _a.selectToValue, onChange = _a.onChange;
     var valueToYm = useCallback(function (v) { return v.year * 100 + v.month; }, []);
@@ -12299,7 +12394,7 @@ var templateObject_1$2;var PrivateMonthPickerMonthList = function (_a) {
     return (React__default.createElement(StyledContainer$1, { className: 'PrivateMonthPickerMonthList', container: true }, months.map(function (info) { return (React__default.createElement(PrivateMonthPickerMonth, { key: info.month, month: info.month, isDefault: info.isDefault, active: info.active, selected: info.selected, selectedStart: info.selectedStart, selectedEnd: info.selectedEnd, selectedTemp: info.selectedTemp, disabled: info.disabled, onClick: handleMonthChange })); })));
 };
 PrivateMonthPickerMonthList.displayName = 'PrivateMonthPickerMonthList';
-PrivateMonthPickerMonthList.defaultProps = PrivateMonthPickerMonthListDefaultProps;var StyledContainer = styled('div')(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  .PrivateYearPickerYearList {\n    max-height: 130px;\n  }\n"], ["\n  .PrivateYearPickerYearList {\n    max-height: 130px;\n  }\n"])));
+PrivateMonthPickerMonthList.defaultProps = PrivateMonthPickerMonthListDefaultProps;var StyledContainer = styled('div')(templateObject_1$2 || (templateObject_1$2 = __makeTemplateObject(["\n  .PrivateYearPickerYearList {\n    max-height: 130px;\n  }\n"], ["\n  .PrivateYearPickerYearList {\n    max-height: 130px;\n  }\n"])));
 var TitleContainer = styled('div')(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"], ["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"])));
 var StyledIconButton = styled(IconButton)(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"], ["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"])));
 var StyledYearMonth = styled('div')(templateObject_4 || (templateObject_4 = __makeTemplateObject(["\n  flex: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n"], ["\n  flex: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n"])));
@@ -12307,7 +12402,7 @@ var StyledYearMonthError = styled('div')(templateObject_5 || (templateObject_5 =
     var theme = _a.theme;
     return theme.palette.error.main;
 });
-var templateObject_1$1, templateObject_2, templateObject_3, templateObject_4, templateObject_5;var PrivateMonthPicker = function (_a) {
+var templateObject_1$2, templateObject_2, templateObject_3, templateObject_4, templateObject_5;var PrivateMonthPicker = function (_a) {
     // State -------------------------------------------------------------------------------------------------------------
     var initValue = _a.value, initMinValue = _a.minValue, initMaxValue = _a.maxValue, disablePast = _a.disablePast, disableFuture = _a.disableFuture, selectFromValue = _a.selectFromValue, selectToValue = _a.selectToValue, onChange = _a.onChange;
     var _b = useAutoUpdateState$1(initValue || null), value = _b[0], setValue = _b[1];
@@ -12435,8 +12530,8 @@ PrivateMonthPicker.defaultProps = PrivateMonthPickerDefaultProps;var PrivateMont
         year: 2050,
         month: 12,
     },
-};var StyledDiv = styled(Grid)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 14px;\n  width: 30px;\n  border-left: 1px solid #efefef;\n  border-right: 1px solid #efefef;\n  background-color: #fafafa;\n"], ["\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 14px;\n  width: 30px;\n  border-left: 1px solid #efefef;\n  border-right: 1px solid #efefef;\n  background-color: #fafafa;\n"])));
-var templateObject_1;var PrivateMonthRangePicker = function (_a) {
+};var StyledDiv = styled(Grid)(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 14px;\n  width: 30px;\n  border-left: 1px solid #efefef;\n  border-right: 1px solid #efefef;\n  background-color: #fafafa;\n"], ["\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 14px;\n  width: 30px;\n  border-left: 1px solid #efefef;\n  border-right: 1px solid #efefef;\n  background-color: #fafafa;\n"])));
+var templateObject_1$1;var PrivateMonthRangePicker = function (_a) {
     // Function ----------------------------------------------------------------------------------------------------------
     var value = _a.value, initMinValue = _a.minValue, initMaxValue = _a.maxValue, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange;
     var valueToYm = useCallback(function (v) { return v.year * 100 + v.month; }, []);
@@ -13035,7 +13130,7 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, initValue = _a.value, initData = _a.data, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, initCalendarCount = _a.calendarCount, initFormat = _a.format, formValueFormat = _a.formValueFormat, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, helperText = _a.helperText, formValueFromNameSuffix = _a.formValueFromNameSuffix, formValueToNameSuffix = _a.formValueToNameSuffix, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, hidden = _a.hidden, align = _a.align, onGetActionButtons = _a.onGetActionButtons, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, initValue = _a.value, initData = _a.data, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, initCalendarCount = _a.calendarCount, initFormat = _a.format, formValueFormat = _a.formValueFormat, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, helperText = _a.helperText, formValueFromNameSuffix = _a.formValueFromNameSuffix, formValueToNameSuffix = _a.formValueToNameSuffix, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, initHidden = _a.hidden, align = _a.align, onGetActionButtons = _a.onGetActionButtons, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = useId();
@@ -13059,13 +13154,14 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
     var openValueRef = useRef();
     // State -----------------------------------------------------------------------------------------------------------
     var _c = useAutoUpdateState$1(initDisabled), disabled = _c[0], setDisabled = _c[1];
-    var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
-    var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
-    var _f = useState(false), startError = _f[0], setStartError = _f[1];
-    var _g = useState(), startErrorHelperText = _g[0], setStartErrorHelperText = _g[1];
-    var _h = useState(false), endError = _h[0], setEndError = _h[1];
-    var _j = useState(), endErrorHelperText = _j[0], setEndErrorHelperText = _j[1];
-    var _k = useAutoUpdateState$1(initData), data = _k[0], setData = _k[1];
+    var _d = useAutoUpdateState$1(initHidden), hidden = _d[0], setHidden = _d[1];
+    var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
+    var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
+    var _g = useState(false), startError = _g[0], setStartError = _g[1];
+    var _h = useState(), startErrorHelperText = _h[0], setStartErrorHelperText = _h[1];
+    var _j = useState(false), endError = _j[0], setEndError = _j[1];
+    var _k = useState(), endErrorHelperText = _k[0], setEndErrorHelperText = _k[1];
+    var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var format = useMemo(function () { return initFormat || DEFAULT_FORMAT$4; }, [initFormat]);
     // Function - getFinalValue ----------------------------------------------------------------------------------------
@@ -13178,16 +13274,16 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
         (_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.activeMonth(month);
     }, [containerRef]);
     // State -----------------------------------------------------------------------------------------------------------
-    var _l = useState(false), open = _l[0], setOpen = _l[1];
-    var _m = useState('start'), selectType = _m[0], setSelectType = _m[1];
-    var _o = useAutoUpdateState$1(useCallback(function () {
+    var _m = useState(false), open = _m[0], setOpen = _m[1];
+    var _o = useState('start'), selectType = _o[0], setSelectType = _o[1];
+    var _p = useAutoUpdateState$1(useCallback(function () {
         return initValue || DEFAULT_VALUE$4;
-    }, [initValue])), value = _o[0], setValue = _o[1];
+    }, [initValue])), value = _p[0], setValue = _p[1];
     var calendarCount = useAutoUpdateState$1(initCalendarCount || 2)[0];
-    var _p = useState(function () {
+    var _q = useState(function () {
         var now = dayjs();
         return [now, now.add(1, 'month'), now.add(2, 'month')];
-    }), months = _p[0], setMonths = _p[1];
+    }), months = _q[0], setMonths = _q[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var inputDatePickerProps = useMemo(function () { return ({
         align: align,
@@ -13448,6 +13544,7 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
             var lastValue_1 = value;
             var lastData_1 = data;
             var lastDisabled_1 = !!disabled;
+            var lastHidden_1 = !!hidden;
             var commands = {
                 getType: function () { return 'FormDateRangePicker'; },
                 getName: function () { return name; },
@@ -13481,6 +13578,11 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
                 setDisabled: function (disabled) {
                     lastDisabled_1 = disabled;
                     setDisabled(disabled);
+                },
+                isHidden: function () { return lastHidden_1; },
+                setHidden: function (hidden) {
+                    lastHidden_1 = hidden;
+                    setHidden(hidden);
                 },
                 focus: focus,
                 focusValidate: focusValidate,
@@ -13547,6 +13649,8 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
         setErrorErrorHelperText,
         data,
         setData,
+        hidden,
+        setHidden,
     ]);
     // Render ----------------------------------------------------------------------------------------------------------
     return (React__default.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs },
@@ -13646,7 +13750,7 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    accept = _a.accept, hideUrl = _a.hideUrl, uploadLabel = _a.uploadLabel, uploadTabIndex = _a.uploadTabIndex, hideUpload = _a.hideUpload, hideUploadLabel = _a.hideUploadLabel, linkLabel = _a.linkLabel, linkTabIndex = _a.linkTabIndex, hideLink = _a.hideLink, hideLinkLabel = _a.hideLinkLabel, removeLabel = _a.removeLabel, removeTabIndex = _a.removeTabIndex, hideRemove = _a.hideRemove, hideRemoveLabel = _a.hideRemoveLabel, maxFileSize = _a.maxFileSize, preview = _a.preview, hidden = _a.hidden, onFile = _a.onFile, onLink = _a.onLink, 
+    accept = _a.accept, hideUrl = _a.hideUrl, uploadLabel = _a.uploadLabel, uploadTabIndex = _a.uploadTabIndex, hideUpload = _a.hideUpload, hideUploadLabel = _a.hideUploadLabel, linkLabel = _a.linkLabel, linkTabIndex = _a.linkTabIndex, hideLink = _a.hideLink, hideLinkLabel = _a.hideLinkLabel, removeLabel = _a.removeLabel, removeTabIndex = _a.removeTabIndex, hideRemove = _a.hideRemove, hideRemoveLabel = _a.hideRemoveLabel, maxFileSize = _a.maxFileSize, preview = _a.preview, initHidden = _a.hidden, onFile = _a.onFile, onLink = _a.onLink, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, initLabel = _a.label, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
@@ -13679,9 +13783,10 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
     var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
-    var _g = useState(false), isOpenLinkDialog = _g[0], setIsOpenLinkDialog = _g[1];
-    var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
-    var _j = useState({ open: false }), alertDialogProps = _j[0], setAlertDialogProps = _j[1];
+    var _g = useAutoUpdateState$1(initHidden), hidden = _g[0], setHidden = _g[1];
+    var _h = useState(false), isOpenLinkDialog = _h[0], setIsOpenLinkDialog = _h[1];
+    var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
+    var _k = useState({ open: false }), alertDialogProps = _k[0], setAlertDialogProps = _k[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var label = useMemo(function () {
         return labelIcon ? (React__default.createElement(React__default.Fragment, null,
@@ -13736,6 +13841,7 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
         var lastValue = value;
         var lastData = data;
         var lastDisabled = !!disabled;
+        var lastHidden = !!hidden;
         var commands = {
             getType: function () { return 'FormFile'; },
             getName: function () { return name; },
@@ -13759,6 +13865,11 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
             setDisabled: function (disabled) {
                 lastDisabled = disabled;
                 setDisabled(disabled);
+            },
+            isHidden: function () { return lastHidden; },
+            setHidden: function (hidden) {
+                lastHidden = hidden;
+                setHidden(hidden);
             },
             focus: focus,
             focusValidate: focus,
@@ -13804,6 +13915,8 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
         setErrorErrorHelperText,
         data,
         setData,
+        hidden,
+        setHidden,
     ]);
     // Function --------------------------------------------------------------------------------------------------------
     var fileSizeCheck = useCallback(function (file) {
@@ -14082,7 +14195,7 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
-    hidden = _a.hidden, 
+    initHidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initFullWidth = _a.fullWidth, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
@@ -14110,16 +14223,17 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
     var _c = useAutoUpdateState$1(initError), error = _c[0], setError = _c[1];
     var _d = useState(), errorHelperText = _d[0], setErrorHelperText = _d[1];
     var _e = useAutoUpdateState$1(initDisabled), disabled = _e[0], setDisabled = _e[1];
-    var _f = useAutoUpdateState$1(initData), data = _f[0], setData = _f[1];
-    var _g = useState(false), open = _g[0], setOpen = _g[1];
+    var _f = useAutoUpdateState$1(initHidden), hidden = _f[0], setHidden = _f[1];
+    var _g = useAutoUpdateState$1(initData), data = _g[0], setData = _g[1];
+    var _h = useState(false), open = _h[0], setOpen = _h[1];
     // Function - getFinalValue ----------------------------------------------------------------------------------------
     var getFinalValue = useCallback(function (value) {
         return value || DEFAULT_VALUE$3;
     }, []);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _h = useAutoUpdateState$1(useCallback(function () {
+    var _j = useAutoUpdateState$1(useCallback(function () {
         return initValue || DEFAULT_VALUE$3;
-    }, [initValue])), value = _h[0], setValue = _h[1];
+    }, [initValue])), value = _j[0], setValue = _j[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(value);
@@ -14231,6 +14345,7 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
         var lastValue = value;
         var lastData = data;
         var lastDisabled = !!disabled;
+        var lastHidden = !!hidden;
         var commands = {
             getType: function () { return 'FormMonthPicker'; },
             getName: function () { return name; },
@@ -14272,6 +14387,11 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
             setDisabled: function (disabled) {
                 lastDisabled = disabled;
                 setDisabled(disabled);
+            },
+            isHidden: function () { return lastHidden; },
+            setHidden: function (hidden) {
+                lastHidden = hidden;
+                setHidden(hidden);
             },
             focus: focus,
             focusValidate: focus,
@@ -14332,6 +14452,8 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
         setData,
         formValueYearNameSuffix,
         formValueMonthNameSuffix,
+        hidden,
+        setHidden,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleContainerMouseDown = useCallback(function () {
@@ -14433,7 +14555,7 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
-    hidden = _a.hidden, 
+    initHidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, readOnly = _a.readOnly, required = _a.required, initFullWidth = _a.fullWidth, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
@@ -14464,16 +14586,17 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
     var _g = useState(false), endError = _g[0], setEndError = _g[1];
     var _h = useState(), endErrorHelperText = _h[0], setEndErrorHelperText = _h[1];
     var _j = useAutoUpdateState$1(initDisabled), disabled = _j[0], setDisabled = _j[1];
-    var _k = useAutoUpdateState$1(initData), data = _k[0], setData = _k[1];
-    var _l = useState(false), open = _l[0], setOpen = _l[1];
+    var _k = useAutoUpdateState$1(initHidden), hidden = _k[0], setHidden = _k[1];
+    var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
+    var _m = useState(false), open = _m[0], setOpen = _m[1];
     // Function - getFinalValue ----------------------------------------------------------------------------------------
     var getFinalValue = useCallback(function (value) {
         return value || DEFAULT_VALUE$2;
     }, []);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _m = useAutoUpdateState$1(useCallback(function () {
+    var _o = useAutoUpdateState$1(useCallback(function () {
         return initValue || DEFAULT_VALUE$2;
-    }, [initValue])), value = _m[0], setValue = _m[1];
+    }, [initValue])), value = _o[0], setValue = _o[1];
     useFirstSkipEffect$1(function () {
         if (error || startError || endError)
             validate(value);
@@ -14605,6 +14728,7 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
         var lastValue = value;
         var lastData = data;
         var lastDisabled = !!disabled;
+        var lastHidden = !!hidden;
         var commands = {
             getType: function () { return 'FormMonthRangePicker'; },
             getName: function () { return name; },
@@ -14687,6 +14811,11 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
                 lastDisabled = disabled;
                 setDisabled(disabled);
             },
+            isHidden: function () { return lastHidden; },
+            setHidden: function (hidden) {
+                lastHidden = hidden;
+                setHidden(hidden);
+            },
             focus: focus,
             focusValidate: focus,
             validate: function () { return validate(value); },
@@ -14760,6 +14889,8 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
         formValueFromMonthNameSuffix,
         formValueToYearNameSuffix,
         formValueToMonthNameSuffix,
+        hidden,
+        setHidden,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleContainerChange = useCallback(function (newValue, selectType, isMonthSelect) {
@@ -14907,7 +15038,7 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
-    hidden = _a.hidden, 
+    initHidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initFullWidth = _a.fullWidth, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
@@ -14935,16 +15066,17 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
     var _c = useAutoUpdateState$1(initError), error = _c[0], setError = _c[1];
     var _d = useState(), errorHelperText = _d[0], setErrorHelperText = _d[1];
     var _e = useAutoUpdateState$1(initDisabled), disabled = _e[0], setDisabled = _e[1];
-    var _f = useAutoUpdateState$1(initData), data = _f[0], setData = _f[1];
-    var _g = useState(false), open = _g[0], setOpen = _g[1];
+    var _f = useAutoUpdateState$1(initHidden), hidden = _f[0], setHidden = _f[1];
+    var _g = useAutoUpdateState$1(initData), data = _g[0], setData = _g[1];
+    var _h = useState(false), open = _h[0], setOpen = _h[1];
     // Function - getFinalValue ----------------------------------------------------------------------------------------
     var getFinalValue = useCallback(function (value) {
         return value || DEFAULT_VALUE$1;
     }, []);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _h = useAutoUpdateState$1(useCallback(function () {
+    var _j = useAutoUpdateState$1(useCallback(function () {
         return initValue || DEFAULT_VALUE$1;
-    }, [initValue])), value = _h[0], setValue = _h[1];
+    }, [initValue])), value = _j[0], setValue = _j[1];
     useFirstSkipEffect$1(function () {
         if (error)
             validate(value);
@@ -15030,6 +15162,7 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
         var lastValue = value;
         var lastData = data;
         var lastDisabled = !!disabled;
+        var lastHidden = !!hidden;
         var commands = {
             getType: function () { return 'FormYearPicker'; },
             getName: function () { return name; },
@@ -15053,6 +15186,11 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
             setDisabled: function (disabled) {
                 lastDisabled = disabled;
                 setDisabled(disabled);
+            },
+            isHidden: function () { return lastHidden; },
+            setHidden: function (hidden) {
+                lastHidden = hidden;
+                setHidden(hidden);
             },
             focus: focus,
             focusValidate: focus,
@@ -15099,6 +15237,8 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
         setErrorErrorHelperText,
         data,
         setData,
+        hidden,
+        setHidden,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleContainerMouseDown = useCallback(function () {
@@ -15198,7 +15338,7 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
-    hidden = _a.hidden, 
+    initHidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, readOnly = _a.readOnly, required = _a.required, initFullWidth = _a.fullWidth, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
@@ -15229,17 +15369,18 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
     var _g = useState(false), endError = _g[0], setEndError = _g[1];
     var _h = useState(), endErrorHelperText = _h[0], setEndErrorHelperText = _h[1];
     var _j = useAutoUpdateState$1(initDisabled), disabled = _j[0], setDisabled = _j[1];
-    var _k = useAutoUpdateState$1(initData), data = _k[0], setData = _k[1];
-    var _l = useState(false), open = _l[0], setOpen = _l[1];
-    var _m = useState('start'), selectType = _m[0], setSelectType = _m[1];
+    var _k = useAutoUpdateState$1(initHidden), hidden = _k[0], setHidden = _k[1];
+    var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
+    var _m = useState(false), open = _m[0], setOpen = _m[1];
+    var _o = useState('start'), selectType = _o[0], setSelectType = _o[1];
     // Function - getFinalValue ----------------------------------------------------------------------------------------
     var getFinalValue = useCallback(function (value) {
         return value || DEFAULT_VALUE;
     }, []);
     // State - value ---------------------------------------------------------------------------------------------------
-    var _o = useAutoUpdateState$1(useCallback(function () {
+    var _p = useAutoUpdateState$1(useCallback(function () {
         return initValue || DEFAULT_VALUE;
-    }, [initValue])), value = _o[0], setValue = _o[1];
+    }, [initValue])), value = _p[0], setValue = _p[1];
     useFirstSkipEffect$1(function () {
         if (error || startError || endError)
             validate(value);
@@ -15348,6 +15489,7 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
         var lastValue = value;
         var lastData = data;
         var lastDisabled = !!disabled;
+        var lastHidden = !!hidden;
         var commands = {
             getType: function () { return 'FormYearRangePicker'; },
             getName: function () { return name; },
@@ -15381,6 +15523,11 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
             setDisabled: function (disabled) {
                 lastDisabled = disabled;
                 setDisabled(disabled);
+            },
+            isHidden: function () { return lastHidden; },
+            setHidden: function (hidden) {
+                lastHidden = hidden;
+                setHidden(hidden);
             },
             focus: focus,
             focusValidate: focus,
@@ -15439,6 +15586,8 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
         setData,
         formValueFromNameSuffix,
         formValueToNameSuffix,
+        hidden,
+        setHidden,
     ]);
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleContainerChange = useCallback(function (newValue, selectType) {
@@ -15648,7 +15797,8 @@ SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React__def
 Search.displayName = 'Search';
 Search.defaultProps = SearchDefaultProps;var SearchGroupDefaultProps = {
     spacing: 1.5,
-};var isReactFragment = function (child) {
+};var StyledItem = styled(Grid)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  &:has(> [style*='display: none;']) {\n    display: none;\n  }\n"], ["\n  &:has(> [style*='display: none;']) {\n    display: none;\n  }\n"])));
+var templateObject_1;var isReactFragment = function (child) {
     try {
         return child.type.toString() === React__default.Fragment.toString();
     }
@@ -15671,15 +15821,15 @@ var removeReactFragment = function (el) {
                 });
             }
             else {
-                return (React__default.createElement(Grid, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
+                return (React__default.createElement(StyledItem, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
             }
         }
         else {
-            return (React__default.createElement(Grid, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
+            return (React__default.createElement(StyledItem, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
         }
     }
     else {
-        return (React__default.createElement(Grid, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
+        return (React__default.createElement(StyledItem, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
     }
 };
 var SearchGroup = function (_a) {

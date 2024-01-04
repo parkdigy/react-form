@@ -38,7 +38,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       //----------------------------------------------------------------------------------------------------------------
       menubar,
       height,
-      hidden,
+      hidden: initHidden,
       onImageUpload,
       //----------------------------------------------------------------------------------------------------------------
       name,
@@ -105,9 +105,9 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-
     const [initialized, setInitialized] = useState(false);
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // Function - focus ------------------------------------------------------------------------------------------------
@@ -159,6 +159,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       let lastValue = value;
       let lastData = data;
       let lastDisabled = !!disabled;
+      let lastHidden = !!hidden;
 
       const commands: FormTextEditorCommands = {
         getType: () => 'FormTextEditor',
@@ -183,6 +184,11 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
         setDisabled: (disabled: boolean) => {
           lastDisabled = disabled;
           setDisabled(disabled);
+        },
+        isHidden: () => lastHidden,
+        setHidden: (hidden) => {
+          lastHidden = hidden;
+          setHidden(hidden);
         },
         focus,
         focusValidate: focus,
@@ -229,6 +235,8 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       data,
       setData,
       validate,
+      hidden,
+      setHidden,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

@@ -53,7 +53,6 @@ export interface FormDateRangePickerProps
   disableFuture?: boolean;
   minDate?: Dayjs;
   maxDate?: Dayjs;
-  hidden?: boolean;
   onGetActionButtons?(): { label: string; start: Dayjs; end: Dayjs }[];
 }
 

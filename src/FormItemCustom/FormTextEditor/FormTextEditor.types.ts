@@ -11,7 +11,6 @@ export interface FormTextEditorProps
   required?: boolean;
   menubar?: boolean;
   height?: number;
-  hidden?: boolean;
   onImageUpload?(
     blob: Blob,
     success: (url: string) => void,

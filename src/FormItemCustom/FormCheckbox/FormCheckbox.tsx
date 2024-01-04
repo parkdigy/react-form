@@ -31,6 +31,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       action: initAction,
       readOnly,
       disabled: initDisabled,
+      hidden: initHidden,
       text,
       error: initError,
       helperText,
@@ -38,7 +39,6 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       data: initData,
       uncheckedValue: initUncheckedValue,
       exceptValue,
-      hidden,
       onChange,
       onValidate,
       //----------------------------------------------------------------------------------------------------------------
@@ -104,6 +104,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // State - checked -------------------------------------------------------------------------------------------------
@@ -178,6 +179,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       let lastData = data;
       let lastUncheckedValue: FormCheckboxValue = uncheckedValue == null ? 0 : uncheckedValue;
       let lastDisabled = !!disabled;
+      let lastHidden = !!hidden;
 
       const commands: FormCheckboxCommands = {
         getType: () => 'FormCheckbox',
@@ -212,6 +214,11 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         setDisabled: (disabled: boolean) => {
           lastDisabled = disabled;
           setDisabled(disabled);
+        },
+        isHidden: () => lastHidden,
+        setHidden: (hidden) => {
+          lastHidden = hidden;
+          setHidden(hidden);
         },
         focus,
         focusValidate: focus,
@@ -262,6 +269,8 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       setErrorErrorHelperText,
       data,
       setData,
+      hidden,
+      setHidden,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

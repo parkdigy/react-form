@@ -34,7 +34,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       color: initColor,
       focused: initFocused,
       //----------------------------------------------------------------------------------------------------------------
-      hidden,
+      hidden: initHidden,
       //----------------------------------------------------------------------------------------------------------------
       name,
       startLabel,
@@ -127,6 +127,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
     const [endError, setEndError] = useState(false);
     const [endErrorHelperText, setEndErrorHelperText] = useState<Props['helperText']>();
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
     const [open, setOpen] = useState(false);
     const [selectType, setSelectType] = useState<PrivateYearRangePickerSelectType>('start');
@@ -285,6 +286,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       let lastValue = value;
       let lastData = data;
       let lastDisabled = !!disabled;
+      let lastHidden = !!hidden;
 
       const commands: FormYearRangePickerCommands = {
         getType: () => 'FormYearRangePicker',
@@ -319,6 +321,11 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
         setDisabled: (disabled) => {
           lastDisabled = disabled;
           setDisabled(disabled);
+        },
+        isHidden: () => lastHidden,
+        setHidden: (hidden) => {
+          lastHidden = hidden;
+          setHidden(hidden);
         },
         focus,
         focusValidate: focus,
@@ -377,6 +384,8 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       setData,
       formValueFromNameSuffix,
       formValueToNameSuffix,
+      hidden,
+      setHidden,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

@@ -60,7 +60,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       startAdornment,
       endAdornment,
       noFormValueItem,
-      hidden,
+      hidden: initHidden,
       disableReturnKey,
       //----------------------------------------------------------------------------------------------------------------
       onChange,
@@ -120,9 +120,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
 
     const [error, setError] = useAutoUpdateState<FormTextFieldProps['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<FormTextFieldProps['helperText']>();
-
     const [showClear, setShowClear] = useState<boolean>(false);
     const [disabled, setDisabled] = useAutoUpdateState<FormTextFieldProps['disabled']>(initDisabled);
+    const [hidden, setHidden] = useAutoUpdateState<FormTextFieldProps['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<FormTextFieldProps['data']>(initData);
 
     // Memo - muiInputLabelProps ---------------------------------------------------------------------------------------
@@ -356,6 +356,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
         let lastValue = value;
         let lastData = data;
         let lastDisabled = !!disabled;
+        let lastHidden = !!hidden;
 
         const commands: FormTextFieldCommands = {
           getType: () => 'default',
@@ -380,6 +381,11 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
           setDisabled: (disabled) => {
             lastDisabled = disabled;
             setDisabled(disabled);
+          },
+          isHidden: () => lastHidden,
+          setHidden: (hidden) => {
+            lastHidden = hidden;
+            setHidden(hidden);
           },
           focus,
           focusValidate: focus,
@@ -429,6 +435,8 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       setDisabled,
       setErrorErrorHelperText,
       setData,
+      hidden,
+      setHidden,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

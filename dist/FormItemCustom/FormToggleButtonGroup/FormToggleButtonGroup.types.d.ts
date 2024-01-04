@@ -20,7 +20,6 @@ export interface FormToggleButtonGroupProps<T extends FormToggleButtonGroupSingl
     formValueSeparator?: string;
     formValueSort?: boolean;
     loading?: boolean;
-    hidden?: boolean;
     itemWidth?: number | string;
     onLoadItems?: () => Promise<FormToggleButtonGroupItem<T>[]>;
     onValue?: (value: FormToggleButtonGroupValue<T, Multiple>) => FormToggleButtonGroupValue<T, Multiple>;

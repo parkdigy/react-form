@@ -10,7 +10,6 @@ export interface FormYearRangePickerProps extends CommonSxProps, Omit<FormValueI
     endLabel?: ReactNode;
     endLabelIcon?: string;
     required?: boolean;
-    hidden?: boolean;
     icon?: string;
     format?: string;
     labelShrink?: boolean;

@@ -77,7 +77,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       minuteInterval,
       secondInterval,
       readOnlyInput,
-      hidden,
+      hidden: initHidden,
       onChange,
       onValidate,
       //--------------------------------------------------------------------------------------------------------------------
@@ -142,8 +142,8 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [timeError, setTimeError] = useState<DateValidationError>(null);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -331,6 +331,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
         let lastValue = value;
         let lastData = data;
         let lastDisabled = !!disabled;
+        let lastHidden = !!hidden;
 
         const commands: PrivateDatePickerCommands = {
           getType: () => 'default',
@@ -356,6 +357,11 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
           setDisabled: (disabled) => {
             lastDisabled = disabled;
             setDisabled(disabled);
+          },
+          isHidden: () => lastHidden,
+          setHidden: (hidden) => {
+            lastHidden = hidden;
+            setHidden(hidden);
           },
           focus,
           focusValidate: focus,
@@ -406,6 +412,8 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       setErrorErrorHelperText,
       data,
       setData,
+      hidden,
+      setHidden,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

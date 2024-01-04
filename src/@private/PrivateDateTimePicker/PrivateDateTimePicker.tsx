@@ -78,7 +78,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
       minuteInterval,
       secondInterval,
       readOnlyInput,
-      hidden,
+      hidden: initHidden,
       onChange,
       onValidate,
       //--------------------------------------------------------------------------------------------------------------------
@@ -143,8 +143,8 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [timeError, setTimeError] = useState<DateTimeValidationError>(null);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -332,6 +332,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
         let lastValue = value;
         let lastData = data;
         let lastDisabled = !!disabled;
+        let lastHidden = !!hidden;
 
         const commands: PrivateDateTimePickerCommands = {
           getType: () => 'default',
@@ -351,12 +352,16 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
             lastData = data;
             setData(data);
           },
-
           isExceptValue: () => !!exceptValue,
           isDisabled: () => lastDisabled,
           setDisabled: (disabled) => {
             lastDisabled = disabled;
             setDisabled(disabled);
+          },
+          isHidden: () => lastHidden,
+          setHidden: (hidden) => {
+            lastHidden = hidden;
+            setHidden(hidden);
           },
           focus,
           focusValidate: focus,
@@ -407,6 +412,8 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
       setErrorErrorHelperText,
       data,
       setData,
+      hidden,
+      setHidden,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------

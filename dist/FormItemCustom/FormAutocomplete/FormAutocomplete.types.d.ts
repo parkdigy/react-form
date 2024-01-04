@@ -27,7 +27,6 @@ export interface FormAutocompleteProps<T extends FormAutocompleteSingleValue, Mu
     openOnFocus?: boolean;
     disableClearable?: boolean;
     async?: boolean;
-    hidden?: boolean;
     onLoadItems?: (inputValue?: string) => Promise<FormAutocompleteItems<T>>;
     onAsyncLoadValueItem?: (value: FormAutocompleteValue<T, Multiple>) => Promise<FormAutocompleteComponentValue<T, Multiple>>;
     onRenderItem?: (item: FormAutocompleteItem<T>) => ReactNode;

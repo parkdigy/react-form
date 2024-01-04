@@ -435,6 +435,16 @@ const Form = React.forwardRef<FormCommands, Props>(
             if (valueItem) valueItem.setDisabled(disabled);
             else throw new Error(`'${name}' 이 존재하지 않습니다.`);
           },
+          isHidden(name: string) {
+            const valueItem = findValueItem(name);
+            if (valueItem) return valueItem.isHidden();
+            else throw new Error(`'${name}' 이 존재하지 않습니다.`);
+          },
+          setHidden(name: string, hidden: boolean) {
+            const valueItem = findValueItem(name);
+            if (valueItem) valueItem.setHidden(hidden);
+            else throw new Error(`'${name}' 이 존재하지 않습니다.`);
+          },
           focus(name) {
             const valueItem = findValueItem(name);
             if (valueItem) valueItem.focus();

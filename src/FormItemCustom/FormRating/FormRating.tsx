@@ -27,7 +27,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       icon,
       emptyIcon,
       max,
-      hidden,
+      hidden: initHidden,
       //----------------------------------------------------------------------------------------------------------------
       name,
       labelIcon,
@@ -88,6 +88,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     // State - width, height -------------------------------------------------------------------------------------------
@@ -180,6 +181,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       let lastValue = value;
       let lastData = data;
       let lastDisabled = !!disabled;
+      let lastHidden = !!hidden;
 
       const commands: FormRatingCommands = {
         getType: () => 'FormRating',
@@ -204,6 +206,11 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         setDisabled: (disabled) => {
           lastDisabled = disabled;
           setDisabled(disabled);
+        },
+        isHidden: () => lastHidden,
+        setHidden: (hidden) => {
+          lastHidden = hidden;
+          setHidden(hidden);
         },
         focus,
         focusValidate: focus,
@@ -251,6 +258,8 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       setErrorErrorHelperText,
       data,
       setData,
+      hidden,
+      setHidden,
     ]);
 
     // Event Handler ---------------------------------------------------------------------------------------------------
