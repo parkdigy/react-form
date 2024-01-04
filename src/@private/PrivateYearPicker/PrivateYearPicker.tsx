@@ -5,7 +5,6 @@ import {
   PrivateYearPickerValue,
   PrivateYearPickerBaseValue,
 } from './PrivateYearPicker.types';
-import dayjs from 'dayjs';
 import { useAutoUpdateState } from '@pdg/react-hook';
 import { FormIcon } from '../../FormCommon';
 import PrivateYearPickerYearList from './PrivateYearPickerYearList';
@@ -64,7 +63,7 @@ const PrivateYearPicker: React.FC<Props> = ({
     if (value) {
       return value;
     } else {
-      let year = dayjs().year();
+      let year = selectFromYear || selectToYear || nowYear;
       if (minAvailableYear > year) {
         year = minAvailableYear;
       } else if (maxAvailableYear < year) {
@@ -72,7 +71,7 @@ const PrivateYearPicker: React.FC<Props> = ({
       }
       return year;
     }
-  }, [maxAvailableYear, minAvailableYear, value]);
+  }, [maxAvailableYear, minAvailableYear, nowYear, selectFromYear, selectToYear, value]);
   const displayError = useMemo(
     () => displayYear < minAvailableYear || displayYear > maxAvailableYear,
     [displayYear, minAvailableYear, maxAvailableYear]

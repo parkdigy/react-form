@@ -76,10 +76,20 @@ const PrivateMonthPicker: React.FC<Props> = ({
       } else if (nowYm > maxAvailableYm) {
         return maxAvailableValue;
       } else {
-        return nowValue;
+        return selectFromValue || selectToValue || nowValue;
       }
     }
-  }, [maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm, nowValue, nowYm, value]);
+  }, [
+    maxAvailableValue,
+    maxAvailableYm,
+    minAvailableValue,
+    minAvailableYm,
+    nowValue,
+    nowYm,
+    selectFromValue,
+    selectToValue,
+    value,
+  ]);
   const displayValueDate = useMemo(() => valueToDate(displayValue), [displayValue, valueToDate]);
   const displayValueYm = useMemo(() => displayValue.year * 100 + displayValue.month, [displayValue]);
   const displayValueError = useMemo(
@@ -170,6 +180,7 @@ const PrivateMonthPicker: React.FC<Props> = ({
       <div style={{ borderTop: '1px solid #efefef' }}>
         <PrivateMonthPickerMonthList
           value={value}
+          defaultValue={selectFromValue || selectToValue}
           minAvailableValue={minAvailableValue}
           maxAvailableValue={maxAvailableValue}
           disablePast={disablePast}

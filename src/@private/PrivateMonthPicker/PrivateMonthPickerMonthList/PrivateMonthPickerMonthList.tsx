@@ -10,6 +10,7 @@ import { StyledContainer } from './PrivateMonthPickerMonthList.style';
 
 const PrivateMonthPickerMonthList: React.FC<Props> = ({
   value,
+  defaultValue: initDefaultValue,
   minAvailableValue,
   maxAvailableValue,
   disablePast,
@@ -33,14 +34,16 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
   const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue, valueToYm]);
 
   const defaultValue = useMemo(() => {
-    if (nowYm < minAvailableYm) {
+    if (initDefaultValue) {
+      return initDefaultValue;
+    } else if (nowYm < minAvailableYm) {
       return minAvailableValue;
     } else if (nowYm > maxAvailableYm) {
       return maxAvailableValue;
     } else {
       return nowValue;
     }
-  }, [nowYm, minAvailableYm, maxAvailableYm, minAvailableValue, maxAvailableValue, nowValue]);
+  }, [initDefaultValue, nowYm, minAvailableYm, maxAvailableYm, minAvailableValue, maxAvailableValue, nowValue]);
 
   const defaultYear = useMemo(() => defaultValue.year, [defaultValue]);
   const defaultMonth = useMemo(() => defaultValue.month, [defaultValue]);

@@ -4,7 +4,6 @@ import {
   PrivateYearRangePickerDefaultProps,
   PrivateYearRangePickerValue,
 } from './PrivateYearRangePicker.types';
-import dayjs from 'dayjs';
 import { useAutoUpdateState } from '@pdg/react-hook';
 import PrivateYearRangePickerYearList from './PrivateYearRangePickerYearList';
 import { StyledTitleContainer, StyledTitleGap, StyledYear, StyledYearError } from './PrivateYearRangePicker.style';
@@ -55,7 +54,7 @@ const PrivateYearRangePicker: React.FC<Props> = ({
   }, [disableFuture, maxYear, nowYear]);
 
   const displayValue = useMemo(() => {
-    let defaultYear = dayjs().year();
+    let defaultYear = nowYear;
     if (minAvailableYear > defaultYear) {
       defaultYear = minYear;
     } else if (maxAvailableYear < defaultYear) {
@@ -63,11 +62,11 @@ const PrivateYearRangePicker: React.FC<Props> = ({
     }
 
     if (value) {
-      return [value[0] || defaultYear, value[1] || defaultYear];
+      return [value[0] || value[1] || defaultYear, value[1] || value[0] || defaultYear];
     } else {
       return [defaultYear, defaultYear];
     }
-  }, [maxAvailableYear, minAvailableYear, minYear, value]);
+  }, [maxAvailableYear, minAvailableYear, minYear, nowYear, value]);
 
   const displayValueError = useMemo(
     () => [

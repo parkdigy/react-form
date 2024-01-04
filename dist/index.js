@@ -11883,7 +11883,7 @@ var PrivateYearRangePicker = function (_a) {
         }
     }, [disableFuture, maxYear, nowYear]);
     var displayValue = React.useMemo(function () {
-        var defaultYear = dayjs().year();
+        var defaultYear = nowYear;
         if (minAvailableYear > defaultYear) {
             defaultYear = minYear;
         }
@@ -11891,12 +11891,12 @@ var PrivateYearRangePicker = function (_a) {
             defaultYear = maxAvailableYear;
         }
         if (value) {
-            return [value[0] || defaultYear, value[1] || defaultYear];
+            return [value[0] || value[1] || defaultYear, value[1] || value[0] || defaultYear];
         }
         else {
             return [defaultYear, defaultYear];
         }
-    }, [maxAvailableYear, minAvailableYear, minYear, value]);
+    }, [maxAvailableYear, minAvailableYear, minYear, nowYear, value]);
     var displayValueError = React.useMemo(function () { return [
         displayValue[0] < minAvailableYear || displayValue[0] > maxAvailableYear,
         displayValue[1] < minAvailableYear || displayValue[1] > maxAvailableYear,
@@ -12150,7 +12150,7 @@ var templateObject_1$4, templateObject_2$2, templateObject_3$1, templateObject_4
             return value;
         }
         else {
-            var year = dayjs().year();
+            var year = selectFromYear || selectToYear || nowYear;
             if (minAvailableYear > year) {
                 year = minAvailableYear;
             }
@@ -12159,7 +12159,7 @@ var templateObject_1$4, templateObject_2$2, templateObject_3$1, templateObject_4
             }
             return year;
         }
-    }, [maxAvailableYear, minAvailableYear, value]);
+    }, [maxAvailableYear, minAvailableYear, nowYear, selectFromYear, selectToYear, value]);
     var displayError = React.useMemo(function () { return displayYear < minAvailableYear || displayYear > maxAvailableYear; }, [displayYear, minAvailableYear, maxAvailableYear]);
     var prevBtnDisabled = React.useMemo(function () { return displayYear <= minAvailableYear; }, [displayYear, minAvailableYear]);
     var nextBtnDisabled = React.useMemo(function () { return displayYear >= maxAvailableYear; }, [displayYear, maxAvailableYear]);
@@ -12236,7 +12236,7 @@ PrivateMonthPickerMonth.displayName = 'PrivateMonthPickerMonth';
 PrivateMonthPickerMonth.defaultProps = PrivateMonthPickerMonthDefaultProps;var StyledContainer$1 = material.styled(material.Grid)(templateObject_1$2 || (templateObject_1$2 = __makeTemplateObject(["\n  width: 240px;\n  padding: 4px;\n"], ["\n  width: 240px;\n  padding: 4px;\n"])));
 var templateObject_1$2;var PrivateMonthPickerMonthList = function (_a) {
     // Function ----------------------------------------------------------------------------------------------------------
-    var value = _a.value, minAvailableValue = _a.minAvailableValue, maxAvailableValue = _a.maxAvailableValue, disablePast = _a.disablePast, disableFuture = _a.disableFuture, selectFromValue = _a.selectFromValue, selectToValue = _a.selectToValue, onChange = _a.onChange;
+    var value = _a.value, initDefaultValue = _a.defaultValue, minAvailableValue = _a.minAvailableValue, maxAvailableValue = _a.maxAvailableValue, disablePast = _a.disablePast, disableFuture = _a.disableFuture, selectFromValue = _a.selectFromValue, selectToValue = _a.selectToValue, onChange = _a.onChange;
     var valueToYm = React.useCallback(function (v) { return v.year * 100 + v.month; }, []);
     var dateToValue = React.useCallback(function (v) { return ({ year: v.year(), month: v.month() + 1 }); }, []);
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -12246,7 +12246,10 @@ var templateObject_1$2;var PrivateMonthPickerMonthList = function (_a) {
     var minAvailableYm = React.useMemo(function () { return valueToYm(minAvailableValue); }, [minAvailableValue, valueToYm]);
     var maxAvailableYm = React.useMemo(function () { return valueToYm(maxAvailableValue); }, [maxAvailableValue, valueToYm]);
     var defaultValue = React.useMemo(function () {
-        if (nowYm < minAvailableYm) {
+        if (initDefaultValue) {
+            return initDefaultValue;
+        }
+        else if (nowYm < minAvailableYm) {
             return minAvailableValue;
         }
         else if (nowYm > maxAvailableYm) {
@@ -12255,7 +12258,7 @@ var templateObject_1$2;var PrivateMonthPickerMonthList = function (_a) {
         else {
             return nowValue;
         }
-    }, [nowYm, minAvailableYm, maxAvailableYm, minAvailableValue, maxAvailableValue, nowValue]);
+    }, [initDefaultValue, nowYm, minAvailableYm, maxAvailableYm, minAvailableValue, maxAvailableValue, nowValue]);
     var defaultYear = React.useMemo(function () { return defaultValue.year; }, [defaultValue]);
     var defaultMonth = React.useMemo(function () { return defaultValue.month; }, [defaultValue]);
     var currentYear = React.useMemo(function () { return (value ? value.year : defaultYear); }, [value, defaultYear]);
@@ -12349,10 +12352,20 @@ var templateObject_1$1, templateObject_2, templateObject_3, templateObject_4, te
                 return maxAvailableValue;
             }
             else {
-                return nowValue;
+                return selectFromValue || selectToValue || nowValue;
             }
         }
-    }, [maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm, nowValue, nowYm, value]);
+    }, [
+        maxAvailableValue,
+        maxAvailableYm,
+        minAvailableValue,
+        minAvailableYm,
+        nowValue,
+        nowYm,
+        selectFromValue,
+        selectToValue,
+        value,
+    ]);
     var displayValueDate = React.useMemo(function () { return valueToDate(displayValue); }, [displayValue, valueToDate]);
     var displayValueYm = React.useMemo(function () { return displayValue.year * 100 + displayValue.month; }, [displayValue]);
     var displayValueError = React.useMemo(function () { return displayValueYm < minAvailableYm || displayValueYm > maxAvailableYm; }, [displayValueYm, maxAvailableYm, minAvailableYm]);
@@ -12410,7 +12423,7 @@ var templateObject_1$1, templateObject_2, templateObject_3, templateObject_4, te
         React.createElement("div", null,
             React.createElement(PrivateYearPicker, { value: (value === null || value === void 0 ? void 0 : value.year) || null, minYear: minValue.year, maxYear: maxValue.year, disablePast: disablePast, disableFuture: disableFuture, onChange: handleYearChange, hideHeader: true, selectFromYear: selectFromYear, selectToYear: selectToYear })),
         React.createElement("div", { style: { borderTop: '1px solid #efefef' } },
-            React.createElement(PrivateMonthPickerMonthList, { value: value, minAvailableValue: minAvailableValue, maxAvailableValue: maxAvailableValue, disablePast: disablePast, disableFuture: disableFuture, selectFromValue: selectFromValue, selectToValue: selectToValue, onChange: handleMonthChange }))));
+            React.createElement(PrivateMonthPickerMonthList, { value: value, defaultValue: selectFromValue || selectToValue, minAvailableValue: minAvailableValue, maxAvailableValue: maxAvailableValue, disablePast: disablePast, disableFuture: disableFuture, selectFromValue: selectFromValue, selectToValue: selectToValue, onChange: handleMonthChange }))));
 };
 PrivateMonthPicker.displayName = 'PrivateMonthPicker';
 PrivateMonthPicker.defaultProps = PrivateMonthPickerDefaultProps;var PrivateMonthRangePickerDefaultProps = {
