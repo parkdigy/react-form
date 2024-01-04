@@ -6,7 +6,14 @@ import {
 } from './PrivateYearRangePicker.types';
 import { useAutoUpdateState } from '@pdg/react-hook';
 import PrivateYearRangePickerYearList from './PrivateYearRangePickerYearList';
-import { StyledTitleContainer, StyledTitleGap, StyledYear, StyledYearError } from './PrivateYearRangePicker.style';
+import {
+  StyledActionButton,
+  StyledActionContainer,
+  StyledTitleContainer,
+  StyledTitleGap,
+  StyledYear,
+  StyledYearError,
+} from './PrivateYearRangePicker.style';
 
 const DEFAULT_VALUE = [null, null];
 
@@ -75,6 +82,43 @@ const PrivateYearRangePicker: React.FC<Props> = ({
     ],
     [displayValue, minAvailableYear, maxAvailableYear]
   );
+
+  // action button -----------------------------------------------------------------------------------------------------
+
+  const getActionButton = useCallback(
+    (fromYear: number, toYear: number, label: string) => {
+      if (fromYear < minAvailableYear || toYear > maxAvailableYear) {
+        return undefined;
+      } else {
+        const newValue: PrivateYearRangePickerValue = [
+          Math.max(fromYear, minAvailableYear),
+          Math.min(toYear, maxAvailableYear),
+        ];
+        return (
+          <StyledActionButton
+            variant='text'
+            onClick={() => {
+              setValue(newValue);
+              onChange(newValue, 'end');
+            }}
+          >
+            {label}
+          </StyledActionButton>
+        );
+      }
+    },
+    [maxAvailableYear, minAvailableYear, onChange, setValue]
+  );
+
+  const actionButtons = useMemo(() => {
+    return (
+      <StyledActionContainer>
+        {getActionButton(nowYear - 2, nowYear, '최근 3년')}
+        {getActionButton(nowYear - 4, nowYear, '최근 5년')}
+        {getActionButton(nowYear - 9, nowYear, '최근 10년')}
+      </StyledActionContainer>
+    );
+  }, [getActionButton, nowYear]);
 
   // Event Handler -----------------------------------------------------------------------------------------------------
 
@@ -146,6 +190,7 @@ const PrivateYearRangePicker: React.FC<Props> = ({
           onChange={handleYearChange}
         />
       </div>
+      {actionButtons}
     </div>
   );
 };

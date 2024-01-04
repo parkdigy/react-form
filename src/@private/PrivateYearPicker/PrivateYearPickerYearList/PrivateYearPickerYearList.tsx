@@ -109,6 +109,7 @@ const PrivateYearPickerYearList: React.FC<Props> = ({
   const years = useMemo(() => {
     const newYears: {
       year: number;
+      range?: boolean;
       isDefault?: boolean;
       active?: boolean;
       selected?: boolean;
@@ -119,10 +120,12 @@ const PrivateYearPickerYearList: React.FC<Props> = ({
     }[] = [];
     const startYear = selectFromYear ? selectFromYear : value ? value : 0;
     const endYear = selectToYear ? selectToYear : value ? value : 0;
+    const range = !!selectFromYear || !!selectToYear;
 
     for (let i = minYear; i <= maxYear; i += 1) {
       newYears.push({
         year: i,
+        range,
         isDefault: !value && !selectFromYear && !selectToYear && i === defaultYear,
         active: (!!selectFromYear || !!selectToYear) && i === value,
         selected: i >= startYear && i <= endYear,
@@ -185,6 +188,7 @@ const PrivateYearPickerYearList: React.FC<Props> = ({
             }
           }}
           year={info.year}
+          range={info.range}
           isDefault={info.isDefault}
           active={info.active}
           selected={info.selected}

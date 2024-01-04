@@ -17,6 +17,7 @@ import {
   FormItemTextEditor,
   FormItemAutocomplete,
   FormItemFile,
+  FormItemDate,
   Search,
 } from '#comp';
 
@@ -38,6 +39,7 @@ const routes = () => {
       <Route path='/form_item/rating' element={<FormItemRating />} />
       <Route path='/form_item/text_editor' element={<FormItemTextEditor />} />
       <Route path='/form_item/file' element={<FormItemFile />} />
+      <Route path='/form_item/date' element={<FormItemDate />} />
       <Route path='/search' element={<Search />} />
       <Route path='*' element={<Navigate to='/' />} />
     </Routes>

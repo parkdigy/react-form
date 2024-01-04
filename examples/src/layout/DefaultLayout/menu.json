@@ -27,73 +27,79 @@
       },
       {
         "id": "form_item/text",
-        "name": "FormText ...",
+        "name": "Text ...",
         "depth": 2,
         "uri": "/form_item/text"
       },
       {
         "id": "form_item/number",
-        "name": "FormNumber",
+        "name": "Number",
         "depth": 2,
         "uri": "/form_item/number"
       },
       {
         "id": "form_item/tag",
-        "name": "FormTag",
+        "name": "Tag",
         "depth": 2,
         "uri": "/form_item/tag"
       },
       {
         "id": "form_item/textarea",
-        "name": "FormTextarea",
+        "name": "Textarea",
         "depth": 2,
         "uri": "/form_item/textarea"
       },
       {
         "id": "form_item/checkbox",
-        "name": "FormCheckbox",
+        "name": "Checkbox",
         "depth": 2,
         "uri": "/form_item/checkbox"
       },
       {
         "id": "form_item/select",
-        "name": "FormSelect",
+        "name": "Select",
         "depth": 2,
         "uri": "/form_item/select"
       },
       {
+        "id": "form_item/date",
+        "name": "Date / Time",
+        "depth": 2,
+        "uri": "/form_item/date"
+      },
+      {
         "id": "form_item/autocomplete",
-        "name": "FormAutocomplete",
+        "name": "Autocomplete",
         "depth": 2,
         "uri": "/form_item/autocomplete"
       },
       {
         "id": "form_item/radio",
-        "name": "FormRadioGroup",
+        "name": "RadioGroup",
         "depth": 2,
         "uri": "/form_item/radio"
       },
       {
         "id": "form_item/toggle_button",
-        "name": "FormToggleButtonGroup",
+        "name": "ToggleButtonGroup",
         "depth": 2,
         "uri": "/form_item/toggle_button"
       },
       {
         "id": "form_item/rating",
-        "name": "FormRating",
+        "name": "Rating",
         "depth": 2,
         "uri": "/form_item/rating"
       },
       {
         "id": "form_item/text_editor",
-        "name": "FormTextEditor",
+        "name": "TextEditor",
         "depth": 2,
         "uri": "/form_item/text_editor"
       },
       {
         "id": "form_item/file",
-        "name": "FormFile",
+        "name": "File",
         "depth": 2,
         "uri": "/form_item/file"
       }

@@ -31,7 +31,11 @@ export const StyledButton = styled(Button)`
   &.selected-start,
   &.selected-end {
     color: #fff;
-    background-color: #1976d2;
+    background-color: rgba(25, 118, 210, 1);
+
+    &.range:not(.active) {
+      background-color: rgba(25, 118, 210, 0.8);
+    }
   }
   &.active {
     color: #fff;

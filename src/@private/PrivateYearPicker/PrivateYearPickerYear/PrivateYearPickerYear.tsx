@@ -9,6 +9,7 @@ const PrivateYearPickerYear = React.forwardRef<HTMLDivElement, Props>(
       year,
       disabled,
       active,
+      range,
       isDefault,
       selected,
       selectedStart,
@@ -23,6 +24,7 @@ const PrivateYearPickerYear = React.forwardRef<HTMLDivElement, Props>(
     const className = useMemo(
       () =>
         classNames(
+          range && 'range',
           isDefault && 'default',
           selected && 'selected',
           selectedStart && 'selected-start',
@@ -31,7 +33,7 @@ const PrivateYearPickerYear = React.forwardRef<HTMLDivElement, Props>(
           active && 'active',
           disabled && 'disabled'
         ),
-      [isDefault, selected, selectedStart, selectedEnd, selectedTemp, active, disabled]
+      [range, isDefault, selected, selectedStart, selectedEnd, selectedTemp, active, disabled]
     );
 
     return (

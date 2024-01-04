@@ -1,4 +1,4 @@
-import { styled } from '@mui/material';
+import { Button, styled } from '@mui/material';
 
 export const StyledTitleContainer = styled('div')`
   display: flex;
@@ -18,4 +18,24 @@ export const StyledYearError = styled('span')`
 export const StyledTitleGap = styled('span')`
   padding: 0 7px;
   opacity: 0.5;
+`;
+
+export const StyledActionContainer = styled('div')`
+  border-top: 1px solid #efefef;
+  padding: 10px;
+  text-align: right;
+  &:empty {
+    display: none;
+  }
+`;
+
+export const StyledActionButton = styled(Button)`
+  min-width: 0;
+  color: unset;
+  &:not(:first-child) {
+    margin-left: 5px;
+  }
+  &.disabled {
+    color: rgba(0, 0, 0, 0.5);
+  }
 `;

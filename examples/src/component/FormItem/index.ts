@@ -11,3 +11,4 @@ export { default as FormItemRating } from './FormItemRating';
 export { default as FormItemTextEditor } from './FormItemTextEditor';
 export { default as FormItemAutocomplete } from './FormItemAutocomplete';
 export { default as FormItemFile } from './FormItemFile';
+export { default as FormItemDate } from './FormItemDate';

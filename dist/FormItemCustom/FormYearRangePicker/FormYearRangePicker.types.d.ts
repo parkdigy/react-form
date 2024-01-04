@@ -5,10 +5,10 @@ import { PrivateInputDatePickerProps, PrivateYearRangePickerBaseValue, PrivateYe
 export type FormYearRangePickerBaseValue = PrivateYearRangePickerBaseValue;
 export type FormYearRangePickerValue = PrivateYearRangePickerValue;
 export interface FormYearRangePickerProps extends CommonSxProps, Omit<FormValueItemProps<FormYearRangePickerValue, false>, 'label' | 'labelIcon' | 'width'>, Pick<PrivateInputDatePickerProps, 'align'> {
-    startLabel?: ReactNode;
-    startLabelIcon?: string;
-    endLabel?: ReactNode;
-    endLabelIcon?: string;
+    fromLabel?: ReactNode;
+    fromLabelIcon?: string;
+    toLabel?: ReactNode;
+    toLabelIcon?: string;
     required?: boolean;
     icon?: string;
     format?: string;

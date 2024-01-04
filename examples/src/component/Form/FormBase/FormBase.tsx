@@ -267,7 +267,7 @@ const FormBase = () => {
             </FormRow>
             <FormRow>
               <FormCol xs={4}>
-                <FormDateRangePicker name='FormTimePicker' startLabel='시작일자' endLabel='종료일자' />
+                <FormDateRangePicker name='FormTimePicker' fromLabel='시작일자' toLabel='종료일자' />
               </FormCol>
             </FormRow>
           </FormBlock>

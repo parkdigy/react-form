@@ -5,10 +5,10 @@ import { PrivateInputDatePickerProps, PrivateMonthRangePickerBaseValue, PrivateM
 export type FormMonthRangePickerBaseValue = PrivateMonthRangePickerBaseValue;
 export type FormMonthRangePickerValue = PrivateMonthRangePickerValue;
 export interface FormMonthRangePickerProps extends CommonSxProps, Omit<FormValueItemProps<FormMonthRangePickerValue, false>, 'label' | 'labelIcon' | 'width'>, Pick<PrivateInputDatePickerProps, 'align'> {
-    startLabel?: ReactNode;
-    startLabelIcon?: string;
-    endLabel?: ReactNode;
-    endLabelIcon?: string;
+    fromLabel?: ReactNode;
+    fromLabelIcon?: string;
+    toLabel?: ReactNode;
+    toLabelIcon?: string;
     required?: boolean;
     icon?: string;
     format?: string;

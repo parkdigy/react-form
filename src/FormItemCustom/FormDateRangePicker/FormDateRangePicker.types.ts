@@ -22,10 +22,10 @@ export interface FormDateRangePickerProps
   extends CommonSxProps,
     Omit<FormValueItemProps<FormDateRangePickerValue, false>, 'label' | 'labelIcon' | 'width'>,
     Pick<PrivateInputDatePickerProps, 'align'> {
-  startLabel?: ReactNode;
-  startLabelIcon?: string;
-  endLabel?: ReactNode;
-  endLabelIcon?: string;
+  fromLabel?: ReactNode;
+  fromLabelIcon?: string;
+  toLabel?: ReactNode;
+  toLabelIcon?: string;
   allowSingleSelect?: boolean;
   required?: boolean;
   requiredStart?: boolean;

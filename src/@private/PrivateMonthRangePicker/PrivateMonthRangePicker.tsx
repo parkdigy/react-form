@@ -9,7 +9,7 @@ import { FormMonthPickerBaseValue } from '../../FormItemCustom';
 import { Grid } from '@mui/material';
 import PrivateMonthPicker, { PrivateMonthPickerBaseValue } from '../PrivateMonthPicker';
 import dayjs, { Dayjs } from 'dayjs';
-import { StyledDiv } from './PrivateMonthRangePicker.style';
+import { StyledActionButton, StyledActionContainer, StyledDiv } from './PrivateMonthRangePicker.style';
 
 const PrivateMonthRangePicker: React.FC<Props> = ({
   value,
@@ -26,7 +26,8 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
 
   // Memo --------------------------------------------------------------------------------------------------------------
 
-  const nowValue = useMemo(() => dateToValue(dayjs()), [dateToValue]);
+  const nowDate = useMemo(() => dayjs(), []);
+  const nowValue = useMemo(() => dateToValue(nowDate), [dateToValue, nowDate]);
   const nowYm = useMemo(() => valueToYm(nowValue), [nowValue, valueToYm]);
 
   const minValue = useMemo(() => initMinValue || PrivateMonthRangePickerDefaultProps.minValue, [initMinValue]);
@@ -88,6 +89,57 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
     [maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm, valueToYm]
   );
 
+  // action button -----------------------------------------------------------------------------------------------------
+
+  const getActionButton = useCallback(
+    (fromDate: Dayjs, toDate: Dayjs, label: string, strict?: boolean) => {
+      const fromValue = dateToValue(fromDate);
+      const fromYm = valueToYm(fromValue);
+      const toValue = dateToValue(toDate);
+      const toYm = valueToYm(toValue);
+      if (strict && (fromYm < minAvailableYm || toYm > maxAvailableYm)) {
+        return undefined;
+      } else if (
+        !strict &&
+        ((fromYm < minAvailableYm && toYm < minAvailableYm) || (fromYm > maxAvailableYm && toYm > maxAvailableYm))
+      ) {
+        return undefined;
+      } else {
+        return (
+          <StyledActionButton
+            variant='text'
+            onClick={() => onChange(getFinalValue([fromValue, toValue], 'end'), 'end', true)}
+          >
+            {label}
+          </StyledActionButton>
+        );
+      }
+    },
+    [dateToValue, getFinalValue, maxAvailableYm, minAvailableYm, onChange, valueToYm]
+  );
+
+  const actionButtons = useMemo(() => {
+    return (
+      <StyledActionContainer>
+        {getActionButton(dayjs(nowDate).subtract(2, 'months'), nowDate, '최근 3개월', true)}
+        {getActionButton(dayjs(nowDate).subtract(5, 'months'), nowDate, '최근 6개월', true)}
+        {getActionButton(dayjs(nowDate).subtract(11, 'months'), nowDate, '최근 12개월', true)}
+        {getActionButton(dayjs(nowDate).subtract(23, 'months'), nowDate, '최근 24개월', true)}
+        {getActionButton(
+          dayjs(nowDate).subtract(2, 'years').set('months', 0),
+          dayjs(nowDate).subtract(2, 'years').set('months', 11),
+          '재작년'
+        )}
+        {getActionButton(
+          dayjs(nowDate).subtract(1, 'years').set('months', 0),
+          dayjs(nowDate).subtract(1, 'years').set('months', 11),
+          '작년'
+        )}
+        {getActionButton(dayjs(nowDate).set('months', 0), dayjs(nowDate).set('months', 11), '올해')}
+      </StyledActionContainer>
+    );
+  }, [getActionButton, nowDate]);
+
   // Event Handler -----------------------------------------------------------------------------------------------------
 
   const handleStartMonthChange = useCallback(
@@ -109,31 +161,34 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
   // Render ------------------------------------------------------------------------------------------------------------
 
   return (
-    <Grid container className='PrivateMonthRangePicker'>
-      <Grid item>
-        <PrivateMonthPicker
-          value={value[0]}
-          selectToValue={value[1]}
-          minValue={minValue}
-          maxValue={maxValue}
-          disablePast={disablePast}
-          disableFuture={disableFuture}
-          onChange={handleStartMonthChange}
-        />
+    <div>
+      <Grid container className='PrivateMonthRangePicker'>
+        <Grid item>
+          <PrivateMonthPicker
+            value={value[0]}
+            selectToValue={value[1]}
+            minValue={minValue}
+            maxValue={maxValue}
+            disablePast={disablePast}
+            disableFuture={disableFuture}
+            onChange={handleStartMonthChange}
+          />
+        </Grid>
+        <StyledDiv>~</StyledDiv>
+        <Grid item>
+          <PrivateMonthPicker
+            value={value[1]}
+            selectFromValue={value[0]}
+            minValue={minValue}
+            maxValue={maxValue}
+            disablePast={disablePast}
+            disableFuture={disableFuture}
+            onChange={handleEndMonthChange}
+          />
+        </Grid>
       </Grid>
-      <StyledDiv>~</StyledDiv>
-      <Grid item>
-        <PrivateMonthPicker
-          value={value[1]}
-          selectFromValue={value[0]}
-          minValue={minValue}
-          maxValue={maxValue}
-          disablePast={disablePast}
-          disableFuture={disableFuture}
-          onChange={handleEndMonthChange}
-        />
-      </Grid>
-    </Grid>
+      {actionButtons}
+    </div>
   );
 };
 

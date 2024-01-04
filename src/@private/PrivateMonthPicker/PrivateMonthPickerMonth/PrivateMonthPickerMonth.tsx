@@ -10,6 +10,7 @@ const PrivateMonthPickerMonth = React.forwardRef<HTMLDivElement, Props>(
   (
     {
       month,
+      range,
       disabled,
       isDefault,
       active,
@@ -26,6 +27,7 @@ const PrivateMonthPickerMonth = React.forwardRef<HTMLDivElement, Props>(
     const className = useMemo(
       () =>
         classNames(
+          range && 'range',
           isDefault && 'default',
           active && 'active',
           selected && 'selected',
@@ -34,7 +36,7 @@ const PrivateMonthPickerMonth = React.forwardRef<HTMLDivElement, Props>(
           selectedTemp && 'selected-temp',
           disabled && 'disabled'
         ),
-      [isDefault, active, selected, selectedStart, selectedEnd, selectedTemp, disabled]
+      [range, isDefault, active, selected, selectedStart, selectedEnd, selectedTemp, disabled]
     );
 
     const handleClick = useCallback(() => {

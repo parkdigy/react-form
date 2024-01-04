@@ -977,8 +977,8 @@ FormIcon.defaultProps = FormIconDefaultProps;var FormButton = React.forwardRef(f
 });
 FormButton.displayName = 'FormButton';
 FormButton.defaultProps = FormButtonDefaultProps;var FormLabelDefaultProps = {};var IconFormIcon = material.styled(FormIcon)(templateObject_1$g || (templateObject_1$g = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
-var ChildrenSpan = material.styled('span')(templateObject_2$7 || (templateObject_2$7 = __makeTemplateObject(["\n  vertical-align: middle;\n"], ["\n  vertical-align: middle;\n"])));
-var templateObject_1$g, templateObject_2$7;var FormLabel = React.forwardRef(function (_a, ref) {
+var ChildrenSpan = material.styled('span')(templateObject_2$8 || (templateObject_2$8 = __makeTemplateObject(["\n  vertical-align: middle;\n"], ["\n  vertical-align: middle;\n"])));
+var templateObject_1$g, templateObject_2$8;var FormLabel = React.forwardRef(function (_a, ref) {
     // Use ---------------------------------------------------------------------------------------------------------------
     var children = _a.children, icon = _a.icon, size = _a.size, style = _a.style, error = _a.error, warning = _a.warning, props = __rest$4(_a, ["children", "icon", "size", "style", "error", "warning"]);
     var theme = material.useTheme();
@@ -2226,8 +2226,8 @@ var isDOMElement = function (element) {
 });
 FormCol.displayName = 'FormCol';
 FormCol.defaultProps = FormColDefaultProps;var FormBodyDefaultProps = {};var StyledContainerDiv = material.styled('div')(templateObject_1$c || (templateObject_1$c = __makeTemplateObject(["\n  flex: 1;\n  position: relative;\n"], ["\n  flex: 1;\n  position: relative;\n"])));
-var StyledContentDiv = material.styled('div')(templateObject_2$6 || (templateObject_2$6 = __makeTemplateObject(["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"], ["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"])));
-var templateObject_1$c, templateObject_2$6;var FormBody = function (_a) {
+var StyledContentDiv = material.styled('div')(templateObject_2$7 || (templateObject_2$7 = __makeTemplateObject(["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"], ["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"])));
+var templateObject_1$c, templateObject_2$7;var FormBody = function (_a) {
     // Ref ---------------------------------------------------------------------------------------------------------------
     var children = _a.children, hidden = _a.hidden;
     var containerRef = React.useRef(null);
@@ -11818,8 +11818,8 @@ PrivateInputDatePicker.defaultProps = PrivateInputDatePickerDefaultProps;var Pri
     minYear: 2020,
     maxYear: 2050,
 };var PrivateYearRangePickerYearListDefaultProps = {};var PrivateYearRangePickerYearDefaultProps = {};var StyledContainer$6 = material.styled(material.Grid)(templateObject_1$a || (templateObject_1$a = __makeTemplateObject(["\n  padding: 4px;\n  position: relative;\n"], ["\n  padding: 4px;\n  position: relative;\n"])));
-var StyledButton$2 = material.styled(material.Button)(templateObject_2$5 || (templateObject_2$5 = __makeTemplateObject(["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"], ["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"])));
-var templateObject_1$a, templateObject_2$5;var PrivateYearRangePickerYear = React.forwardRef(function (_a, ref) {
+var StyledButton$2 = material.styled(material.Button)(templateObject_2$6 || (templateObject_2$6 = __makeTemplateObject(["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"], ["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"])));
+var templateObject_1$a, templateObject_2$6;var PrivateYearRangePickerYear = React.forwardRef(function (_a, ref) {
     var year = _a.year, disabled = _a.disabled, isDefault = _a.isDefault, selected = _a.selected, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, selectedTemp = _a.selectedTemp, onClick = _a.onClick, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
     var className = React.useMemo(function () {
         return classNames$1(isDefault && 'default', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', disabled && 'disabled');
@@ -11946,13 +11946,15 @@ var PrivateYearRangePickerYearList = function (_a) {
 };
 PrivateYearRangePickerYearList.displayName = 'PrivateYearRangePickerYearList';
 PrivateYearRangePickerYearList.defaultProps = PrivateYearRangePickerYearListDefaultProps;var StyledTitleContainer$1 = material.styled('div')(templateObject_1$8 || (templateObject_1$8 = __makeTemplateObject(["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"], ["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"])));
-var StyledYear = material.styled('span')(templateObject_2$4 || (templateObject_2$4 = __makeTemplateObject([""], [""])));
-var StyledYearError = material.styled('span')(templateObject_3$2 || (templateObject_3$2 = __makeTemplateObject(["\n  color: ", ";\n"], ["\n  color: ", ";\n"])), function (_a) {
+var StyledYear = material.styled('span')(templateObject_2$5 || (templateObject_2$5 = __makeTemplateObject([""], [""])));
+var StyledYearError = material.styled('span')(templateObject_3$3 || (templateObject_3$3 = __makeTemplateObject(["\n  color: ", ";\n"], ["\n  color: ", ";\n"])), function (_a) {
     var theme = _a.theme;
     return theme.palette.error.main;
 });
 var StyledTitleGap = material.styled('span')(templateObject_4$2 || (templateObject_4$2 = __makeTemplateObject(["\n  padding: 0 7px;\n  opacity: 0.5;\n"], ["\n  padding: 0 7px;\n  opacity: 0.5;\n"])));
-var templateObject_1$8, templateObject_2$4, templateObject_3$2, templateObject_4$2;var DEFAULT_VALUE$5 = [null, null];
+var StyledActionContainer$1 = material.styled('div')(templateObject_5$1 || (templateObject_5$1 = __makeTemplateObject(["\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n  &:empty {\n    display: none;\n  }\n"], ["\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n  &:empty {\n    display: none;\n  }\n"])));
+var StyledActionButton$1 = material.styled(material.Button)(templateObject_6 || (templateObject_6 = __makeTemplateObject(["\n  min-width: 0;\n  color: unset;\n  &:not(:first-child) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"], ["\n  min-width: 0;\n  color: unset;\n  &:not(:first-child) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"])));
+var templateObject_1$8, templateObject_2$5, templateObject_3$3, templateObject_4$2, templateObject_5$1, templateObject_6;var DEFAULT_VALUE$5 = [null, null];
 var PrivateYearRangePicker = function (_a) {
     // State -------------------------------------------------------------------------------------------------------------
     var selectType = _a.selectType, initValue = _a.value, initMinYear = _a.minYear, initMaxYear = _a.maxYear, disablePast = _a.disablePast, disableFuture = _a.disableFuture, hideHeader = _a.hideHeader, onChange = _a.onChange;
@@ -11996,6 +11998,28 @@ var PrivateYearRangePicker = function (_a) {
         displayValue[0] < minAvailableYear || displayValue[0] > maxAvailableYear,
         displayValue[1] < minAvailableYear || displayValue[1] > maxAvailableYear,
     ]; }, [displayValue, minAvailableYear, maxAvailableYear]);
+    // action button -----------------------------------------------------------------------------------------------------
+    var getActionButton = React.useCallback(function (fromYear, toYear, label) {
+        if (fromYear < minAvailableYear || toYear > maxAvailableYear) {
+            return undefined;
+        }
+        else {
+            var newValue_1 = [
+                Math.max(fromYear, minAvailableYear),
+                Math.min(toYear, maxAvailableYear),
+            ];
+            return (React.createElement(StyledActionButton$1, { variant: 'text', onClick: function () {
+                    setValue(newValue_1);
+                    onChange(newValue_1, 'end');
+                } }, label));
+        }
+    }, [maxAvailableYear, minAvailableYear, onChange, setValue]);
+    var actionButtons = React.useMemo(function () {
+        return (React.createElement(StyledActionContainer$1, null,
+            getActionButton(nowYear - 2, nowYear, '최근 3년'),
+            getActionButton(nowYear - 4, nowYear, '최근 5년'),
+            getActionButton(nowYear - 9, nowYear, '최근 10년')));
+    }, [getActionButton, nowYear]);
     // Event Handler -----------------------------------------------------------------------------------------------------
     var handleYearChange = React.useCallback(function (valueYear) {
         var newValue = __spreadArray([], value, true);
@@ -12046,19 +12070,20 @@ var PrivateYearRangePicker = function (_a) {
                 displayValue[1],
                 "\uB144")))),
         React.createElement("div", null,
-            React.createElement(PrivateYearRangePickerYearList, { value: value, selectType: selectType, displayValue: displayValue, minYear: minYear, maxYear: maxYear, disablePast: disablePast, disableFuture: disableFuture, onChange: handleYearChange }))));
+            React.createElement(PrivateYearRangePickerYearList, { value: value, selectType: selectType, displayValue: displayValue, minYear: minYear, maxYear: maxYear, disablePast: disablePast, disableFuture: disableFuture, onChange: handleYearChange })),
+        actionButtons));
 };
 PrivateYearRangePicker.displayName = 'PrivateYearRangePicker';
 PrivateYearRangePicker.defaultProps = PrivateYearRangePickerDefaultProps;var PrivateYearPickerDefaultProps = {
     minYear: 2020,
     maxYear: 2050,
 };var PrivateYearPickerYearListDefaultProps = {};var PrivateYearPickerYearDefaultProps = {};var StyledContainer$4 = material.styled(material.Grid)(templateObject_1$7 || (templateObject_1$7 = __makeTemplateObject(["\n  padding: 4px;\n  position: relative;\n"], ["\n  padding: 4px;\n  position: relative;\n"])));
-var StyledButton$1 = material.styled(material.Button)(templateObject_2$3 || (templateObject_2$3 = __makeTemplateObject(["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"], ["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"])));
-var templateObject_1$7, templateObject_2$3;var PrivateYearPickerYear = React.forwardRef(function (_a, ref) {
-    var year = _a.year, disabled = _a.disabled, active = _a.active, isDefault = _a.isDefault, selected = _a.selected, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, selectedTemp = _a.selectedTemp, onClick = _a.onClick, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
+var StyledButton$1 = material.styled(material.Button)(templateObject_2$4 || (templateObject_2$4 = __makeTemplateObject(["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n\n    &.range:not(.active) {\n      background-color: rgba(25, 118, 210, 0.8);\n    }\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"], ["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n\n    &.range:not(.active) {\n      background-color: rgba(25, 118, 210, 0.8);\n    }\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"])));
+var templateObject_1$7, templateObject_2$4;var PrivateYearPickerYear = React.forwardRef(function (_a, ref) {
+    var year = _a.year, disabled = _a.disabled, active = _a.active, range = _a.range, isDefault = _a.isDefault, selected = _a.selected, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, selectedTemp = _a.selectedTemp, onClick = _a.onClick, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
     var className = React.useMemo(function () {
-        return classNames$1(isDefault && 'default', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', active && 'active', disabled && 'disabled');
-    }, [isDefault, selected, selectedStart, selectedEnd, selectedTemp, active, disabled]);
+        return classNames$1(range && 'range', isDefault && 'default', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', active && 'active', disabled && 'disabled');
+    }, [range, isDefault, selected, selectedStart, selectedEnd, selectedTemp, active, disabled]);
     return (React.createElement(StyledContainer$4, { className: 'PrivateYearPickerYear', ref: ref, item: true, xs: 4 },
         React.createElement(StyledButton$1, { className: className, disabled: disabled, onClick: onClick, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave }, year)));
 });
@@ -12150,9 +12175,11 @@ var PrivateYearPickerYearList = function (_a) {
         var newYears = [];
         var startYear = selectFromYear ? selectFromYear : value ? value : 0;
         var endYear = selectToYear ? selectToYear : value ? value : 0;
+        var range = !!selectFromYear || !!selectToYear;
         for (var i = minYear; i <= maxYear; i += 1) {
             newYears.push({
                 year: i,
+                range: range,
                 isDefault: !value && !selectFromYear && !selectToYear && i === defaultYear,
                 active: (!!selectFromYear || !!selectToYear) && i === value,
                 selected: i >= startYear && i <= endYear,
@@ -12206,17 +12233,17 @@ var PrivateYearPickerYearList = function (_a) {
             else if (info.isDefault) {
                 defaultButtonRef.current = ref;
             }
-        }, year: info.year, isDefault: info.isDefault, active: info.active, selected: info.selected, selectedStart: info.selectedStart, selectedEnd: info.selectedEnd, selectedTemp: info.selectedTemp, disabled: info.disabled, onClick: function () { return onChange(info.year); }, onMouseEnter: function () { return mouseOver(info.year); }, onMouseLeave: function () { return mouseOver(undefined); } })); })));
+        }, year: info.year, range: info.range, isDefault: info.isDefault, active: info.active, selected: info.selected, selectedStart: info.selectedStart, selectedEnd: info.selectedEnd, selectedTemp: info.selectedTemp, disabled: info.disabled, onClick: function () { return onChange(info.year); }, onMouseEnter: function () { return mouseOver(info.year); }, onMouseLeave: function () { return mouseOver(undefined); } })); })));
 };
 PrivateYearPickerYearList.displayName = 'PrivateYearPickerYearList';
 PrivateYearPickerYearList.defaultProps = PrivateYearPickerYearListDefaultProps;var StyledTitleContainer = material.styled('div')(templateObject_1$5 || (templateObject_1$5 = __makeTemplateObject(["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"], ["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"])));
-var StyledIconButton$1 = material.styled(material.IconButton)(templateObject_2$2 || (templateObject_2$2 = __makeTemplateObject(["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"], ["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"])));
-var StyledYearMonth$1 = material.styled('div')(templateObject_3$1 || (templateObject_3$1 = __makeTemplateObject(["\n  flex: 1;\n  text-align: center;\n"], ["\n  flex: 1;\n  text-align: center;\n"])));
+var StyledIconButton$1 = material.styled(material.IconButton)(templateObject_2$3 || (templateObject_2$3 = __makeTemplateObject(["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"], ["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"])));
+var StyledYearMonth$1 = material.styled('div')(templateObject_3$2 || (templateObject_3$2 = __makeTemplateObject(["\n  flex: 1;\n  text-align: center;\n"], ["\n  flex: 1;\n  text-align: center;\n"])));
 var StyledYearMonthError$1 = material.styled('div')(templateObject_4$1 || (templateObject_4$1 = __makeTemplateObject(["\n  flex: 1;\n  text-align: center;\n  color: ", ";\n"], ["\n  flex: 1;\n  text-align: center;\n  color: ", ";\n"])), function (_a) {
     var theme = _a.theme;
     return theme.palette.error.main;
 });
-var templateObject_1$5, templateObject_2$2, templateObject_3$1, templateObject_4$1;var PrivateYearPicker = function (_a) {
+var templateObject_1$5, templateObject_2$3, templateObject_3$2, templateObject_4$1;var PrivateYearPicker = function (_a) {
     // State -------------------------------------------------------------------------------------------------------------
     var initValue = _a.value, initMinYear = _a.minYear, initMaxYear = _a.maxYear, disablePast = _a.disablePast, disableFuture = _a.disableFuture, hideHeader = _a.hideHeader, selectFromYear = _a.selectFromYear, selectToYear = _a.selectToYear, onChange = _a.onChange;
     var _b = useAutoUpdateState$1(initValue || null), value = _b[0], setValue = _b[1];
@@ -12313,12 +12340,12 @@ PrivateYearPicker.defaultProps = PrivateYearPickerDefaultProps;var PrivateMonthP
         month: 12,
     },
 };var PrivateMonthPickerMonthListDefaultProps = {};var PrivateMonthPickerMonthDefaultProps = {};var StyledContainer$2 = material.styled(material.Grid)(templateObject_1$4 || (templateObject_1$4 = __makeTemplateObject(["\n  padding: 4px;\n  position: relative;\n"], ["\n  padding: 4px;\n  position: relative;\n"])));
-var StyledButton = material.styled(material.Button)(templateObject_2$1 || (templateObject_2$1 = __makeTemplateObject(["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    background-color: rgba(66, 165, 245, 0.3);\n    border: 1px solid transparent;\n  }\n"], ["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    background-color: rgba(66, 165, 245, 0.3);\n    border: 1px solid transparent;\n  }\n"])));
-var templateObject_1$4, templateObject_2$1;var PrivateMonthPickerMonth = React.forwardRef(function (_a, ref) {
-    var month = _a.month, disabled = _a.disabled, isDefault = _a.isDefault, active = _a.active, selected = _a.selected, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, selectedTemp = _a.selectedTemp, onClick = _a.onClick, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
+var StyledButton = material.styled(material.Button)(templateObject_2$2 || (templateObject_2$2 = __makeTemplateObject(["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n\n    &.range:not(.active) {\n      background-color: rgba(25, 118, 210, 0.8);\n    }\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    background-color: rgba(66, 165, 245, 0.3);\n    border: 1px solid transparent;\n  }\n"], ["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n\n    &.range:not(.active) {\n      background-color: rgba(25, 118, 210, 0.8);\n    }\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    background-color: rgba(66, 165, 245, 0.3);\n    border: 1px solid transparent;\n  }\n"])));
+var templateObject_1$4, templateObject_2$2;var PrivateMonthPickerMonth = React.forwardRef(function (_a, ref) {
+    var month = _a.month, range = _a.range, disabled = _a.disabled, isDefault = _a.isDefault, active = _a.active, selected = _a.selected, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, selectedTemp = _a.selectedTemp, onClick = _a.onClick, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
     var className = React.useMemo(function () {
-        return classNames$1(isDefault && 'default', active && 'active', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', disabled && 'disabled');
-    }, [isDefault, active, selected, selectedStart, selectedEnd, selectedTemp, disabled]);
+        return classNames$1(range && 'range', isDefault && 'default', active && 'active', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', disabled && 'disabled');
+    }, [range, isDefault, active, selected, selectedStart, selectedEnd, selectedTemp, disabled]);
     var handleClick = React.useCallback(function () {
         onClick && onClick(month);
     }, [month, onClick]);
@@ -12359,12 +12386,14 @@ var templateObject_1$3;var PrivateMonthPickerMonthList = function (_a) {
     var currentYear = React.useMemo(function () { return (value ? value.year : defaultYear); }, [value, defaultYear]);
     var months = React.useMemo(function () {
         var newMonths = [];
+        var range = !!selectFromValue || !!selectToValue;
         var startYm = selectFromValue ? valueToYm(selectFromValue) : value ? valueToYm(value) : 0;
         var endYm = selectToValue ? valueToYm(selectToValue) : value ? valueToYm(value) : 0;
         for (var i = 1; i <= 12; i += 1) {
             var ym = currentYear * 100 + i;
             newMonths.push({
                 month: i,
+                range: range,
                 isDefault: !value && i === defaultMonth,
                 active: (!!selectFromValue || !!selectToValue) && !!value && ym === valueToYm(value),
                 selected: !!value && ym >= startYm && ym <= endYm,
@@ -12391,18 +12420,18 @@ var templateObject_1$3;var PrivateMonthPickerMonthList = function (_a) {
         onChange({ year: currentYear, month: month });
     }, [currentYear, onChange]);
     // Render ------------------------------------------------------------------------------------------------------------
-    return (React.createElement(StyledContainer$1, { className: 'PrivateMonthPickerMonthList', container: true }, months.map(function (info) { return (React.createElement(PrivateMonthPickerMonth, { key: info.month, month: info.month, isDefault: info.isDefault, active: info.active, selected: info.selected, selectedStart: info.selectedStart, selectedEnd: info.selectedEnd, selectedTemp: info.selectedTemp, disabled: info.disabled, onClick: handleMonthChange })); })));
+    return (React.createElement(StyledContainer$1, { className: 'PrivateMonthPickerMonthList', container: true }, months.map(function (info) { return (React.createElement(PrivateMonthPickerMonth, { key: info.month, month: info.month, range: info.range, isDefault: info.isDefault, active: info.active, selected: info.selected, selectedStart: info.selectedStart, selectedEnd: info.selectedEnd, selectedTemp: info.selectedTemp, disabled: info.disabled, onClick: handleMonthChange })); })));
 };
 PrivateMonthPickerMonthList.displayName = 'PrivateMonthPickerMonthList';
 PrivateMonthPickerMonthList.defaultProps = PrivateMonthPickerMonthListDefaultProps;var StyledContainer = material.styled('div')(templateObject_1$2 || (templateObject_1$2 = __makeTemplateObject(["\n  .PrivateYearPickerYearList {\n    max-height: 130px;\n  }\n"], ["\n  .PrivateYearPickerYearList {\n    max-height: 130px;\n  }\n"])));
-var TitleContainer = material.styled('div')(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"], ["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"])));
-var StyledIconButton = material.styled(material.IconButton)(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"], ["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"])));
+var TitleContainer = material.styled('div')(templateObject_2$1 || (templateObject_2$1 = __makeTemplateObject(["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"], ["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"])));
+var StyledIconButton = material.styled(material.IconButton)(templateObject_3$1 || (templateObject_3$1 = __makeTemplateObject(["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"], ["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"])));
 var StyledYearMonth = material.styled('div')(templateObject_4 || (templateObject_4 = __makeTemplateObject(["\n  flex: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n"], ["\n  flex: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n"])));
 var StyledYearMonthError = material.styled('div')(templateObject_5 || (templateObject_5 = __makeTemplateObject(["\n  flex: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: ", ";\n"], ["\n  flex: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: ", ";\n"])), function (_a) {
     var theme = _a.theme;
     return theme.palette.error.main;
 });
-var templateObject_1$2, templateObject_2, templateObject_3, templateObject_4, templateObject_5;var PrivateMonthPicker = function (_a) {
+var templateObject_1$2, templateObject_2$1, templateObject_3$1, templateObject_4, templateObject_5;var PrivateMonthPicker = function (_a) {
     // State -------------------------------------------------------------------------------------------------------------
     var initValue = _a.value, initMinValue = _a.minValue, initMaxValue = _a.maxValue, disablePast = _a.disablePast, disableFuture = _a.disableFuture, selectFromValue = _a.selectFromValue, selectToValue = _a.selectToValue, onChange = _a.onChange;
     var _b = useAutoUpdateState$1(initValue || null), value = _b[0], setValue = _b[1];
@@ -12531,13 +12560,16 @@ PrivateMonthPicker.defaultProps = PrivateMonthPickerDefaultProps;var PrivateMont
         month: 12,
     },
 };var StyledDiv = material.styled(material.Grid)(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 14px;\n  width: 30px;\n  border-left: 1px solid #efefef;\n  border-right: 1px solid #efefef;\n  background-color: #fafafa;\n"], ["\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 14px;\n  width: 30px;\n  border-left: 1px solid #efefef;\n  border-right: 1px solid #efefef;\n  background-color: #fafafa;\n"])));
-var templateObject_1$1;var PrivateMonthRangePicker = function (_a) {
+var StyledActionContainer = material.styled('div')(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n  &:empty {\n    display: none;\n  }\n"], ["\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n  &:empty {\n    display: none;\n  }\n"])));
+var StyledActionButton = material.styled(material.Button)(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n  min-width: 0;\n  color: unset;\n  &:not(:first-child) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"], ["\n  min-width: 0;\n  color: unset;\n  &:not(:first-child) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"])));
+var templateObject_1$1, templateObject_2, templateObject_3;var PrivateMonthRangePicker = function (_a) {
     // Function ----------------------------------------------------------------------------------------------------------
     var value = _a.value, initMinValue = _a.minValue, initMaxValue = _a.maxValue, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange;
     var valueToYm = React.useCallback(function (v) { return v.year * 100 + v.month; }, []);
     var dateToValue = React.useCallback(function (v) { return ({ year: v.year(), month: v.month() + 1 }); }, []);
     // Memo --------------------------------------------------------------------------------------------------------------
-    var nowValue = React.useMemo(function () { return dateToValue(dayjs()); }, [dateToValue]);
+    var nowDate = React.useMemo(function () { return dayjs(); }, []);
+    var nowValue = React.useMemo(function () { return dateToValue(nowDate); }, [dateToValue, nowDate]);
     var nowYm = React.useMemo(function () { return valueToYm(nowValue); }, [nowValue, valueToYm]);
     var minValue = React.useMemo(function () { return initMinValue || PrivateMonthRangePickerDefaultProps.minValue; }, [initMinValue]);
     var maxValue = React.useMemo(function () { return initMaxValue || PrivateMonthRangePickerDefaultProps.maxValue; }, [initMaxValue]);
@@ -12595,6 +12627,33 @@ var templateObject_1$1;var PrivateMonthRangePicker = function (_a) {
         }
         return finalValue;
     }, [maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm, valueToYm]);
+    // action button -----------------------------------------------------------------------------------------------------
+    var getActionButton = React.useCallback(function (fromDate, toDate, label, strict) {
+        var fromValue = dateToValue(fromDate);
+        var fromYm = valueToYm(fromValue);
+        var toValue = dateToValue(toDate);
+        var toYm = valueToYm(toValue);
+        if (strict && (fromYm < minAvailableYm || toYm > maxAvailableYm)) {
+            return undefined;
+        }
+        else if (!strict &&
+            ((fromYm < minAvailableYm && toYm < minAvailableYm) || (fromYm > maxAvailableYm && toYm > maxAvailableYm))) {
+            return undefined;
+        }
+        else {
+            return (React.createElement(StyledActionButton, { variant: 'text', onClick: function () { return onChange(getFinalValue([fromValue, toValue], 'end'), 'end', true); } }, label));
+        }
+    }, [dateToValue, getFinalValue, maxAvailableYm, minAvailableYm, onChange, valueToYm]);
+    var actionButtons = React.useMemo(function () {
+        return (React.createElement(StyledActionContainer, null,
+            getActionButton(dayjs(nowDate).subtract(2, 'months'), nowDate, '최근 3개월', true),
+            getActionButton(dayjs(nowDate).subtract(5, 'months'), nowDate, '최근 6개월', true),
+            getActionButton(dayjs(nowDate).subtract(11, 'months'), nowDate, '최근 12개월', true),
+            getActionButton(dayjs(nowDate).subtract(23, 'months'), nowDate, '최근 24개월', true),
+            getActionButton(dayjs(nowDate).subtract(2, 'years').set('months', 0), dayjs(nowDate).subtract(2, 'years').set('months', 11), '재작년'),
+            getActionButton(dayjs(nowDate).subtract(1, 'years').set('months', 0), dayjs(nowDate).subtract(1, 'years').set('months', 11), '작년'),
+            getActionButton(dayjs(nowDate).set('months', 0), dayjs(nowDate).set('months', 11), '올해')));
+    }, [getActionButton, nowDate]);
     // Event Handler -----------------------------------------------------------------------------------------------------
     var handleStartMonthChange = React.useCallback(function (v, isMonthSelect) {
         var finalValue = getFinalValue([v, value[1]], 'start');
@@ -12605,12 +12664,14 @@ var templateObject_1$1;var PrivateMonthRangePicker = function (_a) {
         onChange(finalValue, 'end', isMonthSelect);
     }, [getFinalValue, onChange, value]);
     // Render ------------------------------------------------------------------------------------------------------------
-    return (React.createElement(material.Grid, { container: true, className: 'PrivateMonthRangePicker' },
-        React.createElement(material.Grid, { item: true },
-            React.createElement(PrivateMonthPicker, { value: value[0], selectToValue: value[1], minValue: minValue, maxValue: maxValue, disablePast: disablePast, disableFuture: disableFuture, onChange: handleStartMonthChange })),
-        React.createElement(StyledDiv, null, "~"),
-        React.createElement(material.Grid, { item: true },
-            React.createElement(PrivateMonthPicker, { value: value[1], selectFromValue: value[0], minValue: minValue, maxValue: maxValue, disablePast: disablePast, disableFuture: disableFuture, onChange: handleEndMonthChange }))));
+    return (React.createElement("div", null,
+        React.createElement(material.Grid, { container: true, className: 'PrivateMonthRangePicker' },
+            React.createElement(material.Grid, { item: true },
+                React.createElement(PrivateMonthPicker, { value: value[0], selectToValue: value[1], minValue: minValue, maxValue: maxValue, disablePast: disablePast, disableFuture: disableFuture, onChange: handleStartMonthChange })),
+            React.createElement(StyledDiv, null, "~"),
+            React.createElement(material.Grid, { item: true },
+                React.createElement(PrivateMonthPicker, { value: value[1], selectFromValue: value[0], minValue: minValue, maxValue: maxValue, disablePast: disablePast, disableFuture: disableFuture, onChange: handleEndMonthChange }))),
+        actionButtons));
 };
 PrivateMonthRangePicker.displayName = 'PrivateMonthRangePicker';
 PrivateMonthRangePicker.defaultProps = PrivateMonthRangePickerDefaultProps;var FormDatePicker = React.forwardRef(function (_a, ref) {
@@ -13130,7 +13191,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     // ID --------------------------------------------------------------------------------------------------------------
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, initValue = _a.value, initData = _a.data, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, initCalendarCount = _a.calendarCount, initFormat = _a.format, formValueFormat = _a.formValueFormat, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, helperText = _a.helperText, formValueFromNameSuffix = _a.formValueFromNameSuffix, formValueToNameSuffix = _a.formValueToNameSuffix, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, initHidden = _a.hidden, align = _a.align, onGetActionButtons = _a.onGetActionButtons, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, initValue = _a.value, initData = _a.data, fromLabel = _a.fromLabel, fromLabelIcon = _a.fromLabelIcon, toLabel = _a.toLabel, toLabelIcon = _a.toLabelIcon, initCalendarCount = _a.calendarCount, initFormat = _a.format, formValueFormat = _a.formValueFormat, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, helperText = _a.helperText, formValueFromNameSuffix = _a.formValueFromNameSuffix, formValueToNameSuffix = _a.formValueToNameSuffix, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, initHidden = _a.hidden, align = _a.align, onGetActionButtons = _a.onGetActionButtons, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = React.useId();
@@ -13157,10 +13218,10 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     var _d = useAutoUpdateState$1(initHidden), hidden = _d[0], setHidden = _d[1];
     var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
     var _f = React.useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
-    var _g = React.useState(false), startError = _g[0], setStartError = _g[1];
-    var _h = React.useState(), startErrorHelperText = _h[0], setStartErrorHelperText = _h[1];
-    var _j = React.useState(false), endError = _j[0], setEndError = _j[1];
-    var _k = React.useState(), endErrorHelperText = _k[0], setEndErrorHelperText = _k[1];
+    var _g = React.useState(false), fromError = _g[0], setFromError = _g[1];
+    var _h = React.useState(), fromErrorHelperText = _h[0], setFromErrorHelperText = _h[1];
+    var _j = React.useState(false), toError = _j[0], setToError = _j[1];
+    var _k = React.useState(), toErrorHelperText = _k[0], setToErrorHelperText = _k[1];
     var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
     // Memo --------------------------------------------------------------------------------------------------------------
     var format = React.useMemo(function () { return initFormat || DEFAULT_FORMAT$4; }, [initFormat]);
@@ -13175,25 +13236,25 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     }, [startDateTextFieldRef]);
     var focusValidate = React.useCallback(function () {
         var _a, _b;
-        if (endError) {
+        if (toError) {
             (_a = endDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.focus();
         }
         else {
             (_b = startDateTextFieldRef.current) === null || _b === void 0 ? void 0 : _b.focus();
         }
-    }, [endError, startDateTextFieldRef, endDateTextFieldRef]);
+    }, [toError, startDateTextFieldRef, endDateTextFieldRef]);
     // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
     var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
         setErrorHelperText(errorHelperText);
     }, [setError]);
-    var setStartErrorErrorHelperText = React.useCallback(function (error, startErrorHelperText) {
-        setStartError(error);
-        setStartErrorHelperText(startErrorHelperText);
+    var setFromErrorErrorHelperText = React.useCallback(function (error, fromErrorHelperText) {
+        setFromError(error);
+        setFromErrorHelperText(fromErrorHelperText);
     }, []);
-    var setEndErrorErrorHelperText = React.useCallback(function (error, endErrorHelperText) {
-        setEndError(error);
-        setEndErrorHelperText(endErrorHelperText);
+    var setToErrorErrorHelperText = React.useCallback(function (error, toErrorHelperText) {
+        setToError(error);
+        setToErrorHelperText(toErrorHelperText);
     }, []);
     // Function - validate ---------------------------------------------------------------------------------------------
     var validate = React.useCallback(function (value) {
@@ -13203,46 +13264,46 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                 setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             else if (value[0] == null) {
-                setStartErrorErrorHelperText(true, '필수 입력 항목입니다.');
+                setFromErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             else {
-                setEndErrorErrorHelperText(true, '필수 입력 항목입니다.');
+                setToErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             return false;
         }
         if (requiredStart && value[0] == null) {
-            setStartErrorErrorHelperText(true, '필수 입력 항목입니다.');
+            setFromErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
         if (requiredEnd && value[1] == null) {
-            setEndErrorErrorHelperText(true, '필수 입력 항목입니다.');
+            setToErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
         if (!allowSingleSelect && (value[0] || value[1]) && (value[0] == null || value[1] == null)) {
             if (value[0] == null) {
-                setStartErrorErrorHelperText(true, '필수 입력 항목입니다.');
+                setFromErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             else {
-                setEndErrorErrorHelperText(true, '필수 입력 항목입니다.');
+                setToErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             return false;
         }
         var startInputValue = ((_a = startDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.value) || '';
         var endInputValue = ((_b = endDateTextFieldRef.current) === null || _b === void 0 ? void 0 : _b.value) || '';
         if (notEmpty(startInputValue) && !dayjs(startInputValue, format).isValid()) {
-            setStartErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
+            setFromErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
             return false;
         }
         if (notEmpty(endInputValue) && !dayjs(endInputValue, format).isValid()) {
-            setEndErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
+            setToErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
             return false;
         }
         if (startInputDatePickerErrorRef.current) {
-            setStartErrorErrorHelperText(true, getDateValidationErrorText(startInputDatePickerErrorRef.current));
+            setFromErrorErrorHelperText(true, getDateValidationErrorText(startInputDatePickerErrorRef.current));
             return false;
         }
         if (endInputDatePickerErrorRef.current) {
-            setEndErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
+            setToErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
             return false;
         }
         if (onValidate) {
@@ -13253,8 +13314,8 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
             }
         }
         setErrorErrorHelperText(false, undefined);
-        setStartError(false);
-        setEndError(false);
+        setFromError(false);
+        setToError(false);
         return true;
     }, [
         required,
@@ -13264,8 +13325,8 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
         format,
         onValidate,
         setErrorErrorHelperText,
-        setStartErrorErrorHelperText,
-        setEndErrorErrorHelperText,
+        setFromErrorErrorHelperText,
+        setToErrorErrorHelperText,
     ]);
     // Function activeMonth --------------------------------------------------------------------------------------------
     var activeMonth = React.useCallback(function (month) {
@@ -13323,7 +13384,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useFirstSkipEffect$1(function () {
-        if (error || startError || endError)
+        if (error || fromError || toError)
             validate(value);
         if (onChange)
             onChange(value);
@@ -13373,9 +13434,9 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     var handleChange = React.useCallback(function (newValue) {
         setValue(newValue);
         setOpen(false);
-        setStartErrorErrorHelperText(false, undefined);
-        setEndErrorErrorHelperText(false, undefined);
-    }, [setEndErrorErrorHelperText, setStartErrorErrorHelperText, setValue]);
+        setFromErrorErrorHelperText(false, undefined);
+        setToErrorErrorHelperText(false, undefined);
+    }, [setToErrorErrorHelperText, setFromErrorErrorHelperText, setValue]);
     var handleValueChange = React.useCallback(function (selectType, newValue, fromInput) {
         var _a;
         var finalValue;
@@ -13404,7 +13465,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                         }
                     }
                 }
-                setStartErrorErrorHelperText(false, undefined);
+                setFromErrorErrorHelperText(false, undefined);
                 if (fromInput && newValue) {
                     activeMonth(newValue);
                 }
@@ -13415,7 +13476,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                     if (fromInput && newValue) {
                         activeMonth(newValue.subtract(calendarCount - 1, 'month'));
                     }
-                    setStartErrorErrorHelperText(false, undefined);
+                    setFromErrorErrorHelperText(false, undefined);
                 }
                 else {
                     finalValue = [value[0], newValue];
@@ -13436,7 +13497,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                             (_a = startDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.focus();
                         });
                     }
-                    setEndErrorErrorHelperText(false, undefined);
+                    setToErrorErrorHelperText(false, undefined);
                 }
                 break;
         }
@@ -13447,10 +13508,10 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     }, [
         setValue,
         value,
-        setStartErrorErrorHelperText,
+        setFromErrorErrorHelperText,
         activeMonth,
         calendarCount,
-        setEndErrorErrorHelperText,
+        setToErrorErrorHelperText,
         open,
         onRequestSearchSubmit,
         name,
@@ -13471,10 +13532,10 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
         }
         switch (selectType) {
             case 'start':
-                setStartError(error);
+                setFromError(error);
                 break;
             case 'end':
-                setEndError(error);
+                setToError(error);
                 break;
         }
     }, [handleValueChange]);
@@ -13664,8 +13725,8 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                                     offset: [
                                         0,
                                         (error && errorHelperText) ||
-                                            (startError && startErrorHelperText) ||
-                                            (endError && endErrorHelperText)
+                                            (fromError && fromErrorHelperText) ||
+                                            (toError && toErrorHelperText)
                                             ? 8
                                             : -14,
                                     ],
@@ -13676,21 +13737,15 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                         React.createElement(FormDateRangePickerTooltipPickerContainer, { ref: containerRef, calendarCount: calendarCount, selectType: selectType, value: value, months: months, disablePast: disablePast, disableFuture: disableFuture, minDate: minDate, maxDate: maxDate, onGetActionButtons: onGetActionButtons, onChange: handleChange, onValueChange: handleValueChange, onMonthsChange: setMonths })) },
                     React.createElement(material.Grid, { container: true, alignItems: 'center' },
                         React.createElement(material.Grid, { item: true, flex: 1 },
-                            React.createElement(PrivateInputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, value: value[0], label: startLabel, labelIcon: startLabelIcon, error: error || startError, focused: focused || (open && selectType === 'start'), required: required || requiredStart, readOnly: readOnly || readOnlyStart, readOnlyInput: readOnlyInput, icon: startIcon || icon, startAdornment: startStartAdornment || startAdornment, endAdornment: startEndAdornment || endAdornment, inputRef: startDateTextFieldRef, onChange: function (newValue) { return handleInputDatePickerChange('start', newValue); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); } }))),
+                            React.createElement(PrivateInputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, value: value[0], label: fromLabel, labelIcon: fromLabelIcon, error: error || fromError, focused: focused || (open && selectType === 'start'), required: required || requiredStart, readOnly: readOnly || readOnlyStart, readOnlyInput: readOnlyInput, icon: startIcon || icon, startAdornment: startStartAdornment || startAdornment, endAdornment: startEndAdornment || endAdornment, inputRef: startDateTextFieldRef, onChange: function (newValue) { return handleInputDatePickerChange('start', newValue); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); } }))),
                         React.createElement(material.Grid, { item: true, sx: { px: 1 } }, "~"),
                         React.createElement(material.Grid, { item: true, flex: 1 },
-                            React.createElement(PrivateInputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, value: value[1], label: endLabel, labelIcon: endLabelIcon, error: error || endError, focused: focused || (open && selectType === 'end'), required: required || requiredEnd, readOnly: readOnly || readOnlyEnd, readOnlyInput: readOnlyInput, icon: endIcon || icon, startAdornment: endStartAdornment || startAdornment, endAdornment: endEndAdornment || endAdornment, inputRef: endDateTextFieldRef, onChange: function (newValue) { return handleInputDatePickerChange('end', newValue); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); } }))))),
+                            React.createElement(PrivateInputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, value: value[1], label: toLabel, labelIcon: toLabelIcon, error: error || toError, focused: focused || (open && selectType === 'end'), required: required || requiredEnd, readOnly: readOnly || readOnlyEnd, readOnlyInput: readOnlyInput, icon: endIcon || icon, startAdornment: endStartAdornment || startAdornment, endAdornment: endEndAdornment || endAdornment, inputRef: endDateTextFieldRef, onChange: function (newValue) { return handleInputDatePickerChange('end', newValue); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); } }))))),
                 !formColWithHelperText &&
                     (helperText ||
                         (error && errorHelperText) ||
-                        (startError && startErrorHelperText) ||
-                        (endError && endErrorHelperText)) && (React.createElement(material.FormHelperText, { error: error || startError || endError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error
-                    ? errorHelperText
-                    : startError
-                        ? startErrorHelperText
-                        : endError
-                            ? endErrorHelperText
-                            : helperText))))));
+                        (fromError && fromErrorHelperText) ||
+                        (toError && toErrorHelperText)) && (React.createElement(material.FormHelperText, { error: error || fromError || toError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error ? errorHelperText : fromError ? fromErrorHelperText : toError ? toErrorHelperText : helperText))))));
 });
 FormDateRangePicker.displayName = 'FormDateRangePicker';
 FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var FormFileDefaultProps = {
@@ -14557,7 +14612,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
     //----------------------------------------------------------------------------------------------------------------
     initHidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, readOnly = _a.readOnly, required = _a.required, initFullWidth = _a.fullWidth, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, fromLabel = _a.fromLabel, fromLabelIcon = _a.fromLabelIcon, toLabel = _a.toLabel, toLabelIcon = _a.toLabelIcon, readOnly = _a.readOnly, required = _a.required, initFullWidth = _a.fullWidth, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
     icon = _a.icon, initFormat = _a.format, initLabelShrink = _a.labelShrink, disablePast = _a.disablePast, disableFuture = _a.disableFuture, initMinValue = _a.minValue, initMaxValue = _a.maxValue, inputWidth = _a.inputWidth, readOnlyInput = _a.readOnlyInput, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, formValueFromYearNameSuffix = _a.formValueFromYearNameSuffix, formValueFromMonthNameSuffix = _a.formValueFromMonthNameSuffix, formValueToYearNameSuffix = _a.formValueToYearNameSuffix, formValueToMonthNameSuffix = _a.formValueToMonthNameSuffix, align = _a.align, 
     //----------------------------------------------------------------------------------------------------------------
@@ -14581,10 +14636,10 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
     // State -----------------------------------------------------------------------------------------------------------
     var _c = useAutoUpdateState$1(initError), error = _c[0], setError = _c[1];
     var _d = React.useState(), errorHelperText = _d[0], setErrorHelperText = _d[1];
-    var _e = React.useState(false), startError = _e[0], setStartError = _e[1];
-    var _f = React.useState(), startErrorHelperText = _f[0], setStartErrorHelperText = _f[1];
-    var _g = React.useState(false), endError = _g[0], setEndError = _g[1];
-    var _h = React.useState(), endErrorHelperText = _h[0], setEndErrorHelperText = _h[1];
+    var _e = React.useState(false), fromError = _e[0], setFromError = _e[1];
+    var _f = React.useState(), fromErrorHelperText = _f[0], setFromErrorHelperText = _f[1];
+    var _g = React.useState(false), toError = _g[0], setToError = _g[1];
+    var _h = React.useState(), toErrorHelperText = _h[0], setToErrorHelperText = _h[1];
     var _j = useAutoUpdateState$1(initDisabled), disabled = _j[0], setDisabled = _j[1];
     var _k = useAutoUpdateState$1(initHidden), hidden = _k[0], setHidden = _k[1];
     var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
@@ -14598,7 +14653,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         return initValue || DEFAULT_VALUE$2;
     }, [initValue])), value = _o[0], setValue = _o[1];
     useFirstSkipEffect$1(function () {
-        if (error || startError || endError)
+        if (error || fromError || toError)
             validate(value);
         if (onChange)
             onChange(value);
@@ -14675,13 +14730,13 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         var _a;
         (_a = startInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, []);
-    var setStartErrorErrorHelperText = React.useCallback(function (error, startErrorHelperText) {
-        setStartError(error);
-        setStartErrorHelperText(startErrorHelperText);
+    var setFromErrorErrorHelperText = React.useCallback(function (error, fromErrorHelperText) {
+        setFromError(error);
+        setFromErrorHelperText(fromErrorHelperText);
     }, []);
-    var setEndErrorErrorHelperText = React.useCallback(function (error, endErrorHelperText) {
-        setEndError(error);
-        setEndErrorHelperText(endErrorHelperText);
+    var setToErrorErrorHelperText = React.useCallback(function (error, toErrorHelperText) {
+        setToError(error);
+        setToErrorHelperText(toErrorHelperText);
     }, []);
     var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
@@ -14693,22 +14748,22 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                 setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             else if (value[0] == null) {
-                setStartErrorErrorHelperText(true, '필수 입력 항목입니다.');
+                setFromErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             else {
-                setEndErrorErrorHelperText(true, '필수 입력 항목입니다.');
+                setToErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             return false;
         }
         if (startInputDatePickerErrorRef.current) {
-            setStartErrorErrorHelperText(true, getDateValidationErrorText(startInputDatePickerErrorRef.current));
+            setFromErrorErrorHelperText(true, getDateValidationErrorText(startInputDatePickerErrorRef.current));
             if (endInputDatePickerErrorRef.current) {
-                setEndErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
+                setToErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
             }
             return false;
         }
         if (endInputDatePickerErrorRef.current) {
-            setEndErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
+            setToErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
             return false;
         }
         if (onValidate) {
@@ -14719,10 +14774,10 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
             }
         }
         setErrorErrorHelperText(false, undefined);
-        setStartErrorErrorHelperText(false, undefined);
-        setEndErrorErrorHelperText(false, undefined);
+        setFromErrorErrorHelperText(false, undefined);
+        setToErrorErrorHelperText(false, undefined);
         return true;
-    }, [onValidate, required, setEndErrorErrorHelperText, setErrorErrorHelperText, setStartErrorErrorHelperText]);
+    }, [onValidate, required, setToErrorErrorHelperText, setErrorErrorHelperText, setFromErrorErrorHelperText]);
     // Commands --------------------------------------------------------------------------------------------------------
     React.useLayoutEffect(function () {
         var lastValue = value;
@@ -14920,7 +14975,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                             newValue[1] = newValue[0];
                         }
                     }
-                    if (startError) {
+                    if (fromError) {
                         validate(newValue);
                     }
                     nextTick(function () {
@@ -14939,7 +14994,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                             newValue[0] = newValue[1];
                         }
                     }
-                    if (endError) {
+                    if (toError) {
                         validate(newValue);
                     }
                     nextTick(function () {
@@ -14951,13 +15006,13 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         }
     }, [
         dateToValue,
-        endError,
+        toError,
         maxAvailableYm,
         minAvailableYm,
         name,
         onValueChangeByUser,
         setValue,
-        startError,
+        fromError,
         validate,
         valueToYm,
     ]);
@@ -15011,21 +15066,15 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                         React.createElement(PrivateMonthRangePicker, { minValue: minValue, maxValue: maxValue, disablePast: disablePast, disableFuture: disableFuture, value: value, onChange: handleContainerChange })) },
                     React.createElement(material.Grid, { container: true, alignItems: 'center' },
                         React.createElement(material.Grid, { item: true, flex: 1 },
-                            React.createElement(PrivateInputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate[0], label: startLabel, labelIcon: startLabelIcon, error: error || startError, focused: focused || open, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: startInputRef, onChange: function (v) { return handleInputDatePickerChange('start', v); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))),
+                            React.createElement(PrivateInputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate[0], label: fromLabel, labelIcon: fromLabelIcon, error: error || fromError, focused: focused || open, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: startInputRef, onChange: function (v) { return handleInputDatePickerChange('start', v); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))),
                         React.createElement(material.Grid, { item: true, sx: { px: 1 } }, "~"),
                         React.createElement(material.Grid, { item: true, flex: 1 },
-                            React.createElement(PrivateInputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate[1], label: endLabel, labelIcon: endLabelIcon, error: error || endError, focused: focused || open, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: endInputRef, onChange: function (v) { return handleInputDatePickerChange('end', v); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))))),
+                            React.createElement(PrivateInputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate[1], label: toLabel, labelIcon: toLabelIcon, error: error || toError, focused: focused || open, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: endInputRef, onChange: function (v) { return handleInputDatePickerChange('end', v); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))))),
                 !formColWithHelperText &&
                     (helperText ||
                         (error && errorHelperText) ||
-                        (startError && startErrorHelperText) ||
-                        (endError && endErrorHelperText)) && (React.createElement(material.FormHelperText, { error: error || startError || endError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error
-                    ? errorHelperText
-                    : startError
-                        ? startErrorHelperText
-                        : endError
-                            ? endErrorHelperText
-                            : helperText))))));
+                        (fromError && fromErrorHelperText) ||
+                        (toError && toErrorHelperText)) && (React.createElement(material.FormHelperText, { error: error || fromError || toError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error ? errorHelperText : fromError ? fromErrorHelperText : toError ? toErrorHelperText : helperText))))));
 });
 FormMonthRangePicker.displayName = 'FormMonthRangePicker';
 FormMonthRangePicker.defaultProps = FormMonthRangePickerDefaultProps;var FormYearPickerDefaultProps = {
@@ -15340,7 +15389,7 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
     //----------------------------------------------------------------------------------------------------------------
     initHidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, startLabel = _a.startLabel, startLabelIcon = _a.startLabelIcon, endLabel = _a.endLabel, endLabelIcon = _a.endLabelIcon, readOnly = _a.readOnly, required = _a.required, initFullWidth = _a.fullWidth, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, fromLabel = _a.fromLabel, fromLabelIcon = _a.fromLabelIcon, toLabel = _a.toLabel, toLabelIcon = _a.toLabelIcon, readOnly = _a.readOnly, required = _a.required, initFullWidth = _a.fullWidth, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
     icon = _a.icon, initFormat = _a.format, initLabelShrink = _a.labelShrink, disablePast = _a.disablePast, disableFuture = _a.disableFuture, initMinYear = _a.minYear, initMaxYear = _a.maxYear, inputWidth = _a.inputWidth, readOnlyInput = _a.readOnlyInput, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, formValueFromNameSuffix = _a.formValueFromNameSuffix, formValueToNameSuffix = _a.formValueToNameSuffix, align = _a.align, 
     //----------------------------------------------------------------------------------------------------------------
@@ -15364,10 +15413,10 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
     // State -----------------------------------------------------------------------------------------------------------
     var _c = useAutoUpdateState$1(initError), error = _c[0], setError = _c[1];
     var _d = React.useState(), errorHelperText = _d[0], setErrorHelperText = _d[1];
-    var _e = React.useState(false), startError = _e[0], setStartError = _e[1];
-    var _f = React.useState(), startErrorHelperText = _f[0], setStartErrorHelperText = _f[1];
-    var _g = React.useState(false), endError = _g[0], setEndError = _g[1];
-    var _h = React.useState(), endErrorHelperText = _h[0], setEndErrorHelperText = _h[1];
+    var _e = React.useState(false), fromError = _e[0], setFromError = _e[1];
+    var _f = React.useState(), fromErrorHelperText = _f[0], setFromErrorHelperText = _f[1];
+    var _g = React.useState(false), toError = _g[0], setToError = _g[1];
+    var _h = React.useState(), toErrorHelperText = _h[0], setToErrorHelperText = _h[1];
     var _j = useAutoUpdateState$1(initDisabled), disabled = _j[0], setDisabled = _j[1];
     var _k = useAutoUpdateState$1(initHidden), hidden = _k[0], setHidden = _k[1];
     var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
@@ -15382,7 +15431,7 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
         return initValue || DEFAULT_VALUE;
     }, [initValue])), value = _p[0], setValue = _p[1];
     useFirstSkipEffect$1(function () {
-        if (error || startError || endError)
+        if (error || fromError || toError)
             validate(value);
         if (onChange)
             onChange(value);
@@ -15436,13 +15485,13 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
         var _a;
         (_a = startInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, []);
-    var setStartErrorErrorHelperText = React.useCallback(function (error, startErrorHelperText) {
-        setStartError(error);
-        setStartErrorHelperText(startErrorHelperText);
+    var setFromErrorErrorHelperText = React.useCallback(function (error, fromErrorHelperText) {
+        setFromError(error);
+        setFromErrorHelperText(fromErrorHelperText);
     }, []);
-    var setEndErrorErrorHelperText = React.useCallback(function (error, endErrorHelperText) {
-        setEndError(error);
-        setEndErrorHelperText(endErrorHelperText);
+    var setToErrorErrorHelperText = React.useCallback(function (error, toErrorHelperText) {
+        setToError(error);
+        setToErrorHelperText(toErrorHelperText);
     }, []);
     var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);
@@ -15454,22 +15503,22 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
                 setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             else if (value[0] == null) {
-                setStartErrorErrorHelperText(true, '필수 입력 항목입니다.');
+                setFromErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             else {
-                setEndErrorErrorHelperText(true, '필수 입력 항목입니다.');
+                setToErrorErrorHelperText(true, '필수 입력 항목입니다.');
             }
             return false;
         }
         if (startInputDatePickerErrorRef.current) {
-            setStartErrorErrorHelperText(true, getDateValidationErrorText(startInputDatePickerErrorRef.current));
+            setFromErrorErrorHelperText(true, getDateValidationErrorText(startInputDatePickerErrorRef.current));
             if (endInputDatePickerErrorRef.current) {
-                setEndErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
+                setToErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
             }
             return false;
         }
         if (endInputDatePickerErrorRef.current) {
-            setEndErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
+            setToErrorErrorHelperText(true, getDateValidationErrorText(endInputDatePickerErrorRef.current));
             return false;
         }
         if (onValidate) {
@@ -15480,10 +15529,10 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
             }
         }
         setErrorErrorHelperText(false, undefined);
-        setStartErrorErrorHelperText(false, undefined);
-        setEndErrorErrorHelperText(false, undefined);
+        setFromErrorErrorHelperText(false, undefined);
+        setToErrorErrorHelperText(false, undefined);
         return true;
-    }, [onValidate, required, setEndErrorErrorHelperText, setErrorErrorHelperText, setStartErrorErrorHelperText]);
+    }, [onValidate, required, setToErrorErrorHelperText, setErrorErrorHelperText, setFromErrorErrorHelperText]);
     // Commands --------------------------------------------------------------------------------------------------------
     React.useLayoutEffect(function () {
         var lastValue = value;
@@ -15616,7 +15665,7 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
                             newValue[1] = newValue[0];
                         }
                     }
-                    if (startError) {
+                    if (fromError) {
                         validate(newValue);
                     }
                     nextTick(function () {
@@ -15633,7 +15682,7 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
                             newValue[0] = newValue[1];
                         }
                     }
-                    if (endError) {
+                    if (toError) {
                         validate(newValue);
                     }
                     nextTick(function () {
@@ -15643,7 +15692,7 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
                 });
             }
         }
-    }, [dateToValue, endError, maxYear, minYear, name, onValueChangeByUser, setValue, startError, validate]);
+    }, [dateToValue, toError, maxYear, minYear, name, onValueChangeByUser, setValue, fromError, validate]);
     var handleInputDatePickerFocus = React.useCallback(function (selectType) {
         var _a;
         if (readOnly || disabled)
@@ -15694,21 +15743,15 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
                         React.createElement(PrivateYearRangePicker, { selectType: selectType, minYear: minYear, maxYear: maxYear, disablePast: disablePast, disableFuture: disableFuture, value: value, onChange: handleContainerChange })) },
                     React.createElement(material.Grid, { container: true, alignItems: 'center' },
                         React.createElement(material.Grid, { item: true, flex: 1 },
-                            React.createElement(PrivateInputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate[0], label: startLabel, labelIcon: startLabelIcon, error: error || startError, focused: focused || (open && selectType === 'start'), required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: startInputRef, onChange: function (v) { return handleInputDatePickerChange('start', v); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))),
+                            React.createElement(PrivateInputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate[0], label: fromLabel, labelIcon: fromLabelIcon, error: error || fromError, focused: focused || (open && selectType === 'start'), required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: startInputRef, onChange: function (v) { return handleInputDatePickerChange('start', v); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))),
                         React.createElement(material.Grid, { item: true, sx: { px: 1 } }, "~"),
                         React.createElement(material.Grid, { item: true, flex: 1 },
-                            React.createElement(PrivateInputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate[1], label: endLabel, labelIcon: endLabelIcon, error: error || endError, focused: focused || (open && selectType === 'end'), required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: endInputRef, onChange: function (v) { return handleInputDatePickerChange('end', v); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))))),
+                            React.createElement(PrivateInputDatePicker, __assign$7({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate[1], label: toLabel, labelIcon: toLabelIcon, error: error || toError, focused: focused || (open && selectType === 'end'), required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: endInputRef, onChange: function (v) { return handleInputDatePickerChange('end', v); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))))),
                 !formColWithHelperText &&
                     (helperText ||
                         (error && errorHelperText) ||
-                        (startError && startErrorHelperText) ||
-                        (endError && endErrorHelperText)) && (React.createElement(material.FormHelperText, { error: error || startError || endError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error
-                    ? errorHelperText
-                    : startError
-                        ? startErrorHelperText
-                        : endError
-                            ? endErrorHelperText
-                            : helperText))))));
+                        (fromError && fromErrorHelperText) ||
+                        (toError && toErrorHelperText)) && (React.createElement(material.FormHelperText, { error: error || fromError || toError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error ? errorHelperText : fromError ? fromErrorHelperText : toError ? toErrorHelperText : helperText))))));
 });
 FormYearRangePicker.displayName = 'FormYearRangePicker';
 FormYearRangePicker.defaultProps = FormYearRangePickerDefaultProps;var SearchDefaultProps = {

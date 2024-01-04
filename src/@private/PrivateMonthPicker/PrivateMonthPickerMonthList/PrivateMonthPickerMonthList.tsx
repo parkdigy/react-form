@@ -53,6 +53,7 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
   const months = useMemo(() => {
     const newMonths: {
       month: number;
+      range?: boolean;
       isDefault?: boolean;
       active?: boolean;
       selected?: boolean;
@@ -61,6 +62,7 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
       selectedTemp?: boolean;
       disabled?: boolean;
     }[] = [];
+    const range = !!selectFromValue || !!selectToValue;
     const startYm = selectFromValue ? valueToYm(selectFromValue) : value ? valueToYm(value) : 0;
     const endYm = selectToValue ? valueToYm(selectToValue) : value ? valueToYm(value) : 0;
 
@@ -69,6 +71,7 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
 
       newMonths.push({
         month: i,
+        range,
         isDefault: !value && i === defaultMonth,
         active: (!!selectFromValue || !!selectToValue) && !!value && ym === valueToYm(value),
         selected: !!value && ym >= startYm && ym <= endYm,
@@ -108,6 +111,7 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
         <PrivateMonthPickerMonth
           key={info.month}
           month={info.month}
+          range={info.range}
           isDefault={info.isDefault}
           active={info.active}
           selected={info.selected}
