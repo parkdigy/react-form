@@ -565,7 +565,10 @@ function AutoTypeForwardRef(render) {
                 {
                     var startValue = value[0];
                     var endValue = value[1];
-                    value = [startValue ? startValue : '', endValue ? endValue : ''];
+                    value = [
+                        startValue ? startValue : { year: '', month: '' },
+                        endValue ? endValue : { year: '', month: '' },
+                    ];
                 }
                 break;
             default:
@@ -594,40 +597,36 @@ function AutoTypeForwardRef(render) {
         switch (itemCommands.getType()) {
             case 'FormDateRangePicker':
                 {
+                    var commands = itemCommands;
                     var value = getItemFormValue(itemCommands);
-                    data[itemCommands.getFormValueFromName()] = value[0];
-                    data[itemCommands.getFormValueToName()] = value[1];
+                    data[commands.getFormValueFromName()] = value[0];
+                    data[commands.getFormValueToName()] = value[1];
                 }
                 break;
             case 'FormMonthPicker':
                 {
+                    var commands = itemCommands;
                     var value = getItemFormValue(itemCommands);
-                    data[itemCommands.getFormValueYearName()] = value.year;
-                    data[itemCommands.getFormValueMonthName()] = value.month;
+                    data[commands.getFormValueYearName()] = value.year;
+                    data[commands.getFormValueMonthName()] = value.month;
                 }
                 break;
             case 'FormYearRangePicker':
                 {
+                    var commands = itemCommands;
                     var value = getItemFormValue(itemCommands);
-                    data[itemCommands.getFormValueFromName()] = value[0];
-                    data[itemCommands.getFormValueToName()] = value[1];
+                    data[commands.getFormValueFromName()] = value[0];
+                    data[commands.getFormValueToName()] = value[1];
                 }
                 break;
             case 'FormMonthRangePicker':
                 {
+                    var commands = itemCommands;
                     var value = getItemFormValue(itemCommands);
-                    data[itemCommands.getFormValueFromYearName()] = notEmpty(value[0])
-                        ? value[0].year
-                        : '';
-                    data[itemCommands.getFormValueFromMonthName()] = notEmpty(value[0])
-                        ? value[0].month
-                        : '';
-                    data[itemCommands.getFormValueToYearName()] = notEmpty(value[1])
-                        ? value[1].year
-                        : '';
-                    data[itemCommands.getFormValueToMonthName()] = notEmpty(value[1])
-                        ? value[1].month
-                        : '';
+                    data[commands.getFormValueFromYearName()] = value[0].year;
+                    data[commands.getFormValueFromMonthName()] = value[0].month;
+                    data[commands.getFormValueToYearName()] = value[1].year;
+                    data[commands.getFormValueToMonthName()] = value[1].month;
                 }
                 break;
             default:
@@ -719,12 +718,13 @@ function AutoTypeForwardRef(render) {
                     switch (valueItem.getType()) {
                         case 'FormDateRangePicker':
                         case 'FormYearRangePicker': {
+                            var commands_1 = valueItem;
                             var value = getItemFormValue(valueItem, !!isReset);
                             if (notEmpty(subKey)) {
-                                if (subKey === valueItem.getFormValueFromNameSuffix()) {
+                                if (subKey === commands_1.getFormValueFromNameSuffix()) {
                                     return value[0];
                                 }
-                                else if (subKey === valueItem.getFormValueToNameSuffix()) {
+                                else if (subKey === commands_1.getFormValueToNameSuffix()) {
                                     return value[1];
                                 }
                                 else {
@@ -736,12 +736,13 @@ function AutoTypeForwardRef(render) {
                             }
                         }
                         case 'FormMonthPicker': {
+                            var commands_2 = valueItem;
                             var value = getItemFormValue(valueItem, !!isReset);
                             if (notEmpty(subKey)) {
-                                if (subKey === valueItem.getFormValueYearNameSuffix()) {
+                                if (subKey === commands_2.getFormValueYearNameSuffix()) {
                                     return value.year;
                                 }
-                                else if (subKey === valueItem.getFormValueMonthNameSuffix()) {
+                                else if (subKey === commands_2.getFormValueMonthNameSuffix()) {
                                     return value.month;
                                 }
                                 else {
@@ -753,18 +754,19 @@ function AutoTypeForwardRef(render) {
                             }
                         }
                         case 'FormMonthRangePicker': {
+                            var commands_3 = valueItem;
                             var value = getItemFormValue(valueItem, !!isReset);
                             if (notEmpty(subKey)) {
-                                if (subKey === valueItem.getFormValueFromYearNameSuffix()) {
+                                if (subKey === commands_3.getFormValueFromYearNameSuffix()) {
                                     return value[0].year;
                                 }
-                                else if (subKey === valueItem.getFormValueFromMonthNameSuffix()) {
+                                else if (subKey === commands_3.getFormValueFromMonthNameSuffix()) {
                                     return value[0].month;
                                 }
-                                else if (subKey === valueItem.getFormValueToYearNameSuffix()) {
+                                else if (subKey === commands_3.getFormValueToYearNameSuffix()) {
                                     return value[1].year;
                                 }
-                                else if (subKey === valueItem.getFormValueToMonthNameSuffix()) {
+                                else if (subKey === commands_3.getFormValueToMonthNameSuffix()) {
                                     return value[1].month;
                                 }
                                 else {

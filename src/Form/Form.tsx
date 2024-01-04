@@ -144,7 +144,10 @@ const Form = React.forwardRef<FormCommands, Props>(
             {
               const startValue = value[0];
               const endValue = value[1];
-              value = [startValue ? startValue : '', endValue ? endValue : ''];
+              value = [
+                startValue ? startValue : { year: '', month: '' },
+                endValue ? endValue : { year: '', month: '' },
+              ];
             }
             break;
           default:
@@ -180,48 +183,36 @@ const Form = React.forwardRef<FormCommands, Props>(
         switch (itemCommands.getType()) {
           case 'FormDateRangePicker':
             {
+              const commands = itemCommands as FormRangeValueItemNameCommands;
               const value = getItemFormValue(itemCommands) as FormValue[];
-              data[(itemCommands as FormRangeValueItemNameCommands).getFormValueFromName()] = value[0];
-              data[(itemCommands as FormRangeValueItemNameCommands).getFormValueToName()] = value[1];
+              data[commands.getFormValueFromName()] = value[0];
+              data[commands.getFormValueToName()] = value[1];
             }
             break;
           case 'FormMonthPicker':
             {
+              const commands = itemCommands as FormYearMonthValueItemNameCommands;
               const value = getItemFormValue(itemCommands) as FormYearMonthValue;
-              data[(itemCommands as FormYearMonthValueItemNameCommands).getFormValueYearName()] = value.year;
-              data[(itemCommands as FormYearMonthValueItemNameCommands).getFormValueMonthName()] = value.month;
+              data[commands.getFormValueYearName()] = value.year;
+              data[commands.getFormValueMonthName()] = value.month;
             }
             break;
           case 'FormYearRangePicker':
             {
+              const commands = itemCommands as FormRangeValueItemNameCommands;
               const value = getItemFormValue(itemCommands) as FormValue[];
-              data[(itemCommands as FormRangeValueItemNameCommands).getFormValueFromName()] = value[0];
-              data[(itemCommands as FormRangeValueItemNameCommands).getFormValueToName()] = value[1];
+              data[commands.getFormValueFromName()] = value[0];
+              data[commands.getFormValueToName()] = value[1];
             }
             break;
           case 'FormMonthRangePicker':
             {
+              const commands = itemCommands as FormYearMonthRangeValueItemNameCommands;
               const value = getItemFormValue(itemCommands) as FormYearMonthValue[];
-              data[(itemCommands as FormYearMonthRangeValueItemNameCommands).getFormValueFromYearName()] = notEmpty(
-                value[0]
-              )
-                ? value[0].year
-                : '';
-              data[(itemCommands as FormYearMonthRangeValueItemNameCommands).getFormValueFromMonthName()] = notEmpty(
-                value[0]
-              )
-                ? value[0].month
-                : '';
-              data[(itemCommands as FormYearMonthRangeValueItemNameCommands).getFormValueToYearName()] = notEmpty(
-                value[1]
-              )
-                ? value[1].year
-                : '';
-              data[(itemCommands as FormYearMonthRangeValueItemNameCommands).getFormValueToMonthName()] = notEmpty(
-                value[1]
-              )
-                ? value[1].month
-                : '';
+              data[commands.getFormValueFromYearName()] = value[0].year;
+              data[commands.getFormValueFromMonthName()] = value[0].month;
+              data[commands.getFormValueToYearName()] = value[1].year;
+              data[commands.getFormValueToMonthName()] = value[1].month;
             }
             break;
           default:
@@ -333,11 +324,12 @@ const Form = React.forwardRef<FormCommands, Props>(
             switch (valueItem.getType()) {
               case 'FormDateRangePicker':
               case 'FormYearRangePicker': {
+                const commands = valueItem as FormRangeValueItemNameCommands;
                 const value = getItemFormValue(valueItem, !!isReset) as FormValue[];
                 if (notEmpty(subKey)) {
-                  if (subKey === (valueItem as FormRangeValueItemNameCommands).getFormValueFromNameSuffix()) {
+                  if (subKey === commands.getFormValueFromNameSuffix()) {
                     return value[0];
-                  } else if (subKey === (valueItem as FormRangeValueItemNameCommands).getFormValueToNameSuffix()) {
+                  } else if (subKey === commands.getFormValueToNameSuffix()) {
                     return value[1];
                   } else {
                     throw new Error(`Form::getFormReset - ${valueItem.getType()} 의 subKey 값을 찾을 수 없습니다.`);
@@ -349,13 +341,12 @@ const Form = React.forwardRef<FormCommands, Props>(
                 }
               }
               case 'FormMonthPicker': {
+                const commands = valueItem as FormYearMonthValueItemNameCommands;
                 const value = getItemFormValue(valueItem, !!isReset) as FormYearMonthValue;
                 if (notEmpty(subKey)) {
-                  if (subKey === (valueItem as FormYearMonthValueItemNameCommands).getFormValueYearNameSuffix()) {
+                  if (subKey === commands.getFormValueYearNameSuffix()) {
                     return value.year;
-                  } else if (
-                    subKey === (valueItem as FormYearMonthValueItemNameCommands).getFormValueMonthNameSuffix()
-                  ) {
+                  } else if (subKey === commands.getFormValueMonthNameSuffix()) {
                     return value.month;
                   } else {
                     throw new Error(`Form::getFormReset - ${valueItem.getType()} 의 subKey 값을 찾을 수 없습니다.`);
@@ -367,23 +358,16 @@ const Form = React.forwardRef<FormCommands, Props>(
                 }
               }
               case 'FormMonthRangePicker': {
-                const value = getItemFormValue(valueItem, !!isReset) as FormYearMonthValue[];
+                const commands = valueItem as FormYearMonthRangeValueItemNameCommands;
+                const value = getItemFormValue(valueItem, !!isReset) as { year: number | ''; month: number | '' }[];
                 if (notEmpty(subKey)) {
-                  if (
-                    subKey === (valueItem as FormYearMonthRangeValueItemNameCommands).getFormValueFromYearNameSuffix()
-                  ) {
+                  if (subKey === commands.getFormValueFromYearNameSuffix()) {
                     return value[0].year;
-                  } else if (
-                    subKey === (valueItem as FormYearMonthRangeValueItemNameCommands).getFormValueFromMonthNameSuffix()
-                  ) {
+                  } else if (subKey === commands.getFormValueFromMonthNameSuffix()) {
                     return value[0].month;
-                  } else if (
-                    subKey === (valueItem as FormYearMonthRangeValueItemNameCommands).getFormValueToYearNameSuffix()
-                  ) {
+                  } else if (subKey === commands.getFormValueToYearNameSuffix()) {
                     return value[1].year;
-                  } else if (
-                    subKey === (valueItem as FormYearMonthRangeValueItemNameCommands).getFormValueToMonthNameSuffix()
-                  ) {
+                  } else if (subKey === commands.getFormValueToMonthNameSuffix()) {
                     return value[1].month;
                   } else {
                     throw new Error(`Form::getFormReset - ${valueItem.getType()} 의 subKey 값을 찾을 수 없습니다.`);

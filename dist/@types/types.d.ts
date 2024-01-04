@@ -13,8 +13,8 @@ export interface CommonSxProps extends CommonProps {
     sx?: SxProps<Theme>;
 }
 export type FormYearMonthValue = {
-    year: number;
-    month: number;
+    year: number | '';
+    month: number | '';
 };
 export type FormValue = string | number | boolean | FormYearMonthValue;
 export interface FormValueMap {

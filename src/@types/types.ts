@@ -22,7 +22,7 @@ export interface CommonSxProps extends CommonProps {
 
 //--------------------------------------------------------------------------------------------------------------------
 
-export type FormYearMonthValue = { year: number; month: number };
+export type FormYearMonthValue = { year: number | ''; month: number | '' };
 
 export type FormValue = string | number | boolean | FormYearMonthValue;
 
