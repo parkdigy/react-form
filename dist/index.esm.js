@@ -2629,8 +2629,8 @@ FormText.displayName = 'FormText';
 FormText.defaultProps = FormTextDefaultProps;var css_248z$j = ".FormTag.FormTextField {\n  min-width: 200px;\n}";
 styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, ref) {
     // FormState -------------------------------------------------------------------------------------------------------
-    var className = _a.className, name = _a.name, initValue = _a.value, exceptValue = _a.exceptValue, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, disabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest$4(_a, ["className", "name", "value", "exceptValue", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
-    var _b = useFormState(), formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit, otherFormState = __rest$4(_b, ["fullWidth", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
+    var className = _a.className, name = _a.name, initValue = _a.value, exceptValue = _a.exceptValue, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, initDisabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest$4(_a, ["className", "name", "value", "exceptValue", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
+    var _b = useFormState(), formFullWidth = _b.fullWidth, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit, otherFormState = __rest$4(_b, ["fullWidth", "disabled", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
     // State - FormState -----------------------------------------------------------------------------------------------
     var fullWidth = useAutoUpdateState$1(initFullWidth == null ? formFullWidth : initFullWidth)[0];
     // Function - getFinalValue ----------------------------------------------------------------------------------------
@@ -2662,6 +2662,7 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
     var _e = useState(''), inputValue = _e[0], setInputValue = _e[1];
     var _f = useAutoUpdateState$1(initError), error = _f[0], setError = _f[1];
     var _g = useState(), errorHelperText = _g[0], setErrorHelperText = _g[1];
+    var disabled = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled)[0];
     // Effect ----------------------------------------------------------------------------------------------------------
     useEffect(function () {
         if (!isSame$2(value, initValue)) {

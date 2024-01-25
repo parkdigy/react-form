@@ -14,6 +14,7 @@ import { empty, nextTick, notEmpty, isSame } from '../../@util';
 import { useFormState } from '../../FormContext';
 import FormContextProvider from '../../FormContextProvider';
 import './FormTag.scss';
+import { FormTextFieldProps } from '../FormTextField';
 
 const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
   (
@@ -25,7 +26,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       required,
       readOnly,
       maxLength,
-      disabled,
+      disabled: initDisabled,
       fullWidth: initFullWidth,
       error: initError,
       helperText,
@@ -44,6 +45,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
 
     const {
       fullWidth: formFullWidth,
+      disabled: formDisabled,
       onAddValueItem,
       onValueChange,
       onValueChangeByUser,
@@ -94,6 +96,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     const [inputValue, setInputValue] = useState<string>('');
     const [error, setError] = useAutoUpdateState<FormTagProps['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<FormTagProps['helperText']>();
+    const [disabled] = useAutoUpdateState<FormTextFieldProps['disabled']>(
+      initDisabled == null ? formDisabled : initDisabled
+    );
 
     // Effect ----------------------------------------------------------------------------------------------------------
 
