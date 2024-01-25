@@ -93,6 +93,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       focused: formFocused,
       labelShrink: formLabelShrink,
       fullWidth: formFullWidth,
+      disabled: formDisabled,
       formColWithHelperText,
       onAddValueItem,
       onRemoveValueItem,
@@ -121,7 +122,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     const [error, setError] = useAutoUpdateState<FormTextFieldProps['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<FormTextFieldProps['helperText']>();
     const [showClear, setShowClear] = useState<boolean>(false);
-    const [disabled, setDisabled] = useAutoUpdateState<FormTextFieldProps['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateState<FormTextFieldProps['disabled']>(
+      initDisabled == null ? formDisabled : initDisabled
+    );
     const [hidden, setHidden] = useAutoUpdateState<FormTextFieldProps['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<FormTextFieldProps['data']>(initData);
 

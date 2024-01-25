@@ -37,6 +37,7 @@ const Form = React.forwardRef<FormCommands, Props>(
       labelShrink: initLabelShrink,
       fullWidth: initFullWidth,
       fullHeight,
+      disabled,
       //----------------------------------------------------------------------------------------------------------------
       onSubmit,
       onInvalid,
@@ -483,9 +484,11 @@ const Form = React.forwardRef<FormCommands, Props>(
       (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        submit();
+        if (!disabled) {
+          submit();
+        }
       },
-      [submit]
+      [disabled, submit]
     );
 
     // Render ----------------------------------------------------------------------------------------------------------
@@ -516,6 +519,7 @@ const Form = React.forwardRef<FormCommands, Props>(
           labelShrink,
           fullWidth,
           fullHeight,
+          disabled,
           onAddValueItem(id, item) {
             valueItems[id] = item;
             if (formAddValueItem) formAddValueItem(id, item);

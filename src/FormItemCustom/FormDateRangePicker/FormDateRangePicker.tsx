@@ -103,6 +103,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       focused: formFocused,
       labelShrink: formLabelShrink,
       fullWidth: formFullWidth,
+      disabled: formDisabled,
       formColWithHelperText,
       onAddValueItem,
       onRemoveValueItem,
@@ -139,7 +140,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
     // State -----------------------------------------------------------------------------------------------------------
 
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
+      initDisabled == null ? formDisabled : initDisabled
+    );
     const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();

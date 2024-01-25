@@ -94,6 +94,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
       focused: formFocused,
       labelShrink: formLabelShrink,
       fullWidth: formFullWidth,
+      disabled: formDisabled,
       onAddValueItem,
       onRemoveValueItem,
       onValueChange,
@@ -125,7 +126,9 @@ const FormAutocomplete = ToForwardRefExoticComponent(
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
 
     const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
+      initDisabled == null ? formDisabled : initDisabled
+    );
     const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [inputValue, setInputValue] = useState<string | undefined>(undefined);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);

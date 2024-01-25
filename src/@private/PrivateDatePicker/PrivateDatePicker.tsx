@@ -110,6 +110,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       focused: formFocused,
       labelShrink: formLabelShrink,
       fullWidth: formFullWidth,
+      disabled: formDisabled,
       formColWithHelperText,
       onAddValueItem,
       onRemoveValueItem,
@@ -142,7 +143,9 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [timeError, setTimeError] = useState<DateValidationError>(null);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
+      initDisabled == null ? formDisabled : initDisabled
+    );
     const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 

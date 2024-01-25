@@ -500,7 +500,7 @@ function AutoTypeForwardRef(render) {
     // FormState -------------------------------------------------------------------------------------------------------
     var className = _a.className, children = _a.children, initStyle = _a.style, sx = _a.sx, 
     //--------------------------------------------------------------------------------------------------------------------
-    initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFormColGap = _a.formColGap, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, fullHeight = _a.fullHeight, 
+    initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFormColGap = _a.formColGap, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, fullHeight = _a.fullHeight, disabled = _a.disabled, 
     //----------------------------------------------------------------------------------------------------------------
     onSubmit = _a.onSubmit, onInvalid = _a.onInvalid, onValueChange = _a.onValueChange, onValueChangeByUser = _a.onValueChangeByUser;
     var _b = useFormState(), formId = _b.id, formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFormColGap = _b.formColGap, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formAddValueItem = _b.onAddValueItem, formRemoveValueItem = _b.onRemoveValueItem, formValueChange = _b.onValueChange, formValueChangeByUser = _b.onValueChangeByUser, otherFormState = __rest$4(_b, ["id", "variant", "size", "color", "spacing", "formColGap", "focused", "labelShrink", "fullWidth", "onAddValueItem", "onRemoveValueItem", "onValueChange", "onValueChangeByUser"]);
@@ -904,8 +904,10 @@ function AutoTypeForwardRef(render) {
     // Event Handler ---------------------------------------------------------------------------------------------------
     var handleSubmit = useCallback(function (e) {
         e.preventDefault();
-        submit();
-    }, [submit]);
+        if (!disabled) {
+            submit();
+        }
+    }, [disabled, submit]);
     // Render ----------------------------------------------------------------------------------------------------------
     var style = useMemo(function () {
         return fullHeight ? __assign$7(__assign$7({}, initStyle), { flex: 1, height: '100%' }) : initStyle;
@@ -915,7 +917,7 @@ function AutoTypeForwardRef(render) {
         flexDirection: 'column',
         height: fullHeight ? '100%' : undefined,
     }); }, [fullHeight]);
-    return (React__default.createElement(FormContextProvider, { value: __assign$7({ id: formId || 'form', variant: variant, size: size, color: color, spacing: spacing, formColGap: formColGap, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, fullHeight: fullHeight, onAddValueItem: function (id, item) {
+    return (React__default.createElement(FormContextProvider, { value: __assign$7({ id: formId || 'form', variant: variant, size: size, color: color, spacing: spacing, formColGap: formColGap, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, fullHeight: fullHeight, disabled: disabled, onAddValueItem: function (id, item) {
                 valueItems[id] = item;
                 if (formAddValueItem)
                     formAddValueItem(id, item);
@@ -2315,7 +2317,7 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
     // Ref -------------------------------------------------------------------------------------------------------------
     var inputRef = useRef(null);
     // FormState -------------------------------------------------------------------------------------------------------
-    var _c = useFormState(), formVariant = _c.variant, formSize = _c.size, formColor = _c.color, formFocused = _c.focused, formLabelShrink = _c.labelShrink, formFullWidth = _c.fullWidth, formColWithHelperText = _c.formColWithHelperText, onAddValueItem = _c.onAddValueItem, onRemoveValueItem = _c.onRemoveValueItem, onValueChange = _c.onValueChange, onValueChangeByUser = _c.onValueChangeByUser, onRequestSearchSubmit = _c.onRequestSearchSubmit;
+    var _c = useFormState(), formVariant = _c.variant, formSize = _c.size, formColor = _c.color, formFocused = _c.focused, formLabelShrink = _c.labelShrink, formFullWidth = _c.fullWidth, formDisabled = _c.disabled, formColWithHelperText = _c.formColWithHelperText, onAddValueItem = _c.onAddValueItem, onRemoveValueItem = _c.onRemoveValueItem, onValueChange = _c.onValueChange, onValueChangeByUser = _c.onValueChangeByUser, onRequestSearchSubmit = _c.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -2327,7 +2329,7 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
     var _f = useState(false), showClear = _f[0], setShowClear = _f[1];
-    var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
+    var _g = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _g[0], setDisabled = _g[1];
     var _h = useAutoUpdateState$1(initHidden), hidden = _h[0], setHidden = _h[1];
     var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
     // Memo - muiInputLabelProps ---------------------------------------------------------------------------------------
@@ -4663,7 +4665,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
     // Use ---------------------------------------------------------------------------------------------------------------
     var theme = useTheme();
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -4685,7 +4687,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
     var _e = useAutoUpdateState$1(initUncheckedValue), uncheckedValue = _e[0], setUncheckedValue = _e[1];
     var _f = useAutoUpdateState$1(initError), error = _f[0], setError = _f[1];
     var _g = useState(), errorHelperText = _g[0], setErrorHelperText = _g[1];
-    var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
+    var _h = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _h[0], setDisabled = _h[1];
     var _j = useAutoUpdateState$1(initHidden), hidden = _j[0], setHidden = _j[1];
     var _k = useAutoUpdateState$1(initData), data = _k[0], setData = _k[1];
     // State - checked -------------------------------------------------------------------------------------------------
@@ -4862,7 +4864,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
     // ID --------------------------------------------------------------------------------------------------------------
     var id = useId();
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -4879,7 +4881,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
     var _d = useAutoUpdateState$1(initItems), items = _d[0], setItems = _d[1];
     var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
-    var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
+    var _g = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _g[0], setDisabled = _g[1];
     var _h = useAutoUpdateState$1(initHidden), hidden = _h[0], setHidden = _h[1];
     var _j = useState(false), isOnGetItemLoading = _j[0], setIsOnGetItemLoading = _j[1];
     var _k = useAutoUpdateState$1(initLoading), loading = _k[0], setLoading = _k[1];
@@ -5190,7 +5192,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
     var refForButtonResizeHeightDetect = useRef(null);
     var refForLoadingResizeHeightDetect = useRef(null);
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, formColWidth = _b.formColWidth, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWidth = _b.formColWidth, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -5234,7 +5236,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
     var _h = useAutoUpdateState$1(initError), error = _h[0], setError = _h[1];
     var _j = useState(), errorHelperText = _j[0], setErrorHelperText = _j[1];
     var _k = useAutoUpdateState$1(initLoading), loading = _k[0], setLoading = _k[1];
-    var _l = useAutoUpdateState$1(initDisabled), disabled = _l[0], setDisabled = _l[1];
+    var _l = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _l[0], setDisabled = _l[1];
     var _m = useAutoUpdateState$1(initHidden), hidden = _m[0], setHidden = _m[1];
     var _o = useAutoUpdateState$1(initData), data = _o[0], setData = _o[1];
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -5618,7 +5620,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = useId();
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -5631,7 +5633,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     // State -----------------------------------------------------------------------------------------------------------
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
-    var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
+    var _f = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _f[0], setDisabled = _f[1];
     var _g = useAutoUpdateState$1(initHidden), hidden = _g[0], setHidden = _g[1];
     var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
     // State - width, height -------------------------------------------------------------------------------------------
@@ -7646,7 +7648,7 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
     className = _a.className;
     var id = useId();
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onRemoveValueItem = _b.onRemoveValueItem, onValueChangeByUser = _b.onValueChangeByUser;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onRemoveValueItem = _b.onRemoveValueItem, onValueChangeByUser = _b.onValueChangeByUser;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -7669,7 +7671,7 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
     var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useState(false), initialized = _g[0], setInitialized = _g[1];
-    var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
+    var _h = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _h[0], setDisabled = _h[1];
     var _j = useAutoUpdateState$1(initHidden), hidden = _j[0], setHidden = _j[1];
     var _k = useAutoUpdateState$1(initData), data = _k[0], setData = _k[1];
     // Function - focus ------------------------------------------------------------------------------------------------
@@ -7864,7 +7866,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     var asyncTimerRef = useRef(null);
     var oldComponentValueRef = useRef(null);
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -7878,7 +7880,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useAutoUpdateState$1(initLoading), loading = _g[0], setLoading = _g[1];
-    var _h = useAutoUpdateState$1(initDisabled), disabled = _h[0], setDisabled = _h[1];
+    var _h = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _h[0], setDisabled = _h[1];
     var _j = useAutoUpdateState$1(initHidden), hidden = _j[0], setHidden = _j[1];
     var _k = useState(undefined), inputValue = _k[0], setInputValue = _k[1];
     var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
@@ -10562,7 +10564,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
     var datePickerErrorRef = useRef(null);
     var openValueRef = useRef(null);
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -10576,7 +10578,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = useState(null), timeError = _e[0], setTimeError = _e[1];
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
-    var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
+    var _g = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _g[0], setDisabled = _g[1];
     var _h = useAutoUpdateState$1(initHidden), hidden = _h[0], setHidden = _h[1];
     var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -11274,7 +11276,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
     var datePickerErrorRef = useRef(null);
     var openValueRef = useRef(null);
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -11288,7 +11290,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = useState(null), timeError = _e[0], setTimeError = _e[1];
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
-    var _g = useAutoUpdateState$1(initDisabled), disabled = _g[0], setDisabled = _g[1];
+    var _g = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _g[0], setDisabled = _g[1];
     var _h = useAutoUpdateState$1(initHidden), hidden = _h[0], setHidden = _h[1];
     var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
     // Memo --------------------------------------------------------------------------------------------------------------
@@ -13196,7 +13198,7 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
     className = _a.className;
     var id = useId();
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -13214,7 +13216,7 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
     var endInputDatePickerErrorRef = useRef(null);
     var openValueRef = useRef();
     // State -----------------------------------------------------------------------------------------------------------
-    var _c = useAutoUpdateState$1(initDisabled), disabled = _c[0], setDisabled = _c[1];
+    var _c = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _c[0], setDisabled = _c[1];
     var _d = useAutoUpdateState$1(initHidden), hidden = _d[0], setHidden = _d[1];
     var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
@@ -13812,7 +13814,7 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     className = _a.className;
     var id = useId();
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onRemoveValueItem = _b.onRemoveValueItem, onValueChangeByUser = _b.onValueChangeByUser;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onRemoveValueItem = _b.onRemoveValueItem, onValueChangeByUser = _b.onValueChangeByUser;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -13837,7 +13839,7 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     // State -----------------------------------------------------------------------------------------------------------
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
-    var _f = useAutoUpdateState$1(initDisabled), disabled = _f[0], setDisabled = _f[1];
+    var _f = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _f[0], setDisabled = _f[1];
     var _g = useAutoUpdateState$1(initHidden), hidden = _g[0], setHidden = _g[1];
     var _h = useState(false), isOpenLinkDialog = _h[0], setIsOpenLinkDialog = _h[1];
     var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
@@ -14259,7 +14261,7 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = useId();
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -14277,7 +14279,7 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
     // State -----------------------------------------------------------------------------------------------------------
     var _c = useAutoUpdateState$1(initError), error = _c[0], setError = _c[1];
     var _d = useState(), errorHelperText = _d[0], setErrorHelperText = _d[1];
-    var _e = useAutoUpdateState$1(initDisabled), disabled = _e[0], setDisabled = _e[1];
+    var _e = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _e[0], setDisabled = _e[1];
     var _f = useAutoUpdateState$1(initHidden), hidden = _f[0], setHidden = _f[1];
     var _g = useAutoUpdateState$1(initData), data = _g[0], setData = _g[1];
     var _h = useState(false), open = _h[0], setOpen = _h[1];
@@ -14619,7 +14621,7 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = useId();
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -14640,7 +14642,7 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
     var _f = useState(), fromErrorHelperText = _f[0], setFromErrorHelperText = _f[1];
     var _g = useState(false), toError = _g[0], setToError = _g[1];
     var _h = useState(), toErrorHelperText = _h[0], setToErrorHelperText = _h[1];
-    var _j = useAutoUpdateState$1(initDisabled), disabled = _j[0], setDisabled = _j[1];
+    var _j = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _j[0], setDisabled = _j[1];
     var _k = useAutoUpdateState$1(initHidden), hidden = _k[0], setHidden = _k[1];
     var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
     var _m = useState(false), open = _m[0], setOpen = _m[1];
@@ -15096,7 +15098,7 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = useId();
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -15114,7 +15116,7 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
     // State -----------------------------------------------------------------------------------------------------------
     var _c = useAutoUpdateState$1(initError), error = _c[0], setError = _c[1];
     var _d = useState(), errorHelperText = _d[0], setErrorHelperText = _d[1];
-    var _e = useAutoUpdateState$1(initDisabled), disabled = _e[0], setDisabled = _e[1];
+    var _e = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _e[0], setDisabled = _e[1];
     var _f = useAutoUpdateState$1(initHidden), hidden = _f[0], setHidden = _f[1];
     var _g = useAutoUpdateState$1(initData), data = _g[0], setData = _g[1];
     var _h = useState(false), open = _h[0], setOpen = _h[1];
@@ -15396,7 +15398,7 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = useId();
     // FormState -------------------------------------------------------------------------------------------------------
-    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     // Memo - FormState ------------------------------------------------------------------------------------------------
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
@@ -15417,7 +15419,7 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
     var _f = useState(), fromErrorHelperText = _f[0], setFromErrorHelperText = _f[1];
     var _g = useState(false), toError = _g[0], setToError = _g[1];
     var _h = useState(), toErrorHelperText = _h[0], setToErrorHelperText = _h[1];
-    var _j = useAutoUpdateState$1(initDisabled), disabled = _j[0], setDisabled = _j[1];
+    var _j = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _j[0], setDisabled = _j[1];
     var _k = useAutoUpdateState$1(initHidden), hidden = _k[0], setHidden = _k[1];
     var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
     var _m = useState(false), open = _m[0], setOpen = _m[1];

@@ -61,6 +61,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       size: formSize,
       color: formColor,
       focused: formFocused,
+      disabled: formDisabled,
       onAddValueItem,
       onRemoveValueItem,
       onValueChange,
@@ -87,7 +88,9 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
+      initDisabled == null ? formDisabled : initDisabled
+    );
     const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 

@@ -8,6 +8,7 @@ export interface FormContextValue<T = any, AllowUndefinedValue extends boolean =
   > {
   id: string;
   fullHeight?: boolean;
+  disabled?: boolean;
   onAddValueItem(id: string, commands: FormValueItemCommands<T, AllowUndefinedValue>): void;
   onRemoveValueItem(id: string): void;
   onValueChange(name: string, value: T): void;

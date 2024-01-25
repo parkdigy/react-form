@@ -24,6 +24,7 @@ export interface FormProps
   fullWidth?: boolean;
   fullHeight?: boolean;
   formColGap?: number;
+  disabled?: boolean;
   //--------------------------------------------------------------------------------------------------------------------
   onSubmit?(data: FormValueMap): void;
   onInvalid?(invalidItems: FormInvalidItems): void;

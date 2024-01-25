@@ -65,6 +65,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       color: formColor,
       focused: formFocused,
       fullWidth: formFullWidth,
+      disabled: formDisabled,
       onAddValueItem,
       onRemoveValueItem,
       onValueChange,
@@ -103,7 +104,9 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
     const [uncheckedValue, setUncheckedValue] = useAutoUpdateState<Props['uncheckedValue']>(initUncheckedValue);
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
+      initDisabled == null ? formDisabled : initDisabled
+    );
     const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 

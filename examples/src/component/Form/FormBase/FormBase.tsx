@@ -49,6 +49,8 @@ const FormBase = () => {
   const [focused, setFocused] = useState<FormProps['focused']>(false);
   const [labelShrink, setLabelShrink] = useState<FormProps['labelShrink']>(false);
   const [fullWidth, setFullWidth] = useState<FormProps['fullWidth']>(true);
+  const [fullHeight, setFullHeight] = useState<FormProps['fullHeight']>(false);
+  const [disabled, setDisabled] = useState<FormProps['disabled']>(false);
   const [isFormBlock1Hidden, setIsFormBlock1Hidden] = useState(false);
   const [isFormBlock2Hidden, setIsFormBlock2Hidden] = useState(false);
   const [isFormBlock3Hidden, setIsFormBlock3Hidden] = useState(false);
@@ -144,6 +146,20 @@ const FormBase = () => {
                   onChange={setFullWidth}
                   fullWidth={false}
                 />
+                <FormCheckbox
+                  name='fullHeight'
+                  text='fullHeight'
+                  checked={fullHeight}
+                  onChange={setFullHeight}
+                  fullWidth={false}
+                />
+                <FormCheckbox
+                  name='disabled'
+                  text='disabled'
+                  checked={disabled}
+                  onChange={setDisabled}
+                  fullWidth={false}
+                />
               </FormCol>
             </FormRow>
           </FormBody>
@@ -188,6 +204,8 @@ const FormBase = () => {
         focused={focused}
         labelShrink={labelShrink}
         fullWidth={fullWidth}
+        fullHeight={fullHeight}
+        disabled={disabled}
         style={{ marginTop: 20 }}
         onSubmit={handleSubmit}
       >

@@ -72,6 +72,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       focused: formFocused,
       labelShrink: formLabelShrink,
       fullWidth: formFullWidth,
+      disabled: formDisabled,
       onAddValueItem,
       onValueChange,
       onRemoveValueItem,
@@ -114,7 +115,9 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
+      initDisabled == null ? formDisabled : initDisabled
+    );
     const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [isOpenLinkDialog, setIsOpenLinkDialog] = useState(false);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);

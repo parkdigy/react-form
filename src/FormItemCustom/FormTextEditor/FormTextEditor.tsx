@@ -70,6 +70,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       size: formSize,
       color: formColor,
       focused: formFocused,
+      disabled: formDisabled,
       onAddValueItem,
       onValueChange,
       onRemoveValueItem,
@@ -106,7 +107,9 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [initialized, setInitialized] = useState(false);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
+      initDisabled == null ? formDisabled : initDisabled
+    );
     const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 

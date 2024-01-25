@@ -91,6 +91,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       focused: formFocused,
       labelShrink: formLabelShrink,
       fullWidth: formFullWidth,
+      disabled: formDisabled,
       formColWithHelperText,
       onAddValueItem,
       onRemoveValueItem,
@@ -130,7 +131,9 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
     const [fromErrorHelperText, setFromErrorHelperText] = useState<Props['helperText']>();
     const [toError, setToError] = useState(false);
     const [toErrorHelperText, setToErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
+      initDisabled == null ? formDisabled : initDisabled
+    );
     const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
     const [open, setOpen] = useState(false);

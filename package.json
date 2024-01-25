@@ -1,7 +1,7 @@
 {
   "name": "@pdg/react-form",
   "title": "React Form",
-  "version": "1.0.79",
+  "version": "1.0.80",
   "description": "React Form",
   "type": "module",
   "types": "dist/index.d.ts",

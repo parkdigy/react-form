@@ -81,6 +81,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       color: formColor,
       focused: formFocused,
       fullWidth: formFullWidth,
+      disabled: formDisabled,
       formColWidth,
       onAddValueItem,
       onRemoveValueItem,
@@ -146,7 +147,9 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
     const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(initDisabled);
+    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
+      initDisabled == null ? formDisabled : initDisabled
+    );
     const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
