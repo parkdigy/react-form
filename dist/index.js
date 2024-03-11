@@ -4712,13 +4712,13 @@ function autoDash$1(companyNo) {
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
-    var className = _a.className, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest$4(_a, ["className", "onValue", "onValidate"]);
+    var className = _a.className, skipPersonalNumberValidateCheck = _a.skipPersonalNumberValidateCheck, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest$4(_a, ["className", "skipPersonalNumberValidateCheck", "onValue", "onValidate"]);
     var handleValue = React.useCallback(function (value) {
         var newValue = autoDash(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     var handleValidate = React.useCallback(function (value) {
-        if (notEmpty(value)) {
+        if (notEmpty(value) && !skipPersonalNumberValidateCheck) {
             if (value.length === 14 && value.includes('-')) {
                 var jumin = value
                     .replace(/-/g, '')
@@ -4750,7 +4750,7 @@ function autoDash$1(companyNo) {
         else {
             return onValidate ? onValidate(value) : true;
         }
-    }, [onValidate]);
+    }, [onValidate, skipPersonalNumberValidateCheck]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/

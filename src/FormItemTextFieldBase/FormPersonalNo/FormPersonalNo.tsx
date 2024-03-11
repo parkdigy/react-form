@@ -10,7 +10,7 @@ import {
 } from './FormPersonalNo.types';
 
 const FormPersonalNo = React.forwardRef<FormPersonalNoCommands, Props>(
-  ({ className, onValue, onValidate, ...props }, ref) => {
+  ({ className, skipPersonalNumberValidateCheck, onValue, onValidate, ...props }, ref) => {
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -25,7 +25,7 @@ const FormPersonalNo = React.forwardRef<FormPersonalNoCommands, Props>(
 
     const handleValidate = useCallback(
       (value: FormPersonalNoValue) => {
-        if (notEmpty(value)) {
+        if (notEmpty(value) && !skipPersonalNumberValidateCheck) {
           if (value.length === 14 && value.includes('-')) {
             const jumin: number[] = value
               .replace(/-/g, '')
@@ -62,7 +62,7 @@ const FormPersonalNo = React.forwardRef<FormPersonalNoCommands, Props>(
           return onValidate ? onValidate(value) : true;
         }
       },
-      [onValidate]
+      [onValidate, skipPersonalNumberValidateCheck]
     );
 
     /********************************************************************************************************************
