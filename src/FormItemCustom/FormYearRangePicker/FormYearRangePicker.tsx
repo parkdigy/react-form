@@ -74,11 +74,15 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
     },
     ref
   ) => {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
 
     const id = useId();
 
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
 
     const {
       variant: formVariant,
@@ -96,7 +100,9 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       onRequestSearchSubmit,
     } = useFormState();
 
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
 
     const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
     const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
@@ -111,7 +117,9 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       [initFullWidth, formFullWidth]
     );
 
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
 
     const startInputRef = useRef<HTMLInputElement>();
     const endInputRef = useRef<HTMLInputElement>();
@@ -119,7 +127,9 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
     const endInputDatePickerErrorRef = useRef<DateValidationError>(null);
     const openValueRef = useRef<FormYearRangePickerValue>();
 
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
@@ -135,13 +145,17 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
     const [open, setOpen] = useState(false);
     const [selectType, setSelectType] = useState<PrivateYearRangePickerSelectType>('start');
 
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
 
     const getFinalValue = useCallback((value: FormYearRangePickerValue | undefined): FormYearRangePickerValue => {
       return value || DEFAULT_VALUE;
     }, []);
 
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
 
     const [value, setValue] = useAutoUpdateState<FormYearRangePickerValue>(
       useCallback(() => {
@@ -155,12 +169,16 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       onValueChange(name, value);
     }, [value]);
 
-    // Function ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
 
     const valueToDate = useCallback((v: FormYearRangePickerBaseValue) => dayjs(`${v}-01-01`), []);
     const dateToValue = useCallback((v: Dayjs) => v.year(), []);
 
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
 
     const nowYear = useMemo(() => new Date().getFullYear(), []);
 
@@ -184,11 +202,15 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
     const minDate = useMemo(() => (minYear ? valueToDate(minYear) : undefined), [minYear, valueToDate]);
     const maxDate = useMemo(() => (maxYear ? valueToDate(maxYear) : undefined), [maxYear, valueToDate]);
 
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
 
     const format = useMemo(() => initFormat || DEFAULT_FORMAT, [initFormat]);
 
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
 
     useEffect(() => {
       if (value !== initValue) {
@@ -217,7 +239,9 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       }
     }, [open]);
 
-    // Function --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
 
     const focus = useCallback(function () {
       startInputRef.current?.focus();
@@ -283,7 +307,9 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       [onValidate, required, setToErrorErrorHelperText, setErrorErrorHelperText, setFromErrorErrorHelperText]
     );
 
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
 
     useLayoutEffect(() => {
       let lastValue = value;
@@ -391,7 +417,9 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       setHidden,
     ]);
 
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
 
     const handleContainerChange = useCallback(
       (newValue: FormYearRangePickerValue, selectType: PrivateYearRangePickerSelectType) => {
@@ -475,7 +503,9 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       [disableFuture, disablePast, nowYear]
     );
 
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
 
     const inputDatePickerProps = useMemo(
       () => ({
@@ -506,7 +536,9 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       [hidden, fullWidth]
     );
 
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
 
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs}>

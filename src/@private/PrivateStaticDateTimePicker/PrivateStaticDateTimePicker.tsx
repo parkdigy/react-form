@@ -54,13 +54,17 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
     },
     ref
   ) => {
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
 
     const hourSelectRef = useRef<PrivateTimeSelectCommands>(null);
     const minuteSelectRef = useRef<PrivateTimeSelectCommands>(null);
     const secondSelectRef = useRef<PrivateTimeSelectCommands>(null);
 
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
 
     const [month, setMonth] = useState<Dayjs>(() => {
       if (value) return value;
@@ -71,7 +75,9 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
     const [yearSelectOpen, setYearSelectOpen] = useState(false);
     const [monthSelectOpen, setMonthSelectOpen] = useState(false);
 
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
 
     const hours = useMemo(() => initHours || DEFAULT_HOURS, [initHours]);
     const minutes = useMemo(() => initMinutes || DEFAULT_MINUTES, [initMinutes]);
@@ -126,7 +132,9 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
       return newDisableSeconds;
     }, [time, value, availableDate, seconds]);
 
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
 
     useEffect(() => {
       if (!yearSelectOpen) {
@@ -155,7 +163,9 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
       return ArrowButton;
     });
 
-    // Function --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
 
     const previousMonth = useCallback(() => {
       if (leftArrowOnClickRef.current) {
@@ -175,7 +185,9 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
       if (!times || times?.includes('second')) secondSelectRef.current?.scrollToValue(date.second());
     }, []);
 
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
 
     const handleYearSelect = useCallback(
       (year: number) => {
@@ -203,7 +215,9 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
       [value]
     );
 
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
 
     useLayoutEffect(() => {
       if (ref) {
@@ -227,7 +241,9 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
       }
     }, [ref, timeSelectScrollToDate]);
 
-    // Render - Function -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render - Function
+     * ******************************************************************************************************************/
 
     const getActionButton = useCallback(
       (date: Dayjs, label: string) => {
@@ -259,7 +275,9 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
       [type, time, onChange, availableDate]
     );
 
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
 
     return (
       <Grid container className={classNames('PrivateStaticDateTimePicker', type)}>

@@ -90,11 +90,15 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     },
     ref
   ) => {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
 
     const id = useId();
 
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
 
     const {
       variant: formVariant,
@@ -112,7 +116,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       onRequestSearchSubmit,
     } = useFormState();
 
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
 
     const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
     const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
@@ -127,7 +133,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       [initFullWidth, formFullWidth]
     );
 
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
 
     const containerRef = useRef<FormDateRangePickerTooltipPickerContainerCommands>(null);
     const startDateTextFieldRef = useRef<HTMLInputElement>();
@@ -138,7 +146,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     const endInputDatePickerErrorRef = useRef<DateValidationError>(null);
     const openValueRef = useRef<FormDateRangePickerValue>();
 
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
 
     const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
       initDisabled == null ? formDisabled : initDisabled
@@ -152,17 +162,23 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     const [toErrorHelperText, setToErrorHelperText] = useState<Props['helperText']>();
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
 
     const format = useMemo(() => initFormat || DEFAULT_FORMAT, [initFormat]);
 
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
 
     const getFinalValue = useCallback((value: FormDateRangePickerValue | undefined): FormDateRangePickerValue => {
       return value || DEFAULT_VALUE;
     }, []);
 
-    // Function - focus ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
 
     const focus = useCallback(() => {
       startDateTextFieldRef.current?.focus();
@@ -176,7 +192,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       }
     }, [toError, startDateTextFieldRef, endDateTextFieldRef]);
 
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
 
     const setErrorErrorHelperText = useCallback(
       (error: boolean, errorHelperText: ReactNode) => {
@@ -196,7 +214,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       setToErrorHelperText(toErrorHelperText);
     }, []);
 
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
 
     const validate = useCallback(
       (value: FormDateRangePickerValue) => {
@@ -274,7 +294,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       ]
     );
 
-    // Function activeMonth --------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - activeMonth
+     * ******************************************************************************************************************/
 
     const activeMonth = useCallback(
       (month: Dayjs) => {
@@ -284,7 +306,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       [containerRef]
     );
 
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
 
     const [open, setOpen] = useState(false);
     const [selectType, setSelectType] = useState<FormDateRangePickerTooltipPickerSelectType>('start');
@@ -300,7 +324,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       return [now, now.add(1, 'month'), now.add(2, 'month')];
     });
 
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
 
     const inputDatePickerProps = useMemo(
       () => ({
@@ -338,7 +364,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       [inputWidth, fullWidth]
     );
 
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
 
     useEffect(() => {
       if (value !== initValue) {
@@ -389,7 +417,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       }
     }, [open]);
 
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
 
     const wrapStyle = useMemo(
       () => ({
@@ -399,7 +429,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       [hidden, fullWidth]
     );
 
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
 
     const handleChange = useCallback(
       (newValue: FormDateRangePickerTooltipPickerValue) => {
@@ -519,7 +551,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       [handleValueChange]
     );
 
-    // Event Handler - Container ---------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler - Container
+     * ******************************************************************************************************************/
 
     const handleContainerFocus = useCallback(() => {
       if (closeTimeoutRef.current) {
@@ -584,7 +618,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       [value, calendarCount, activeMonth, readOnly, disabled]
     );
 
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
 
     useLayoutEffect(() => {
       if (ref || onAddValueItem) {
@@ -699,7 +735,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       setHidden,
     ]);
 
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
 
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs}>

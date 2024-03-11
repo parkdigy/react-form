@@ -22,7 +22,7 @@ export interface FormValueMap {
 }
 export type FormValueItemData = Record<string, any>;
 export interface FormValueItemBaseCommands<T, AllowUndefinedValue extends boolean, V = AllowUndefinedValue extends true ? T | undefined : T> {
-    getType(): 'default' | 'FormCheckbox' | 'FormToggleButtonGroup' | 'FormRadioGroup' | 'FormRating' | 'FormTextEditor' | 'FormAutocomplete' | 'FormDatePicker' | 'FormDateTimePicker' | 'FormTimePicker' | 'FormDateRangePicker' | 'FormMonthPicker' | 'FormMonthRangePicker' | 'FormYearPicker' | 'FormYearRangePicker' | 'FormFile';
+    getType(): 'default' | 'FormCheckbox' | 'FormToggleButtonGroup' | 'FormRadioGroup' | 'FormRating' | 'FormTextEditor' | 'FormAutocomplete' | 'FormDatePicker' | 'FormDateTimePicker' | 'FormTimePicker' | 'FormDateRangePicker' | 'FormMonthPicker' | 'FormMonthRangePicker' | 'FormYearPicker' | 'FormYearRangePicker' | 'FormFile' | 'FormSwitch';
     getName(): string;
     getReset(): V;
     reset(): void;

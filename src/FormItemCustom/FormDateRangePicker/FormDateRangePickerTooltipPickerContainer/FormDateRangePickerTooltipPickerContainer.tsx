@@ -55,7 +55,9 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
   ) => {
     const theme = useTheme();
 
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
 
     const datePicker1Ref = useRef<FormDateRangePickerTooltipPickerCommands>(null);
     const datePicker2Ref = useRef<FormDateRangePickerTooltipPickerCommands>(null);
@@ -63,7 +65,9 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
     const yearSelectRef = useRef<HTMLDivElement>(null);
     const activeYearBtnRef = useRef<HTMLButtonElement>(null);
 
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
 
     const [focusedDate, setFocusedDate] = useState<FormDateRangePickerTooltipPickerDateValue>();
     const [yearMonthSelectIndex, setYearMonthSelectIndex] = useState<number>(0);
@@ -80,7 +84,9 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
       [minDate, maxDate, disablePast, disableFuture]
     );
 
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
 
     useEffect(() => {
       if (yearSelectOpen) {
@@ -97,7 +103,9 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
       }
     }, [yearSelectOpen]);
 
-    // Function --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
 
     const previousMonth = useCallback(() => {
       datePicker1Ref.current?.previousMonth();
@@ -117,7 +125,9 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
       datePicker3Ref.current?.activeMonth(month.add(2, 'month'));
     }, []);
 
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
 
     const handleFirstDatePickerMonthChange = useCallback(
       (date: Dayjs) => {
@@ -183,7 +193,9 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
       [activeMonth, months, yearMonthSelectIndex]
     );
 
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
 
     useLayoutEffect(() => {
       if (ref) {
@@ -209,7 +221,9 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
       }
     }, [ref, previousMonth, nextMonth, activeMonth]);
 
-    // Render Function -------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render Function
+     * ******************************************************************************************************************/
 
     const getMonthTitle = useCallback(
       (index: number): ReactNode => {
@@ -237,7 +251,9 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
       [yearSelectOpen, yearMonthSelectIndex, months, monthSelectOpen, handleYearSelectClick, handleMonthSelectClick]
     );
 
-    // Render - Function -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render - Function
+     * ******************************************************************************************************************/
 
     const getActionButton = useCallback(
       (startDate: Dayjs, endDate: Dayjs, label: string) => {
@@ -279,7 +295,9 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
       [onChange, availableDate]
     );
 
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
 
     const actionButtons = useMemo(() => {
       if (onGetActionButtons) {

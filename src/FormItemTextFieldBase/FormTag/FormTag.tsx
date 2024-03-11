@@ -41,7 +41,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     },
     ref
   ) => {
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
 
     const {
       fullWidth: formFullWidth,
@@ -53,13 +55,17 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       ...otherFormState
     } = useFormState();
 
-    // State - FormState -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - FormState
+     * ******************************************************************************************************************/
 
     const [fullWidth] = useAutoUpdateState<FormTagProps['fullWidth']>(
       initFullWidth == null ? formFullWidth : initFullWidth
     );
 
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
 
     const getFinalValue = useCallback(
       (value: FormTagValue | Set<string>): FormTagValue => {
@@ -78,7 +84,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       [onValue]
     );
 
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
 
     const [valueSet, setValueSet] = useState<Set<string>>(() => {
       return new Set<string>(getFinalValue(initValue || []));
@@ -100,7 +108,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       initDisabled == null ? formDisabled : initDisabled
     );
 
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
 
     useEffect(() => {
       if (!isSame(value, initValue)) {
@@ -110,7 +120,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
 
     const setErrorErrorHelperText = useCallback(
       function (error: boolean, errorHelperText: ReactNode) {
@@ -120,7 +132,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       [setError]
     );
 
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
 
     const validate = useCallback(
       (value: FormTagValue) => {
@@ -144,7 +158,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       [required, onValidate, setErrorErrorHelperText]
     );
 
-    // Function - getExtraCommands -------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getExtraCommands
+     * ******************************************************************************************************************/
 
     const getExtraCommands = useCallback((): FormTagExtraCommands => {
       return {
@@ -153,7 +169,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       };
     }, [formValueSort, formValueSeparator]);
 
-    // Function - getCommands ------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getCommands
+     * ******************************************************************************************************************/
 
     const getCommands = useCallback(
       (baseCommands: FormTextCommands) => {
@@ -182,7 +200,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       [value, getExtraCommands, getFinalValue, initValue, setValue, validate]
     );
 
-    // Function - appendTag, removeTag ---------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - appendTag, removeTag
+     * ******************************************************************************************************************/
 
     const appendTag = useCallback(
       (tag: string) => {
@@ -218,7 +238,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       [valueSet, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
 
     const handleAddValueItem = useCallback(
       (id: string, commands: FormTextCommands) => {
@@ -289,7 +311,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       [disabled, readOnly, removeTag]
     );
 
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
 
     return (
       <FormContextProvider

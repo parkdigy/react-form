@@ -12,7 +12,9 @@ const FormEmail = React.forwardRef<FormEmailCommands, FormEmailProps>(({ classNa
     [onValue]
   );
 
-  // Render ------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <FormText ref={ref} className={classNames(className, 'FormEmail')} type='email' onValue={handleValue} {...props} />

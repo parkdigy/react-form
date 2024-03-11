@@ -1,4 +1,4 @@
-import*as React from'react';import React__default,{createContext,useContext,useMemo,useRef,useState,useCallback,useLayoutEffect,useEffect,cloneElement,isValidElement,createRef,PureComponent,useId}from'react';import {Box,Icon as Icon$1,Button,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Paper,Menu}from'@mui/material';import dayjs from'dayjs';import {findDOMNode}from'react-dom';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import CircularProgress$1 from'@mui/material/CircularProgress';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import'dayjs/locale/ko';/******************************************************************************
+import*as React from'react';import React__default,{createContext,useContext,useMemo,useRef,useState,useCallback,useLayoutEffect,useEffect,cloneElement,isValidElement,createRef,PureComponent,useId}from'react';import {Box,Icon as Icon$1,Button,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import dayjs from'dayjs';import {findDOMNode}from'react-dom';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import CircularProgress$1 from'@mui/material/CircularProgress';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import'dayjs/locale/ko';/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -284,7 +284,9 @@ function getAvailableDateValFormat(type, time) {
             return 'YYYYMMDDHHmmss';
     }
 }
-// getAvailableDateType ------------------------------------------------------------------------------------------------
+/********************************************************************************************************************
+ * getAvailableDateType
+ * ******************************************************************************************************************/
 function getAvailableDateType(type, time) {
     switch (type) {
         case 'date':
@@ -308,7 +310,9 @@ function getAvailableDateType(type, time) {
             throw new Error("util::date_time::getAvailableDateType - '".concat(type, "' type \uC744 \uC0AC\uC6A9\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."));
     }
 }
-// makeAvailableDate ---------------------------------------------------------------------------------------------------
+/********************************************************************************************************************
+ * makeAvailableDate
+ * ******************************************************************************************************************/
 function makeAvailableDate(minDate, maxDate, disablePast, disableFuture) {
     var now = dayjs();
     var min = null;
@@ -397,7 +401,9 @@ function getAvailableDateVal(availableDate, type, time) {
         availableDate[1] ? availableDate[1][availableDateType] : null,
     ];
 }
-// getDateVal ----------------------------------------------------------------------------------------------------------
+/********************************************************************************************************************
+ * getDateVal
+ * ******************************************************************************************************************/
 function getDateValForAvailableDate(date, type, time) {
     var format = getAvailableDateValFormat(type, time);
     return Number(date.format(format));
@@ -497,14 +503,18 @@ function AutoTypeForwardRef(render) {
     var children = _a.children, value = _a.value;
     return React__default.createElement(FormContext.Provider, { value: value }, children);
 };var Form = React__default.forwardRef(function (_a, ref) {
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var className = _a.className, children = _a.children, initStyle = _a.style, sx = _a.sx, 
     //--------------------------------------------------------------------------------------------------------------------
     initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFormColGap = _a.formColGap, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, fullHeight = _a.fullHeight, disabled = _a.disabled, 
     //----------------------------------------------------------------------------------------------------------------
     onSubmit = _a.onSubmit, onInvalid = _a.onInvalid, onValueChange = _a.onValueChange, onValueChangeByUser = _a.onValueChangeByUser;
     var _b = useFormState(), formId = _b.id, formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFormColGap = _b.formColGap, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formAddValueItem = _b.onAddValueItem, formRemoveValueItem = _b.onRemoveValueItem, formValueChange = _b.onValueChange, formValueChangeByUser = _b.onValueChangeByUser, otherFormState = __rest$4(_b, ["id", "variant", "size", "color", "spacing", "formColGap", "focused", "labelShrink", "fullWidth", "onAddValueItem", "onRemoveValueItem", "onValueChange", "onValueChangeByUser"]);
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
@@ -513,11 +523,17 @@ function AutoTypeForwardRef(render) {
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var formRef = useRef(null);
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var valueItems = useState({})[0];
-    // Function - getItemFormValue -----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getItemFormValue
+     * ******************************************************************************************************************/
     var getItemFormValue = useCallback(function (commands, reset) {
         var type = commands.getType();
         var value;
@@ -586,7 +602,9 @@ function AutoTypeForwardRef(render) {
         }
         return value;
     }, []);
-    // Function - resetAll ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - resetAll
+     * ******************************************************************************************************************/
     var resetAll = useCallback(function () {
         Object.keys(valueItems).forEach(function (id) {
             var _a;
@@ -650,7 +668,9 @@ function AutoTypeForwardRef(render) {
         });
         return data;
     }, [valueItems, appendFormValueData]);
-    // Function - submit -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - submit
+     * ******************************************************************************************************************/
     var submit = useCallback(function () {
         var isAllValid = true;
         var firstInvalidItemId;
@@ -686,7 +706,9 @@ function AutoTypeForwardRef(render) {
             });
         }
     }, [valueItems, appendFormValueData, onSubmit, onInvalid]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         if (ref) {
             var findValueItem_1 = function (name) {
@@ -901,14 +923,18 @@ function AutoTypeForwardRef(render) {
             };
         }
     }, [ref, valueItems, submit, resetAll, getAllFormValue, getItemFormValue]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleSubmit = useCallback(function (e) {
         e.preventDefault();
         if (!disabled) {
             submit();
         }
     }, [disabled, submit]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     var style = useMemo(function () {
         return fullHeight ? __assign$7(__assign$7({}, initStyle), { flex: 1, height: '100%' }) : initStyle;
     }, [initStyle, fullHeight]);
@@ -951,14 +977,20 @@ Form.defaultProps = FormDefaultProps;var FormButtonDefaultProps = {
 });
 FormIcon.displayName = 'FormIcon';
 FormIcon.defaultProps = FormIconDefaultProps;var FormButton = React__default.forwardRef(function (_a, ref) {
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var initSize = _a.size, initColor = _a.color, initVariant = _a.variant, initFullWidth = _a.fullWidth, children = _a.children, className = _a.className, type = _a.type, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, onClick = _a.onClick, props = __rest$4(_a, ["size", "color", "variant", "fullWidth", "children", "className", "type", "icon", "startIcon", "endIcon", "onClick"]);
     var _b = useFormState(), formSize = _b.size, formColor = _b.color, formFullWidth = _b.fullWidth;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // Memo ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var variant = useMemo(function () {
         if (initVariant) {
             return initVariant;
@@ -972,7 +1004,9 @@ FormIcon.defaultProps = FormIconDefaultProps;var FormButton = React__default.for
             }
         }
     }, [initVariant, type]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(Button, __assign$7({ ref: ref, className: classNames$1(className, 'FormButton'), type: type, variant: variant, size: size, color: color, fullWidth: fullWidth, onClick: onClick, startIcon: startIcon ? React__default.createElement(FormIcon, { sx: { mr: -0.5 } }, startIcon) : undefined, endIcon: endIcon ? React__default.createElement(FormIcon, { sx: { ml: -0.5 } }, endIcon) : undefined }, props),
         icon && (React__default.createElement(FormIcon, { fontSize: size, color: 'inherit', sx: { mr: children ? 0.5 : undefined } }, icon)),
         children));
@@ -981,10 +1015,14 @@ FormButton.displayName = 'FormButton';
 FormButton.defaultProps = FormButtonDefaultProps;var FormLabelDefaultProps = {};var IconFormIcon = styled(FormIcon)(templateObject_1$g || (templateObject_1$g = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
 var ChildrenSpan = styled('span')(templateObject_2$8 || (templateObject_2$8 = __makeTemplateObject(["\n  vertical-align: middle;\n"], ["\n  vertical-align: middle;\n"])));
 var templateObject_1$g, templateObject_2$8;var FormLabel = React__default.forwardRef(function (_a, ref) {
-    // Use ---------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Use
+     * ******************************************************************************************************************/
     var children = _a.children, icon = _a.icon, size = _a.size, style = _a.style, error = _a.error, warning = _a.warning, props = __rest$4(_a, ["children", "icon", "size", "style", "error", "warning"]);
     var theme = useTheme();
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var finalProps = useMemo(function () {
         var newStyle = __assign$7({ height: 20, transform: size === 'small' ? 'translate(0, -1.5px) scale(0.7)' : undefined }, style);
         if (!error) {
@@ -992,7 +1030,9 @@ var templateObject_1$g, templateObject_2$8;var FormLabel = React__default.forwar
         }
         return __assign$7({ shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size, error: error, style: newStyle }, props);
     }, [size, style, warning, error, props, theme.palette.warning.main]);
-    // Render ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(InputLabel, __assign$7({ ref: ref }, finalProps), icon ? (React__default.createElement(React__default.Fragment, null,
         React__default.createElement(IconFormIcon, null, icon),
         React__default.createElement(ChildrenSpan, null, children))) : (children)));
@@ -1025,16 +1065,22 @@ var StyledWarningLineBox = styled(Box)(function (_a) {
 });
 var templateObject_1$f;var DEFAULT_LINE_STYLE = { flex: 1, position: 'relative' };
 var FormDivider = React__default.forwardRef(function (_a, ref) {
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var initSize = _a.size, 
     //----------------------------------------------------------------------------------------------------------------
     icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, hidden = _a.hidden, collapse = _a.collapse, collapseIn = _a.collapseIn, error = _a.error, warning = _a.warning, onCollapseChange = _a.onCollapseChange, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var formSize = useFormState().size;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var style = useMemo(function () {
         if (hidden) {
             return __assign$7(__assign$7({}, initStyle), { display: 'none' });
@@ -1051,13 +1097,17 @@ var FormDivider = React__default.forwardRef(function (_a, ref) {
             return DEFAULT_LINE_STYLE;
         }
     }, [lineVerticalMargin]);
-    // Event Handler -----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleClick = useCallback(function () {
         if (collapse) {
             onCollapseChange && onCollapseChange(!collapseIn);
         }
     }, [collapse, collapseIn, onCollapseChange]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(Grid, { ref: ref, item: true, xs: 12, style: style, className: classNames$1(className, 'FormDivider'), sx: sx },
         React__default.createElement(Box, { sx: {
                 display: 'flex',
@@ -1142,7 +1192,9 @@ FormDivider.defaultProps = FormDividerDefaultProps;function useFirstSkipEffect$1
     return [_state.current, setState];
 }var StyledWrapGrid$1 = styled(Grid)(templateObject_1$e || (templateObject_1$e = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
 var templateObject_1$e;var FormBlock = React__default.forwardRef(function (_a, ref) {
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
     icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, error = _a.error, warning = _a.warning, 
@@ -1151,7 +1203,9 @@ var templateObject_1$e;var FormBlock = React__default.forwardRef(function (_a, r
     //----------------------------------------------------------------------------------------------------------------
     children = _a.children, className = _a.className, initStyle = _a.style, sx = _a.sx;
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, otherFormState = __rest$4(_b, ["variant", "size", "color", "spacing", "focused", "labelShrink", "fullWidth"]);
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
@@ -1159,9 +1213,13 @@ var templateObject_1$e;var FormBlock = React__default.forwardRef(function (_a, r
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // State -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _c = useAutoUpdateState$1(initCollapseIn), collapseIn = _c[0], setCollapseIn = _c[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var style = useMemo(function () {
         if (hidden) {
             return __assign$7(__assign$7({}, initStyle), { display: 'none' });
@@ -1170,18 +1228,24 @@ var templateObject_1$e;var FormBlock = React__default.forwardRef(function (_a, r
             return initStyle;
         }
     }, [hidden, initStyle]);
-    // Effect ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         setCollapseIn(initCollapseIn);
     }, [initCollapseIn, setCollapseIn]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var Container = useMemo(function () {
         return collapse ? Collapse : React__default.Fragment;
     }, [collapse]);
     var containerProps = useMemo(function () {
         return collapse ? { in: collapseIn } : undefined;
     }, [collapse, collapseIn]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormContext.Provider, { value: __assign$7({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth }, otherFormState) },
         React__default.createElement(Grid, { item: true, ref: ref, xs: 12, className: classNames$1(className, 'FormBlock'), style: style, sx: sx },
             React__default.createElement(Grid, { container: true, spacing: spacing },
@@ -1195,7 +1259,9 @@ var templateObject_1$e;var FormBlock = React__default.forwardRef(function (_a, r
 FormBlock.displayName = 'FormBlock';
 FormBlock.defaultProps = FormBlockDefaultProps;var FormRowDefaultProps = {};var StyledWrapGrid = styled(Grid)(templateObject_1$d || (templateObject_1$d = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
 var templateObject_1$d;var FormRow = React__default.forwardRef(function (_a, ref) {
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
     icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, 
@@ -1204,7 +1270,9 @@ var templateObject_1$d;var FormRow = React__default.forwardRef(function (_a, ref
     //----------------------------------------------------------------------------------------------------------------
     children = _a.children, className = _a.className, initStyle = _a.style, sx = _a.sx;
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, otherFormState = __rest$4(_b, ["variant", "size", "color", "spacing", "focused", "labelShrink", "fullWidth"]);
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
@@ -1212,10 +1280,14 @@ var templateObject_1$d;var FormRow = React__default.forwardRef(function (_a, ref
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var formCols = useState({})[0];
     var _c = useState(12), formColAutoXs = _c[0], setFormColAutoXs = _c[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var style = useMemo(function () {
         var style = __assign$7({ width: '100%' }, initStyle);
         if (hidden) {
@@ -1223,7 +1295,9 @@ var templateObject_1$d;var FormRow = React__default.forwardRef(function (_a, ref
         }
         return style;
     }, [hidden, initStyle]);
-    // Function - makeFormColXs ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - makeFormColXs
+     * ******************************************************************************************************************/
     var makeFormColXs = useCallback(function () {
         var formColKeys = Object.keys(formCols);
         var autoXs = 12;
@@ -1237,7 +1311,9 @@ var templateObject_1$d;var FormRow = React__default.forwardRef(function (_a, ref
         });
         setFormColAutoXs(autoXsCount === 0 ? autoXs : autoXs / autoXsCount);
     }, [formCols]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleAddFormCol = useCallback(function (id, xs) {
         formCols[id] = xs;
         makeFormColXs();
@@ -2156,18 +2232,26 @@ var isDOMElement = function (element) {
     }, [size]);
     return __assign$6({ ref: onRefChange }, size);
 }var FormColDefaultProps = {};var FormCol = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
     initGap = _a.gap, icon = _a.icon, label = _a.label, hidden = _a.hidden, error = _a.error, warning = _a.warning, helperText = _a.helperText, helperTextShift = _a.helperTextShift, 
     //----------------------------------------------------------------------------------------------------------------
     xs = _a.xs, className = _a.className, children = _a.children, initStyle = _a.style, sx = _a.sx;
     var id = useId();
-    // Ref ---------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var gridRef = useRef(null);
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFormColGap = _b.formColGap, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formColAutoXs = _b.formColAutoXs, onAddFormCol = _b.onAddFormCol, onRemoveFormCol = _b.onRemoveFormCol, otherFormState = __rest$4(_b, ["variant", "size", "color", "spacing", "formColGap", "focused", "labelShrink", "fullWidth", "formColAutoXs", "onAddFormCol", "onRemoveFormCol"]);
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
@@ -2175,15 +2259,21 @@ var isDOMElement = function (element) {
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var gap = useMemo(function () { return (initGap == null ? formFormColGap : initGap); }, [formFormColGap, initGap]);
-    // ResizeDetector --------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ResizeDetector
+     * ******************************************************************************************************************/
     var formColWidth = useResizeDetector({
         targetRef: gridRef,
         handleWidth: true,
         handleHeight: false,
     }).width;
-    // State - style ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - style
+     * ******************************************************************************************************************/
     var style = useAutoUpdateState$1(useCallback(function () {
         if (hidden) {
             return __assign$7(__assign$7({}, initStyle), { display: 'none' });
@@ -2192,7 +2282,9 @@ var isDOMElement = function (element) {
             return initStyle;
         }
     }, [initStyle, hidden]))[0];
-    // LayoutEffect ----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * LayoutEffect
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         if (onAddFormCol)
             onAddFormCol(id, xs);
@@ -2202,7 +2294,9 @@ var isDOMElement = function (element) {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [xs]);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (ref) {
             if (typeof ref === 'function') {
@@ -2214,7 +2308,9 @@ var isDOMElement = function (element) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormContextProvider, { value: __assign$7({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColXs: xs || formColAutoXs || 12, formColWidth: formColWidth, formColWithLabel: !!label, formColWithHelperText: !!helperText }, otherFormState) },
         React__default.createElement(Grid, { ref: gridRef, item: true, xs: xs || formColAutoXs || 12, className: classNames$1(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text'), style: style, sx: sx },
             React__default.createElement(Grid, { container: true, direction: 'column' },
@@ -2230,13 +2326,19 @@ FormCol.displayName = 'FormCol';
 FormCol.defaultProps = FormColDefaultProps;var FormBodyDefaultProps = {};var StyledContainerDiv = styled('div')(templateObject_1$c || (templateObject_1$c = __makeTemplateObject(["\n  flex: 1;\n  position: relative;\n"], ["\n  flex: 1;\n  position: relative;\n"])));
 var StyledContentDiv = styled('div')(templateObject_2$7 || (templateObject_2$7 = __makeTemplateObject(["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"], ["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"])));
 var templateObject_1$c, templateObject_2$7;var FormBody = function (_a) {
-    // Ref ---------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var children = _a.children, hidden = _a.hidden;
     var containerRef = useRef(null);
-    // State -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _b = useFormState(), spacing = _b.spacing, fullHeight = _b.fullHeight;
     var _c = useState(0), height = _c[0], setHeight = _c[1];
-    // -------------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ResizeDetector
+     * ******************************************************************************************************************/
     useResizeDetector({
         targetRef: containerRef,
         handleWidth: false,
@@ -2246,7 +2348,9 @@ var templateObject_1$c, templateObject_2$7;var FormBody = function (_a) {
             setHeight(((_b = (_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height) || 0);
         },
     });
-    // -------------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Style
+     * ******************************************************************************************************************/
     var style = useMemo(function () { return (hidden ? { display: 'none' } : undefined); }, [hidden]);
     var contentStyle = useMemo(function () {
         return fullHeight
@@ -2302,7 +2406,9 @@ FormFooter.defaultProps = FormFooterDefaultProps;var FormTextFieldDefaultProps =
   }
 }var css_248z$l = ".FormTextField {\n  min-width: 200px;\n}\n.FormTextField .clear-icon-button-wrap {\n  visibility: hidden;\n}\n.FormTextField.variant-filled .clear-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormTextField:hover .clear-icon-button-wrap.show,\n.FormTextField .MuiInputBase-root.Mui-focused .clear-icon-button-wrap.show {\n  visibility: visible;\n}";
 styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var _b;
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
@@ -2314,25 +2420,35 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
     //----------------------------------------------------------------------------------------------------------------
     props = __rest$4(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "required", "value", "data", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "disableReturnKey", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
     var id = useId();
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var inputRef = useRef(null);
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _c = useFormState(), formVariant = _c.variant, formSize = _c.size, formColor = _c.color, formFocused = _c.focused, formLabelShrink = _c.labelShrink, formFullWidth = _c.fullWidth, formDisabled = _c.disabled, formColWithHelperText = _c.formColWithHelperText, onAddValueItem = _c.onAddValueItem, onRemoveValueItem = _c.onRemoveValueItem, onValueChange = _c.onValueChange, onValueChangeByUser = _c.onValueChangeByUser, onRequestSearchSubmit = _c.onRequestSearchSubmit;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
     var _f = useState(false), showClear = _f[0], setShowClear = _f[1];
     var _g = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _g[0], setDisabled = _g[1];
     var _h = useAutoUpdateState$1(initHidden), hidden = _h[0], setHidden = _h[1];
     var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
-    // Memo - muiInputLabelProps ---------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - muiInputLabelProps
+     * ******************************************************************************************************************/
     var muiInputLabelProps = useMemo(function () {
         if (labelShrink || placeholder) {
             return __assign$7(__assign$7({}, initMuiInputLabelProps), { shrink: true });
@@ -2341,7 +2457,9 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
             return initMuiInputLabelProps;
         }
     }, [initMuiInputLabelProps, labelShrink, placeholder]);
-    // Memo - inputProps -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - inputProps
+     * ******************************************************************************************************************/
     var inputProps = useMemo(function () {
         if (readOnly != null || maxLength != null) {
             var finalInputProps = __assign$7(__assign$7({}, initInputProps), { readOnly: readOnly, maxLength: maxLength });
@@ -2358,7 +2476,9 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
             return initInputProps;
         }
     }, [initInputProps, readOnly, tabIndex, maxLength]);
-    // Memo - style ----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - style
+     * ******************************************************************************************************************/
     var style = useMemo(function () {
         var newStyle = __assign$7({}, initStyle);
         if (width != null) {
@@ -2369,17 +2489,23 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
         }
         return newStyle;
     }, [initStyle, width, hidden]);
-    // Memo - label ----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - label
+     * ******************************************************************************************************************/
     var label = useMemo(function () {
         return labelIcon ? (React__default.createElement(React__default.Fragment, null,
             React__default.createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
             React__default.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
     }, [initLabel, labelIcon]);
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         return onValue ? onValue(value) : value;
     }, [onValue]);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _k = useAutoUpdateState$1(initValue, getFinalValue), value = _k[0], setValue = _k[1];
     useEffect(function () {
         setShowClear(clear ? notEmpty(value) : false);
@@ -2394,7 +2520,9 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
             onValueChange(name, value);
         }
     }, [value]);
-    // Function - focus ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a, _b;
         if (initInputRef) {
@@ -2404,12 +2532,16 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
             (_b = inputRef.current) === null || _b === void 0 ? void 0 : _b.focus();
         }
     }, [initInputRef, inputRef]);
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
         setError(error);
         setErrorHelperText(errorHelperText);
     }, [setError]);
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
     var validate = useCallback(function (value) {
         if (required && empty(value)) {
             setErrorErrorHelperText(true, '필수 입력 항목입니다.');
@@ -2437,7 +2569,9 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
         setErrorErrorHelperText(false, undefined);
         return true;
     }, [required, validPattern, invalidPattern, onValidate, setErrorErrorHelperText]);
-    // Memo - muiInputProps --------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - muiInputProps
+     * ******************************************************************************************************************/
     var muiInputProps = useMemo(function () {
         var muiInputProps = __assign$7({}, initMuiInputProps);
         if (startAdornment || icon || muiInputProps.startAdornment) {
@@ -2483,7 +2617,9 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
         showClear,
         startAdornment,
     ]);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (value !== initValue) {
             if (onChange)
@@ -2492,7 +2628,9 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         if (ref || (!noFormValueItem && onAddValueItem)) {
             var lastValue_1 = value;
@@ -2580,7 +2718,9 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
         hidden,
         setHidden,
     ]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleChange = useCallback(function (e) {
         var finalValue = getFinalValue(e.target.value);
         setValue(finalValue);
@@ -2611,7 +2751,9 @@ styleInject(css_248z$l);var FormTextField = React__default.forwardRef(function (
         if (onKeyDown)
             onKeyDown(e);
     }, [select, multiline, disableReturnKey, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, value]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(TextField, __assign$7({}, props, { variant: variant, size: size, color: color, focused: focused || undefined, name: name, label: label, placeholder: placeholder, className: classNames$1(className, 'FormValueItem', 'FormTextField', "variant-".concat(variant)), inputRef: initInputRef ? initInputRef : inputRef, value: value, required: required, fullWidth: !width && fullWidth, error: error, helperText: formColWithHelperText ? undefined : error ? errorHelperText : helperText, FormHelperTextProps: { component: 'div' }, disabled: disabled, InputProps: muiInputProps, InputLabelProps: muiInputLabelProps, inputProps: ((_b = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _b === void 0 ? void 0 : _b.includes('FormTag-Input')) ? initInputProps : inputProps, style: style, select: select, SelectProps: SelectProps, multiline: multiline, onChange: handleChange, onBlur: handleBlur, onKeyDown: handleKeyDown })));
 });
 FormTextField.displayName = 'FormText';
@@ -2628,12 +2770,18 @@ FormHidden.defaultProps = FormHiddenDefaultProps;var FormTagDefaultProps = __ass
 FormText.displayName = 'FormText';
 FormText.defaultProps = FormTextDefaultProps;var css_248z$j = ".FormTag.FormTextField {\n  min-width: 200px;\n}";
 styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, ref) {
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var className = _a.className, name = _a.name, initValue = _a.value, exceptValue = _a.exceptValue, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, initDisabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest$4(_a, ["className", "name", "value", "exceptValue", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
     var _b = useFormState(), formFullWidth = _b.fullWidth, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit, otherFormState = __rest$4(_b, ["fullWidth", "disabled", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
-    // State - FormState -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - FormState
+     * ******************************************************************************************************************/
     var fullWidth = useAutoUpdateState$1(initFullWidth == null ? formFullWidth : initFullWidth)[0];
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         var finalValue;
         if (value instanceof Set) {
@@ -2646,7 +2794,9 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
         }
         return onValue ? onValue(finalValue) : finalValue;
     }, [onValue]);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _c = useState(function () {
         return new Set(getFinalValue(initValue || []));
     }), valueSet = _c[0], setValueSet = _c[1];
@@ -2663,7 +2813,9 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
     var _f = useAutoUpdateState$1(initError), error = _f[0], setError = _f[1];
     var _g = useState(), errorHelperText = _g[0], setErrorHelperText = _g[1];
     var disabled = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled)[0];
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (!isSame$2(value, initValue)) {
             if (onChange)
@@ -2672,12 +2824,16 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
         setError(error);
         setErrorHelperText(errorHelperText);
     }, [setError]);
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
     var validate = useCallback(function (value) {
         if (required && empty(value)) {
             setErrorErrorHelperText(true, '필수 입력 항목입니다.');
@@ -2693,14 +2849,18 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
         setErrorErrorHelperText(false, undefined);
         return true;
     }, [required, onValidate, setErrorErrorHelperText]);
-    // Function - getExtraCommands -------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getExtraCommands
+     * ******************************************************************************************************************/
     var getExtraCommands = useCallback(function () {
         return {
             isFormValueSort: function () { return !!formValueSort; },
             getFormValueSeparator: function () { return formValueSeparator; },
         };
     }, [formValueSort, formValueSeparator]);
-    // Function - getCommands ------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getCommands
+     * ******************************************************************************************************************/
     var getCommands = useCallback(function (baseCommands) {
         var lastValue = value;
         return __assign$7(__assign$7(__assign$7({}, baseCommands), { getReset: function () { return getFinalValue(initValue || []); }, reset: function () {
@@ -2715,7 +2875,9 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
                 }
             }, validate: function () { return validate(value); } }), getExtraCommands());
     }, [value, getExtraCommands, getFinalValue, initValue, setValue, validate]);
-    // Function - appendTag, removeTag ---------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - appendTag, removeTag
+     * ******************************************************************************************************************/
     var appendTag = useCallback(function (tag) {
         if (valueSet.has(tag)) {
             setInputValue('');
@@ -2743,7 +2905,9 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
             });
         }
     }, [valueSet, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleAddValueItem = useCallback(function (id, commands) {
         onAddValueItem(id, getCommands(commands));
     }, [onAddValueItem, getCommands]);
@@ -2785,7 +2949,9 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
     var handleRenderTags = useCallback(function (tags) {
         return tags.map(function (tag) { return (React__default.createElement(Chip, { className: 'MuiAutocomplete-tag', key: tag, label: tag, size: 'small', disabled: readOnly || disabled, onDelete: readOnly || disabled ? undefined : function () { return removeTag(tag); } })); });
     }, [disabled, readOnly, removeTag]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormContextProvider, { value: __assign$7({ fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, 
             // eslint-disable-next-line
             onValueChange: function () { }, 
@@ -2825,18 +2991,24 @@ FormTag.defaultProps = FormTagDefaultProps;var FormEmailDefaultProps = __assign$
         var newValue = value.replace(/ /gi, '');
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
-    // Render ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormEmail'), type: 'email', onValue: handleValue }, props)));
 });
 FormEmail.displayName = 'FormEmail';
 FormEmail.defaultProps = FormEmailDefaultProps;var FormPasswordDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: false, eye: true });var css_248z$i = ".FormPassword .eye-icon-button-wrap {\n  visibility: hidden;\n}\n.FormPassword.variant-filled .eye-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormPassword:hover .eye-icon-button-wrap.show,\n.FormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show {\n  visibility: visible;\n}";
 styleInject(css_248z$i);var StyledEyeInputAdornment = styled(InputAdornment)(templateObject_1$b || (templateObject_1$b = __makeTemplateObject(["\n  visibility: hidden;\n"], ["\n  visibility: hidden;\n"])));
 var FormPassword = React__default.forwardRef(function (_a, ref) {
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var className = _a.className, initMuiInputProps = _a.InputProps, eye = _a.eye, onChange = _a.onChange, props = __rest$4(_a, ["className", "InputProps", "eye", "onChange"]);
     var _b = useState('password'), type = _b[0], setType = _b[1];
     var _c = useState(notEmpty(props.value)), showEye = _c[0], setShowEye = _c[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var muiInputProps = useMemo(function () {
         if (eye) {
             var newProps = __assign$7({}, initMuiInputProps);
@@ -2853,24 +3025,32 @@ var FormPassword = React__default.forwardRef(function (_a, ref) {
             return initMuiInputProps;
         }
     }, [eye, initMuiInputProps, showEye, type]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleChange = useCallback(function (value) {
         setShowEye(notEmpty(value));
         onChange && onChange(value);
     }, [onChange]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormPassword'), onChange: handleChange, type: type, InputProps: muiInputProps }, props)));
 });
 FormPassword.displayName = 'FormPassword';
 FormPassword.defaultProps = FormPasswordDefaultProps;
 var templateObject_1$b;var FormTelDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /(^([0-9]{2,3})([0-9]{3,4})([0-9]{4})$)|(^([0-9]{2,3})-([0-9]{3,4})-([0-9]{4})$)|(^([0-9]{4})-([0-9]{4})$)|(^\+(?:[-]?[0-9]){8,}$)/ });var FormTel = React__default.forwardRef(function (_a, ref) {
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var className = _a.className, onValue = _a.onValue, props = __rest$4(_a, ["className", "onValue"]);
     var handleValue = useCallback(function (value) {
         var newValue = autoDash$2(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormTel'), onValue: handleValue, maxLength: 13 }, props)));
 });
 FormTel.displayName = 'FormTel';
@@ -4122,14 +4302,20 @@ function NumericFormat(props) {
         } })));
 });
 NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { clear: true });var FormNumber = React__default.forwardRef(function (_a, ref) {
-    // State -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var className = _a.className, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initMuiInputProps = _a.InputProps, initInputProps = _a.inputProps, initValue = _a.value, onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest$4(_a, ["className", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "InputProps", "inputProps", "value", "onChange", "onValue", "onValidate"]);
     var _b = useState(function () { return (empty(initValue) ? '' : "".concat(initValue)); }), strValue = _b[0], setStrValue = _b[1];
-    // Effect ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         setStrValue(empty(initValue) ? '' : "".concat(initValue));
     }, [initValue]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var muiInputProps = useMemo(function () {
         var inputProps = {
             className: readOnly ? 'Mui-disabled' : undefined,
@@ -4161,7 +4347,9 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
         initInputProps,
         decimalScale,
     ]);
-    // Event Handler -----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleChange = useCallback(function (value) {
         var newValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
         onChange && onChange(newValue);
@@ -4183,7 +4371,9 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
             return true;
         }
     }, [onValidate]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormTextField, __assign$7({ ref: ref, className: classNames$1(className, 'FormNumber'), disableReturnKey: true, InputProps: muiInputProps, readOnly: readOnly, value: strValue, onChange: handleChange, onValue: handleValue, onValidate: handleValidate }, props)));
 });
 FormNumber.displayName = 'FormNumber';
@@ -4200,31 +4390,45 @@ styleInject(css_248z$g);var FormTextarea = React__default.forwardRef(function (_
 });
 FormTextarea.displayName = 'FormTextarea';
 FormTextarea.defaultProps = FormTextareaDefaultProps;var FormUrlDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'%()*+,;=.]+$/gim });var FormUrl = React__default.forwardRef(function (_a, ref) {
-    // Event Handler -----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var className = _a.className, onValue = _a.onValue, props = __rest$4(_a, ["className", "onValue"]);
     var handleValue = useCallback(function (value) {
         var newValue = value.replace(/ /gi, '');
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
-    // Render ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormUrl'), type: 'url', onValue: handleValue }, props)));
 });
 FormUrl.displayName = 'FormUrl';
 FormUrl.defaultProps = FormUrlDefaultProps;var FormSelectDefaultProps = __assign$7(__assign$7({}, FormTextFieldDefaultProps), { formValueSeparator: ',', minWidth: 120 });var css_248z$f = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
 styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
-    // types -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * type
+     * ******************************************************************************************************************/
     var className = _a.className, name = _a.name, initItems = _a.items, initFullWidth = _a.fullWidth, onLoadItems = _a.onLoadItems, readOnly = _a.readOnly, multiple = _a.multiple, checkbox = _a.checkbox, placeholder = _a.placeholder, initStartAdornment = _a.startAdornment, initValue = _a.value, initInputLabelProps = _a.InputLabelProps, initSelectProps = _a.SelectProps, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, width = _a.width, minWidth = _a.minWidth, initLoading = _a.loading, onChange = _a.onChange, onValue = _a.onValue, props = __rest$4(_a, ["className", "name", "items", "fullWidth", "onLoadItems", "readOnly", "multiple", "checkbox", "placeholder", "startAdornment", "value", "InputLabelProps", "SelectProps", "formValueSeparator", "formValueSort", "width", "minWidth", "loading", "onChange", "onValue"]);
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formFullWidth = _b.fullWidth, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, otherFormState = __rest$4(_b, ["fullWidth", "onAddValueItem", "onValueChange"]);
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var emptyValue = useState([])[0];
     var _c = useState({}), itemValueLabels = _c[0], setItemValueLabels = _c[1];
     var _d = useState(false), hasEmptyValue = _d[0], setHasEmptyValue = _d[1];
     var _e = useState(false), isOnGetItemLoading = _e[0], setIsOnGetItemLoading = _e[1];
     var _f = useState(initLoading), loading = _f[0], setLoading = _f[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var startAdornment = useMemo(function () {
         if (isOnGetItemLoading || loading) {
             return (React__default.createElement(React__default.Fragment, null,
@@ -4235,7 +4439,9 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
             return initStartAdornment;
         }
     }, [initStartAdornment, isOnGetItemLoading, loading]);
-    // State - items ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - items
+     * ******************************************************************************************************************/
     var _g = useAutoUpdateState$1(initItems), items = _g[0], setItems = _g[1];
     useEffect(function () {
         if (items) {
@@ -4253,7 +4459,9 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
             setHasEmptyValue(false);
         }
     }, [items]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var itemsValues = useMemo(function () {
         if (items) {
             return items.reduce(function (res, _a) {
@@ -4266,7 +4474,9 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
             return {};
         }
     }, [items]);
-    // State - inputLabelProps -----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - inputLabelProps
+     * ******************************************************************************************************************/
     var inputLabelProps = useAutoUpdateState$1(useCallback(function () {
         if (hasEmptyValue || (!hasEmptyValue && placeholder)) {
             return __assign$7(__assign$7({}, initInputLabelProps), { shrink: true });
@@ -4275,7 +4485,9 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
             return initInputLabelProps;
         }
     }, [initInputLabelProps, hasEmptyValue, placeholder]))[0];
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         var finalValue = value == null ? '' : value;
         if (multiple) {
@@ -4323,18 +4535,24 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
         }
         return onValue ? onValue(finalValue) : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _h = useAutoUpdateState$1(initValue, getFinalValue), value = _h[0], setValue = _h[1];
     useFirstSkipEffect$1(function () {
         if (onChange)
             onChange(value);
         onValueChange(name, value);
     }, [value]);
-    // State - isSelectedPlaceholder -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - isSelectedPlaceholder
+     * ******************************************************************************************************************/
     var isSelectedPlaceholder = useAutoUpdateState$1(useCallback(function () {
         return notEmpty(items) && empty(value) && !!placeholder && !hasEmptyValue;
     }, [items, value, placeholder, hasEmptyValue]))[0];
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (!isSame$2(value, initValue)) {
             if (onChange)
@@ -4350,7 +4568,9 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var selectProps = useMemo(function () {
         var _a;
         var finalSelectProps = __assign$7(__assign$7({}, initSelectProps), { displayEmpty: true, multiple: !!multiple });
@@ -4378,7 +4598,9 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
         finalSelectProps.MenuProps = __assign$7(__assign$7({}, finalSelectProps.MenuProps), { className: classNames$1((_a = finalSelectProps.MenuProps) === null || _a === void 0 ? void 0 : _a.className, 'FormSelect-Menu-Popover') });
         return finalSelectProps;
     }, [initSelectProps, isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, width]);
-    // Function - getExtraCommands -------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getExtraCommands
+     * ******************************************************************************************************************/
     var getBaseCommands = useCallback(function () {
         var lastValue = value;
         return {
@@ -4413,7 +4635,9 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
             },
         };
     }, [items, loading, formValueSeparator, formValueSort, setItems, multiple]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleRef = useCallback(function (commands) {
         if (ref) {
             var finalCommands = commands
@@ -4435,7 +4659,9 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
     var handleValue = useCallback(function (value) {
         return getFinalValue(value);
     }, [getFinalValue]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     var finalValue;
     if (notEmpty(items)) {
         finalValue = value;
@@ -4457,13 +4683,17 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
 }));
 FormSelect.displayName = 'FormSelect';
 FormSelect.defaultProps = FormSelectDefaultProps;var FormCompanyNoDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /(([0-9]{3})([0-9]{2})([0-9]{5}))|(([0-9]{3})-([0-9]{2})-([0-9]{5}))/ });var FormCompanyNo = React__default.forwardRef(function (_a, ref) {
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var className = _a.className, onValue = _a.onValue, props = __rest$4(_a, ["className", "onValue"]);
     var handleValue = useCallback(function (value) {
         var newValue = autoDash$1(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormCompanyNo'), maxLength: 12, onValue: handleValue }, props)));
 });
 FormCompanyNo.displayName = 'FormCompanyNo';
@@ -4479,7 +4709,9 @@ function autoDash$1(companyNo) {
     }
     return tmp;
 }var FormPersonalNoDefaultProps = __assign$7(__assign$7({}, FormTextDefaultProps), { validPattern: /(([0-9]{6})([0-9]{7}))|(([0-9]{6})-([0-9]{7}))/ });var FormPersonalNo = React__default.forwardRef(function (_a, ref) {
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var className = _a.className, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest$4(_a, ["className", "onValue", "onValidate"]);
     var handleValue = useCallback(function (value) {
         var newValue = autoDash(value.replace(/[^0-9]/gi, ''));
@@ -4519,7 +4751,9 @@ function autoDash$1(companyNo) {
             return onValidate ? onValidate(value) : true;
         }
     }, [onValidate]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormText, __assign$7({ ref: ref, className: classNames$1(className, 'FormPersonalNo'), maxLength: 14, onValue: handleValue, onValidate: handleValidate }, props)));
 });
 FormPersonalNo.displayName = 'FormPersonalNo';
@@ -4540,7 +4774,9 @@ function autoDash(personalNo) {
     uncheckedValue: 0,
 };var css_248z$e = ".FormItemBase .FormItemBase-InputLabel {\n  overflow: visible;\n  padding-left: 5px;\n}\n.FormItemBase .FormItemBase-InputLabel.MuiInputLabel-sizeSmall {\n  transform: translate(0, -1.5px) scale(0.7);\n}\n.FormItemBase .FormItemBase-Control-wrap {\n  position: relative;\n}\n.FormItemBase .FormItemBase-Control {\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n.FormItemBase.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 16px;\n}";
 styleInject(css_248z$e);var FormItemBase = React__default.forwardRef(function (_a, ref) {
-    // Ref ---------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
     control = _a.control, controlHeight = _a.controlHeight, controlVerticalCenter = _a.controlVerticalCenter, required = _a.required, labelIcon = _a.labelIcon, label = _a.label, focused = _a.focused, helperText = _a.helperText, helperTextProps = _a.helperTextProps, error = _a.error, hideLabel = _a.hideLabel, hidden = _a.hidden, autoSize = _a.autoSize, 
@@ -4548,14 +4784,20 @@ styleInject(css_248z$e);var FormItemBase = React__default.forwardRef(function (_
     className = _a.className, style = _a.style, sx = _a.sx;
     var inputRef = useRef(null);
     var realControlContainerRef = useRef(null);
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFullWidth = _b.fullWidth, formColWithLabel = _b.formColWithLabel, formColWithHelperText = _b.formColWithHelperText;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var wrapStyle = useMemo(function () {
         var wrapStyle = {
             display: hidden ? 'none' : fullWidth ? 'block' : 'inline-flex',
@@ -4566,7 +4808,9 @@ styleInject(css_248z$e);var FormItemBase = React__default.forwardRef(function (_
         }
         return wrapStyle;
     }, [formColWithLabel, fullWidth, hidden]);
-    // State - inputHeight ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - inputHeight
+     * ******************************************************************************************************************/
     var _c = useState(0), inputHeight = _c[0], setInputHeight = _c[1];
     useResizeDetector({
         targetRef: inputRef,
@@ -4577,7 +4821,9 @@ styleInject(css_248z$e);var FormItemBase = React__default.forwardRef(function (_
             setInputHeight(((_b = (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height) || 0);
         },
     });
-    // State - realControlHeight ---------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - realControlHeight
+     * ******************************************************************************************************************/
     var _d = useState(0), realControlHeight = _d[0], setRealControlHeight = _d[1];
     useResizeDetector({
         targetRef: realControlContainerRef,
@@ -4588,7 +4834,9 @@ styleInject(css_248z$e);var FormItemBase = React__default.forwardRef(function (_
             setRealControlHeight(((_b = (_a = realControlContainerRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height) || 0);
         },
     });
-    // Memo ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var bottomMargin = useMemo(function () {
         var realHeight = realControlHeight || 0;
         var height = controlHeight || 0;
@@ -4633,7 +4881,9 @@ styleInject(css_248z$e);var FormItemBase = React__default.forwardRef(function (_
         }
         return controlMarginTop;
     }, [controlHeight, controlVerticalCenter, formColWithLabel, inputHeight, label, size, variant]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement("div", { style: wrapStyle },
         React__default.createElement(FormControl, { ref: ref, variant: 'standard', className: classNames$1(className, 'FormItemBase', !!label && 'with-label', "variant-".concat(variant), controlVerticalCenter && 'control-vertical-center', !!error && 'error'), style: style, color: color, error: error, focused: focused, sx: sx },
             !formColWithLabel && label && (React__default.createElement(InputLabel, { shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size, required: required }, labelIcon ? (React__default.createElement(React__default.Fragment, null,
@@ -4656,34 +4906,48 @@ styleInject(css_248z$e);var FormItemBase = React__default.forwardRef(function (_
             !formColWithHelperText && helperText && (React__default.createElement(FormHelperText, __assign$7({ component: 'div' }, helperTextProps), helperText)))));
 });
 FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initChecked = _a.checked, initInputRef = _a.inputRef, initAction = _a.action, readOnly = _a.readOnly, initDisabled = _a.disabled, initHidden = _a.hidden, text = _a.text, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, initUncheckedValue = _a.uncheckedValue, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, props = __rest$4(_a, ["variant", "size", "color", "focused", "fullWidth", "name", "labelIcon", "label", "checked", "inputRef", "action", "readOnly", "disabled", "hidden", "text", "error", "helperText", "value", "data", "uncheckedValue", "exceptValue", "onChange", "onValidate", "className", "style", "sx"]);
     var id = useId();
-    // Use ---------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Use
+     * ******************************************************************************************************************/
     var theme = useTheme();
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var inputRef = useRef(null);
     var actionRef = useRef(null);
     var labelRef = useRef(null);
-    // ResizeDetector --------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ResizeDetector
+     * ******************************************************************************************************************/
     var _c = useResizeDetector({
         targetRef: labelRef,
         handleWidth: true,
         handleHeight: true,
     }), width = _c.width, height = _c.height;
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _d = useAutoUpdateState$1(initValue), value = _d[0], setValue = _d[1];
     var _e = useAutoUpdateState$1(initUncheckedValue), uncheckedValue = _e[0], setUncheckedValue = _e[1];
     var _f = useAutoUpdateState$1(initError), error = _f[0], setError = _f[1];
@@ -4691,7 +4955,9 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
     var _h = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _h[0], setDisabled = _h[1];
     var _j = useAutoUpdateState$1(initHidden), hidden = _j[0], setHidden = _j[1];
     var _k = useAutoUpdateState$1(initData), data = _k[0], setData = _k[1];
-    // State - checked -------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - checked
+     * ******************************************************************************************************************/
     var _l = useAutoUpdateState$1(!!initChecked), checked = _l[0], setChecked = _l[1];
     useFirstSkipEffect$1(function () {
         if (error)
@@ -4700,9 +4966,13 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
             onChange(checked);
         onValueChange(name, checked);
     }, [checked]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var style = useMemo(function () { return (__assign$7({ width: fullWidth ? '100%' : width || 100, paddingLeft: 3 }, initStyle)); }, [initStyle, fullWidth, width]);
-    // Function - focus ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a, _b, _c, _d;
         if (initInputRef) {
@@ -4718,12 +4988,16 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
             (_d = actionRef.current) === null || _d === void 0 ? void 0 : _d.focusVisible();
         }
     }, [initInputRef, inputRef, initAction, actionRef]);
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
         setError(error);
         setErrorHelperText(errorHelperText);
     }, [setError]);
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
     var validate = useCallback(function (checked) {
         if (onValidate) {
             var onValidateResult = onValidate(checked);
@@ -4735,7 +5009,9 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
         setErrorErrorHelperText(false, undefined);
         return true;
     }, [onValidate, setErrorErrorHelperText]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         var lastChecked = checked;
         var lastValue = value == null ? 1 : value;
@@ -4833,7 +5109,9 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
         hidden,
         setHidden,
     ]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleChange = useCallback(function (e, checked) {
         if (readOnly) {
             e.preventDefault();
@@ -4846,7 +5124,9 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React__default.forw
             });
         }
     }, [readOnly, setChecked, onValueChangeByUser, name, onRequestSearchSubmit]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormCheckbox'), labelIcon: labelIcon, label: label, error: error, fullWidth: fullWidth, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React__default.createElement(FormControlLabel, { ref: labelRef, control: React__default.createElement(Checkbox, __assign$7({ name: name, color: color, size: size, inputRef: initInputRef ? initInputRef : inputRef, action: initAction ? initAction : actionRef, checked: checked, checkedIcon: React__default.createElement(CheckBox, { color: error ? 'error' : undefined }), icon: React__default.createElement(CheckBoxOutlineBlank, { color: error ? 'error' : undefined }), onChange: handleChange, disabled: disabled || readOnly }, props)), label: React__default.createElement(Typography, { color: error ? 'error' : readOnly || disabled ? theme.palette.text.disabled : undefined, whiteSpace: 'nowrap' }, text) }) }));
 });
 FormCheckbox.displayName = 'FormCheckbox';
@@ -4854,7 +5134,9 @@ FormCheckbox.defaultProps = FormCheckboxDefaultProps;var FormRadioGroupDefaultPr
     inline: true,
 };var PADDING_LEFT = 3;
 var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
-    // type ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * type
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, initHidden = _a.hidden, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, initWidth = _a.width, labelIcon = _a.labelIcon, label = _a.label, inline = _a.inline, initLoading = _a.loading, nowrap = _a.nowrap, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, helperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, onLoadItems = _a.onLoadItems, onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
@@ -4862,23 +5144,37 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
     className = _a.className, initStyle = _a.style, sx = _a.sx, 
     //----------------------------------------------------------------------------------------------------------------
     props = __rest$4(_a, ["variant", "size", "color", "focused", "fullWidth", "hidden", "name", "width", "labelIcon", "label", "inline", "loading", "nowrap", "items", "value", "data", "error", "helperText", "disabled", "readOnly", "required", "exceptValue", "onLoadItems", "onChange", "onValue", "onValidate", "className", "style", "sx"]);
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var id = useId();
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
-    // State - FormState -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - FormState
+     * ******************************************************************************************************************/
     var _c = useAutoUpdateState$1(initFullWidth == null ? formFullWidth : initFullWidth), fullWidth = _c[0], setFullWidth = _c[1];
-    // Theme -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Theme
+     * ******************************************************************************************************************/
     var theme = useTheme();
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var baseRef = useRef(null);
     var firstInputRef = useRef(null);
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _d = useAutoUpdateState$1(initItems), items = _d[0], setItems = _d[1];
     var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
@@ -4889,7 +5185,9 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
     var _l = useAutoUpdateState$1(initWidth || '100%'), width = _l[0], setWidth = _l[1];
     var _m = useState(), formColWrapRect = _m[0], setFormColWrapRect = _m[1];
     var _o = useAutoUpdateState$1(initData), data = _o[0], setData = _o[1];
-    // State - radioGroupNoWrapRect (ResizeDetector) -------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - radioGroupNoWrapRect (ResizeDetector)
+     * ******************************************************************************************************************/
     var _p = useState(), radioGroupNoWrapRect = _p[0], setRadioGroupNoWrapRect = _p[1];
     var resizeWidthDetectorRef = useResizeDetector({
         handleWidth: true,
@@ -4899,13 +5197,19 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
             setRadioGroupNoWrapRect((_a = resizeWidthDetectorRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect());
         },
     }).ref;
-    // State - height (ResizeDetector) ---------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - height (ResizeDetector)
+     * ******************************************************************************************************************/
     var _q = useResizeDetector(), height = _q.height, resizeHeightDetectorRef = _q.ref;
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         return onValue ? onValue(value) : value;
     }, [onValue]);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _r = useAutoUpdateState$1(initValue, getFinalValue), value = _r[0], setValue = _r[1];
     useFirstSkipEffect$1(function () {
         if (error)
@@ -4915,9 +5219,13 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         if (onValueChange)
             onValueChange(name, value);
     }, [value]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var style = useMemo(function () { return (__assign$7({ width: width, paddingLeft: PADDING_LEFT }, initStyle)); }, [initStyle, width]);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (value !== initValue) {
             if (onChange)
@@ -4982,17 +5290,23 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         setFullWidth(fullWidth);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [initWidth, formFullWidth, initFullWidth, formColWrapRect, radioGroupNoWrapRect]);
-    // Function - focus ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a;
         (_a = firstInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, []);
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
         setError(error);
         setErrorHelperText(errorHelperText);
     }, [setError]);
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
     var validate = useCallback(function (value) {
         if (required && empty(value)) {
             setErrorErrorHelperText(true, '필수 선택 항목입니다.');
@@ -5008,7 +5322,9 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         setErrorErrorHelperText(false, undefined);
         return true;
     }, [required, onValidate, setErrorErrorHelperText]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         var lastValue = value;
         var lastData = data;
@@ -5117,7 +5433,9 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleChange = useCallback(function (e) {
         if (readOnly) {
             e.preventDefault();
@@ -5143,7 +5461,9 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
             }
         }
     }, [readOnly, items, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormItemBase, { focused: focused, ref: baseRef, className: classNames$1(className, 'FormValueItem', 'FormRadioGroup'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, fullWidth: fullWidth, required: required, error: error, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React__default.createElement(React__default.Fragment, null,
             !fullWidth && !isOnGetItemLoading && !loading && items && (React__default.createElement("div", { ref: resizeWidthDetectorRef, style: {
                     display: 'grid',
@@ -5177,7 +5497,9 @@ FormRadioGroup.defaultProps = FormRadioGroupDefaultProps;var FormToggleButtonGro
     formValueSeparator: ',',
 };var css_248z$d = ".FormToggleButtonGroup .ToggleButton {\n  display: inline-block;\n  padding: 0 10px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton, .FormToggleButtonGroup.type-radio .ToggleButton {\n  padding-left: 3px;\n  padding-right: 5px;\n  border: 0 !important;\n  margin-left: 0 !important;\n  justify-content: flex-start;\n  display: flex;\n  background-color: transparent !important;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton:not(:last-child), .FormToggleButtonGroup.type-radio .ToggleButton:not(:last-child) {\n  margin-right: 5px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-unchecked__ {\n  margin-right: 3px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__ {\n  display: none;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-checked__ {\n  display: block;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-unchecked__ {\n  display: none;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 15px;\n  margin-bottom: -15px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .FormItemBase-Control-wrap {\n  margin-top: 15px;\n  margin-bottom: -15px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 13px;\n  margin-bottom: -13px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 13px;\n  margin-bottom: -13px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}";
 styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
-    // type ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * type
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, label = _a.label, type = _a.type, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, helperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, notAllowEmptyValue = _a.notAllowEmptyValue, exceptValue = _a.exceptValue, initWidth = _a.width, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, initHidden = _a.hidden, itemWidth = _a.itemWidth, onLoadItems = _a.onLoadItems, 
@@ -5185,25 +5507,39 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var id = useId();
     var labelId = useId();
-    // Ref ---------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var refForResizeWidthDetect = useRef(null);
     var refForButtonResizeHeightDetect = useRef(null);
     var refForLoadingResizeHeightDetect = useRef(null);
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWidth = _b.formColWidth, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var fullWidth = useMemo(function () { return (type === 'checkbox' || type === 'radio' ? true : initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth, type]);
-    // State - FormState -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - FormState
+     * ******************************************************************************************************************/
     var _c = useAutoUpdateState$1(initFocused == null ? formFocused : initFocused), focused = _c[0], setFocused = _c[1];
-    // Theme -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Theme
+     * ******************************************************************************************************************/
     var theme = useTheme();
-    // State - width (ResizeDetector) ----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - width (ResizeDetector)
+     * ******************************************************************************************************************/
     var _d = useState(), width = _d[0], setWidth = _d[1];
     useResizeDetector({
         targetRef: refForResizeWidthDetect,
@@ -5213,7 +5549,9 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
             setWidth((_b = (_a = refForResizeWidthDetect.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.width);
         },
     });
-    // State - height (ResizeDetector) ---------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - height (ResizeDetector)
+     * ******************************************************************************************************************/
     var _e = useState(), height = _e[0], setHeight = _e[1];
     useResizeDetector({
         targetRef: refForButtonResizeHeightDetect,
@@ -5231,7 +5569,9 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
             setHeight((_b = (_a = refForLoadingResizeHeightDetect.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height);
         },
     });
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _f = useState(false), isOnGetItemLoading = _f[0], setIsOnGetItemLoading = _f[1];
     var _g = useAutoUpdateState$1(initItems), items = _g[0], setItems = _g[1];
     var _h = useAutoUpdateState$1(initError), error = _h[0], setError = _h[1];
@@ -5240,7 +5580,9 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
     var _l = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _l[0], setDisabled = _l[1];
     var _m = useAutoUpdateState$1(initHidden), hidden = _m[0], setHidden = _m[1];
     var _o = useAutoUpdateState$1(initData), data = _o[0], setData = _o[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var itemsValues = useMemo(function () {
         if (items) {
             return items.reduce(function (res, _a) {
@@ -5276,7 +5618,9 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         }
         return __assign$7({ width: finalWidth }, initStyle);
     }, [formColWidth, fullWidth, initStyle, initWidth, isOnGetItemLoading, width]);
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         var finalValue = value;
         if (multiple) {
@@ -5324,9 +5668,13 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         }
         return onValue ? onValue(finalValue) : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _p = useAutoUpdateState$1(initValue, getFinalValue), value = _p[0], setValue = _p[1];
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (value !== initValue) {
             if (onChange)
@@ -5370,17 +5718,23 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items, value, multiple, notAllowEmptyValue]);
-    // Function - focus ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a;
         (_a = refForButtonResizeHeightDetect.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [refForButtonResizeHeightDetect]);
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
         setError(error);
         setErrorHelperText(errorHelperText);
     }, [setError]);
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
     var validate = useCallback(function (value) {
         if (required && empty(value)) {
             setErrorErrorHelperText(true, '필수 선택 항목입니다.');
@@ -5396,7 +5750,9 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         setErrorErrorHelperText(false, undefined);
         return true;
     }, [required, onValidate, setErrorErrorHelperText]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         if (ref || onAddValueItem) {
             var lastValue_1 = value;
@@ -5505,7 +5861,9 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         hidden,
         setHidden,
     ]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleChange = useCallback(function (e, newValue) {
         if (readOnly) {
             e.preventDefault();
@@ -5546,7 +5904,9 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         name,
         onRequestSearchSubmit,
     ]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     var formControlBaseProps = {};
     if (focused) {
         formControlBaseProps.focused = true;
@@ -5611,7 +5971,9 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     value: 0,
     precision: 1,
 };var FormRating = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
     precision = _a.precision, highlightSelectedOnly = _a.highlightSelectedOnly, icon = _a.icon, emptyIcon = _a.emptyIcon, max = _a.max, initHidden = _a.hidden, 
@@ -5620,34 +5982,50 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = useId();
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    // State - FormState -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - FormState
+     * ******************************************************************************************************************/
     var _c = useAutoUpdateState$1(initFocused == null ? formFocused : initFocused), focused = _c[0], setFocused = _c[1];
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var ratingRef = useRef(null);
     var inputRef = useRef();
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
     var _f = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _f[0], setDisabled = _f[1];
     var _g = useAutoUpdateState$1(initHidden), hidden = _g[0], setHidden = _g[1];
     var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
-    // State - width, height -------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - width, height
+     * ******************************************************************************************************************/
     var _j = useResizeDetector({
         targetRef: ratingRef,
         handleWidth: true,
         handleHeight: true,
     }), width = _j.width, height = _j.height;
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         return onValue ? onValue(value) : value;
     }, [onValue]);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _k = useAutoUpdateState$1(initValue || 0, getFinalValue), value = _k[0], setValue = _k[1];
     useFirstSkipEffect$1(function () {
         if (error)
@@ -5656,9 +6034,13 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
             onChange(value);
         onValueChange(name, value);
     }, [value]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var style = useMemo(function () { return (__assign$7({ width: width || 100 }, initStyle)); }, [initStyle, width]);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (value !== initValue) {
             if (onChange)
@@ -5670,7 +6052,9 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    // Function --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a;
         (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
@@ -5698,7 +6082,9 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         setErrorErrorHelperText(false, undefined);
         return true;
     }, [required, onValidate, setErrorErrorHelperText]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         var lastValue = value;
         var lastData = data;
@@ -5781,7 +6167,9 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         hidden,
         setHidden,
     ]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleChange = useCallback(function (e, value) {
         if (readOnly) {
             e.preventDefault();
@@ -5795,7 +6183,9 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
             });
         }
     }, [readOnly, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormRating'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, required: required, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 21 : 26), controlVerticalCenter: true, control: React__default.createElement(Rating, { ref: ratingRef, size: size === 'medium' ? 'large' : 'medium', name: name, precision: precision, highlightSelectedOnly: highlightSelectedOnly, value: value, disabled: disabled || readOnly, max: max, icon: React__default.createElement(FormIcon, { color: color, fontSize: 'inherit' }, icon ? icon : 'Star'), emptyIcon: React__default.createElement(FormIcon, { fontSize: 'inherit' }, emptyIcon ? emptyIcon : 'StarBorder'), onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } }) }));
 });
 FormRating.displayName = 'FormRating';
@@ -7637,7 +8027,9 @@ var Editor = /** @class */ (function (_super) {
     value: '',
 };var css_248z$c = ".FormTextEditor.initializing textarea {\n  display: none;\n}\n.FormTextEditor.error .tox-tinymce {\n  border-color: #d32f2f;\n}\n\n.tox-menu.tox-collection.tox-collection--list .tox-collection__group .tox-menu-nav__js.tox-collection__item {\n  padding-right: 20px !important;\n}\n\n.tox-notifications-container {\n  display: none;\n}";
 styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     // ---------------------------------------------------------------------------------------------------------------
     apiKey = _a.apiKey, toolbar = _a.toolbar, 
@@ -7648,18 +8040,28 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = useId();
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onRemoveValueItem = _b.onRemoveValueItem, onValueChangeByUser = _b.onValueChangeByUser;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    // State - FormState -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - FormState
+     * ******************************************************************************************************************/
     var _c = useAutoUpdateState$1(initFocused == null ? formFocused : initFocused), focused = _c[0], setFocused = _c[1];
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var editorRef = useRef();
     var keyDownTime = useRef(0);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _d = useAutoUpdateState$1(initValue || ''), value = _d[0], setValue = _d[1];
     useFirstSkipEffect$1(function () {
         if (error)
@@ -7668,24 +8070,32 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
             onChange(value);
         onValueChange(name, value);
     }, [value]);
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useState(false), initialized = _g[0], setInitialized = _g[1];
     var _h = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _h[0], setDisabled = _h[1];
     var _j = useAutoUpdateState$1(initHidden), hidden = _j[0], setHidden = _j[1];
     var _k = useAutoUpdateState$1(initData), data = _k[0], setData = _k[1];
-    // Function - focus ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a;
         (_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [editorRef]);
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
         setError(error);
         setErrorHelperText(errorHelperText);
     }, [setError]);
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
     var validate = useCallback(function (value) {
         var _a;
         if (required && empty((_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.getContent())) {
@@ -7702,7 +8112,9 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
         setErrorErrorHelperText(false, undefined);
         return true;
     }, [required, onValidate, setErrorErrorHelperText]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         var lastValue = value;
         var lastData = data;
@@ -7784,7 +8196,9 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
         hidden,
         setHidden,
     ]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleEditorChange = useCallback(function (value) {
         setValue(value);
         if (new Date().getTime() - keyDownTime.current < 300) {
@@ -7809,7 +8223,9 @@ styleInject(css_248z$c);var FormTextEditor = React__default.forwardRef(function 
             }
         });
     }, [onImageUpload]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormTextEditor', !initialized && 'initializing'), labelIcon: labelIcon, label: label, error: error, required: required, fullWidth: true, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: { width: '100%' }, hidden: hidden, controlHeight: height, control: React__default.createElement(React__default.Fragment, null,
             !initialized ? React__default.createElement(Skeleton, { variant: 'rectangular', width: '100%', height: height }) : null,
             React__default.createElement(Editor, { apiKey: apiKey, value: value, disabled: readOnly || disabled, init: {
@@ -7852,7 +8268,9 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     formValueSeparator: ',',
     noOptionsText: '항목이 없습니다',
 };var FormAutocomplete = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
-    // type ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * type
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, helperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, width = _a.width, placeholder = _a.placeholder, multiple = _a.multiple, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, disablePortal = _a.disablePortal, noOptionsText = _a.noOptionsText, loadingText = _a.loadingText, limitTags = _a.limitTags, openOnFocus = _a.openOnFocus, disableClearable = _a.disableClearable, async = _a.async, initHidden = _a.hidden, onLoadItems = _a.onLoadItems, onAsyncLoadValueItem = _a.onAsyncLoadValueItem, onRenderItem = _a.onRenderItem, onRenderTag = _a.onRenderTag, onAddItem = _a.onAddItem, getOptionDisabled = _a.getOptionDisabled, 
@@ -7860,22 +8278,32 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var id = useId();
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var textFieldRef = useRef(null);
     var asyncTimerRef = useRef(null);
     var oldComponentValueRef = useRef(null);
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _c = useState(false), isOnGetItemLoading = _c[0], setIsOnGetItemLoading = _c[1];
     var _d = useAutoUpdateState$1(initItems), items = _d[0], setItems = _d[1];
     var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
@@ -7885,7 +8313,9 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     var _j = useAutoUpdateState$1(initHidden), hidden = _j[0], setHidden = _j[1];
     var _k = useState(undefined), inputValue = _k[0], setInputValue = _k[1];
     var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var itemsValues = useMemo(function () {
         if (items) {
             return items.reduce(function (res, _a) {
@@ -7908,7 +8338,9 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         }
         return style;
     }, [initStyle, width, hidden]);
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         var finalValue = value;
         if (multiple) {
@@ -7956,7 +8388,9 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         }
         return onValue ? onValue(finalValue) : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _m = useAutoUpdateState$1(initValue, getFinalValue), value = _m[0], setValue = _m[1];
     var _o = useState(null), valueItem = _o[0], setValueItem = _o[1];
     var componentValue = useMemo(function () {
@@ -8033,14 +8467,18 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [async, value, valueItem]);
-    // Function ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var showOnGetItemLoading = useCallback(function () {
         setIsOnGetItemLoading(true);
     }, []);
     var hideOnGetItemLoading = useCallback(function () {
         setIsOnGetItemLoading(false);
     }, []);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (value !== initValue) {
             if (onChange)
@@ -8117,17 +8555,23 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [async, inputValue]);
-    // Function - focus ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a;
         (_a = textFieldRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [textFieldRef]);
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
         setError(error);
         setErrorHelperText(errorHelperText);
     }, [setError]);
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
     var validate = useCallback(function (value) {
         if (required && empty(value)) {
             setErrorErrorHelperText(true, '필수 선택 항목입니다.');
@@ -8143,7 +8587,9 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         setErrorErrorHelperText(false, undefined);
         return true;
     }, [required, onValidate, setErrorErrorHelperText]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         if (ref || onAddValueItem) {
             var lastValue_1 = value;
@@ -8252,7 +8698,9 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         hidden,
         setHidden,
     ]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleChange = useCallback(function (componentValue, reason, details) {
         var go = function () {
             var newValue = undefined;
@@ -8305,7 +8753,9 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
             return !!option.disabled;
         }
     }, [getOptionDisabled]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(Autocomplete, { options: items || [], className: classNames$1(className, 'FormValueItem', 'FormAutocomplete'), sx: sx, multiple: multiple, fullWidth: !width && fullWidth, openOnFocus: openOnFocus, disableClearable: disableClearable, disablePortal: disablePortal, noOptionsText: noOptionsText, value: componentValue, style: style, isOptionEqualToValue: function (option, value) { return option.value === value.value; }, getOptionDisabled: handleGetOptionDisabled, disabled: disabled, readOnly: readOnly, loading: loading || isOnGetItemLoading, loadingText: loadingText, limitTags: limitTags, onChange: function (e, value, reason, details) { return handleChange(value, reason, details); }, renderOption: function (props, option) { return (React__default.createElement("li", __assign$7({}, props, { key: "".concat(option.value) }), onRenderItem ? onRenderItem(option) : option.label)); }, onInputChange: function (event, newInputValue, reason) {
             if (reason === 'input') {
                 setInputValue(newInputValue);
@@ -10093,11 +10543,15 @@ for (var i$5 = 0; i$5 < 200; i$5 += 1) {
     YEARS$1[i$5] = 1900 + i$5;
 }
 var PrivateYearSelect = function (_a) {
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var selectYear = _a.selectYear, activeYear = _a.activeYear, availableDate = _a.availableDate, onSelect = _a.onSelect;
     var containerRef = useRef(null);
     var simpleBarRef = useRef(null);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         var _a, _b, _c, _d, _e;
         var activeEls = (_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.getElementsByClassName("private-year-select-value-".concat(activeYear));
@@ -10116,7 +10570,9 @@ var PrivateYearSelect = function (_a) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     var today = dayjs().startOf('date');
     return (React__default.createElement("div", { ref: containerRef, className: 'PrivateYearSelect' },
         React__default.createElement(SimpleBar, { scrollableNodeProps: { ref: simpleBarRef }, style: { height: '100%' } },
@@ -10160,12 +10616,16 @@ for (var i$3 = 0; i$3 < DEFAULT_MINUTES$2.length; i$3 += 1) {
     DEFAULT_MINUTES$2[i$3] = i$3;
 }
 var PrivateTimeSelect = React__default.forwardRef(function (_a, ref) {
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var list = _a.list, listInterval = _a.listInterval, unit = _a.unit, value = _a.value, cols = _a.cols, disableList = _a.disableList, onSelect = _a.onSelect;
     var containerRef = useRef(null);
     var simpleBarRef = useRef(null);
     var scrollTimerRef = useRef();
-    // Function - scrollToValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - scrollToValue
+     * ******************************************************************************************************************/
     var scrollToValue = useCallback(function (value) {
         var _a;
         var valueEls = (_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.getElementsByClassName("private-time-select-value-".concat(value));
@@ -10208,7 +10668,9 @@ var PrivateTimeSelect = React__default.forwardRef(function (_a, ref) {
             }, 10);
         }
     }, []);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         return function () {
             if (scrollTimerRef.current) {
@@ -10223,7 +10685,9 @@ var PrivateTimeSelect = React__default.forwardRef(function (_a, ref) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    // LayoutEffect ----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * LayoutEffect
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         if (ref) {
             var commands = {
@@ -10245,7 +10709,9 @@ var PrivateTimeSelect = React__default.forwardRef(function (_a, ref) {
             };
         }
     }, [ref, scrollToValue]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(React__default.Fragment, null,
         React__default.createElement("div", { ref: containerRef, className: 'PrivateTimeSelect' },
             React__default.createElement(SimpleBar, { scrollableNodeProps: { ref: simpleBarRef }, style: { height: '100%' } },
@@ -10275,12 +10741,16 @@ for (var i$2 = 0; i$2 < DEFAULT_SECONDS$1.length; i$2 += 1) {
     DEFAULT_SECONDS$1[i$2] = i$2;
 }
 var PrivateStaticDatePicker = React__default.forwardRef(function (_a, ref) {
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var value = _a.value, initAvailableDate = _a.availableDate, defaultCalendarMonth = _a.defaultCalendarMonth, type = _a.type, time = _a.time, initHours = _a.hours, initMinutes = _a.minutes, initSeconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest$4(_a, ["value", "availableDate", "defaultCalendarMonth", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
     var hourSelectRef = useRef(null);
     var minuteSelectRef = useRef(null);
     var secondSelectRef = useRef(null);
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _b = useState(function () {
         if (value)
             return value;
@@ -10292,7 +10762,9 @@ var PrivateStaticDatePicker = React__default.forwardRef(function (_a, ref) {
     var _c = useState(null), activeMonthValue = _c[0], setActiveMonthValue = _c[1];
     var _d = useState(false), yearSelectOpen = _d[0], setYearSelectOpen = _d[1];
     var _e = useState(false), monthSelectOpen = _e[0], setMonthSelectOpen = _e[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var hours = useMemo(function () { return initHours || DEFAULT_HOURS$1; }, [initHours]);
     var minutes = useMemo(function () { return initMinutes || DEFAULT_MINUTES$1; }, [initMinutes]);
     var seconds = useMemo(function () { return initSeconds || DEFAULT_SECONDS$1; }, [initSeconds]);
@@ -10336,7 +10808,9 @@ var PrivateStaticDatePicker = React__default.forwardRef(function (_a, ref) {
         }
         return newDisableSeconds;
     }, [time, value, availableDate, seconds]);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (!yearSelectOpen) {
             setActiveMonthValue(null);
@@ -10359,7 +10833,9 @@ var PrivateStaticDatePicker = React__default.forwardRef(function (_a, ref) {
         };
         return ArrowButton;
     })[0];
-    // Function --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var previousMonth = useCallback(function () {
         if (leftArrowOnClickRef.current) {
             leftArrowOnClickRef.current({});
@@ -10370,7 +10846,9 @@ var PrivateStaticDatePicker = React__default.forwardRef(function (_a, ref) {
             rightArrowOnClickRef.current({});
         }
     }, []);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleYearSelect = useCallback(function (year) {
         setMonth(month.set('year', year));
         setActiveMonthValue(month.set('year', year));
@@ -10385,7 +10863,9 @@ var PrivateStaticDatePicker = React__default.forwardRef(function (_a, ref) {
     var handleRenderDay = useCallback(function (props) {
         return React__default.createElement(PickersDay, __assign$7({}, props, { selected: props.day.isSame(value, 'date') }));
     }, [value]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         if (ref) {
             var commands = {};
@@ -10405,7 +10885,9 @@ var PrivateStaticDatePicker = React__default.forwardRef(function (_a, ref) {
             };
         }
     }, [ref]);
-    // Render - Function -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render - Function
+     * ******************************************************************************************************************/
     var getActionButton = useCallback(function (date, label) {
         var disabled = !isDateAvailable(date, availableDate, 'day');
         return (React__default.createElement(Button, { variant: 'text', className: disabled ? 'disabled' : undefined, disabled: disabled, onClick: function () {
@@ -10425,7 +10907,9 @@ var PrivateStaticDatePicker = React__default.forwardRef(function (_a, ref) {
                 onChange('action_date', finalDate);
             } }, label));
     }, [type, time, onChange, availableDate]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(Grid, { container: true, className: classNames$1('PrivateStaticDatePicker', type) },
         type !== 'time' && (React__default.createElement(Grid, { item: true },
             React__default.createElement(Grid, { container: true, direction: 'column' },
@@ -10550,39 +11034,53 @@ PrivateStaticDatePicker.defaultProps = PrivateStaticDatePickerDefaultProps;var P
         _b);
 });var css_248z$7 = ".PrivateDatePicker .input-text-field.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.PrivateDatePicker .input-text-field.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.PrivateDatePicker .input-text-field.align-right .MuiInputBase-input {\n  text-align: right;\n}";
 styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
     name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, helperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, initHidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     //--------------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$4(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = useId();
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var privateStaticDatePickerRef = useRef(null);
     var textFieldInputRef = useRef();
     var closeTimeoutRef = useRef();
     var mouseDownTimeRef = useRef();
     var datePickerErrorRef = useRef(null);
     var openValueRef = useRef(null);
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // State - open ----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - open
+     * ******************************************************************************************************************/
     var _c = useState(false), open = _c[0], setOpen = _c[1];
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = useState(null), timeError = _e[0], setTimeError = _e[1];
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _g[0], setDisabled = _g[1];
     var _h = useAutoUpdateState$1(initHidden), hidden = _h[0], setHidden = _h[1];
     var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var label = useMemo(function () {
         if (labelIcon) {
             return React__default.createElement(IconText, { icon: labelIcon }, initLabel);
@@ -10608,7 +11106,9 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
         }
     }, [initFormValueFormat, time, type]);
     var availableDate = useMemo(function () { return makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture); }, [disableFuture, disablePast, maxDate, minDate]);
-    // State - style ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - style
+     * ******************************************************************************************************************/
     var style = useAutoUpdateState$1(useCallback(function () {
         if (width != null) {
             return __assign$7(__assign$7({}, initStyle), { width: width });
@@ -10617,14 +11117,20 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
             return initStyle;
         }
     }, [initStyle, width]))[0];
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         return value;
     }, []);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _k = useAutoUpdateState$1(initValue || null, getFinalValue), value = _k[0], setValue = _k[1];
     var _l = useState(null), inputValue = _l[0], setInputValue = _l[1];
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (value !== initValue) {
             if (onChange)
@@ -10684,22 +11190,30 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var wrapStyle = useMemo(function () { return ({
         display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
         flex: fullWidth ? 1 : undefined,
     }); }, [hidden, fullWidth]);
-    // Function - focus ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a;
         (_a = textFieldInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [textFieldInputRef]);
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
     var setErrorErrorHelperText = useCallback(function (error, helperText) {
         setError(error);
         setErrorHelperText(helperText);
     }, [setError]);
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
     var validate = useCallback(function (value) {
         if (required && empty(value)) {
             setErrorErrorHelperText(true, '필수 입력 항목입니다.');
@@ -10727,7 +11241,9 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
         setErrorErrorHelperText(false, undefined);
         return true;
     }, [required, timeError, onValidate, setErrorErrorHelperText]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         if (ref || onAddValueItem) {
             var lastValue_1 = value;
@@ -10816,7 +11332,9 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
         hidden,
         setHidden,
     ]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleChange = useCallback(function (unit, newValue, keyboardInputValue) {
         var updateValue = true;
         if (notEmpty(keyboardInputValue)) {
@@ -10888,7 +11406,9 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
         }
         mouseDownTimeRef.current = new Date().getTime();
     }, []);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var slotProps = useMemo(function () {
         var textFieldInputLabelProps = {};
         if (labelShrink) {
@@ -10958,7 +11478,9 @@ styleInject(css_248z$7);var PrivateDatePicker = React__default.forwardRef(functi
         timeError,
         variant,
     ]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs },
         React__default.createElement(ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
             React__default.createElement("div", { className: classNames$1(className, 'PrivateDatePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
@@ -10996,12 +11518,16 @@ for (var i$1 = 0; i$1 < DEFAULT_SECONDS.length; i$1 += 1) {
     DEFAULT_SECONDS[i$1] = i$1;
 }
 var PrivateStaticDateTimePicker = React__default.forwardRef(function (_a, ref) {
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var value = _a.value, initAvailableDate = _a.availableDate, defaultCalendarMonth = _a.defaultCalendarMonth, type = _a.type, time = _a.time, initHours = _a.hours, initMinutes = _a.minutes, initSeconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest$4(_a, ["value", "availableDate", "defaultCalendarMonth", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
     var hourSelectRef = useRef(null);
     var minuteSelectRef = useRef(null);
     var secondSelectRef = useRef(null);
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _b = useState(function () {
         if (value)
             return value;
@@ -11013,7 +11539,9 @@ var PrivateStaticDateTimePicker = React__default.forwardRef(function (_a, ref) {
     var _c = useState(null), activeMonthValue = _c[0], setActiveMonthValue = _c[1];
     var _d = useState(false), yearSelectOpen = _d[0], setYearSelectOpen = _d[1];
     var _e = useState(false), monthSelectOpen = _e[0], setMonthSelectOpen = _e[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var hours = useMemo(function () { return initHours || DEFAULT_HOURS; }, [initHours]);
     var minutes = useMemo(function () { return initMinutes || DEFAULT_MINUTES; }, [initMinutes]);
     var seconds = useMemo(function () { return initSeconds || DEFAULT_SECONDS; }, [initSeconds]);
@@ -11057,7 +11585,9 @@ var PrivateStaticDateTimePicker = React__default.forwardRef(function (_a, ref) {
         }
         return newDisableSeconds;
     }, [time, value, availableDate, seconds]);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (!yearSelectOpen) {
             setActiveMonthValue(null);
@@ -11080,7 +11610,9 @@ var PrivateStaticDateTimePicker = React__default.forwardRef(function (_a, ref) {
         };
         return ArrowButton;
     })[0];
-    // Function --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var previousMonth = useCallback(function () {
         if (leftArrowOnClickRef.current) {
             leftArrowOnClickRef.current({});
@@ -11100,7 +11632,9 @@ var PrivateStaticDateTimePicker = React__default.forwardRef(function (_a, ref) {
         if (!times || (times === null || times === void 0 ? void 0 : times.includes('second')))
             (_c = secondSelectRef.current) === null || _c === void 0 ? void 0 : _c.scrollToValue(date.second());
     }, []);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleYearSelect = useCallback(function (year) {
         setMonth(month.set('year', year));
         setActiveMonthValue(month.set('year', year));
@@ -11115,7 +11649,9 @@ var PrivateStaticDateTimePicker = React__default.forwardRef(function (_a, ref) {
     var handleRenderDay = useCallback(function (props) {
         return React__default.createElement(PickersDay, __assign$7({}, props, { selected: props.day.isSame(value, 'date') }));
     }, [value]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         if (ref) {
             var commands = {
@@ -11137,7 +11673,9 @@ var PrivateStaticDateTimePicker = React__default.forwardRef(function (_a, ref) {
             };
         }
     }, [ref, timeSelectScrollToDate]);
-    // Render - Function -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render - Function
+     * ******************************************************************************************************************/
     var getActionButton = useCallback(function (date, label) {
         var disabled = !isDateAvailable(date, availableDate, 'day');
         return (React__default.createElement(Button, { variant: 'text', className: disabled ? 'disabled' : undefined, disabled: disabled, onClick: function () {
@@ -11157,7 +11695,9 @@ var PrivateStaticDateTimePicker = React__default.forwardRef(function (_a, ref) {
                 onChange('action_date', finalDate);
             } }, label));
     }, [type, time, onChange, availableDate]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(Grid, { container: true, className: classNames$1('PrivateStaticDateTimePicker', type) },
         type !== 'time' && (React__default.createElement(Grid, { item: true },
             React__default.createElement(Grid, { container: true, direction: 'column' },
@@ -11262,39 +11802,53 @@ var PrivateStaticDateTimePicker = React__default.forwardRef(function (_a, ref) {
 });
 PrivateStaticDateTimePicker.displayName = 'PrivateStaticDateTimePicker';
 PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultProps;var PrivateDateTimePicker = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
     name = _a.name, type = _a.type, time = _a.time, initValue = _a.value, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, helperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, initHidden = _a.hidden, onChange = _a.onChange, onValidate = _a.onValidate, 
     //--------------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest$4(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "onChange", "onValidate", "className", "style", "sx"]);
     var id = useId();
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var privateStaticDateTimePickerRef = useRef(null);
     var textFieldInputRef = useRef();
     var closeTimeoutRef = useRef();
     var mouseDownTimeRef = useRef();
     var datePickerErrorRef = useRef(null);
     var openValueRef = useRef(null);
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // State - open ----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - open
+     * ******************************************************************************************************************/
     var _c = useState(false), open = _c[0], setOpen = _c[1];
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = useState(null), timeError = _e[0], setTimeError = _e[1];
     var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
     var _g = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _g[0], setDisabled = _g[1];
     var _h = useAutoUpdateState$1(initHidden), hidden = _h[0], setHidden = _h[1];
     var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var label = useMemo(function () {
         if (labelIcon) {
             return React__default.createElement(IconText, { icon: labelIcon }, initLabel);
@@ -11320,7 +11874,9 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         }
     }, [initFormValueFormat, time, type]);
     var availableDate = useMemo(function () { return makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture); }, [disableFuture, disablePast, maxDate, minDate]);
-    // State - style ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - style
+     * ******************************************************************************************************************/
     var style = useAutoUpdateState$1(useCallback(function () {
         if (width != null) {
             return __assign$7(__assign$7({}, initStyle), { width: width });
@@ -11329,14 +11885,20 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
             return initStyle;
         }
     }, [initStyle, width]))[0];
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         return value;
     }, []);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _k = useAutoUpdateState$1(initValue || null, getFinalValue), value = _k[0], setValue = _k[1];
     var _l = useState(null), inputValue = _l[0], setInputValue = _l[1];
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (value !== initValue) {
             if (onChange)
@@ -11396,22 +11958,30 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var wrapStyle = useMemo(function () { return ({
         display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
         flex: fullWidth ? 1 : undefined,
     }); }, [hidden, fullWidth]);
-    // Function - focus ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a;
         (_a = textFieldInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [textFieldInputRef]);
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
         setError(error);
         setErrorHelperText(errorHelperText);
     }, [setError]);
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
     var validate = useCallback(function (value) {
         if (required && empty(value)) {
             setErrorErrorHelperText(true, '필수 입력 항목입니다.');
@@ -11439,7 +12009,9 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         setErrorErrorHelperText(false, undefined);
         return true;
     }, [required, timeError, onValidate, setErrorErrorHelperText]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         if (ref || onAddValueItem) {
             var lastValue_1 = value;
@@ -11528,7 +12100,9 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         hidden,
         setHidden,
     ]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleChange = useCallback(function (unit, newValue, keyboardInputValue) {
         var _a, _b, _c;
         var updateValue = true;
@@ -11617,7 +12191,9 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         }
         mouseDownTimeRef.current = new Date().getTime();
     }, []);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var slotProps = useMemo(function () {
         var textFieldInputLabelProps = {};
         if (labelShrink) {
@@ -11687,7 +12263,9 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         timeError,
         variant,
     ]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs },
         React__default.createElement(ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
             React__default.createElement("div", { className: classNames$1(className, 'PrivateDateTimePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
@@ -11724,12 +12302,16 @@ PrivateAlertDialog.defaultProps = PrivateAlertDialogDefaultProps;var PrivateInpu
     align: 'center',
 };var css_248z$4 = ".PrivateInputDatePicker.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.PrivateInputDatePicker.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.PrivateInputDatePicker.align-right .MuiInputBase-input {\n  text-align: right;\n}";
 styleInject(css_248z$4);var PrivateInputDatePicker = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var variant = _a.variant, size = _a.size, color = _a.color, focused = _a.focused, fullWidth = _a.fullWidth, disabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, labelShrink = _a.labelShrink, 
     //--------------------------------------------------------------------------------------------------------------------
     className = _a.className, style = _a.style, sx = _a.sx, value = _a.value, initLabel = _a.label, labelIcon = _a.labelIcon, inputRef = _a.inputRef, format = _a.format, error = _a.error, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, align = _a.align, readOnlyInput = _a.readOnlyInput, onFocus = _a.onFocus, onBlur = _a.onBlur, props = __rest$4(_a, ["variant", "size", "color", "focused", "fullWidth", "disabled", "readOnly", "required", "labelShrink", "className", "style", "sx", "value", "label", "labelIcon", "inputRef", "format", "error", "icon", "startAdornment", "endAdornment", "align", "readOnlyInput", "onFocus", "onBlur"]);
     var id = useId();
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var label = useMemo(function () {
         return labelIcon ? (React__default.createElement(React__default.Fragment, null,
             React__default.createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
@@ -11813,7 +12395,9 @@ styleInject(css_248z$4);var PrivateInputDatePicker = React__default.forwardRef(f
         sx,
         variant,
     ]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(DesktopDatePicker, __assign$7({}, props, { ref: ref, className: classNames$1(className, 'PrivateInputDatePicker', "align-".concat(align)), open: false, value: value, format: format, disabled: disabled, readOnly: readOnly || readOnlyInput, slotProps: slotProps })));
 });
 PrivateInputDatePicker.displayName = 'PrivateInputDatePicker';
@@ -11834,15 +12418,21 @@ PrivateYearRangePickerYear.displayName = 'PrivateYearRangePickerYear';
 PrivateYearRangePickerYear.defaultProps = PrivateYearRangePickerYearDefaultProps;var StyledContainer$5 = styled(Grid)(templateObject_1$9 || (templateObject_1$9 = __makeTemplateObject(["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"], ["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"])));
 var templateObject_1$9;var _lastCloseTime$1 = 0;
 var PrivateYearRangePickerYearList = function (_a) {
-    // Ref ---------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var value = _a.value, displayValue = _a.displayValue, selectType = _a.selectType, minYear = _a.minYear, maxYear = _a.maxYear, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange;
     var yearsContainerRef = useRef(null);
     var startButtonRef = useRef(null);
     var endButtonRef = useRef(null);
     var mouseOverTimer = useRef();
-    // State -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _b = useState(), mouseOverYear = _b[0], setMouseOverYear = _b[1];
-    // Effect ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         return function () {
             if (mouseOverTimer.current) {
@@ -11900,7 +12490,9 @@ var PrivateYearRangePickerYearList = function (_a) {
             _lastCloseTime$1 = new Date().getTime();
         };
     }, [selectType]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var nowYear = useMemo(function () { return new Date().getFullYear(); }, []);
     var years = useMemo(function () {
         var newYears = [];
@@ -11918,7 +12510,9 @@ var PrivateYearRangePickerYearList = function (_a) {
         }
         return newYears;
     }, [minYear, maxYear, value, displayValue, selectType, mouseOverYear, disablePast, nowYear, disableFuture]);
-    // Function ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var mouseOver = useCallback(function (year) {
         if (mouseOverTimer.current) {
             clearTimeout(mouseOverTimer.current);
@@ -11934,7 +12528,9 @@ var PrivateYearRangePickerYearList = function (_a) {
             }, 100);
         }
     }, []);
-    // Render ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(StyledContainer$5, { className: 'PrivateYearRangePickerYearList', container: true, ref: yearsContainerRef }, years.map(function (info) { return (React__default.createElement(PrivateYearRangePickerYear, { key: info.year, ref: function (ref) {
             if (info.selectedStart) {
                 startButtonRef.current = ref;
@@ -11959,10 +12555,14 @@ var StyledActionContainer$1 = styled('div')(templateObject_5$1 || (templateObjec
 var StyledActionButton$1 = styled(Button)(templateObject_6 || (templateObject_6 = __makeTemplateObject(["\n  min-width: 0;\n  color: unset;\n  &:not(:first-child) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"], ["\n  min-width: 0;\n  color: unset;\n  &:not(:first-child) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"])));
 var templateObject_1$8, templateObject_2$5, templateObject_3$3, templateObject_4$2, templateObject_5$1, templateObject_6;var DEFAULT_VALUE$5 = [null, null];
 var PrivateYearRangePicker = function (_a) {
-    // State -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var selectType = _a.selectType, initValue = _a.value, initMinYear = _a.minYear, initMaxYear = _a.maxYear, disablePast = _a.disablePast, disableFuture = _a.disableFuture, hideHeader = _a.hideHeader, onChange = _a.onChange;
     var _b = useAutoUpdateState$1(initValue || DEFAULT_VALUE$5), value = _b[0], setValue = _b[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var nowYear = useMemo(function () { return new Date().getFullYear(); }, []);
     var minYear = useMemo(function () { return (initMinYear === undefined ? PrivateYearRangePickerDefaultProps.minYear : initMinYear); }, [initMinYear]);
     var maxYear = useMemo(function () { return (initMaxYear === undefined ? PrivateYearRangePickerDefaultProps.maxYear : initMaxYear); }, [initMaxYear]);
@@ -12001,7 +12601,9 @@ var PrivateYearRangePicker = function (_a) {
         displayValue[0] < minAvailableYear || displayValue[0] > maxAvailableYear,
         displayValue[1] < minAvailableYear || displayValue[1] > maxAvailableYear,
     ]; }, [displayValue, minAvailableYear, maxAvailableYear]);
-    // action button -----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * action button
+     * ******************************************************************************************************************/
     var getActionButton = useCallback(function (fromYear, toYear, label) {
         if (fromYear < minAvailableYear || toYear > maxAvailableYear) {
             return undefined;
@@ -12023,7 +12625,9 @@ var PrivateYearRangePicker = function (_a) {
             getActionButton(nowYear - 4, nowYear, '최근 5년'),
             getActionButton(nowYear - 9, nowYear, '최근 10년')));
     }, [getActionButton, nowYear]);
-    // Event Handler -----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleYearChange = useCallback(function (valueYear) {
         var newValue = __spreadArray([], value, true);
         if (minAvailableYear && valueYear < minAvailableYear) {
@@ -12058,7 +12662,9 @@ var PrivateYearRangePicker = function (_a) {
         }
         setValue(newValue);
     }, [value, minAvailableYear, maxAvailableYear, selectType, setValue, onChange]);
-    // Render ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement("div", { className: 'PrivateYearRangePicker' },
         !hideHeader && (React__default.createElement(StyledTitleContainer$1, null,
             displayValueError[0] ? (React__default.createElement(StyledYearError, null,
@@ -12094,16 +12700,22 @@ PrivateYearPickerYear.displayName = 'PrivateYearPickerYear';
 PrivateYearPickerYear.defaultProps = PrivateYearPickerYearDefaultProps;var StyledContainer$3 = styled(Grid)(templateObject_1$6 || (templateObject_1$6 = __makeTemplateObject(["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"], ["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"])));
 var templateObject_1$6;var _lastCloseTime = 0;
 var PrivateYearPickerYearList = function (_a) {
-    // Ref ---------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var value = _a.value, minYear = _a.minYear, maxYear = _a.maxYear, disablePast = _a.disablePast, disableFuture = _a.disableFuture, selectFromYear = _a.selectFromYear, selectToYear = _a.selectToYear, onChange = _a.onChange;
     var yearsContainerRef = useRef(null);
     var defaultButtonRef = useRef(null);
     var startButtonRef = useRef(null);
     var endButtonRef = useRef(null);
     var mouseOverTimer = useRef();
-    // State -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _b = useState(), mouseOverYear = _b[0], setMouseOverYear = _b[1];
-    // Effect ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         return function () {
             if (mouseOverTimer.current) {
@@ -12160,7 +12772,9 @@ var PrivateYearPickerYearList = function (_a) {
             _lastCloseTime = new Date().getTime();
         };
     }, [selectFromYear, selectToYear]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var nowYear = useMemo(function () { return new Date().getFullYear(); }, []);
     var defaultYear = useMemo(function () {
         var newDefaultYear = nowYear;
@@ -12206,7 +12820,9 @@ var PrivateYearPickerYearList = function (_a) {
         nowYear,
         disableFuture,
     ]);
-    // Function ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var mouseOver = useCallback(function (year) {
         if (mouseOverTimer.current) {
             clearTimeout(mouseOverTimer.current);
@@ -12222,7 +12838,9 @@ var PrivateYearPickerYearList = function (_a) {
             }, 100);
         }
     }, []);
-    // Render ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(StyledContainer$3, { className: 'PrivateYearPickerYearList', container: true, ref: yearsContainerRef }, years.map(function (info) { return (React__default.createElement(PrivateYearPickerYear, { key: info.year, ref: function (ref) {
             if (info.selectedStart) {
                 startButtonRef.current = ref;
@@ -12247,10 +12865,14 @@ var StyledYearMonthError$1 = styled('div')(templateObject_4$1 || (templateObject
     return theme.palette.error.main;
 });
 var templateObject_1$5, templateObject_2$3, templateObject_3$2, templateObject_4$1;var PrivateYearPicker = function (_a) {
-    // State -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var initValue = _a.value, initMinYear = _a.minYear, initMaxYear = _a.maxYear, disablePast = _a.disablePast, disableFuture = _a.disableFuture, hideHeader = _a.hideHeader, selectFromYear = _a.selectFromYear, selectToYear = _a.selectToYear, onChange = _a.onChange;
     var _b = useAutoUpdateState$1(initValue || null), value = _b[0], setValue = _b[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var nowYear = useMemo(function () { return new Date().getFullYear(); }, []);
     var minYear = useMemo(function () { return (initMinYear === undefined ? PrivateYearPickerDefaultProps.minYear : initMinYear); }, [initMinYear]);
     var maxYear = useMemo(function () { return (initMaxYear === undefined ? PrivateYearPickerDefaultProps.maxYear : initMaxYear); }, [initMaxYear]);
@@ -12288,7 +12910,9 @@ var templateObject_1$5, templateObject_2$3, templateObject_3$2, templateObject_4
     var displayError = useMemo(function () { return displayYear < minAvailableYear || displayYear > maxAvailableYear; }, [displayYear, minAvailableYear, maxAvailableYear]);
     var prevBtnDisabled = useMemo(function () { return displayYear <= minAvailableYear; }, [displayYear, minAvailableYear]);
     var nextBtnDisabled = useMemo(function () { return displayYear >= maxAvailableYear; }, [displayYear, maxAvailableYear]);
-    // Event Handler -----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleYearChange = useCallback(function (v) {
         if (minAvailableYear && v < minAvailableYear) {
             setValue(minAvailableYear);
@@ -12317,7 +12941,9 @@ var templateObject_1$5, templateObject_2$3, templateObject_3$2, templateObject_4
             onChange(newValue, false);
         }
     }, [displayYear, onChange, setValue]);
-    // Render ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement("div", { className: 'PrivateYearPicker' },
         !hideHeader && (React__default.createElement(StyledTitleContainer, null,
             React__default.createElement(StyledIconButton$1, { disabled: prevBtnDisabled, onClick: handlePrevClick },
@@ -12360,11 +12986,15 @@ var templateObject_1$4, templateObject_2$2;var PrivateMonthPickerMonth = React__
 PrivateMonthPickerMonth.displayName = 'PrivateMonthPickerMonth';
 PrivateMonthPickerMonth.defaultProps = PrivateMonthPickerMonthDefaultProps;var StyledContainer$1 = styled(Grid)(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  width: 240px;\n  padding: 4px;\n"], ["\n  width: 240px;\n  padding: 4px;\n"])));
 var templateObject_1$3;var PrivateMonthPickerMonthList = function (_a) {
-    // Function ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var value = _a.value, initDefaultValue = _a.defaultValue, minAvailableValue = _a.minAvailableValue, maxAvailableValue = _a.maxAvailableValue, disablePast = _a.disablePast, disableFuture = _a.disableFuture, selectFromValue = _a.selectFromValue, selectToValue = _a.selectToValue, onChange = _a.onChange;
     var valueToYm = useCallback(function (v) { return v.year * 100 + v.month; }, []);
     var dateToValue = useCallback(function (v) { return ({ year: v.year(), month: v.month() + 1 }); }, []);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var nowDate = useMemo(function () { return dayjs(); }, []);
     var nowValue = useMemo(function () { return dateToValue(nowDate); }, [dateToValue, nowDate]);
     var nowYm = useMemo(function () { return Number(nowDate.format('YYYYMM')); }, [nowDate]);
@@ -12422,7 +13052,9 @@ var templateObject_1$3;var PrivateMonthPickerMonthList = function (_a) {
     var handleMonthChange = useCallback(function (month) {
         onChange({ year: currentYear, month: month });
     }, [currentYear, onChange]);
-    // Render ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(StyledContainer$1, { className: 'PrivateMonthPickerMonthList', container: true }, months.map(function (info) { return (React__default.createElement(PrivateMonthPickerMonth, { key: info.month, month: info.month, range: info.range, isDefault: info.isDefault, active: info.active, selected: info.selected, selectedStart: info.selectedStart, selectedEnd: info.selectedEnd, selectedTemp: info.selectedTemp, disabled: info.disabled, onClick: handleMonthChange })); })));
 };
 PrivateMonthPickerMonthList.displayName = 'PrivateMonthPickerMonthList';
@@ -12435,14 +13067,20 @@ var StyledYearMonthError = styled('div')(templateObject_5 || (templateObject_5 =
     return theme.palette.error.main;
 });
 var templateObject_1$2, templateObject_2$1, templateObject_3$1, templateObject_4, templateObject_5;var PrivateMonthPicker = function (_a) {
-    // State -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var initValue = _a.value, initMinValue = _a.minValue, initMaxValue = _a.maxValue, disablePast = _a.disablePast, disableFuture = _a.disableFuture, selectFromValue = _a.selectFromValue, selectToValue = _a.selectToValue, onChange = _a.onChange;
     var _b = useAutoUpdateState$1(initValue || null), value = _b[0], setValue = _b[1];
-    // Function ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var valueToDate = useCallback(function (v) { return dayjs("".concat(v.year, "-").concat(v.month, "-01")); }, []);
     var valueToYm = useCallback(function (v) { return v.year * 100 + v.month; }, []);
     var dateToValue = useCallback(function (v) { return ({ year: v.year(), month: v.month() + 1 }); }, []);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var nowValue = useMemo(function () { return dateToValue(dayjs()); }, [dateToValue]);
     var nowYm = useMemo(function () { return valueToYm(nowValue); }, [nowValue, valueToYm]);
     var minValue = useMemo(function () { return initMinValue || PrivateMonthPickerDefaultProps.minValue; }, [initMinValue]);
@@ -12500,7 +13138,9 @@ var templateObject_1$2, templateObject_2$1, templateObject_3$1, templateObject_4
     var nextBtnDisabled = useMemo(function () { return displayValueYm >= maxAvailableYm; }, [displayValueYm, maxAvailableYm]);
     var selectFromYear = useMemo(function () { return (selectFromValue ? selectFromValue.year : undefined); }, [selectFromValue]);
     var selectToYear = useMemo(function () { return (selectToValue ? selectToValue.year : undefined); }, [selectToValue]);
-    // Event Handler -----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleYearChange = useCallback(function (year) {
         var newValue = __assign$7(__assign$7({}, displayValue), { year: year });
         var valueYm = valueToYm(newValue);
@@ -12531,7 +13171,9 @@ var templateObject_1$2, templateObject_2$1, templateObject_3$1, templateObject_4
         setValue(newValue);
         onChange(newValue, false);
     }, [dateToValue, displayValueDate, onChange, setValue]);
-    // Render ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(StyledContainer, { className: 'PrivateMonthPicker' },
         React__default.createElement(TitleContainer, null,
             React__default.createElement(StyledIconButton, { disabled: prevBtnDisabled, onClick: handlePrevClick },
@@ -12566,11 +13208,15 @@ PrivateMonthPicker.defaultProps = PrivateMonthPickerDefaultProps;var PrivateMont
 var StyledActionContainer = styled('div')(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n  &:empty {\n    display: none;\n  }\n"], ["\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n  &:empty {\n    display: none;\n  }\n"])));
 var StyledActionButton = styled(Button)(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n  min-width: 0;\n  color: unset;\n  &:not(:first-child) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"], ["\n  min-width: 0;\n  color: unset;\n  &:not(:first-child) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"])));
 var templateObject_1$1, templateObject_2, templateObject_3;var PrivateMonthRangePicker = function (_a) {
-    // Function ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var value = _a.value, initMinValue = _a.minValue, initMaxValue = _a.maxValue, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange;
     var valueToYm = useCallback(function (v) { return v.year * 100 + v.month; }, []);
     var dateToValue = useCallback(function (v) { return ({ year: v.year(), month: v.month() + 1 }); }, []);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var nowDate = useMemo(function () { return dayjs(); }, []);
     var nowValue = useMemo(function () { return dateToValue(nowDate); }, [dateToValue, nowDate]);
     var nowYm = useMemo(function () { return valueToYm(nowValue); }, [nowValue, valueToYm]);
@@ -12596,7 +13242,9 @@ var templateObject_1$1, templateObject_2, templateObject_3;var PrivateMonthRange
         }
     }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
     var maxAvailableYm = useMemo(function () { return valueToYm(maxAvailableValue); }, [maxAvailableValue, valueToYm]);
-    // Function ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (v, selectType) {
         var finalValue = [v[0], v[1]];
         if (finalValue[0]) {
@@ -12630,7 +13278,9 @@ var templateObject_1$1, templateObject_2, templateObject_3;var PrivateMonthRange
         }
         return finalValue;
     }, [maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm, valueToYm]);
-    // action button -----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * action button
+     * ******************************************************************************************************************/
     var getActionButton = useCallback(function (fromDate, toDate, label, strict) {
         var fromValue = dateToValue(fromDate);
         var fromYm = valueToYm(fromValue);
@@ -12657,7 +13307,9 @@ var templateObject_1$1, templateObject_2, templateObject_3;var PrivateMonthRange
             getActionButton(dayjs(nowDate).subtract(1, 'years').set('months', 0), dayjs(nowDate).subtract(1, 'years').set('months', 11), '작년'),
             getActionButton(dayjs(nowDate).set('months', 0), dayjs(nowDate).set('months', 11), '올해')));
     }, [getActionButton, nowDate]);
-    // Event Handler -----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleStartMonthChange = useCallback(function (v, isMonthSelect) {
         var finalValue = getFinalValue([v, value[1]], 'start');
         onChange(finalValue, 'start', isMonthSelect);
@@ -12666,7 +13318,9 @@ var templateObject_1$1, templateObject_2, templateObject_3;var PrivateMonthRange
         var finalValue = getFinalValue([value[0], v], 'end');
         onChange(finalValue, 'end', isMonthSelect);
     }, [getFinalValue, onChange, value]);
-    // Render ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement("div", null,
         React__default.createElement(Grid, { container: true, className: 'PrivateMonthRangePicker' },
             React__default.createElement(Grid, { item: true },
@@ -12678,43 +13332,61 @@ var templateObject_1$1, templateObject_2, templateObject_3;var PrivateMonthRange
 };
 PrivateMonthRangePicker.displayName = 'PrivateMonthRangePicker';
 PrivateMonthRangePicker.defaultProps = PrivateMonthRangePickerDefaultProps;var FormDatePicker = React__default.forwardRef(function (_a, ref) {
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var className = _a.className, props = __rest$4(_a, ["className"]);
     var _b = useFormState(), onAddValueItem = _b.onAddValueItem, otherFormState = __rest$4(_b, ["onAddValueItem"]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleAddValueItem = useCallback(function (id, commands) {
         commands.getType = function () { return 'FormDatePicker'; };
         onAddValueItem(id, commands);
     }, [onAddValueItem]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormContextProvider, { value: __assign$7({ onAddValueItem: handleAddValueItem }, otherFormState) },
         React__default.createElement(PrivateDatePicker, __assign$7({ className: classNames$1(className, 'FormDatePicker') }, props, { ref: ref, type: 'date' }))));
 });
 FormDatePicker.displayName = 'FormDatePicker';
 FormDatePicker.defaultProps = FormDatePickerDefaultProps;var FormDateTimePickerDefaultProps = {};var FormDateTimePicker = React__default.forwardRef(function (_a, ref) {
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var className = _a.className, props = __rest$4(_a, ["className"]);
     var _b = useFormState(), onAddValueItem = _b.onAddValueItem, otherFormState = __rest$4(_b, ["onAddValueItem"]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleAddValueItem = useCallback(function (id, commands) {
         commands.getType = function () { return 'FormDateTimePicker'; };
         onAddValueItem(id, commands);
     }, [onAddValueItem]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormContextProvider, { value: __assign$7({ onAddValueItem: handleAddValueItem }, otherFormState) },
         React__default.createElement(PrivateDateTimePicker, __assign$7({ className: classNames$1(className, 'FormDateTimePicker') }, props, { ref: ref, type: 'date_time' }))));
 });
 FormDateTimePicker.displayName = 'FormDateTimePicker';
 FormDateTimePicker.defaultProps = FormDateTimePickerDefaultProps;var FormTimePickerDefaultProps = {};var FormTimePicker = React__default.forwardRef(function (_a, ref) {
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var className = _a.className, props = __rest$4(_a, ["className"]);
     var _b = useFormState(), onAddValueItem = _b.onAddValueItem, otherFormState = __rest$4(_b, ["onAddValueItem"]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleAddValueItem = useCallback(function (id, commands) {
         commands.getType = function () { return 'FormTimePicker'; };
         onAddValueItem(id, commands);
     }, [onAddValueItem]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormContextProvider, { value: __assign$7({ onAddValueItem: handleAddValueItem }, otherFormState) },
         React__default.createElement(PrivateDateTimePicker, __assign$7({ className: classNames$1(className, 'FormTimePicker') }, props, { ref: ref, type: 'time' }))));
 });
@@ -12730,13 +13402,17 @@ FormTimePicker.defaultProps = FormTimePickerDefaultProps;var FormDateRangePicker
     calendarCount: 2,
 };var FormDateRangePickerTooltipPickerDefaultProps = {};var css_248z$3 = ".FormDateRangePickerTooltipPicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.FormDateRangePickerTooltipPicker .MuiDayPicker-header > span {\n  margin: 0;\n}\n.FormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content {\n  min-width: 292px;\n}\n.FormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root > div {\n  width: 292px;\n}\n.FormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root > div .MuiCalendarPicker-root {\n  width: 292px;\n}\n.FormDateRangePickerTooltipPicker .selected-bg {\n  display: none;\n  position: absolute;\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel {\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background-color: rgba(66, 165, 245, 0.6);\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel.ui-start, .FormDateRangePickerTooltipPicker .selected-bg.sel.s-start {\n  border-top-left-radius: 50%;\n  border-bottom-left-radius: 50%;\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel.ui-end, .FormDateRangePickerTooltipPicker .selected-bg.sel.s-end {\n  border-top-right-radius: 50%;\n  border-bottom-right-radius: 50%;\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel ~ .MuiPickersDay-root {\n  border: 0;\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel ~ .MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected) {\n  background-color: transparent;\n}\n.FormDateRangePickerTooltipPicker .focused-bg {\n  display: none;\n  position: absolute;\n}\n.FormDateRangePickerTooltipPicker .focused-bg.focused {\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  border: 2px solid #efefef;\n  border-left: 0;\n  border-right: 0;\n}\n.FormDateRangePickerTooltipPicker .focused-bg.focused.ui-start, .FormDateRangePickerTooltipPicker .focused-bg.focused.f-start {\n  border-left: 2px solid #efefef;\n  border-top-left-radius: 50%;\n  border-bottom-left-radius: 50%;\n}\n.FormDateRangePickerTooltipPicker .focused-bg.focused.ui-end, .FormDateRangePickerTooltipPicker .focused-bg.focused.f-end {\n  border-right: 2px solid #efefef;\n  border-top-right-radius: 50%;\n  border-bottom-right-radius: 50%;\n}\n.FormDateRangePickerTooltipPicker .focused-bg.focused ~ .MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected) {\n  background-color: transparent;\n}";
 styleInject(css_248z$3);var FormDateRangePickerTooltipPicker = React__default.forwardRef(function (_a, ref) {
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var selectType = _a.selectType, initValue = _a.value, focusedDate = _a.focusedDate, month = _a.month, disableFuture = _a.disableFuture, disablePast = _a.disablePast, minDate = _a.minDate, maxDate = _a.maxDate, onValueChange = _a.onValueChange, onMouseEnterPickersDay = _a.onMouseEnterPickersDay, onMonthChange = _a.onMonthChange;
     var value = useAutoUpdateState$1(useCallback(function () {
         return initValue ? initValue : [null, null];
     }, [initValue]))[0];
     var _b = useState(null), activeMonthValue = _b[0], setActiveMonthValue = _b[1];
-    // Effect ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         setActiveMonthValue(null);
     }, [selectType]);
@@ -12899,16 +13575,9 @@ styleInject(css_248z$3);var FormDateRangePickerTooltipPicker = React__default.fo
             React__default.createElement("div", { className: classNames$1('selected-bg', baseClassName, selectedClassName) }),
             React__default.createElement(PickersDay, __assign$7({}, props, { disableMargin: true, selected: props.day.isSame(startDate, 'date') || props.day.isSame(endDate, 'date'), onMouseEnter: value[0] || value[1] ? function () { return onMouseEnterPickersDay && onMouseEnterPickersDay(props.day); } : undefined }))));
     }, [value, getDateVal, baseClassNames, selectedClassNames, focusedClassNames, onMouseEnterPickersDay]);
-    // -------------------------------------------------------------------------------------------------------------------
-    // const slots = useMemo(
-    //   () => ({
-    //     previousIconButton: LeftArrowButton,
-    //     nextIconButton: RightArrowButton,
-    //     day: handleRenderDay,
-    //   }),
-    //   [LeftArrowButton, RightArrowButton, handleRenderDay]
-    // );
-    // Render ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(StaticDatePicker, { className: 'FormDateRangePickerTooltipPicker', displayStaticWrapperAs: 'desktop', slots: {
             previousIconButton: LeftArrowButton,
             nextIconButton: RightArrowButton,
@@ -12936,20 +13605,26 @@ for (var i = 0; i < 12; i += 1) {
 var FormDateRangePickerTooltipPickerContainer = React__default.forwardRef(function (_a, ref) {
     var selectType = _a.selectType, value = _a.value, calendarCount = _a.calendarCount, months = _a.months, disablePast = _a.disablePast, disableFuture = _a.disableFuture, maxDate = _a.maxDate, minDate = _a.minDate, onGetActionButtons = _a.onGetActionButtons, onChange = _a.onChange, onValueChange = _a.onValueChange, onMonthsChange = _a.onMonthsChange;
     var theme = useTheme();
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var datePicker1Ref = useRef(null);
     var datePicker2Ref = useRef(null);
     var datePicker3Ref = useRef(null);
     var yearSelectRef = useRef(null);
     var activeYearBtnRef = useRef(null);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var _b = useState(), focusedDate = _b[0], setFocusedDate = _b[1];
     var _c = useState(0), yearMonthSelectIndex = _c[0], setYearMonthSelectIndex = _c[1];
     var _d = useState(false), yearSelectOpen = _d[0], setYearSelectOpen = _d[1];
     var _e = useState(false), monthSelectOpen = _e[0], setMonthSelectOpen = _e[1];
     var customDatePickerProps = useMemo(function () { return ({ selectType: selectType, value: value, minDate: minDate, maxDate: maxDate, disableFuture: disableFuture, disablePast: disablePast, onValueChange: onValueChange }); }, [selectType, value, minDate, maxDate, disableFuture, disablePast, onValueChange]);
     var availableDate = useMemo(function () { return makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture); }, [minDate, maxDate, disablePast, disableFuture]);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (yearSelectOpen) {
             nextTick(function () {
@@ -12965,7 +13640,9 @@ var FormDateRangePickerTooltipPickerContainer = React__default.forwardRef(functi
             });
         }
     }, [yearSelectOpen]);
-    // Function --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var previousMonth = useCallback(function () {
         var _a, _b, _c;
         (_a = datePicker1Ref.current) === null || _a === void 0 ? void 0 : _a.previousMonth();
@@ -12984,7 +13661,9 @@ var FormDateRangePickerTooltipPickerContainer = React__default.forwardRef(functi
         (_b = datePicker2Ref.current) === null || _b === void 0 ? void 0 : _b.activeMonth(month.add(1, 'month'));
         (_c = datePicker3Ref.current) === null || _c === void 0 ? void 0 : _c.activeMonth(month.add(2, 'month'));
     }, []);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleFirstDatePickerMonthChange = useCallback(function (date) {
         if (onMonthsChange) {
             onMonthsChange([date, date.add(1, 'month'), date.add(2, 'month')]);
@@ -13031,7 +13710,9 @@ var FormDateRangePickerTooltipPickerContainer = React__default.forwardRef(functi
         activeMonth(months[yearMonthSelectIndex].set('month', m).subtract(yearMonthSelectIndex, 'month'));
         setMonthSelectOpen(false);
     }, [activeMonth, months, yearMonthSelectIndex]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         if (ref) {
             var commands = {
@@ -13055,7 +13736,9 @@ var FormDateRangePickerTooltipPickerContainer = React__default.forwardRef(functi
             };
         }
     }, [ref, previousMonth, nextMonth, activeMonth]);
-    // Render Function -------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render Function
+     * ******************************************************************************************************************/
     var getMonthTitle = useCallback(function (index) {
         return (React__default.createElement("div", { className: 'month-title' },
             React__default.createElement(Button, { variant: 'text', className: yearSelectOpen && yearMonthSelectIndex === index ? 'active' : undefined, onClick: function () { return handleYearSelectClick(index); } },
@@ -13065,7 +13748,9 @@ var FormDateRangePickerTooltipPickerContainer = React__default.forwardRef(functi
                 months[index].format('M월'),
                 React__default.createElement(Icon$1, null, monthSelectOpen && yearMonthSelectIndex === index ? 'arrow_drop_up' : 'arrow_drop_down'))));
     }, [yearSelectOpen, yearMonthSelectIndex, months, monthSelectOpen, handleYearSelectClick, handleMonthSelectClick]);
-    // Render - Function -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render - Function
+     * ******************************************************************************************************************/
     var getActionButton = useCallback(function (startDate, endDate, label) {
         var availableDateDate = getAvailableDate(availableDate, 'date');
         var availableDateVal = getAvailableDateVal(availableDate, 'date');
@@ -13090,7 +13775,9 @@ var FormDateRangePickerTooltipPickerContainer = React__default.forwardRef(functi
                 onChange([finalStartDate, finalEndDate]);
             } }, label));
     }, [onChange, availableDate]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     var actionButtons = useMemo(function () {
         if (onGetActionButtons) {
             return onGetActionButtons().map(function (info, idx) { return (React__default.createElement(React__default.Fragment, { key: idx }, getActionButton(info.start, info.end, info.label))); });
@@ -13191,23 +13878,31 @@ FormDateRangePickerTooltipPickerContainer.displayName = 'FormDateRangePickerTool
 FormDateRangePickerTooltipPickerContainer.defaultProps = FormDateRangePickerTooltipPickerContainerDefaultProps;var DEFAULT_VALUE$4 = [null, null];
 var DEFAULT_FORMAT$4 = 'YYYY-MM-DD';
 var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
     name = _a.name, initValue = _a.value, initData = _a.data, fromLabel = _a.fromLabel, fromLabelIcon = _a.fromLabelIcon, toLabel = _a.toLabel, toLabelIcon = _a.toLabelIcon, initCalendarCount = _a.calendarCount, initFormat = _a.format, formValueFormat = _a.formValueFormat, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, helperText = _a.helperText, formValueFromNameSuffix = _a.formValueFromNameSuffix, formValueToNameSuffix = _a.formValueToNameSuffix, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, initHidden = _a.hidden, align = _a.align, onGetActionButtons = _a.onGetActionButtons, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = useId();
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var containerRef = useRef(null);
     var startDateTextFieldRef = useRef();
     var endDateTextFieldRef = useRef();
@@ -13216,7 +13911,9 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
     var startInputDatePickerErrorRef = useRef(null);
     var endInputDatePickerErrorRef = useRef(null);
     var openValueRef = useRef();
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _c = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _c[0], setDisabled = _c[1];
     var _d = useAutoUpdateState$1(initHidden), hidden = _d[0], setHidden = _d[1];
     var _e = useAutoUpdateState$1(initError), error = _e[0], setError = _e[1];
@@ -13226,13 +13923,19 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
     var _j = useState(false), toError = _j[0], setToError = _j[1];
     var _k = useState(), toErrorHelperText = _k[0], setToErrorHelperText = _k[1];
     var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var format = useMemo(function () { return initFormat || DEFAULT_FORMAT$4; }, [initFormat]);
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         return value || DEFAULT_VALUE$4;
     }, []);
-    // Function - focus ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a;
         (_a = startDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.focus();
@@ -13246,7 +13949,9 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
             (_b = startDateTextFieldRef.current) === null || _b === void 0 ? void 0 : _b.focus();
         }
     }, [toError, startDateTextFieldRef, endDateTextFieldRef]);
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
         setError(error);
         setErrorHelperText(errorHelperText);
@@ -13259,7 +13964,9 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
         setToError(error);
         setToErrorHelperText(toErrorHelperText);
     }, []);
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
     var validate = useCallback(function (value) {
         var _a, _b;
         if (required && (value[0] == null || value[1] == null)) {
@@ -13331,13 +14038,17 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
         setFromErrorErrorHelperText,
         setToErrorErrorHelperText,
     ]);
-    // Function activeMonth --------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - activeMonth
+     * ******************************************************************************************************************/
     var activeMonth = useCallback(function (month) {
         var _a;
         setMonths([month, month.add(1, 'month'), month.add(2, 'month')]);
         (_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.activeMonth(month);
     }, [containerRef]);
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _m = useState(false), open = _m[0], setOpen = _m[1];
     var _o = useState('start'), selectType = _o[0], setSelectType = _o[1];
     var _p = useAutoUpdateState$1(useCallback(function () {
@@ -13348,7 +14059,9 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
         var now = dayjs();
         return [now, now.add(1, 'month'), now.add(2, 'month')];
     }), months = _q[0], setMonths = _q[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var inputDatePickerProps = useMemo(function () { return ({
         align: align,
         variant: variant,
@@ -13377,7 +14090,9 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
         maxDate,
     ]);
     var inputStyle = useMemo(function () { return (inputWidth != null ? { width: inputWidth } : { width: fullWidth ? undefined : 150 }); }, [inputWidth, fullWidth]);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (value !== initValue) {
             if (onChange)
@@ -13428,12 +14143,16 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
             }
         }
     }, [open]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var wrapStyle = useMemo(function () { return ({
         display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
         flex: fullWidth ? 1 : undefined,
     }); }, [hidden, fullWidth]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleChange = useCallback(function (newValue) {
         setValue(newValue);
         setOpen(false);
@@ -13542,7 +14261,9 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
                 break;
         }
     }, [handleValueChange]);
-    // Event Handler - Container ---------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler - Container
+     * ******************************************************************************************************************/
     var handleContainerFocus = useCallback(function () {
         if (closeTimeoutRef.current) {
             clearTimeout(closeTimeoutRef.current);
@@ -13602,7 +14323,9 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
             activeMonth(endValue);
         }
     }, [value, calendarCount, activeMonth, readOnly, disabled]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         if (ref || onAddValueItem) {
             var lastValue_1 = value;
@@ -13716,7 +14439,9 @@ var FormDateRangePicker = React__default.forwardRef(function (_a, ref) {
         hidden,
         setHidden,
     ]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs },
         React__default.createElement(ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
             React__default.createElement("div", { className: classNames$1(className, 'FormDateRangePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
@@ -13754,18 +14479,26 @@ FormDateRangePicker.displayName = 'FormDateRangePicker';
 FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var FormFileDefaultProps = {
     value: '',
 };var LinkDialogDefaultProps = {};var LinkDialog = function (_a) {
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var open = _a.open, onConfirm = _a.onConfirm, onCancel = _a.onCancel, onClose = _a.onClose;
     var inputRef = useRef();
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _b = useState(''), value = _b[0], setValue = _b[1];
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (!open) {
             setValue('');
         }
     }, [open]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleSubmit = useCallback(function () {
         var _a, _b;
         if ((_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.validate()) {
@@ -13780,7 +14513,9 @@ FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var FormFileD
         onCancel && onCancel();
         onClose && onClose();
     }, [onCancel, onClose]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(Dialog, { className: 'color-primary', open: !!open, maxWidth: 'sm', fullWidth: true, onClose: function (e, reason) {
             if (reason === 'backdropClick') {
                 if (empty(value)) {
@@ -13805,7 +14540,9 @@ FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var FormFileD
 LinkDialog.displayName = 'LinkDialog';
 LinkDialog.defaultProps = LinkDialogDefaultProps;var css_248z$1 = ".FormFile .control-wrap {\n  display: inline-flex;\n}\n.FormFile .control-wrap .file-name-wrap .file-name {\n  min-width: 350px;\n}\n.FormFile .control-wrap .file-name-wrap .file-name .MuiInputBase-root {\n  padding-right: 7px;\n}\n.FormFile .control-wrap .input-file {\n  display: none;\n}\n.FormFile .control-wrap .form-file-btn {\n  min-width: 0;\n  padding: 0;\n}\n.FormFile .control-wrap .form-file-btn label {\n  cursor: pointer;\n  display: flex;\n  width: 100%;\n  height: 100%;\n  justify-content: center;\n  align-items: center;\n  padding: 0 10px;\n}\n.FormFile .control-wrap .form-file-btn label .FormIcon {\n  margin-right: 5px;\n}\n.FormFile .control-wrap .form-file-btn.hidden-label label .FormIcon {\n  margin-left: 0;\n  margin-right: 0;\n}\n.FormFile .control-wrap .input-file-wrap {\n  display: flex;\n}\n.FormFile .control-wrap .input-file-wrap .input-file-btn .FormIcon {\n  margin-left: -3px;\n}\n.FormFile .control-wrap .input-file-wrap .form-file-btn:first-of-type:not(:last-of-type) {\n  border-right: 0;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.FormFile .control-wrap .input-file-wrap .form-file-btn:last-of-type:not(:first-of-type) {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.FormFile .control-wrap .input-file-wrap .form-file-btn:not(:first-of-type):not(:last-of-type) {\n  border-right: 0;\n  border-radius: 0;\n}\n.FormFile.full-width .control-wrap {\n  display: flex;\n}\n.FormFile.full-width .control-wrap .file-name-wrap {\n  flex: 1;\n}\n.FormFile.variant-standard .file-name-wrap .file-name .MuiInputBase-root {\n  padding-right: 0;\n}\n\n.FormFile:not(.hide-file-name).variant-outlined .form-file-btn label, .FormFile:not(.hide-file-name).variant-filled .form-file-btn label {\n  padding-top: 10px;\n  padding-bottom: 10px;\n}\n.FormFile:not(.hide-file-name).variant-standard .form-file-btn label {\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n.FormFile:not(.hide-file-name).size-small .form-file-btn label {\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n\n.FormFile.hide-file-name:not(.with-label).variant-outlined .form-file-btn {\n  height: 52px;\n}\n.FormFile.hide-file-name:not(.with-label).variant-filled .form-file-btn {\n  height: 52px;\n}\n.FormFile.hide-file-name:not(.with-label).variant-standard .form-file-btn {\n  height: 28px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-filled .form-file-btn {\n  height: 44px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-standard .form-file-btn {\n  height: 26px;\n}\n.FormFile.hide-file-name.with-label.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name.with-label.variant-filled .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name.with-label.variant-standard .form-file-btn {\n  height: 28px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-outlined .form-file-btn {\n  height: 24px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-filled .form-file-btn {\n  height: 31px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-standard .form-file-btn {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-filled .form-file-btn {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-standard .form-file-btn {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-outlined .form-file-btn {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-filled .form-file-btn {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-standard .form-file-btn {\n  height: 26px;\n}";
 styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
     accept = _a.accept, hideUrl = _a.hideUrl, uploadLabel = _a.uploadLabel, uploadTabIndex = _a.uploadTabIndex, hideUpload = _a.hideUpload, hideUploadLabel = _a.hideUploadLabel, linkLabel = _a.linkLabel, linkTabIndex = _a.linkTabIndex, hideLink = _a.hideLink, hideLinkLabel = _a.hideLinkLabel, removeLabel = _a.removeLabel, removeTabIndex = _a.removeTabIndex, hideRemove = _a.hideRemove, hideRemoveLabel = _a.hideRemoveLabel, maxFileSize = _a.maxFileSize, preview = _a.preview, initHidden = _a.hidden, onFile = _a.onFile, onLink = _a.onLink, 
@@ -13814,20 +14551,28 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = useId();
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onRemoveValueItem = _b.onRemoveValueItem, onValueChangeByUser = _b.onValueChangeByUser;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var textFieldRef = useRef(null);
     var fileUploadBtnRef = useRef(null);
     var linkBtnRef = useRef(null);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _c = useAutoUpdateState$1(initValue || ''), value = _c[0], setValue = _c[1];
     var fileValue = useState('')[0];
     useFirstSkipEffect$1(function () {
@@ -13837,7 +14582,9 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
             onChange(value);
         onValueChange(name, value);
     }, [value]);
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
     var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
     var _f = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _f[0], setDisabled = _f[1];
@@ -13845,13 +14592,17 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
     var _h = useState(false), isOpenLinkDialog = _h[0], setIsOpenLinkDialog = _h[1];
     var _j = useAutoUpdateState$1(initData), data = _j[0], setData = _j[1];
     var _k = useState({ open: false }), alertDialogProps = _k[0], setAlertDialogProps = _k[1];
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var label = useMemo(function () {
         return labelIcon ? (React__default.createElement(React__default.Fragment, null,
             React__default.createElement(FormIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
             React__default.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
     }, [initLabel, labelIcon]);
-    // Function - focus ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a, _b, _c;
         if (hideUrl) {
@@ -13866,12 +14617,16 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
             (_c = textFieldRef.current) === null || _c === void 0 ? void 0 : _c.focus();
         }
     }, [hideUpload, hideUrl]);
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
         setError(error);
         setErrorHelperText(errorHelperText);
     }, [setError]);
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
     var validate = useCallback(function (value) {
         var isEmptyValue = false;
         if (value) {
@@ -13894,7 +14649,9 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
         setErrorErrorHelperText(false, undefined);
         return true;
     }, [required, onValidate, setErrorErrorHelperText]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         var lastValue = value;
         var lastData = data;
@@ -13976,7 +14733,9 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
         hidden,
         setHidden,
     ]);
-    // Function --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var fileSizeCheck = useCallback(function (file) {
         if (maxFileSize) {
             return new Promise(function (resolve, reject) {
@@ -14011,7 +14770,9 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
             return Promise.resolve();
         }
     }, [maxFileSize]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleFileChange = useCallback(function (e) {
         if (onFile) {
             var target = e.currentTarget;
@@ -14055,7 +14816,9 @@ styleInject(css_248z$1);var FormFile = React__default.forwardRef(function (_a, r
             });
         }
     }, [name, onLink, onValueChangeByUser, setValue]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormFile', "variant-".concat(variant), "size-".concat(size), !!initLabel && 'with-label', !!fullWidth && 'full-width', !!hideUrl && 'hide-file-name', !!hideLink && 'hide-link', !!hideUpload && 'hide-upload', !!hideRemove && 'hide-remove', notEmpty(value) && 'with-value'), labelIcon: hideUrl ? labelIcon : undefined, label: hideUrl ? initLabel : undefined, error: error, required: required, fullWidth: fullWidth, hidden: hidden, helperText: React__default.createElement("div", null,
             preview,
             React__default.createElement("div", null, error ? errorHelperText : helperText)), hideLabel: !hideUrl, helperTextProps: {
@@ -14115,7 +14878,9 @@ styleInject(css_248z);var FormImageFile = React__default.forwardRef(function (_a
         else if (window.webkitURL)
             return window.webkitURL;
     })[0];
-    // Function --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var imageSizeCheck = useCallback(function (file) {
         if (imageSize && urlKit) {
             return new Promise(function (resolve, reject) {
@@ -14177,7 +14942,9 @@ styleInject(css_248z);var FormImageFile = React__default.forwardRef(function (_a
         }
         return Promise.resolve();
     }, [urlKit, imageSize]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleChange = useCallback(function (value) {
         setValue(value);
         onChange && onChange(value);
@@ -14220,7 +14987,9 @@ styleInject(css_248z);var FormImageFile = React__default.forwardRef(function (_a
             });
         });
     }, [onLink, imageSizeCheck]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var previewNode = useMemo(function () {
         if (preview && value) {
             return (React__default.createElement("a", { href: value, target: '_blank' },
@@ -14229,7 +14998,9 @@ styleInject(css_248z);var FormImageFile = React__default.forwardRef(function (_a
                     React__default.createElement("img", { className: 'preview-img', src: value, style: { maxHeight: previewMaxHeight || undefined }, alt: '' }))));
         }
     }, [preview, previewMaxHeight, value]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(React__default.Fragment, null,
         React__default.createElement(FormFile, __assign$7({ ref: ref, className: classNames$1(className, 'FormImageFile'), value: value, preview: previewNode, onChange: handleChange, onFile: handleFile, onLink: handleLink }, props)),
         React__default.createElement(PrivateAlertDialog, __assign$7({}, alertDialogProps, { onClose: function () { return setAlertDialogProps({ open: false }); } }))));
@@ -14250,7 +15021,9 @@ FormImageFile.defaultProps = FormImageFileDefaultProps;var FormMonthPickerDefaul
 };var DEFAULT_VALUE$3 = null;
 var DEFAULT_FORMAT$3 = 'YYYY년 MM월';
 var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
     initHidden = _a.hidden, 
@@ -14261,34 +15034,46 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = useId();
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var ratingRef = useRef(null);
     var inputRef = useRef();
     var closeTimeoutRef = useRef();
     var mouseDownTimeRef = useRef();
     var inputDatePickerErrorRef = useRef(null);
     var openValueRef = useRef();
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _c = useAutoUpdateState$1(initError), error = _c[0], setError = _c[1];
     var _d = useState(), errorHelperText = _d[0], setErrorHelperText = _d[1];
     var _e = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _e[0], setDisabled = _e[1];
     var _f = useAutoUpdateState$1(initHidden), hidden = _f[0], setHidden = _f[1];
     var _g = useAutoUpdateState$1(initData), data = _g[0], setData = _g[1];
     var _h = useState(false), open = _h[0], setOpen = _h[1];
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         return value || DEFAULT_VALUE$3;
     }, []);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _j = useAutoUpdateState$1(useCallback(function () {
         return initValue || DEFAULT_VALUE$3;
     }, [initValue])), value = _j[0], setValue = _j[1];
@@ -14299,11 +15084,15 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
             onChange(value);
         onValueChange(name, value);
     }, [value]);
-    // Function ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var valueToDate = useCallback(function (v) { return dayjs("".concat(v.year, "-").concat(v.month, "-01")); }, []);
     var valueToYm = useCallback(function (v) { return v.year * 100 + v.month; }, []);
     var dateToValue = useCallback(function (v) { return ({ year: v.year(), month: v.month() + 1 }); }, []);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var nowDate = useMemo(function () { return dayjs(); }, []);
     var nowValue = useMemo(function () { return dateToValue(nowDate); }, [dateToValue, nowDate]);
     var nowYm = useMemo(function () { return valueToYm(nowValue); }, [nowValue, valueToYm]);
@@ -14332,9 +15121,13 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
         }
     }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
     var maxAvailableYm = useMemo(function () { return valueToYm(maxAvailableValue); }, [maxAvailableValue, valueToYm]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var format = useMemo(function () { return initFormat || DEFAULT_FORMAT$3; }, [initFormat]);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (value !== initValue) {
             if (onChange)
@@ -14366,7 +15159,9 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
             }
         }
     }, [open]);
-    // Function --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a;
         (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
@@ -14398,7 +15193,9 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
         setErrorErrorHelperText(false, undefined);
         return true;
     }, [onValidate, required, setErrorErrorHelperText]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         var lastValue = value;
         var lastData = data;
@@ -14513,7 +15310,9 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
         hidden,
         setHidden,
     ]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleContainerMouseDown = useCallback(function () {
         if (closeTimeoutRef.current) {
             clearTimeout(closeTimeoutRef.current);
@@ -14556,7 +15355,9 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
         var dateYm = Number(date.format('YYYYMM'));
         return dateYm < minAvailableYm || dateYm > maxAvailableYm;
     }, [maxAvailableYm, minAvailableYm]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var inputDatePickerProps = useMemo(function () { return ({
         variant: variant,
         size: size,
@@ -14573,7 +15374,9 @@ var FormMonthPicker = React__default.forwardRef(function (_a, ref) {
         display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
         flex: fullWidth ? 1 : undefined,
     }); }, [hidden, fullWidth]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs, adapterLocale: 'ko' },
         React__default.createElement(ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
             React__default.createElement("div", { className: classNames$1(className, 'FormMonthPicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
@@ -14610,7 +15413,9 @@ FormMonthPicker.defaultProps = FormMonthPickerDefaultProps;var FormMonthRangePic
 };var DEFAULT_VALUE$2 = [null, null];
 var DEFAULT_FORMAT$2 = 'YYYY년 MM월';
 var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
     initHidden = _a.hidden, 
@@ -14621,22 +15426,30 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = useId();
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var startInputRef = useRef();
     var endInputRef = useRef();
     var startInputDatePickerErrorRef = useRef(null);
     var endInputDatePickerErrorRef = useRef(null);
     var openValueRef = useRef();
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _c = useAutoUpdateState$1(initError), error = _c[0], setError = _c[1];
     var _d = useState(), errorHelperText = _d[0], setErrorHelperText = _d[1];
     var _e = useState(false), fromError = _e[0], setFromError = _e[1];
@@ -14647,11 +15460,15 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
     var _k = useAutoUpdateState$1(initHidden), hidden = _k[0], setHidden = _k[1];
     var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
     var _m = useState(false), open = _m[0], setOpen = _m[1];
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         return value || DEFAULT_VALUE$2;
     }, []);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _o = useAutoUpdateState$1(useCallback(function () {
         return initValue || DEFAULT_VALUE$2;
     }, [initValue])), value = _o[0], setValue = _o[1];
@@ -14662,11 +15479,15 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
             onChange(value);
         onValueChange(name, value);
     }, [value]);
-    // Function ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var valueToDate = useCallback(function (v) { return dayjs("".concat(v.year, "-").concat(v.month, "-01")); }, []);
     var valueToYm = useCallback(function (v) { return v.year * 100 + v.month; }, []);
     var dateToValue = useCallback(function (v) { return ({ year: v.year(), month: v.month() + 1 }); }, []);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var nowDate = useMemo(function () { return dayjs(); }, []);
     var nowValue = useMemo(function () { return dateToValue(nowDate); }, [dateToValue, nowDate]);
     var nowYm = useMemo(function () { return valueToYm(nowValue); }, [nowValue, valueToYm]);
@@ -14698,9 +15519,13 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
         }
     }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
     var maxAvailableYm = useMemo(function () { return valueToYm(maxAvailableValue); }, [maxAvailableValue, valueToYm]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var format = useMemo(function () { return initFormat || DEFAULT_FORMAT$2; }, [initFormat]);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (value !== initValue) {
             if (onChange)
@@ -14728,7 +15553,9 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
             }
         }
     }, [open]);
-    // Function --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a;
         (_a = startInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
@@ -14781,7 +15608,9 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
         setToErrorErrorHelperText(false, undefined);
         return true;
     }, [onValidate, required, setToErrorErrorHelperText, setErrorErrorHelperText, setFromErrorErrorHelperText]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         var lastValue = value;
         var lastData = data;
@@ -14950,7 +15779,9 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
         hidden,
         setHidden,
     ]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleContainerChange = useCallback(function (newValue, selectType, isMonthSelect) {
         setValue(newValue);
         if (selectType === 'start' && isMonthSelect) {
@@ -15034,7 +15865,9 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
         var ym = dt.year() * 100 + (dt.month() + 1);
         return ym < minAvailableYm || ym > maxAvailableYm;
     }, [maxAvailableYm, minAvailableYm]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var inputDatePickerProps = useMemo(function () { return ({
         align: align,
         variant: variant,
@@ -15052,7 +15885,9 @@ var FormMonthRangePicker = React__default.forwardRef(function (_a, ref) {
         display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
         flex: fullWidth ? 1 : undefined,
     }); }, [hidden, fullWidth]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs, adapterLocale: 'ko' },
         React__default.createElement(ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
             React__default.createElement("div", { className: classNames$1(className, 'FormMonthRangePicker'), style: wrapStyle },
@@ -15087,7 +15922,9 @@ FormMonthRangePicker.defaultProps = FormMonthRangePickerDefaultProps;var FormYea
 };var DEFAULT_VALUE$1 = null;
 var DEFAULT_FORMAT$1 = 'YYYY년 MM월';
 var FormYearPicker = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
     initHidden = _a.hidden, 
@@ -15098,34 +15935,46 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = useId();
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var ratingRef = useRef(null);
     var inputRef = useRef();
     var closeTimeoutRef = useRef();
     var mouseDownTimeRef = useRef();
     var inputDatePickerErrorRef = useRef(null);
     var openValueRef = useRef();
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _c = useAutoUpdateState$1(initError), error = _c[0], setError = _c[1];
     var _d = useState(), errorHelperText = _d[0], setErrorHelperText = _d[1];
     var _e = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _e[0], setDisabled = _e[1];
     var _f = useAutoUpdateState$1(initHidden), hidden = _f[0], setHidden = _f[1];
     var _g = useAutoUpdateState$1(initData), data = _g[0], setData = _g[1];
     var _h = useState(false), open = _h[0], setOpen = _h[1];
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         return value || DEFAULT_VALUE$1;
     }, []);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _j = useAutoUpdateState$1(useCallback(function () {
         return initValue || DEFAULT_VALUE$1;
     }, [initValue])), value = _j[0], setValue = _j[1];
@@ -15136,17 +15985,25 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
             onChange(value);
         onValueChange(name, value);
     }, [value]);
-    // Function ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var valueToDate = useCallback(function (v) { return dayjs("".concat(v, "-01-01")); }, []);
     var dateToValue = useCallback(function (v) { return v.year(); }, []);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var nowYear = useMemo(function () { return new Date().getFullYear(); }, []);
     var valueDate = useMemo(function () { return (value ? valueToDate(value) : null); }, [value, valueToDate]);
     var minDate = useMemo(function () { return (minYear ? valueToDate(minYear) : undefined); }, [minYear, valueToDate]);
     var maxDate = useMemo(function () { return (maxYear ? valueToDate(maxYear) : undefined); }, [maxYear, valueToDate]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var format = useMemo(function () { return initFormat || DEFAULT_FORMAT$1; }, [initFormat]);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (value !== initValue) {
             if (onChange)
@@ -15177,7 +16034,9 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
             }
         }
     }, [open]);
-    // Function --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a;
         (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
@@ -15209,7 +16068,9 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
         setErrorErrorHelperText(false, undefined);
         return true;
     }, [onValidate, required, setErrorErrorHelperText]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         var lastValue = value;
         var lastData = data;
@@ -15292,7 +16153,9 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
         hidden,
         setHidden,
     ]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleContainerMouseDown = useCallback(function () {
         if (closeTimeoutRef.current) {
             clearTimeout(closeTimeoutRef.current);
@@ -15341,7 +16204,9 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
     var handleInputDatePickerShouldDisableYear = useCallback(function (year) {
         return (!!disablePast && year.year() < nowYear) || (!!disableFuture && year.year() > nowYear);
     }, [disableFuture, disablePast, nowYear]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var inputDatePickerProps = useMemo(function () { return ({
         variant: variant,
         size: size,
@@ -15358,7 +16223,9 @@ var FormYearPicker = React__default.forwardRef(function (_a, ref) {
         display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
         flex: fullWidth ? 1 : undefined,
     }); }, [hidden, fullWidth]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs },
         React__default.createElement(ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
             React__default.createElement("div", { className: classNames$1(className, 'FormYearPicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
@@ -15387,7 +16254,9 @@ FormYearPicker.defaultProps = FormYearPickerDefaultProps;var FormYearRangePicker
 };var DEFAULT_VALUE = [null, null];
 var DEFAULT_FORMAT = 'YYYY년 MM월';
 var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     //----------------------------------------------------------------------------------------------------------------
     initHidden = _a.hidden, 
@@ -15398,22 +16267,30 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = useId();
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
     var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
     var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
     var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
     var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
     var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
     var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var startInputRef = useRef();
     var endInputRef = useRef();
     var startInputDatePickerErrorRef = useRef(null);
     var endInputDatePickerErrorRef = useRef(null);
     var openValueRef = useRef();
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _c = useAutoUpdateState$1(initError), error = _c[0], setError = _c[1];
     var _d = useState(), errorHelperText = _d[0], setErrorHelperText = _d[1];
     var _e = useState(false), fromError = _e[0], setFromError = _e[1];
@@ -15425,11 +16302,15 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
     var _l = useAutoUpdateState$1(initData), data = _l[0], setData = _l[1];
     var _m = useState(false), open = _m[0], setOpen = _m[1];
     var _o = useState('start'), selectType = _o[0], setSelectType = _o[1];
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (value) {
         return value || DEFAULT_VALUE;
     }, []);
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
     var _p = useAutoUpdateState$1(useCallback(function () {
         return initValue || DEFAULT_VALUE;
     }, [initValue])), value = _p[0], setValue = _p[1];
@@ -15440,10 +16321,14 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
             onChange(value);
         onValueChange(name, value);
     }, [value]);
-    // Function ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var valueToDate = useCallback(function (v) { return dayjs("".concat(v, "-01-01")); }, []);
     var dateToValue = useCallback(function (v) { return v.year(); }, []);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var nowYear = useMemo(function () { return new Date().getFullYear(); }, []);
     var valueDate = useMemo(function () { return [
         !!value && !!value[0] ? valueToDate(value[0]) : null,
@@ -15453,9 +16338,13 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
     var maxYear = useMemo(function () { return Math.min(initMaxYear || FormYearRangePickerDefaultProps.maxYear, FormYearRangePickerDefaultProps.maxYear); }, [initMaxYear]);
     var minDate = useMemo(function () { return (minYear ? valueToDate(minYear) : undefined); }, [minYear, valueToDate]);
     var maxDate = useMemo(function () { return (maxYear ? valueToDate(maxYear) : undefined); }, [maxYear, valueToDate]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var format = useMemo(function () { return initFormat || DEFAULT_FORMAT; }, [initFormat]);
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (value !== initValue) {
             if (onChange)
@@ -15483,7 +16372,9 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
             }
         }
     }, [open]);
-    // Function --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var focus = useCallback(function () {
         var _a;
         (_a = startInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
@@ -15536,7 +16427,9 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
         setToErrorErrorHelperText(false, undefined);
         return true;
     }, [onValidate, required, setToErrorErrorHelperText, setErrorErrorHelperText, setFromErrorErrorHelperText]);
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
     useLayoutEffect(function () {
         var lastValue = value;
         var lastData = data;
@@ -15641,7 +16534,9 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
         hidden,
         setHidden,
     ]);
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleContainerChange = useCallback(function (newValue, selectType) {
         setValue(newValue);
         if (selectType === 'start') {
@@ -15711,7 +16606,9 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
     var handleInputDatePickerShouldDisableYear = useCallback(function (year) {
         return (!!disablePast && year.year() < nowYear) || (!!disableFuture && year.year() > nowYear);
     }, [disableFuture, disablePast, nowYear]);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var inputDatePickerProps = useMemo(function () { return ({
         align: align,
         variant: variant,
@@ -15729,7 +16626,9 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
         display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
         flex: fullWidth ? 1 : undefined,
     }); }, [hidden, fullWidth]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs },
         React__default.createElement(ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
             React__default.createElement("div", { className: classNames$1(className, 'FormYearRangePicker'), style: wrapStyle },
@@ -15757,7 +16656,209 @@ var FormYearRangePicker = React__default.forwardRef(function (_a, ref) {
                         (toError && toErrorHelperText)) && (React__default.createElement(FormHelperText, { error: error || fromError || toError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error ? errorHelperText : fromError ? fromErrorHelperText : toError ? toErrorHelperText : helperText))))));
 });
 FormYearRangePicker.displayName = 'FormYearRangePicker';
-FormYearRangePicker.defaultProps = FormYearRangePickerDefaultProps;var SearchDefaultProps = {
+FormYearRangePicker.defaultProps = FormYearRangePickerDefaultProps;var FormSwitchDefaultProps = {};var FormSwitch = React__default.forwardRef(function (_a, ref) {
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
+    var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
+    //----------------------------------------------------------------------------------------------------------------
+    initHidden = _a.hidden, 
+    //----------------------------------------------------------------------------------------------------------------
+    name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, onValue = _a.onValue, 
+    //----------------------------------------------------------------------------------------------------------------
+    switchLabel = _a.switchLabel, 
+    //----------------------------------------------------------------------------------------------------------------
+    className = _a.className, style = _a.style, sx = _a.sx;
+    var id = useId();
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit;
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
+    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
+    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
+    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
+    /********************************************************************************************************************
+     * State - FormState
+     * ******************************************************************************************************************/
+    var _c = useAutoUpdateState$1(initFocused == null ? formFocused : initFocused), focused = _c[0], setFocused = _c[1];
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
+    var inputRef = useRef();
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
+    var _d = useAutoUpdateState$1(initError), error = _d[0], setError = _d[1];
+    var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
+    var _f = useAutoUpdateState$1(initDisabled == null ? formDisabled : initDisabled), disabled = _f[0], setDisabled = _f[1];
+    var _g = useAutoUpdateState$1(initHidden), hidden = _g[0], setHidden = _g[1];
+    var _h = useAutoUpdateState$1(initData), data = _h[0], setData = _h[1];
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
+    var getFinalValue = useCallback(function (value) {
+        return onValue ? onValue(value) : value;
+    }, [onValue]);
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+    var _j = useAutoUpdateState$1(initValue || false, getFinalValue), value = _j[0], setValue = _j[1];
+    useFirstSkipEffect$1(function () {
+        if (error)
+            validate(value);
+        if (onChange)
+            onChange(value);
+        onValueChange(name, value);
+    }, [value]);
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
+    useEffect(function () {
+        if (value !== initValue) {
+            if (onChange)
+                onChange(value);
+            onValueChange(name, value);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+    var focus = useCallback(function () {
+        var _a;
+        (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+        setTimeout(function () {
+            var _a;
+            (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
+        });
+    }, []);
+    var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
+        setError(error);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
+    var validate = useCallback(function (value) {
+        if (onValidate) {
+            var onValidateResult = onValidate(value);
+            if (onValidateResult != null && onValidateResult !== true) {
+                setErrorErrorHelperText(true, onValidateResult);
+                return false;
+            }
+        }
+        setErrorErrorHelperText(false, undefined);
+        return true;
+    }, [onValidate, setErrorErrorHelperText]);
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
+    useLayoutEffect(function () {
+        var lastValue = value;
+        var lastData = data;
+        var lastDisabled = !!disabled;
+        var lastHidden = !!hidden;
+        var commands = {
+            getType: function () { return 'FormSwitch'; },
+            getName: function () { return name; },
+            getReset: function () { return getFinalValue(initValue || false); },
+            reset: function () {
+                lastValue = getFinalValue(initValue || false);
+                setValue(lastValue);
+            },
+            getValue: function () { return lastValue; },
+            setValue: function (value) {
+                lastValue = getFinalValue(value);
+                setValue(lastValue);
+            },
+            getData: function () { return lastData; },
+            setData: function (data) {
+                lastData = data;
+                setData(data);
+            },
+            isExceptValue: function () { return !!exceptValue; },
+            isDisabled: function () { return lastDisabled; },
+            setDisabled: function (disabled) {
+                lastDisabled = disabled;
+                setDisabled(disabled);
+            },
+            isHidden: function () { return lastHidden; },
+            setHidden: function (hidden) {
+                lastHidden = hidden;
+                setHidden(hidden);
+            },
+            focus: focus,
+            focusValidate: focus,
+            validate: function () { return validate(value); },
+            setError: function (error, errorHelperText) {
+                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
+            },
+        };
+        onAddValueItem(id, commands);
+        if (ref) {
+            if (typeof ref === 'function') {
+                ref(commands);
+            }
+            else {
+                ref.current = commands;
+            }
+        }
+        return function () {
+            onRemoveValueItem(id);
+            if (ref) {
+                if (typeof ref === 'function') {
+                    ref(null);
+                }
+                else {
+                    ref.current = null;
+                }
+            }
+        };
+    }, [
+        name,
+        initValue,
+        value,
+        getFinalValue,
+        exceptValue,
+        disabled,
+        focus,
+        validate,
+        ref,
+        onAddValueItem,
+        onRemoveValueItem,
+        id,
+        setValue,
+        setDisabled,
+        setErrorErrorHelperText,
+        data,
+        setData,
+        hidden,
+        setHidden,
+    ]);
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
+    var handleChange = useCallback(function (e, checked) {
+        if (readOnly) {
+            e.preventDefault();
+        }
+        else {
+            var finalValue_1 = getFinalValue(checked);
+            setValue(finalValue_1);
+            nextTick(function () {
+                onValueChangeByUser(name, finalValue_1);
+                onRequestSearchSubmit(name, finalValue_1);
+            });
+        }
+    }, [readOnly, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
+    var switchControl = useMemo(function () { return (React__default.createElement(Switch, { size: size, name: name, checked: value, disabled: disabled, onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } })); }, [disabled, handleChange, initFocused, name, setFocused, size, value]);
+    return (React__default.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames$1(className, 'FormValueItem', 'FormSwitch'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: size === 'small' ? 21 : 26, controlVerticalCenter: true, control: switchLabel ? (React__default.createElement(FormControlLabel, { control: switchControl, label: switchLabel, disabled: disabled })) : (switchControl) }));
+});
+FormSwitch.displayName = 'FormSwitch';
+FormSwitch.defaultProps = FormSwitchDefaultProps;var SearchDefaultProps = {
     color: 'primary',
 };var SearchGroupRowDefaultProps = {};var SearchGroupRow = function (_a) {
     var children = _a.children, props = __rest$4(_a, ["children"]);
@@ -15767,12 +16868,16 @@ FormYearRangePicker.defaultProps = FormYearRangePickerDefaultProps;var SearchDef
 };
 SearchGroupRow.displayName = 'SearchGroupRow';
 SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React__default.forwardRef(function (_a, ref) {
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
     var children = _a.children, className = _a.className, style = _a.style, sx = _a.sx, 
     //----------------------------------------------------------------------------------------------------------------
     color = _a.color, spacing = _a.spacing, focused = _a.focused, labelShrink = _a.labelShrink, autoSubmit = _a.autoSubmit, otherProps = __rest$4(_a, ["children", "className", "style", "sx", "color", "spacing", "focused", "labelShrink", "autoSubmit"]);
     var formRef = useRef();
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         var _a;
         if (autoSubmit) {
@@ -15780,7 +16885,9 @@ SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React__def
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var renderChildren = useMemo(function () {
         var rowItems = [];
         var basicRowItems = [];
@@ -15801,7 +16908,9 @@ SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React__def
             return rowItems;
         }
     }, [children]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormContextProvider, { value: {
             id: 'search',
             variant: 'outlined',
@@ -15879,7 +16988,9 @@ var removeReactFragment = function (el) {
     }
 };
 var SearchGroup = function (_a) {
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var children = _a.children, className = _a.className, style = _a.style, sx = _a.sx, 
     //--------------------------------------------------------------------------------------------------------------------
     max = _a.max, align = _a.align, hidden = _a.hidden, spacing = _a.spacing;
@@ -15894,7 +17005,9 @@ var SearchGroup = function (_a) {
                 return 'end';
         }
     }, [align]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(Grid, { item: true, className: classNames$1(className, 'SearchGroup'), style: { flex: max ? 1 : undefined, display: hidden ? 'none' : undefined } },
         React__default.createElement(Grid, { container: true, wrap: 'wrap', spacing: spacing, justifyContent: justifyContent, alignItems: 'start', style: style, sx: sx }, React__default.Children.map(children, function (child) {
             if (React__default.isValidElement(child)) {
@@ -15906,21 +17019,31 @@ var SearchGroup = function (_a) {
         }))));
 };
 SearchGroup.defaultProps = SearchGroupDefaultProps;var SearchButtonDefaultProps = {};var SearchButton = function (_a) {
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var children = _a.children, className = _a.className, initSx = _a.sx, startIcon = _a.startIcon, endIcon = _a.endIcon, icon = _a.icon, props = __rest$4(_a, ["children", "className", "sx", "startIcon", "endIcon", "icon"]);
     var sx = useMemo(function () { return (__assign$7({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7 }, initSx)); }, [endIcon, icon, initSx, startIcon]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(FormButton, __assign$7({ className: classNames$1(className, 'SearchButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, endIcon: endIcon, icon: icon }, props), children));
 };
 SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefaultProps = {};var SearchMenuButton = function (_a) {
-    // ID ----------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
     var children = _a.children, className = _a.className, initSx = _a.sx, menuList = _a.menuList, startIcon = _a.startIcon, icon = _a.icon, placement = _a.placement, props = __rest$4(_a, ["children", "className", "sx", "menuList", "startIcon", "icon", "placement"]);
     var buttonId = useId();
     var menuId = useId();
-    // State -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
     var _b = useState(null), anchorEl = _b[0], setAnchorEl = _b[1];
     var _c = useState('ArrowDropDown'), endIcon = _c[0], setEndIcon = _c[1];
-    // Event Handler -----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var handleClick = useCallback(function (e) {
         setAnchorEl(e.currentTarget);
         setEndIcon('ArrowDropUp');
@@ -15929,7 +17052,9 @@ SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefault
         setAnchorEl(null);
         setEndIcon('ArrowDropDown');
     }, []);
-    // Memo --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var open = useMemo(function () { return !!anchorEl; }, [anchorEl]);
     var sx = useMemo(function () { return (__assign$7({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7 }, initSx)); }, [endIcon, icon, initSx, startIcon]);
     var anchorOrigin = useMemo(function () {
@@ -15988,9 +17113,11 @@ SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefault
                 return { vertical: 'bottom', horizontal: 'left' };
         }
     }, [placement]);
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
     return (React__default.createElement(React__default.Fragment, null,
         React__default.createElement(FormButton, __assign$7({ className: classNames$1(className, 'SearchMenuButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, icon: icon }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, onClick: handleClick }), children),
         React__default.createElement(Menu, { id: menuId, "aria-labelledby": buttonId, anchorEl: anchorEl, open: open, onClose: handleClose, onClick: handleClose, anchorOrigin: anchorOrigin, transformOrigin: transformOrigin }, menuList)));
 };
-SearchMenuButton.defaultProps = SearchMenuButtonDefaultProps;export{Form,FormAutocomplete,FormAutocompleteDefaultProps,FormBlock,FormBlockDefaultProps,FormBody,FormBodyDefaultProps,FormButton,FormButtonDefaultProps,FormCheckbox,FormCheckboxDefaultProps,FormCol,FormColDefaultProps,FormCompanyNo,FormCompanyNoDefaultProps,FormContext,FormContextDefaultValue,FormContextProvider,FormDatePicker,FormDatePickerDefaultProps,FormDateRangePicker,FormDateRangePickerDefaultProps,FormDateTimePicker,FormDateTimePickerDefaultProps,FormDefaultProps,FormDivider,FormDividerDefaultProps,FormEmail,FormEmailDefaultProps,FormFile,FormFileDefaultProps,FormFooter,FormFooterDefaultProps,FormHidden,FormHiddenDefaultProps,FormIcon,FormIconDefaultProps,FormImageFile,FormImageFileDefaultProps,FormLabel,FormLabelDefaultProps,FormMobile,FormMobileDefaultProps,FormMonthPicker,FormMonthPickerDefaultProps,FormMonthRangePicker,FormMonthRangePickerDefaultProps,FormNumber,FormNumberDefaultProps,FormPassword,FormPasswordDefaultProps,FormPersonalNo,FormPersonalNoDefaultProps,FormRadioGroup,FormRadioGroupDefaultProps,FormRating,FormRatingDefaultProps,FormRow,FormRowDefaultProps,FormSearch,FormSearchDefaultProps,FormSelect,FormSelectDefaultProps,FormTag,FormTagDefaultProps,FormTel,FormTelDefaultProps,FormText,FormTextDefaultProps,FormTextEditor,FormTextEditorDefaultProps,FormTextField,FormTextFieldDefaultProps,FormTextarea,FormTextareaDefaultProps,FormTimePicker,FormTimePickerDefaultProps,FormToggleButtonGroup,FormToggleButtonGroupDefaultProps,FormUrl,FormUrlDefaultProps,FormYearPicker,FormYearPickerDefaultProps,FormYearRangePicker,FormYearRangePickerDefaultProps,Search,SearchButton,SearchButtonDefaultProps,SearchDefaultProps,SearchGroup,SearchGroupDefaultProps,SearchGroupRow,SearchGroupRowDefaultProps,SearchMenuButton,SearchMenuButtonDefaultProps,useFormState};//# sourceMappingURL=index.esm.js.map
+SearchMenuButton.defaultProps = SearchMenuButtonDefaultProps;export{Form,FormAutocomplete,FormAutocompleteDefaultProps,FormBlock,FormBlockDefaultProps,FormBody,FormBodyDefaultProps,FormButton,FormButtonDefaultProps,FormCheckbox,FormCheckboxDefaultProps,FormCol,FormColDefaultProps,FormCompanyNo,FormCompanyNoDefaultProps,FormContext,FormContextDefaultValue,FormContextProvider,FormDatePicker,FormDatePickerDefaultProps,FormDateRangePicker,FormDateRangePickerDefaultProps,FormDateTimePicker,FormDateTimePickerDefaultProps,FormDefaultProps,FormDivider,FormDividerDefaultProps,FormEmail,FormEmailDefaultProps,FormFile,FormFileDefaultProps,FormFooter,FormFooterDefaultProps,FormHidden,FormHiddenDefaultProps,FormIcon,FormIconDefaultProps,FormImageFile,FormImageFileDefaultProps,FormLabel,FormLabelDefaultProps,FormMobile,FormMobileDefaultProps,FormMonthPicker,FormMonthPickerDefaultProps,FormMonthRangePicker,FormMonthRangePickerDefaultProps,FormNumber,FormNumberDefaultProps,FormPassword,FormPasswordDefaultProps,FormPersonalNo,FormPersonalNoDefaultProps,FormRadioGroup,FormRadioGroupDefaultProps,FormRating,FormRatingDefaultProps,FormRow,FormRowDefaultProps,FormSearch,FormSearchDefaultProps,FormSelect,FormSelectDefaultProps,FormSwitch,FormSwitchDefaultProps,FormTag,FormTagDefaultProps,FormTel,FormTelDefaultProps,FormText,FormTextDefaultProps,FormTextEditor,FormTextEditorDefaultProps,FormTextField,FormTextFieldDefaultProps,FormTextarea,FormTextareaDefaultProps,FormTimePicker,FormTimePickerDefaultProps,FormToggleButtonGroup,FormToggleButtonGroupDefaultProps,FormUrl,FormUrlDefaultProps,FormYearPicker,FormYearPickerDefaultProps,FormYearRangePicker,FormYearRangePickerDefaultProps,Search,SearchButton,SearchButtonDefaultProps,SearchDefaultProps,SearchGroup,SearchGroupDefaultProps,SearchGroupRow,SearchGroupRowDefaultProps,SearchMenuButton,SearchMenuButtonDefaultProps,useFormState};//# sourceMappingURL=index.esm.js.map

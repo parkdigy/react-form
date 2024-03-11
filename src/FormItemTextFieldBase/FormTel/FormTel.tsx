@@ -4,7 +4,9 @@ import classNames from 'classnames';
 import { FormTelProps as Props, FormTelDefaultProps, FormTelCommands, FormTelValue } from './FormTel.types';
 
 const FormTel = React.forwardRef<FormTelCommands, Props>(({ className, onValue, ...props }, ref) => {
-  // Event Handler ---------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
 
   const handleValue = useCallback(
     (value: FormTelValue) => {
@@ -14,7 +16,9 @@ const FormTel = React.forwardRef<FormTelCommands, Props>(({ className, onValue, 
     [onValue]
   );
 
-  // Render ----------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <FormText ref={ref} className={classNames(className, 'FormTel')} onValue={handleValue} maxLength={13} {...props} />

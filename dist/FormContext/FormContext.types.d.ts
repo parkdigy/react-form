@@ -9,10 +9,12 @@ export interface FormContextValue<T = any, AllowUndefinedValue extends boolean =
     onValueChange(name: string, value: T): void;
     onValueChangeByUser(name: string, value: T): void;
     onRequestSearchSubmit(name: string, value: T): void;
+    /** FormRow */
     formColAutoXs?: number;
     formColWidth?: number;
     onAddFormCol?(id: string, xs: number | undefined): void;
     onRemoveFormCol?(id: string): void;
+    /** FormCol */
     formColXs?: number;
     formColWithLabel?: boolean;
     formColWithHelperText?: boolean;

@@ -53,7 +53,8 @@ export interface FormValueItemBaseCommands<
     | 'FormMonthRangePicker'
     | 'FormYearPicker'
     | 'FormYearRangePicker'
-    | 'FormFile';
+    | 'FormFile'
+    | 'FormSwitch';
   getName(): string;
   getReset(): V;
   reset(): void;

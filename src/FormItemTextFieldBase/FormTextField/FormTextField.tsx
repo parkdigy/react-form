@@ -76,15 +76,21 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     },
     ref
   ) => {
-    // ID --------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * ID
+     * ******************************************************************************************************************/
 
     const id = useId();
 
-    // Ref -------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
 
     const inputRef = useRef<HTMLInputElement>(null);
 
-    // FormState -------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * FormState
+     * ******************************************************************************************************************/
 
     const {
       variant: formVariant,
@@ -102,7 +108,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       onRequestSearchSubmit,
     } = useFormState();
 
-    // Memo - FormState ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - FormState
+     * ******************************************************************************************************************/
 
     const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
     const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
@@ -117,7 +125,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       [initFullWidth, formFullWidth]
     );
 
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
 
     const [error, setError] = useAutoUpdateState<FormTextFieldProps['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<FormTextFieldProps['helperText']>();
@@ -128,7 +138,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     const [hidden, setHidden] = useAutoUpdateState<FormTextFieldProps['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<FormTextFieldProps['data']>(initData);
 
-    // Memo - muiInputLabelProps ---------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - muiInputLabelProps
+     * ******************************************************************************************************************/
 
     const muiInputLabelProps = useMemo(() => {
       if (labelShrink || placeholder) {
@@ -141,7 +153,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       }
     }, [initMuiInputLabelProps, labelShrink, placeholder]);
 
-    // Memo - inputProps -----------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - inputProps
+     * ******************************************************************************************************************/
 
     const inputProps = useMemo(() => {
       if (readOnly != null || maxLength != null) {
@@ -164,7 +178,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       }
     }, [initInputProps, readOnly, tabIndex, maxLength]);
 
-    // Memo - style ----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - style
+     * ******************************************************************************************************************/
 
     const style = useMemo(() => {
       const newStyle = { ...initStyle };
@@ -177,7 +193,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       return newStyle;
     }, [initStyle, width, hidden]);
 
-    // Memo - label ----------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - label
+     * ******************************************************************************************************************/
 
     const label = useMemo(() => {
       return labelIcon ? (
@@ -190,7 +208,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       );
     }, [initLabel, labelIcon]);
 
-    // Function - getFinalValue ----------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - getFinalValue
+     * ******************************************************************************************************************/
 
     const getFinalValue = useCallback(
       function (value: FormTextFieldProps['value']): FormTextFieldProps['value'] {
@@ -199,7 +219,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       [onValue]
     );
 
-    // State - value ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
 
     const [value, setValue] = useAutoUpdateState<FormTextFieldProps['value']>(initValue, getFinalValue);
 
@@ -216,7 +238,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       }
     }, [value]);
 
-    // Function - focus ------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
 
     const focus = useCallback(
       function () {
@@ -229,7 +253,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       [initInputRef, inputRef]
     );
 
-    // Function - setErrorErrorHelperText -----------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
 
     const setErrorErrorHelperText = useCallback(
       function (error: boolean, errorHelperText: ReactNode) {
@@ -239,7 +265,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       [setError]
     );
 
-    // Function - validate ---------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
 
     const validate = useCallback(
       (value: FormTextFieldValue) => {
@@ -275,7 +303,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       [required, validPattern, invalidPattern, onValidate, setErrorErrorHelperText]
     );
 
-    // Memo - muiInputProps --------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo - muiInputProps
+     * ******************************************************************************************************************/
 
     const muiInputProps = useMemo(() => {
       const muiInputProps: InputProps = { ...initMuiInputProps };
@@ -342,7 +372,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       startAdornment,
     ]);
 
-    // Effect ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
 
     useEffect(() => {
       if (value !== initValue) {
@@ -352,7 +384,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Commands --------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
 
     useLayoutEffect(() => {
       if (ref || (!noFormValueItem && onAddValueItem)) {
@@ -442,7 +476,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       setHidden,
     ]);
 
-    // Event Handler ---------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
 
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -485,7 +521,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       [select, multiline, disableReturnKey, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, value]
     );
 
-    // Render ----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
 
     return (
       <TextField

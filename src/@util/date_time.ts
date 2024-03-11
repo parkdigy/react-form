@@ -109,7 +109,9 @@ export function getDateTimeFormValueFormat(type: FormDateType, time?: FormTimeTy
   }
 }
 
-// getAvailableDateValFormat -------------------------------------------------------------------------------------------
+/********************************************************************************************************************
+ * getAvailableDateValFormat
+ * ******************************************************************************************************************/
 
 export function getAvailableDateValFormat(type: FormAvailableDateType): string;
 export function getAvailableDateValFormat(type: FormDateType, time?: FormTimeType): string;
@@ -140,7 +142,9 @@ export function getAvailableDateValFormat(type: FormAvailableDateType | FormDate
   }
 }
 
-// getDateValFormat ----------------------------------------------------------------------------------------------------
+/********************************************************************************************************************
+ * getDateValFormat
+ * ******************************************************************************************************************/
 
 export function getDateValFormat(type: FormDateType, time?: FormTimeType): string {
   switch (type) {
@@ -177,7 +181,9 @@ export function getDateValFormat(type: FormDateType, time?: FormTimeType): strin
   }
 }
 
-// getAvailableDateType ------------------------------------------------------------------------------------------------
+/********************************************************************************************************************
+ * getAvailableDateType
+ * ******************************************************************************************************************/
 
 export function getAvailableDateType(type: FormDateType, time?: FormTimeType): FormAvailableDateType {
   switch (type) {
@@ -202,7 +208,9 @@ export function getAvailableDateType(type: FormDateType, time?: FormTimeType): F
   }
 }
 
-// makeAvailableDate ---------------------------------------------------------------------------------------------------
+/********************************************************************************************************************
+ * makeAvailableDate
+ * ******************************************************************************************************************/
 
 export function makeAvailableDate(
   minDate: Dayjs | undefined,
@@ -266,7 +274,9 @@ export function makeAvailableDate(
   return [minItem, maxItem];
 }
 
-// getAvailableDate -------------------------------------------------------------------------------------------------
+/********************************************************************************************************************
+ * getAvailableDate
+ * ******************************************************************************************************************/
 
 export function getAvailableDate(
   availableDate: FormAvailableDate,
@@ -301,7 +311,9 @@ export function getAvailableDate(
   ];
 }
 
-// getAvailableDateVal -------------------------------------------------------------------------------------------------
+/********************************************************************************************************************
+ * getAvailableDateVal
+ * ******************************************************************************************************************/
 
 export function getAvailableDateVal(
   availableDate: FormAvailableDate,
@@ -333,14 +345,17 @@ export function getAvailableDateVal(
   ];
 }
 
-// getDateVal ----------------------------------------------------------------------------------------------------------
-
+/********************************************************************************************************************
+ * getDateVal
+ * ******************************************************************************************************************/
 export function getDateValForAvailableDate(date: Dayjs, type: FormDateType, time?: FormTimeType): number {
   const format = getAvailableDateValFormat(type, time);
   return Number(date.format(format));
 }
 
-// isDateAvailable -----------------------------------------------------------------------------------------------------
+/********************************************************************************************************************
+ * isDateAvailable
+ * ******************************************************************************************************************/
 
 export function isDateAvailable(date: Dayjs, availableDate: FormAvailableDate, type: FormAvailableDateType): boolean;
 export function isDateAvailable(
@@ -373,7 +388,9 @@ export function isDateAvailable(
   );
 }
 
-// checkDateAvailable --------------------------------------------------------------------------------------------------
+/********************************************************************************************************************
+ * checkDateAvailable
+ * ******************************************************************************************************************/
 
 export type checkDateAvailableResult = 'available' | 'min' | 'max';
 

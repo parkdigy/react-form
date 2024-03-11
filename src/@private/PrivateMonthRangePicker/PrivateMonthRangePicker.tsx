@@ -19,12 +19,16 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
   disableFuture,
   onChange,
 }) => {
-  // Function ----------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Function
+   * ******************************************************************************************************************/
 
   const valueToYm = useCallback((v: FormMonthPickerBaseValue) => v.year * 100 + v.month, []);
   const dateToValue = useCallback((v: Dayjs) => ({ year: v.year(), month: v.month() + 1 }), []);
 
-  // Memo --------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Memo
+   * ******************************************************************************************************************/
 
   const nowDate = useMemo(() => dayjs(), []);
   const nowValue = useMemo(() => dateToValue(nowDate), [dateToValue, nowDate]);
@@ -53,7 +57,9 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
   }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
   const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue, valueToYm]);
 
-  // Function ----------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Function
+   * ******************************************************************************************************************/
 
   const getFinalValue = useCallback(
     (v: PrivateMonthRangePickerValue, selectType: PrivateMonthRangePickerSelectType) => {
@@ -89,7 +95,9 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
     [maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm, valueToYm]
   );
 
-  // action button -----------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * action button
+   * ******************************************************************************************************************/
 
   const getActionButton = useCallback(
     (fromDate: Dayjs, toDate: Dayjs, label: string, strict?: boolean) => {
@@ -140,7 +148,9 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
     );
   }, [getActionButton, nowDate]);
 
-  // Event Handler -----------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
 
   const handleStartMonthChange = useCallback(
     (v: PrivateMonthPickerBaseValue, isMonthSelect: boolean) => {
@@ -158,7 +168,9 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
     [getFinalValue, onChange, value]
   );
 
-  // Render ------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <div>

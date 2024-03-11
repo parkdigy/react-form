@@ -34,7 +34,9 @@ const FormDateRangePickerTooltipPicker = React.forwardRef<FormDateRangePickerToo
     },
     ref
   ) => {
-    // State -----------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
 
     const [value] = useAutoUpdateState<FormDateRangePickerTooltipPickerValue>(
       useCallback((): FormDateRangePickerTooltipPickerValue => {
@@ -43,7 +45,9 @@ const FormDateRangePickerTooltipPicker = React.forwardRef<FormDateRangePickerToo
     );
     const [activeMonthValue, setActiveMonthValue] = useState<FormDateRangePickerTooltipPickerDateValue>(null);
 
-    // Effect ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
 
     useEffect(() => {
       setActiveMonthValue(null);
@@ -261,18 +265,9 @@ const FormDateRangePickerTooltipPicker = React.forwardRef<FormDateRangePickerToo
       [value, getDateVal, baseClassNames, selectedClassNames, focusedClassNames, onMouseEnterPickersDay]
     );
 
-    // -------------------------------------------------------------------------------------------------------------------
-
-    // const slots = useMemo(
-    //   () => ({
-    //     previousIconButton: LeftArrowButton,
-    //     nextIconButton: RightArrowButton,
-    //     day: handleRenderDay,
-    //   }),
-    //   [LeftArrowButton, RightArrowButton, handleRenderDay]
-    // );
-
-    // Render ------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
 
     return (
       <StaticDatePicker

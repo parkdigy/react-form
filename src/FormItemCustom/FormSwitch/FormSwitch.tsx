@@ -1,20 +1,13 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { useResizeDetector } from 'react-resize-detector';
-import { Rating } from '@mui/material';
+import { FormControlLabel, Switch } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, nextTick } from '../../@util';
-import {
-  FormRatingProps as Props,
-  FormRatingDefaultProps,
-  FormRatingCommands,
-  FormRatingValue,
-} from './FormRating.types';
+import { nextTick } from '../../@util';
+import { FormSwitchProps as Props, FormSwitchDefaultProps, FormSwitchCommands } from './FormSwitch.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
-import { FormIcon } from '../../FormCommon';
 
-const FormRating = React.forwardRef<FormRatingCommands, Props>(
+const FormSwitch = React.forwardRef<FormSwitchCommands, Props>(
   (
     {
       variant: initVariant,
@@ -22,18 +15,12 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       color: initColor,
       focused: initFocused,
       //----------------------------------------------------------------------------------------------------------------
-      precision,
-      highlightSelectedOnly,
-      icon,
-      emptyIcon,
-      max,
       hidden: initHidden,
       //----------------------------------------------------------------------------------------------------------------
       name,
       labelIcon,
       label,
       readOnly,
-      required,
       disabled: initDisabled,
       error: initError,
       helperText,
@@ -44,8 +31,10 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       onValidate,
       onValue,
       //----------------------------------------------------------------------------------------------------------------
+      switchLabel,
+      //----------------------------------------------------------------------------------------------------------------
       className,
-      style: initStyle,
+      style,
       sx,
     },
     ref
@@ -91,7 +80,6 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
      * Ref
      * ******************************************************************************************************************/
 
-    const ratingRef = useRef<HTMLSpanElement>(null);
     const inputRef = useRef<HTMLInputElement>();
 
     /********************************************************************************************************************
@@ -107,21 +95,11 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
     /********************************************************************************************************************
-     * State - width, height
-     * ******************************************************************************************************************/
-
-    const { width, height } = useResizeDetector({
-      targetRef: ratingRef,
-      handleWidth: true,
-      handleHeight: true,
-    });
-
-    /********************************************************************************************************************
      * Function - getFinalValue
      * ******************************************************************************************************************/
 
     const getFinalValue = useCallback(
-      (value: number): number => {
+      (value: boolean): boolean => {
         return onValue ? onValue(value) : value;
       },
       [onValue]
@@ -131,19 +109,13 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
      * State - value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useAutoUpdateState<number>(initValue || 0, getFinalValue);
+    const [value, setValue] = useAutoUpdateState<boolean>(initValue || false, getFinalValue);
 
     useFirstSkipEffect(() => {
       if (error) validate(value);
       if (onChange) onChange(value);
       onValueChange(name, value);
     }, [value]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const style = useMemo(() => ({ width: width || 100, ...initStyle }), [initStyle, width]);
 
     /********************************************************************************************************************
      * Effect
@@ -153,10 +125,6 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       if (value !== initValue) {
         if (onChange) onChange(value);
         onValueChange(name, value);
-      }
-
-      if (ratingRef.current) {
-        inputRef.current = ratingRef.current.querySelector('input') || undefined;
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -181,12 +149,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
     );
 
     const validate = useCallback(
-      function (value: FormRatingValue) {
-        if (required && (empty(value) || value === 0)) {
-          setErrorErrorHelperText(true, '필수 선택 항목입니다.');
-          return false;
-        }
-
+      function (value: boolean) {
         if (onValidate) {
           const onValidateResult = onValidate(value);
           if (onValidateResult != null && onValidateResult !== true) {
@@ -199,7 +162,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
 
         return true;
       },
-      [required, onValidate, setErrorErrorHelperText]
+      [onValidate, setErrorErrorHelperText]
     );
 
     /********************************************************************************************************************
@@ -212,16 +175,16 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       let lastDisabled = !!disabled;
       let lastHidden = !!hidden;
 
-      const commands: FormRatingCommands = {
-        getType: () => 'FormRating',
+      const commands: FormSwitchCommands = {
+        getType: () => 'FormSwitch',
         getName: () => name,
-        getReset: () => getFinalValue(initValue || 0),
+        getReset: () => getFinalValue(initValue || false),
         reset: () => {
-          lastValue = getFinalValue(initValue || 0);
+          lastValue = getFinalValue(initValue || false);
           setValue(lastValue);
         },
         getValue: () => lastValue,
-        setValue: (value: number) => {
+        setValue: (value: boolean) => {
           lastValue = getFinalValue(value);
           setValue(lastValue);
         },
@@ -296,11 +259,11 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
      * ******************************************************************************************************************/
 
     const handleChange = useCallback(
-      (e: React.SyntheticEvent, value: number | null) => {
+      (e: React.SyntheticEvent, checked: boolean) => {
         if (readOnly) {
           e.preventDefault();
         } else {
-          const finalValue = getFinalValue(value || 0);
+          const finalValue = getFinalValue(checked);
           setValue(finalValue);
           nextTick(() => {
             onValueChangeByUser(name, finalValue);
@@ -315,53 +278,53 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
      * Render
      * ******************************************************************************************************************/
 
+    const switchControl = useMemo(
+      () => (
+        <Switch
+          size={size}
+          name={name}
+          checked={value}
+          disabled={disabled}
+          onChange={handleChange}
+          onFocus={() => setFocused(initFocused || true)}
+          onBlur={() => setFocused(initFocused || false)}
+        />
+      ),
+      [disabled, handleChange, initFocused, name, setFocused, size, value]
+    );
+
     return (
       <FormItemBase
         variant={variant}
         size={size}
         color={color}
         focused={focused}
-        className={classNames(className, 'FormValueItem', 'FormRating')}
+        className={classNames(className, 'FormValueItem', 'FormSwitch')}
         labelIcon={labelIcon}
         label={label}
         error={error}
         fullWidth={false}
-        required={required}
         helperText={error ? errorHelperText : helperText}
         helperTextProps={{ style: { marginLeft: 5 } }}
         style={style}
         sx={sx}
         hidden={hidden}
         autoSize
-        controlHeight={height || (size === 'small' ? 21 : 26)}
+        controlHeight={size === 'small' ? 21 : 26}
         controlVerticalCenter
         control={
-          <Rating
-            ref={ratingRef}
-            size={size === 'medium' ? 'large' : 'medium'}
-            name={name}
-            precision={precision}
-            highlightSelectedOnly={highlightSelectedOnly}
-            value={value}
-            disabled={disabled || readOnly}
-            max={max}
-            icon={
-              <FormIcon color={color} fontSize='inherit'>
-                {icon ? icon : 'Star'}
-              </FormIcon>
-            }
-            emptyIcon={<FormIcon fontSize='inherit'>{emptyIcon ? emptyIcon : 'StarBorder'}</FormIcon>}
-            onChange={handleChange}
-            onFocus={() => setFocused(initFocused || true)}
-            onBlur={() => setFocused(initFocused || false)}
-          />
+          switchLabel ? (
+            <FormControlLabel control={switchControl} label={switchLabel} disabled={disabled} />
+          ) : (
+            switchControl
+          )
         }
       />
     );
   }
 );
 
-FormRating.displayName = 'FormRating';
-FormRating.defaultProps = FormRatingDefaultProps;
+FormSwitch.displayName = 'FormSwitch';
+FormSwitch.defaultProps = FormSwitchDefaultProps;
 
-export default FormRating;
+export default FormSwitch;

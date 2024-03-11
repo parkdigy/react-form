@@ -32,7 +32,7 @@ import {
   FormCompanyNo,
   FormPersonalNo,
 } from '../../../../../src';
-import { ToggleButtonGroup, Checkbox, RadioGroup, Rating, FileUpload } from './sub';
+import { ToggleButtonGroup, Checkbox, RadioGroup, Rating, FileUpload, Switch } from './sub';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 
 const FormBase = () => {
@@ -295,6 +295,7 @@ const FormBase = () => {
             <Checkbox />
             <RadioGroup />
             <Rating />
+            <Switch />
           </FormBlock>
 
           <FormBlock icon='Upload' label='FormBlock 4' hidden={isFormBlock4Hidden} collapse collapseIn>

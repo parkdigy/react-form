@@ -4,7 +4,9 @@ import { FormUrlProps as Props, FormUrlDefaultProps, FormUrlCommands, FormUrlVal
 import classNames from 'classnames';
 
 const FormUrl = React.forwardRef<FormUrlCommands, Props>(({ className, onValue, ...props }, ref) => {
-  // Event Handler -----------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
 
   const handleValue = useCallback(
     (value: FormUrlValue) => {
@@ -14,7 +16,9 @@ const FormUrl = React.forwardRef<FormUrlCommands, Props>(({ className, onValue, 
     [onValue]
   );
 
-  // Render ------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <FormText ref={ref} className={classNames(className, 'FormUrl')} type='url' onValue={handleValue} {...props} />

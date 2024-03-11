@@ -14,3 +14,4 @@ export * from './FormMonthPicker';
 export * from './FormMonthRangePicker';
 export * from './FormYearPicker';
 export * from './FormYearRangePicker';
+export * from './FormSwitch';
