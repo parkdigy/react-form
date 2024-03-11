@@ -88,10 +88,14 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
      * State - value
      * ******************************************************************************************************************/
 
-    const [valueSet, setValueSet] = useState<Set<string>>(() => {
-      return new Set<string>(getFinalValue(initValue || []));
-    });
-    const [value, setValue] = useAutoUpdateState<FormTagValue>(initValue || [], getFinalValue);
+    const [value, setValue] = useState(() => getFinalValue(initValue || []));
+    const [valueSet, setValueSet] = useState(() => new Set<string>(getFinalValue(initValue || [])));
+
+    useFirstSkipEffect(() => {
+      setValue(getFinalValue(initValue || []));
+      setValueSet(new Set(getFinalValue(initValue || [])));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initValue]);
 
     useFirstSkipEffect(() => {
       if (error) validate(value);

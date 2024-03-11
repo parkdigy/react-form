@@ -2797,10 +2797,13 @@ styleInject(css_248z$j);var FormTag = React__default.forwardRef(function (_a, re
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _c = useState(function () {
-        return new Set(getFinalValue(initValue || []));
-    }), valueSet = _c[0], setValueSet = _c[1];
-    var _d = useAutoUpdateState$1(initValue || [], getFinalValue), value = _d[0], setValue = _d[1];
+    var _c = useState(function () { return getFinalValue(initValue || []); }), value = _c[0], setValue = _c[1];
+    var _d = useState(function () { return new Set(getFinalValue(initValue || [])); }), valueSet = _d[0], setValueSet = _d[1];
+    useFirstSkipEffect$1(function () {
+        setValue(getFinalValue(initValue || []));
+        setValueSet(new Set(getFinalValue(initValue || [])));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initValue]);
     useFirstSkipEffect$1(function () {
         if (error)
             validate(value);
