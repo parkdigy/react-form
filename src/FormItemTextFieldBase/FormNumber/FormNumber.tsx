@@ -19,6 +19,7 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
       suffix,
       readOnly,
       tabIndex,
+      labelShrink,
       InputProps: initMuiInputProps,
       inputProps: initInputProps,
       value: initValue,
@@ -129,6 +130,7 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
         ref={ref}
         className={classNames(className, 'FormNumber')}
         disableReturnKey
+        labelShrink={strValue === '' || strValue === undefined ? labelShrink : true}
         InputProps={muiInputProps}
         readOnly={readOnly}
         value={strValue}
