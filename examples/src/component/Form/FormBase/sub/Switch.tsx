@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormSwitch, FormCol, FormRow, FormText } from '../../../../../../src';
+import { FormSwitch, FormCol, FormRow } from '../../../../../../src';
 
 const Switch = () => {
   return (
