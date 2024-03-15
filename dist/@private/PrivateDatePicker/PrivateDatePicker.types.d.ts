@@ -3,7 +3,7 @@ import { DesktopDatePickerProps } from '@mui/x-date-pickers';
 import { CommonSxProps, FormDateType, FormDateValueItemCommands, FormTimeType, FormValueItemBaseCommands, FormValueItemProps } from '../../@types';
 import { Dayjs } from 'dayjs';
 export type PrivateDatePickerValue = Dayjs | null;
-export interface PrivateDatePickerProps extends CommonSxProps, Partial<Omit<DesktopDatePickerProps<Dayjs>, 'children' | 'className' | 'style' | 'sx' | 'value' | 'inputFormat' | 'views' | 'onChange'>>, FormValueItemProps<PrivateDatePickerValue, false> {
+export interface PrivateDatePickerProps extends CommonSxProps, Partial<Omit<DesktopDatePickerProps<Dayjs>, 'children' | 'name' | 'className' | 'style' | 'sx' | 'value' | 'inputFormat' | 'views' | 'onChange'>>, FormValueItemProps<PrivateDatePickerValue, false> {
     type: FormDateType;
     time?: FormTimeType;
     hours?: number[];

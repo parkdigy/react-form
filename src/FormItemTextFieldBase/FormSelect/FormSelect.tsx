@@ -13,7 +13,7 @@ import {
 import { useFormState } from '../../FormContext';
 import FormContextProvider from '../../FormContextProvider';
 import './FormSelect.scss';
-import FormTextField from '../FormTextField';
+import FormTextField, { FormTextFieldProps } from '../FormTextField';
 
 interface ItemValueLabelMap {
   [key: string]: ReactNode;
@@ -249,7 +249,11 @@ const FormSelect = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     const selectProps = useMemo(() => {
-      const finalSelectProps = { ...initSelectProps, displayEmpty: true, multiple: !!multiple };
+      const finalSelectProps: FormTextFieldProps['SelectProps'] = {
+        ...initSelectProps,
+        displayEmpty: true,
+        multiple: !!multiple,
+      };
       if (multiple) {
         finalSelectProps.renderValue = (selected) => {
           if (isSelectedPlaceholder) {

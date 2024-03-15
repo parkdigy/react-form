@@ -19,6 +19,7 @@ export interface PrivateDateTimePickerProps
         DesktopDateTimePickerProps<Dayjs>,
         | 'children'
         | 'className'
+        | 'name'
         | 'style'
         | 'sx'
         | 'value'

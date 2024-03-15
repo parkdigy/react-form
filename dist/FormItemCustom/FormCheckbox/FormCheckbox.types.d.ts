@@ -5,7 +5,7 @@ export type FormCheckboxValue = string | number | boolean;
 export interface FormCheckboxCommands extends Omit<FormValueItemBaseCommands<FormCheckboxValue, false>, 'getReset'>, FormCheckValueItemCommands<FormCheckboxValue> {
     getReset(): boolean;
 }
-export interface FormCheckboxProps extends CommonSxProps, Omit<CheckboxProps, 'color' | 'name' | 'inputRef' | 'action' | 'required' | 'onChange'>, Omit<FormValueItemProps<FormCheckboxValue, false>, 'value' | 'onChange'> {
+export interface FormCheckboxProps extends CommonSxProps, Omit<CheckboxProps, 'size' | 'color' | 'name' | 'inputRef' | 'action' | 'required' | 'onChange'>, Omit<FormValueItemProps<FormCheckboxValue, false>, 'value' | 'onChange'> {
     value?: FormCheckboxValue;
     uncheckedValue?: FormCheckboxValue;
     text?: ReactNode;

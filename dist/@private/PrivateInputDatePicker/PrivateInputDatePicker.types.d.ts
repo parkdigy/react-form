@@ -5,7 +5,7 @@ import { DateValidationError } from '@mui/x-date-pickers';
 import { CommonSxProps, FormValueItemProps } from '../../@types';
 import { DesktopDatePickerProps } from '@mui/x-date-pickers';
 export type PrivateInputDatePickerValue = Dayjs | null;
-export interface PrivateInputDatePickerProps extends CommonSxProps, Pick<DesktopDatePickerProps<Dayjs>, 'disablePast' | 'disableFuture' | 'shouldDisableYear' | 'shouldDisableMonth' | 'shouldDisableDate'>, Pick<FormValueItemProps<PrivateInputDatePickerValue>, 'variant' | 'size' | 'color' | 'focused' | 'fullWidth' | 'readOnly' | 'label' | 'labelIcon' | 'error'> {
+export interface PrivateInputDatePickerProps extends CommonSxProps, Pick<DesktopDatePickerProps<Dayjs>, 'name' | 'disablePast' | 'disableFuture' | 'shouldDisableYear' | 'shouldDisableMonth' | 'shouldDisableDate'>, Pick<FormValueItemProps<PrivateInputDatePickerValue>, 'variant' | 'size' | 'color' | 'focused' | 'fullWidth' | 'readOnly' | 'label' | 'labelIcon' | 'error'> {
     className?: string;
     value: PrivateInputDatePickerValue;
     disabled?: boolean;

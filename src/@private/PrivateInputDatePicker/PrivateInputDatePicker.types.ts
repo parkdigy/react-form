@@ -10,7 +10,7 @@ export interface PrivateInputDatePickerProps
   extends CommonSxProps,
     Pick<
       DesktopDatePickerProps<Dayjs>,
-      'disablePast' | 'disableFuture' | 'shouldDisableYear' | 'shouldDisableMonth' | 'shouldDisableDate'
+      'name' | 'disablePast' | 'disableFuture' | 'shouldDisableYear' | 'shouldDisableMonth' | 'shouldDisableDate'
     >,
     Pick<
       FormValueItemProps<PrivateInputDatePickerValue>,

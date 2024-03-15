@@ -17,7 +17,7 @@ export interface PrivateDatePickerProps
     Partial<
       Omit<
         DesktopDatePickerProps<Dayjs>,
-        'children' | 'className' | 'style' | 'sx' | 'value' | 'inputFormat' | 'views' | 'onChange'
+        'children' | 'name' | 'className' | 'style' | 'sx' | 'value' | 'inputFormat' | 'views' | 'onChange'
       >
     >,
     FormValueItemProps<PrivateDatePickerValue, false> {

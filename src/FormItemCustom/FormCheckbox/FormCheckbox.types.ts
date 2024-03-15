@@ -12,7 +12,7 @@ export interface FormCheckboxCommands
 
 export interface FormCheckboxProps
   extends CommonSxProps,
-    Omit<CheckboxProps, 'color' | 'name' | 'inputRef' | 'action' | 'required' | 'onChange'>,
+    Omit<CheckboxProps, 'size' | 'color' | 'name' | 'inputRef' | 'action' | 'required' | 'onChange'>,
     Omit<FormValueItemProps<FormCheckboxValue, false>, 'value' | 'onChange'> {
   value?: FormCheckboxValue;
   uncheckedValue?: FormCheckboxValue;

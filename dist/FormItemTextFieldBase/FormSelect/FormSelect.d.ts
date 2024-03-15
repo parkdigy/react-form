@@ -1,7 +1,8 @@
 import React from 'react';
 import { FormSelectCommands, FormSelectSingleValue } from './FormSelect.types';
 import './FormSelect.scss';
-declare const FormSelect: (<T extends FormSelectSingleValue, Multiple extends boolean | undefined>(props: Omit<import("../FormTextField").FormTextFieldProps<import("./FormSelect.types").FormSelectValue<T, Multiple>, false, import("./FormSelect.types").FormSelectValue<T, Multiple>>, "type" | "clear"> & {
+import { FormTextFieldProps } from '../FormTextField';
+declare const FormSelect: (<T extends FormSelectSingleValue, Multiple extends boolean | undefined>(props: Omit<FormTextFieldProps<import("./FormSelect.types").FormSelectValue<T, Multiple>, false>, "type" | "clear"> & {
     items?: import("./FormSelect.types").FormSelectItems<T> | undefined;
     multiple?: Multiple | undefined;
     checkbox?: boolean | undefined;
