@@ -1,4 +1,4 @@
-import React,{createContext,useContext,useMemo,useRef,useState,useCallback,useLayoutEffect,useEffect,useId}from'react';import classNames from'classnames';import {Box,Icon,Button,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import dayjs from'dayjs';import {useAutoUpdateState,useFirstSkipEffect}from'@pdg/react-hook';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import CircularProgress$1 from'@mui/material/CircularProgress';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import {IconText}from'@pdg/react-component';import SimpleBar from'simplebar-react';import'dayjs/locale/ko';/******************************************************************************
+import React,{createContext,useContext,useMemo,useRef,useState,useCallback,useLayoutEffect,useEffect,useId}from'react';import classNames from'classnames';import {Box,Icon,Button,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,nextTick,notEmpty,equal,telAutoDash,companyNoAutoDash,personalNoAutoDash}from'@pdg/util';import dayjs from'dayjs';import {useAutoUpdateState,useFirstSkipEffect}from'@pdg/react-hook';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import CircularProgress$1 from'@mui/material/CircularProgress';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import {PdgIconText}from'@pdg/react-component';import SimpleBar from'simplebar-react';import'dayjs/locale/ko';/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -55,355 +55,6 @@ function __makeTemplateObject(cooked, raw) {
 typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};var empty = function (v) {
-    var result = false;
-    if (v == null) {
-        result = true;
-    }
-    else if (typeof v === 'string') {
-        result = v === '';
-    }
-    else if (typeof v === 'object') {
-        if (Array.isArray(v)) {
-            result = v.length === 0;
-        }
-        else if (!(v instanceof Date)) {
-            result = Object.entries(v).length === 0;
-        }
-    }
-    return result;
-};
-var notEmpty = function (v) {
-    return !empty(v);
-};
-var isSame = function (v1, v2) {
-    if (v1 === v2)
-        return true;
-    if (typeof v1 !== typeof v2)
-        return false;
-    if (v1 == null || v2 == null)
-        return false;
-    if (Array.isArray(v1) && Array.isArray(v2)) {
-        if (v1.length !== v2.length)
-            return false;
-        for (var i = 0; i < v1.length; i += 1) {
-            if (v1[i] !== v2[i])
-                return false;
-        }
-    }
-    else {
-        return v1 === v2;
-    }
-    return true;
-};function getDateValidationErrorText(error) {
-    switch (error) {
-        case 'invalidDate':
-            return '형식이 일치하지 않습니다.';
-        case 'shouldDisableDate':
-        case 'shouldDisableMonth':
-        case 'shouldDisableYear':
-        case 'disableFuture':
-        case 'disablePast':
-        case 'minDate':
-        case 'maxDate':
-            return '선택할 수 없는 날짜입니다.';
-    }
-}
-//--------------------------------------------------------------------------------------------------------------------
-var DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
-var DEFAULT_DATE_FORM_VALUE_FORMAT = 'YYYY-MM-DD';
-var DEFAULT_DATE_TIME_HOUR_FORMAT = 'YYYY-MM-DD HH시';
-var DEFAULT_DATE_TIME_HOUR_FORM_VALUE_FORMAT = 'YYYY-MM-DD HH:00:00';
-var DEFAULT_DATE_TIME_MINUTE_FORMAT = 'YYYY-MM-DD HH:mm';
-var DEFAULT_DATE_TIME_MINUTE_FORM_VALUE_FORMAT = 'YYYY-MM-DD HH:mm:00';
-var DEFAULT_DATE_TIME_SECOND_FORMAT = 'YYYY-MM-DD HH:mm:ss';
-var DEFAULT_DATE_TIME_SECOND_FORM_VALUE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
-var DEFAULT_TIME_HOUR_FORMAT = 'HH시';
-var DEFAULT_TIME_HOUR_FORM_VALUE_FORMAT = 'HH:00:00';
-var DEFAULT_TIME_MINUTE_FORMAT = 'HH:mm';
-var DEFAULT_TIME_MINUTE_FORM_VALUE_FORMAT = 'HH:mm:00';
-var DEFAULT_TIME_SECOND_FORMAT = 'HH:mm:ss';
-var DEFAULT_TIME_SECOND_FORM_VALUE_FORMAT = 'HH:mm:ss';
-function getDateTimeFormat(type, time) {
-    switch (type) {
-        case 'date':
-            return DEFAULT_DATE_FORMAT;
-        case 'date_time':
-            if (time) {
-                switch (time) {
-                    case 'hour':
-                        return DEFAULT_DATE_TIME_HOUR_FORMAT;
-                    case 'minute':
-                        return DEFAULT_DATE_TIME_MINUTE_FORMAT;
-                    case 'second':
-                        return DEFAULT_DATE_TIME_SECOND_FORMAT;
-                }
-            }
-            else {
-                throw new Error("util::date_time::getDateTimeFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
-            }
-            break;
-        case 'time':
-            if (time) {
-                switch (time) {
-                    case 'hour':
-                        return DEFAULT_TIME_HOUR_FORMAT;
-                    case 'minute':
-                        return DEFAULT_TIME_MINUTE_FORMAT;
-                    case 'second':
-                        return DEFAULT_TIME_SECOND_FORMAT;
-                }
-            }
-            else {
-                throw new Error("util::date_time::getDateTimeFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
-            }
-            break;
-    }
-}
-function getDateTimeFormValueFormat(type, time) {
-    switch (type) {
-        case 'date':
-            return DEFAULT_DATE_FORM_VALUE_FORMAT;
-        case 'date_time':
-            if (time) {
-                switch (time) {
-                    case 'hour':
-                        return DEFAULT_DATE_TIME_HOUR_FORM_VALUE_FORMAT;
-                    case 'minute':
-                        return DEFAULT_DATE_TIME_MINUTE_FORM_VALUE_FORMAT;
-                    case 'second':
-                        return DEFAULT_DATE_TIME_SECOND_FORM_VALUE_FORMAT;
-                }
-            }
-            else {
-                throw new Error("util::date_time::getDateTimeFormValueFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
-            }
-            break;
-        case 'time':
-            if (time) {
-                switch (time) {
-                    case 'hour':
-                        return DEFAULT_TIME_HOUR_FORM_VALUE_FORMAT;
-                    case 'minute':
-                        return DEFAULT_TIME_MINUTE_FORM_VALUE_FORMAT;
-                    case 'second':
-                        return DEFAULT_TIME_SECOND_FORM_VALUE_FORMAT;
-                }
-            }
-            else {
-                throw new Error("util::date_time::getDateTimeFormValueFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
-            }
-            break;
-    }
-}
-function getAvailableDateValFormat(type, time) {
-    var availableDateType;
-    if (time) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else if (['date', 'date_time', 'time'].includes(type)) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else {
-        availableDateType = type;
-    }
-    switch (availableDateType) {
-        case 'year':
-            return 'YYYY';
-        case 'month':
-            return 'YYYYMM';
-        case 'day':
-            return 'YYYYMMDD';
-        case 'hour':
-            return 'YYYYMMDDHH';
-        case 'minute':
-            return 'YYYYMMDDHHmm';
-        case 'second':
-            return 'YYYYMMDDHHmmss';
-    }
-}
-/********************************************************************************************************************
- * getAvailableDateType
- * ******************************************************************************************************************/
-function getAvailableDateType(type, time) {
-    switch (type) {
-        case 'date':
-            return 'day';
-        case 'date_time':
-            if (time) {
-                switch (time) {
-                    case 'hour':
-                        return 'hour';
-                    case 'minute':
-                        return 'minute';
-                    case 'second':
-                        return 'second';
-                }
-            }
-            else {
-                throw new Error("util::date_time::getAvailableDateType - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
-            }
-            break;
-        case 'time':
-            throw new Error("util::date_time::getAvailableDateType - '".concat(type, "' type \uC744 \uC0AC\uC6A9\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."));
-    }
-}
-/********************************************************************************************************************
- * makeAvailableDate
- * ******************************************************************************************************************/
-function makeAvailableDate(minDate, maxDate, disablePast, disableFuture) {
-    var now = dayjs();
-    var min = null;
-    var max = null;
-    if (disablePast) {
-        min = now;
-    }
-    if (minDate) {
-        if (min) {
-            if (minDate.isAfter(min, 'date')) {
-                min = minDate;
-            }
-        }
-        else {
-            min = minDate;
-        }
-    }
-    if (disableFuture) {
-        max = now;
-    }
-    if (maxDate) {
-        if (max) {
-            if (maxDate.isBefore(max, 'date')) {
-                max = maxDate;
-            }
-        }
-        else {
-            max = maxDate;
-        }
-    }
-    var minItem = min
-        ? {
-            date: min,
-            year: Number(min.format(getAvailableDateValFormat('year'))),
-            month: Number(min.format(getAvailableDateValFormat('month'))),
-            day: Number(min.format(getAvailableDateValFormat('day'))),
-            hour: Number(min.format(getAvailableDateValFormat('hour'))),
-            minute: Number(min.format(getAvailableDateValFormat('minute'))),
-            second: Number(min.format(getAvailableDateValFormat('second'))),
-        }
-        : null;
-    var maxItem = max
-        ? {
-            date: max,
-            year: Number(max.format(getAvailableDateValFormat('year'))),
-            month: Number(max.format(getAvailableDateValFormat('month'))),
-            day: Number(max.format(getAvailableDateValFormat('day'))),
-            hour: Number(max.format(getAvailableDateValFormat('hour'))),
-            minute: Number(max.format(getAvailableDateValFormat('minute'))),
-            second: Number(max.format(getAvailableDateValFormat('second'))),
-        }
-        : null;
-    return [minItem, maxItem];
-}
-function getAvailableDate(availableDate, type, time) {
-    var availableDateType;
-    if (time) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else if (['date', 'date_time', 'time'].includes(type)) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else {
-        availableDateType = type;
-    }
-    var availableDateVal = getAvailableDateVal(availableDate, availableDateType);
-    var availableDateValFormat = getAvailableDateValFormat(availableDateType);
-    return [
-        availableDateVal[0] ? dayjs(availableDateVal[0].toString(), availableDateValFormat) : null,
-        availableDateVal[1] ? dayjs(availableDateVal[1].toString(), availableDateValFormat) : null,
-    ];
-}
-function getAvailableDateVal(availableDate, type, time) {
-    var availableDateType;
-    if (time) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else if (['date', 'date_time', 'time'].includes(type)) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else {
-        availableDateType = type;
-    }
-    return [
-        availableDate[0] ? availableDate[0][availableDateType] : null,
-        availableDate[1] ? availableDate[1][availableDateType] : null,
-    ];
-}
-/********************************************************************************************************************
- * getDateVal
- * ******************************************************************************************************************/
-function getDateValForAvailableDate(date, type, time) {
-    var format = getAvailableDateValFormat(type, time);
-    return Number(date.format(format));
-}
-function isDateAvailable(date, availableDate, type, time) {
-    var availableDateType;
-    if (time) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else if (['date', 'date_time', 'time'].includes(type)) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else {
-        availableDateType = type;
-    }
-    var dateVal = Number(date.format(getAvailableDateValFormat(availableDateType)));
-    var availableDateVal = getAvailableDateVal(availableDate, availableDateType);
-    return !((availableDateVal[0] && dateVal < availableDateVal[0]) ||
-        (availableDateVal[1] && dateVal > availableDateVal[1]));
-}
-function checkDateAvailable(date, availableDate, type, time) {
-    var availableDateType;
-    if (time) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else if (['date', 'date_time', 'time'].includes(type)) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else {
-        availableDateType = type;
-    }
-    var dateVal = Number(date.format(getAvailableDateValFormat(availableDateType)));
-    var availableDateVal = getAvailableDateVal(availableDate, availableDateType);
-    if (availableDateVal[0] && dateVal < availableDateVal[0])
-        return 'min';
-    if (availableDateVal[1] && dateVal > availableDateVal[1])
-        return 'max';
-    return 'available';
-}function getFileSizeText(bytes, dp) {
-    if (dp === void 0) { dp = 1; }
-    var thresh = 1024;
-    if (Math.abs(bytes) < thresh) {
-        return "".concat(bytes, " Byte");
-    }
-    var units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-    var u = -1;
-    var r = Math.pow(10, dp);
-    do {
-        bytes /= thresh;
-        u += 1;
-    } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
-    return "".concat(bytes.toFixed(dp), " ").concat(units[u]);
-}function ToForwardRefExoticComponent(component, ext) {
-    var fComponent = component;
-    fComponent.displayName = ext === null || ext === void 0 ? void 0 : ext.displayName;
-    fComponent.defaultProps = ext === null || ext === void 0 ? void 0 : ext.defaultProps;
-    return component;
-}
-function AutoTypeForwardRef(render) {
-    return React.forwardRef(render);
-}var nextTick = function (callback) {
-    setTimeout(callback, 1);
 };var FormDefaultProps = {
     variant: 'outlined',
     size: 'medium',
@@ -1797,7 +1448,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
      * Effect
      * ******************************************************************************************************************/
     useEffect(function () {
-        if (!isSame(value, initValue)) {
+        if (!equal(value, initValue)) {
             if (onChange)
                 onChange(value);
             onValueChange(name, value);
@@ -1848,7 +1499,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
                 setValue(lastValue);
             }, getValue: function () { return lastValue; }, setValue: function (newValue) {
                 var finalValue = getFinalValue(newValue);
-                if (!isSame(lastValue, finalValue)) {
+                if (!equal(lastValue, finalValue)) {
                     lastValue = finalValue;
                     setValueSet(new Set(lastValue));
                     setValue(lastValue);
@@ -2025,7 +1676,7 @@ var templateObject_1$b;var FormTelDefaultProps = __assign(__assign({}, FormTextD
      * ******************************************************************************************************************/
     var className = _a.className, onValue = _a.onValue, props = __rest(_a, ["className", "onValue"]);
     var handleValue = useCallback(function (value) {
-        var newValue = autoDash$2(value.replace(/[^0-9]/gi, ''));
+        var newValue = telAutoDash(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     /********************************************************************************************************************
@@ -2034,72 +1685,7 @@ var templateObject_1$b;var FormTelDefaultProps = __assign(__assign({}, FormTextD
     return (React.createElement(FormText, __assign({ ref: ref, className: classNames(className, 'FormTel'), onValue: handleValue, maxLength: 13 }, props)));
 });
 FormTel.displayName = 'FormTel';
-FormTel.defaultProps = FormTelDefaultProps;
-function autoDash$2(tel) {
-    var str = tel.replace(/[^0-9*]/g, '');
-    var isLastDash = tel.substring(tel.length - 1, tel.length) === '-';
-    if (str.substring(0, 1) !== '0' && !['15', '16', '18'].includes(str.substring(0, 2))) {
-        return tel;
-    }
-    var tmp = '';
-    var preLen;
-    switch (str.substring(0, 2)) {
-        case '02':
-            preLen = 2;
-            break;
-        case '15':
-        case '16':
-        case '18':
-            preLen = 4;
-            break;
-        default:
-            preLen = 3;
-    }
-    if (['15', '16', '18'].includes(str.substring(0, 2))) {
-        if (str.length <= preLen) {
-            tmp = str;
-        }
-        else if (str.length <= preLen + 4) {
-            tmp += str.substring(0, preLen);
-            tmp += '-';
-            tmp += str.substring(preLen);
-        }
-        else {
-            tmp = str;
-        }
-    }
-    else if (str.length <= preLen) {
-        tmp = str;
-    }
-    else if (str.length <= preLen + 3) {
-        tmp += str.substring(0, preLen);
-        tmp += '-';
-        tmp += str.substring(preLen);
-    }
-    else if (str.length <= preLen + 7) {
-        tmp += str.substring(0, preLen);
-        tmp += '-';
-        tmp += str.substring(preLen, preLen + 3);
-        tmp += '-';
-        tmp += str.substring(preLen + 3);
-    }
-    else if (str.length <= preLen + 8) {
-        tmp += str.substring(0, preLen);
-        tmp += '-';
-        tmp += str.substring(preLen, preLen + 4);
-        tmp += '-';
-        tmp += str.substring(preLen + 4);
-    }
-    else {
-        tmp = str;
-    }
-    if (isLastDash) {
-        if (str.length === preLen) {
-            tmp += '-';
-        }
-    }
-    return tmp;
-}var FormMobileDefaultProps = __assign(__assign({}, FormTelDefaultProps), { validPattern: /(^(01(?:0|1|[6-9]))([0-9]{3,4})([0-9]{4,4})$)|(^(01(?:0|1|[6-9]))-([0-9]{3,4})-([0-9]{4,4})$)|(^\+(?:[-]?[0-9]){8,}$)/ });var FormMobile = React.forwardRef(function (_a, ref) {
+FormTel.defaultProps = FormTelDefaultProps;var FormMobileDefaultProps = __assign(__assign({}, FormTelDefaultProps), { validPattern: /(^(01(?:0|1|[6-9]))([0-9]{3,4})([0-9]{4,4})$)|(^(01(?:0|1|[6-9]))-([0-9]{3,4})-([0-9]{4,4})$)|(^\+(?:[-]?[0-9]){8,}$)/ });var FormMobile = React.forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest(_a, ["className"]);
     return React.createElement(FormTel, __assign({ ref: ref, className: classNames(className, 'FormMobile') }, props));
 });
@@ -2214,7 +1800,314 @@ FormTextarea.defaultProps = FormTextareaDefaultProps;var FormUrlDefaultProps = _
     return (React.createElement(FormText, __assign({ ref: ref, className: classNames(className, 'FormUrl'), type: 'url', onValue: handleValue }, props)));
 });
 FormUrl.displayName = 'FormUrl';
-FormUrl.defaultProps = FormUrlDefaultProps;var FormSelectDefaultProps = __assign(__assign({}, FormTextFieldDefaultProps), { formValueSeparator: ',', minWidth: 120 });var css_248z$f = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
+FormUrl.defaultProps = FormUrlDefaultProps;function getDateValidationErrorText(error) {
+    switch (error) {
+        case 'invalidDate':
+            return '형식이 일치하지 않습니다.';
+        case 'shouldDisableDate':
+        case 'shouldDisableMonth':
+        case 'shouldDisableYear':
+        case 'disableFuture':
+        case 'disablePast':
+        case 'minDate':
+        case 'maxDate':
+            return '선택할 수 없는 날짜입니다.';
+    }
+}
+//--------------------------------------------------------------------------------------------------------------------
+var DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
+var DEFAULT_DATE_FORM_VALUE_FORMAT = 'YYYY-MM-DD';
+var DEFAULT_DATE_TIME_HOUR_FORMAT = 'YYYY-MM-DD HH시';
+var DEFAULT_DATE_TIME_HOUR_FORM_VALUE_FORMAT = 'YYYY-MM-DD HH:00:00';
+var DEFAULT_DATE_TIME_MINUTE_FORMAT = 'YYYY-MM-DD HH:mm';
+var DEFAULT_DATE_TIME_MINUTE_FORM_VALUE_FORMAT = 'YYYY-MM-DD HH:mm:00';
+var DEFAULT_DATE_TIME_SECOND_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+var DEFAULT_DATE_TIME_SECOND_FORM_VALUE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+var DEFAULT_TIME_HOUR_FORMAT = 'HH시';
+var DEFAULT_TIME_HOUR_FORM_VALUE_FORMAT = 'HH:00:00';
+var DEFAULT_TIME_MINUTE_FORMAT = 'HH:mm';
+var DEFAULT_TIME_MINUTE_FORM_VALUE_FORMAT = 'HH:mm:00';
+var DEFAULT_TIME_SECOND_FORMAT = 'HH:mm:ss';
+var DEFAULT_TIME_SECOND_FORM_VALUE_FORMAT = 'HH:mm:ss';
+function getDateTimeFormat(type, time) {
+    switch (type) {
+        case 'date':
+            return DEFAULT_DATE_FORMAT;
+        case 'date_time':
+            if (time) {
+                switch (time) {
+                    case 'hour':
+                        return DEFAULT_DATE_TIME_HOUR_FORMAT;
+                    case 'minute':
+                        return DEFAULT_DATE_TIME_MINUTE_FORMAT;
+                    case 'second':
+                        return DEFAULT_DATE_TIME_SECOND_FORMAT;
+                }
+            }
+            else {
+                throw new Error("util::date_time::getDateTimeFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
+            }
+            break;
+        case 'time':
+            if (time) {
+                switch (time) {
+                    case 'hour':
+                        return DEFAULT_TIME_HOUR_FORMAT;
+                    case 'minute':
+                        return DEFAULT_TIME_MINUTE_FORMAT;
+                    case 'second':
+                        return DEFAULT_TIME_SECOND_FORMAT;
+                }
+            }
+            else {
+                throw new Error("util::date_time::getDateTimeFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
+            }
+            break;
+    }
+}
+function getDateTimeFormValueFormat(type, time) {
+    switch (type) {
+        case 'date':
+            return DEFAULT_DATE_FORM_VALUE_FORMAT;
+        case 'date_time':
+            if (time) {
+                switch (time) {
+                    case 'hour':
+                        return DEFAULT_DATE_TIME_HOUR_FORM_VALUE_FORMAT;
+                    case 'minute':
+                        return DEFAULT_DATE_TIME_MINUTE_FORM_VALUE_FORMAT;
+                    case 'second':
+                        return DEFAULT_DATE_TIME_SECOND_FORM_VALUE_FORMAT;
+                }
+            }
+            else {
+                throw new Error("util::date_time::getDateTimeFormValueFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
+            }
+            break;
+        case 'time':
+            if (time) {
+                switch (time) {
+                    case 'hour':
+                        return DEFAULT_TIME_HOUR_FORM_VALUE_FORMAT;
+                    case 'minute':
+                        return DEFAULT_TIME_MINUTE_FORM_VALUE_FORMAT;
+                    case 'second':
+                        return DEFAULT_TIME_SECOND_FORM_VALUE_FORMAT;
+                }
+            }
+            else {
+                throw new Error("util::date_time::getDateTimeFormValueFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
+            }
+            break;
+    }
+}
+function getAvailableDateValFormat(type, time) {
+    var availableDateType;
+    if (time) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else if (['date', 'date_time', 'time'].includes(type)) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else {
+        availableDateType = type;
+    }
+    switch (availableDateType) {
+        case 'year':
+            return 'YYYY';
+        case 'month':
+            return 'YYYYMM';
+        case 'day':
+            return 'YYYYMMDD';
+        case 'hour':
+            return 'YYYYMMDDHH';
+        case 'minute':
+            return 'YYYYMMDDHHmm';
+        case 'second':
+            return 'YYYYMMDDHHmmss';
+    }
+}
+/********************************************************************************************************************
+ * getAvailableDateType
+ * ******************************************************************************************************************/
+function getAvailableDateType(type, time) {
+    switch (type) {
+        case 'date':
+            return 'day';
+        case 'date_time':
+            if (time) {
+                switch (time) {
+                    case 'hour':
+                        return 'hour';
+                    case 'minute':
+                        return 'minute';
+                    case 'second':
+                        return 'second';
+                }
+            }
+            else {
+                throw new Error("util::date_time::getAvailableDateType - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
+            }
+            break;
+        case 'time':
+            throw new Error("util::date_time::getAvailableDateType - '".concat(type, "' type \uC744 \uC0AC\uC6A9\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."));
+    }
+}
+/********************************************************************************************************************
+ * makeAvailableDate
+ * ******************************************************************************************************************/
+function makeAvailableDate(minDate, maxDate, disablePast, disableFuture) {
+    var now = dayjs();
+    var min = null;
+    var max = null;
+    if (disablePast) {
+        min = now;
+    }
+    if (minDate) {
+        if (min) {
+            if (minDate.isAfter(min, 'date')) {
+                min = minDate;
+            }
+        }
+        else {
+            min = minDate;
+        }
+    }
+    if (disableFuture) {
+        max = now;
+    }
+    if (maxDate) {
+        if (max) {
+            if (maxDate.isBefore(max, 'date')) {
+                max = maxDate;
+            }
+        }
+        else {
+            max = maxDate;
+        }
+    }
+    var minItem = min
+        ? {
+            date: min,
+            year: Number(min.format(getAvailableDateValFormat('year'))),
+            month: Number(min.format(getAvailableDateValFormat('month'))),
+            day: Number(min.format(getAvailableDateValFormat('day'))),
+            hour: Number(min.format(getAvailableDateValFormat('hour'))),
+            minute: Number(min.format(getAvailableDateValFormat('minute'))),
+            second: Number(min.format(getAvailableDateValFormat('second'))),
+        }
+        : null;
+    var maxItem = max
+        ? {
+            date: max,
+            year: Number(max.format(getAvailableDateValFormat('year'))),
+            month: Number(max.format(getAvailableDateValFormat('month'))),
+            day: Number(max.format(getAvailableDateValFormat('day'))),
+            hour: Number(max.format(getAvailableDateValFormat('hour'))),
+            minute: Number(max.format(getAvailableDateValFormat('minute'))),
+            second: Number(max.format(getAvailableDateValFormat('second'))),
+        }
+        : null;
+    return [minItem, maxItem];
+}
+function getAvailableDate(availableDate, type, time) {
+    var availableDateType;
+    if (time) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else if (['date', 'date_time', 'time'].includes(type)) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else {
+        availableDateType = type;
+    }
+    var availableDateVal = getAvailableDateVal(availableDate, availableDateType);
+    var availableDateValFormat = getAvailableDateValFormat(availableDateType);
+    return [
+        availableDateVal[0] ? dayjs(availableDateVal[0].toString(), availableDateValFormat) : null,
+        availableDateVal[1] ? dayjs(availableDateVal[1].toString(), availableDateValFormat) : null,
+    ];
+}
+function getAvailableDateVal(availableDate, type, time) {
+    var availableDateType;
+    if (time) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else if (['date', 'date_time', 'time'].includes(type)) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else {
+        availableDateType = type;
+    }
+    return [
+        availableDate[0] ? availableDate[0][availableDateType] : null,
+        availableDate[1] ? availableDate[1][availableDateType] : null,
+    ];
+}
+/********************************************************************************************************************
+ * getDateVal
+ * ******************************************************************************************************************/
+function getDateValForAvailableDate(date, type, time) {
+    var format = getAvailableDateValFormat(type, time);
+    return Number(date.format(format));
+}
+function isDateAvailable(date, availableDate, type, time) {
+    var availableDateType;
+    if (time) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else if (['date', 'date_time', 'time'].includes(type)) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else {
+        availableDateType = type;
+    }
+    var dateVal = Number(date.format(getAvailableDateValFormat(availableDateType)));
+    var availableDateVal = getAvailableDateVal(availableDate, availableDateType);
+    return !((availableDateVal[0] && dateVal < availableDateVal[0]) ||
+        (availableDateVal[1] && dateVal > availableDateVal[1]));
+}
+function checkDateAvailable(date, availableDate, type, time) {
+    var availableDateType;
+    if (time) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else if (['date', 'date_time', 'time'].includes(type)) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else {
+        availableDateType = type;
+    }
+    var dateVal = Number(date.format(getAvailableDateValFormat(availableDateType)));
+    var availableDateVal = getAvailableDateVal(availableDate, availableDateType);
+    if (availableDateVal[0] && dateVal < availableDateVal[0])
+        return 'min';
+    if (availableDateVal[1] && dateVal > availableDateVal[1])
+        return 'max';
+    return 'available';
+}function getFileSizeText(bytes, dp) {
+    if (dp === void 0) { dp = 1; }
+    var thresh = 1024;
+    if (Math.abs(bytes) < thresh) {
+        return "".concat(bytes, " Byte");
+    }
+    var units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    var u = -1;
+    var r = Math.pow(10, dp);
+    do {
+        bytes /= thresh;
+        u += 1;
+    } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
+    return "".concat(bytes.toFixed(dp), " ").concat(units[u]);
+}function ToForwardRefExoticComponent(component, ext) {
+    var fComponent = component;
+    fComponent.displayName = ext === null || ext === void 0 ? void 0 : ext.displayName;
+    fComponent.defaultProps = ext === null || ext === void 0 ? void 0 : ext.defaultProps;
+    return component;
+}
+function AutoTypeForwardRef(render) {
+    return React.forwardRef(render);
+}var FormSelectDefaultProps = __assign(__assign({}, FormTextFieldDefaultProps), { formValueSeparator: ',', minWidth: 120 });var css_248z$f = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
 styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * type
@@ -2364,7 +2257,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
      * Effect
      * ******************************************************************************************************************/
     useEffect(function () {
-        if (!isSame(value, initValue)) {
+        if (!equal(value, initValue)) {
             if (onChange)
                 onChange(value);
             onValueChange(name, value);
@@ -2498,7 +2391,7 @@ FormSelect.defaultProps = FormSelectDefaultProps;var FormCompanyNoDefaultProps =
      * ******************************************************************************************************************/
     var className = _a.className, onValue = _a.onValue, props = __rest(_a, ["className", "onValue"]);
     var handleValue = useCallback(function (value) {
-        var newValue = autoDash$1(value.replace(/[^0-9]/gi, ''));
+        var newValue = companyNoAutoDash(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     /********************************************************************************************************************
@@ -2507,24 +2400,13 @@ FormSelect.defaultProps = FormSelectDefaultProps;var FormCompanyNoDefaultProps =
     return (React.createElement(FormText, __assign({ ref: ref, className: classNames(className, 'FormCompanyNo'), maxLength: 12, onValue: handleValue }, props)));
 });
 FormCompanyNo.displayName = 'FormCompanyNo';
-FormCompanyNo.defaultProps = FormCompanyNoDefaultProps;
-function autoDash$1(companyNo) {
-    var str = companyNo.replace(/[^0-9]/g, '');
-    var tmp = '';
-    for (var i = 0; i < str.length; i += 1) {
-        if (i === 3 || i === 5) {
-            tmp += '-';
-        }
-        tmp += str[i];
-    }
-    return tmp;
-}var FormPersonalNoDefaultProps = __assign(__assign({}, FormTextDefaultProps), { validPattern: /(([0-9]{6})([0-9]{7}))|(([0-9]{6})-([0-9]{7}))/ });var FormPersonalNo = React.forwardRef(function (_a, ref) {
+FormCompanyNo.defaultProps = FormCompanyNoDefaultProps;var FormPersonalNoDefaultProps = __assign(__assign({}, FormTextDefaultProps), { validPattern: /(([0-9]{6})([0-9]{7}))|(([0-9]{6})-([0-9]{7}))/ });var FormPersonalNo = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
     var className = _a.className, skipPersonalNumberValidateCheck = _a.skipPersonalNumberValidateCheck, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest(_a, ["className", "skipPersonalNumberValidateCheck", "onValue", "onValidate"]);
     var handleValue = useCallback(function (value) {
-        var newValue = autoDash(value.replace(/[^0-9]/gi, ''));
+        var newValue = personalNoAutoDash(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     var handleValidate = useCallback(function (value) {
@@ -2567,18 +2449,7 @@ function autoDash$1(companyNo) {
     return (React.createElement(FormText, __assign({ ref: ref, className: classNames(className, 'FormPersonalNo'), maxLength: 14, onValue: handleValue, onValidate: handleValidate }, props)));
 });
 FormPersonalNo.displayName = 'FormPersonalNo';
-FormPersonalNo.defaultProps = FormPersonalNoDefaultProps;
-function autoDash(personalNo) {
-    var str = personalNo.replace(/[^0-9]/g, '');
-    var tmp = '';
-    for (var i = 0; i < str.length; i += 1) {
-        if (i === 6) {
-            tmp += '-';
-        }
-        tmp += str[i];
-    }
-    return tmp;
-}var FormCheckboxDefaultProps = {
+FormPersonalNo.defaultProps = FormPersonalNoDefaultProps;var FormCheckboxDefaultProps = {
     checked: false,
     value: 1,
     uncheckedValue: 0,
@@ -3695,7 +3566,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                 }
             }
             finalValue_1 = getFinalValue(finalValue_1);
-            if (!isSame(value, finalValue_1)) {
+            if (!equal(value, finalValue_1)) {
                 setValue(finalValue_1);
                 nextTick(function () {
                     onValueChangeByUser(name, finalValue_1);
@@ -4412,9 +4283,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                 }
             }
         }
-        if (oldComponentValueRef.current &&
-            newComponentValue &&
-            isSame(oldComponentValueRef.current, newComponentValue)) {
+        if (oldComponentValueRef.current && newComponentValue && equal(oldComponentValueRef.current, newComponentValue)) {
             return oldComponentValueRef.current;
         }
         else {
@@ -4693,7 +4562,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                 }
             }
             var finalValue = getFinalValue(newValue);
-            if (!isSame(value, finalValue)) {
+            if (!equal(value, finalValue)) {
                 setValue(finalValue);
                 setValueItem(componentValue);
                 nextTick(function () {
@@ -5327,7 +5196,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
      * ******************************************************************************************************************/
     var label = useMemo(function () {
         if (labelIcon) {
-            return React.createElement(IconText, { icon: labelIcon }, initLabel);
+            return React.createElement(PdgIconText, { icon: labelIcon }, initLabel);
         }
         else {
             return initLabel;
@@ -6095,7 +5964,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
      * ******************************************************************************************************************/
     var label = useMemo(function () {
         if (labelIcon) {
-            return React.createElement(IconText, { icon: labelIcon }, initLabel);
+            return React.createElement(PdgIconText, { icon: labelIcon }, initLabel);
         }
         else {
             return initLabel;

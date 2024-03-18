@@ -19,8 +19,8 @@ import {
   getDateValForAvailableDate,
   isDateAvailable,
   makeAvailableDate,
-  nextTick,
 } from '../../../@util';
+import { nextTick } from '@pdg/util';
 
 const YEARS = new Array(200).fill(0);
 for (let i = 0; i < 200; i += 1) {

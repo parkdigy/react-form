@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development LIB_ENV=development webpack serve --config=webpack.config.js",
     "dev-prd-lib": "cross-env NODE_ENV=development LIB_ENV=production webpack serve --config=webpack.config.js",
+    "lint": "eslint './src/**/*.{ts,tsx}'",
     "reinstall-module": "rm -rf node_modules && rm -f package-lock.json && npm i"
   },
   "devDependencies": {
@@ -11,10 +12,11 @@
     "@mui/icons-material": "^5.15.13",
     "@mui/material": "^5.15.13",
     "@mui/x-date-pickers": "^6.19.7",
-    "@pdg/react-admin-layout": "^1.0.17",
-    "@pdg/react-component": "^1.0.5",
-    "@pdg/react-dialog": "^1.0.12",
-    "@pdg/react-hook": "^1.0.5",
+    "@pdg/react-admin-layout": "^1.0.18",
+    "@pdg/react-component": "^1.0.6",
+    "@pdg/react-dialog": "^1.0.13",
+    "@pdg/react-hook": "^1.0.6",
+    "@pdg/util": "^1.0.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@soda/friendly-errors-webpack-plugin": "^1.8.1",
     "@tinymce/tinymce-react": "^4.3.2",

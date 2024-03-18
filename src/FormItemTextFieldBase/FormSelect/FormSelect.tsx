@@ -2,7 +2,8 @@ import React, { useState, useEffect, ReactNode, useCallback, useMemo } from 'rea
 import classNames from 'classnames';
 import { Box, Checkbox, Chip, CircularProgress, MenuItem } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, notEmpty, isSame, AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util';
+import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util';
+import { empty, notEmpty, equal } from '@pdg/util';
 import {
   FormSelectProps,
   FormSelectDefaultProps,
@@ -229,7 +230,7 @@ const FormSelect = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     useEffect(() => {
-      if (!isSame(value, initValue)) {
+      if (!equal(value, initValue)) {
         if (onChange) onChange(value);
         onValueChange(name, value);
       }

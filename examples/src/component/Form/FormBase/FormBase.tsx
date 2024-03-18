@@ -34,6 +34,7 @@ import {
 } from '../../../../../src';
 import { ToggleButtonGroup, Checkbox, RadioGroup, Rating, FileUpload, Switch } from './sub';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
+import { lv } from '@pdg/util';
 
 const FormBase = () => {
   const formRef = useRef<FormCommands>(null);
@@ -233,7 +234,7 @@ const FormBase = () => {
                 <FormMobile name='FormMobile' label='FormMobile' />
               </FormCol>
               <FormCol>
-                <FormNumber name='FormNumber' label='FormNumber' thousandSeparator onChange={(v) => ll(v, typeof v)} />
+                <FormNumber name='FormNumber' label='FormNumber' thousandSeparator />
               </FormCol>
               <FormCol>
                 <FormUrl name='FormUrl' label='FormUrl' />

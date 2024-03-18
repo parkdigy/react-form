@@ -12,7 +12,7 @@ import {
 } from './FormCheckbox.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
-import { nextTick } from '../../@util';
+import { nextTick } from '@pdg/util';
 
 const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
   (

@@ -2,7 +2,8 @@ import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEff
 import classNames from 'classnames';
 import { Autocomplete, Chip, AutocompleteChangeReason, AutocompleteChangeDetails } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, nextTick, notEmpty, isSame, ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util';
+import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util';
+import { empty, nextTick, notEmpty, equal } from '@pdg/util';
 import {
   FormAutocompleteProps,
   FormAutocompleteDefaultProps,
@@ -277,11 +278,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
         }
       }
 
-      if (
-        oldComponentValueRef.current &&
-        newComponentValue &&
-        isSame(oldComponentValueRef.current, newComponentValue)
-      ) {
+      if (oldComponentValueRef.current && newComponentValue && equal(oldComponentValueRef.current, newComponentValue)) {
         return oldComponentValueRef.current;
       } else {
         oldComponentValueRef.current = newComponentValue;
@@ -585,7 +582,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
           }
 
           const finalValue = getFinalValue(newValue);
-          if (!isSame(value, finalValue)) {
+          if (!equal(value, finalValue)) {
             setValue(finalValue);
             setValueItem(componentValue);
             nextTick(() => {

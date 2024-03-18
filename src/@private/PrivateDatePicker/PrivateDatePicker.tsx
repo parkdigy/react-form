@@ -4,7 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DesktopDatePicker, DateValidationError } from '@mui/x-date-pickers';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
-import { IconText } from '@pdg/react-component';
+import { PdgIconText } from '@pdg/react-component';
 import {
   PrivateDatePickerProps as Props,
   PrivateDatePickerDefaultProps,
@@ -14,7 +14,6 @@ import {
 import { useFormState } from '../../FormContext';
 import {
   checkDateAvailable,
-  empty,
   getAvailableDate,
   getAvailableDateVal,
   getDateTimeFormat,
@@ -22,8 +21,6 @@ import {
   getDateValForAvailableDate,
   getDateValidationErrorText,
   makeAvailableDate,
-  nextTick,
-  notEmpty,
 } from '../../@util';
 import {
   PrivateStaticDatePicker,
@@ -36,6 +33,7 @@ import { InputBaseProps } from '@mui/material/InputBase';
 import './PrivateDatePicker.scss';
 import { DesktopDatePickerSlotsComponentsProps } from '@mui/x-date-pickers/DesktopDatePicker/DesktopDatePicker.types';
 import { Dayjs } from 'dayjs';
+import { empty, nextTick, notEmpty } from '@pdg/util';
 
 const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
   (
@@ -167,7 +165,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
     const label = useMemo(() => {
       if (labelIcon) {
-        return <IconText icon={labelIcon}>{initLabel}</IconText>;
+        return <PdgIconText icon={labelIcon}>{initLabel}</PdgIconText>;
       } else {
         return initLabel;
       }

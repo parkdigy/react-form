@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef,
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, getDateValidationErrorText, nextTick } from '../../@util';
+import { getDateValidationErrorText } from '../../@util';
+import { empty, nextTick } from '@pdg/util';
 import {
   FormMonthPickerProps as Props,
   FormMonthPickerDefaultProps,
@@ -322,8 +323,8 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
             year === null
               ? null
               : lastValue
-              ? { year, month: lastValue.month }
-              : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 }
+                ? { year, month: lastValue.month }
+                : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 }
           );
           setValue(lastValue);
         },
@@ -333,8 +334,8 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
             month === null
               ? null
               : lastValue
-              ? { year: lastValue.year, month }
-              : { year: new Date().getFullYear(), month }
+                ? { year: lastValue.year, month }
+                : { year: new Date().getFullYear(), month }
           );
           setValue(lastValue);
         },

@@ -10,7 +10,7 @@ import {
   FormTagValue,
 } from './FormTag.types';
 import FormText, { FormTextCommands } from '../FormText';
-import { empty, nextTick, notEmpty, isSame } from '../../@util';
+import { empty, nextTick, notEmpty, equal } from '@pdg/util';
 import { useFormState } from '../../FormContext';
 import FormContextProvider from '../../FormContextProvider';
 import './FormTag.scss';
@@ -117,7 +117,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
      * ******************************************************************************************************************/
 
     useEffect(() => {
-      if (!isSame(value, initValue)) {
+      if (!equal(value, initValue)) {
         if (onChange) onChange(value);
         onValueChange(name, value);
       }
@@ -191,7 +191,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           getValue: () => lastValue,
           setValue: (newValue: FormTagValue) => {
             const finalValue = getFinalValue(newValue);
-            if (!isSame(lastValue, finalValue)) {
+            if (!equal(lastValue, finalValue)) {
               lastValue = finalValue;
               setValueSet(new Set(lastValue));
               setValue(lastValue);

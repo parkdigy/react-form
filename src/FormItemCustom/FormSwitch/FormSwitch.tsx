@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef,
 import classNames from 'classnames';
 import { FormControlLabel, Switch } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { nextTick } from '../../@util';
+import { nextTick } from '@pdg/util';
 import { FormSwitchProps as Props, FormSwitchDefaultProps, FormSwitchCommands } from './FormSwitch.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';

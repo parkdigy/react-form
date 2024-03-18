@@ -12,6 +12,7 @@ import {
   FormFooter,
   FormRadioGroupItems,
 } from '../../../../src';
+import { lv } from '@pdg/util';
 
 const DEFAULT_ITEMS: FormRadioGroupItem<number>[] = [lv('Item 1', 1), lv('Item 2', 2), lv('Item 3', 3)];
 

@@ -32,6 +32,7 @@ import {
 } from '../../../../../src';
 import { OutlinedPaper } from '#ccomp';
 import { BasicBlock, IconAdornmentBlock, NumberBlock, TextareaBlock, WidthBlock, ColorBlock, RatingBlock } from './sub';
+import { lv } from '@pdg/util';
 
 const _components: React.ForwardRefExoticComponent<any>[] = [
   FormText,

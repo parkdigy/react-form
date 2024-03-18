@@ -16,6 +16,7 @@ import {
   FormAutocompleteItems,
 } from '../../../../src';
 import { OutlinedPaper } from '#ccomp';
+import { lv } from '@pdg/util';
 
 const DEFAULT_ITEMS: FormAutocompleteItem<number>[] = [
   lv('Item 1', 1),

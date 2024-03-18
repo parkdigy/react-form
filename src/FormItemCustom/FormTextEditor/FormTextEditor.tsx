@@ -4,7 +4,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { Editor as TinyMCEEditor } from 'tinymce';
 import { Skeleton } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, nextTick } from '../../@util';
+import { empty, nextTick } from '@pdg/util';
 import {
   FormTextEditorProps as Props,
   FormTextEditorDefaultProps,

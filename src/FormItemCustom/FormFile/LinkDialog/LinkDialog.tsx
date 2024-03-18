@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { LinkDialogProps as Props, LinkDialogDefaultProps } from './LinkDialog.types';
 import { FormUrl, FormUrlCommands } from '../../../FormItemTextFieldBase';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { empty } from '../../../@util';
+import { empty } from '@pdg/util';
 
 const LinkDialog: React.FC<Props> = ({ open, onConfirm, onCancel, onClose }) => {
   /********************************************************************************************************************

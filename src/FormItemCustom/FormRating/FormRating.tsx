@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { Rating } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, nextTick } from '../../@util';
+import { empty, nextTick } from '@pdg/util';
 import {
   FormRatingProps as Props,
   FormRatingDefaultProps,

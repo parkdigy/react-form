@@ -9,7 +9,7 @@ import {
 } from '@mui/x-date-pickers';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
-import { IconText } from '@pdg/react-component';
+import { PdgIconText } from '@pdg/react-component';
 import {
   PrivateDateTimePickerProps as Props,
   PrivateDateTimePickerDefaultProps,
@@ -19,7 +19,6 @@ import {
 import { useFormState } from '../../FormContext';
 import {
   checkDateAvailable,
-  empty,
   getAvailableDate,
   getAvailableDateVal,
   getDateTimeFormat,
@@ -27,8 +26,6 @@ import {
   getDateValForAvailableDate,
   getDateValidationErrorText,
   makeAvailableDate,
-  nextTick,
-  notEmpty,
 } from '../../@util';
 import { PrivateStaticDateTimePickerCommands, PrivateStaticDateTimePickerUnit } from '../PrivateStaticDateTimePicker';
 import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
@@ -37,6 +34,7 @@ import { InputBaseProps } from '@mui/material/InputBase';
 import './PrivateDateTimePicker.scss';
 import { Dayjs } from 'dayjs';
 import PrivateStaticDateTimePicker from '../PrivateStaticDateTimePicker';
+import { empty, nextTick, notEmpty } from '@pdg/util';
 
 const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Props>(
   (
@@ -168,7 +166,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
 
     const label = useMemo(() => {
       if (labelIcon) {
-        return <IconText icon={labelIcon}>{initLabel}</IconText>;
+        return <PdgIconText icon={labelIcon}>{initLabel}</PdgIconText>;
       } else {
         return initLabel;
       }

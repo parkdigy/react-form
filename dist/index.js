@@ -1,4 +1,4 @@
-'use strict';var React=require('react'),classNames=require('classnames'),material=require('@mui/material'),dayjs=require('dayjs'),reactHook=require('@pdg/react-hook'),reactResizeDetector=require('react-resize-detector'),reactNumberFormat=require('react-number-format'),iconsMaterial=require('@mui/icons-material'),tinymceReact=require('@tinymce/tinymce-react'),CircularProgress=require('@mui/material/CircularProgress'),AdapterDayjs=require('@mui/x-date-pickers/AdapterDayjs'),xDatePickers=require('@mui/x-date-pickers'),reactComponent=require('@pdg/react-component'),SimpleBar=require('simplebar-react');require('dayjs/locale/ko');/******************************************************************************
+'use strict';var React=require('react'),classNames=require('classnames'),material=require('@mui/material'),util=require('@pdg/util'),dayjs=require('dayjs'),reactHook=require('@pdg/react-hook'),reactResizeDetector=require('react-resize-detector'),reactNumberFormat=require('react-number-format'),iconsMaterial=require('@mui/icons-material'),tinymceReact=require('@tinymce/tinymce-react'),CircularProgress=require('@mui/material/CircularProgress'),AdapterDayjs=require('@mui/x-date-pickers/AdapterDayjs'),xDatePickers=require('@mui/x-date-pickers'),reactComponent=require('@pdg/react-component'),SimpleBar=require('simplebar-react');require('dayjs/locale/ko');/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -55,355 +55,6 @@ function __makeTemplateObject(cooked, raw) {
 typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};var empty = function (v) {
-    var result = false;
-    if (v == null) {
-        result = true;
-    }
-    else if (typeof v === 'string') {
-        result = v === '';
-    }
-    else if (typeof v === 'object') {
-        if (Array.isArray(v)) {
-            result = v.length === 0;
-        }
-        else if (!(v instanceof Date)) {
-            result = Object.entries(v).length === 0;
-        }
-    }
-    return result;
-};
-var notEmpty = function (v) {
-    return !empty(v);
-};
-var isSame = function (v1, v2) {
-    if (v1 === v2)
-        return true;
-    if (typeof v1 !== typeof v2)
-        return false;
-    if (v1 == null || v2 == null)
-        return false;
-    if (Array.isArray(v1) && Array.isArray(v2)) {
-        if (v1.length !== v2.length)
-            return false;
-        for (var i = 0; i < v1.length; i += 1) {
-            if (v1[i] !== v2[i])
-                return false;
-        }
-    }
-    else {
-        return v1 === v2;
-    }
-    return true;
-};function getDateValidationErrorText(error) {
-    switch (error) {
-        case 'invalidDate':
-            return '형식이 일치하지 않습니다.';
-        case 'shouldDisableDate':
-        case 'shouldDisableMonth':
-        case 'shouldDisableYear':
-        case 'disableFuture':
-        case 'disablePast':
-        case 'minDate':
-        case 'maxDate':
-            return '선택할 수 없는 날짜입니다.';
-    }
-}
-//--------------------------------------------------------------------------------------------------------------------
-var DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
-var DEFAULT_DATE_FORM_VALUE_FORMAT = 'YYYY-MM-DD';
-var DEFAULT_DATE_TIME_HOUR_FORMAT = 'YYYY-MM-DD HH시';
-var DEFAULT_DATE_TIME_HOUR_FORM_VALUE_FORMAT = 'YYYY-MM-DD HH:00:00';
-var DEFAULT_DATE_TIME_MINUTE_FORMAT = 'YYYY-MM-DD HH:mm';
-var DEFAULT_DATE_TIME_MINUTE_FORM_VALUE_FORMAT = 'YYYY-MM-DD HH:mm:00';
-var DEFAULT_DATE_TIME_SECOND_FORMAT = 'YYYY-MM-DD HH:mm:ss';
-var DEFAULT_DATE_TIME_SECOND_FORM_VALUE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
-var DEFAULT_TIME_HOUR_FORMAT = 'HH시';
-var DEFAULT_TIME_HOUR_FORM_VALUE_FORMAT = 'HH:00:00';
-var DEFAULT_TIME_MINUTE_FORMAT = 'HH:mm';
-var DEFAULT_TIME_MINUTE_FORM_VALUE_FORMAT = 'HH:mm:00';
-var DEFAULT_TIME_SECOND_FORMAT = 'HH:mm:ss';
-var DEFAULT_TIME_SECOND_FORM_VALUE_FORMAT = 'HH:mm:ss';
-function getDateTimeFormat(type, time) {
-    switch (type) {
-        case 'date':
-            return DEFAULT_DATE_FORMAT;
-        case 'date_time':
-            if (time) {
-                switch (time) {
-                    case 'hour':
-                        return DEFAULT_DATE_TIME_HOUR_FORMAT;
-                    case 'minute':
-                        return DEFAULT_DATE_TIME_MINUTE_FORMAT;
-                    case 'second':
-                        return DEFAULT_DATE_TIME_SECOND_FORMAT;
-                }
-            }
-            else {
-                throw new Error("util::date_time::getDateTimeFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
-            }
-            break;
-        case 'time':
-            if (time) {
-                switch (time) {
-                    case 'hour':
-                        return DEFAULT_TIME_HOUR_FORMAT;
-                    case 'minute':
-                        return DEFAULT_TIME_MINUTE_FORMAT;
-                    case 'second':
-                        return DEFAULT_TIME_SECOND_FORMAT;
-                }
-            }
-            else {
-                throw new Error("util::date_time::getDateTimeFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
-            }
-            break;
-    }
-}
-function getDateTimeFormValueFormat(type, time) {
-    switch (type) {
-        case 'date':
-            return DEFAULT_DATE_FORM_VALUE_FORMAT;
-        case 'date_time':
-            if (time) {
-                switch (time) {
-                    case 'hour':
-                        return DEFAULT_DATE_TIME_HOUR_FORM_VALUE_FORMAT;
-                    case 'minute':
-                        return DEFAULT_DATE_TIME_MINUTE_FORM_VALUE_FORMAT;
-                    case 'second':
-                        return DEFAULT_DATE_TIME_SECOND_FORM_VALUE_FORMAT;
-                }
-            }
-            else {
-                throw new Error("util::date_time::getDateTimeFormValueFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
-            }
-            break;
-        case 'time':
-            if (time) {
-                switch (time) {
-                    case 'hour':
-                        return DEFAULT_TIME_HOUR_FORM_VALUE_FORMAT;
-                    case 'minute':
-                        return DEFAULT_TIME_MINUTE_FORM_VALUE_FORMAT;
-                    case 'second':
-                        return DEFAULT_TIME_SECOND_FORM_VALUE_FORMAT;
-                }
-            }
-            else {
-                throw new Error("util::date_time::getDateTimeFormValueFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
-            }
-            break;
-    }
-}
-function getAvailableDateValFormat(type, time) {
-    var availableDateType;
-    if (time) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else if (['date', 'date_time', 'time'].includes(type)) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else {
-        availableDateType = type;
-    }
-    switch (availableDateType) {
-        case 'year':
-            return 'YYYY';
-        case 'month':
-            return 'YYYYMM';
-        case 'day':
-            return 'YYYYMMDD';
-        case 'hour':
-            return 'YYYYMMDDHH';
-        case 'minute':
-            return 'YYYYMMDDHHmm';
-        case 'second':
-            return 'YYYYMMDDHHmmss';
-    }
-}
-/********************************************************************************************************************
- * getAvailableDateType
- * ******************************************************************************************************************/
-function getAvailableDateType(type, time) {
-    switch (type) {
-        case 'date':
-            return 'day';
-        case 'date_time':
-            if (time) {
-                switch (time) {
-                    case 'hour':
-                        return 'hour';
-                    case 'minute':
-                        return 'minute';
-                    case 'second':
-                        return 'second';
-                }
-            }
-            else {
-                throw new Error("util::date_time::getAvailableDateType - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
-            }
-            break;
-        case 'time':
-            throw new Error("util::date_time::getAvailableDateType - '".concat(type, "' type \uC744 \uC0AC\uC6A9\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."));
-    }
-}
-/********************************************************************************************************************
- * makeAvailableDate
- * ******************************************************************************************************************/
-function makeAvailableDate(minDate, maxDate, disablePast, disableFuture) {
-    var now = dayjs();
-    var min = null;
-    var max = null;
-    if (disablePast) {
-        min = now;
-    }
-    if (minDate) {
-        if (min) {
-            if (minDate.isAfter(min, 'date')) {
-                min = minDate;
-            }
-        }
-        else {
-            min = minDate;
-        }
-    }
-    if (disableFuture) {
-        max = now;
-    }
-    if (maxDate) {
-        if (max) {
-            if (maxDate.isBefore(max, 'date')) {
-                max = maxDate;
-            }
-        }
-        else {
-            max = maxDate;
-        }
-    }
-    var minItem = min
-        ? {
-            date: min,
-            year: Number(min.format(getAvailableDateValFormat('year'))),
-            month: Number(min.format(getAvailableDateValFormat('month'))),
-            day: Number(min.format(getAvailableDateValFormat('day'))),
-            hour: Number(min.format(getAvailableDateValFormat('hour'))),
-            minute: Number(min.format(getAvailableDateValFormat('minute'))),
-            second: Number(min.format(getAvailableDateValFormat('second'))),
-        }
-        : null;
-    var maxItem = max
-        ? {
-            date: max,
-            year: Number(max.format(getAvailableDateValFormat('year'))),
-            month: Number(max.format(getAvailableDateValFormat('month'))),
-            day: Number(max.format(getAvailableDateValFormat('day'))),
-            hour: Number(max.format(getAvailableDateValFormat('hour'))),
-            minute: Number(max.format(getAvailableDateValFormat('minute'))),
-            second: Number(max.format(getAvailableDateValFormat('second'))),
-        }
-        : null;
-    return [minItem, maxItem];
-}
-function getAvailableDate(availableDate, type, time) {
-    var availableDateType;
-    if (time) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else if (['date', 'date_time', 'time'].includes(type)) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else {
-        availableDateType = type;
-    }
-    var availableDateVal = getAvailableDateVal(availableDate, availableDateType);
-    var availableDateValFormat = getAvailableDateValFormat(availableDateType);
-    return [
-        availableDateVal[0] ? dayjs(availableDateVal[0].toString(), availableDateValFormat) : null,
-        availableDateVal[1] ? dayjs(availableDateVal[1].toString(), availableDateValFormat) : null,
-    ];
-}
-function getAvailableDateVal(availableDate, type, time) {
-    var availableDateType;
-    if (time) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else if (['date', 'date_time', 'time'].includes(type)) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else {
-        availableDateType = type;
-    }
-    return [
-        availableDate[0] ? availableDate[0][availableDateType] : null,
-        availableDate[1] ? availableDate[1][availableDateType] : null,
-    ];
-}
-/********************************************************************************************************************
- * getDateVal
- * ******************************************************************************************************************/
-function getDateValForAvailableDate(date, type, time) {
-    var format = getAvailableDateValFormat(type, time);
-    return Number(date.format(format));
-}
-function isDateAvailable(date, availableDate, type, time) {
-    var availableDateType;
-    if (time) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else if (['date', 'date_time', 'time'].includes(type)) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else {
-        availableDateType = type;
-    }
-    var dateVal = Number(date.format(getAvailableDateValFormat(availableDateType)));
-    var availableDateVal = getAvailableDateVal(availableDate, availableDateType);
-    return !((availableDateVal[0] && dateVal < availableDateVal[0]) ||
-        (availableDateVal[1] && dateVal > availableDateVal[1]));
-}
-function checkDateAvailable(date, availableDate, type, time) {
-    var availableDateType;
-    if (time) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else if (['date', 'date_time', 'time'].includes(type)) {
-        availableDateType = getAvailableDateType(type, time);
-    }
-    else {
-        availableDateType = type;
-    }
-    var dateVal = Number(date.format(getAvailableDateValFormat(availableDateType)));
-    var availableDateVal = getAvailableDateVal(availableDate, availableDateType);
-    if (availableDateVal[0] && dateVal < availableDateVal[0])
-        return 'min';
-    if (availableDateVal[1] && dateVal > availableDateVal[1])
-        return 'max';
-    return 'available';
-}function getFileSizeText(bytes, dp) {
-    if (dp === void 0) { dp = 1; }
-    var thresh = 1024;
-    if (Math.abs(bytes) < thresh) {
-        return "".concat(bytes, " Byte");
-    }
-    var units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-    var u = -1;
-    var r = Math.pow(10, dp);
-    do {
-        bytes /= thresh;
-        u += 1;
-    } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
-    return "".concat(bytes.toFixed(dp), " ").concat(units[u]);
-}function ToForwardRefExoticComponent(component, ext) {
-    var fComponent = component;
-    fComponent.displayName = ext === null || ext === void 0 ? void 0 : ext.displayName;
-    fComponent.defaultProps = ext === null || ext === void 0 ? void 0 : ext.defaultProps;
-    return component;
-}
-function AutoTypeForwardRef(render) {
-    return React.forwardRef(render);
-}var nextTick = function (callback) {
-    setTimeout(callback, 1);
 };var FormDefaultProps = {
     variant: 'outlined',
     size: 'medium',
@@ -526,7 +177,7 @@ function AutoTypeForwardRef(render) {
                 }
                 break;
             default:
-                if (empty(value)) {
+                if (util.empty(value)) {
                     value = '';
                 }
                 else if (Array.isArray(value)) {
@@ -638,7 +289,7 @@ function AutoTypeForwardRef(render) {
         }
         else {
             onInvalid && onInvalid(invalidItems);
-            nextTick(function () {
+            util.nextTick(function () {
                 var _a;
                 (_a = valueItems[firstInvalidItemId]) === null || _a === void 0 ? void 0 : _a.focusValidate();
             });
@@ -680,7 +331,7 @@ function AutoTypeForwardRef(render) {
                         case 'FormYearRangePicker': {
                             var commands_1 = valueItem;
                             var value = getItemFormValue(valueItem, !!isReset);
-                            if (notEmpty(subKey)) {
+                            if (util.notEmpty(subKey)) {
                                 if (subKey === commands_1.getFormValueFromNameSuffix()) {
                                     return value[0];
                                 }
@@ -698,7 +349,7 @@ function AutoTypeForwardRef(render) {
                         case 'FormMonthPicker': {
                             var commands_2 = valueItem;
                             var value = getItemFormValue(valueItem, !!isReset);
-                            if (notEmpty(subKey)) {
+                            if (util.notEmpty(subKey)) {
                                 if (subKey === commands_2.getFormValueYearNameSuffix()) {
                                     return value.year;
                                 }
@@ -716,7 +367,7 @@ function AutoTypeForwardRef(render) {
                         case 'FormMonthRangePicker': {
                             var commands_3 = valueItem;
                             var value = getItemFormValue(valueItem, !!isReset);
-                            if (notEmpty(subKey)) {
+                            if (util.notEmpty(subKey)) {
                                 if (subKey === commands_3.getFormValueFromYearNameSuffix()) {
                                     return value[0].year;
                                 }
@@ -1485,7 +1136,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
      * ******************************************************************************************************************/
     var _k = reactHook.useAutoUpdateState(initValue, getFinalValue), value = _k[0], setValue = _k[1];
     React.useEffect(function () {
-        setShowClear(clear ? notEmpty(value) : false);
+        setShowClear(clear ? util.notEmpty(value) : false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
     reactHook.useFirstSkipEffect(function () {
@@ -1520,17 +1171,17 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
      * Function - validate
      * ******************************************************************************************************************/
     var validate = React.useCallback(function (value) {
-        if (required && empty(value)) {
+        if (required && util.empty(value)) {
             setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
-        if (notEmpty(value) && validPattern) {
+        if (util.notEmpty(value) && validPattern) {
             if (!new RegExp(validPattern).test(value)) {
                 setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
                 return false;
             }
         }
-        if (notEmpty(value) && invalidPattern) {
+        if (util.notEmpty(value) && invalidPattern) {
             if (new RegExp(invalidPattern).test(value)) {
                 setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
                 return false;
@@ -1566,7 +1217,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
                             setValue(finalValue);
                             focus();
                             if (!noFormValueItem) {
-                                nextTick(function () {
+                                util.nextTick(function () {
                                     onValueChangeByUser(name, finalValue);
                                     onRequestSearchSubmit(name, finalValue);
                                 });
@@ -1702,7 +1353,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
         var finalValue = getFinalValue(e.target.value);
         setValue(finalValue);
         if (!noFormValueItem) {
-            nextTick(function () {
+            util.nextTick(function () {
                 onValueChangeByUser(name, finalValue);
                 if (select) {
                     onRequestSearchSubmit(name, finalValue);
@@ -1797,7 +1448,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
      * Effect
      * ******************************************************************************************************************/
     React.useEffect(function () {
-        if (!isSame(value, initValue)) {
+        if (!util.equal(value, initValue)) {
             if (onChange)
                 onChange(value);
             onValueChange(name, value);
@@ -1815,7 +1466,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
      * Function - validate
      * ******************************************************************************************************************/
     var validate = React.useCallback(function (value) {
-        if (required && empty(value)) {
+        if (required && util.empty(value)) {
             setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
@@ -1848,7 +1499,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
                 setValue(lastValue);
             }, getValue: function () { return lastValue; }, setValue: function (newValue) {
                 var finalValue = getFinalValue(newValue);
-                if (!isSame(lastValue, finalValue)) {
+                if (!util.equal(lastValue, finalValue)) {
                     lastValue = finalValue;
                     setValueSet(new Set(lastValue));
                     setValue(lastValue);
@@ -1867,7 +1518,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
             Array.from(valueSet);
             var finalValue_1 = getFinalValue(valueSet);
             setValue(finalValue_1);
-            nextTick(function () {
+            util.nextTick(function () {
                 setInputValue('');
                 onValueChangeByUser(name, finalValue_1);
                 onRequestSearchSubmit(name, finalValue_1);
@@ -1879,7 +1530,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
             valueSet.delete(tag);
             var finalValue_2 = getFinalValue(valueSet);
             setValue(finalValue_2);
-            nextTick(function () {
+            util.nextTick(function () {
                 onValueChangeByUser(name, finalValue_2);
                 onRequestSearchSubmit(name, finalValue_2);
             });
@@ -1906,7 +1557,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
         if ([' ', ',', 'Enter'].includes(e.key)) {
             e.preventDefault();
             e.stopPropagation();
-            if (notEmpty(inputValue)) {
+            if (util.notEmpty(inputValue)) {
                 appendTag(inputValue);
             }
         }
@@ -1920,7 +1571,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
         setInputValue(value);
     }, []);
     var handleBlur = React.useCallback(function (e) {
-        if (notEmpty(inputValue)) {
+        if (util.notEmpty(inputValue)) {
             appendTag(inputValue);
         }
         if (onBlur)
@@ -1944,7 +1595,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
                 var renderProps = __assign({}, props);
                 renderProps.InputLabelProps = __assign(__assign({}, renderProps.InputLabelProps), { htmlFor: params.InputLabelProps.htmlFor, id: params.InputLabelProps.id });
                 renderProps.InputProps = __assign(__assign({}, renderProps.InputProps), { className: classNames((_a = renderProps.InputProps) === null || _a === void 0 ? void 0 : _a.className, params.InputProps.className), ref: params.InputProps.ref });
-                if (notEmpty(params.InputProps.startAdornment)) {
+                if (util.notEmpty(params.InputProps.startAdornment)) {
                     renderProps.InputProps.startAdornment = (React.createElement(React.Fragment, null,
                         renderProps.InputProps.startAdornment,
                         params.InputProps.startAdornment));
@@ -1985,7 +1636,7 @@ var FormPassword = React.forwardRef(function (_a, ref) {
      * ******************************************************************************************************************/
     var className = _a.className, initMuiInputProps = _a.InputProps, eye = _a.eye, onChange = _a.onChange, props = __rest(_a, ["className", "InputProps", "eye", "onChange"]);
     var _b = React.useState('password'), type = _b[0], setType = _b[1];
-    var _c = React.useState(notEmpty(props.value)), showEye = _c[0], setShowEye = _c[1];
+    var _c = React.useState(util.notEmpty(props.value)), showEye = _c[0], setShowEye = _c[1];
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -2009,7 +1660,7 @@ var FormPassword = React.forwardRef(function (_a, ref) {
      * Event Handler
      * ******************************************************************************************************************/
     var handleChange = React.useCallback(function (value) {
-        setShowEye(notEmpty(value));
+        setShowEye(util.notEmpty(value));
         onChange && onChange(value);
     }, [onChange]);
     /********************************************************************************************************************
@@ -2025,7 +1676,7 @@ var templateObject_1$b;var FormTelDefaultProps = __assign(__assign({}, FormTextD
      * ******************************************************************************************************************/
     var className = _a.className, onValue = _a.onValue, props = __rest(_a, ["className", "onValue"]);
     var handleValue = React.useCallback(function (value) {
-        var newValue = autoDash$2(value.replace(/[^0-9]/gi, ''));
+        var newValue = util.telAutoDash(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     /********************************************************************************************************************
@@ -2034,72 +1685,7 @@ var templateObject_1$b;var FormTelDefaultProps = __assign(__assign({}, FormTextD
     return (React.createElement(FormText, __assign({ ref: ref, className: classNames(className, 'FormTel'), onValue: handleValue, maxLength: 13 }, props)));
 });
 FormTel.displayName = 'FormTel';
-FormTel.defaultProps = FormTelDefaultProps;
-function autoDash$2(tel) {
-    var str = tel.replace(/[^0-9*]/g, '');
-    var isLastDash = tel.substring(tel.length - 1, tel.length) === '-';
-    if (str.substring(0, 1) !== '0' && !['15', '16', '18'].includes(str.substring(0, 2))) {
-        return tel;
-    }
-    var tmp = '';
-    var preLen;
-    switch (str.substring(0, 2)) {
-        case '02':
-            preLen = 2;
-            break;
-        case '15':
-        case '16':
-        case '18':
-            preLen = 4;
-            break;
-        default:
-            preLen = 3;
-    }
-    if (['15', '16', '18'].includes(str.substring(0, 2))) {
-        if (str.length <= preLen) {
-            tmp = str;
-        }
-        else if (str.length <= preLen + 4) {
-            tmp += str.substring(0, preLen);
-            tmp += '-';
-            tmp += str.substring(preLen);
-        }
-        else {
-            tmp = str;
-        }
-    }
-    else if (str.length <= preLen) {
-        tmp = str;
-    }
-    else if (str.length <= preLen + 3) {
-        tmp += str.substring(0, preLen);
-        tmp += '-';
-        tmp += str.substring(preLen);
-    }
-    else if (str.length <= preLen + 7) {
-        tmp += str.substring(0, preLen);
-        tmp += '-';
-        tmp += str.substring(preLen, preLen + 3);
-        tmp += '-';
-        tmp += str.substring(preLen + 3);
-    }
-    else if (str.length <= preLen + 8) {
-        tmp += str.substring(0, preLen);
-        tmp += '-';
-        tmp += str.substring(preLen, preLen + 4);
-        tmp += '-';
-        tmp += str.substring(preLen + 4);
-    }
-    else {
-        tmp = str;
-    }
-    if (isLastDash) {
-        if (str.length === preLen) {
-            tmp += '-';
-        }
-    }
-    return tmp;
-}var FormMobileDefaultProps = __assign(__assign({}, FormTelDefaultProps), { validPattern: /(^(01(?:0|1|[6-9]))([0-9]{3,4})([0-9]{4,4})$)|(^(01(?:0|1|[6-9]))-([0-9]{3,4})-([0-9]{4,4})$)|(^\+(?:[-]?[0-9]){8,}$)/ });var FormMobile = React.forwardRef(function (_a, ref) {
+FormTel.defaultProps = FormTelDefaultProps;var FormMobileDefaultProps = __assign(__assign({}, FormTelDefaultProps), { validPattern: /(^(01(?:0|1|[6-9]))([0-9]{3,4})([0-9]{4,4})$)|(^(01(?:0|1|[6-9]))-([0-9]{3,4})-([0-9]{4,4})$)|(^\+(?:[-]?[0-9]){8,}$)/ });var FormMobile = React.forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest(_a, ["className"]);
     return React.createElement(FormTel, __assign({ ref: ref, className: classNames(className, 'FormMobile') }, props));
 });
@@ -2116,12 +1702,12 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
      * State
      * ******************************************************************************************************************/
     var className = _a.className, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, labelShrink = _a.labelShrink, initMuiInputProps = _a.InputProps, initInputProps = _a.inputProps, initValue = _a.value, onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest(_a, ["className", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "labelShrink", "InputProps", "inputProps", "value", "onChange", "onValue", "onValidate"]);
-    var _b = React.useState(function () { return (empty(initValue) ? '' : "".concat(initValue)); }), strValue = _b[0], setStrValue = _b[1];
+    var _b = React.useState(function () { return (util.empty(initValue) ? '' : "".concat(initValue)); }), strValue = _b[0], setStrValue = _b[1];
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
     React.useEffect(function () {
-        setStrValue(empty(initValue) ? '' : "".concat(initValue));
+        setStrValue(util.empty(initValue) ? '' : "".concat(initValue));
     }, [initValue]);
     /********************************************************************************************************************
      * Memo
@@ -2161,12 +1747,12 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
      * Event Handler
      * ******************************************************************************************************************/
     var handleChange = React.useCallback(function (value) {
-        var newValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
+        var newValue = util.empty(value) || value === '-' || value === '.' ? undefined : Number(value);
         onChange && onChange(newValue);
         setStrValue(value);
     }, [onChange]);
     var handleValue = React.useCallback(function (value) {
-        var finalValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
+        var finalValue = util.empty(value) || value === '-' || value === '.' ? undefined : Number(value);
         if (onValue) {
             finalValue = onValue(finalValue);
         }
@@ -2174,7 +1760,7 @@ NumberFormatCustom.displayName = 'NumberFormatCustom';var FormNumberDefaultProps
     }, [onValue]);
     var handleValidate = React.useCallback(function (value) {
         if (onValidate) {
-            var finalValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
+            var finalValue = util.empty(value) || value === '-' || value === '.' ? undefined : Number(value);
             return onValidate(finalValue);
         }
         else {
@@ -2214,7 +1800,314 @@ FormTextarea.defaultProps = FormTextareaDefaultProps;var FormUrlDefaultProps = _
     return (React.createElement(FormText, __assign({ ref: ref, className: classNames(className, 'FormUrl'), type: 'url', onValue: handleValue }, props)));
 });
 FormUrl.displayName = 'FormUrl';
-FormUrl.defaultProps = FormUrlDefaultProps;var FormSelectDefaultProps = __assign(__assign({}, FormTextFieldDefaultProps), { formValueSeparator: ',', minWidth: 120 });var css_248z$f = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
+FormUrl.defaultProps = FormUrlDefaultProps;function getDateValidationErrorText(error) {
+    switch (error) {
+        case 'invalidDate':
+            return '형식이 일치하지 않습니다.';
+        case 'shouldDisableDate':
+        case 'shouldDisableMonth':
+        case 'shouldDisableYear':
+        case 'disableFuture':
+        case 'disablePast':
+        case 'minDate':
+        case 'maxDate':
+            return '선택할 수 없는 날짜입니다.';
+    }
+}
+//--------------------------------------------------------------------------------------------------------------------
+var DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
+var DEFAULT_DATE_FORM_VALUE_FORMAT = 'YYYY-MM-DD';
+var DEFAULT_DATE_TIME_HOUR_FORMAT = 'YYYY-MM-DD HH시';
+var DEFAULT_DATE_TIME_HOUR_FORM_VALUE_FORMAT = 'YYYY-MM-DD HH:00:00';
+var DEFAULT_DATE_TIME_MINUTE_FORMAT = 'YYYY-MM-DD HH:mm';
+var DEFAULT_DATE_TIME_MINUTE_FORM_VALUE_FORMAT = 'YYYY-MM-DD HH:mm:00';
+var DEFAULT_DATE_TIME_SECOND_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+var DEFAULT_DATE_TIME_SECOND_FORM_VALUE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+var DEFAULT_TIME_HOUR_FORMAT = 'HH시';
+var DEFAULT_TIME_HOUR_FORM_VALUE_FORMAT = 'HH:00:00';
+var DEFAULT_TIME_MINUTE_FORMAT = 'HH:mm';
+var DEFAULT_TIME_MINUTE_FORM_VALUE_FORMAT = 'HH:mm:00';
+var DEFAULT_TIME_SECOND_FORMAT = 'HH:mm:ss';
+var DEFAULT_TIME_SECOND_FORM_VALUE_FORMAT = 'HH:mm:ss';
+function getDateTimeFormat(type, time) {
+    switch (type) {
+        case 'date':
+            return DEFAULT_DATE_FORMAT;
+        case 'date_time':
+            if (time) {
+                switch (time) {
+                    case 'hour':
+                        return DEFAULT_DATE_TIME_HOUR_FORMAT;
+                    case 'minute':
+                        return DEFAULT_DATE_TIME_MINUTE_FORMAT;
+                    case 'second':
+                        return DEFAULT_DATE_TIME_SECOND_FORMAT;
+                }
+            }
+            else {
+                throw new Error("util::date_time::getDateTimeFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
+            }
+            break;
+        case 'time':
+            if (time) {
+                switch (time) {
+                    case 'hour':
+                        return DEFAULT_TIME_HOUR_FORMAT;
+                    case 'minute':
+                        return DEFAULT_TIME_MINUTE_FORMAT;
+                    case 'second':
+                        return DEFAULT_TIME_SECOND_FORMAT;
+                }
+            }
+            else {
+                throw new Error("util::date_time::getDateTimeFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
+            }
+            break;
+    }
+}
+function getDateTimeFormValueFormat(type, time) {
+    switch (type) {
+        case 'date':
+            return DEFAULT_DATE_FORM_VALUE_FORMAT;
+        case 'date_time':
+            if (time) {
+                switch (time) {
+                    case 'hour':
+                        return DEFAULT_DATE_TIME_HOUR_FORM_VALUE_FORMAT;
+                    case 'minute':
+                        return DEFAULT_DATE_TIME_MINUTE_FORM_VALUE_FORMAT;
+                    case 'second':
+                        return DEFAULT_DATE_TIME_SECOND_FORM_VALUE_FORMAT;
+                }
+            }
+            else {
+                throw new Error("util::date_time::getDateTimeFormValueFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
+            }
+            break;
+        case 'time':
+            if (time) {
+                switch (time) {
+                    case 'hour':
+                        return DEFAULT_TIME_HOUR_FORM_VALUE_FORMAT;
+                    case 'minute':
+                        return DEFAULT_TIME_MINUTE_FORM_VALUE_FORMAT;
+                    case 'second':
+                        return DEFAULT_TIME_SECOND_FORM_VALUE_FORMAT;
+                }
+            }
+            else {
+                throw new Error("util::date_time::getDateTimeFormValueFormat - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
+            }
+            break;
+    }
+}
+function getAvailableDateValFormat(type, time) {
+    var availableDateType;
+    if (time) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else if (['date', 'date_time', 'time'].includes(type)) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else {
+        availableDateType = type;
+    }
+    switch (availableDateType) {
+        case 'year':
+            return 'YYYY';
+        case 'month':
+            return 'YYYYMM';
+        case 'day':
+            return 'YYYYMMDD';
+        case 'hour':
+            return 'YYYYMMDDHH';
+        case 'minute':
+            return 'YYYYMMDDHHmm';
+        case 'second':
+            return 'YYYYMMDDHHmmss';
+    }
+}
+/********************************************************************************************************************
+ * getAvailableDateType
+ * ******************************************************************************************************************/
+function getAvailableDateType(type, time) {
+    switch (type) {
+        case 'date':
+            return 'day';
+        case 'date_time':
+            if (time) {
+                switch (time) {
+                    case 'hour':
+                        return 'hour';
+                    case 'minute':
+                        return 'minute';
+                    case 'second':
+                        return 'second';
+                }
+            }
+            else {
+                throw new Error("util::date_time::getAvailableDateType - type \uC774 '".concat(type, "' \uC77C \uACBD\uC6B0 time \uAC12\uC744 \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
+            }
+            break;
+        case 'time':
+            throw new Error("util::date_time::getAvailableDateType - '".concat(type, "' type \uC744 \uC0AC\uC6A9\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."));
+    }
+}
+/********************************************************************************************************************
+ * makeAvailableDate
+ * ******************************************************************************************************************/
+function makeAvailableDate(minDate, maxDate, disablePast, disableFuture) {
+    var now = dayjs();
+    var min = null;
+    var max = null;
+    if (disablePast) {
+        min = now;
+    }
+    if (minDate) {
+        if (min) {
+            if (minDate.isAfter(min, 'date')) {
+                min = minDate;
+            }
+        }
+        else {
+            min = minDate;
+        }
+    }
+    if (disableFuture) {
+        max = now;
+    }
+    if (maxDate) {
+        if (max) {
+            if (maxDate.isBefore(max, 'date')) {
+                max = maxDate;
+            }
+        }
+        else {
+            max = maxDate;
+        }
+    }
+    var minItem = min
+        ? {
+            date: min,
+            year: Number(min.format(getAvailableDateValFormat('year'))),
+            month: Number(min.format(getAvailableDateValFormat('month'))),
+            day: Number(min.format(getAvailableDateValFormat('day'))),
+            hour: Number(min.format(getAvailableDateValFormat('hour'))),
+            minute: Number(min.format(getAvailableDateValFormat('minute'))),
+            second: Number(min.format(getAvailableDateValFormat('second'))),
+        }
+        : null;
+    var maxItem = max
+        ? {
+            date: max,
+            year: Number(max.format(getAvailableDateValFormat('year'))),
+            month: Number(max.format(getAvailableDateValFormat('month'))),
+            day: Number(max.format(getAvailableDateValFormat('day'))),
+            hour: Number(max.format(getAvailableDateValFormat('hour'))),
+            minute: Number(max.format(getAvailableDateValFormat('minute'))),
+            second: Number(max.format(getAvailableDateValFormat('second'))),
+        }
+        : null;
+    return [minItem, maxItem];
+}
+function getAvailableDate(availableDate, type, time) {
+    var availableDateType;
+    if (time) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else if (['date', 'date_time', 'time'].includes(type)) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else {
+        availableDateType = type;
+    }
+    var availableDateVal = getAvailableDateVal(availableDate, availableDateType);
+    var availableDateValFormat = getAvailableDateValFormat(availableDateType);
+    return [
+        availableDateVal[0] ? dayjs(availableDateVal[0].toString(), availableDateValFormat) : null,
+        availableDateVal[1] ? dayjs(availableDateVal[1].toString(), availableDateValFormat) : null,
+    ];
+}
+function getAvailableDateVal(availableDate, type, time) {
+    var availableDateType;
+    if (time) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else if (['date', 'date_time', 'time'].includes(type)) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else {
+        availableDateType = type;
+    }
+    return [
+        availableDate[0] ? availableDate[0][availableDateType] : null,
+        availableDate[1] ? availableDate[1][availableDateType] : null,
+    ];
+}
+/********************************************************************************************************************
+ * getDateVal
+ * ******************************************************************************************************************/
+function getDateValForAvailableDate(date, type, time) {
+    var format = getAvailableDateValFormat(type, time);
+    return Number(date.format(format));
+}
+function isDateAvailable(date, availableDate, type, time) {
+    var availableDateType;
+    if (time) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else if (['date', 'date_time', 'time'].includes(type)) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else {
+        availableDateType = type;
+    }
+    var dateVal = Number(date.format(getAvailableDateValFormat(availableDateType)));
+    var availableDateVal = getAvailableDateVal(availableDate, availableDateType);
+    return !((availableDateVal[0] && dateVal < availableDateVal[0]) ||
+        (availableDateVal[1] && dateVal > availableDateVal[1]));
+}
+function checkDateAvailable(date, availableDate, type, time) {
+    var availableDateType;
+    if (time) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else if (['date', 'date_time', 'time'].includes(type)) {
+        availableDateType = getAvailableDateType(type, time);
+    }
+    else {
+        availableDateType = type;
+    }
+    var dateVal = Number(date.format(getAvailableDateValFormat(availableDateType)));
+    var availableDateVal = getAvailableDateVal(availableDate, availableDateType);
+    if (availableDateVal[0] && dateVal < availableDateVal[0])
+        return 'min';
+    if (availableDateVal[1] && dateVal > availableDateVal[1])
+        return 'max';
+    return 'available';
+}function getFileSizeText(bytes, dp) {
+    if (dp === void 0) { dp = 1; }
+    var thresh = 1024;
+    if (Math.abs(bytes) < thresh) {
+        return "".concat(bytes, " Byte");
+    }
+    var units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    var u = -1;
+    var r = Math.pow(10, dp);
+    do {
+        bytes /= thresh;
+        u += 1;
+    } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
+    return "".concat(bytes.toFixed(dp), " ").concat(units[u]);
+}function ToForwardRefExoticComponent(component, ext) {
+    var fComponent = component;
+    fComponent.displayName = ext === null || ext === void 0 ? void 0 : ext.displayName;
+    fComponent.defaultProps = ext === null || ext === void 0 ? void 0 : ext.defaultProps;
+    return component;
+}
+function AutoTypeForwardRef(render) {
+    return React.forwardRef(render);
+}var FormSelectDefaultProps = __assign(__assign({}, FormTextFieldDefaultProps), { formValueSeparator: ',', minWidth: 120 });var css_248z$f = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
 styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * type
@@ -2302,7 +2195,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
         var finalValue = value == null ? '' : value;
         if (multiple) {
             if (!Array.isArray(finalValue)) {
-                if (empty(finalValue)) {
+                if (util.empty(finalValue)) {
                     finalValue = [];
                 }
                 else {
@@ -2317,16 +2210,16 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
         }
         else {
             if (Array.isArray(finalValue)) {
-                finalValue = empty(finalValue) ? '' : finalValue[0];
+                finalValue = util.empty(finalValue) ? '' : finalValue[0];
             }
             else {
-                if (empty(finalValue)) {
+                if (util.empty(finalValue)) {
                     finalValue = '';
                 }
             }
         }
-        if (notEmpty(itemsValues)) {
-            if (finalValue != null && notEmpty(finalValue)) {
+        if (util.notEmpty(itemsValues)) {
+            if (finalValue != null && util.notEmpty(finalValue)) {
                 if (multiple) {
                     if (Array.isArray(finalValue)) {
                         finalValue = finalValue.map(function (v) {
@@ -2358,13 +2251,13 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
      * State - isSelectedPlaceholder
      * ******************************************************************************************************************/
     var isSelectedPlaceholder = reactHook.useAutoUpdateState(React.useCallback(function () {
-        return notEmpty(items) && empty(value) && !!placeholder && !hasEmptyValue;
+        return util.notEmpty(items) && util.empty(value) && !!placeholder && !hasEmptyValue;
     }, [items, value, placeholder, hasEmptyValue]))[0];
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
     React.useEffect(function () {
-        if (!isSame(value, initValue)) {
+        if (!util.equal(value, initValue)) {
             if (onChange)
                 onChange(value);
             onValueChange(name, value);
@@ -2473,7 +2366,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
      * Render
      * ******************************************************************************************************************/
     var finalValue;
-    if (notEmpty(items)) {
+    if (util.notEmpty(items)) {
         finalValue = value;
     }
     else {
@@ -2482,11 +2375,11 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
     return (React.createElement(FormContextProvider, { value: __assign({ fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, 
             // eslint-disable-next-line
             onValueChange: function () { } }, otherFormState) },
-        React.createElement(FormTextField, __assign({ select: true, ref: handleRef, name: name, className: classNames(className, 'FormSelect', isSelectedPlaceholder && 'is-selected-placeholder'), fullWidth: fullWidth }, props, { startAdornment: startAdornment, value: finalValue, clear: false, readOnly: readOnly || empty(items), InputLabelProps: inputLabelProps, SelectProps: selectProps, onChange: handleChange, onValue: handleValue }),
+        React.createElement(FormTextField, __assign({ select: true, ref: handleRef, name: name, className: classNames(className, 'FormSelect', isSelectedPlaceholder && 'is-selected-placeholder'), fullWidth: fullWidth }, props, { startAdornment: startAdornment, value: finalValue, clear: false, readOnly: readOnly || util.empty(items), InputLabelProps: inputLabelProps, SelectProps: selectProps, onChange: handleChange, onValue: handleValue }),
             isSelectedPlaceholder && (React.createElement(material.MenuItem, { key: '$$$EmptyValuePlaceholder$$$', value: '', disabled: true, sx: { display: 'none' } }, placeholder)),
-            items && notEmpty(items) ? (items.map(function (_a) {
+            items && util.notEmpty(items) ? (items.map(function (_a) {
                 var itemLabel = _a.label, itemValue = _a.value, disabled = _a.disabled;
-                return (React.createElement(material.MenuItem, { key: empty(itemValue) ? '$$$EmptyValue$$$' : "".concat(itemValue), value: typeof itemValue === 'boolean' ? "".concat(itemValue) : itemValue, disabled: disabled },
+                return (React.createElement(material.MenuItem, { key: util.empty(itemValue) ? '$$$EmptyValue$$$' : "".concat(itemValue), value: typeof itemValue === 'boolean' ? "".concat(itemValue) : itemValue, disabled: disabled },
                     multiple && checkbox && Array.isArray(value) && React.createElement(material.Checkbox, { checked: value.includes(itemValue) }),
                     itemLabel));
             })) : (React.createElement(material.MenuItem, { value: '' })))));
@@ -2498,7 +2391,7 @@ FormSelect.defaultProps = FormSelectDefaultProps;var FormCompanyNoDefaultProps =
      * ******************************************************************************************************************/
     var className = _a.className, onValue = _a.onValue, props = __rest(_a, ["className", "onValue"]);
     var handleValue = React.useCallback(function (value) {
-        var newValue = autoDash$1(value.replace(/[^0-9]/gi, ''));
+        var newValue = util.companyNoAutoDash(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     /********************************************************************************************************************
@@ -2507,28 +2400,17 @@ FormSelect.defaultProps = FormSelectDefaultProps;var FormCompanyNoDefaultProps =
     return (React.createElement(FormText, __assign({ ref: ref, className: classNames(className, 'FormCompanyNo'), maxLength: 12, onValue: handleValue }, props)));
 });
 FormCompanyNo.displayName = 'FormCompanyNo';
-FormCompanyNo.defaultProps = FormCompanyNoDefaultProps;
-function autoDash$1(companyNo) {
-    var str = companyNo.replace(/[^0-9]/g, '');
-    var tmp = '';
-    for (var i = 0; i < str.length; i += 1) {
-        if (i === 3 || i === 5) {
-            tmp += '-';
-        }
-        tmp += str[i];
-    }
-    return tmp;
-}var FormPersonalNoDefaultProps = __assign(__assign({}, FormTextDefaultProps), { validPattern: /(([0-9]{6})([0-9]{7}))|(([0-9]{6})-([0-9]{7}))/ });var FormPersonalNo = React.forwardRef(function (_a, ref) {
+FormCompanyNo.defaultProps = FormCompanyNoDefaultProps;var FormPersonalNoDefaultProps = __assign(__assign({}, FormTextDefaultProps), { validPattern: /(([0-9]{6})([0-9]{7}))|(([0-9]{6})-([0-9]{7}))/ });var FormPersonalNo = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
     var className = _a.className, skipPersonalNumberValidateCheck = _a.skipPersonalNumberValidateCheck, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest(_a, ["className", "skipPersonalNumberValidateCheck", "onValue", "onValidate"]);
     var handleValue = React.useCallback(function (value) {
-        var newValue = autoDash(value.replace(/[^0-9]/gi, ''));
+        var newValue = util.personalNoAutoDash(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     var handleValidate = React.useCallback(function (value) {
-        if (notEmpty(value) && !skipPersonalNumberValidateCheck) {
+        if (util.notEmpty(value) && !skipPersonalNumberValidateCheck) {
             if (value.length === 14 && value.includes('-')) {
                 var jumin = value
                     .replace(/-/g, '')
@@ -2567,18 +2449,7 @@ function autoDash$1(companyNo) {
     return (React.createElement(FormText, __assign({ ref: ref, className: classNames(className, 'FormPersonalNo'), maxLength: 14, onValue: handleValue, onValidate: handleValidate }, props)));
 });
 FormPersonalNo.displayName = 'FormPersonalNo';
-FormPersonalNo.defaultProps = FormPersonalNoDefaultProps;
-function autoDash(personalNo) {
-    var str = personalNo.replace(/[^0-9]/g, '');
-    var tmp = '';
-    for (var i = 0; i < str.length; i += 1) {
-        if (i === 6) {
-            tmp += '-';
-        }
-        tmp += str[i];
-    }
-    return tmp;
-}var FormCheckboxDefaultProps = {
+FormPersonalNo.defaultProps = FormPersonalNoDefaultProps;var FormCheckboxDefaultProps = {
     checked: false,
     value: 1,
     uncheckedValue: 0,
@@ -2928,7 +2799,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
         }
         else {
             setChecked(checked);
-            nextTick(function () {
+            util.nextTick(function () {
                 onValueChangeByUser(name, checked);
                 onRequestSearchSubmit(name, checked);
             });
@@ -3118,7 +2989,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
      * Function - validate
      * ******************************************************************************************************************/
     var validate = React.useCallback(function (value) {
-        if (required && empty(value)) {
+        if (required && util.empty(value)) {
             setErrorErrorHelperText(true, '필수 선택 항목입니다.');
             return false;
         }
@@ -3264,7 +3135,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
             finalValue_1 = getFinalValue(finalValue_1);
             if (value !== finalValue_1) {
                 setValue(finalValue_1);
-                nextTick(function () {
+                util.nextTick(function () {
                     onValueChangeByUser(name, finalValue_1);
                     onRequestSearchSubmit(name, finalValue_1);
                 });
@@ -3435,7 +3306,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         var finalValue = value;
         if (multiple) {
             if (!Array.isArray(finalValue)) {
-                if (finalValue != null && notEmpty(finalValue)) {
+                if (finalValue != null && util.notEmpty(finalValue)) {
                     if (typeof finalValue === 'string') {
                         finalValue = Array.from(new Set(finalValue.split(formValueSeparator || ',')));
                     }
@@ -3450,7 +3321,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         }
         else {
             if (Array.isArray(finalValue)) {
-                if (notEmpty(finalValue)) {
+                if (util.notEmpty(finalValue)) {
                     finalValue = finalValue[0];
                 }
                 else {
@@ -3458,8 +3329,8 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                 }
             }
         }
-        if (notEmpty(itemsValues)) {
-            if (finalValue != null && notEmpty(finalValue)) {
+        if (util.notEmpty(itemsValues)) {
+            if (finalValue != null && util.notEmpty(finalValue)) {
                 if (multiple) {
                     if (Array.isArray(finalValue)) {
                         finalValue = finalValue.map(function (v) {
@@ -3509,10 +3380,10 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
     }, [value]);
     React.useEffect(function () {
         if (notAllowEmptyValue) {
-            if (items && notEmpty(items)) {
+            if (items && util.notEmpty(items)) {
                 var setFirstItem = false;
                 if (Array.isArray(value)) {
-                    if (empty(value)) {
+                    if (util.empty(value)) {
                         setFirstItem = true;
                     }
                 }
@@ -3546,7 +3417,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
      * Function - validate
      * ******************************************************************************************************************/
     var validate = React.useCallback(function (value) {
-        if (required && empty(value)) {
+        if (required && util.empty(value)) {
             setErrorErrorHelperText(true, '필수 선택 항목입니다.');
             return false;
         }
@@ -3682,7 +3553,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
             var finalValue_1 = newValue;
             if (notAllowEmptyValue) {
                 if (multiple) {
-                    if (empty(finalValue_1)) {
+                    if (util.empty(finalValue_1)) {
                         if (Array.isArray(value) && value.length > 0) {
                             finalValue_1 = [value[0]];
                         }
@@ -3695,9 +3566,9 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                 }
             }
             finalValue_1 = getFinalValue(finalValue_1);
-            if (!isSame(value, finalValue_1)) {
+            if (!util.equal(value, finalValue_1)) {
                 setValue(finalValue_1);
-                nextTick(function () {
+                util.nextTick(function () {
                     onValueChangeByUser(name, finalValue_1);
                     onRequestSearchSubmit(name, finalValue_1);
                 });
@@ -3774,7 +3645,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                         ? formColWidth
                         : undefined,
                     flexWrap: type === 'checkbox' || type === 'radio' ? 'wrap' : 'nowrap',
-                }, "aria-labelledby": notEmpty(label) ? labelId : undefined }, isOnGetItemLoading || loading || !items || empty(items) ? (React.createElement(material.ToggleButton, { ref: refForButtonResizeHeightDetect, size: size, className: 'ToggleButton', disabled: disabled || readOnly, value: '', style: { visibility: 'hidden' } })) : (buttons)))) })));
+                }, "aria-labelledby": util.notEmpty(label) ? labelId : undefined }, isOnGetItemLoading || loading || !items || util.empty(items) ? (React.createElement(material.ToggleButton, { ref: refForButtonResizeHeightDetect, size: size, className: 'ToggleButton', disabled: disabled || readOnly, value: '', style: { visibility: 'hidden' } })) : (buttons)))) })));
 }));
 FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';
 FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormRatingDefaultProps = {
@@ -3878,7 +3749,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         setErrorHelperText(errorHelperText);
     }, [setError]);
     var validate = React.useCallback(function (value) {
-        if (required && (empty(value) || value === 0)) {
+        if (required && (util.empty(value) || value === 0)) {
             setErrorErrorHelperText(true, '필수 선택 항목입니다.');
             return false;
         }
@@ -3987,7 +3858,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         else {
             var finalValue_1 = getFinalValue(value || 0);
             setValue(finalValue_1);
-            nextTick(function () {
+            util.nextTick(function () {
                 onValueChangeByUser(name, finalValue_1);
                 onRequestSearchSubmit(name, finalValue_1);
             });
@@ -4076,7 +3947,7 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
      * ******************************************************************************************************************/
     var validate = React.useCallback(function (value) {
         var _a;
-        if (required && empty((_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.getContent())) {
+        if (required && util.empty((_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.getContent())) {
             setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
@@ -4180,7 +4051,7 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
     var handleEditorChange = React.useCallback(function (value) {
         setValue(value);
         if (new Date().getTime() - keyDownTime.current < 300) {
-            nextTick(function () {
+            util.nextTick(function () {
                 if (onValueChangeByUser)
                     onValueChangeByUser(name, value);
             });
@@ -4323,7 +4194,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         var finalValue = value;
         if (multiple) {
             if (!Array.isArray(finalValue)) {
-                if (finalValue != null && notEmpty(finalValue)) {
+                if (finalValue != null && util.notEmpty(finalValue)) {
                     if (typeof finalValue === 'string') {
                         finalValue = Array.from(new Set(finalValue.split(formValueSeparator || ',')));
                     }
@@ -4338,7 +4209,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         }
         else {
             if (Array.isArray(finalValue)) {
-                if (notEmpty(finalValue)) {
+                if (util.notEmpty(finalValue)) {
                     finalValue = finalValue[0];
                 }
                 else {
@@ -4346,8 +4217,8 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                 }
             }
         }
-        if (notEmpty(itemsValues)) {
-            if (finalValue != null && notEmpty(finalValue)) {
+        if (util.notEmpty(itemsValues)) {
+            if (finalValue != null && util.notEmpty(finalValue)) {
                 if (multiple) {
                     if (Array.isArray(finalValue)) {
                         finalValue = finalValue.map(function (v) {
@@ -4389,7 +4260,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
             finalValue = (multiple ? [] : undefined);
         }
         var newComponentValue = (multiple ? [] : null);
-        if (notEmpty(finalValue)) {
+        if (util.notEmpty(finalValue)) {
             if (items) {
                 if (Array.isArray(finalValue)) {
                     newComponentValue = items.filter(function (info) { return Array.isArray(finalValue) && finalValue.includes(info.value); });
@@ -4399,7 +4270,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                         (multiple ? [] : null));
                 }
             }
-            if (empty(newComponentValue) && valueItem) {
+            if (util.empty(newComponentValue) && valueItem) {
                 if (Array.isArray(finalValue)) {
                     if (Array.isArray(valueItem)) {
                         newComponentValue = valueItem.filter(function (info) { return Array.isArray(finalValue) && finalValue.includes(info.value); });
@@ -4412,9 +4283,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                 }
             }
         }
-        if (oldComponentValueRef.current &&
-            newComponentValue &&
-            isSame(oldComponentValueRef.current, newComponentValue)) {
+        if (oldComponentValueRef.current && newComponentValue && util.equal(oldComponentValueRef.current, newComponentValue)) {
             return oldComponentValueRef.current;
         }
         else {
@@ -4551,7 +4420,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
      * Function - validate
      * ******************************************************************************************************************/
     var validate = React.useCallback(function (value) {
-        if (required && empty(value)) {
+        if (required && util.empty(value)) {
             setErrorErrorHelperText(true, '필수 선택 항목입니다.');
             return false;
         }
@@ -4693,10 +4562,10 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                 }
             }
             var finalValue = getFinalValue(newValue);
-            if (!isSame(value, finalValue)) {
+            if (!util.equal(value, finalValue)) {
                 setValue(finalValue);
                 setValueItem(componentValue);
-                nextTick(function () {
+                util.nextTick(function () {
                     onValueChangeByUser(name, finalValue);
                     onRequestSearchSubmit(name, finalValue);
                 });
@@ -5327,7 +5196,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
      * ******************************************************************************************************************/
     var label = React.useMemo(function () {
         if (labelIcon) {
-            return React.createElement(reactComponent.IconText, { icon: labelIcon }, initLabel);
+            return React.createElement(reactComponent.PdgIconText, { icon: labelIcon }, initLabel);
         }
         else {
             return initLabel;
@@ -5459,7 +5328,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
      * Function - validate
      * ******************************************************************************************************************/
     var validate = React.useCallback(function (value) {
-        if (required && empty(value)) {
+        if (required && util.empty(value)) {
             setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
@@ -5581,7 +5450,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
      * ******************************************************************************************************************/
     var handleChange = React.useCallback(function (unit, newValue, keyboardInputValue) {
         var updateValue = true;
-        if (notEmpty(keyboardInputValue)) {
+        if (util.notEmpty(keyboardInputValue)) {
             if (newValue) {
                 if (!newValue.isValid()) {
                     updateValue = false;
@@ -5605,7 +5474,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
                 }
             }
             var runOnRequestSearchSubmit_1 = false;
-            if (notEmpty(keyboardInputValue)) {
+            if (util.notEmpty(keyboardInputValue)) {
                 if (!time || unit !== 'action_date') {
                     runOnRequestSearchSubmit_1 = !open; // 팝업창 열리지 않은 상태에서 날짜 키보드로 변경
                     setOpen(false);
@@ -5616,7 +5485,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
                     setOpen(false);
             }
             setValue(finalValue);
-            nextTick(function () {
+            util.nextTick(function () {
                 onValueChangeByUser(name, finalValue);
                 if (runOnRequestSearchSubmit_1) {
                     onRequestSearchSubmit(name, finalValue);
@@ -6095,7 +5964,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
      * ******************************************************************************************************************/
     var label = React.useMemo(function () {
         if (labelIcon) {
-            return React.createElement(reactComponent.IconText, { icon: labelIcon }, initLabel);
+            return React.createElement(reactComponent.PdgIconText, { icon: labelIcon }, initLabel);
         }
         else {
             return initLabel;
@@ -6227,7 +6096,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
      * Function - validate
      * ******************************************************************************************************************/
     var validate = React.useCallback(function (value) {
-        if (required && empty(value)) {
+        if (required && util.empty(value)) {
             setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
@@ -6350,7 +6219,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
     var handleChange = React.useCallback(function (unit, newValue, keyboardInputValue) {
         var _a, _b, _c;
         var updateValue = true;
-        if (notEmpty(keyboardInputValue)) {
+        if (util.notEmpty(keyboardInputValue)) {
             if (newValue) {
                 if (!newValue.isValid()) {
                     updateValue = false;
@@ -6374,7 +6243,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
                 }
             }
             var runOnRequestSearchSubmit_1 = false;
-            if (notEmpty(keyboardInputValue)) {
+            if (util.notEmpty(keyboardInputValue)) {
                 if (!time || unit !== 'action_date') {
                     runOnRequestSearchSubmit_1 = !open; // 팝업창 열리지 않은 상태에서 날짜 키보드로 변경
                     setOpen(false);
@@ -6385,7 +6254,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
                     setOpen(false);
             }
             setValue(finalValue);
-            nextTick(function () {
+            util.nextTick(function () {
                 onValueChangeByUser(name, finalValue);
                 if (runOnRequestSearchSubmit_1) {
                     onRequestSearchSubmit(name, finalValue);
@@ -7871,7 +7740,7 @@ var FormDateRangePickerTooltipPickerContainer = React.forwardRef(function (_a, r
      * ******************************************************************************************************************/
     React.useEffect(function () {
         if (yearSelectOpen) {
-            nextTick(function () {
+            util.nextTick(function () {
                 var _a, _b, _c;
                 var wrapRect = (_a = yearSelectRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect();
                 var activeRect = (_b = activeYearBtnRef.current) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect();
@@ -7917,7 +7786,7 @@ var FormDateRangePickerTooltipPickerContainer = React.forwardRef(function (_a, r
         if (yearSelectOpen) {
             setYearSelectOpen(false);
             if (index !== yearMonthSelectIndex) {
-                nextTick(function () {
+                util.nextTick(function () {
                     setYearMonthSelectIndex(index);
                     setYearSelectOpen(true);
                     setMonthSelectOpen(false);
@@ -8244,11 +8113,11 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
         }
         var startInputValue = ((_a = startDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.value) || '';
         var endInputValue = ((_b = endDateTextFieldRef.current) === null || _b === void 0 ? void 0 : _b.value) || '';
-        if (notEmpty(startInputValue) && !dayjs(startInputValue, format).isValid()) {
+        if (util.notEmpty(startInputValue) && !dayjs(startInputValue, format).isValid()) {
             setFromErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
             return false;
         }
-        if (notEmpty(endInputValue) && !dayjs(endInputValue, format).isValid()) {
+        if (util.notEmpty(endInputValue) && !dayjs(endInputValue, format).isValid()) {
             setToErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
             return false;
         }
@@ -8411,7 +8280,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                 if ((_a = value[1]) === null || _a === void 0 ? void 0 : _a.isBefore(newValue)) {
                     finalValue = [newValue, null];
                     if (!fromInput) {
-                        nextTick(function () {
+                        util.nextTick(function () {
                             var _a;
                             (_a = endDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.focus();
                         });
@@ -8424,7 +8293,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                             setOpen(false);
                         }
                         else {
-                            nextTick(function () {
+                            util.nextTick(function () {
                                 var _a;
                                 (_a = endDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.focus();
                             });
@@ -8452,13 +8321,13 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                     if (value[0]) {
                         setOpen(false);
                         if (fromInput && !open) {
-                            nextTick(function () {
+                            util.nextTick(function () {
                                 onRequestSearchSubmit(name, finalValue);
                             });
                         }
                     }
                     else {
-                        nextTick(function () {
+                        util.nextTick(function () {
                             var _a;
                             (_a = startDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.focus();
                         });
@@ -8468,7 +8337,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                 break;
         }
         setValue(finalValue);
-        nextTick(function () {
+        util.nextTick(function () {
             onValueChangeByUser(name, finalValue);
         });
     }, [
@@ -8762,7 +8631,7 @@ FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;var FormFileD
      * ******************************************************************************************************************/
     return (React.createElement(material.Dialog, { className: 'color-primary', open: !!open, maxWidth: 'sm', fullWidth: true, onClose: function (e, reason) {
             if (reason === 'backdropClick') {
-                if (empty(value)) {
+                if (util.empty(value)) {
                     onClose && onClose();
                 }
             }
@@ -8877,9 +8746,9 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
             var d = document.createElement('div');
             d.innerHTML = value;
             var text = d.textContent || d.innerText;
-            isEmptyValue = empty(text.trim());
+            isEmptyValue = util.empty(text.trim());
         }
-        if (required && (isEmptyValue || empty(value))) {
+        if (required && (isEmptyValue || util.empty(value))) {
             setErrorErrorHelperText(true, '필수 선택 항목입니다.');
             return false;
         }
@@ -9024,7 +8893,7 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
             fileSizeCheck(file_1).then(function () {
                 onFile(file_1).then(function (url) {
                     setValue(url);
-                    nextTick(function () {
+                    util.nextTick(function () {
                         if (onValueChangeByUser)
                             onValueChangeByUser(name, url);
                     });
@@ -9037,7 +8906,7 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
     }, []);
     var handleRemoveClick = React.useCallback(function () {
         setValue('');
-        nextTick(function () {
+        util.nextTick(function () {
             if (onValueChangeByUser)
                 onValueChangeByUser(name, '');
         });
@@ -9046,7 +8915,7 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
         if (onLink) {
             onLink(url).then(function (finalUrl) {
                 setValue(finalUrl);
-                nextTick(function () {
+                util.nextTick(function () {
                     if (onValueChangeByUser)
                         onValueChangeByUser(name, finalUrl);
                 });
@@ -9054,7 +8923,7 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
         }
         else {
             setValue(url);
-            nextTick(function () {
+            util.nextTick(function () {
                 if (onValueChangeByUser)
                     onValueChangeByUser(name, url);
             });
@@ -9063,7 +8932,7 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormFile', "variant-".concat(variant), "size-".concat(size), !!initLabel && 'with-label', !!fullWidth && 'full-width', !!hideUrl && 'hide-file-name', !!hideLink && 'hide-link', !!hideUpload && 'hide-upload', !!hideRemove && 'hide-remove', notEmpty(value) && 'with-value'), labelIcon: hideUrl ? labelIcon : undefined, label: hideUrl ? initLabel : undefined, error: error, required: required, fullWidth: fullWidth, hidden: hidden, helperText: React.createElement("div", null,
+    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormFile', "variant-".concat(variant), "size-".concat(size), !!initLabel && 'with-label', !!fullWidth && 'full-width', !!hideUrl && 'hide-file-name', !!hideLink && 'hide-link', !!hideUpload && 'hide-upload', !!hideRemove && 'hide-remove', util.notEmpty(value) && 'with-value'), labelIcon: hideUrl ? labelIcon : undefined, label: hideUrl ? initLabel : undefined, error: error, required: required, fullWidth: fullWidth, hidden: hidden, helperText: React.createElement("div", null,
             preview,
             React.createElement("div", null, error ? errorHelperText : helperText)), hideLabel: !hideUrl, helperTextProps: {
             style: {
@@ -9085,7 +8954,7 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
                                     React.createElement("label", null,
                                         React.createElement(FormIcon, null, "link"),
                                         !hideLinkLabel && (linkLabel || '링크')))),
-                                !hideRemove && notEmpty(value) && (React.createElement(material.Button, { variant: 'text', tabIndex: removeTabIndex == null ? -1 : removeTabIndex, className: classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, onClick: handleRemoveClick },
+                                !hideRemove && util.notEmpty(value) && (React.createElement(material.Button, { variant: 'text', tabIndex: removeTabIndex == null ? -1 : removeTabIndex, className: classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, disabled: readOnly || disabled, onClick: handleRemoveClick },
                                     React.createElement("label", null,
                                         React.createElement(FormIcon, null, "Close"),
                                         !hideRemoveLabel && (removeLabel || '삭제'))))))),
@@ -9101,7 +8970,7 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
                     React.createElement("label", null,
                         React.createElement(FormIcon, null, "link"),
                         !hideLinkLabel && (linkLabel || '링크')))),
-                !hideRemove && notEmpty(value) && (React.createElement(material.Button, { variant: 'outlined', tabIndex: removeTabIndex, className: classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, disabled: disabled, onClick: handleRemoveClick },
+                !hideRemove && util.notEmpty(value) && (React.createElement(material.Button, { variant: 'outlined', tabIndex: removeTabIndex, className: classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, disabled: disabled, onClick: handleRemoveClick },
                     React.createElement("label", null,
                         React.createElement(FormIcon, null, "Close"),
                         !hideRemoveLabel && (removeLabel || '삭제')))))),
@@ -9419,7 +9288,7 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
         setErrorHelperText(errorHelperText);
     }, [setError]);
     var validate = React.useCallback(function (value) {
-        if (required && empty(value)) {
+        if (required && util.empty(value)) {
             setErrorErrorHelperText(true, '필수 선택 항목입니다.');
             return false;
         }
@@ -9586,7 +9455,7 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
         setValue(newValue);
         if (isMonthSelect)
             setOpen(false);
-        nextTick(function () {
+        util.nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
     }, [name, onValueChangeByUser, setValue]);
@@ -10029,7 +9898,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
     var handleContainerChange = React.useCallback(function (newValue, selectType, isMonthSelect) {
         setValue(newValue);
         if (selectType === 'start' && isMonthSelect) {
-            nextTick(function () {
+            util.nextTick(function () {
                 var _a;
                 (_a = endInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
             });
@@ -10037,7 +9906,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         else if (selectType === 'end' && isMonthSelect) {
             setOpen(false);
         }
-        nextTick(function () {
+        util.nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
     }, [name, onValueChangeByUser, setValue]);
@@ -10056,7 +9925,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                     if (fromError) {
                         validate(newValue);
                     }
-                    nextTick(function () {
+                    util.nextTick(function () {
                         onValueChangeByUser(name, newValue);
                     });
                     return newValue;
@@ -10075,7 +9944,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                     if (toError) {
                         validate(newValue);
                     }
-                    nextTick(function () {
+                    util.nextTick(function () {
                         onValueChangeByUser(name, newValue);
                     });
                     return newValue;
@@ -10294,7 +10163,7 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
         setErrorHelperText(errorHelperText);
     }, [setError]);
     var validate = React.useCallback(function (value) {
-        if (required && empty(value)) {
+        if (required && util.empty(value)) {
             setErrorErrorHelperText(true, '필수 선택 항목입니다.');
             return false;
         }
@@ -10429,14 +10298,14 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
         setValue(newValue);
         if (isClick)
             setOpen(false);
-        nextTick(function () {
+        util.nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
     }, [name, onValueChangeByUser, setValue]);
     var handleInputDatePickerChange = React.useCallback(function (v) {
         var newValue = v ? dateToValue(v) : v;
         setValue(newValue);
-        nextTick(function () {
+        util.nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
     }, [dateToValue, name, onValueChangeByUser, setValue]);
@@ -10784,7 +10653,7 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
     var handleContainerChange = React.useCallback(function (newValue, selectType) {
         setValue(newValue);
         if (selectType === 'start') {
-            nextTick(function () {
+            util.nextTick(function () {
                 var _a;
                 setSelectType('end');
                 (_a = endInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
@@ -10793,7 +10662,7 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
         else if (selectType === 'end') {
             setOpen(false);
         }
-        nextTick(function () {
+        util.nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
     }, [name, onValueChangeByUser, setValue]);
@@ -10810,7 +10679,7 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
                     if (fromError) {
                         validate(newValue);
                     }
-                    nextTick(function () {
+                    util.nextTick(function () {
                         onValueChangeByUser(name, newValue);
                     });
                     return newValue;
@@ -10827,7 +10696,7 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
                     if (toError) {
                         validate(newValue);
                     }
-                    nextTick(function () {
+                    util.nextTick(function () {
                         onValueChangeByUser(name, newValue);
                     });
                     return newValue;
@@ -11089,7 +10958,7 @@ FormYearRangePicker.defaultProps = FormYearRangePickerDefaultProps;var FormSwitc
         else {
             var finalValue_1 = getFinalValue(checked);
             setValue(finalValue_1);
-            nextTick(function () {
+            util.nextTick(function () {
                 onValueChangeByUser(name, finalValue_1);
                 onRequestSearchSubmit(name, finalValue_1);
             });

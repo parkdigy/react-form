@@ -3,7 +3,8 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, nextTick, notEmpty, isSame, ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util';
+import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util';
+import { empty, nextTick, notEmpty, equal } from '@pdg/util';
 import { PartialPick } from '../../@types';
 import {
   FormToggleButtonGroupProps,
@@ -499,7 +500,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
             }
           }
           finalValue = getFinalValue(finalValue);
-          if (!isSame(value, finalValue)) {
+          if (!equal(value, finalValue)) {
             setValue(finalValue);
             nextTick(() => {
               onValueChangeByUser(name, finalValue);

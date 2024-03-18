@@ -2,7 +2,8 @@ import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useMe
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { getDateValidationErrorText, nextTick } from '../../@util';
+import { getDateValidationErrorText } from '../../@util';
+import { nextTick } from '@pdg/util';
 import {
   FormMonthRangePickerProps as Props,
   FormMonthRangePickerDefaultProps,
@@ -371,8 +372,8 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
             year === null
               ? null
               : lastValue[0]
-              ? { year, month: lastValue[0].month }
-              : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
+                ? { year, month: lastValue[0].month }
+                : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
             lastValue[1],
           ]);
           setValue(lastValue);
@@ -383,8 +384,8 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
             month === null
               ? null
               : lastValue[0]
-              ? { year: lastValue[0].year, month }
-              : { year: new Date().getFullYear(), month },
+                ? { year: lastValue[0].year, month }
+                : { year: new Date().getFullYear(), month },
             lastValue[1],
           ]);
           setValue(lastValue);
@@ -396,8 +397,8 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
             year === null
               ? null
               : lastValue[1]
-              ? { year, month: lastValue[1].month }
-              : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
+                ? { year, month: lastValue[1].month }
+                : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
           ]);
           setValue(lastValue);
         },
@@ -408,8 +409,8 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
             month === null
               ? null
               : lastValue[1]
-              ? { year: lastValue[1].year, month }
-              : { year: new Date().getFullYear(), month },
+                ? { year: lastValue[1].year, month }
+                : { year: new Date().getFullYear(), month },
           ]);
           setValue(lastValue);
         },
