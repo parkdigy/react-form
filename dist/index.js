@@ -1676,7 +1676,7 @@ var templateObject_1$b;var FormTelDefaultProps = __assign(__assign({}, FormTextD
      * ******************************************************************************************************************/
     var className = _a.className, onValue = _a.onValue, props = __rest(_a, ["className", "onValue"]);
     var handleValue = React.useCallback(function (value) {
-        var newValue = util.telAutoDash(value.replace(/[^0-9]/gi, ''));
+        var newValue = util.telNoAutoDash(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     /********************************************************************************************************************

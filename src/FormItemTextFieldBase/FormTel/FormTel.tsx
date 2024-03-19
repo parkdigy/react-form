@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import FormText from '../FormText';
 import classNames from 'classnames';
 import { FormTelProps as Props, FormTelDefaultProps, FormTelCommands, FormTelValue } from './FormTel.types';
-import { telAutoDash } from '@pdg/util';
+import { telNoAutoDash } from '@pdg/util';
 
 const FormTel = React.forwardRef<FormTelCommands, Props>(({ className, onValue, ...props }, ref) => {
   /********************************************************************************************************************
@@ -11,7 +11,7 @@ const FormTel = React.forwardRef<FormTelCommands, Props>(({ className, onValue, 
 
   const handleValue = useCallback(
     (value: FormTelValue) => {
-      const newValue = telAutoDash(value.replace(/[^0-9]/gi, ''));
+      const newValue = telNoAutoDash(value.replace(/[^0-9]/gi, ''));
       return onValue ? onValue(newValue) : newValue;
     },
     [onValue]
