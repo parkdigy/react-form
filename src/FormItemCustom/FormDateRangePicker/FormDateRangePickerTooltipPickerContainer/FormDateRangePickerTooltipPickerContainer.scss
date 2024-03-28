@@ -9,7 +9,7 @@
     right: 0;
 
     > div {
-      &:first-child {
+      &:first-of-type {
         padding-left: 20px;
       }
       &:last-child {
@@ -84,7 +84,7 @@
     button {
       min-width: 0;
       color: unset;
-      &:not(:first-child) {
+      &:not(:first-of-type) {
         margin-left: 5px;
       }
       &.disabled {

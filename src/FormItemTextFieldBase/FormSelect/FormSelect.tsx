@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Box, Checkbox, Chip, CircularProgress, MenuItem } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util';
-import { empty, notEmpty, equal } from '@pdg/util';
+import { empty, notEmpty, equal, nextTick, ifUndefined } from '@pdg/util';
 import {
   FormSelectProps,
   FormSelectDefaultProps,
@@ -199,7 +199,9 @@ const FormSelect = ToForwardRefExoticComponent(
           }
         }
 
-        return onValue ? onValue(finalValue) : finalValue;
+        finalValue = onValue ? onValue(finalValue) : finalValue;
+
+        return equal(value, finalValue) ? value : finalValue;
       },
       [multiple, formValueSeparator, itemsValues, onValue]
     );
@@ -208,12 +210,32 @@ const FormSelect = ToForwardRefExoticComponent(
      * State - value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useAutoUpdateState(initValue, getFinalValue);
+    const [value, setValue] = useState(() => getFinalValue(initValue));
+
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+
+    const changeValue = useCallback(
+      (newValue: any) => {
+        if (!equal(value, newValue)) {
+          setValue(newValue);
+          nextTick(() => {
+            if (onChange) onChange(newValue);
+            onValueChange(name, newValue);
+          });
+        }
+      },
+      [name, onChange, onValueChange, value]
+    );
 
     useFirstSkipEffect(() => {
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
+      changeValue(getFinalValue(initValue));
+    }, [initValue]);
+
+    useFirstSkipEffect(() => {
+      changeValue(getFinalValue(value));
+    }, [multiple]);
 
     /********************************************************************************************************************
      * State - isSelectedPlaceholder
@@ -230,11 +252,6 @@ const FormSelect = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     useEffect(() => {
-      if (!equal(value, initValue)) {
-        if (onChange) onChange(value);
-        onValueChange(name, value);
-      }
-
       if (onLoadItems) {
         setIsOnGetItemLoading(true);
         onLoadItems().then((items) => {
@@ -254,6 +271,7 @@ const FormSelect = ToForwardRefExoticComponent(
         ...initSelectProps,
         displayEmpty: true,
         multiple: !!multiple,
+        value: value,
       };
       if (multiple) {
         finalSelectProps.renderValue = (selected) => {
@@ -284,7 +302,7 @@ const FormSelect = ToForwardRefExoticComponent(
       };
 
       return finalSelectProps;
-    }, [initSelectProps, isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, width]);
+    }, [initSelectProps, isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, value, width]);
 
     /********************************************************************************************************************
      * Function - getExtraCommands
@@ -297,15 +315,15 @@ const FormSelect = ToForwardRefExoticComponent(
         getReset: () => getFinalValue(initValue),
         reset: () => {
           lastValue = getFinalValue(initValue);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getValue: () => lastValue,
         setValue: (value: Props['value']) => {
           lastValue = getFinalValue(value);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
       };
-    }, [value, getFinalValue, initValue, setValue]);
+    }, [value, getFinalValue, initValue, changeValue]);
 
     const getExtraCommands = useCallback((): FormSelectExtraCommands<any> => {
       let lastItems = items;
@@ -365,7 +383,7 @@ const FormSelect = ToForwardRefExoticComponent(
     );
 
     const handleChange = (newValue: any) => {
-      setValue(newValue);
+      changeValue(getFinalValue(newValue));
     };
 
     const handleValue = useCallback(
@@ -384,6 +402,24 @@ const FormSelect = ToForwardRefExoticComponent(
       finalValue = value;
     } else {
       finalValue = multiple ? emptyValue : '';
+    }
+
+    if (multiple) {
+      if (selectProps.value != null && !Array.isArray(selectProps.value)) {
+        selectProps.value = [selectProps.value];
+      }
+      if (finalValue !== undefined && !Array.isArray(finalValue)) {
+        finalValue = [finalValue];
+      }
+    } else {
+      if (Array.isArray(selectProps.value)) {
+        selectProps.value = selectProps.value[0];
+      }
+      if (Array.isArray(finalValue)) {
+        finalValue = finalValue[0];
+      }
+
+      finalValue = ifUndefined(finalValue, '');
     }
 
     return (

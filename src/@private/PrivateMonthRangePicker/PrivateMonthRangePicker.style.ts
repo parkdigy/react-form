@@ -23,7 +23,7 @@ export const StyledActionContainer = styled('div')`
 export const StyledActionButton = styled(Button)`
   min-width: 0;
   color: unset;
-  &:not(:first-child) {
+  &:not(:first-of-type) {
     margin-left: 5px;
   }
   &.disabled {

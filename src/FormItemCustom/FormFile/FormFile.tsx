@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Button, InputAdornment, TextField, Typography } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getFileSizeText } from '../../@util';
-import { empty, nextTick, notEmpty } from '@pdg/util';
+import { empty, equal, nextTick, notEmpty } from '@pdg/util';
 import { FormFileProps as Props, FormFileDefaultProps, FormFileCommands, FormFileValue } from './FormFile.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
@@ -110,19 +110,6 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
     const linkBtnRef = useRef<HTMLButtonElement>(null);
 
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-
-    const [value, setValue] = useAutoUpdateState<FormFileValue>(initValue || '');
-    const [fileValue] = useState('');
-
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
-
-    /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
 
@@ -140,37 +127,6 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       title?: ReactNode;
       content?: ReactNode;
     }>({ open: false });
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const label = useMemo(() => {
-      return labelIcon ? (
-        <>
-          <PdgIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PdgIcon>
-          <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
-        </>
-      ) : (
-        initLabel
-      );
-    }, [initLabel, labelIcon]);
-
-    /********************************************************************************************************************
-     * Function - focus
-     * ******************************************************************************************************************/
-
-    const focus = useCallback(() => {
-      if (hideUrl) {
-        if (hideUpload) {
-          linkBtnRef.current?.focus();
-        } else {
-          fileUploadBtnRef.current?.focus();
-        }
-      } else {
-        textFieldRef.current?.focus();
-      }
-    }, [hideUpload, hideUrl]);
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -218,6 +174,67 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
     );
 
     /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+
+    const [value, setValue] = useState<FormFileValue>(initValue || '');
+
+    const [fileValue] = useState('');
+
+    const changeValue = useCallback(
+      (newValue: FormFileValue) => {
+        if (!equal(value, newValue)) {
+          setValue(newValue);
+          nextTick(() => {
+            if (error) validate(newValue);
+            if (onChange) onChange(newValue);
+            onValueChange(name, newValue);
+          });
+        }
+      },
+      [error, name, onChange, onValueChange, validate, value]
+    );
+
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
+
+    useFirstSkipEffect(() => {
+      changeValue(initValue || '');
+    }, [initValue]);
+
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+
+    const label = useMemo(() => {
+      return labelIcon ? (
+        <>
+          <PdgIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PdgIcon>
+          <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
+        </>
+      ) : (
+        initLabel
+      );
+    }, [initLabel, labelIcon]);
+
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
+
+    const focus = useCallback(() => {
+      if (hideUrl) {
+        if (hideUpload) {
+          linkBtnRef.current?.focus();
+        } else {
+          fileUploadBtnRef.current?.focus();
+        }
+      } else {
+        textFieldRef.current?.focus();
+      }
+    }, [hideUpload, hideUrl]);
+
+    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
 
@@ -233,12 +250,12 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
         getReset: () => initValue || '',
         reset: () => {
           lastValue = initValue || '';
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getValue: () => lastValue,
         setValue: (value) => {
           lastValue = value;
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getData: () => lastData,
         setData: (data) => {
@@ -296,13 +313,13 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       onAddValueItem,
       onRemoveValueItem,
       id,
-      setValue,
       setDisabled,
       setErrorErrorHelperText,
       data,
       setData,
       hidden,
       setHidden,
+      changeValue,
     ]);
 
     /********************************************************************************************************************
@@ -356,7 +373,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
           const file = (target.files as FileList)[0];
           fileSizeCheck(file).then(() => {
             onFile(file).then((url) => {
-              setValue(url);
+              changeValue(url);
               nextTick(() => {
                 if (onValueChangeByUser) onValueChangeByUser(name, url);
               });
@@ -364,7 +381,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
           });
         }
       },
-      [fileSizeCheck, name, onFile, onValueChangeByUser, setValue]
+      [changeValue, fileSizeCheck, name, onFile, onValueChangeByUser]
     );
 
     const handleLinkClick = useCallback(() => {
@@ -372,29 +389,29 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
     }, []);
 
     const handleRemoveClick = useCallback(() => {
-      setValue('');
+      changeValue('');
       nextTick(() => {
         if (onValueChangeByUser) onValueChangeByUser(name, '');
       });
-    }, [name, onValueChangeByUser, setValue]);
+    }, [changeValue, name, onValueChangeByUser]);
 
     const handleLinkDialogConfirm = useCallback(
       (url: string) => {
         if (onLink) {
           onLink(url).then((finalUrl) => {
-            setValue(finalUrl);
+            changeValue(finalUrl);
             nextTick(() => {
               if (onValueChangeByUser) onValueChangeByUser(name, finalUrl);
             });
           });
         } else {
-          setValue(url);
+          changeValue(url);
           nextTick(() => {
             if (onValueChangeByUser) onValueChangeByUser(name, url);
           });
         }
       },
-      [name, onLink, onValueChangeByUser, setValue]
+      [changeValue, name, onLink, onValueChangeByUser]
     );
 
     /********************************************************************************************************************

@@ -4,7 +4,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { Editor as TinyMCEEditor } from 'tinymce';
 import { Skeleton } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, nextTick } from '@pdg/util';
+import { empty, equal, nextTick } from '@pdg/util';
 import {
   FormTextEditorProps as Props,
   FormTextEditorDefaultProps,
@@ -103,18 +103,6 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
     const keyDownTime = useRef(0);
 
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-
-    const [value, setValue] = useAutoUpdateState<FormTextEditorValue>(initValue || '');
-
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
-
-    /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
 
@@ -126,17 +114,6 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
     );
     const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [data, setData] = useAutoUpdateState<Props['data']>(initData);
-
-    /********************************************************************************************************************
-     * Function - focus
-     * ******************************************************************************************************************/
-
-    const focus = useCallback(
-      function () {
-        editorRef.current?.focus();
-      },
-      [editorRef]
-    );
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -177,6 +154,41 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
     );
 
     /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+
+    const [value, setValue] = useState<FormTextEditorValue>(initValue || '');
+
+    const changeValue = useCallback(
+      (newValue: FormTextEditorValue) => {
+        if (!equal(value, newValue)) {
+          setValue(newValue);
+          nextTick(() => {
+            if (error) validate(newValue);
+            if (onChange) onChange(newValue);
+            onValueChange(name, newValue);
+          });
+        }
+      },
+      [error, name, onChange, onValueChange, validate, value]
+    );
+
+    useFirstSkipEffect(() => {
+      changeValue(initValue || '');
+    }, [initValue]);
+
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
+
+    const focus = useCallback(
+      function () {
+        editorRef.current?.focus();
+      },
+      [editorRef]
+    );
+
+    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
 
@@ -192,12 +204,12 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
         getReset: () => initValue || '',
         reset: () => {
           lastValue = initValue || '';
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getValue: () => lastValue,
         setValue: (value) => {
           lastValue = value;
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getData: () => lastData,
         setData: (data) => {
@@ -254,7 +266,6 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       onAddValueItem,
       onRemoveValueItem,
       id,
-      setValue,
       setDisabled,
       setErrorErrorHelperText,
       data,
@@ -262,6 +273,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       validate,
       hidden,
       setHidden,
+      changeValue,
     ]);
 
     /********************************************************************************************************************
@@ -270,14 +282,14 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
 
     const handleEditorChange = useCallback(
       (value: string) => {
-        setValue(value);
+        changeValue(value);
         if (new Date().getTime() - keyDownTime.current < 300) {
           nextTick(() => {
             if (onValueChangeByUser) onValueChangeByUser(name, value);
           });
         }
       },
-      [name, onValueChangeByUser, setValue]
+      [changeValue, name, onValueChangeByUser]
     );
 
     const handleKeyDown = useCallback(() => {

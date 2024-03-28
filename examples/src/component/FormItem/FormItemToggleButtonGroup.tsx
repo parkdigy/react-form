@@ -12,7 +12,6 @@ import {
   FormBody,
   FormFooter,
   FormToggleButtonGroupItems,
-  FormToggleButtonGroupValue,
 } from '../../../../src';
 import { OutlinedPaper } from '#ccomp';
 import { lv } from '@pdg/util';
@@ -71,8 +70,6 @@ const FormItemToggleButtonGroup = () => {
 
   const additionalProps = { multiple, notAllowEmptyValue };
 
-  const [value, setValue] = useState<FormToggleButtonGroupValue<number, true>>([1, 2, 3]);
-
   return (
     <>
       <OutlinedPaper>
@@ -105,13 +102,10 @@ const FormItemToggleButtonGroup = () => {
               <FormToggleButtonGroup
                 {...additionalProps}
                 name='label'
-                multiple
                 items={items}
                 labelIcon='RadioButtonChecked'
                 label='FormToggleButtonGroup'
                 helperText='labelIcon'
-                value={value}
-                onChange={setValue}
               />
             </FormCol>
             <FormCol>

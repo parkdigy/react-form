@@ -266,12 +266,6 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
     );
 
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-
-    const [value, setValue] = useState<Props['value']>(() => getFinalValue(initValue));
-
-    /********************************************************************************************************************
      * Function - setErrorErrorHelperText
      * ******************************************************************************************************************/
 
@@ -309,8 +303,10 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
     );
 
     /********************************************************************************************************************
-     * Function
+     * State - value
      * ******************************************************************************************************************/
+
+    const [value, setValue] = useState<Props['value']>(() => getFinalValue(initValue));
 
     const changeValue = useCallback(
       (newValue: Props['value']) => {
@@ -326,13 +322,17 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       [error, name, onChange, onValueChange, validate, value]
     );
 
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-
     useFirstSkipEffect(() => {
       changeValue(getFinalValue(initValue));
     }, [initValue]);
+
+    useFirstSkipEffect(() => {
+      changeValue(getFinalValue(value));
+    }, [multiple]);
+
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
 
     useEffect(() => {
       if (onLoadItems) {
@@ -344,12 +344,6 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
 
     useEffect(() => {
       if (notAllowEmptyValue) {

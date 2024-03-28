@@ -1,9 +1,9 @@
-import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util';
-import { nextTick } from '@pdg/util';
+import { equal, nextTick } from '@pdg/util';
 import {
   FormMonthRangePickerProps as Props,
   FormMonthRangePickerDefaultProps,
@@ -158,115 +158,8 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
     }, []);
 
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-
-    const [value, setValue] = useAutoUpdateState<FormMonthRangePickerValue>(
-      useCallback(() => {
-        return initValue || DEFAULT_VALUE;
-      }, [initValue])
-    );
-
-    useFirstSkipEffect(() => {
-      if (error || fromError || toError) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
-
-    /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
-
-    const valueToDate = useCallback((v: FormMonthPickerBaseValue) => dayjs(`${v.year}-${v.month}-01`), []);
-    const valueToYm = useCallback((v: FormMonthPickerBaseValue) => v.year * 100 + v.month, []);
-    const dateToValue = useCallback((v: Dayjs) => ({ year: v.year(), month: v.month() + 1 }), []);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const nowDate = useMemo(() => dayjs(), []);
-    const nowValue = useMemo(() => dateToValue(nowDate), [dateToValue, nowDate]);
-    const nowYm = useMemo(() => valueToYm(nowValue), [nowValue, valueToYm]);
-
-    const valueDate = useMemo(
-      () => [
-        !!value && !!value[0] ? valueToDate(value[0]) : null,
-        !!value && !!value[1] ? valueToDate(value[1]) : null,
-      ],
-      [value, valueToDate]
-    );
-
-    const minValue = useMemo(() => initMinValue || FormMonthRangePickerDefaultProps.minValue, [initMinValue]);
-    const maxValue = useMemo(() => initMaxValue || FormMonthRangePickerDefaultProps.maxValue, [initMaxValue]);
-
-    const minDate = useMemo(() => (minValue ? valueToDate(minValue) : undefined), [minValue, valueToDate]);
-    const maxDate = useMemo(() => (maxValue ? valueToDate(maxValue) : undefined), [maxValue, valueToDate]);
-
-    const minAvailableValue = useMemo(() => {
-      if (disablePast) {
-        const minYm = valueToYm(minValue);
-        return nowYm > minYm ? nowValue : minValue;
-      } else {
-        return minValue;
-      }
-    }, [disablePast, valueToYm, minValue, nowYm, nowValue]);
-    const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue, valueToYm]);
-
-    const maxAvailableValue = useMemo(() => {
-      if (disableFuture) {
-        const maxYm = valueToYm(maxValue);
-        return nowYm < maxYm ? nowValue : maxValue;
-      } else {
-        return maxValue;
-      }
-    }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
-    const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue, valueToYm]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const format = useMemo(() => initFormat || DEFAULT_FORMAT, [initFormat]);
-
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-
-    useEffect(() => {
-      if (value !== initValue) {
-        if (onChange) onChange(value);
-        onValueChange(name, value);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useFirstSkipEffect(() => {
-      if (open) {
-        openValueRef.current = value;
-      } else {
-        if (openValueRef.current !== value) {
-          let runOnRequestSearchSubmit;
-          if (openValueRef.current && value) {
-            runOnRequestSearchSubmit = openValueRef.current !== value;
-          } else {
-            runOnRequestSearchSubmit = true;
-          }
-
-          if (runOnRequestSearchSubmit) {
-            onRequestSearchSubmit(name, value);
-          }
-        }
-      }
-    }, [open]);
-
-    /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-
-    const focus = useCallback(function () {
-      startInputRef.current?.focus();
-    }, []);
 
     const setFromErrorErrorHelperText = useCallback((error: boolean, fromErrorHelperText: ReactNode) => {
       setFromError(error);
@@ -329,6 +222,117 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
     );
 
     /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+
+    const [value, setValue] = useState<FormMonthRangePickerValue>(() => getFinalValue(initValue));
+
+    const changeValue = useCallback(
+      (newValue: FormMonthRangePickerValue) => {
+        if (!equal(value, newValue)) {
+          setValue(newValue);
+          nextTick(() => {
+            if (error || fromError || toError) validate(value);
+            if (onChange) onChange(newValue);
+            onValueChange(name, newValue);
+          });
+        }
+      },
+      [error, fromError, name, onChange, onValueChange, toError, validate, value]
+    );
+
+    useFirstSkipEffect(() => {
+      changeValue(getFinalValue(initValue));
+    }, [initValue]);
+
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+
+    const valueToDate = useCallback((v: FormMonthPickerBaseValue) => dayjs(`${v.year}-${v.month}-01`), []);
+    const valueToYm = useCallback((v: FormMonthPickerBaseValue) => v.year * 100 + v.month, []);
+    const dateToValue = useCallback((v: Dayjs) => ({ year: v.year(), month: v.month() + 1 }), []);
+
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+
+    const nowDate = useMemo(() => dayjs(), []);
+    const nowValue = useMemo(() => dateToValue(nowDate), [dateToValue, nowDate]);
+    const nowYm = useMemo(() => valueToYm(nowValue), [nowValue, valueToYm]);
+
+    const valueDate = useMemo(
+      () => [
+        !!value && !!value[0] ? valueToDate(value[0]) : null,
+        !!value && !!value[1] ? valueToDate(value[1]) : null,
+      ],
+      [value, valueToDate]
+    );
+
+    const minValue = useMemo(() => initMinValue || FormMonthRangePickerDefaultProps.minValue, [initMinValue]);
+    const maxValue = useMemo(() => initMaxValue || FormMonthRangePickerDefaultProps.maxValue, [initMaxValue]);
+
+    const minDate = useMemo(() => (minValue ? valueToDate(minValue) : undefined), [minValue, valueToDate]);
+    const maxDate = useMemo(() => (maxValue ? valueToDate(maxValue) : undefined), [maxValue, valueToDate]);
+
+    const minAvailableValue = useMemo(() => {
+      if (disablePast) {
+        const minYm = valueToYm(minValue);
+        return nowYm > minYm ? nowValue : minValue;
+      } else {
+        return minValue;
+      }
+    }, [disablePast, valueToYm, minValue, nowYm, nowValue]);
+    const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue, valueToYm]);
+
+    const maxAvailableValue = useMemo(() => {
+      if (disableFuture) {
+        const maxYm = valueToYm(maxValue);
+        return nowYm < maxYm ? nowValue : maxValue;
+      } else {
+        return maxValue;
+      }
+    }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
+    const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue, valueToYm]);
+
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+
+    const format = useMemo(() => initFormat || DEFAULT_FORMAT, [initFormat]);
+
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
+
+    useFirstSkipEffect(() => {
+      if (open) {
+        openValueRef.current = value;
+      } else {
+        if (openValueRef.current !== value) {
+          let runOnRequestSearchSubmit;
+          if (openValueRef.current && value) {
+            runOnRequestSearchSubmit = openValueRef.current !== value;
+          } else {
+            runOnRequestSearchSubmit = true;
+          }
+
+          if (runOnRequestSearchSubmit) {
+            onRequestSearchSubmit(name, value);
+          }
+        }
+      }
+    }, [open]);
+
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+
+    const focus = useCallback(function () {
+      startInputRef.current?.focus();
+    }, []);
+
+    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
 
@@ -344,12 +348,12 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
         getReset: () => getFinalValue(initValue),
         reset: () => {
           lastValue = getFinalValue(initValue);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getValue: () => lastValue,
         setValue: (value) => {
           lastValue = getFinalValue(value);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getData: () => lastData,
         setData: (data) => {
@@ -359,12 +363,12 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
         getFromValue: () => lastValue[0],
         setFromValue: (value) => {
           lastValue = [value, lastValue[1]];
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getToValue: () => lastValue[1],
         setToValue: (value) => {
           lastValue = [lastValue[0], value];
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getFromYear: () => (lastValue[0] ? lastValue[0].year : null),
         setFromYear: (year: number | null) => {
@@ -376,7 +380,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
                 : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
             lastValue[1],
           ]);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getFromMonth: () => (lastValue[0] ? lastValue[0].month : null),
         setFromMonth: (month: number | null) => {
@@ -388,7 +392,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
                 : { year: new Date().getFullYear(), month },
             lastValue[1],
           ]);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getToYear: () => (lastValue[1] ? lastValue[1].year : null),
         setToYear: (year: number | null) => {
@@ -400,7 +404,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
                 ? { year, month: lastValue[1].month }
                 : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
           ]);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getToMonth: () => (lastValue[1] ? lastValue[1].month : null),
         setToMonth: (month: number | null) => {
@@ -412,7 +416,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
                 ? { year: lastValue[1].year, month }
                 : { year: new Date().getFullYear(), month },
           ]);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         isExceptValue: () => !!exceptValue,
         isDisabled: () => lastDisabled,
@@ -486,7 +490,6 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       onAddValueItem,
       onRemoveValueItem,
       id,
-      setValue,
       setDisabled,
       setErrorErrorHelperText,
       data,
@@ -497,6 +500,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       formValueToMonthNameSuffix,
       hidden,
       setHidden,
+      changeValue,
     ]);
 
     /********************************************************************************************************************
@@ -505,7 +509,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
 
     const handleContainerChange = useCallback(
       (newValue: FormMonthRangePickerValue, selectType: PrivateMonthRangePickerSelectType, isMonthSelect: boolean) => {
-        setValue(newValue);
+        changeValue(newValue);
         if (selectType === 'start' && isMonthSelect) {
           nextTick(() => {
             endInputRef.current?.focus();
@@ -518,67 +522,64 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
           onValueChangeByUser(name, newValue);
         });
       },
-      [name, onValueChangeByUser, setValue]
+      [changeValue, name, onValueChangeByUser]
     );
 
     const handleInputDatePickerChange = useCallback(
       (selectType: PrivateYearRangePickerSelectType, date: PrivateInputDatePickerValue) => {
         if (date == null || date.isValid()) {
           if (selectType === 'start') {
-            setValue((old) => {
-              const newValue: FormMonthRangePickerValue = [date ? dateToValue(date) : null, old[1]];
-              if (
-                newValue[0] !== null &&
-                valueToYm(newValue[0]) >= minAvailableYm &&
-                valueToYm(newValue[0]) <= maxAvailableYm
-              ) {
-                if (newValue[1] !== null && newValue[1] < newValue[0]) {
-                  newValue[1] = newValue[0];
-                }
+            const newValue: FormMonthRangePickerValue = [date ? dateToValue(date) : null, value[1]];
+            if (
+              newValue[0] !== null &&
+              valueToYm(newValue[0]) >= minAvailableYm &&
+              valueToYm(newValue[0]) <= maxAvailableYm
+            ) {
+              if (newValue[1] !== null && newValue[1] < newValue[0]) {
+                newValue[1] = newValue[0];
               }
+            }
 
-              if (fromError) {
-                validate(newValue);
-              }
-              nextTick(() => {
-                onValueChangeByUser(name, newValue);
-              });
-              return newValue;
+            if (fromError) {
+              validate(newValue);
+            }
+            nextTick(() => {
+              onValueChangeByUser(name, newValue);
             });
+            changeValue(newValue);
           } else {
-            setValue((old) => {
-              const newValue: FormMonthRangePickerValue = [old[0], date ? dateToValue(date) : null];
-              if (
-                newValue[1] !== null &&
-                valueToYm(newValue[1]) >= minAvailableYm &&
-                valueToYm(newValue[1]) <= maxAvailableYm
-              ) {
-                if (newValue[0] !== null && newValue[0] > newValue[1]) {
-                  newValue[0] = newValue[1];
-                }
+            const newValue: FormMonthRangePickerValue = [value[0], date ? dateToValue(date) : null];
+            if (
+              newValue[1] !== null &&
+              valueToYm(newValue[1]) >= minAvailableYm &&
+              valueToYm(newValue[1]) <= maxAvailableYm
+            ) {
+              if (newValue[0] !== null && newValue[0] > newValue[1]) {
+                newValue[0] = newValue[1];
               }
-              if (toError) {
-                validate(newValue);
-              }
-              nextTick(() => {
-                onValueChangeByUser(name, newValue);
-              });
-              return newValue;
+            }
+            if (toError) {
+              validate(newValue);
+            }
+            nextTick(() => {
+              onValueChangeByUser(name, newValue);
             });
+            changeValue(newValue);
           }
         }
       },
       [
         dateToValue,
-        toError,
-        maxAvailableYm,
-        minAvailableYm,
-        name,
-        onValueChangeByUser,
-        setValue,
-        fromError,
-        validate,
+        value,
         valueToYm,
+        minAvailableYm,
+        maxAvailableYm,
+        fromError,
+        changeValue,
+        validate,
+        onValueChangeByUser,
+        name,
+        toError,
       ]
     );
 

@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   FormDateRangePickerProps as Props,
@@ -313,17 +313,35 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
     const [open, setOpen] = useState(false);
     const [selectType, setSelectType] = useState<FormDateRangePickerTooltipPickerSelectType>('start');
-    const [value, setValue] = useAutoUpdateState<FormDateRangePickerValue>(
-      useCallback(() => {
-        return initValue || DEFAULT_VALUE;
-      }, [initValue])
-    );
-
     const [calendarCount] = useAutoUpdateState<FormDateRangePickerCalendarCount>(initCalendarCount || 2);
     const [months, setMonths] = useState<FormDateRangePickerTooltipPickerContainerMonths>(() => {
       const now = dayjs();
       return [now, now.add(1, 'month'), now.add(2, 'month')];
     });
+
+    /********************************************************************************************************************
+     * State - Value
+     * ******************************************************************************************************************/
+
+    const [value, setValue] = useState<FormDateRangePickerValue>(() => getFinalValue(initValue));
+
+    const changeValue = useCallback(
+      (newValue: FormDateRangePickerValue) => {
+        if (value !== newValue) {
+          setValue(newValue);
+          nextTick(() => {
+            if (error || fromError || toError) validate(newValue);
+            if (onChange) onChange(newValue);
+            onValueChange(name, newValue);
+          });
+        }
+      },
+      [error, fromError, name, onChange, onValueChange, toError, validate, value]
+    );
+
+    useFirstSkipEffect(() => {
+      changeValue(getFinalValue(initValue));
+    }, [initValue]);
 
     /********************************************************************************************************************
      * Memo
@@ -368,20 +386,6 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
-
-    useEffect(() => {
-      if (value !== initValue) {
-        if (onChange) onChange(value);
-        onValueChange(name, value);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useFirstSkipEffect(() => {
-      if (error || fromError || toError) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
 
     useFirstSkipEffect(() => {
       if (open) {
@@ -436,12 +440,12 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
     const handleChange = useCallback(
       (newValue: FormDateRangePickerTooltipPickerValue) => {
-        setValue(newValue);
+        changeValue(newValue);
         setOpen(false);
         setFromErrorErrorHelperText(false, undefined);
         setToErrorErrorHelperText(false, undefined);
       },
-      [setToErrorErrorHelperText, setFromErrorErrorHelperText, setValue]
+      [changeValue, setFromErrorErrorHelperText, setToErrorErrorHelperText]
     );
 
     const handleValueChange = useCallback(
@@ -507,14 +511,14 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
             break;
         }
 
-        setValue(finalValue);
+        changeValue(finalValue);
 
         nextTick(() => {
           onValueChangeByUser(name, finalValue);
         });
       },
       [
-        setValue,
+        changeValue,
         value,
         setFromErrorErrorHelperText,
         activeMonth,
@@ -636,12 +640,12 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
           getReset: () => getFinalValue(initValue),
           reset: () => {
             lastValue = getFinalValue(initValue);
-            setValue(lastValue);
+            changeValue(lastValue);
           },
           getValue: () => lastValue,
           setValue: (value) => {
             lastValue = getFinalValue(value);
-            setValue(lastValue);
+            changeValue(lastValue);
           },
           getData: () => lastData,
           setData: (data) => {
@@ -652,12 +656,12 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
           getFromValue: () => lastValue[0],
           setFromValue: (value) => {
             lastValue = [value, lastValue[1]];
-            setValue(lastValue);
+            changeValue(lastValue);
           },
           getToValue: () => lastValue[1],
           setToValue: (value) => {
             lastValue = [lastValue[0], value];
-            setValue(lastValue);
+            changeValue(lastValue);
           },
           isExceptValue: () => !!exceptValue,
           isDisabled: () => lastDisabled,
@@ -727,13 +731,13 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       onAddValueItem,
       onRemoveValueItem,
       id,
-      setValue,
       setDisabled,
       setErrorErrorHelperText,
       data,
       setData,
       hidden,
       setHidden,
+      changeValue,
     ]);
 
     /********************************************************************************************************************

@@ -41,7 +41,7 @@
     button {
       min-width: 0;
       color: inherit;
-      &:not(:first-child) {
+      &:not(:first-of-type) {
         margin-left: 5px;
       }
       &.disabled {
@@ -73,7 +73,7 @@
       .time-container {
         .time-select-wrap {
           > div > div {
-            &:not(:first-child) {
+            &:not(:first-of-type) {
               border-left: $border;
             }
           }

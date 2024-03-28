@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { Rating } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, nextTick } from '@pdg/util';
+import { empty, equal, nextTick } from '@pdg/util';
 import {
   FormRatingProps as Props,
   FormRatingDefaultProps,
@@ -128,49 +128,8 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
     );
 
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-
-    const [value, setValue] = useAutoUpdateState<number>(initValue || 0, getFinalValue);
-
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const style = useMemo(() => ({ width: width || 100, ...initStyle }), [initStyle, width]);
-
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-
-    useEffect(() => {
-      if (value !== initValue) {
-        if (onChange) onChange(value);
-        onValueChange(name, value);
-      }
-
-      if (ratingRef.current) {
-        inputRef.current = ratingRef.current.querySelector('input') || undefined;
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
-
-    const focus = useCallback(function () {
-      inputRef.current?.focus();
-      setTimeout(() => {
-        inputRef.current?.blur();
-      });
-    }, []);
 
     const setErrorErrorHelperText = useCallback(
       function (error: Props['error'], errorHelperText: Props['helperText']) {
@@ -203,6 +162,58 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
     );
 
     /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+
+    const [value, setValue] = useState<number>(() => getFinalValue(initValue || 0));
+
+    const changeValue = useCallback(
+      (newValue: number) => {
+        if (!equal(value, newValue)) {
+          setValue(newValue);
+          nextTick(() => {
+            if (error) validate(newValue);
+            if (onChange) onChange(newValue);
+            onValueChange(name, newValue);
+          });
+        }
+      },
+      [error, name, onChange, onValueChange, validate, value]
+    );
+
+    useFirstSkipEffect(() => {
+      changeValue(getFinalValue(initValue || 0));
+    }, [initValue]);
+
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+
+    const style = useMemo(() => ({ width: width || 100, ...initStyle }), [initStyle, width]);
+
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
+
+    useEffect(() => {
+      if (ratingRef.current) {
+        inputRef.current = ratingRef.current.querySelector('input') || undefined;
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+
+    const focus = useCallback(function () {
+      inputRef.current?.focus();
+      setTimeout(() => {
+        inputRef.current?.blur();
+      });
+    }, []);
+
+    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
 
@@ -218,12 +229,12 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         getReset: () => getFinalValue(initValue || 0),
         reset: () => {
           lastValue = getFinalValue(initValue || 0);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getValue: () => lastValue,
         setValue: (value: number) => {
           lastValue = getFinalValue(value);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getData: () => lastData,
         setData: (data) => {
@@ -282,13 +293,13 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       onAddValueItem,
       onRemoveValueItem,
       id,
-      setValue,
       setDisabled,
       setErrorErrorHelperText,
       data,
       setData,
       hidden,
       setHidden,
+      changeValue,
     ]);
 
     /********************************************************************************************************************
@@ -301,14 +312,14 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
           e.preventDefault();
         } else {
           const finalValue = getFinalValue(value || 0);
-          setValue(finalValue);
+          changeValue(finalValue);
           nextTick(() => {
             onValueChangeByUser(name, finalValue);
             onRequestSearchSubmit(name, finalValue);
           });
         }
       },
-      [readOnly, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
+      [readOnly, getFinalValue, changeValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     /********************************************************************************************************************

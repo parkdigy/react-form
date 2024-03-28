@@ -105,7 +105,6 @@ const FormItemSelect = () => {
               />
             </FormCol>
             <FormCol>
-              <FormSelect name='123' items={items} />
               <FormSelect
                 name='readOnly'
                 items={items}

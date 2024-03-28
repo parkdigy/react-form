@@ -214,29 +214,82 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     }, []);
 
     /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
+
+    const setErrorErrorHelperText = useCallback(
+      (error: boolean, helperText: ReactNode) => {
+        setError(error);
+        setErrorHelperText(helperText);
+      },
+      [setError]
+    );
+
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
+
+    const validate = useCallback(
+      (value: PrivateDatePickerValue) => {
+        if (required && empty(value)) {
+          setErrorErrorHelperText(true, '필수 입력 항목입니다.');
+          return false;
+        }
+        if (value && !value.isValid()) {
+          setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
+          return false;
+        }
+        if (datePickerErrorRef.current) {
+          setErrorErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
+          return false;
+        }
+        if (timeError) {
+          setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
+          return false;
+        }
+        if (onValidate) {
+          const onValidateResult = onValidate(value);
+          if (onValidateResult != null && onValidateResult !== true) {
+            setErrorErrorHelperText(true, onValidateResult);
+            return false;
+          }
+        }
+
+        setErrorErrorHelperText(false, undefined);
+
+        return true;
+      },
+      [required, timeError, onValidate, setErrorErrorHelperText]
+    );
+
+    /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useAutoUpdateState<PrivateDatePickerValue>(initValue || null, getFinalValue);
+    const [value, setValue] = useState<PrivateDatePickerValue>(() => getFinalValue(initValue || null));
     const [inputValue, setInputValue] = useState<PrivateDatePickerValue>(null);
+
+    const changeValue = useCallback(
+      (newValue: PrivateDatePickerValue) => {
+        if (value !== newValue) {
+          setValue(newValue);
+          nextTick(() => {
+            if (error) validate(newValue);
+            if (onChange) onChange(newValue);
+            onValueChange(name, newValue);
+          });
+        }
+      },
+      [error, name, onChange, onValueChange, validate, value]
+    );
 
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
 
-    useEffect(() => {
-      if (value !== initValue) {
-        if (onChange) onChange(value);
-        onValueChange(name, value);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
+      changeValue(getFinalValue(initValue || null));
+    }, [initValue]);
 
     useEffect(() => {
       setInputValue(value);
@@ -306,55 +359,6 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     }, [textFieldInputRef]);
 
     /********************************************************************************************************************
-     * Function - setErrorErrorHelperText
-     * ******************************************************************************************************************/
-
-    const setErrorErrorHelperText = useCallback(
-      (error: boolean, helperText: ReactNode) => {
-        setError(error);
-        setErrorHelperText(helperText);
-      },
-      [setError]
-    );
-
-    /********************************************************************************************************************
-     * Function - validate
-     * ******************************************************************************************************************/
-
-    const validate = useCallback(
-      (value: PrivateDatePickerValue) => {
-        if (required && empty(value)) {
-          setErrorErrorHelperText(true, '필수 입력 항목입니다.');
-          return false;
-        }
-        if (value && !value.isValid()) {
-          setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
-          return false;
-        }
-        if (datePickerErrorRef.current) {
-          setErrorErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
-          return false;
-        }
-        if (timeError) {
-          setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
-          return false;
-        }
-        if (onValidate) {
-          const onValidateResult = onValidate(value);
-          if (onValidateResult != null && onValidateResult !== true) {
-            setErrorErrorHelperText(true, onValidateResult);
-            return false;
-          }
-        }
-
-        setErrorErrorHelperText(false, undefined);
-
-        return true;
-      },
-      [required, timeError, onValidate, setErrorErrorHelperText]
-    );
-
-    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
 
@@ -371,12 +375,12 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
           getReset: () => getFinalValue(initValue || null),
           reset: () => {
             lastValue = getFinalValue(initValue || null);
-            setValue(lastValue);
+            changeValue(lastValue);
           },
           getValue: () => lastValue,
           setValue: (value) => {
             lastValue = getFinalValue(value);
-            setValue(lastValue);
+            changeValue(lastValue);
           },
           getData: () => lastData,
           setData: (data) => {
@@ -439,13 +443,13 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       onAddValueItem,
       onRemoveValueItem,
       id,
-      setValue,
       setDisabled,
       setErrorErrorHelperText,
       data,
       setData,
       hidden,
       setHidden,
+      changeValue,
     ]);
 
     /********************************************************************************************************************
@@ -488,7 +492,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
           } else if (time) {
             if (time === unit) setOpen(false);
           }
-          setValue(finalValue);
+          changeValue(finalValue);
 
           nextTick(() => {
             onValueChangeByUser(name, finalValue);
@@ -517,7 +521,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
         setInputValue(finalValue);
       },
-      [type, time, setValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]
+      [type, time, changeValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     const handleContainerFocus = useCallback(() => {

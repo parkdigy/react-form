@@ -1,4 +1,4 @@
-import React,{createContext,useContext,useMemo,useRef,useState,useCallback,useLayoutEffect,useEffect,useId}from'react';import classNames from'classnames';import {Box,Button,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,nextTick,notEmpty,equal,telNoAutoDash,companyNoAutoDash,personalNoAutoDash}from'@pdg/util';import dayjs from'dayjs';import {PdgIcon,PdgIconText}from'@pdg/react-component';import {useAutoUpdateState,useFirstSkipEffect}from'@pdg/react-hook';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import CircularProgress$1 from'@mui/material/CircularProgress';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';import'dayjs/locale/ko';/******************************************************************************
+import React,{createContext,useContext,useMemo,useRef,useState,useCallback,useLayoutEffect,useEffect,useId}from'react';import classNames from'classnames';import {Box,Button,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,nextTick,notEmpty,equal,telNoAutoDash,ifUndefined,companyNoAutoDash,personalNoAutoDash}from'@pdg/util';import dayjs from'dayjs';import {PdgIcon,PdgIconText}from'@pdg/react-component';import {useAutoUpdateState,useFirstSkipEffect}from'@pdg/react-hook';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import CircularProgress$1 from'@mui/material/CircularProgress';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';import'dayjs/locale/ko';/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -1126,35 +1126,6 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
         return onValue ? onValue(value) : value;
     }, [onValue]);
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-    var _k = useAutoUpdateState(initValue, getFinalValue), value = _k[0], setValue = _k[1];
-    useEffect(function () {
-        setShowClear(clear ? notEmpty(value) : false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value]);
-    useFirstSkipEffect(function () {
-        if (error)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        if (!noFormValueItem) {
-            onValueChange(name, value);
-        }
-    }, [value]);
-    /********************************************************************************************************************
-     * Function - focus
-     * ******************************************************************************************************************/
-    var focus = useCallback(function () {
-        var _a, _b;
-        if (initInputRef) {
-            (_a = initInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
-        }
-        else {
-            (_b = inputRef.current) === null || _b === void 0 ? void 0 : _b.focus();
-        }
-    }, [initInputRef, inputRef]);
-    /********************************************************************************************************************
      * Function - setErrorErrorHelperText
      * ******************************************************************************************************************/
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
@@ -1192,6 +1163,43 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
         return true;
     }, [required, validPattern, invalidPattern, onValidate, setErrorErrorHelperText]);
     /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+    var _k = useState(function () { return getFinalValue(initValue); }), value = _k[0], setValue = _k[1];
+    var changeValue = useCallback(function (newValue) {
+        if (!equal(value, newValue)) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error)
+                    validate(newValue);
+                if (onChange)
+                    onChange(newValue);
+                if (!noFormValueItem) {
+                    onValueChange(name, newValue);
+                }
+            });
+        }
+    }, [error, name, noFormValueItem, onChange, onValueChange, validate, value]);
+    useFirstSkipEffect(function () {
+        changeValue(getFinalValue(initValue));
+    }, [initValue]);
+    useEffect(function () {
+        setShowClear(clear ? notEmpty(value) : false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]);
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
+    var focus = useCallback(function () {
+        var _a, _b;
+        if (initInputRef) {
+            (_a = initInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+        }
+        else {
+            (_b = inputRef.current) === null || _b === void 0 ? void 0 : _b.focus();
+        }
+    }, [initInputRef, inputRef]);
+    /********************************************************************************************************************
      * Memo - muiInputProps
      * ******************************************************************************************************************/
     var muiInputProps = useMemo(function () {
@@ -1208,7 +1216,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
                 clear && !readOnly && !disabled && (React.createElement(InputAdornment, { className: classNames('clear-icon-button-wrap', showClear && 'show'), position: 'end' },
                     React.createElement(IconButton, { className: 'clear-icon-button', size: 'small', tabIndex: -1, onClick: function () {
                             var finalValue = getFinalValue('');
-                            setValue(finalValue);
+                            changeValue(finalValue);
                             focus();
                             if (!noFormValueItem) {
                                 nextTick(function () {
@@ -1223,6 +1231,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
         }
         return muiInputProps;
     }, [
+        changeValue,
         clear,
         disabled,
         endAdornment,
@@ -1235,21 +1244,9 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
         onRequestSearchSubmit,
         onValueChangeByUser,
         readOnly,
-        setValue,
         showClear,
         startAdornment,
     ]);
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-    useEffect(function () {
-        if (value !== initValue) {
-            if (onChange)
-                onChange(value);
-            onValueChange(name, value);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
@@ -1265,12 +1262,12 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
                 getReset: function () { return getFinalValue(initValue); },
                 reset: function () {
                     lastValue_1 = getFinalValue(initValue);
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 getValue: function () { return lastValue_1; },
                 setValue: function (value) {
                     lastValue_1 = getFinalValue(value);
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 getData: function () { return lastData_1; },
                 setData: function (data) {
@@ -1333,19 +1330,19 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
         onAddValueItem,
         onRemoveValueItem,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         setData,
         hidden,
         setHidden,
+        changeValue,
     ]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
     var handleChange = useCallback(function (e) {
         var finalValue = getFinalValue(e.target.value);
-        setValue(finalValue);
+        changeValue(finalValue);
         if (!noFormValueItem) {
             nextTick(function () {
                 onValueChangeByUser(name, finalValue);
@@ -1354,7 +1351,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
                 }
             });
         }
-    }, [getFinalValue, setValue, noFormValueItem, onValueChangeByUser, name, select, onRequestSearchSubmit]);
+    }, [getFinalValue, changeValue, noFormValueItem, onValueChangeByUser, name, select, onRequestSearchSubmit]);
     var handleBlur = useCallback(function (e) {
         if (error)
             validate(value);
@@ -2230,17 +2227,32 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
                 }
             }
         }
-        return onValue ? onValue(finalValue) : finalValue;
+        finalValue = onValue ? onValue(finalValue) : finalValue;
+        return equal(value, finalValue) ? value : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _h = useAutoUpdateState(initValue, getFinalValue), value = _h[0], setValue = _h[1];
+    var _h = useState(function () { return getFinalValue(initValue); }), value = _h[0], setValue = _h[1];
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+    var changeValue = useCallback(function (newValue) {
+        if (!equal(value, newValue)) {
+            setValue(newValue);
+            nextTick(function () {
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [name, onChange, onValueChange, value]);
     useFirstSkipEffect(function () {
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+        changeValue(getFinalValue(initValue));
+    }, [initValue]);
+    useFirstSkipEffect(function () {
+        changeValue(getFinalValue(value));
+    }, [multiple]);
     /********************************************************************************************************************
      * State - isSelectedPlaceholder
      * ******************************************************************************************************************/
@@ -2251,11 +2263,6 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
      * Effect
      * ******************************************************************************************************************/
     useEffect(function () {
-        if (!equal(value, initValue)) {
-            if (onChange)
-                onChange(value);
-            onValueChange(name, value);
-        }
         if (onLoadItems) {
             setIsOnGetItemLoading(true);
             onLoadItems().then(function (items) {
@@ -2270,7 +2277,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
      * ******************************************************************************************************************/
     var selectProps = useMemo(function () {
         var _a;
-        var finalSelectProps = __assign(__assign({}, initSelectProps), { displayEmpty: true, multiple: !!multiple });
+        var finalSelectProps = __assign(__assign({}, initSelectProps), { displayEmpty: true, multiple: !!multiple, value: value });
         if (multiple) {
             finalSelectProps.renderValue = function (selected) {
                 if (isSelectedPlaceholder) {
@@ -2294,7 +2301,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
         }
         finalSelectProps.MenuProps = __assign(__assign({}, finalSelectProps.MenuProps), { className: classNames((_a = finalSelectProps.MenuProps) === null || _a === void 0 ? void 0 : _a.className, 'FormSelect-Menu-Popover') });
         return finalSelectProps;
-    }, [initSelectProps, isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, width]);
+    }, [initSelectProps, isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, value, width]);
     /********************************************************************************************************************
      * Function - getExtraCommands
      * ******************************************************************************************************************/
@@ -2304,15 +2311,15 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
             getReset: function () { return getFinalValue(initValue); },
             reset: function () {
                 lastValue = getFinalValue(initValue);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getValue: function () { return lastValue; },
             setValue: function (value) {
                 lastValue = getFinalValue(value);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
         };
-    }, [value, getFinalValue, initValue, setValue]);
+    }, [value, getFinalValue, initValue, changeValue]);
     var getExtraCommands = useCallback(function () {
         var lastItems = items;
         var lastLoading = loading;
@@ -2351,7 +2358,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
         onAddValueItem(id, __assign(__assign(__assign({}, commands), getBaseCommands()), getExtraCommands()));
     }, [onAddValueItem, getBaseCommands, getExtraCommands]);
     var handleChange = function (newValue) {
-        setValue(newValue);
+        changeValue(getFinalValue(newValue));
     };
     var handleValue = useCallback(function (value) {
         return getFinalValue(value);
@@ -2365,6 +2372,23 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
     }
     else {
         finalValue = multiple ? emptyValue : '';
+    }
+    if (multiple) {
+        if (selectProps.value != null && !Array.isArray(selectProps.value)) {
+            selectProps.value = [selectProps.value];
+        }
+        if (finalValue !== undefined && !Array.isArray(finalValue)) {
+            finalValue = [finalValue];
+        }
+    }
+    else {
+        if (Array.isArray(selectProps.value)) {
+            selectProps.value = selectProps.value[0];
+        }
+        if (Array.isArray(finalValue)) {
+            finalValue = finalValue[0];
+        }
+        finalValue = ifUndefined(finalValue, '');
     }
     return (React.createElement(FormContextProvider, { value: __assign({ fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, 
             // eslint-disable-next-line
@@ -2883,17 +2907,49 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         return onValue ? onValue(value) : value;
     }, [onValue]);
     /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
+    var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
+        setError(error);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
+    var validate = useCallback(function (value) {
+        if (required && empty(value)) {
+            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
+            return false;
+        }
+        if (onValidate) {
+            var onValidateResult = onValidate(value);
+            if (onValidateResult != null && onValidateResult !== true) {
+                setErrorErrorHelperText(true, onValidateResult);
+                return false;
+            }
+        }
+        setErrorErrorHelperText(false, undefined);
+        return true;
+    }, [required, onValidate, setErrorErrorHelperText]);
+    /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _r = useAutoUpdateState(initValue, getFinalValue), value = _r[0], setValue = _r[1];
+    var _r = useState(function () { return getFinalValue(initValue); }), value = _r[0], setValue = _r[1];
+    var changeValue = useCallback(function (newValue) {
+        if (!equal(value, newValue)) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error)
+                    validate(newValue);
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [error, name, onChange, onValueChange, validate, value]);
     useFirstSkipEffect(function () {
-        if (error)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        if (onValueChange)
-            onValueChange(name, value);
-    }, [value]);
+        changeValue(getFinalValue(initValue));
+    }, [initValue]);
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -2901,15 +2957,6 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
-    useEffect(function () {
-        if (value !== initValue) {
-            if (onChange)
-                onChange(value);
-            if (onValueChange)
-                onValueChange(name, value);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
     useEffect(function () {
         if (!fullWidth || initWidth) {
             var findParentByClassName_1 = function (element, className) {
@@ -2973,31 +3020,6 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         (_a = firstInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, []);
     /********************************************************************************************************************
-     * Function - setErrorErrorHelperText
-     * ******************************************************************************************************************/
-    var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
-        setError(error);
-        setErrorHelperText(errorHelperText);
-    }, [setError]);
-    /********************************************************************************************************************
-     * Function - validate
-     * ******************************************************************************************************************/
-    var validate = useCallback(function (value) {
-        if (required && empty(value)) {
-            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
-            return false;
-        }
-        if (onValidate) {
-            var onValidateResult = onValidate(value);
-            if (onValidateResult != null && onValidateResult !== true) {
-                setErrorErrorHelperText(true, onValidateResult);
-                return false;
-            }
-        }
-        setErrorErrorHelperText(false, undefined);
-        return true;
-    }, [required, onValidate, setErrorErrorHelperText]);
-    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
     useLayoutEffect(function () {
@@ -3013,12 +3035,12 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
             getReset: function () { return getFinalValue(initValue); },
             reset: function () {
                 lastValue = getFinalValue(initValue);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getValue: function () { return lastValue; },
             setValue: function (value) {
                 lastValue = getFinalValue(value);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getData: function () { return lastData; },
             setData: function (data) {
@@ -3088,7 +3110,6 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         onAddValueItem,
         onRemoveValueItem,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         setItems,
@@ -3097,6 +3118,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         setData,
         hidden,
         setHidden,
+        changeValue,
     ]);
     useEffect(function () {
         if (onLoadItems) {
@@ -3128,14 +3150,14 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
             }
             finalValue_1 = getFinalValue(finalValue_1);
             if (value !== finalValue_1) {
-                setValue(finalValue_1);
+                changeValue(finalValue_1);
                 nextTick(function () {
                     onValueChangeByUser(name, finalValue_1);
                     onRequestSearchSubmit(name, finalValue_1);
                 });
             }
         }
-    }, [readOnly, items, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [readOnly, items, getFinalValue, value, changeValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
@@ -3345,10 +3367,6 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         return equal(value, finalValue) ? value : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-    var _p = useState(function () { return getFinalValue(initValue); }), value = _p[0], setValue = _p[1];
-    /********************************************************************************************************************
      * Function - setErrorErrorHelperText
      * ******************************************************************************************************************/
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
@@ -3374,8 +3392,9 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         return true;
     }, [required, onValidate, setErrorErrorHelperText]);
     /********************************************************************************************************************
-     * Function
+     * State - value
      * ******************************************************************************************************************/
+    var _p = useState(function () { return getFinalValue(initValue); }), value = _p[0], setValue = _p[1];
     var changeValue = useCallback(function (newValue) {
         if (!equal(value, newValue)) {
             setValue(newValue);
@@ -3388,12 +3407,15 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
             });
         }
     }, [error, name, onChange, onValueChange, validate, value]);
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
     useFirstSkipEffect(function () {
         changeValue(getFinalValue(initValue));
     }, [initValue]);
+    useFirstSkipEffect(function () {
+        changeValue(getFinalValue(value));
+    }, [multiple]);
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
     useEffect(function () {
         if (onLoadItems) {
             setIsOnGetItemLoading(true);
@@ -3404,13 +3426,6 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    useFirstSkipEffect(function () {
-        if (error)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
     useEffect(function () {
         if (notAllowEmptyValue) {
             if (items && notEmpty(items)) {
@@ -3713,45 +3728,8 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         return onValue ? onValue(value) : value;
     }, [onValue]);
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-    var _k = useAutoUpdateState(initValue || 0, getFinalValue), value = _k[0], setValue = _k[1];
-    useFirstSkipEffect(function () {
-        if (error)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var style = useMemo(function () { return (__assign({ width: width || 100 }, initStyle)); }, [initStyle, width]);
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-    useEffect(function () {
-        if (value !== initValue) {
-            if (onChange)
-                onChange(value);
-            onValueChange(name, value);
-        }
-        if (ratingRef.current) {
-            inputRef.current = ratingRef.current.querySelector('input') || undefined;
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
-    var focus = useCallback(function () {
-        var _a;
-        (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
-        setTimeout(function () {
-            var _a;
-            (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
-        });
-    }, []);
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
         setError(error);
         setErrorHelperText(errorHelperText);
@@ -3772,6 +3750,49 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         return true;
     }, [required, onValidate, setErrorErrorHelperText]);
     /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+    var _k = useState(function () { return getFinalValue(initValue || 0); }), value = _k[0], setValue = _k[1];
+    var changeValue = useCallback(function (newValue) {
+        if (!equal(value, newValue)) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error)
+                    validate(newValue);
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [error, name, onChange, onValueChange, validate, value]);
+    useFirstSkipEffect(function () {
+        changeValue(getFinalValue(initValue || 0));
+    }, [initValue]);
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+    var style = useMemo(function () { return (__assign({ width: width || 100 }, initStyle)); }, [initStyle, width]);
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
+    useEffect(function () {
+        if (ratingRef.current) {
+            inputRef.current = ratingRef.current.querySelector('input') || undefined;
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+    var focus = useCallback(function () {
+        var _a;
+        (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+        setTimeout(function () {
+            var _a;
+            (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
+        });
+    }, []);
+    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
     useLayoutEffect(function () {
@@ -3785,12 +3806,12 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
             getReset: function () { return getFinalValue(initValue || 0); },
             reset: function () {
                 lastValue = getFinalValue(initValue || 0);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getValue: function () { return lastValue; },
             setValue: function (value) {
                 lastValue = getFinalValue(value);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getData: function () { return lastData; },
             setData: function (data) {
@@ -3848,13 +3869,13 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         onAddValueItem,
         onRemoveValueItem,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         data,
         setData,
         hidden,
         setHidden,
+        changeValue,
     ]);
     /********************************************************************************************************************
      * Event Handler
@@ -3865,13 +3886,13 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
         }
         else {
             var finalValue_1 = getFinalValue(value || 0);
-            setValue(finalValue_1);
+            changeValue(finalValue_1);
             nextTick(function () {
                 onValueChangeByUser(name, finalValue_1);
                 onRequestSearchSubmit(name, finalValue_1);
             });
         }
-    }, [readOnly, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [readOnly, getFinalValue, changeValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
@@ -3917,32 +3938,14 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
     var editorRef = useRef();
     var keyDownTime = useRef(0);
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-    var _d = useAutoUpdateState(initValue || ''), value = _d[0], setValue = _d[1];
-    useFirstSkipEffect(function () {
-        if (error)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
-    /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var _e = useAutoUpdateState(initError), error = _e[0], setError = _e[1];
-    var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
-    var _g = useState(false), initialized = _g[0], setInitialized = _g[1];
-    var _h = useAutoUpdateState(initDisabled == null ? formDisabled : initDisabled), disabled = _h[0], setDisabled = _h[1];
-    var _j = useAutoUpdateState(initHidden), hidden = _j[0], setHidden = _j[1];
-    var _k = useAutoUpdateState(initData), data = _k[0], setData = _k[1];
-    /********************************************************************************************************************
-     * Function - focus
-     * ******************************************************************************************************************/
-    var focus = useCallback(function () {
-        var _a;
-        (_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.focus();
-    }, [editorRef]);
+    var _d = useAutoUpdateState(initError), error = _d[0], setError = _d[1];
+    var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
+    var _f = useState(false), initialized = _f[0], setInitialized = _f[1];
+    var _g = useAutoUpdateState(initDisabled == null ? formDisabled : initDisabled), disabled = _g[0], setDisabled = _g[1];
+    var _h = useAutoUpdateState(initHidden), hidden = _h[0], setHidden = _h[1];
+    var _j = useAutoUpdateState(initData), data = _j[0], setData = _j[1];
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
      * ******************************************************************************************************************/
@@ -3970,6 +3973,32 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
         return true;
     }, [required, onValidate, setErrorErrorHelperText]);
     /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+    var _k = useState(initValue || ''), value = _k[0], setValue = _k[1];
+    var changeValue = useCallback(function (newValue) {
+        if (!equal(value, newValue)) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error)
+                    validate(newValue);
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [error, name, onChange, onValueChange, validate, value]);
+    useFirstSkipEffect(function () {
+        changeValue(initValue || '');
+    }, [initValue]);
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
+    var focus = useCallback(function () {
+        var _a;
+        (_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+    }, [editorRef]);
+    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
     useLayoutEffect(function () {
@@ -3983,12 +4012,12 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
             getReset: function () { return initValue || ''; },
             reset: function () {
                 lastValue = initValue || '';
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getValue: function () { return lastValue; },
             setValue: function (value) {
                 lastValue = value;
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getData: function () { return lastData; },
             setData: function (data) {
@@ -4044,7 +4073,6 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
         onAddValueItem,
         onRemoveValueItem,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         data,
@@ -4052,19 +4080,20 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
         validate,
         hidden,
         setHidden,
+        changeValue,
     ]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
     var handleEditorChange = useCallback(function (value) {
-        setValue(value);
+        changeValue(value);
         if (new Date().getTime() - keyDownTime.current < 300) {
             nextTick(function () {
                 if (onValueChangeByUser)
                     onValueChangeByUser(name, value);
             });
         }
-    }, [name, onValueChangeByUser, setValue]);
+    }, [changeValue, name, onValueChangeByUser]);
     var handleKeyDown = useCallback(function () {
         keyDownTime.current = new Date().getTime();
     }, []);
@@ -4246,10 +4275,53 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         return onValue ? onValue(finalValue) : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
+    var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
+        setError(error);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
+    var validate = useCallback(function (value) {
+        if (required && empty(value)) {
+            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
+            return false;
+        }
+        if (onValidate) {
+            var onValidateResult = onValidate(value);
+            if (onValidateResult != null && onValidateResult !== true) {
+                setErrorErrorHelperText(true, onValidateResult);
+                return false;
+            }
+        }
+        setErrorErrorHelperText(false, undefined);
+        return true;
+    }, [required, onValidate, setErrorErrorHelperText]);
+    /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _m = useAutoUpdateState(initValue, getFinalValue), value = _m[0], setValue = _m[1];
+    var _m = useState(function () { return getFinalValue(initValue); }), value = _m[0], setValue = _m[1];
     var _o = useState(null), valueItem = _o[0], setValueItem = _o[1];
+    var changeValue = useCallback(function (newValue) {
+        if (!equal(value, newValue)) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error)
+                    validate(newValue);
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [error, name, onChange, onValueChange, validate, value]);
+    useFirstSkipEffect(function () {
+        changeValue(getFinalValue(initValue));
+    }, [initValue]);
+    useFirstSkipEffect(function () {
+        changeValue(getFinalValue(value));
+    }, [multiple]);
     var componentValue = useMemo(function () {
         var finalValue = value;
         if (finalValue != null) {
@@ -4335,11 +4407,6 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
      * Effect
      * ******************************************************************************************************************/
     useEffect(function () {
-        if (value !== initValue) {
-            if (onChange)
-                onChange(value);
-            onValueChange(name, value);
-        }
         if (!async && onLoadItems) {
             showOnGetItemLoading();
             onLoadItems().then(function (items) {
@@ -4355,13 +4422,6 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    useFirstSkipEffect(function () {
-        if (error)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
     useEffect(function () {
         if (async && onLoadItems) {
             if (asyncTimerRef.current) {
@@ -4418,31 +4478,6 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         (_a = textFieldRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [textFieldRef]);
     /********************************************************************************************************************
-     * Function - setErrorErrorHelperText
-     * ******************************************************************************************************************/
-    var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
-        setError(error);
-        setErrorHelperText(errorHelperText);
-    }, [setError]);
-    /********************************************************************************************************************
-     * Function - validate
-     * ******************************************************************************************************************/
-    var validate = useCallback(function (value) {
-        if (required && empty(value)) {
-            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
-            return false;
-        }
-        if (onValidate) {
-            var onValidateResult = onValidate(value);
-            if (onValidateResult != null && onValidateResult !== true) {
-                setErrorErrorHelperText(true, onValidateResult);
-                return false;
-            }
-        }
-        setErrorErrorHelperText(false, undefined);
-        return true;
-    }, [required, onValidate, setErrorErrorHelperText]);
-    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
     useLayoutEffect(function () {
@@ -4459,12 +4494,12 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                 getReset: function () { return getFinalValue(initValue); },
                 reset: function () {
                     lastValue_1 = getFinalValue(initValue);
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 getValue: function () { return lastValue_1; },
                 setValue: function (value) {
                     lastValue_1 = getFinalValue(value);
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 getData: function () { return lastData_1; },
                 setData: function (data) {
@@ -4543,7 +4578,6 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         onRemoveValueItem,
         loading,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         setItems,
@@ -4552,6 +4586,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         setData,
         hidden,
         setHidden,
+        changeValue,
     ]);
     /********************************************************************************************************************
      * Event Handler
@@ -4571,7 +4606,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
             }
             var finalValue = getFinalValue(newValue);
             if (!equal(value, finalValue)) {
-                setValue(finalValue);
+                changeValue(finalValue);
                 setValueItem(componentValue);
                 nextTick(function () {
                     onValueChangeByUser(name, finalValue);
@@ -4599,7 +4634,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         else {
             go();
         }
-    }, [multiple, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit, onAddItem]);
+    }, [multiple, getFinalValue, value, changeValue, onValueChangeByUser, name, onRequestSearchSubmit, onAddItem]);
     var handleGetOptionDisabled = useCallback(function (option) {
         if (getOptionDisabled) {
             return option.disabled || getOptionDisabled(option);
@@ -4848,7 +4883,7 @@ var PrivateTimeSelect = React.forwardRef(function (_a, ref) {
                 }))))));
 });
 PrivateTimeSelect.displayName = 'PrivateTimeSelect';
-PrivateTimeSelect.defaultProps = PrivateTimeSelectDefaultProps;var css_248z$8 = ".PrivateStaticDatePicker.time {\n  height: 400px;\n}\n.PrivateStaticDatePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDatePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDatePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDatePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDatePicker .action-buttons button:not(:first-child) {\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDatePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDatePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDatePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDatePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDatePicker.time .time .time-container .time-select-wrap > div > div:not(:first-child) {\n  border-left: 1px solid #efefef;\n}";
+PrivateTimeSelect.defaultProps = PrivateTimeSelectDefaultProps;var css_248z$8 = ".PrivateStaticDatePicker.time {\n  height: 400px;\n}\n.PrivateStaticDatePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDatePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDatePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDatePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDatePicker .action-buttons button:not(:first-of-type) {\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDatePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDatePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDatePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDatePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDatePicker.time .time .time-container .time-select-wrap > div > div:not(:first-of-type) {\n  border-left: 1px solid #efefef;\n}";
 styleInject(css_248z$8);var DEFAULT_HOURS$1 = new Array(24).fill(0);
 for (var i$2 = 0; i$2 < DEFAULT_HOURS$1.length; i$2 += 1) {
     DEFAULT_HOURS$1[i$2] = i$2;
@@ -5245,28 +5280,65 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
         return value;
     }, []);
     /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
+    var setErrorErrorHelperText = useCallback(function (error, helperText) {
+        setError(error);
+        setErrorHelperText(helperText);
+    }, [setError]);
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
+    var validate = useCallback(function (value) {
+        if (required && empty(value)) {
+            setErrorErrorHelperText(true, '필수 입력 항목입니다.');
+            return false;
+        }
+        if (value && !value.isValid()) {
+            setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
+            return false;
+        }
+        if (datePickerErrorRef.current) {
+            setErrorErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
+            return false;
+        }
+        if (timeError) {
+            setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
+            return false;
+        }
+        if (onValidate) {
+            var onValidateResult = onValidate(value);
+            if (onValidateResult != null && onValidateResult !== true) {
+                setErrorErrorHelperText(true, onValidateResult);
+                return false;
+            }
+        }
+        setErrorErrorHelperText(false, undefined);
+        return true;
+    }, [required, timeError, onValidate, setErrorErrorHelperText]);
+    /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _k = useAutoUpdateState(initValue || null, getFinalValue), value = _k[0], setValue = _k[1];
+    var _k = useState(function () { return getFinalValue(initValue || null); }), value = _k[0], setValue = _k[1];
     var _l = useState(null), inputValue = _l[0], setInputValue = _l[1];
+    var changeValue = useCallback(function (newValue) {
+        if (value !== newValue) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error)
+                    validate(newValue);
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [error, name, onChange, onValueChange, validate, value]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
-    useEffect(function () {
-        if (value !== initValue) {
-            if (onChange)
-                onChange(value);
-            onValueChange(name, value);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
     useFirstSkipEffect(function () {
-        if (error)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+        changeValue(getFinalValue(initValue || null));
+    }, [initValue]);
     useEffect(function () {
         setInputValue(value);
     }, [value]);
@@ -5326,43 +5398,6 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
         (_a = textFieldInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [textFieldInputRef]);
     /********************************************************************************************************************
-     * Function - setErrorErrorHelperText
-     * ******************************************************************************************************************/
-    var setErrorErrorHelperText = useCallback(function (error, helperText) {
-        setError(error);
-        setErrorHelperText(helperText);
-    }, [setError]);
-    /********************************************************************************************************************
-     * Function - validate
-     * ******************************************************************************************************************/
-    var validate = useCallback(function (value) {
-        if (required && empty(value)) {
-            setErrorErrorHelperText(true, '필수 입력 항목입니다.');
-            return false;
-        }
-        if (value && !value.isValid()) {
-            setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
-            return false;
-        }
-        if (datePickerErrorRef.current) {
-            setErrorErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
-            return false;
-        }
-        if (timeError) {
-            setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
-            return false;
-        }
-        if (onValidate) {
-            var onValidateResult = onValidate(value);
-            if (onValidateResult != null && onValidateResult !== true) {
-                setErrorErrorHelperText(true, onValidateResult);
-                return false;
-            }
-        }
-        setErrorErrorHelperText(false, undefined);
-        return true;
-    }, [required, timeError, onValidate, setErrorErrorHelperText]);
-    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
     useLayoutEffect(function () {
@@ -5377,12 +5412,12 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
                 getReset: function () { return getFinalValue(initValue || null); },
                 reset: function () {
                     lastValue_1 = getFinalValue(initValue || null);
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 getValue: function () { return lastValue_1; },
                 setValue: function (value) {
                     lastValue_1 = getFinalValue(value);
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 getData: function () { return lastData_1; },
                 setData: function (data) {
@@ -5445,13 +5480,13 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
         onAddValueItem,
         onRemoveValueItem,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         data,
         setData,
         hidden,
         setHidden,
+        changeValue,
     ]);
     /********************************************************************************************************************
      * Event Handler
@@ -5492,7 +5527,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
                 if (time === unit)
                     setOpen(false);
             }
-            setValue(finalValue);
+            changeValue(finalValue);
             nextTick(function () {
                 onValueChangeByUser(name, finalValue);
                 if (runOnRequestSearchSubmit_1) {
@@ -5501,7 +5536,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
             });
         }
         setInputValue(finalValue);
-    }, [type, time, setValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [type, time, changeValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]);
     var handleContainerFocus = useCallback(function () {
         if (closeTimeoutRef.current) {
             clearTimeout(closeTimeoutRef.current);
@@ -5625,7 +5660,7 @@ PrivateDatePicker.defaultProps = PrivateDatePickerDefaultProps;var PrivateDateTi
     align: 'center',
     value: null,
 };var css_248z$6 = ".PrivateDateTimePicker .input-text-field.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.PrivateDateTimePicker .input-text-field.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.PrivateDateTimePicker .input-text-field.align-right .MuiInputBase-input {\n  text-align: right;\n}";
-styleInject(css_248z$6);var PrivateStaticDateTimePickerDefaultProps = {};var css_248z$5 = ".PrivateStaticDateTimePicker.time {\n  height: 400px;\n}\n.PrivateStaticDateTimePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDateTimePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDateTimePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDateTimePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDateTimePicker .action-buttons button:not(:first-child) {\n  margin-left: 5px;\n}\n.PrivateStaticDateTimePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDateTimePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDateTimePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDateTimePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDateTimePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDateTimePicker.time .time .time-container .time-select-wrap > div > div:not(:first-child) {\n  border-left: 1px solid #efefef;\n}";
+styleInject(css_248z$6);var PrivateStaticDateTimePickerDefaultProps = {};var css_248z$5 = ".PrivateStaticDateTimePicker.time {\n  height: 400px;\n}\n.PrivateStaticDateTimePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDateTimePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDateTimePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDateTimePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDateTimePicker .action-buttons button:not(:first-of-type) {\n  margin-left: 5px;\n}\n.PrivateStaticDateTimePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDateTimePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDateTimePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDateTimePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDateTimePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDateTimePicker.time .time .time-container .time-select-wrap > div > div:not(:first-of-type) {\n  border-left: 1px solid #efefef;\n}";
 styleInject(css_248z$5);var DEFAULT_HOURS = new Array(24).fill(0);
 for (var i$1 = 0; i$1 < DEFAULT_HOURS.length; i$1 += 1) {
     DEFAULT_HOURS[i$1] = i$1;
@@ -6013,28 +6048,65 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         return value;
     }, []);
     /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
+    var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
+        setError(error);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
+    var validate = useCallback(function (value) {
+        if (required && empty(value)) {
+            setErrorErrorHelperText(true, '필수 입력 항목입니다.');
+            return false;
+        }
+        if (value && !value.isValid()) {
+            setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
+            return false;
+        }
+        if (datePickerErrorRef.current) {
+            setErrorErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
+            return false;
+        }
+        if (timeError) {
+            setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
+            return false;
+        }
+        if (onValidate) {
+            var onValidateResult = onValidate(value);
+            if (onValidateResult != null && onValidateResult !== true) {
+                setErrorErrorHelperText(true, onValidateResult);
+                return false;
+            }
+        }
+        setErrorErrorHelperText(false, undefined);
+        return true;
+    }, [required, timeError, onValidate, setErrorErrorHelperText]);
+    /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _k = useAutoUpdateState(initValue || null, getFinalValue), value = _k[0], setValue = _k[1];
+    var _k = useState(function () { return getFinalValue(initValue || null); }), value = _k[0], setValue = _k[1];
     var _l = useState(null), inputValue = _l[0], setInputValue = _l[1];
+    var changeValue = useCallback(function (newValue) {
+        if (value !== newValue) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error)
+                    validate(newValue);
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [error, name, onChange, onValueChange, validate, value]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
-    useEffect(function () {
-        if (value !== initValue) {
-            if (onChange)
-                onChange(value);
-            onValueChange(name, value);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
     useFirstSkipEffect(function () {
-        if (error)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+        changeValue(getFinalValue(initValue || null));
+    }, [initValue]);
     useEffect(function () {
         setInputValue(value);
     }, [value]);
@@ -6094,43 +6166,6 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         (_a = textFieldInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [textFieldInputRef]);
     /********************************************************************************************************************
-     * Function - setErrorErrorHelperText
-     * ******************************************************************************************************************/
-    var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
-        setError(error);
-        setErrorHelperText(errorHelperText);
-    }, [setError]);
-    /********************************************************************************************************************
-     * Function - validate
-     * ******************************************************************************************************************/
-    var validate = useCallback(function (value) {
-        if (required && empty(value)) {
-            setErrorErrorHelperText(true, '필수 입력 항목입니다.');
-            return false;
-        }
-        if (value && !value.isValid()) {
-            setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
-            return false;
-        }
-        if (datePickerErrorRef.current) {
-            setErrorErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
-            return false;
-        }
-        if (timeError) {
-            setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
-            return false;
-        }
-        if (onValidate) {
-            var onValidateResult = onValidate(value);
-            if (onValidateResult != null && onValidateResult !== true) {
-                setErrorErrorHelperText(true, onValidateResult);
-                return false;
-            }
-        }
-        setErrorErrorHelperText(false, undefined);
-        return true;
-    }, [required, timeError, onValidate, setErrorErrorHelperText]);
-    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
     useLayoutEffect(function () {
@@ -6145,12 +6180,12 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
                 getReset: function () { return getFinalValue(initValue || null); },
                 reset: function () {
                     lastValue_1 = getFinalValue(initValue || null);
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 getValue: function () { return lastValue_1; },
                 setValue: function (value) {
                     lastValue_1 = getFinalValue(value);
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 getData: function () { return lastData_1; },
                 setData: function (data) {
@@ -6213,13 +6248,13 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         onAddValueItem,
         onRemoveValueItem,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         data,
         setData,
         hidden,
         setHidden,
+        changeValue,
     ]);
     /********************************************************************************************************************
      * Event Handler
@@ -6261,7 +6296,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
                 if (time === unit)
                     setOpen(false);
             }
-            setValue(finalValue);
+            changeValue(finalValue);
             nextTick(function () {
                 onValueChangeByUser(name, finalValue);
                 if (runOnRequestSearchSubmit_1) {
@@ -6286,7 +6321,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
             }
         }
         setInputValue(finalValue);
-    }, [type, time, setValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [type, time, changeValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]);
     var handleContainerFocus = useCallback(function () {
         if (closeTimeoutRef.current) {
             clearTimeout(closeTimeoutRef.current);
@@ -6673,7 +6708,7 @@ var StyledYearError = styled('span')(templateObject_3$3 || (templateObject_3$3 =
 });
 var StyledTitleGap = styled('span')(templateObject_4$2 || (templateObject_4$2 = __makeTemplateObject(["\n  padding: 0 7px;\n  opacity: 0.5;\n"], ["\n  padding: 0 7px;\n  opacity: 0.5;\n"])));
 var StyledActionContainer$1 = styled('div')(templateObject_5$1 || (templateObject_5$1 = __makeTemplateObject(["\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n  &:empty {\n    display: none;\n  }\n"], ["\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n  &:empty {\n    display: none;\n  }\n"])));
-var StyledActionButton$1 = styled(Button)(templateObject_6 || (templateObject_6 = __makeTemplateObject(["\n  min-width: 0;\n  color: unset;\n  &:not(:first-child) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"], ["\n  min-width: 0;\n  color: unset;\n  &:not(:first-child) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"])));
+var StyledActionButton$1 = styled(Button)(templateObject_6 || (templateObject_6 = __makeTemplateObject(["\n  min-width: 0;\n  color: unset;\n  &:not(:first-of-type) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"], ["\n  min-width: 0;\n  color: unset;\n  &:not(:first-of-type) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"])));
 var templateObject_1$8, templateObject_2$5, templateObject_3$3, templateObject_4$2, templateObject_5$1, templateObject_6;var DEFAULT_VALUE$5 = [null, null];
 var PrivateYearRangePicker = function (_a) {
     /********************************************************************************************************************
@@ -7327,7 +7362,7 @@ PrivateMonthPicker.defaultProps = PrivateMonthPickerDefaultProps;var PrivateMont
     },
 };var StyledDiv = styled(Grid)(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 14px;\n  width: 30px;\n  border-left: 1px solid #efefef;\n  border-right: 1px solid #efefef;\n  background-color: #fafafa;\n"], ["\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 14px;\n  width: 30px;\n  border-left: 1px solid #efefef;\n  border-right: 1px solid #efefef;\n  background-color: #fafafa;\n"])));
 var StyledActionContainer = styled('div')(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n  &:empty {\n    display: none;\n  }\n"], ["\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n  &:empty {\n    display: none;\n  }\n"])));
-var StyledActionButton = styled(Button)(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n  min-width: 0;\n  color: unset;\n  &:not(:first-child) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"], ["\n  min-width: 0;\n  color: unset;\n  &:not(:first-child) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"])));
+var StyledActionButton = styled(Button)(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n  min-width: 0;\n  color: unset;\n  &:not(:first-of-type) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"], ["\n  min-width: 0;\n  color: unset;\n  &:not(:first-of-type) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"])));
 var templateObject_1$1, templateObject_2, templateObject_3;var PrivateMonthRangePicker = function (_a) {
     /********************************************************************************************************************
      * Function
@@ -7714,7 +7749,7 @@ styleInject(css_248z$3);var FormDateRangePickerTooltipPicker = React.forwardRef(
         } }));
 });
 FormDateRangePickerTooltipPicker.displayName = 'FormDateRangePickerTooltipPicker';
-FormDateRangePickerTooltipPicker.defaultProps = FormDateRangePickerTooltipPickerDefaultProps;var css_248z$2 = ".FormDateRangePickerTooltipPickerContainer {\n  display: inline-block;\n  position: relative;\n}\n.FormDateRangePickerTooltipPickerContainer .month-change-arrow-wrap {\n  position: absolute;\n  top: 15px;\n  left: 0;\n  right: 0;\n}\n.FormDateRangePickerTooltipPickerContainer .month-change-arrow-wrap > div:first-child {\n  padding-left: 20px;\n}\n.FormDateRangePickerTooltipPickerContainer .month-change-arrow-wrap > div:last-child {\n  padding-right: 20px;\n  text-align: right;\n}\n.FormDateRangePickerTooltipPickerContainer .month-title {\n  text-align: center;\n  padding-top: 13px;\n  padding-bottom: 10px;\n}\n.FormDateRangePickerTooltipPickerContainer .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.FormDateRangePickerTooltipPickerContainer .month-title button:not(.active) {\n  color: unset;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap {\n  position: relative;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select,\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  border-top: 1px solid #efefef;\n  padding-top: 15px;\n  background-color: white;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button.today:not(.selected),\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button.today:not(.selected) {\n  border: 1px solid rgba(0, 0, 0, 0.1);\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button.active:not(.selected),\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button.active:not(.selected) {\n  background-color: #f5f5f5;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button.active:not(.selected):hover,\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button.active:not(.selected):hover {\n  background-color: rgb(229, 229, 229);\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select {\n  overflow-y: scroll;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button {\n  font-size: 14px;\n  font-weight: 400;\n  border-radius: 18px;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button {\n  font-size: 15px;\n  font-weight: 400;\n  border-radius: 18px;\n}\n.FormDateRangePickerTooltipPickerContainer .action-buttons button {\n  min-width: 0;\n  color: unset;\n}\n.FormDateRangePickerTooltipPickerContainer .action-buttons button:not(:first-child) {\n  margin-left: 5px;\n}\n.FormDateRangePickerTooltipPickerContainer .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}";
+FormDateRangePickerTooltipPicker.defaultProps = FormDateRangePickerTooltipPickerDefaultProps;var css_248z$2 = ".FormDateRangePickerTooltipPickerContainer {\n  display: inline-block;\n  position: relative;\n}\n.FormDateRangePickerTooltipPickerContainer .month-change-arrow-wrap {\n  position: absolute;\n  top: 15px;\n  left: 0;\n  right: 0;\n}\n.FormDateRangePickerTooltipPickerContainer .month-change-arrow-wrap > div:first-of-type {\n  padding-left: 20px;\n}\n.FormDateRangePickerTooltipPickerContainer .month-change-arrow-wrap > div:last-child {\n  padding-right: 20px;\n  text-align: right;\n}\n.FormDateRangePickerTooltipPickerContainer .month-title {\n  text-align: center;\n  padding-top: 13px;\n  padding-bottom: 10px;\n}\n.FormDateRangePickerTooltipPickerContainer .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.FormDateRangePickerTooltipPickerContainer .month-title button:not(.active) {\n  color: unset;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap {\n  position: relative;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select,\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  border-top: 1px solid #efefef;\n  padding-top: 15px;\n  background-color: white;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button.today:not(.selected),\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button.today:not(.selected) {\n  border: 1px solid rgba(0, 0, 0, 0.1);\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button.active:not(.selected),\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button.active:not(.selected) {\n  background-color: #f5f5f5;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button.active:not(.selected):hover,\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button.active:not(.selected):hover {\n  background-color: rgb(229, 229, 229);\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select {\n  overflow-y: scroll;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button {\n  font-size: 14px;\n  font-weight: 400;\n  border-radius: 18px;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button {\n  font-size: 15px;\n  font-weight: 400;\n  border-radius: 18px;\n}\n.FormDateRangePickerTooltipPickerContainer .action-buttons button {\n  min-width: 0;\n  color: unset;\n}\n.FormDateRangePickerTooltipPickerContainer .action-buttons button:not(:first-of-type) {\n  margin-left: 5px;\n}\n.FormDateRangePickerTooltipPickerContainer .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}";
 styleInject(css_248z$2);var YEARS = new Array(200).fill(0);
 for (var i = 0; i < 200; i += 1) {
     YEARS[i] = 1900 + i;
@@ -8172,14 +8207,30 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
      * ******************************************************************************************************************/
     var _m = useState(false), open = _m[0], setOpen = _m[1];
     var _o = useState('start'), selectType = _o[0], setSelectType = _o[1];
-    var _p = useAutoUpdateState(useCallback(function () {
-        return initValue || DEFAULT_VALUE$4;
-    }, [initValue])), value = _p[0], setValue = _p[1];
     var calendarCount = useAutoUpdateState(initCalendarCount || 2)[0];
-    var _q = useState(function () {
+    var _p = useState(function () {
         var now = dayjs();
         return [now, now.add(1, 'month'), now.add(2, 'month')];
-    }), months = _q[0], setMonths = _q[1];
+    }), months = _p[0], setMonths = _p[1];
+    /********************************************************************************************************************
+     * State - Value
+     * ******************************************************************************************************************/
+    var _q = useState(function () { return getFinalValue(initValue); }), value = _q[0], setValue = _q[1];
+    var changeValue = useCallback(function (newValue) {
+        if (value !== newValue) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error || fromError || toError)
+                    validate(newValue);
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [error, fromError, name, onChange, onValueChange, toError, validate, value]);
+    useFirstSkipEffect(function () {
+        changeValue(getFinalValue(initValue));
+    }, [initValue]);
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -8214,21 +8265,6 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
-    useEffect(function () {
-        if (value !== initValue) {
-            if (onChange)
-                onChange(value);
-            onValueChange(name, value);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    useFirstSkipEffect(function () {
-        if (error || fromError || toError)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
     useFirstSkipEffect(function () {
         if (open) {
             openValueRef.current = value;
@@ -8275,11 +8311,11 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
      * Event Handler
      * ******************************************************************************************************************/
     var handleChange = useCallback(function (newValue) {
-        setValue(newValue);
+        changeValue(newValue);
         setOpen(false);
         setFromErrorErrorHelperText(false, undefined);
         setToErrorErrorHelperText(false, undefined);
-    }, [setToErrorErrorHelperText, setFromErrorErrorHelperText, setValue]);
+    }, [changeValue, setFromErrorErrorHelperText, setToErrorErrorHelperText]);
     var handleValueChange = useCallback(function (selectType, newValue, fromInput) {
         var _a;
         var finalValue;
@@ -8344,12 +8380,12 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                 }
                 break;
         }
-        setValue(finalValue);
+        changeValue(finalValue);
         nextTick(function () {
             onValueChangeByUser(name, finalValue);
         });
     }, [
-        setValue,
+        changeValue,
         value,
         setFromErrorErrorHelperText,
         activeMonth,
@@ -8459,12 +8495,12 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                 getReset: function () { return getFinalValue(initValue); },
                 reset: function () {
                     lastValue_1 = getFinalValue(initValue);
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 getValue: function () { return lastValue_1; },
                 setValue: function (value) {
                     lastValue_1 = getFinalValue(value);
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 getData: function () { return lastData_1; },
                 setData: function (data) {
@@ -8474,12 +8510,12 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                 getFromValue: function () { return lastValue_1[0]; },
                 setFromValue: function (value) {
                     lastValue_1 = [value, lastValue_1[1]];
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 getToValue: function () { return lastValue_1[1]; },
                 setToValue: function (value) {
                     lastValue_1 = [lastValue_1[0], value];
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 isExceptValue: function () { return !!exceptValue; },
                 isDisabled: function () { return lastDisabled_1; },
@@ -8552,13 +8588,13 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
         onAddValueItem,
         onRemoveValueItem,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         data,
         setData,
         hidden,
         setHidden,
+        changeValue,
     ]);
     /********************************************************************************************************************
      * Render
@@ -8692,52 +8728,15 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
     var fileUploadBtnRef = useRef(null);
     var linkBtnRef = useRef(null);
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-    var _c = useAutoUpdateState(initValue || ''), value = _c[0], setValue = _c[1];
-    var fileValue = useState('')[0];
-    useFirstSkipEffect(function () {
-        if (error)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
-    /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var _d = useAutoUpdateState(initError), error = _d[0], setError = _d[1];
-    var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
-    var _f = useAutoUpdateState(initDisabled == null ? formDisabled : initDisabled), disabled = _f[0], setDisabled = _f[1];
-    var _g = useAutoUpdateState(initHidden), hidden = _g[0], setHidden = _g[1];
-    var _h = useState(false), isOpenLinkDialog = _h[0], setIsOpenLinkDialog = _h[1];
-    var _j = useAutoUpdateState(initData), data = _j[0], setData = _j[1];
-    var _k = useState({ open: false }), alertDialogProps = _k[0], setAlertDialogProps = _k[1];
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var label = useMemo(function () {
-        return labelIcon ? (React.createElement(React.Fragment, null,
-            React.createElement(PdgIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
-            React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
-    }, [initLabel, labelIcon]);
-    /********************************************************************************************************************
-     * Function - focus
-     * ******************************************************************************************************************/
-    var focus = useCallback(function () {
-        var _a, _b, _c;
-        if (hideUrl) {
-            if (hideUpload) {
-                (_a = linkBtnRef.current) === null || _a === void 0 ? void 0 : _a.focus();
-            }
-            else {
-                (_b = fileUploadBtnRef.current) === null || _b === void 0 ? void 0 : _b.focus();
-            }
-        }
-        else {
-            (_c = textFieldRef.current) === null || _c === void 0 ? void 0 : _c.focus();
-        }
-    }, [hideUpload, hideUrl]);
+    var _c = useAutoUpdateState(initError), error = _c[0], setError = _c[1];
+    var _d = useState(), errorHelperText = _d[0], setErrorHelperText = _d[1];
+    var _e = useAutoUpdateState(initDisabled == null ? formDisabled : initDisabled), disabled = _e[0], setDisabled = _e[1];
+    var _f = useAutoUpdateState(initHidden), hidden = _f[0], setHidden = _f[1];
+    var _g = useState(false), isOpenLinkDialog = _g[0], setIsOpenLinkDialog = _g[1];
+    var _h = useAutoUpdateState(initData), data = _h[0], setData = _h[1];
+    var _j = useState({ open: false }), alertDialogProps = _j[0], setAlertDialogProps = _j[1];
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
      * ******************************************************************************************************************/
@@ -8771,6 +8770,54 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
         return true;
     }, [required, onValidate, setErrorErrorHelperText]);
     /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+    var _k = useState(initValue || ''), value = _k[0], setValue = _k[1];
+    var fileValue = useState('')[0];
+    var changeValue = useCallback(function (newValue) {
+        if (!equal(value, newValue)) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error)
+                    validate(newValue);
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [error, name, onChange, onValueChange, validate, value]);
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
+    useFirstSkipEffect(function () {
+        changeValue(initValue || '');
+    }, [initValue]);
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+    var label = useMemo(function () {
+        return labelIcon ? (React.createElement(React.Fragment, null,
+            React.createElement(PdgIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
+            React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
+    }, [initLabel, labelIcon]);
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
+    var focus = useCallback(function () {
+        var _a, _b, _c;
+        if (hideUrl) {
+            if (hideUpload) {
+                (_a = linkBtnRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+            }
+            else {
+                (_b = fileUploadBtnRef.current) === null || _b === void 0 ? void 0 : _b.focus();
+            }
+        }
+        else {
+            (_c = textFieldRef.current) === null || _c === void 0 ? void 0 : _c.focus();
+        }
+    }, [hideUpload, hideUrl]);
+    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
     useLayoutEffect(function () {
@@ -8784,12 +8831,12 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
             getReset: function () { return initValue || ''; },
             reset: function () {
                 lastValue = initValue || '';
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getValue: function () { return lastValue; },
             setValue: function (value) {
                 lastValue = value;
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getData: function () { return lastData; },
             setData: function (data) {
@@ -8846,13 +8893,13 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
         onAddValueItem,
         onRemoveValueItem,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         data,
         setData,
         hidden,
         setHidden,
+        changeValue,
     ]);
     /********************************************************************************************************************
      * Function
@@ -8900,7 +8947,7 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
             var file_1 = target.files[0];
             fileSizeCheck(file_1).then(function () {
                 onFile(file_1).then(function (url) {
-                    setValue(url);
+                    changeValue(url);
                     nextTick(function () {
                         if (onValueChangeByUser)
                             onValueChangeByUser(name, url);
@@ -8908,21 +8955,21 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
                 });
             });
         }
-    }, [fileSizeCheck, name, onFile, onValueChangeByUser, setValue]);
+    }, [changeValue, fileSizeCheck, name, onFile, onValueChangeByUser]);
     var handleLinkClick = useCallback(function () {
         setIsOpenLinkDialog(true);
     }, []);
     var handleRemoveClick = useCallback(function () {
-        setValue('');
+        changeValue('');
         nextTick(function () {
             if (onValueChangeByUser)
                 onValueChangeByUser(name, '');
         });
-    }, [name, onValueChangeByUser, setValue]);
+    }, [changeValue, name, onValueChangeByUser]);
     var handleLinkDialogConfirm = useCallback(function (url) {
         if (onLink) {
             onLink(url).then(function (finalUrl) {
-                setValue(finalUrl);
+                changeValue(finalUrl);
                 nextTick(function () {
                     if (onValueChangeByUser)
                         onValueChangeByUser(name, finalUrl);
@@ -8930,13 +8977,13 @@ styleInject(css_248z$1);var FormFile = React.forwardRef(function (_a, ref) {
             });
         }
         else {
-            setValue(url);
+            changeValue(url);
             nextTick(function () {
                 if (onValueChangeByUser)
                     onValueChangeByUser(name, url);
             });
         }
-    }, [name, onLink, onValueChangeByUser, setValue]);
+    }, [changeValue, name, onLink, onValueChangeByUser]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
@@ -9193,18 +9240,50 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
         return value || DEFAULT_VALUE$3;
     }, []);
     /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+    var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
+        setError(error);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
+    var validate = useCallback(function (value) {
+        if (required && empty(value)) {
+            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
+            return false;
+        }
+        if (inputDatePickerErrorRef.current) {
+            setErrorErrorHelperText(true, getDateValidationErrorText(inputDatePickerErrorRef.current));
+            return false;
+        }
+        if (onValidate) {
+            var onValidateResult = onValidate(value);
+            if (onValidateResult != null && onValidateResult !== true) {
+                setErrorErrorHelperText(true, onValidateResult);
+                return false;
+            }
+        }
+        setErrorErrorHelperText(false, undefined);
+        return true;
+    }, [onValidate, required, setErrorErrorHelperText]);
+    /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _j = useAutoUpdateState(useCallback(function () {
-        return initValue || DEFAULT_VALUE$3;
-    }, [initValue])), value = _j[0], setValue = _j[1];
+    var _j = useState(function () { return getFinalValue(initValue); }), value = _j[0], setValue = _j[1];
+    var changeValue = useCallback(function (newValue) {
+        if (!equal(value, newValue)) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error)
+                    validate(newValue);
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [error, name, onChange, onValueChange, validate, value]);
     useFirstSkipEffect(function () {
-        if (error)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+        changeValue(getFinalValue(initValue));
+    }, [initValue]);
     /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
@@ -9250,11 +9329,6 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
      * Effect
      * ******************************************************************************************************************/
     useEffect(function () {
-        if (value !== initValue) {
-            if (onChange)
-                onChange(value);
-            onValueChange(name, value);
-        }
         if (ratingRef.current) {
             inputRef.current = ratingRef.current.querySelector('input') || undefined;
         }
@@ -9291,29 +9365,6 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
             (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
         });
     }, []);
-    var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
-        setError(error);
-        setErrorHelperText(errorHelperText);
-    }, [setError]);
-    var validate = useCallback(function (value) {
-        if (required && empty(value)) {
-            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
-            return false;
-        }
-        if (inputDatePickerErrorRef.current) {
-            setErrorErrorHelperText(true, getDateValidationErrorText(inputDatePickerErrorRef.current));
-            return false;
-        }
-        if (onValidate) {
-            var onValidateResult = onValidate(value);
-            if (onValidateResult != null && onValidateResult !== true) {
-                setErrorErrorHelperText(true, onValidateResult);
-                return false;
-            }
-        }
-        setErrorErrorHelperText(false, undefined);
-        return true;
-    }, [onValidate, required, setErrorErrorHelperText]);
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
@@ -9328,12 +9379,12 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
             getReset: function () { return getFinalValue(initValue); },
             reset: function () {
                 lastValue = getFinalValue(initValue);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getValue: function () { return lastValue; },
             setValue: function (value) {
                 lastValue = getFinalValue(value);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getData: function () { return lastData; },
             setData: function (data) {
@@ -9347,7 +9398,7 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
                     : lastValue
                         ? { year: year, month: lastValue.month }
                         : { year: year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 });
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getMonth: function () { return (lastValue ? lastValue.month : null); },
             setMonth: function (month) {
@@ -9356,7 +9407,7 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
                     : lastValue
                         ? { year: lastValue.year, month: month }
                         : { year: new Date().getFullYear(), month: month });
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             isExceptValue: function () { return !!exceptValue; },
             isDisabled: function () { return lastDisabled; },
@@ -9421,7 +9472,6 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
         onAddValueItem,
         onRemoveValueItem,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         data,
@@ -9430,6 +9480,7 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
         formValueMonthNameSuffix,
         hidden,
         setHidden,
+        changeValue,
     ]);
     /********************************************************************************************************************
      * Event Handler
@@ -9460,13 +9511,13 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
         }
     }, []);
     var handleContainerChange = useCallback(function (newValue, isMonthSelect) {
-        setValue(newValue);
+        changeValue(newValue);
         if (isMonthSelect)
             setOpen(false);
         nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
-    }, [name, onValueChangeByUser, setValue]);
+    }, [changeValue, name, onValueChangeByUser]);
     var handleInputDatePickerFocus = useCallback(function () {
         if (readOnly || disabled)
             return;
@@ -9513,7 +9564,7 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
                     }, title: React.createElement("div", { style: { display: 'flex' } },
                         React.createElement(PrivateMonthPicker, { minValue: minValue, maxValue: maxValue, disablePast: disablePast, disableFuture: disableFuture, value: value, onChange: handleContainerChange })) },
                     React.createElement("div", null,
-                        React.createElement(PrivateInputDatePicker, __assign({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate, label: label, labelIcon: labelIcon, error: error, focused: focused, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: inputRef, onChange: function (v) { return setValue(v ? dateToValue(v) : v); }, onFocus: handleInputDatePickerFocus, onError: function (reason) { return (inputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear })))),
+                        React.createElement(PrivateInputDatePicker, __assign({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate, label: label, labelIcon: labelIcon, error: error, focused: focused, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: inputRef, onChange: function (v) { return changeValue(v ? dateToValue(v) : v); }, onFocus: handleInputDatePickerFocus, onError: function (reason) { return (inputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear })))),
                 !formColWithHelperText && (!!helperText || (error && !!errorHelperText)) && (React.createElement(FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error ? errorHelperText : helperText))))));
 });
 FormMonthPicker.displayName = 'FormMonthPicker';
@@ -9588,99 +9639,8 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         return value || DEFAULT_VALUE$2;
     }, []);
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-    var _o = useAutoUpdateState(useCallback(function () {
-        return initValue || DEFAULT_VALUE$2;
-    }, [initValue])), value = _o[0], setValue = _o[1];
-    useFirstSkipEffect(function () {
-        if (error || fromError || toError)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
-    /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
-    var valueToDate = useCallback(function (v) { return dayjs("".concat(v.year, "-").concat(v.month, "-01")); }, []);
-    var valueToYm = useCallback(function (v) { return v.year * 100 + v.month; }, []);
-    var dateToValue = useCallback(function (v) { return ({ year: v.year(), month: v.month() + 1 }); }, []);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var nowDate = useMemo(function () { return dayjs(); }, []);
-    var nowValue = useMemo(function () { return dateToValue(nowDate); }, [dateToValue, nowDate]);
-    var nowYm = useMemo(function () { return valueToYm(nowValue); }, [nowValue, valueToYm]);
-    var valueDate = useMemo(function () { return [
-        !!value && !!value[0] ? valueToDate(value[0]) : null,
-        !!value && !!value[1] ? valueToDate(value[1]) : null,
-    ]; }, [value, valueToDate]);
-    var minValue = useMemo(function () { return initMinValue || FormMonthRangePickerDefaultProps.minValue; }, [initMinValue]);
-    var maxValue = useMemo(function () { return initMaxValue || FormMonthRangePickerDefaultProps.maxValue; }, [initMaxValue]);
-    var minDate = useMemo(function () { return (minValue ? valueToDate(minValue) : undefined); }, [minValue, valueToDate]);
-    var maxDate = useMemo(function () { return (maxValue ? valueToDate(maxValue) : undefined); }, [maxValue, valueToDate]);
-    var minAvailableValue = useMemo(function () {
-        if (disablePast) {
-            var minYm = valueToYm(minValue);
-            return nowYm > minYm ? nowValue : minValue;
-        }
-        else {
-            return minValue;
-        }
-    }, [disablePast, valueToYm, minValue, nowYm, nowValue]);
-    var minAvailableYm = useMemo(function () { return valueToYm(minAvailableValue); }, [minAvailableValue, valueToYm]);
-    var maxAvailableValue = useMemo(function () {
-        if (disableFuture) {
-            var maxYm = valueToYm(maxValue);
-            return nowYm < maxYm ? nowValue : maxValue;
-        }
-        else {
-            return maxValue;
-        }
-    }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
-    var maxAvailableYm = useMemo(function () { return valueToYm(maxAvailableValue); }, [maxAvailableValue, valueToYm]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var format = useMemo(function () { return initFormat || DEFAULT_FORMAT$2; }, [initFormat]);
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-    useEffect(function () {
-        if (value !== initValue) {
-            if (onChange)
-                onChange(value);
-            onValueChange(name, value);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    useFirstSkipEffect(function () {
-        if (open) {
-            openValueRef.current = value;
-        }
-        else {
-            if (openValueRef.current !== value) {
-                var runOnRequestSearchSubmit = void 0;
-                if (openValueRef.current && value) {
-                    runOnRequestSearchSubmit = openValueRef.current !== value;
-                }
-                else {
-                    runOnRequestSearchSubmit = true;
-                }
-                if (runOnRequestSearchSubmit) {
-                    onRequestSearchSubmit(name, value);
-                }
-            }
-        }
-    }, [open]);
-    /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-    var focus = useCallback(function () {
-        var _a;
-        (_a = startInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
-    }, []);
     var setFromErrorErrorHelperText = useCallback(function (error, fromErrorHelperText) {
         setFromError(error);
         setFromErrorHelperText(fromErrorHelperText);
@@ -9730,6 +9690,98 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         return true;
     }, [onValidate, required, setToErrorErrorHelperText, setErrorErrorHelperText, setFromErrorErrorHelperText]);
     /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+    var _o = useState(function () { return getFinalValue(initValue); }), value = _o[0], setValue = _o[1];
+    var changeValue = useCallback(function (newValue) {
+        if (!equal(value, newValue)) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error || fromError || toError)
+                    validate(value);
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [error, fromError, name, onChange, onValueChange, toError, validate, value]);
+    useFirstSkipEffect(function () {
+        changeValue(getFinalValue(initValue));
+    }, [initValue]);
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+    var valueToDate = useCallback(function (v) { return dayjs("".concat(v.year, "-").concat(v.month, "-01")); }, []);
+    var valueToYm = useCallback(function (v) { return v.year * 100 + v.month; }, []);
+    var dateToValue = useCallback(function (v) { return ({ year: v.year(), month: v.month() + 1 }); }, []);
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+    var nowDate = useMemo(function () { return dayjs(); }, []);
+    var nowValue = useMemo(function () { return dateToValue(nowDate); }, [dateToValue, nowDate]);
+    var nowYm = useMemo(function () { return valueToYm(nowValue); }, [nowValue, valueToYm]);
+    var valueDate = useMemo(function () { return [
+        !!value && !!value[0] ? valueToDate(value[0]) : null,
+        !!value && !!value[1] ? valueToDate(value[1]) : null,
+    ]; }, [value, valueToDate]);
+    var minValue = useMemo(function () { return initMinValue || FormMonthRangePickerDefaultProps.minValue; }, [initMinValue]);
+    var maxValue = useMemo(function () { return initMaxValue || FormMonthRangePickerDefaultProps.maxValue; }, [initMaxValue]);
+    var minDate = useMemo(function () { return (minValue ? valueToDate(minValue) : undefined); }, [minValue, valueToDate]);
+    var maxDate = useMemo(function () { return (maxValue ? valueToDate(maxValue) : undefined); }, [maxValue, valueToDate]);
+    var minAvailableValue = useMemo(function () {
+        if (disablePast) {
+            var minYm = valueToYm(minValue);
+            return nowYm > minYm ? nowValue : minValue;
+        }
+        else {
+            return minValue;
+        }
+    }, [disablePast, valueToYm, minValue, nowYm, nowValue]);
+    var minAvailableYm = useMemo(function () { return valueToYm(minAvailableValue); }, [minAvailableValue, valueToYm]);
+    var maxAvailableValue = useMemo(function () {
+        if (disableFuture) {
+            var maxYm = valueToYm(maxValue);
+            return nowYm < maxYm ? nowValue : maxValue;
+        }
+        else {
+            return maxValue;
+        }
+    }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
+    var maxAvailableYm = useMemo(function () { return valueToYm(maxAvailableValue); }, [maxAvailableValue, valueToYm]);
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+    var format = useMemo(function () { return initFormat || DEFAULT_FORMAT$2; }, [initFormat]);
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
+    useFirstSkipEffect(function () {
+        if (open) {
+            openValueRef.current = value;
+        }
+        else {
+            if (openValueRef.current !== value) {
+                var runOnRequestSearchSubmit = void 0;
+                if (openValueRef.current && value) {
+                    runOnRequestSearchSubmit = openValueRef.current !== value;
+                }
+                else {
+                    runOnRequestSearchSubmit = true;
+                }
+                if (runOnRequestSearchSubmit) {
+                    onRequestSearchSubmit(name, value);
+                }
+            }
+        }
+    }, [open]);
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+    var focus = useCallback(function () {
+        var _a;
+        (_a = startInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+    }, []);
+    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
     useLayoutEffect(function () {
@@ -9743,12 +9795,12 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
             getReset: function () { return getFinalValue(initValue); },
             reset: function () {
                 lastValue = getFinalValue(initValue);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getValue: function () { return lastValue; },
             setValue: function (value) {
                 lastValue = getFinalValue(value);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getData: function () { return lastData; },
             setData: function (data) {
@@ -9758,12 +9810,12 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
             getFromValue: function () { return lastValue[0]; },
             setFromValue: function (value) {
                 lastValue = [value, lastValue[1]];
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getToValue: function () { return lastValue[1]; },
             setToValue: function (value) {
                 lastValue = [lastValue[0], value];
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getFromYear: function () { return (lastValue[0] ? lastValue[0].year : null); },
             setFromYear: function (year) {
@@ -9775,7 +9827,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                             : { year: year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
                     lastValue[1],
                 ]);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getFromMonth: function () { return (lastValue[0] ? lastValue[0].month : null); },
             setFromMonth: function (month) {
@@ -9787,7 +9839,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                             : { year: new Date().getFullYear(), month: month },
                     lastValue[1],
                 ]);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getToYear: function () { return (lastValue[1] ? lastValue[1].year : null); },
             setToYear: function (year) {
@@ -9799,7 +9851,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                             ? { year: year, month: lastValue[1].month }
                             : { year: year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
                 ]);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getToMonth: function () { return (lastValue[1] ? lastValue[1].month : null); },
             setToMonth: function (month) {
@@ -9811,7 +9863,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                             ? { year: lastValue[1].year, month: month }
                             : { year: new Date().getFullYear(), month: month },
                 ]);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             isExceptValue: function () { return !!exceptValue; },
             isDisabled: function () { return lastDisabled; },
@@ -9888,7 +9940,6 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         onAddValueItem,
         onRemoveValueItem,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         data,
@@ -9899,12 +9950,13 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         formValueToMonthNameSuffix,
         hidden,
         setHidden,
+        changeValue,
     ]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
     var handleContainerChange = useCallback(function (newValue, selectType, isMonthSelect) {
-        setValue(newValue);
+        changeValue(newValue);
         if (selectType === 'start' && isMonthSelect) {
             nextTick(function () {
                 var _a;
@@ -9917,59 +9969,56 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
-    }, [name, onValueChangeByUser, setValue]);
+    }, [changeValue, name, onValueChangeByUser]);
     var handleInputDatePickerChange = useCallback(function (selectType, date) {
         if (date == null || date.isValid()) {
             if (selectType === 'start') {
-                setValue(function (old) {
-                    var newValue = [date ? dateToValue(date) : null, old[1]];
-                    if (newValue[0] !== null &&
-                        valueToYm(newValue[0]) >= minAvailableYm &&
-                        valueToYm(newValue[0]) <= maxAvailableYm) {
-                        if (newValue[1] !== null && newValue[1] < newValue[0]) {
-                            newValue[1] = newValue[0];
-                        }
+                var newValue_1 = [date ? dateToValue(date) : null, value[1]];
+                if (newValue_1[0] !== null &&
+                    valueToYm(newValue_1[0]) >= minAvailableYm &&
+                    valueToYm(newValue_1[0]) <= maxAvailableYm) {
+                    if (newValue_1[1] !== null && newValue_1[1] < newValue_1[0]) {
+                        newValue_1[1] = newValue_1[0];
                     }
-                    if (fromError) {
-                        validate(newValue);
-                    }
-                    nextTick(function () {
-                        onValueChangeByUser(name, newValue);
-                    });
-                    return newValue;
+                }
+                if (fromError) {
+                    validate(newValue_1);
+                }
+                nextTick(function () {
+                    onValueChangeByUser(name, newValue_1);
                 });
+                changeValue(newValue_1);
             }
             else {
-                setValue(function (old) {
-                    var newValue = [old[0], date ? dateToValue(date) : null];
-                    if (newValue[1] !== null &&
-                        valueToYm(newValue[1]) >= minAvailableYm &&
-                        valueToYm(newValue[1]) <= maxAvailableYm) {
-                        if (newValue[0] !== null && newValue[0] > newValue[1]) {
-                            newValue[0] = newValue[1];
-                        }
+                var newValue_2 = [value[0], date ? dateToValue(date) : null];
+                if (newValue_2[1] !== null &&
+                    valueToYm(newValue_2[1]) >= minAvailableYm &&
+                    valueToYm(newValue_2[1]) <= maxAvailableYm) {
+                    if (newValue_2[0] !== null && newValue_2[0] > newValue_2[1]) {
+                        newValue_2[0] = newValue_2[1];
                     }
-                    if (toError) {
-                        validate(newValue);
-                    }
-                    nextTick(function () {
-                        onValueChangeByUser(name, newValue);
-                    });
-                    return newValue;
+                }
+                if (toError) {
+                    validate(newValue_2);
+                }
+                nextTick(function () {
+                    onValueChangeByUser(name, newValue_2);
                 });
+                changeValue(newValue_2);
             }
         }
     }, [
         dateToValue,
-        toError,
-        maxAvailableYm,
-        minAvailableYm,
-        name,
-        onValueChangeByUser,
-        setValue,
-        fromError,
-        validate,
+        value,
         valueToYm,
+        minAvailableYm,
+        maxAvailableYm,
+        fromError,
+        changeValue,
+        validate,
+        onValueChangeByUser,
+        name,
+        toError,
     ]);
     var handleInputDatePickerFocus = useCallback(function (selectType) {
         var _a;
@@ -10093,19 +10142,48 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
     var getFinalValue = useCallback(function (value) {
         return value || DEFAULT_VALUE$1;
     }, []);
+    var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
+        setError(error);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
+    var validate = useCallback(function (value) {
+        if (required && empty(value)) {
+            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
+            return false;
+        }
+        if (inputDatePickerErrorRef.current) {
+            setErrorErrorHelperText(true, getDateValidationErrorText(inputDatePickerErrorRef.current));
+            return false;
+        }
+        if (onValidate) {
+            var onValidateResult = onValidate(value);
+            if (onValidateResult != null && onValidateResult !== true) {
+                setErrorErrorHelperText(true, onValidateResult);
+                return false;
+            }
+        }
+        setErrorErrorHelperText(false, undefined);
+        return true;
+    }, [onValidate, required, setErrorErrorHelperText]);
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _j = useAutoUpdateState(useCallback(function () {
-        return initValue || DEFAULT_VALUE$1;
-    }, [initValue])), value = _j[0], setValue = _j[1];
+    var _j = useState(function () { return getFinalValue(initValue); }), value = _j[0], setValue = _j[1];
+    var changeValue = useCallback(function (newValue) {
+        if (!equal(value, newValue)) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error)
+                    validate(newValue);
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [error, name, onChange, onValueChange, validate, value]);
     useFirstSkipEffect(function () {
-        if (error)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+        changeValue(getFinalValue(initValue));
+    }, [initValue]);
     /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
@@ -10126,11 +10204,6 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
      * Effect
      * ******************************************************************************************************************/
     useEffect(function () {
-        if (value !== initValue) {
-            if (onChange)
-                onChange(value);
-            onValueChange(name, value);
-        }
         if (ratingRef.current) {
             inputRef.current = ratingRef.current.querySelector('input') || undefined;
         }
@@ -10166,29 +10239,6 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
             (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
         });
     }, []);
-    var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
-        setError(error);
-        setErrorHelperText(errorHelperText);
-    }, [setError]);
-    var validate = useCallback(function (value) {
-        if (required && empty(value)) {
-            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
-            return false;
-        }
-        if (inputDatePickerErrorRef.current) {
-            setErrorErrorHelperText(true, getDateValidationErrorText(inputDatePickerErrorRef.current));
-            return false;
-        }
-        if (onValidate) {
-            var onValidateResult = onValidate(value);
-            if (onValidateResult != null && onValidateResult !== true) {
-                setErrorErrorHelperText(true, onValidateResult);
-                return false;
-            }
-        }
-        setErrorErrorHelperText(false, undefined);
-        return true;
-    }, [onValidate, required, setErrorErrorHelperText]);
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
@@ -10203,12 +10253,12 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
             getReset: function () { return getFinalValue(initValue); },
             reset: function () {
                 lastValue = getFinalValue(initValue);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getValue: function () { return lastValue; },
             setValue: function (value) {
                 lastValue = getFinalValue(value);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getData: function () { return lastData; },
             setData: function (data) {
@@ -10266,13 +10316,13 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
         onAddValueItem,
         onRemoveValueItem,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         data,
         setData,
         hidden,
         setHidden,
+        changeValue,
     ]);
     /********************************************************************************************************************
      * Event Handler
@@ -10303,20 +10353,20 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
         }
     }, []);
     var handleContainerChange = useCallback(function (newValue, isClick) {
-        setValue(newValue);
+        changeValue(newValue);
         if (isClick)
             setOpen(false);
         nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
-    }, [name, onValueChangeByUser, setValue]);
+    }, [changeValue, name, onValueChangeByUser]);
     var handleInputDatePickerChange = useCallback(function (v) {
         var newValue = v ? dateToValue(v) : v;
-        setValue(newValue);
+        changeValue(newValue);
         nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
-    }, [dateToValue, name, onValueChangeByUser, setValue]);
+    }, [changeValue, dateToValue, name, onValueChangeByUser]);
     var handleInputDatePickerFocus = useCallback(function () {
         if (readOnly || disabled)
             return;
@@ -10430,76 +10480,8 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
         return value || DEFAULT_VALUE;
     }, []);
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-    var _p = useAutoUpdateState(useCallback(function () {
-        return initValue || DEFAULT_VALUE;
-    }, [initValue])), value = _p[0], setValue = _p[1];
-    useFirstSkipEffect(function () {
-        if (error || fromError || toError)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
-    /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
-    var valueToDate = useCallback(function (v) { return dayjs("".concat(v, "-01-01")); }, []);
-    var dateToValue = useCallback(function (v) { return v.year(); }, []);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var nowYear = useMemo(function () { return new Date().getFullYear(); }, []);
-    var valueDate = useMemo(function () { return [
-        !!value && !!value[0] ? valueToDate(value[0]) : null,
-        !!value && !!value[1] ? valueToDate(value[1]) : null,
-    ]; }, [value, valueToDate]);
-    var minYear = useMemo(function () { return Math.max(initMinYear || FormYearRangePickerDefaultProps.minYear, FormYearRangePickerDefaultProps.minYear); }, [initMinYear]);
-    var maxYear = useMemo(function () { return Math.min(initMaxYear || FormYearRangePickerDefaultProps.maxYear, FormYearRangePickerDefaultProps.maxYear); }, [initMaxYear]);
-    var minDate = useMemo(function () { return (minYear ? valueToDate(minYear) : undefined); }, [minYear, valueToDate]);
-    var maxDate = useMemo(function () { return (maxYear ? valueToDate(maxYear) : undefined); }, [maxYear, valueToDate]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var format = useMemo(function () { return initFormat || DEFAULT_FORMAT; }, [initFormat]);
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-    useEffect(function () {
-        if (value !== initValue) {
-            if (onChange)
-                onChange(value);
-            onValueChange(name, value);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    useFirstSkipEffect(function () {
-        if (open) {
-            openValueRef.current = value;
-        }
-        else {
-            if (openValueRef.current !== value) {
-                var runOnRequestSearchSubmit = void 0;
-                if (openValueRef.current && value) {
-                    runOnRequestSearchSubmit = openValueRef.current !== value;
-                }
-                else {
-                    runOnRequestSearchSubmit = true;
-                }
-                if (runOnRequestSearchSubmit) {
-                    onRequestSearchSubmit(name, value);
-                }
-            }
-        }
-    }, [open]);
-    /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-    var focus = useCallback(function () {
-        var _a;
-        (_a = startInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
-    }, []);
     var setFromErrorErrorHelperText = useCallback(function (error, fromErrorHelperText) {
         setFromError(error);
         setFromErrorHelperText(fromErrorHelperText);
@@ -10549,6 +10531,75 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
         return true;
     }, [onValidate, required, setToErrorErrorHelperText, setErrorErrorHelperText, setFromErrorErrorHelperText]);
     /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+    var _p = useState(function () { return getFinalValue(initValue); }), value = _p[0], setValue = _p[1];
+    var changeValue = useCallback(function (newValue) {
+        if (!equal(value, newValue)) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error || fromError || toError)
+                    validate(value);
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [error, fromError, name, onChange, onValueChange, toError, validate, value]);
+    useFirstSkipEffect(function () {
+        changeValue(getFinalValue(initValue));
+    }, [initValue]);
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+    var valueToDate = useCallback(function (v) { return dayjs("".concat(v, "-01-01")); }, []);
+    var dateToValue = useCallback(function (v) { return v.year(); }, []);
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+    var nowYear = useMemo(function () { return new Date().getFullYear(); }, []);
+    var valueDate = useMemo(function () { return [
+        !!value && !!value[0] ? valueToDate(value[0]) : null,
+        !!value && !!value[1] ? valueToDate(value[1]) : null,
+    ]; }, [value, valueToDate]);
+    var minYear = useMemo(function () { return Math.max(initMinYear || FormYearRangePickerDefaultProps.minYear, FormYearRangePickerDefaultProps.minYear); }, [initMinYear]);
+    var maxYear = useMemo(function () { return Math.min(initMaxYear || FormYearRangePickerDefaultProps.maxYear, FormYearRangePickerDefaultProps.maxYear); }, [initMaxYear]);
+    var minDate = useMemo(function () { return (minYear ? valueToDate(minYear) : undefined); }, [minYear, valueToDate]);
+    var maxDate = useMemo(function () { return (maxYear ? valueToDate(maxYear) : undefined); }, [maxYear, valueToDate]);
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+    var format = useMemo(function () { return initFormat || DEFAULT_FORMAT; }, [initFormat]);
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
+    useFirstSkipEffect(function () {
+        if (open) {
+            openValueRef.current = value;
+        }
+        else {
+            if (openValueRef.current !== value) {
+                var runOnRequestSearchSubmit = void 0;
+                if (openValueRef.current && value) {
+                    runOnRequestSearchSubmit = openValueRef.current !== value;
+                }
+                else {
+                    runOnRequestSearchSubmit = true;
+                }
+                if (runOnRequestSearchSubmit) {
+                    onRequestSearchSubmit(name, value);
+                }
+            }
+        }
+    }, [open]);
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+    var focus = useCallback(function () {
+        var _a;
+        (_a = startInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+    }, []);
+    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
     useLayoutEffect(function () {
@@ -10562,12 +10613,12 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
             getReset: function () { return getFinalValue(initValue); },
             reset: function () {
                 lastValue = getFinalValue(initValue);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getValue: function () { return lastValue; },
             setValue: function (value) {
                 lastValue = getFinalValue(value);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getData: function () { return lastData; },
             setData: function (data) {
@@ -10577,12 +10628,12 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
             getFromValue: function () { return lastValue[0]; },
             setFromValue: function (value) {
                 lastValue = [value, lastValue[1]];
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getToValue: function () { return lastValue[1]; },
             setToValue: function (value) {
                 lastValue = [lastValue[0], value];
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             isExceptValue: function () { return !!exceptValue; },
             isDisabled: function () { return lastDisabled; },
@@ -10645,7 +10696,6 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
         onAddValueItem,
         onRemoveValueItem,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         data,
@@ -10654,12 +10704,13 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
         formValueToNameSuffix,
         hidden,
         setHidden,
+        changeValue,
     ]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
     var handleContainerChange = useCallback(function (newValue, selectType) {
-        setValue(newValue);
+        changeValue(newValue);
         if (selectType === 'start') {
             nextTick(function () {
                 var _a;
@@ -10673,45 +10724,41 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
         nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
-    }, [name, onValueChangeByUser, setValue]);
+    }, [changeValue, name, onValueChangeByUser]);
     var handleInputDatePickerChange = useCallback(function (selectType, date) {
         if (date == null || date.isValid()) {
             if (selectType === 'start') {
-                setValue(function (old) {
-                    var newValue = [date ? dateToValue(date) : null, old[1]];
-                    if (newValue[0] !== null && newValue[0] >= minYear && newValue[0] <= maxYear) {
-                        if (newValue[1] !== null && newValue[1] < newValue[0]) {
-                            newValue[1] = newValue[0];
-                        }
+                var newValue_1 = [date ? dateToValue(date) : null, value[1]];
+                if (newValue_1[0] !== null && newValue_1[0] >= minYear && newValue_1[0] <= maxYear) {
+                    if (newValue_1[1] !== null && newValue_1[1] < newValue_1[0]) {
+                        newValue_1[1] = newValue_1[0];
                     }
-                    if (fromError) {
-                        validate(newValue);
-                    }
-                    nextTick(function () {
-                        onValueChangeByUser(name, newValue);
-                    });
-                    return newValue;
+                }
+                if (fromError) {
+                    validate(newValue_1);
+                }
+                nextTick(function () {
+                    onValueChangeByUser(name, newValue_1);
                 });
+                changeValue(newValue_1);
             }
             else {
-                setValue(function (old) {
-                    var newValue = [old[0], date ? dateToValue(date) : null];
-                    if (newValue[1] !== null && newValue[1] >= minYear && newValue[1] <= maxYear) {
-                        if (newValue[0] !== null && newValue[0] > newValue[1]) {
-                            newValue[0] = newValue[1];
-                        }
+                var newValue_2 = [value[0], date ? dateToValue(date) : null];
+                if (newValue_2[1] !== null && newValue_2[1] >= minYear && newValue_2[1] <= maxYear) {
+                    if (newValue_2[0] !== null && newValue_2[0] > newValue_2[1]) {
+                        newValue_2[0] = newValue_2[1];
                     }
-                    if (toError) {
-                        validate(newValue);
-                    }
-                    nextTick(function () {
-                        onValueChangeByUser(name, newValue);
-                    });
-                    return newValue;
+                }
+                if (toError) {
+                    validate(newValue_2);
+                }
+                nextTick(function () {
+                    onValueChangeByUser(name, newValue_2);
                 });
+                changeValue(newValue_2);
             }
         }
-    }, [dateToValue, toError, maxYear, minYear, name, onValueChangeByUser, setValue, fromError, validate]);
+    }, [dateToValue, value, minYear, maxYear, fromError, changeValue, validate, onValueChangeByUser, name, toError]);
     var handleInputDatePickerFocus = useCallback(function (selectType) {
         var _a;
         if (readOnly || disabled)
@@ -10824,38 +10871,8 @@ FormYearRangePicker.defaultProps = FormYearRangePickerDefaultProps;var FormSwitc
         return onValue ? onValue(value) : value;
     }, [onValue]);
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-    var _j = useAutoUpdateState(initValue || false, getFinalValue), value = _j[0], setValue = _j[1];
-    useFirstSkipEffect(function () {
-        if (error)
-            validate(value);
-        if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-    useEffect(function () {
-        if (value !== initValue) {
-            if (onChange)
-                onChange(value);
-            onValueChange(name, value);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
-    var focus = useCallback(function () {
-        var _a;
-        (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
-        setTimeout(function () {
-            var _a;
-            (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
-        });
-    }, []);
     var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
         setError(error);
         setErrorHelperText(errorHelperText);
@@ -10872,6 +10889,36 @@ FormYearRangePicker.defaultProps = FormYearRangePickerDefaultProps;var FormSwitc
         return true;
     }, [onValidate, setErrorErrorHelperText]);
     /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+    var _j = useState(function () { return getFinalValue(initValue || false); }), value = _j[0], setValue = _j[1];
+    var changeValue = useCallback(function (newValue) {
+        if (!equal(value, newValue)) {
+            setValue(newValue);
+            nextTick(function () {
+                if (error)
+                    validate(newValue);
+                if (onChange)
+                    onChange(newValue);
+                onValueChange(name, newValue);
+            });
+        }
+    }, [error, name, onChange, onValueChange, validate, value]);
+    useFirstSkipEffect(function () {
+        changeValue(getFinalValue(initValue || false));
+    }, [initValue]);
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+    var focus = useCallback(function () {
+        var _a;
+        (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+        setTimeout(function () {
+            var _a;
+            (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
+        });
+    }, []);
+    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
     useLayoutEffect(function () {
@@ -10885,12 +10932,12 @@ FormYearRangePicker.defaultProps = FormYearRangePickerDefaultProps;var FormSwitc
             getReset: function () { return getFinalValue(initValue || false); },
             reset: function () {
                 lastValue = getFinalValue(initValue || false);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getValue: function () { return lastValue; },
             setValue: function (value) {
                 lastValue = getFinalValue(value);
-                setValue(lastValue);
+                changeValue(lastValue);
             },
             getData: function () { return lastData; },
             setData: function (data) {
@@ -10948,13 +10995,13 @@ FormYearRangePicker.defaultProps = FormYearRangePickerDefaultProps;var FormSwitc
         onAddValueItem,
         onRemoveValueItem,
         id,
-        setValue,
         setDisabled,
         setErrorErrorHelperText,
         data,
         setData,
         hidden,
         setHidden,
+        changeValue,
     ]);
     /********************************************************************************************************************
      * Event Handler
@@ -10965,13 +11012,13 @@ FormYearRangePicker.defaultProps = FormYearRangePickerDefaultProps;var FormSwitc
         }
         else {
             var finalValue_1 = getFinalValue(checked);
-            setValue(finalValue_1);
+            changeValue(finalValue_1);
             nextTick(function () {
                 onValueChangeByUser(name, finalValue_1);
                 onRequestSearchSubmit(name, finalValue_1);
             });
         }
-    }, [readOnly, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [readOnly, getFinalValue, changeValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/

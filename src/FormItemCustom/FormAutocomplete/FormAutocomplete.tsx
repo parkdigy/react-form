@@ -228,11 +228,70 @@ const FormAutocomplete = ToForwardRefExoticComponent(
     );
 
     /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
+
+    const setErrorErrorHelperText = useCallback(
+      (error: boolean, errorHelperText: ReactNode) => {
+        setError(error);
+        setErrorHelperText(errorHelperText);
+      },
+      [setError]
+    );
+
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
+
+    const validate = useCallback(
+      (value: Props['value']) => {
+        if (required && empty(value)) {
+          setErrorErrorHelperText(true, '필수 선택 항목입니다.');
+          return false;
+        }
+        if (onValidate) {
+          const onValidateResult = onValidate(value);
+          if (onValidateResult != null && onValidateResult !== true) {
+            setErrorErrorHelperText(true, onValidateResult);
+            return false;
+          }
+        }
+
+        setErrorErrorHelperText(false, undefined);
+
+        return true;
+      },
+      [required, onValidate, setErrorErrorHelperText]
+    );
+
+    /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue, getFinalValue);
+    const [value, setValue] = useState<Props['value']>(() => getFinalValue(initValue));
     const [valueItem, setValueItem] = useState<ComponentValue>(null);
+
+    const changeValue = useCallback(
+      (newValue: Props['value']) => {
+        if (!equal(value, newValue)) {
+          setValue(newValue);
+          nextTick(() => {
+            if (error) validate(newValue);
+            if (onChange) onChange(newValue);
+            onValueChange(name, newValue);
+          });
+        }
+      },
+      [error, name, onChange, onValueChange, validate, value]
+    );
+
+    useFirstSkipEffect(() => {
+      changeValue(getFinalValue(initValue));
+    }, [initValue]);
+
+    useFirstSkipEffect(() => {
+      changeValue(getFinalValue(value));
+    }, [multiple]);
 
     const componentValue = useMemo(() => {
       let finalValue: Props['value'] = value;
@@ -325,11 +384,6 @@ const FormAutocomplete = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     useEffect(() => {
-      if (value !== initValue) {
-        if (onChange) onChange(value);
-        onValueChange(name, value);
-      }
-
       if (!async && onLoadItems) {
         showOnGetItemLoading();
         onLoadItems().then((items) => {
@@ -346,12 +400,6 @@ const FormAutocomplete = ToForwardRefExoticComponent(
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
 
     useEffect(() => {
       if (async && onLoadItems) {
@@ -409,43 +457,6 @@ const FormAutocomplete = ToForwardRefExoticComponent(
     }, [textFieldRef]);
 
     /********************************************************************************************************************
-     * Function - setErrorErrorHelperText
-     * ******************************************************************************************************************/
-
-    const setErrorErrorHelperText = useCallback(
-      (error: boolean, errorHelperText: ReactNode) => {
-        setError(error);
-        setErrorHelperText(errorHelperText);
-      },
-      [setError]
-    );
-
-    /********************************************************************************************************************
-     * Function - validate
-     * ******************************************************************************************************************/
-
-    const validate = useCallback(
-      (value: Props['value']) => {
-        if (required && empty(value)) {
-          setErrorErrorHelperText(true, '필수 선택 항목입니다.');
-          return false;
-        }
-        if (onValidate) {
-          const onValidateResult = onValidate(value);
-          if (onValidateResult != null && onValidateResult !== true) {
-            setErrorErrorHelperText(true, onValidateResult);
-            return false;
-          }
-        }
-
-        setErrorErrorHelperText(false, undefined);
-
-        return true;
-      },
-      [required, onValidate, setErrorErrorHelperText]
-    );
-
-    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
 
@@ -464,12 +475,12 @@ const FormAutocomplete = ToForwardRefExoticComponent(
           getReset: () => getFinalValue(initValue),
           reset: () => {
             lastValue = getFinalValue(initValue);
-            setValue(lastValue);
+            changeValue(lastValue);
           },
           getValue: () => lastValue,
           setValue: (value) => {
             lastValue = getFinalValue(value);
-            setValue(lastValue);
+            changeValue(lastValue);
           },
           getData: () => lastData,
           setData: (data) => {
@@ -547,7 +558,6 @@ const FormAutocomplete = ToForwardRefExoticComponent(
       onRemoveValueItem,
       loading,
       id,
-      setValue,
       setDisabled,
       setErrorErrorHelperText,
       setItems,
@@ -556,6 +566,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
       setData,
       hidden,
       setHidden,
+      changeValue,
     ]);
 
     /********************************************************************************************************************
@@ -583,7 +594,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
 
           const finalValue = getFinalValue(newValue);
           if (!equal(value, finalValue)) {
-            setValue(finalValue);
+            changeValue(finalValue);
             setValueItem(componentValue);
             nextTick(() => {
               onValueChangeByUser(name, finalValue);
@@ -609,7 +620,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
           go();
         }
       },
-      [multiple, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit, onAddItem]
+      [multiple, getFinalValue, value, changeValue, onValueChangeByUser, name, onRequestSearchSubmit, onAddItem]
     );
 
     const handleGetOptionDisabled = useCallback(

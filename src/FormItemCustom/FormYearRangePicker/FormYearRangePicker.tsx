@@ -1,9 +1,9 @@
-import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util';
-import { nextTick } from '@pdg/util';
+import { equal, nextTick } from '@pdg/util';
 import {
   FormYearRangePickerProps as Props,
   FormYearRangePickerDefaultProps,
@@ -155,98 +155,8 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
     }, []);
 
     /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-
-    const [value, setValue] = useAutoUpdateState<FormYearRangePickerValue>(
-      useCallback(() => {
-        return initValue || DEFAULT_VALUE;
-      }, [initValue])
-    );
-
-    useFirstSkipEffect(() => {
-      if (error || fromError || toError) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
-
-    /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
-
-    const valueToDate = useCallback((v: FormYearRangePickerBaseValue) => dayjs(`${v}-01-01`), []);
-    const dateToValue = useCallback((v: Dayjs) => v.year(), []);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const nowYear = useMemo(() => new Date().getFullYear(), []);
-
-    const valueDate = useMemo(
-      () => [
-        !!value && !!value[0] ? valueToDate(value[0]) : null,
-        !!value && !!value[1] ? valueToDate(value[1]) : null,
-      ],
-      [value, valueToDate]
-    );
-
-    const minYear = useMemo(
-      () => Math.max(initMinYear || FormYearRangePickerDefaultProps.minYear, FormYearRangePickerDefaultProps.minYear),
-      [initMinYear]
-    );
-    const maxYear = useMemo(
-      () => Math.min(initMaxYear || FormYearRangePickerDefaultProps.maxYear, FormYearRangePickerDefaultProps.maxYear),
-      [initMaxYear]
-    );
-
-    const minDate = useMemo(() => (minYear ? valueToDate(minYear) : undefined), [minYear, valueToDate]);
-    const maxDate = useMemo(() => (maxYear ? valueToDate(maxYear) : undefined), [maxYear, valueToDate]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const format = useMemo(() => initFormat || DEFAULT_FORMAT, [initFormat]);
-
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-
-    useEffect(() => {
-      if (value !== initValue) {
-        if (onChange) onChange(value);
-        onValueChange(name, value);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useFirstSkipEffect(() => {
-      if (open) {
-        openValueRef.current = value;
-      } else {
-        if (openValueRef.current !== value) {
-          let runOnRequestSearchSubmit;
-          if (openValueRef.current && value) {
-            runOnRequestSearchSubmit = openValueRef.current !== value;
-          } else {
-            runOnRequestSearchSubmit = true;
-          }
-
-          if (runOnRequestSearchSubmit) {
-            onRequestSearchSubmit(name, value);
-          }
-        }
-      }
-    }, [open]);
-
-    /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-
-    const focus = useCallback(function () {
-      startInputRef.current?.focus();
-    }, []);
 
     const setFromErrorErrorHelperText = useCallback((error: boolean, fromErrorHelperText: ReactNode) => {
       setFromError(error);
@@ -309,6 +219,100 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
     );
 
     /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+
+    const [value, setValue] = useState<FormYearRangePickerValue>(() => getFinalValue(initValue));
+
+    const changeValue = useCallback(
+      (newValue: FormYearRangePickerValue) => {
+        if (!equal(value, newValue)) {
+          setValue(newValue);
+          nextTick(() => {
+            if (error || fromError || toError) validate(value);
+            if (onChange) onChange(newValue);
+            onValueChange(name, newValue);
+          });
+        }
+      },
+      [error, fromError, name, onChange, onValueChange, toError, validate, value]
+    );
+
+    useFirstSkipEffect(() => {
+      changeValue(getFinalValue(initValue));
+    }, [initValue]);
+
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+
+    const valueToDate = useCallback((v: FormYearRangePickerBaseValue) => dayjs(`${v}-01-01`), []);
+    const dateToValue = useCallback((v: Dayjs) => v.year(), []);
+
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+
+    const nowYear = useMemo(() => new Date().getFullYear(), []);
+
+    const valueDate = useMemo(
+      () => [
+        !!value && !!value[0] ? valueToDate(value[0]) : null,
+        !!value && !!value[1] ? valueToDate(value[1]) : null,
+      ],
+      [value, valueToDate]
+    );
+
+    const minYear = useMemo(
+      () => Math.max(initMinYear || FormYearRangePickerDefaultProps.minYear, FormYearRangePickerDefaultProps.minYear),
+      [initMinYear]
+    );
+    const maxYear = useMemo(
+      () => Math.min(initMaxYear || FormYearRangePickerDefaultProps.maxYear, FormYearRangePickerDefaultProps.maxYear),
+      [initMaxYear]
+    );
+
+    const minDate = useMemo(() => (minYear ? valueToDate(minYear) : undefined), [minYear, valueToDate]);
+    const maxDate = useMemo(() => (maxYear ? valueToDate(maxYear) : undefined), [maxYear, valueToDate]);
+
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+
+    const format = useMemo(() => initFormat || DEFAULT_FORMAT, [initFormat]);
+
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
+
+    useFirstSkipEffect(() => {
+      if (open) {
+        openValueRef.current = value;
+      } else {
+        if (openValueRef.current !== value) {
+          let runOnRequestSearchSubmit;
+          if (openValueRef.current && value) {
+            runOnRequestSearchSubmit = openValueRef.current !== value;
+          } else {
+            runOnRequestSearchSubmit = true;
+          }
+
+          if (runOnRequestSearchSubmit) {
+            onRequestSearchSubmit(name, value);
+          }
+        }
+      }
+    }, [open]);
+
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+
+    const focus = useCallback(function () {
+      startInputRef.current?.focus();
+    }, []);
+
+    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
 
@@ -324,12 +328,12 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
         getReset: () => getFinalValue(initValue),
         reset: () => {
           lastValue = getFinalValue(initValue);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getValue: () => lastValue,
         setValue: (value) => {
           lastValue = getFinalValue(value);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getData: () => lastData,
         setData: (data) => {
@@ -339,12 +343,12 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
         getFromValue: () => lastValue[0],
         setFromValue: (value) => {
           lastValue = [value, lastValue[1]];
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getToValue: () => lastValue[1],
         setToValue: (value) => {
           lastValue = [lastValue[0], value];
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         isExceptValue: () => !!exceptValue,
         isDisabled: () => lastDisabled,
@@ -407,7 +411,6 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       onAddValueItem,
       onRemoveValueItem,
       id,
-      setValue,
       setDisabled,
       setErrorErrorHelperText,
       data,
@@ -416,6 +419,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       formValueToNameSuffix,
       hidden,
       setHidden,
+      changeValue,
     ]);
 
     /********************************************************************************************************************
@@ -424,7 +428,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
 
     const handleContainerChange = useCallback(
       (newValue: FormYearRangePickerValue, selectType: PrivateYearRangePickerSelectType) => {
-        setValue(newValue);
+        changeValue(newValue);
         if (selectType === 'start') {
           nextTick(() => {
             setSelectType('end');
@@ -438,49 +442,47 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
           onValueChangeByUser(name, newValue);
         });
       },
-      [name, onValueChangeByUser, setValue]
+      [changeValue, name, onValueChangeByUser]
     );
 
     const handleInputDatePickerChange = useCallback(
       (selectType: PrivateYearRangePickerSelectType, date: PrivateInputDatePickerValue) => {
         if (date == null || date.isValid()) {
           if (selectType === 'start') {
-            setValue((old) => {
-              const newValue: FormYearRangePickerValue = [date ? dateToValue(date) : null, old[1]];
-              if (newValue[0] !== null && newValue[0] >= minYear && newValue[0] <= maxYear) {
-                if (newValue[1] !== null && newValue[1] < newValue[0]) {
-                  newValue[1] = newValue[0];
-                }
+            const newValue: FormYearRangePickerValue = [date ? dateToValue(date) : null, value[1]];
+            if (newValue[0] !== null && newValue[0] >= minYear && newValue[0] <= maxYear) {
+              if (newValue[1] !== null && newValue[1] < newValue[0]) {
+                newValue[1] = newValue[0];
               }
+            }
 
-              if (fromError) {
-                validate(newValue);
-              }
-              nextTick(() => {
-                onValueChangeByUser(name, newValue);
-              });
-              return newValue;
+            if (fromError) {
+              validate(newValue);
+            }
+            nextTick(() => {
+              onValueChangeByUser(name, newValue);
             });
+
+            changeValue(newValue);
           } else {
-            setValue((old) => {
-              const newValue: FormYearRangePickerValue = [old[0], date ? dateToValue(date) : null];
-              if (newValue[1] !== null && newValue[1] >= minYear && newValue[1] <= maxYear) {
-                if (newValue[0] !== null && newValue[0] > newValue[1]) {
-                  newValue[0] = newValue[1];
-                }
+            const newValue: FormYearRangePickerValue = [value[0], date ? dateToValue(date) : null];
+            if (newValue[1] !== null && newValue[1] >= minYear && newValue[1] <= maxYear) {
+              if (newValue[0] !== null && newValue[0] > newValue[1]) {
+                newValue[0] = newValue[1];
               }
-              if (toError) {
-                validate(newValue);
-              }
-              nextTick(() => {
-                onValueChangeByUser(name, newValue);
-              });
-              return newValue;
+            }
+            if (toError) {
+              validate(newValue);
+            }
+            nextTick(() => {
+              onValueChangeByUser(name, newValue);
             });
+
+            changeValue(newValue);
           }
         }
       },
-      [dateToValue, toError, maxYear, minYear, name, onValueChangeByUser, setValue, fromError, validate]
+      [dateToValue, value, minYear, maxYear, fromError, changeValue, validate, onValueChangeByUser, name, toError]
     );
 
     const handleInputDatePickerFocus = useCallback(

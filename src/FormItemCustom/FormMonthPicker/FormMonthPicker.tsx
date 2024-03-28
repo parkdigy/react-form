@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util';
-import { empty, nextTick } from '@pdg/util';
+import { empty, equal, nextTick } from '@pdg/util';
 import {
   FormMonthPickerProps as Props,
   FormMonthPickerDefaultProps,
@@ -142,20 +142,67 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
     }, []);
 
     /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+
+    const setErrorErrorHelperText = useCallback(
+      function (error: Props['error'], errorHelperText: Props['helperText']) {
+        setError(error);
+        setErrorHelperText(errorHelperText);
+      },
+      [setError]
+    );
+
+    const validate = useCallback(
+      function (value: FormMonthPickerValue) {
+        if (required && empty(value)) {
+          setErrorErrorHelperText(true, '필수 선택 항목입니다.');
+          return false;
+        }
+
+        if (inputDatePickerErrorRef.current) {
+          setErrorErrorHelperText(true, getDateValidationErrorText(inputDatePickerErrorRef.current));
+          return false;
+        }
+
+        if (onValidate) {
+          const onValidateResult = onValidate(value);
+          if (onValidateResult != null && onValidateResult !== true) {
+            setErrorErrorHelperText(true, onValidateResult);
+            return false;
+          }
+        }
+
+        setErrorErrorHelperText(false, undefined);
+
+        return true;
+      },
+      [onValidate, required, setErrorErrorHelperText]
+    );
+
+    /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useAutoUpdateState<FormMonthPickerValue>(
-      useCallback(() => {
-        return initValue || DEFAULT_VALUE;
-      }, [initValue])
+    const [value, setValue] = useState<FormMonthPickerValue>(() => getFinalValue(initValue));
+
+    const changeValue = useCallback(
+      (newValue: FormMonthPickerValue) => {
+        if (!equal(value, newValue)) {
+          setValue(newValue);
+          nextTick(() => {
+            if (error) validate(newValue);
+            if (onChange) onChange(newValue);
+            onValueChange(name, newValue);
+          });
+        }
+      },
+      [error, name, onChange, onValueChange, validate, value]
     );
 
     useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
+      changeValue(getFinalValue(initValue));
+    }, [initValue]);
 
     /********************************************************************************************************************
      * Function
@@ -212,11 +259,6 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
      * ******************************************************************************************************************/
 
     useEffect(() => {
-      if (value !== initValue) {
-        if (onChange) onChange(value);
-        onValueChange(name, value);
-      }
-
       if (ratingRef.current) {
         inputRef.current = ratingRef.current.querySelector('input') || undefined;
       }
@@ -254,41 +296,6 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
       });
     }, []);
 
-    const setErrorErrorHelperText = useCallback(
-      function (error: Props['error'], errorHelperText: Props['helperText']) {
-        setError(error);
-        setErrorHelperText(errorHelperText);
-      },
-      [setError]
-    );
-
-    const validate = useCallback(
-      function (value: FormMonthPickerValue) {
-        if (required && empty(value)) {
-          setErrorErrorHelperText(true, '필수 선택 항목입니다.');
-          return false;
-        }
-
-        if (inputDatePickerErrorRef.current) {
-          setErrorErrorHelperText(true, getDateValidationErrorText(inputDatePickerErrorRef.current));
-          return false;
-        }
-
-        if (onValidate) {
-          const onValidateResult = onValidate(value);
-          if (onValidateResult != null && onValidateResult !== true) {
-            setErrorErrorHelperText(true, onValidateResult);
-            return false;
-          }
-        }
-
-        setErrorErrorHelperText(false, undefined);
-
-        return true;
-      },
-      [onValidate, required, setErrorErrorHelperText]
-    );
-
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
@@ -305,12 +312,12 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
         getReset: () => getFinalValue(initValue),
         reset: () => {
           lastValue = getFinalValue(initValue);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getValue: () => lastValue,
         setValue: (value) => {
           lastValue = getFinalValue(value);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getData: () => lastData,
         setData: (data) => {
@@ -326,7 +333,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
                 ? { year, month: lastValue.month }
                 : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 }
           );
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getMonth: () => (lastValue ? lastValue.month : null),
         setMonth: (month: number | null) => {
@@ -337,7 +344,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
                 ? { year: lastValue.year, month }
                 : { year: new Date().getFullYear(), month }
           );
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         isExceptValue: () => !!exceptValue,
         isDisabled: () => lastDisabled,
@@ -401,7 +408,6 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
       onAddValueItem,
       onRemoveValueItem,
       id,
-      setValue,
       setDisabled,
       setErrorErrorHelperText,
       data,
@@ -410,6 +416,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
       formValueMonthNameSuffix,
       hidden,
       setHidden,
+      changeValue,
     ]);
 
     /********************************************************************************************************************
@@ -447,14 +454,14 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
 
     const handleContainerChange = useCallback(
       (newValue: FormMonthPickerBaseValue, isMonthSelect: boolean) => {
-        setValue(newValue);
+        changeValue(newValue);
         if (isMonthSelect) setOpen(false);
 
         nextTick(() => {
           onValueChangeByUser(name, newValue);
         });
       },
-      [name, onValueChangeByUser, setValue]
+      [changeValue, name, onValueChangeByUser]
     );
 
     const handleInputDatePickerFocus = useCallback(() => {
@@ -559,7 +566,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
                   startAdornment={startAdornment}
                   endAdornment={endAdornment}
                   inputRef={inputRef}
-                  onChange={(v) => setValue(v ? dateToValue(v) : v)}
+                  onChange={(v) => changeValue(v ? dateToValue(v) : v)}
                   onFocus={handleInputDatePickerFocus}
                   onError={(reason) => (inputDatePickerErrorRef.current = reason)}
                   shouldDisableYear={handleInputDatePickerShouldDisableYear}

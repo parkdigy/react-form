@@ -15,7 +15,7 @@ import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from 
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util';
-import { empty, nextTick } from '@pdg/util';
+import { empty, equal, nextTick } from '@pdg/util';
 import {
   FormRadioGroupProps,
   FormRadioGroupDefaultProps,
@@ -178,16 +178,65 @@ const FormRadioGroup = ToForwardRefExoticComponent(
     );
 
     /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
+
+    const setErrorErrorHelperText = useCallback(
+      function (error: boolean, errorHelperText: ReactNode) {
+        setError(error);
+        setErrorHelperText(errorHelperText);
+      },
+      [setError]
+    );
+
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
+
+    const validate = useCallback(
+      function (value: Value) {
+        if (required && empty(value)) {
+          setErrorErrorHelperText(true, '필수 선택 항목입니다.');
+          return false;
+        }
+        if (onValidate) {
+          const onValidateResult = onValidate(value);
+          if (onValidateResult != null && onValidateResult !== true) {
+            setErrorErrorHelperText(true, onValidateResult);
+            return false;
+          }
+        }
+
+        setErrorErrorHelperText(false, undefined);
+
+        return true;
+      },
+      [required, onValidate, setErrorErrorHelperText]
+    );
+
+    /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useAutoUpdateState<Value>(initValue, getFinalValue);
+    const [value, setValue] = useState<Value>(() => getFinalValue(initValue));
+
+    const changeValue = useCallback(
+      (newValue: Value) => {
+        if (!equal(value, newValue)) {
+          setValue(newValue);
+          nextTick(() => {
+            if (error) validate(newValue);
+            if (onChange) onChange(newValue);
+            onValueChange(name, newValue);
+          });
+        }
+      },
+      [error, name, onChange, onValueChange, validate, value]
+    );
 
     useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      if (onValueChange) onValueChange(name, value);
-    }, [value]);
+      changeValue(getFinalValue(initValue));
+    }, [initValue]);
 
     /********************************************************************************************************************
      * Memo
@@ -198,14 +247,6 @@ const FormRadioGroup = ToForwardRefExoticComponent(
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
-
-    useEffect(() => {
-      if (value !== initValue) {
-        if (onChange) onChange(value);
-        if (onValueChange) onValueChange(name, value);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     useEffect(() => {
       if (!fullWidth || initWidth) {
@@ -278,43 +319,6 @@ const FormRadioGroup = ToForwardRefExoticComponent(
     }, []);
 
     /********************************************************************************************************************
-     * Function - setErrorErrorHelperText
-     * ******************************************************************************************************************/
-
-    const setErrorErrorHelperText = useCallback(
-      function (error: boolean, errorHelperText: ReactNode) {
-        setError(error);
-        setErrorHelperText(errorHelperText);
-      },
-      [setError]
-    );
-
-    /********************************************************************************************************************
-     * Function - validate
-     * ******************************************************************************************************************/
-
-    const validate = useCallback(
-      function (value: Value) {
-        if (required && empty(value)) {
-          setErrorErrorHelperText(true, '필수 선택 항목입니다.');
-          return false;
-        }
-        if (onValidate) {
-          const onValidateResult = onValidate(value);
-          if (onValidateResult != null && onValidateResult !== true) {
-            setErrorErrorHelperText(true, onValidateResult);
-            return false;
-          }
-        }
-
-        setErrorErrorHelperText(false, undefined);
-
-        return true;
-      },
-      [required, onValidate, setErrorErrorHelperText]
-    );
-
-    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
 
@@ -332,12 +336,12 @@ const FormRadioGroup = ToForwardRefExoticComponent(
         getReset: () => getFinalValue(initValue),
         reset: () => {
           lastValue = getFinalValue(initValue);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getValue: () => lastValue,
         setValue: (value: Value) => {
           lastValue = getFinalValue(value);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getData: () => lastData,
         setData: (data) => {
@@ -408,7 +412,6 @@ const FormRadioGroup = ToForwardRefExoticComponent(
       onAddValueItem,
       onRemoveValueItem,
       id,
-      setValue,
       setDisabled,
       setErrorErrorHelperText,
       setItems,
@@ -417,6 +420,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
       setData,
       hidden,
       setHidden,
+      changeValue,
     ]);
 
     useEffect(() => {
@@ -448,7 +452,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
           }
           finalValue = getFinalValue(finalValue);
           if (value !== finalValue) {
-            setValue(finalValue);
+            changeValue(finalValue);
             nextTick(() => {
               onValueChangeByUser(name, finalValue);
               onRequestSearchSubmit(name, finalValue);
@@ -456,7 +460,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
           }
         }
       },
-      [readOnly, items, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
+      [readOnly, items, getFinalValue, value, changeValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     /********************************************************************************************************************

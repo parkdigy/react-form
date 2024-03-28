@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util';
-import { empty, nextTick } from '@pdg/util';
+import { empty, equal, nextTick } from '@pdg/util';
 import {
   FormYearPickerProps as Props,
   FormYearPickerDefaultProps,
@@ -143,90 +143,6 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
       return value || DEFAULT_VALUE;
     }, []);
 
-    /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-
-    const [value, setValue] = useAutoUpdateState<FormYearPickerValue>(
-      useCallback(() => {
-        return initValue || DEFAULT_VALUE;
-      }, [initValue])
-    );
-
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
-
-    /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-
-    const valueToDate = useCallback((v: FormYearPickerBaseValue) => dayjs(`${v}-01-01`), []);
-    const dateToValue = useCallback((v: Dayjs) => v.year(), []);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const nowYear = useMemo(() => new Date().getFullYear(), []);
-    const valueDate = useMemo(() => (value ? valueToDate(value) : null), [value, valueToDate]);
-    const minDate = useMemo(() => (minYear ? valueToDate(minYear) : undefined), [minYear, valueToDate]);
-    const maxDate = useMemo(() => (maxYear ? valueToDate(maxYear) : undefined), [maxYear, valueToDate]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const format = useMemo(() => initFormat || DEFAULT_FORMAT, [initFormat]);
-
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-
-    useEffect(() => {
-      if (value !== initValue) {
-        if (onChange) onChange(value);
-        onValueChange(name, value);
-      }
-
-      if (ratingRef.current) {
-        inputRef.current = ratingRef.current.querySelector('input') || undefined;
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useFirstSkipEffect(() => {
-      if (open) {
-        openValueRef.current = value;
-      } else {
-        if (openValueRef.current !== value) {
-          let runOnRequestSearchSubmit;
-          if (openValueRef.current && value) {
-            runOnRequestSearchSubmit = openValueRef.current !== value;
-          } else {
-            runOnRequestSearchSubmit = true;
-          }
-
-          if (runOnRequestSearchSubmit) {
-            onRequestSearchSubmit(name, value);
-          }
-        }
-      }
-    }, [open]);
-
-    /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-
-    const focus = useCallback(function () {
-      inputRef.current?.focus();
-      setTimeout(() => {
-        inputRef.current?.blur();
-      });
-    }, []);
-
     const setErrorErrorHelperText = useCallback(
       function (error: Props['error'], errorHelperText: Props['helperText']) {
         setError(error);
@@ -263,6 +179,93 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
     );
 
     /********************************************************************************************************************
+     * State - value
+     * ******************************************************************************************************************/
+
+    const [value, setValue] = useState<FormYearPickerValue>(() => getFinalValue(initValue));
+
+    const changeValue = useCallback(
+      (newValue: FormYearPickerValue) => {
+        if (!equal(value, newValue)) {
+          setValue(newValue);
+          nextTick(() => {
+            if (error) validate(newValue);
+            if (onChange) onChange(newValue);
+            onValueChange(name, newValue);
+          });
+        }
+      },
+      [error, name, onChange, onValueChange, validate, value]
+    );
+
+    useFirstSkipEffect(() => {
+      changeValue(getFinalValue(initValue));
+    }, [initValue]);
+
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+
+    const valueToDate = useCallback((v: FormYearPickerBaseValue) => dayjs(`${v}-01-01`), []);
+    const dateToValue = useCallback((v: Dayjs) => v.year(), []);
+
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+
+    const nowYear = useMemo(() => new Date().getFullYear(), []);
+    const valueDate = useMemo(() => (value ? valueToDate(value) : null), [value, valueToDate]);
+    const minDate = useMemo(() => (minYear ? valueToDate(minYear) : undefined), [minYear, valueToDate]);
+    const maxDate = useMemo(() => (maxYear ? valueToDate(maxYear) : undefined), [maxYear, valueToDate]);
+
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+
+    const format = useMemo(() => initFormat || DEFAULT_FORMAT, [initFormat]);
+
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
+
+    useEffect(() => {
+      if (ratingRef.current) {
+        inputRef.current = ratingRef.current.querySelector('input') || undefined;
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useFirstSkipEffect(() => {
+      if (open) {
+        openValueRef.current = value;
+      } else {
+        if (openValueRef.current !== value) {
+          let runOnRequestSearchSubmit;
+          if (openValueRef.current && value) {
+            runOnRequestSearchSubmit = openValueRef.current !== value;
+          } else {
+            runOnRequestSearchSubmit = true;
+          }
+
+          if (runOnRequestSearchSubmit) {
+            onRequestSearchSubmit(name, value);
+          }
+        }
+      }
+    }, [open]);
+
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+
+    const focus = useCallback(function () {
+      inputRef.current?.focus();
+      setTimeout(() => {
+        inputRef.current?.blur();
+      });
+    }, []);
+
+    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
 
@@ -278,12 +281,12 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
         getReset: () => getFinalValue(initValue),
         reset: () => {
           lastValue = getFinalValue(initValue);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getValue: () => lastValue,
         setValue: (value) => {
           lastValue = getFinalValue(value);
-          setValue(lastValue);
+          changeValue(lastValue);
         },
         getData: () => lastData,
         setData: (data) => {
@@ -342,13 +345,13 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
       onAddValueItem,
       onRemoveValueItem,
       id,
-      setValue,
       setDisabled,
       setErrorErrorHelperText,
       data,
       setData,
       hidden,
       setHidden,
+      changeValue,
     ]);
 
     /********************************************************************************************************************
@@ -386,25 +389,25 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
 
     const handleContainerChange = useCallback(
       (newValue: FormYearPickerBaseValue, isClick: boolean) => {
-        setValue(newValue);
+        changeValue(newValue);
         if (isClick) setOpen(false);
 
         nextTick(() => {
           onValueChangeByUser(name, newValue);
         });
       },
-      [name, onValueChangeByUser, setValue]
+      [changeValue, name, onValueChangeByUser]
     );
 
     const handleInputDatePickerChange = useCallback(
       (v: PrivateDatePickerValue) => {
         const newValue = v ? dateToValue(v) : v;
-        setValue(newValue);
+        changeValue(newValue);
         nextTick(() => {
           onValueChangeByUser(name, newValue);
         });
       },
-      [dateToValue, name, onValueChangeByUser, setValue]
+      [changeValue, dateToValue, name, onValueChangeByUser]
     );
 
     const handleInputDatePickerFocus = useCallback(() => {
