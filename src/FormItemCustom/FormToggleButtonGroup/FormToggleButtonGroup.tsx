@@ -269,64 +269,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
      * State - value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue, getFinalValue);
-
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-
-    useEffect(() => {
-      if (!equal(value, initValue)) {
-        if (onChange) onChange(value);
-        onValueChange(name, value);
-      }
-
-      if (onLoadItems) {
-        setIsOnGetItemLoading(true);
-        onLoadItems().then((items) => {
-          setItems(items);
-          setIsOnGetItemLoading(false);
-        });
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
-
-    useEffect(() => {
-      if (notAllowEmptyValue) {
-        if (items && notEmpty(items)) {
-          let setFirstItem = false;
-
-          if (Array.isArray(value)) {
-            if (empty(value)) {
-              setFirstItem = true;
-            }
-          } else {
-            if (value == null) {
-              setFirstItem = true;
-            }
-          }
-
-          if (setFirstItem) {
-            setValue((multiple ? [items[0].value] : items[0].value) as Props['value']);
-          }
-        }
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [items, value, multiple, notAllowEmptyValue]);
-
-    /********************************************************************************************************************
-     * Function - focus
-     * ******************************************************************************************************************/
-
-    const focus = useCallback(() => {
-      refForButtonResizeHeightDetect.current?.focus();
-    }, [refForButtonResizeHeightDetect]);
+    const [value, setValue] = useState<Props['value']>(() => getFinalValue(initValue));
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -366,6 +309,82 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
     );
 
     /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+
+    const changeValue = useCallback(
+      (newValue: Props['value']) => {
+        setValue((old) => {
+          const finalNewValue = getFinalValue(newValue);
+          if (!equal(old, finalNewValue)) {
+            if (error) validate(finalNewValue);
+            if (onChange) onChange(finalNewValue);
+            onValueChange(name, finalNewValue);
+          } else {
+            return old;
+          }
+        });
+      },
+      [error, getFinalValue, name, onChange, onValueChange, validate]
+    );
+
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
+
+    useFirstSkipEffect(() => {
+      changeValue(initValue);
+    }, [initValue]);
+
+    useEffect(() => {
+      if (onLoadItems) {
+        setIsOnGetItemLoading(true);
+        onLoadItems().then((items) => {
+          setItems(items);
+          setIsOnGetItemLoading(false);
+        });
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useFirstSkipEffect(() => {
+      if (error) validate(value);
+      if (onChange) onChange(value);
+      onValueChange(name, value);
+    }, [value]);
+
+    useEffect(() => {
+      if (notAllowEmptyValue) {
+        if (items && notEmpty(items)) {
+          let setFirstItem = false;
+
+          if (Array.isArray(value)) {
+            if (empty(value)) {
+              setFirstItem = true;
+            }
+          } else {
+            if (value == null) {
+              setFirstItem = true;
+            }
+          }
+
+          if (setFirstItem) {
+            changeValue((multiple ? [items[0].value] : items[0].value) as Props['value']);
+          }
+        }
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [items, value, multiple, notAllowEmptyValue]);
+
+    /********************************************************************************************************************
+     * Function - focus
+     * ******************************************************************************************************************/
+
+    const focus = useCallback(() => {
+      refForButtonResizeHeightDetect.current?.focus();
+    }, [refForButtonResizeHeightDetect]);
+
+    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
 
@@ -384,12 +403,12 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           getReset: () => getFinalValue(initValue),
           reset: () => {
             lastValue = getFinalValue(initValue);
-            setValue(lastValue);
+            changeValue(lastValue);
           },
           getValue: () => lastValue,
           setValue: (value) => {
             lastValue = getFinalValue(value);
-            setValue(lastValue);
+            changeValue(lastValue);
           },
           getData: () => lastData,
           setData: (data) => {
@@ -450,32 +469,32 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
         };
       }
     }, [
-      name,
-      initValue,
-      value,
-      getFinalValue,
-      exceptValue,
+      changeValue,
+      data,
       disabled,
-      multiple,
+      exceptValue,
       focus,
-      validate,
       formValueSeparator,
       formValueSort,
+      getFinalValue,
+      hidden,
+      id,
+      initValue,
       items,
-      ref,
+      loading,
+      multiple,
+      name,
       onAddValueItem,
       onRemoveValueItem,
-      loading,
-      id,
-      setValue,
+      ref,
+      setData,
       setDisabled,
       setErrorErrorHelperText,
+      setHidden,
       setItems,
       setLoading,
-      data,
-      setData,
-      hidden,
-      setHidden,
+      validate,
+      value,
     ]);
 
     /********************************************************************************************************************
@@ -503,7 +522,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           }
           finalValue = getFinalValue(finalValue);
           if (!equal(value, finalValue)) {
-            setValue(finalValue);
+            changeValue(finalValue);
             nextTick(() => {
               onValueChangeByUser(name, finalValue);
               onRequestSearchSubmit(name, finalValue);
@@ -517,7 +536,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
         getFinalValue,
         value,
         multiple,
-        setValue,
+        changeValue,
         onValueChangeByUser,
         name,
         onRequestSearchSubmit,

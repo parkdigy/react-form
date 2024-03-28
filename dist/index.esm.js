@@ -3347,16 +3347,57 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _p = useAutoUpdateState(initValue, getFinalValue), value = _p[0], setValue = _p[1];
+    var _p = useState(function () { return getFinalValue(initValue); }), value = _p[0], setValue = _p[1];
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
+    var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
+        setError(error);
+        setErrorHelperText(errorHelperText);
+    }, [setError]);
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
+    var validate = useCallback(function (value) {
+        if (required && empty(value)) {
+            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
+            return false;
+        }
+        if (onValidate) {
+            var onValidateResult = onValidate(value);
+            if (onValidateResult != null && onValidateResult !== true) {
+                setErrorErrorHelperText(true, onValidateResult);
+                return false;
+            }
+        }
+        setErrorErrorHelperText(false, undefined);
+        return true;
+    }, [required, onValidate, setErrorErrorHelperText]);
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+    var changeValue = useCallback(function (newValue) {
+        setValue(function (old) {
+            var finalNewValue = getFinalValue(newValue);
+            if (!equal(old, finalNewValue)) {
+                if (error)
+                    validate(finalNewValue);
+                if (onChange)
+                    onChange(finalNewValue);
+                onValueChange(name, finalNewValue);
+            }
+            else {
+                return old;
+            }
+        });
+    }, [error, getFinalValue, name, onChange, onValueChange, validate]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
+    useFirstSkipEffect(function () {
+        changeValue(initValue);
+    }, [initValue]);
     useEffect(function () {
-        if (!equal(value, initValue)) {
-            if (onChange)
-                onChange(value);
-            onValueChange(name, value);
-        }
         if (onLoadItems) {
             setIsOnGetItemLoading(true);
             onLoadItems().then(function (items) {
@@ -3388,7 +3429,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                     }
                 }
                 if (setFirstItem) {
-                    setValue((multiple ? [items[0].value] : items[0].value));
+                    changeValue((multiple ? [items[0].value] : items[0].value));
                 }
             }
         }
@@ -3401,31 +3442,6 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         var _a;
         (_a = refForButtonResizeHeightDetect.current) === null || _a === void 0 ? void 0 : _a.focus();
     }, [refForButtonResizeHeightDetect]);
-    /********************************************************************************************************************
-     * Function - setErrorErrorHelperText
-     * ******************************************************************************************************************/
-    var setErrorErrorHelperText = useCallback(function (error, errorHelperText) {
-        setError(error);
-        setErrorHelperText(errorHelperText);
-    }, [setError]);
-    /********************************************************************************************************************
-     * Function - validate
-     * ******************************************************************************************************************/
-    var validate = useCallback(function (value) {
-        if (required && empty(value)) {
-            setErrorErrorHelperText(true, '필수 선택 항목입니다.');
-            return false;
-        }
-        if (onValidate) {
-            var onValidateResult = onValidate(value);
-            if (onValidateResult != null && onValidateResult !== true) {
-                setErrorErrorHelperText(true, onValidateResult);
-                return false;
-            }
-        }
-        setErrorErrorHelperText(false, undefined);
-        return true;
-    }, [required, onValidate, setErrorErrorHelperText]);
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
@@ -3443,12 +3459,12 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                 getReset: function () { return getFinalValue(initValue); },
                 reset: function () {
                     lastValue_1 = getFinalValue(initValue);
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 getValue: function () { return lastValue_1; },
                 setValue: function (value) {
                     lastValue_1 = getFinalValue(value);
-                    setValue(lastValue_1);
+                    changeValue(lastValue_1);
                 },
                 getData: function () { return lastData_1; },
                 setData: function (data) {
@@ -3510,32 +3526,32 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
             };
         }
     }, [
-        name,
-        initValue,
-        value,
-        getFinalValue,
-        exceptValue,
+        changeValue,
+        data,
         disabled,
-        multiple,
+        exceptValue,
         focus,
-        validate,
         formValueSeparator,
         formValueSort,
+        getFinalValue,
+        hidden,
+        id,
+        initValue,
         items,
-        ref,
+        loading,
+        multiple,
+        name,
         onAddValueItem,
         onRemoveValueItem,
-        loading,
-        id,
-        setValue,
+        ref,
+        setData,
         setDisabled,
         setErrorErrorHelperText,
+        setHidden,
         setItems,
         setLoading,
-        data,
-        setData,
-        hidden,
-        setHidden,
+        validate,
+        value,
     ]);
     /********************************************************************************************************************
      * Event Handler
@@ -3562,7 +3578,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
             }
             finalValue_1 = getFinalValue(finalValue_1);
             if (!equal(value, finalValue_1)) {
-                setValue(finalValue_1);
+                changeValue(finalValue_1);
                 nextTick(function () {
                     onValueChangeByUser(name, finalValue_1);
                     onRequestSearchSubmit(name, finalValue_1);
@@ -3575,7 +3591,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         getFinalValue,
         value,
         multiple,
-        setValue,
+        changeValue,
         onValueChangeByUser,
         name,
         onRequestSearchSubmit,
