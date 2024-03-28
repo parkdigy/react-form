@@ -258,7 +258,9 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           }
         }
 
-        return onValue ? onValue(finalValue) : finalValue;
+        finalValue = onValue ? onValue(finalValue) : finalValue;
+
+        return equal(value, finalValue) ? value : finalValue;
       },
       [multiple, formValueSeparator, itemsValues, onValue]
     );
@@ -274,7 +276,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     useEffect(() => {
-      if (value !== initValue) {
+      if (!equal(value, initValue)) {
         if (onChange) onChange(value);
         onValueChange(name, value);
       }

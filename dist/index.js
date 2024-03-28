@@ -3341,7 +3341,8 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                 }
             }
         }
-        return onValue ? onValue(finalValue) : finalValue;
+        finalValue = onValue ? onValue(finalValue) : finalValue;
+        return util.equal(value, finalValue) ? value : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     /********************************************************************************************************************
      * State - value
@@ -3351,7 +3352,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
      * Effect
      * ******************************************************************************************************************/
     React.useEffect(function () {
-        if (value !== initValue) {
+        if (!util.equal(value, initValue)) {
             if (onChange)
                 onChange(value);
             onValueChange(name, value);
