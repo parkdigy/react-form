@@ -315,17 +315,17 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
     const changeValue = useCallback(
       (newValue: Props['value']) => {
         setValue((old) => {
-          const finalNewValue = getFinalValue(newValue);
-          if (!equal(old, finalNewValue)) {
-            if (error) validate(finalNewValue);
-            if (onChange) onChange(finalNewValue);
-            onValueChange(name, finalNewValue);
+          if (!equal(old, newValue)) {
+            if (error) validate(newValue);
+            if (onChange) onChange(newValue);
+            onValueChange(name, newValue);
+            return newValue;
           } else {
             return old;
           }
         });
       },
-      [error, getFinalValue, name, onChange, onValueChange, validate]
+      [error, name, onChange, onValueChange, validate]
     );
 
     /********************************************************************************************************************
@@ -333,7 +333,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     useFirstSkipEffect(() => {
-      changeValue(initValue);
+      changeValue(getFinalValue(initValue));
     }, [initValue]);
 
     useEffect(() => {
@@ -369,7 +369,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           }
 
           if (setFirstItem) {
-            changeValue((multiple ? [items[0].value] : items[0].value) as Props['value']);
+            changeValue(getFinalValue((multiple ? [items[0].value] : items[0].value) as Props['value']));
           }
         }
       }

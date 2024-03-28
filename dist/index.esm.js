@@ -3378,24 +3378,24 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
     var changeValue = useCallback(function (newValue) {
         setValue(function (old) {
-            var finalNewValue = getFinalValue(newValue);
-            if (!equal(old, finalNewValue)) {
+            if (!equal(old, newValue)) {
                 if (error)
-                    validate(finalNewValue);
+                    validate(newValue);
                 if (onChange)
-                    onChange(finalNewValue);
-                onValueChange(name, finalNewValue);
+                    onChange(newValue);
+                onValueChange(name, newValue);
+                return newValue;
             }
             else {
                 return old;
             }
         });
-    }, [error, getFinalValue, name, onChange, onValueChange, validate]);
+    }, [error, name, onChange, onValueChange, validate]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
     useFirstSkipEffect(function () {
-        changeValue(initValue);
+        changeValue(getFinalValue(initValue));
     }, [initValue]);
     useEffect(function () {
         if (onLoadItems) {
@@ -3429,7 +3429,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                     }
                 }
                 if (setFirstItem) {
-                    changeValue((multiple ? [items[0].value] : items[0].value));
+                    changeValue(getFinalValue((multiple ? [items[0].value] : items[0].value)));
                 }
             }
         }
