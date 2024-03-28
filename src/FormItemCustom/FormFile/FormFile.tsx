@@ -7,10 +7,10 @@ import { empty, nextTick, notEmpty } from '@pdg/util';
 import { FormFileProps as Props, FormFileDefaultProps, FormFileCommands, FormFileValue } from './FormFile.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
-import { FormIcon } from '../../FormCommon';
 import LinkDialog from './LinkDialog/LinkDialog';
 import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
 import './FormFile.scss';
+import { PdgIcon } from '@pdg/react-component';
 
 const FormFile = React.forwardRef<FormFileCommands, Props>(
   (
@@ -148,7 +148,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
     const label = useMemo(() => {
       return labelIcon ? (
         <>
-          <FormIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</FormIcon>
+          <PdgIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PdgIcon>
           <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
         </>
       ) : (
@@ -477,7 +477,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                                 ref={fileUploadBtnRef}
                               >
                                 <label htmlFor={id}>
-                                  <FormIcon>upload</FormIcon>
+                                  <PdgIcon>upload</PdgIcon>
                                   {!hideUploadLabel && (uploadLabel || '파일 업로드')}
                                 </label>
                               </Button>
@@ -502,7 +502,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                               onClick={handleLinkClick}
                             >
                               <label>
-                                <FormIcon>link</FormIcon>
+                                <PdgIcon>link</PdgIcon>
                                 {!hideLinkLabel && (linkLabel || '링크')}
                               </label>
                             </Button>
@@ -517,7 +517,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                               onClick={handleRemoveClick}
                             >
                               <label>
-                                <FormIcon>Close</FormIcon>
+                                <PdgIcon>Close</PdgIcon>
                                 {!hideRemoveLabel && (removeLabel || '삭제')}
                               </label>
                             </Button>
@@ -543,7 +543,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                       disabled={disabled}
                     >
                       <label htmlFor={id}>
-                        <FormIcon>upload</FormIcon>
+                        <PdgIcon>upload</PdgIcon>
                         {!hideUploadLabel && (uploadLabel || '파일 업로드')}
                       </label>
                     </Button>
@@ -568,7 +568,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                     ref={linkBtnRef}
                   >
                     <label>
-                      <FormIcon>link</FormIcon>
+                      <PdgIcon>link</PdgIcon>
                       {!hideLinkLabel && (linkLabel || '링크')}
                     </label>
                   </Button>
@@ -583,7 +583,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                     onClick={handleRemoveClick}
                   >
                     <label>
-                      <FormIcon>Close</FormIcon>
+                      <PdgIcon>Close</PdgIcon>
                       {!hideRemoveLabel && (removeLabel || '삭제')}
                     </label>
                   </Button>

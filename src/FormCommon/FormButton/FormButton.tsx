@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { FormButtonProps as Props, FormButtonDefaultProps } from './FormButton.types';
 import { useFormState } from '../../FormContext';
-import FormIcon from '../FormIcon';
+import { PdgIcon } from '@pdg/react-component';
 
 const FormButton = React.forwardRef<HTMLButtonElement, Props>(
   (
@@ -71,16 +71,21 @@ const FormButton = React.forwardRef<HTMLButtonElement, Props>(
         color={color}
         fullWidth={fullWidth}
         onClick={onClick}
-        startIcon={startIcon ? <FormIcon sx={{ mr: -0.5 }}>{startIcon}</FormIcon> : undefined}
-        endIcon={endIcon ? <FormIcon sx={{ ml: -0.5 }}>{endIcon}</FormIcon> : undefined}
         {...props}
       >
-        {icon && (
-          <FormIcon fontSize={size} color='inherit' sx={{ mr: children ? 0.5 : undefined }}>
-            {icon}
-          </FormIcon>
-        )}
-        {children}
+        <Box display='inline-flex' flexDirection='row' alignItems='center'>
+          {(icon || startIcon) && (
+            <PdgIcon fontSize={size} color='inherit' sx={{ mr: children ? 0.5 : undefined }}>
+              {icon || startIcon}
+            </PdgIcon>
+          )}
+          {children}
+          {endIcon && (
+            <PdgIcon fontSize={size} color='inherit' sx={{ ml: children ? 0.5 : undefined }}>
+              {endIcon}
+            </PdgIcon>
+          )}
+        </Box>
       </Button>
     );
   }

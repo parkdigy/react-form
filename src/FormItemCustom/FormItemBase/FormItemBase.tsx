@@ -4,8 +4,8 @@ import { FormControl, FormHelperText, Input, InputLabel, OutlinedInput, FilledIn
 import { useResizeDetector } from 'react-resize-detector';
 import { FormItemBaseProps as Props } from './FormItemBase.types';
 import { useFormState } from '../../FormContext';
-import { FormIcon } from '../../FormCommon';
 import './FormItemBase.scss';
+import { PdgIcon } from '@pdg/react-component';
 
 const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
   (
@@ -197,9 +197,9 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
             >
               {labelIcon ? (
                 <>
-                  <FormIcon style={{ verticalAlign: 'middle', marginRight: 3, marginTop: -4, marginBottom: -2 }}>
+                  <PdgIcon style={{ verticalAlign: 'middle', marginRight: 3, marginTop: -4, marginBottom: -2 }}>
                     {labelIcon}
-                  </FormIcon>
+                  </PdgIcon>
                   <span style={{ verticalAlign: 'middle' }}>{label}</span>
                 </>
               ) : (

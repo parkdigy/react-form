@@ -9,7 +9,7 @@ import {
 } from '@mui/x-date-pickers';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
-import { PdgIconText } from '@pdg/react-component';
+import { PdgIcon, PdgIconText } from '@pdg/react-component';
 import {
   PrivateDateTimePickerProps as Props,
   PrivateDateTimePickerDefaultProps,
@@ -29,7 +29,6 @@ import {
 } from '../../@util';
 import { PrivateStaticDateTimePickerCommands, PrivateStaticDateTimePickerUnit } from '../PrivateStaticDateTimePicker';
 import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
-import { FormIcon } from '../../FormCommon';
 import { InputBaseProps } from '@mui/material/InputBase';
 import './PrivateDateTimePicker.scss';
 import { Dayjs } from 'dayjs';
@@ -575,7 +574,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
           <>
             {icon && (
               <InputAdornment position='start'>
-                <FormIcon fontSize='small'>{icon}</FormIcon>
+                <PdgIcon fontSize='small'>{icon}</PdgIcon>
               </InputAdornment>
             )}
             {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}

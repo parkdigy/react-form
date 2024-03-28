@@ -6,7 +6,6 @@ import {
   SearchGroup,
   SearchButton,
   SearchMenuButton,
-  FormIcon,
   FormSelect,
   FormToggleButtonGroup,
   FormValueMap,
@@ -19,6 +18,7 @@ import {
 import { FormHelperText, Grid, MenuItem, MenuList } from '@mui/material';
 import dayjs from 'dayjs';
 import { lv } from '@pdg/util';
+import { PdgIcon } from '@pdg/react-component';
 
 const Search = () => {
   const searchRef = useRef<SearchCommands>(null);
@@ -71,7 +71,7 @@ const Search = () => {
       {/*    {leftSearchGroup}*/}
       {/*    <SearchGroup align='right'>*/}
       {/*      <SearchButton>*/}
-      {/*        <FormIcon>download</FormIcon>*/}
+      {/*        <PdgIcon>download</PdgIcon>*/}
       {/*      </SearchButton>*/}
       {/*      <SearchButton type='submit' startIcon='search'>*/}
       {/*        조회*/}
@@ -87,7 +87,7 @@ const Search = () => {
 
             <SearchGroup align='right'>
               <SearchButton>
-                <FormIcon>download</FormIcon>
+                <PdgIcon>download</PdgIcon>
               </SearchButton>
               <SearchButton
                 icon='add'

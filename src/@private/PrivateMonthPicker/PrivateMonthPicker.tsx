@@ -7,7 +7,6 @@ import {
 } from './PrivateMonthPicker.types';
 import dayjs, { Dayjs } from 'dayjs';
 import { useAutoUpdateState } from '@pdg/react-hook';
-import { FormIcon } from '../../FormCommon';
 import PrivateYearPicker from '../PrivateYearPicker';
 import { FormMonthPickerBaseValue } from '../../FormItemCustom';
 import PrivateMonthPickerMonthList from './PrivateMonthPickerMonthList';
@@ -18,6 +17,7 @@ import {
   StyledYearMonthError,
   TitleContainer,
 } from './PrivateMonthPicker.style';
+import { PdgIcon } from '@pdg/react-component';
 
 const PrivateMonthPicker: React.FC<Props> = ({
   value: initValue,
@@ -159,7 +159,7 @@ const PrivateMonthPicker: React.FC<Props> = ({
     <StyledContainer className='PrivateMonthPicker'>
       <TitleContainer>
         <StyledIconButton disabled={prevBtnDisabled} onClick={handlePrevClick}>
-          <FormIcon>KeyboardArrowLeft</FormIcon>
+          <PdgIcon>KeyboardArrowLeft</PdgIcon>
         </StyledIconButton>
         {displayValueError ? (
           <StyledYearMonthError>
@@ -171,7 +171,7 @@ const PrivateMonthPicker: React.FC<Props> = ({
           </StyledYearMonth>
         )}
         <StyledIconButton disabled={nextBtnDisabled} onClick={handleNextClick}>
-          <FormIcon>KeyboardArrowRight</FormIcon>
+          <PdgIcon>KeyboardArrowRight</PdgIcon>
         </StyledIconButton>
       </TitleContainer>
       <div>

@@ -6,7 +6,6 @@ import {
   PrivateYearPickerBaseValue,
 } from './PrivateYearPicker.types';
 import { useAutoUpdateState } from '@pdg/react-hook';
-import { FormIcon } from '../../FormCommon';
 import PrivateYearPickerYearList from './PrivateYearPickerYearList';
 import {
   StyledIconButton,
@@ -14,6 +13,7 @@ import {
   StyledYearMonth,
   StyledYearMonthError,
 } from './PrivateYearPicker.style';
+import { PdgIcon } from '@pdg/react-component';
 
 const PrivateYearPicker: React.FC<Props> = ({
   value: initValue,
@@ -129,7 +129,7 @@ const PrivateYearPicker: React.FC<Props> = ({
       {!hideHeader && (
         <StyledTitleContainer>
           <StyledIconButton disabled={prevBtnDisabled} onClick={handlePrevClick}>
-            <FormIcon>KeyboardArrowLeft</FormIcon>
+            <PdgIcon>KeyboardArrowLeft</PdgIcon>
           </StyledIconButton>
           {displayError ? (
             <StyledYearMonthError>{displayYear}년</StyledYearMonthError>
@@ -137,7 +137,7 @@ const PrivateYearPicker: React.FC<Props> = ({
             <StyledYearMonth>{displayYear}년</StyledYearMonth>
           )}
           <StyledIconButton disabled={nextBtnDisabled} onClick={handleNextClick}>
-            <FormIcon>KeyboardArrowRight</FormIcon>
+            <PdgIcon>KeyboardArrowRight</PdgIcon>
           </StyledIconButton>
         </StyledTitleContainer>
       )}

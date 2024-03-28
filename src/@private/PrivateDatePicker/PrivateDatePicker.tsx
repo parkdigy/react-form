@@ -4,7 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DesktopDatePicker, DateValidationError } from '@mui/x-date-pickers';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
-import { PdgIconText } from '@pdg/react-component';
+import { PdgIcon, PdgIconText } from '@pdg/react-component';
 import {
   PrivateDatePickerProps as Props,
   PrivateDatePickerDefaultProps,
@@ -28,7 +28,6 @@ import {
   PrivateStaticDatePickerUnit,
 } from '../PrivateStaticDatePicker';
 import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
-import { FormIcon } from '../../FormCommon';
 import { InputBaseProps } from '@mui/material/InputBase';
 import './PrivateDatePicker.scss';
 import { DesktopDatePickerSlotsComponentsProps } from '@mui/x-date-pickers/DesktopDatePicker/DesktopDatePicker.types';
@@ -575,7 +574,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
           <>
             {icon && (
               <InputAdornment position='start'>
-                <FormIcon fontSize='small'>{icon}</FormIcon>
+                <PdgIcon fontSize='small'>{icon}</PdgIcon>
               </InputAdornment>
             )}
             {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}

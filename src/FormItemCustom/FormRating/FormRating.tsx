@@ -12,7 +12,7 @@ import {
 } from './FormRating.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
-import { FormIcon } from '../../FormCommon';
+import { PdgIcon } from '@pdg/react-component';
 
 const FormRating = React.forwardRef<FormRatingCommands, Props>(
   (
@@ -346,11 +346,11 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
             disabled={disabled || readOnly}
             max={max}
             icon={
-              <FormIcon color={color} fontSize='inherit'>
+              <PdgIcon color={color} fontSize='inherit'>
                 {icon ? icon : 'Star'}
-              </FormIcon>
+              </PdgIcon>
             }
-            emptyIcon={<FormIcon fontSize='inherit'>{emptyIcon ? emptyIcon : 'StarBorder'}</FormIcon>}
+            emptyIcon={<PdgIcon fontSize='inherit'>{emptyIcon ? emptyIcon : 'StarBorder'}</PdgIcon>}
             onChange={handleChange}
             onFocus={() => setFocused(initFocused || true)}
             onBlur={() => setFocused(initFocused || false)}

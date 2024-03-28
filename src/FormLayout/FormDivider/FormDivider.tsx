@@ -2,9 +2,9 @@ import React, { CSSProperties, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { Grid, Box } from '@mui/material';
 import { FormDividerProps as Props, FormDividerDefaultProps } from './FormDivider.types';
-import { FormIcon } from '../../FormCommon';
 import { useFormState } from '../../FormContext';
 import { StyledErrorLineBox, StyledLineBox, StyledWarningLineBox } from './FormDivider.style';
+import { PdgIcon } from '@pdg/react-component';
 
 const DEFAULT_LINE_STYLE: CSSProperties = { flex: 1, position: 'relative' };
 
@@ -90,13 +90,13 @@ const FormDivider = React.forwardRef<HTMLDivElement, Props>(
           onClick={handleClick}
         >
           {icon && (
-            <FormIcon
+            <PdgIcon
               style={{ opacity: 0.54, marginRight: 5 }}
               color={error ? 'error' : warning ? 'warning' : undefined}
               fontSize={size}
             >
               {icon}
-            </FormIcon>
+            </PdgIcon>
           )}
           {label && (
             <Box
@@ -116,9 +116,9 @@ const FormDivider = React.forwardRef<HTMLDivElement, Props>(
             </div>
           )}
           {collapse && (
-            <FormIcon sx={{ opacity: 0.6, ml: 1 }} color={error ? 'error' : warning ? 'warning' : undefined}>
+            <PdgIcon sx={{ opacity: 0.6, ml: 1 }} color={error ? 'error' : warning ? 'warning' : undefined}>
               {collapseIn ? 'KeyboardDoubleArrowUp' : 'KeyboardDoubleArrowDown'}
-            </FormIcon>
+            </PdgIcon>
           )}
         </Box>
       </Grid>

@@ -8,8 +8,8 @@ import { InputProps, InputAdornment, InputBaseComponentProps } from '@mui/materi
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { Dayjs } from 'dayjs';
 import { DesktopDatePickerSlotsComponentsProps } from '@mui/x-date-pickers/DesktopDatePicker/DesktopDatePicker.types';
-import { FormIcon } from '../../FormCommon';
 import './PrivateInputDatePicker.scss';
+import { PdgIcon } from '@pdg/react-component';
 
 const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
   (
@@ -58,7 +58,7 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
       () =>
         labelIcon ? (
           <>
-            <FormIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</FormIcon>
+            <PdgIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PdgIcon>
             <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
           </>
         ) : (
@@ -84,7 +84,7 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
           <>
             {icon && (
               <InputAdornment position='start'>
-                <FormIcon fontSize='small'>{icon}</FormIcon>
+                <PdgIcon fontSize='small'>{icon}</PdgIcon>
               </InputAdornment>
             )}
             {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}

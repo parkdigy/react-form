@@ -10,8 +10,8 @@ import {
   FormTextFieldValue,
 } from './FormTextField.types';
 import { useFormState } from '../../FormContext';
-import { FormIcon } from '../../FormCommon';
 import './FormTextField.scss';
+import { PdgIcon } from '@pdg/react-component';
 
 interface WithForwardRefType<T = FormTextFieldValue, AllowUndefinedValue extends boolean = true>
   extends React.FC<FormTextFieldProps<T, AllowUndefinedValue>> {
@@ -200,7 +200,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     const label = useMemo(() => {
       return labelIcon ? (
         <>
-          <FormIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</FormIcon>
+          <PdgIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PdgIcon>
           <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
         </>
       ) : (
@@ -314,7 +314,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
           <>
             {icon && (
               <InputAdornment position='start'>
-                <FormIcon fontSize='small'>{icon}</FormIcon>
+                <PdgIcon fontSize='small'>{icon}</PdgIcon>
               </InputAdornment>
             )}
             {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
@@ -343,7 +343,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
                     }
                   }}
                 >
-                  <FormIcon fontSize='inherit'>ClearRounded</FormIcon>
+                  <PdgIcon fontSize='inherit'>ClearRounded</PdgIcon>
                 </IconButton>
               </InputAdornment>
             )}

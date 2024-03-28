@@ -1,7 +1,7 @@
 import { styled } from '@mui/material';
-import FormIcon from '../FormIcon';
+import { PdgIcon } from '@pdg/react-component';
 
-export const IconFormIcon = styled(FormIcon)`
+export const IconPdgIcon = styled(PdgIcon)`
   vertical-align: middle;
   margin-right: 3px;
   margin-top: -4px;

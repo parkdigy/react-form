@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Form,
   FormBody,
@@ -11,23 +11,34 @@ import {
   FormMonthPicker,
   FormMonthRangePicker,
   FormRow,
+  FormText,
   FormTimePicker,
   FormValueMap,
   FormYearPicker,
   FormYearRangePicker,
 } from '../../../../src';
+import dayjs, { Dayjs } from 'dayjs';
 
 const FormItemDate = () => {
   function handleSubmit(data: FormValueMap) {
     ll(data);
   }
 
+  const [date, setDate] = useState<Dayjs>();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setDate(dayjs());
+    }, 2000);
+  }, []);
+
   return (
     <Form onSubmit={handleSubmit}>
       <FormBody>
         <FormRow label='date/time' line>
           <FormCol>
-            <FormDatePicker name='FormDatePicker' label='FormDatePicker' />
+            <FormText name='FormText' label='FormText' />
+            <FormDatePicker name='FormDatePicker' label='FormDatePicker' value={date} />
           </FormCol>
           <FormCol>
             <FormDateTimePicker name='FormDateTimePicker' label='FormDateTimePicker' time='minute' />

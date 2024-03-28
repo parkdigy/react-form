@@ -1,7 +1,7 @@
 import React, { CSSProperties, useMemo } from 'react';
 import { InputLabel, InputLabelProps, useTheme } from '@mui/material';
 import { FormLabelProps as Props, FormLabelDefaultProps } from './FormLabel.types';
-import { ChildrenSpan, IconFormIcon } from './FormLabel.style';
+import { ChildrenSpan, IconPdgIcon } from './FormLabel.style';
 
 const FormLabel = React.forwardRef<HTMLLabelElement, Props>(
   ({ children, icon, size, style, error, warning, ...props }, ref) => {
@@ -42,7 +42,7 @@ const FormLabel = React.forwardRef<HTMLLabelElement, Props>(
       <InputLabel ref={ref} {...finalProps}>
         {icon ? (
           <>
-            <IconFormIcon>{icon}</IconFormIcon>
+            <IconPdgIcon>{icon}</IconPdgIcon>
             <ChildrenSpan>{children}</ChildrenSpan>
           </>
         ) : (
