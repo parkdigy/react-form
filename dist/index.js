@@ -3377,20 +3377,17 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
      * Function
      * ******************************************************************************************************************/
     var changeValue = React.useCallback(function (newValue) {
-        setValue(function (old) {
-            if (!util.equal(old, newValue)) {
+        if (!util.equal(value, newValue)) {
+            setValue(newValue);
+            util.nextTick(function () {
                 if (error)
                     validate(newValue);
                 if (onChange)
                     onChange(newValue);
                 onValueChange(name, newValue);
-                return newValue;
-            }
-            else {
-                return old;
-            }
-        });
-    }, [error, name, onChange, onValueChange, validate]);
+            });
+        }
+    }, [error, name, onChange, onValueChange, validate, value]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/

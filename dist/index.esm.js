@@ -3377,20 +3377,17 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
      * Function
      * ******************************************************************************************************************/
     var changeValue = useCallback(function (newValue) {
-        setValue(function (old) {
-            if (!equal(old, newValue)) {
+        if (!equal(value, newValue)) {
+            setValue(newValue);
+            nextTick(function () {
                 if (error)
                     validate(newValue);
                 if (onChange)
                     onChange(newValue);
                 onValueChange(name, newValue);
-                return newValue;
-            }
-            else {
-                return old;
-            }
-        });
-    }, [error, name, onChange, onValueChange, validate]);
+            });
+        }
+    }, [error, name, onChange, onValueChange, validate, value]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/

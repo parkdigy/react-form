@@ -1,7 +1,7 @@
 {
   "name": "@pdg/react-form",
   "title": "React Form",
-  "version": "1.0.97",
+  "version": "1.0.98",
   "description": "React Form",
   "type": "module",
   "types": "dist/index.d.ts",
@@ -24,7 +24,7 @@
     "dev": "cd examples && npm run dev",
     "dev-prd-lib": "cd examples && npm run dev-prd-lib",
     "build": "rollup -c --bundleConfigAsCjs",
-    "pub": "npm publish --access=public",
+    "pub": "npm i && npm run build && npm publish --access=public && rm ./.git/hooks/pre-commit",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "reinstall-module": "rm -rf node_modules && rm -f package-lock.json && npm i"
   },

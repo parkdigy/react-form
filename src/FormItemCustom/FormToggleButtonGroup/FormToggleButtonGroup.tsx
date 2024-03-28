@@ -314,18 +314,16 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
 
     const changeValue = useCallback(
       (newValue: Props['value']) => {
-        setValue((old) => {
-          if (!equal(old, newValue)) {
+        if (!equal(value, newValue)) {
+          setValue(newValue);
+          nextTick(() => {
             if (error) validate(newValue);
             if (onChange) onChange(newValue);
             onValueChange(name, newValue);
-            return newValue;
-          } else {
-            return old;
-          }
-        });
+          });
+        }
       },
-      [error, name, onChange, onValueChange, validate]
+      [error, name, onChange, onValueChange, validate, value]
     );
 
     /********************************************************************************************************************
