@@ -13,7 +13,7 @@
     "@mui/material": "^5.15.13",
     "@mui/x-date-pickers": "^6.19.7",
     "@pdg/react-admin-layout": "^1.0.20",
-    "@pdg/react-component": "^1.0.9",
+    "@pdg/react-component": "^1.0.10",
     "@pdg/react-dialog": "^1.0.15",
     "@pdg/react-hook": "^1.0.8",
     "@pdg/util": "^1.0.19",
