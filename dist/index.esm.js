@@ -590,9 +590,9 @@ Form.defaultProps = FormDefaultProps;var FormButtonDefaultProps = {
      * ******************************************************************************************************************/
     return (React.createElement(Button, __assign({ ref: ref, className: classNames(className, 'FormButton'), type: type, variant: variant, size: size, color: color, fullWidth: fullWidth, onClick: onClick }, props),
         React.createElement(Box, { display: 'inline-flex', flexDirection: 'row', alignItems: 'center' },
-            (icon || startIcon) && (React.createElement(PdgIcon, { fontSize: size, color: 'inherit', sx: { mr: children ? 0.5 : undefined } }, icon || startIcon)),
+            (icon || startIcon) && (React.createElement(PdgIcon, { className: 'FormButton-StartIcon', fontSize: size, color: 'inherit', sx: { mr: children ? 0.5 : undefined } }, icon || startIcon)),
             children,
-            endIcon && (React.createElement(PdgIcon, { fontSize: size, color: 'inherit', sx: { ml: children ? 0.5 : undefined } }, endIcon)))));
+            endIcon && (React.createElement(PdgIcon, { className: 'FormButton-EndIcon', fontSize: size, color: 'inherit', sx: { ml: children ? 0.5 : undefined } }, endIcon)))));
 });
 FormButton.displayName = 'FormButton';
 FormButton.defaultProps = FormButtonDefaultProps;var FormLabelDefaultProps = {};var IconPdgIcon = styled(PdgIcon)(templateObject_1$g || (templateObject_1$g = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));

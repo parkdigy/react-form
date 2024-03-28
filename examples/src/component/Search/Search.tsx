@@ -66,20 +66,6 @@ const Search = () => {
 
   return (
     <Grid container direction='column' spacing={2}>
-      {/*<Grid item>*/}
-      {/*  <_Search onSubmit={handleSubmit}>*/}
-      {/*    {leftSearchGroup}*/}
-      {/*    <SearchGroup align='right'>*/}
-      {/*      <SearchButton>*/}
-      {/*        <PdgIcon>download</PdgIcon>*/}
-      {/*      </SearchButton>*/}
-      {/*      <SearchButton type='submit' startIcon='search'>*/}
-      {/*        조회*/}
-      {/*      </SearchButton>*/}
-      {/*    </SearchGroup>*/}
-      {/*  </_Search>*/}
-      {/*  <FormHelperText component='div' sx={{ ml: 1 }}>기본</FormHelperText>*/}
-      {/*</Grid>*/}
       <Grid item>
         <_Search ref={searchRef} autoSubmit onSubmit={handleSubmit}>
           <SearchGroupRow>

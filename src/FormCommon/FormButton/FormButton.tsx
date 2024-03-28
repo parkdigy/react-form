@@ -75,13 +75,23 @@ const FormButton = React.forwardRef<HTMLButtonElement, Props>(
       >
         <Box display='inline-flex' flexDirection='row' alignItems='center'>
           {(icon || startIcon) && (
-            <PdgIcon fontSize={size} color='inherit' sx={{ mr: children ? 0.5 : undefined }}>
+            <PdgIcon
+              className='FormButton-StartIcon'
+              fontSize={size}
+              color='inherit'
+              sx={{ mr: children ? 0.5 : undefined }}
+            >
               {icon || startIcon}
             </PdgIcon>
           )}
           {children}
           {endIcon && (
-            <PdgIcon fontSize={size} color='inherit' sx={{ ml: children ? 0.5 : undefined }}>
+            <PdgIcon
+              className='FormButton-EndIcon'
+              fontSize={size}
+              color='inherit'
+              sx={{ ml: children ? 0.5 : undefined }}
+            >
               {endIcon}
             </PdgIcon>
           )}
