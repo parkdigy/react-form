@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef,
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { Rating } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, equal, nextTick } from '@pdg/util';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { empty, nextTick } from '@pdg/util';
 import {
   FormRatingProps as Props,
   FormRatingDefaultProps,
@@ -100,11 +100,12 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
-      initDisabled == null ? formDisabled : initDisabled
+
+    const [dataRef, , setData] = useAutoUpdateRefState(initData);
+    const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
+      useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
     );
-    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
-    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
+    const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
 
     /********************************************************************************************************************
      * State - width, height
@@ -115,17 +116,6 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       handleWidth: true,
       handleHeight: true,
     });
-
-    /********************************************************************************************************************
-     * Function - getFinalValue
-     * ******************************************************************************************************************/
-
-    const getFinalValue = useCallback(
-      (value: number): number => {
-        return onValue ? onValue(value) : value;
-      },
-      [onValue]
-    );
 
     /********************************************************************************************************************
      * Function
@@ -165,25 +155,21 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
      * State - value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useState<number>(() => getFinalValue(initValue || 0));
-
-    const changeValue = useCallback(
-      (newValue: number) => {
-        if (!equal(value, newValue)) {
-          setValue(newValue);
-          nextTick(() => {
-            if (error) validate(newValue);
-            if (onChange) onChange(newValue);
-            onValueChange(name, newValue);
-          });
-        }
+    const getFinalValue = useCallback(
+      (value: Props['value'] | null) => {
+        const finalValue = value || 0;
+        return onValue ? onValue(finalValue) : finalValue;
       },
-      [error, name, onChange, onValueChange, validate, value]
+      [onValue]
     );
 
+    const [valueRef, value, setValue] = useAutoUpdateRefState<number, Props['value'] | null>(initValue, getFinalValue);
+
     useFirstSkipEffect(() => {
-      changeValue(getFinalValue(initValue || 0));
-    }, [initValue]);
+      if (error) validate(value);
+      if (onChange) onChange(value);
+      onValueChange(name, value);
+    }, [value]);
 
     /********************************************************************************************************************
      * Memo
@@ -218,43 +204,23 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
      * ******************************************************************************************************************/
 
     useLayoutEffect(() => {
-      let lastValue = value;
-      let lastData = data;
-      let lastDisabled = !!disabled;
-      let lastHidden = !!hidden;
-
       const commands: FormRatingCommands = {
         getType: () => 'FormRating',
         getName: () => name,
-        getReset: () => getFinalValue(initValue || 0),
-        reset: () => {
-          lastValue = getFinalValue(initValue || 0);
-          changeValue(lastValue);
-        },
-        getValue: () => lastValue,
-        setValue: (value: number) => {
-          lastValue = getFinalValue(value);
-          changeValue(lastValue);
-        },
-        getData: () => lastData,
-        setData: (data) => {
-          lastData = data;
-          setData(data);
-        },
+        getReset: () => getFinalValue(initValue),
+        reset: () => setValue(initValue),
+        getValue: () => valueRef.current,
+        setValue: (value) => setValue(value),
+        getData: () => dataRef.current,
+        setData: (data) => setData(data),
         isExceptValue: () => !!exceptValue,
-        isDisabled: () => lastDisabled,
-        setDisabled: (disabled) => {
-          lastDisabled = disabled;
-          setDisabled(disabled);
-        },
-        isHidden: () => lastHidden,
-        setHidden: (hidden) => {
-          lastHidden = hidden;
-          setHidden(hidden);
-        },
+        isDisabled: () => !!disabledRef.current,
+        setDisabled: (disabled) => setDisabled(disabled),
+        isHidden: () => !!hiddenRef.current,
+        setHidden: (hidden) => setHidden(hidden),
         focus,
         focusValidate: focus,
-        validate: () => validate(value),
+        validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
       };
@@ -281,25 +247,25 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         }
       };
     }, [
-      name,
-      initValue,
-      value,
-      getFinalValue,
+      dataRef,
+      disabledRef,
       exceptValue,
-      disabled,
       focus,
-      validate,
-      ref,
+      getFinalValue,
+      hiddenRef,
+      id,
+      initValue,
+      name,
       onAddValueItem,
       onRemoveValueItem,
-      id,
+      ref,
+      setData,
       setDisabled,
       setErrorErrorHelperText,
-      data,
-      setData,
-      hidden,
       setHidden,
-      changeValue,
+      setValue,
+      validate,
+      valueRef,
     ]);
 
     /********************************************************************************************************************
@@ -311,15 +277,14 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         if (readOnly) {
           e.preventDefault();
         } else {
-          const finalValue = getFinalValue(value || 0);
-          changeValue(finalValue);
+          const finalValue = setValue(value);
           nextTick(() => {
             onValueChangeByUser(name, finalValue);
             onRequestSearchSubmit(name, finalValue);
           });
         }
       },
-      [readOnly, getFinalValue, changeValue, onValueChangeByUser, name, onRequestSearchSubmit]
+      [readOnly, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     /********************************************************************************************************************

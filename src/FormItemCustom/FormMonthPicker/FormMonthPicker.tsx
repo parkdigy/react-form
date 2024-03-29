@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util';
-import { empty, equal, nextTick } from '@pdg/util';
+import { empty, nextTick } from '@pdg/util';
 import {
   FormMonthPickerProps as Props,
   FormMonthPickerDefaultProps,
@@ -126,20 +126,13 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
-      initDisabled == null ? formDisabled : initDisabled
-    );
-    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
-    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
     const [open, setOpen] = useState(false);
 
-    /********************************************************************************************************************
-     * Function - getFinalValue
-     * ******************************************************************************************************************/
-
-    const getFinalValue = useCallback((value: FormMonthPickerValue | undefined): FormMonthPickerValue => {
-      return value || DEFAULT_VALUE;
-    }, []);
+    const [dataRef, , setData] = useAutoUpdateRefState(initData);
+    const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
+      useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
+    );
+    const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
 
     /********************************************************************************************************************
      * Function
@@ -181,28 +174,20 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
     );
 
     /********************************************************************************************************************
-     * State - value
+     * value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useState<FormMonthPickerValue>(() => getFinalValue(initValue));
+    const getFinalValue = useCallback((value: Props['value']): FormMonthPickerValue => {
+      return value || DEFAULT_VALUE;
+    }, []);
 
-    const changeValue = useCallback(
-      (newValue: FormMonthPickerValue) => {
-        if (!equal(value, newValue)) {
-          setValue(newValue);
-          nextTick(() => {
-            if (error) validate(newValue);
-            if (onChange) onChange(newValue);
-            onValueChange(name, newValue);
-          });
-        }
-      },
-      [error, name, onChange, onValueChange, validate, value]
-    );
+    const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
-      changeValue(getFinalValue(initValue));
-    }, [initValue]);
+      if (error) validate(value);
+      if (onChange) onChange(value);
+      onValueChange(name, value);
+    }, [value]);
 
     /********************************************************************************************************************
      * Function
@@ -301,65 +286,43 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
      * ******************************************************************************************************************/
 
     useLayoutEffect(() => {
-      let lastValue = value;
-      let lastData = data;
-      let lastDisabled = !!disabled;
-      let lastHidden = !!hidden;
-
       const commands: FormMonthPickerCommands = {
         getType: () => 'FormMonthPicker',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
-        reset: () => {
-          lastValue = getFinalValue(initValue);
-          changeValue(lastValue);
-        },
-        getValue: () => lastValue,
-        setValue: (value) => {
-          lastValue = getFinalValue(value);
-          changeValue(lastValue);
-        },
-        getData: () => lastData,
-        setData: (data) => {
-          lastData = data;
-          setData(data);
-        },
-        getYear: () => (lastValue ? lastValue.year : null),
+        reset: () => setValue(initValue),
+        getValue: () => valueRef.current,
+        setValue: (value) => setValue(value),
+        getData: () => dataRef.current,
+        setData: (data) => setData(data),
+        getYear: () => (valueRef.current ? valueRef.current.year : null),
         setYear: (year: number | null) => {
-          lastValue = getFinalValue(
+          setValue(
             year === null
               ? null
-              : lastValue
-                ? { year, month: lastValue.month }
+              : valueRef.current
+                ? { year, month: valueRef.current.month }
                 : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 }
           );
-          changeValue(lastValue);
         },
-        getMonth: () => (lastValue ? lastValue.month : null),
+        getMonth: () => (valueRef.current ? valueRef.current.month : null),
         setMonth: (month: number | null) => {
-          lastValue = getFinalValue(
+          setValue(
             month === null
               ? null
-              : lastValue
-                ? { year: lastValue.year, month }
+              : valueRef.current
+                ? { year: valueRef.current.year, month }
                 : { year: new Date().getFullYear(), month }
           );
-          changeValue(lastValue);
         },
         isExceptValue: () => !!exceptValue,
-        isDisabled: () => lastDisabled,
-        setDisabled: (disabled) => {
-          lastDisabled = disabled;
-          setDisabled(disabled);
-        },
-        isHidden: () => lastHidden,
-        setHidden: (hidden) => {
-          lastHidden = hidden;
-          setHidden(hidden);
-        },
+        isDisabled: () => !!disabledRef.current,
+        setDisabled: (disabled) => setDisabled(disabled),
+        isHidden: () => !!hiddenRef.current,
+        setHidden: (hidden) => setHidden(hidden),
         focus,
         focusValidate: focus,
-        validate: () => validate(value),
+        validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
         getFormValueYearNameSuffix: () =>
@@ -396,27 +359,27 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
         }
       };
     }, [
-      name,
-      initValue,
-      value,
-      getFinalValue,
+      dataRef,
+      disabledRef,
       exceptValue,
-      disabled,
       focus,
-      validate,
-      ref,
+      formValueMonthNameSuffix,
+      formValueYearNameSuffix,
+      getFinalValue,
+      hiddenRef,
+      id,
+      initValue,
+      name,
       onAddValueItem,
       onRemoveValueItem,
-      id,
+      ref,
+      setData,
       setDisabled,
       setErrorErrorHelperText,
-      data,
-      setData,
-      formValueYearNameSuffix,
-      formValueMonthNameSuffix,
-      hidden,
       setHidden,
-      changeValue,
+      setValue,
+      validate,
+      valueRef,
     ]);
 
     /********************************************************************************************************************
@@ -454,14 +417,14 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
 
     const handleContainerChange = useCallback(
       (newValue: FormMonthPickerBaseValue, isMonthSelect: boolean) => {
-        changeValue(newValue);
+        setValue(newValue);
         if (isMonthSelect) setOpen(false);
 
         nextTick(() => {
           onValueChangeByUser(name, newValue);
         });
       },
-      [changeValue, name, onValueChangeByUser]
+      [name, onValueChangeByUser, setValue]
     );
 
     const handleInputDatePickerFocus = useCallback(() => {
@@ -566,7 +529,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
                   startAdornment={startAdornment}
                   endAdornment={endAdornment}
                   inputRef={inputRef}
-                  onChange={(v) => changeValue(v ? dateToValue(v) : v)}
+                  onChange={(v) => setValue(v ? dateToValue(v) : v)}
                   onFocus={handleInputDatePickerFocus}
                   onError={(reason) => (inputDatePickerErrorRef.current = reason)}
                   shouldDisableYear={handleInputDatePickerShouldDisableYear}

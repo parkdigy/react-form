@@ -1,9 +1,9 @@
-import React, { useState, useEffect, ReactNode, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { Box, Checkbox, Chip, CircularProgress, MenuItem } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util';
-import { empty, notEmpty, equal, nextTick, ifUndefined } from '@pdg/util';
+import { empty, notEmpty, equal, ifUndefined } from '@pdg/util';
 import {
   FormSelectProps,
   FormSelectDefaultProps,
@@ -139,18 +139,16 @@ const FormSelect = ToForwardRefExoticComponent(
     }, [items]);
 
     /********************************************************************************************************************
-     * State - inputLabelProps
+     * inputLabelProps
      * ******************************************************************************************************************/
 
-    const [inputLabelProps] = useAutoUpdateState<Props['InputLabelProps']>(
-      useCallback(() => {
-        if (hasEmptyValue || (!hasEmptyValue && placeholder)) {
-          return { ...initInputLabelProps, shrink: true };
-        } else {
-          return initInputLabelProps;
-        }
-      }, [initInputLabelProps, hasEmptyValue, placeholder])
-    );
+    const inputLabelProps = useMemo(() => {
+      if (hasEmptyValue || (!hasEmptyValue && placeholder)) {
+        return { ...initInputLabelProps, shrink: true };
+      } else {
+        return initInputLabelProps;
+      }
+    }, [hasEmptyValue, initInputLabelProps, placeholder]);
 
     /********************************************************************************************************************
      * Function - getFinalValue
@@ -210,44 +208,20 @@ const FormSelect = ToForwardRefExoticComponent(
      * State - value
      * ******************************************************************************************************************/
 
-    const valueRef = useRef(getFinalValue(initValue));
-    const [value, setValue] = useState(() => getFinalValue(initValue));
+    const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
     /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
 
-    const changeValue = useCallback(
-      (newValue: any) => {
-        if (!equal(valueRef.current, newValue)) {
-          valueRef.current = newValue;
-          setValue(newValue);
-          nextTick(() => {
-            if (onChange) onChange(newValue);
-            onValueChange(name, newValue);
-          });
-        }
-      },
-      [name, onChange, onValueChange]
-    );
+    useFirstSkipEffect(() => {
+      if (onChange) onChange(value);
+      onValueChange(name, value);
+    }, [value]);
 
     useFirstSkipEffect(() => {
-      changeValue(getFinalValue(initValue));
-    }, [initValue]);
-
-    useFirstSkipEffect(() => {
-      changeValue(getFinalValue(valueRef.current));
+      setValue(valueRef.current);
     }, [multiple]);
-
-    /********************************************************************************************************************
-     * State - isSelectedPlaceholder
-     * ******************************************************************************************************************/
-
-    const [isSelectedPlaceholder] = useAutoUpdateState<boolean>(
-      useCallback(() => {
-        return notEmpty(items) && empty(value) && !!placeholder && !hasEmptyValue;
-      }, [items, value, placeholder, hasEmptyValue])
-    );
 
     /********************************************************************************************************************
      * Effect
@@ -267,6 +241,11 @@ const FormSelect = ToForwardRefExoticComponent(
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
+
+    const isSelectedPlaceholder = useMemo(
+      () => notEmpty(items) && empty(value) && !!placeholder && !hasEmptyValue,
+      [hasEmptyValue, items, placeholder, value]
+    );
 
     const selectProps = useMemo(() => {
       const finalSelectProps: FormTextFieldProps['SelectProps'] = {
@@ -313,15 +292,11 @@ const FormSelect = ToForwardRefExoticComponent(
     const getBaseCommands = useCallback((): Partial<Commands> => {
       return {
         getReset: () => getFinalValue(initValue),
-        reset: () => {
-          changeValue(getFinalValue(initValue));
-        },
+        reset: () => setValue(initValue),
         getValue: () => valueRef.current,
-        setValue: (value: Props['value']) => {
-          changeValue(getFinalValue(value));
-        },
+        setValue: (value: Props['value']) => setValue(value),
       };
-    }, [getFinalValue, initValue, changeValue]);
+    }, [getFinalValue, initValue, setValue, valueRef]);
 
     const getExtraCommands = useCallback((): FormSelectExtraCommands<any> => {
       let lastItems = items;
@@ -381,7 +356,7 @@ const FormSelect = ToForwardRefExoticComponent(
     );
 
     const handleChange = (newValue: any) => {
-      changeValue(getFinalValue(newValue));
+      setValue(newValue);
     };
 
     const handleValue = useCallback(

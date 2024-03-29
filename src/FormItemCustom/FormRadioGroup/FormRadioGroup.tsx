@@ -13,9 +13,9 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from '@mui/material';
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util';
-import { empty, equal, nextTick } from '@pdg/util';
+import { empty, nextTick } from '@pdg/util';
 import {
   FormRadioGroupProps,
   FormRadioGroupDefaultProps,
@@ -133,18 +133,19 @@ const FormRadioGroup = ToForwardRefExoticComponent(
      * State
      * ******************************************************************************************************************/
 
-    const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
-      initDisabled == null ? formDisabled : initDisabled
-    );
-    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
-    const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
     const [width, setWidth] = useAutoUpdateState<Props['width']>(initWidth || '100%');
     const [formColWrapRect, setFormColWrapRect] = useState<DOMRect>();
-    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
+
+    const [dataRef, , setData] = useAutoUpdateRefState(initData);
+    const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
+      useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
+    );
+    const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
+    const [loadingRef, loading, setLoading] = useAutoUpdateRefState(initLoading);
+    const [itemsRef, items, setItems] = useAutoUpdateRefState(initItems);
 
     /********************************************************************************************************************
      * State - radioGroupNoWrapRect (ResizeDetector)
@@ -165,17 +166,6 @@ const FormRadioGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     const { height, ref: resizeHeightDetectorRef } = useResizeDetector<HTMLDivElement>();
-
-    /********************************************************************************************************************
-     * Function - getFinalValue
-     * ******************************************************************************************************************/
-
-    const getFinalValue = useCallback(
-      (value: Value): Value => {
-        return onValue ? onValue(value) : value;
-      },
-      [onValue]
-    );
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -218,25 +208,20 @@ const FormRadioGroup = ToForwardRefExoticComponent(
      * State - value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useState<Value>(() => getFinalValue(initValue));
-
-    const changeValue = useCallback(
-      (newValue: Value) => {
-        if (!equal(value, newValue)) {
-          setValue(newValue);
-          nextTick(() => {
-            if (error) validate(newValue);
-            if (onChange) onChange(newValue);
-            onValueChange(name, newValue);
-          });
-        }
+    const getFinalValue = useCallback(
+      (value: any) => {
+        return onValue ? onValue(value) : value;
       },
-      [error, name, onChange, onValueChange, validate, value]
+      [onValue]
     );
 
+    const [valueRef, value, setValue] = useAutoUpdateRefState<Value, any>(initValue, getFinalValue);
+
     useFirstSkipEffect(() => {
-      changeValue(getFinalValue(initValue));
-    }, [initValue]);
+      if (error) validate(value);
+      if (onChange) onChange(value);
+      onValueChange(name, value);
+    }, [value]);
 
     /********************************************************************************************************************
      * Memo
@@ -323,57 +308,29 @@ const FormRadioGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     useLayoutEffect(() => {
-      let lastValue = value;
-      let lastData = data;
-      let lastItems = items;
-      let lastLoading = loading;
-      let lastDisabled = !!disabled;
-      let lastHidden = !!hidden;
-
       const commands: Commands = {
         getType: () => 'FormRadioGroup',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
-        reset: () => {
-          lastValue = getFinalValue(initValue);
-          changeValue(lastValue);
-        },
-        getValue: () => lastValue,
-        setValue: (value: Value) => {
-          lastValue = getFinalValue(value);
-          changeValue(lastValue);
-        },
-        getData: () => lastData,
-        setData: (data) => {
-          lastData = data;
-          setData(data);
-        },
+        reset: () => setValue(initValue),
+        getValue: () => valueRef.current,
+        setValue: (value: Value) => setValue(value),
+        getData: () => dataRef.current,
+        setData: (data) => setData(data),
         isExceptValue: () => !!exceptValue,
-        isDisabled: () => lastDisabled,
-        setDisabled: (disabled) => {
-          lastDisabled = disabled;
-          setDisabled(disabled);
-        },
-        isHidden: () => lastHidden,
-        setHidden: (hidden) => {
-          lastHidden = hidden;
-          setHidden(hidden);
-        },
+        isDisabled: () => !!disabledRef.current,
+        setDisabled: (disabled) => setDisabled(disabled),
+        isHidden: () => !!hiddenRef.current,
+        setHidden: (hidden) => setHidden(hidden),
         focus,
         focusValidate: focus,
-        validate: () => validate(value),
+        validate: () => validate(valueRef.current),
         setError: (error: boolean, errorHelperText: ReactNode) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
-        getItems: () => lastItems,
-        setItems: (items: Props['items']) => {
-          lastItems = items;
-          setItems(lastItems);
-        },
-        getLoading: () => !!lastLoading,
-        setLoading: (loading: boolean) => {
-          lastLoading = loading;
-          setLoading(lastLoading);
-        },
+        getItems: () => itemsRef.current,
+        setItems: (items) => setItems(items),
+        getLoading: () => !!loadingRef.current,
+        setLoading: (loading: boolean) => setLoading(loading),
       };
 
       onAddValueItem(id, commands);
@@ -398,29 +355,29 @@ const FormRadioGroup = ToForwardRefExoticComponent(
         }
       };
     }, [
-      name,
-      initValue,
-      value,
-      getFinalValue,
+      dataRef,
+      disabledRef,
       exceptValue,
-      disabled,
       focus,
-      validate,
-      items,
-      loading,
-      ref,
+      getFinalValue,
+      hiddenRef,
+      id,
+      initValue,
+      itemsRef,
+      loadingRef,
+      name,
       onAddValueItem,
       onRemoveValueItem,
-      id,
+      ref,
+      setData,
       setDisabled,
       setErrorErrorHelperText,
+      setHidden,
       setItems,
       setLoading,
-      data,
-      setData,
-      hidden,
-      setHidden,
-      changeValue,
+      setValue,
+      validate,
+      valueRef,
     ]);
 
     useEffect(() => {
@@ -452,7 +409,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
           }
           finalValue = getFinalValue(finalValue);
           if (value !== finalValue) {
-            changeValue(finalValue);
+            setValue(finalValue, true);
             nextTick(() => {
               onValueChangeByUser(name, finalValue);
               onRequestSearchSubmit(name, finalValue);
@@ -460,7 +417,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
           }
         }
       },
-      [readOnly, items, getFinalValue, value, changeValue, onValueChangeByUser, name, onRequestSearchSubmit]
+      [readOnly, items, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     /********************************************************************************************************************

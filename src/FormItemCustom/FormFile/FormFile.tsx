@@ -1,16 +1,18 @@
 import React, { ChangeEvent, ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Button, InputAdornment, TextField, Typography } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getFileSizeText } from '../../@util';
-import { empty, equal, nextTick, notEmpty } from '@pdg/util';
+import { empty, nextTick, notEmpty } from '@pdg/util';
 import { FormFileProps as Props, FormFileDefaultProps, FormFileCommands, FormFileValue } from './FormFile.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
 import LinkDialog from './LinkDialog/LinkDialog';
 import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
-import './FormFile.scss';
 import { PdgIcon } from '@pdg/react-component';
+import './FormFile.scss';
+
+const FILE_VALUE = '';
 
 const FormFile = React.forwardRef<FormFileCommands, Props>(
   (
@@ -115,18 +117,19 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
-      initDisabled == null ? formDisabled : initDisabled
-    );
-    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [isOpenLinkDialog, setIsOpenLinkDialog] = useState(false);
-    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
     const [alertDialogProps, setAlertDialogProps] = useState<{
       open: boolean;
       color?: PrivateAlertDialogProps['color'];
       title?: ReactNode;
       content?: ReactNode;
     }>({ open: false });
+
+    const [dataRef, , setData] = useAutoUpdateRefState(initData);
+    const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
+      useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
+    );
+    const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -177,31 +180,15 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
      * State - value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useState<FormFileValue>(initValue || '');
+    const getFinalValue = useCallback((value: Props['value']): FormFileValue => value || '', []);
 
-    const [fileValue] = useState('');
-
-    const changeValue = useCallback(
-      (newValue: FormFileValue) => {
-        if (!equal(value, newValue)) {
-          setValue(newValue);
-          nextTick(() => {
-            if (error) validate(newValue);
-            if (onChange) onChange(newValue);
-            onValueChange(name, newValue);
-          });
-        }
-      },
-      [error, name, onChange, onValueChange, validate, value]
-    );
-
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
+    const [valueRef, value, setValue] = useAutoUpdateRefState<FormFileValue, Props['value']>(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
-      changeValue(initValue || '');
-    }, [initValue]);
+      if (error) validate(value);
+      if (onChange) onChange(value);
+      onValueChange(name, value);
+    }, [value]);
 
     /********************************************************************************************************************
      * Memo
@@ -239,43 +226,23 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
      * ******************************************************************************************************************/
 
     useLayoutEffect(() => {
-      let lastValue = value;
-      let lastData = data;
-      let lastDisabled = !!disabled;
-      let lastHidden = !!hidden;
-
       const commands: FormFileCommands = {
         getType: () => 'FormFile',
         getName: () => name,
-        getReset: () => initValue || '',
-        reset: () => {
-          lastValue = initValue || '';
-          changeValue(lastValue);
-        },
-        getValue: () => lastValue,
-        setValue: (value) => {
-          lastValue = value;
-          changeValue(lastValue);
-        },
-        getData: () => lastData,
-        setData: (data) => {
-          lastData = data;
-          setData(data);
-        },
+        getReset: () => getFinalValue(initValue),
+        reset: () => setValue(initValue),
+        getValue: () => valueRef.current,
+        setValue: (value) => setValue(value),
+        getData: () => dataRef.current,
+        setData: (data) => setData(data),
         isExceptValue: () => !!exceptValue,
-        isDisabled: () => lastDisabled,
-        setDisabled: (disabled: boolean) => {
-          lastDisabled = disabled;
-          setDisabled(disabled);
-        },
-        isHidden: () => lastHidden,
-        setHidden: (hidden) => {
-          lastHidden = hidden;
-          setHidden(hidden);
-        },
+        isDisabled: () => !!disabledRef.current,
+        setDisabled: (disabled: boolean) => setDisabled(disabled),
+        isHidden: () => !!hiddenRef.current,
+        setHidden: (hidden) => setHidden(hidden),
         focus,
         focusValidate: focus,
-        validate: () => validate(value),
+        validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
       };
@@ -302,24 +269,25 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
         }
       };
     }, [
-      name,
-      initValue,
-      value,
+      dataRef,
+      disabledRef,
       exceptValue,
-      disabled,
       focus,
-      validate,
-      ref,
+      getFinalValue,
+      hiddenRef,
+      id,
+      initValue,
+      name,
       onAddValueItem,
       onRemoveValueItem,
-      id,
+      ref,
+      setData,
       setDisabled,
       setErrorErrorHelperText,
-      data,
-      setData,
-      hidden,
       setHidden,
-      changeValue,
+      setValue,
+      validate,
+      valueRef,
     ]);
 
     /********************************************************************************************************************
@@ -373,7 +341,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
           const file = (target.files as FileList)[0];
           fileSizeCheck(file).then(() => {
             onFile(file).then((url) => {
-              changeValue(url);
+              setValue(url);
               nextTick(() => {
                 if (onValueChangeByUser) onValueChangeByUser(name, url);
               });
@@ -381,7 +349,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
           });
         }
       },
-      [changeValue, fileSizeCheck, name, onFile, onValueChangeByUser]
+      [fileSizeCheck, name, onFile, onValueChangeByUser, setValue]
     );
 
     const handleLinkClick = useCallback(() => {
@@ -389,29 +357,29 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
     }, []);
 
     const handleRemoveClick = useCallback(() => {
-      changeValue('');
+      setValue('');
       nextTick(() => {
         if (onValueChangeByUser) onValueChangeByUser(name, '');
       });
-    }, [changeValue, name, onValueChangeByUser]);
+    }, [name, onValueChangeByUser, setValue]);
 
     const handleLinkDialogConfirm = useCallback(
       (url: string) => {
         if (onLink) {
           onLink(url).then((finalUrl) => {
-            changeValue(finalUrl);
+            setValue(finalUrl);
             nextTick(() => {
               if (onValueChangeByUser) onValueChangeByUser(name, finalUrl);
             });
           });
         } else {
-          changeValue(url);
+          setValue(url);
           nextTick(() => {
             if (onValueChangeByUser) onValueChangeByUser(name, url);
           });
         }
       },
-      [changeValue, name, onLink, onValueChangeByUser]
+      [name, onLink, onValueChangeByUser, setValue]
     );
 
     /********************************************************************************************************************
@@ -502,7 +470,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                                 type='file'
                                 accept={accept}
                                 id={id}
-                                value={fileValue}
+                                value={FILE_VALUE}
                                 className='input-file'
                                 onChange={handleFileChange}
                               />
@@ -568,7 +536,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                       type='file'
                       accept={accept}
                       id={id}
-                      value={fileValue}
+                      value={FILE_VALUE}
                       className='input-file'
                       onChange={handleFileChange}
                     />

@@ -4,13 +4,11 @@ import { FormImageFileProps as Props, FormImageFileDefaultProps, FormImageFileCo
 import FormFile from '../FormFile';
 import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
 import { Tooltip, Typography } from '@mui/material';
-import { useAutoUpdateState } from '@pdg/react-hook';
+import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import './FormImageFile.scss';
 
 const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
   ({ className, imageSize, preview, previewMaxHeight, value: initValue, onChange, onFile, onLink, ...props }, ref) => {
-    const [value, setValue] = useAutoUpdateState(initValue);
-
     const [alertDialogProps, setAlertDialogProps] = useState<{
       open: boolean;
       color?: PrivateAlertDialogProps['color'];
@@ -23,6 +21,20 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
       if (window.URL) return window.URL;
       else if (window.webkitURL) return window.webkitURL;
     });
+
+    /********************************************************************************************************************
+     * value
+     * ******************************************************************************************************************/
+
+    const getFinalValue = useCallback((value: Props['value']): string => {
+      return value || '';
+    }, []);
+
+    const [value, setValue] = useAutoUpdateState(initValue, getFinalValue);
+
+    useFirstSkipEffect(() => {
+      if (onChange) onChange(value);
+    }, [value]);
 
     /********************************************************************************************************************
      * Function
@@ -100,9 +112,8 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
     const handleChange = useCallback(
       (value: string) => {
         setValue(value);
-        onChange && onChange(value);
       },
-      [onChange, setValue]
+      [setValue]
     );
 
     const handleFile = useCallback(

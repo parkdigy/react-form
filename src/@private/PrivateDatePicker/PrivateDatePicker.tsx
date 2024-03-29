@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useMe
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DesktopDatePicker, DateValidationError } from '@mui/x-date-pickers';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
 import { PdgIcon, PdgIconText } from '@pdg/react-component';
 import {
@@ -152,11 +152,12 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [timeError, setTimeError] = useState<DateValidationError>(null);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
-      initDisabled == null ? formDisabled : initDisabled
+
+    const [dataRef, , setData] = useAutoUpdateRefState(initData);
+    const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
+      useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
     );
-    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
-    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
+    const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
 
     /********************************************************************************************************************
      * Memo
@@ -191,27 +192,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       [disableFuture, disablePast, maxDate, minDate]
     );
 
-    /********************************************************************************************************************
-     * State - style
-     * ******************************************************************************************************************/
-
-    const [style] = useAutoUpdateState<Props['style']>(
-      useCallback(() => {
-        if (width != null) {
-          return { ...initStyle, width };
-        } else {
-          return initStyle;
-        }
-      }, [initStyle, width])
-    );
-
-    /********************************************************************************************************************
-     * Function - getFinalValue
-     * ******************************************************************************************************************/
-
-    const getFinalValue = useCallback((value: PrivateDatePickerValue): PrivateDatePickerValue => {
-      return value;
-    }, []);
+    const style = useMemo(() => (width != null ? { ...initStyle, width } : initStyle), [initStyle, width]);
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -266,32 +247,25 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
      * State - value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useState<PrivateDatePickerValue>(() => getFinalValue(initValue || null));
-    const [inputValue, setInputValue] = useState<PrivateDatePickerValue>(null);
+    const getFinalValue = useCallback((value: Props['value']): PrivateDatePickerValue => {
+      return value || null;
+    }, []);
 
-    const changeValue = useCallback(
-      (newValue: PrivateDatePickerValue) => {
-        if (value !== newValue) {
-          setValue(newValue);
-          nextTick(() => {
-            if (error) validate(newValue);
-            if (onChange) onChange(newValue);
-            onValueChange(name, newValue);
-          });
-        }
-      },
-      [error, name, onChange, onValueChange, validate, value]
-    );
+    const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+
+    useFirstSkipEffect(() => {
+      if (error) validate(value);
+      if (onChange) onChange(value);
+      onValueChange(name, value);
+    }, [value]);
 
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
 
-    useFirstSkipEffect(() => {
-      changeValue(getFinalValue(initValue || null));
-    }, [initValue]);
+    const [inputValue, setInputValue] = useState<PrivateDatePickerValue>(value);
 
-    useEffect(() => {
+    useFirstSkipEffect(() => {
       setInputValue(value);
     }, [value]);
 
@@ -364,44 +338,23 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
     useLayoutEffect(() => {
       if (ref || onAddValueItem) {
-        let lastValue = value;
-        let lastData = data;
-        let lastDisabled = !!disabled;
-        let lastHidden = !!hidden;
-
         const commands: PrivateDatePickerCommands = {
           getType: () => 'default',
           getName: () => name,
           getReset: () => getFinalValue(initValue || null),
-          reset: () => {
-            lastValue = getFinalValue(initValue || null);
-            changeValue(lastValue);
-          },
-          getValue: () => lastValue,
-          setValue: (value) => {
-            lastValue = getFinalValue(value);
-            changeValue(lastValue);
-          },
-          getData: () => lastData,
-          setData: (data) => {
-            lastData = data;
-            setData(data);
-          },
-
+          reset: () => setValue(initValue),
+          getValue: () => valueRef.current,
+          setValue,
+          getData: () => dataRef.current,
+          setData,
           isExceptValue: () => !!exceptValue,
-          isDisabled: () => lastDisabled,
-          setDisabled: (disabled) => {
-            lastDisabled = disabled;
-            setDisabled(disabled);
-          },
-          isHidden: () => lastHidden,
-          setHidden: (hidden) => {
-            lastHidden = hidden;
-            setHidden(hidden);
-          },
+          isDisabled: () => !!disabledRef.current,
+          setDisabled,
+          isHidden: () => !!hiddenRef.current,
+          setHidden,
           focus,
           focusValidate: focus,
-          validate: () => validate(value),
+          validate: () => validate(valueRef.current),
           setError: (error: boolean, errorText: ReactNode | undefined) =>
             setErrorErrorHelperText(error, error ? errorText : undefined),
           getFormValueFormat: () => formValueFormat,
@@ -430,26 +383,26 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
         };
       }
     }, [
-      name,
-      initValue,
-      value,
-      getFinalValue,
+      dataRef,
+      disabledRef,
       exceptValue,
-      disabled,
       focus,
-      validate,
       formValueFormat,
-      ref,
+      getFinalValue,
+      hiddenRef,
+      id,
+      initValue,
+      name,
       onAddValueItem,
       onRemoveValueItem,
-      id,
+      ref,
+      setData,
       setDisabled,
       setErrorErrorHelperText,
-      data,
-      setData,
-      hidden,
       setHidden,
-      changeValue,
+      setValue,
+      validate,
+      valueRef,
     ]);
 
     /********************************************************************************************************************
@@ -492,7 +445,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
           } else if (time) {
             if (time === unit) setOpen(false);
           }
-          changeValue(finalValue);
+          setValue(finalValue);
 
           nextTick(() => {
             onValueChangeByUser(name, finalValue);
@@ -521,7 +474,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
         setInputValue(finalValue);
       },
-      [type, time, changeValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]
+      [type, time, setValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     const handleContainerFocus = useCallback(() => {

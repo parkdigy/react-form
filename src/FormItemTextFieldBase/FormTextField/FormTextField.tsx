@@ -1,8 +1,8 @@
-import React, { useId, useRef, useState, useEffect, useCallback, ReactNode, useLayoutEffect, useMemo } from 'react';
+import React, { useId, useRef, useState, useCallback, ReactNode, useLayoutEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { IconButton, InputAdornment, InputProps, TextField } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, equal, nextTick, notEmpty } from '@pdg/util';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { empty, nextTick, notEmpty } from '@pdg/util';
 import {
   FormTextFieldProps,
   FormTextFieldDefaultProps,
@@ -131,51 +131,12 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
 
     const [error, setError] = useAutoUpdateState<FormTextFieldProps['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<FormTextFieldProps['helperText']>();
-    const [showClear, setShowClear] = useState<boolean>(false);
 
-    /********************************************************************************************************************
-     * disabled
-     * ******************************************************************************************************************/
-
-    const disabledRef = useRef<FormTextFieldProps['disabled']>(initDisabled == null ? formDisabled : initDisabled);
-    const [disabled, setDisabled] = useState<FormTextFieldProps['disabled']>(
-      initDisabled == null ? formDisabled : initDisabled
+    const [dataRef, , setData] = useAutoUpdateRefState<FormTextFieldProps['data']>(initData);
+    const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState<FormTextFieldProps['disabled']>(
+      useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
     );
-
-    const changeDisabled = useCallback((newDisabled: FormTextFieldProps['disabled']) => {
-      disabledRef.current = newDisabled;
-      setDisabled(newDisabled);
-    }, []);
-
-    useFirstSkipEffect(() => {
-      changeDisabled(initDisabled == null ? formDisabled : initDisabled);
-    }, [initDisabled, formDisabled]);
-
-    /********************************************************************************************************************
-     * hidden
-     * ******************************************************************************************************************/
-
-    const hiddenRef = useRef<FormTextFieldProps['hidden']>(initHidden);
-    const [hidden, setHidden] = useState<FormTextFieldProps['hidden']>(initHidden);
-
-    const changeHidden = useCallback((newHidden: FormTextFieldProps['hidden']) => {
-      hiddenRef.current = newHidden;
-      setHidden(newHidden);
-    }, []);
-
-    useFirstSkipEffect(() => {
-      changeHidden(initHidden);
-    }, [initHidden]);
-
-    /********************************************************************************************************************
-     * data
-     * ******************************************************************************************************************/
-
-    const dataRef = useRef<FormTextFieldProps['data']>(initData);
-
-    useFirstSkipEffect(() => {
-      dataRef.current = initData;
-    }, [initData]);
+    const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState<FormTextFieldProps['hidden']>(initHidden);
 
     /********************************************************************************************************************
      * Memo - muiInputLabelProps
@@ -248,17 +209,6 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     }, [initLabel, labelIcon]);
 
     /********************************************************************************************************************
-     * Function - getFinalValue
-     * ******************************************************************************************************************/
-
-    const getFinalValue = useCallback(
-      function (newValue: FormTextFieldProps['value']): FormTextFieldProps['value'] {
-        return onValue ? onValue(newValue) : newValue;
-      },
-      [onValue]
-    );
-
-    /********************************************************************************************************************
      * Function - setErrorErrorHelperText
      * ******************************************************************************************************************/
 
@@ -312,34 +262,28 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
      * State - value
      * ******************************************************************************************************************/
 
-    const valueRef = useRef<FormTextFieldProps['value']>(getFinalValue(initValue));
-    const [value, setValue] = useState<FormTextFieldProps['value']>(() => getFinalValue(initValue));
-
-    const changeValue = useCallback(
-      (newValue: FormTextFieldProps['value']) => {
-        if (!equal(valueRef.current, newValue)) {
-          valueRef.current = newValue;
-          setValue(newValue);
-          nextTick(() => {
-            if (error) validate(newValue);
-            if (onChange) onChange(newValue);
-            if (!noFormValueItem) {
-              onValueChange(name, newValue);
-            }
-          });
-        }
+    const getFinalValue = useCallback(
+      function (newValue: FormTextFieldProps['value']): FormTextFieldProps['value'] {
+        return onValue ? onValue(newValue) : newValue;
       },
-      [error, name, noFormValueItem, onChange, onValueChange, validate]
+      [onValue]
     );
 
-    useFirstSkipEffect(() => {
-      changeValue(getFinalValue(initValue));
-    }, [initValue]);
+    const [valueRef, value, setValue] = useAutoUpdateRefState<FormTextFieldProps['value']>(initValue, getFinalValue);
 
-    useEffect(() => {
-      setShowClear(clear ? notEmpty(value) : false);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    useFirstSkipEffect(() => {
+      if (error) validate(value);
+      if (onChange) onChange(value);
+      if (!noFormValueItem) {
+        onValueChange(name, value);
+      }
     }, [value]);
+
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+
+    const showClear = useMemo(() => (clear ? notEmpty(value) : false), [clear, value]);
 
     /********************************************************************************************************************
      * Function - focus
@@ -385,8 +329,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
                   size='small'
                   tabIndex={-1}
                   onClick={() => {
-                    const finalValue = getFinalValue('');
-                    changeValue(finalValue);
+                    const finalValue = setValue('');
                     focus();
                     if (!noFormValueItem) {
                       nextTick(() => {
@@ -408,12 +351,10 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
 
       return muiInputProps;
     }, [
-      changeValue,
       clear,
       disabled,
       endAdornment,
       focus,
-      getFinalValue,
       icon,
       initMuiInputProps,
       name,
@@ -421,6 +362,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       onRequestSearchSubmit,
       onValueChangeByUser,
       readOnly,
+      setValue,
       showClear,
       startAdornment,
     ]);
@@ -435,25 +377,21 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
           getType: () => 'default',
           getName: () => name,
           getReset: () => getFinalValue(initValue),
-          reset: () => {
-            changeValue(getFinalValue(initValue));
-          },
+          reset: () => setValue(initValue),
           getValue: () => valueRef.current,
-          setValue: (value) => {
-            changeValue(getFinalValue(value));
-          },
+          setValue: (value) => setValue(value),
           getData: () => dataRef.current,
           setData: (data) => {
-            dataRef.current = data;
+            setData(data);
           },
           isExceptValue: () => !!exceptValue,
           isDisabled: () => !!disabledRef.current,
           setDisabled: (disabled) => {
-            changeDisabled(disabled);
+            setDisabled(disabled);
           },
           isHidden: () => !!hiddenRef.current,
           setHidden: (hidden) => {
-            changeHidden(hidden);
+            setHidden(hidden);
           },
           focus,
           focusValidate: focus,
@@ -485,12 +423,12 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
         };
       }
     }, [
-      changeDisabled,
-      changeHidden,
-      changeValue,
+      dataRef,
+      disabledRef,
       exceptValue,
       focus,
       getFinalValue,
+      hiddenRef,
       id,
       initValue,
       name,
@@ -498,8 +436,13 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       onAddValueItem,
       onRemoveValueItem,
       ref,
+      setData,
+      setDisabled,
       setErrorErrorHelperText,
+      setHidden,
+      setValue,
       validate,
+      valueRef,
     ]);
 
     /********************************************************************************************************************
@@ -508,8 +451,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
 
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const finalValue = getFinalValue(e.target.value);
-        changeValue(finalValue);
+        const finalValue = setValue(e.target.value);
         if (!noFormValueItem) {
           nextTick(() => {
             onValueChangeByUser(name, finalValue);
@@ -519,7 +461,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
           });
         }
       },
-      [getFinalValue, changeValue, noFormValueItem, onValueChangeByUser, name, select, onRequestSearchSubmit]
+      [setValue, noFormValueItem, onValueChangeByUser, name, select, onRequestSearchSubmit]
     );
 
     const handleBlur = useCallback(
@@ -527,7 +469,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
         if (error) validate(valueRef.current);
         if (onBlur) onBlur(e);
       },
-      [error, validate, onBlur]
+      [error, validate, valueRef, onBlur]
     );
 
     const handleKeyDown = useCallback(
@@ -544,7 +486,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
         }
         if (onKeyDown) onKeyDown(e);
       },
-      [select, multiline, disableReturnKey, noFormValueItem, onKeyDown, onRequestSearchSubmit, name]
+      [select, multiline, disableReturnKey, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, valueRef]
     );
 
     /********************************************************************************************************************

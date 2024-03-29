@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback, ReactNode } from 'react';
+import React, { useEffect, useState, useCallback, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
 import { Autocomplete, Chip, InputLabelProps } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import {
   FormTagProps,
   FormTagDefaultProps,
@@ -64,46 +64,8 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     );
 
     /********************************************************************************************************************
-     * Function - getFinalValue
+     * State
      * ******************************************************************************************************************/
-
-    const getFinalValue = useCallback(
-      (value: FormTagValue | Set<string>): FormTagValue => {
-        let finalValue;
-
-        if (value instanceof Set) {
-          finalValue = Array.from(value);
-        } else {
-          const valueSet = new Set<string>();
-          (value || []).forEach((value) => valueSet.add(value));
-          finalValue = Array.from(valueSet);
-        }
-
-        return onValue ? onValue(finalValue) : finalValue;
-      },
-      [onValue]
-    );
-
-    /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-
-    const [value, setValue] = useState(() => getFinalValue(initValue || []));
-    const [valueSet, setValueSet] = useState(() => new Set<string>(getFinalValue(initValue || [])));
-
-    useFirstSkipEffect(() => {
-      setValue(getFinalValue(initValue || []));
-      setValueSet(new Set(getFinalValue(initValue || [])));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [initValue]);
-
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
-
-    //------------------------------------------------------------------------------------------------------------------
 
     const [inputValue, setInputValue] = useState<string>('');
     const [error, setError] = useAutoUpdateState<FormTagProps['error']>(initError);
@@ -111,18 +73,6 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     const [disabled] = useAutoUpdateState<FormTextFieldProps['disabled']>(
       initDisabled == null ? formDisabled : initDisabled
     );
-
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-
-    useEffect(() => {
-      if (!equal(value, initValue)) {
-        if (onChange) onChange(value);
-        onValueChange(name, value);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -163,6 +113,53 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     );
 
     /********************************************************************************************************************
+     * value
+     * ******************************************************************************************************************/
+
+    type GetFinalValueParam = FormTagValue | Set<string> | undefined;
+
+    const getFinalValue = useCallback(
+      (value: GetFinalValueParam): FormTagValue => {
+        let finalValue = value === undefined ? [] : value;
+
+        if (finalValue instanceof Set) {
+          finalValue = Array.from(finalValue);
+        } else {
+          const finalValueSet = new Set<string>();
+          (finalValue || []).forEach((finalValue) => finalValueSet.add(finalValue));
+          finalValue = Array.from(finalValueSet);
+        }
+
+        return onValue ? onValue(finalValue) : finalValue;
+      },
+      [onValue]
+    );
+
+    const [valueRef, value, setValue] = useAutoUpdateRefState<FormTagValue, GetFinalValueParam>(
+      initValue,
+      getFinalValue
+    );
+    const valueSet = useMemo(() => new Set(value), [value]);
+
+    useFirstSkipEffect(() => {
+      if (error) validate(value);
+      if (onChange) onChange(value);
+      onValueChange(name, value);
+    }, [value]);
+
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
+
+    useEffect(() => {
+      if (!equal(value, initValue)) {
+        if (onChange) onChange(value);
+        onValueChange(name, value);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    /********************************************************************************************************************
      * Function - getExtraCommands
      * ******************************************************************************************************************/
 
@@ -179,29 +176,17 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
 
     const getCommands = useCallback(
       (baseCommands: FormTextCommands) => {
-        let lastValue = value;
-
         return {
           ...baseCommands,
-          getReset: () => getFinalValue(initValue || []),
-          reset: () => {
-            lastValue = getFinalValue(initValue || []);
-            setValue(lastValue);
-          },
-          getValue: () => lastValue,
-          setValue: (newValue: FormTagValue) => {
-            const finalValue = getFinalValue(newValue);
-            if (!equal(lastValue, finalValue)) {
-              lastValue = finalValue;
-              setValueSet(new Set(lastValue));
-              setValue(lastValue);
-            }
-          },
-          validate: () => validate(value),
+          getReset: () => getFinalValue(initValue),
+          reset: () => setValue(initValue),
+          getValue: () => valueRef.current,
+          setValue: (newValue: FormTagValue) => setValue(newValue),
+          validate: () => validate(valueRef.current),
           ...getExtraCommands(),
         };
       },
-      [value, getExtraCommands, getFinalValue, initValue, setValue, validate]
+      [getExtraCommands, getFinalValue, initValue, setValue, valueRef, validate]
     );
 
     /********************************************************************************************************************
@@ -214,9 +199,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           setInputValue('');
         } else {
           valueSet.add(tag);
-          Array.from(valueSet);
-          const finalValue = getFinalValue(valueSet);
-          setValue(finalValue);
+          const finalValue = setValue(valueSet);
           nextTick(() => {
             setInputValue('');
             onValueChangeByUser(name, finalValue);
@@ -224,22 +207,21 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           });
         }
       },
-      [valueSet, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
+      [valueSet, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     const removeTag = useCallback(
       (tag: string) => {
         if (valueSet.has(tag)) {
           valueSet.delete(tag);
-          const finalValue = getFinalValue(valueSet);
-          setValue(finalValue);
+          const finalValue = setValue(valueSet);
           nextTick(() => {
             onValueChangeByUser(name, finalValue);
             onRequestSearchSubmit(name, finalValue);
           });
         }
       },
-      [valueSet, getFinalValue, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
+      [valueSet, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     /********************************************************************************************************************

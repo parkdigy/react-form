@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util';
-import { empty, equal, nextTick } from '@pdg/util';
+import { empty, nextTick } from '@pdg/util';
 import {
   FormYearPickerProps as Props,
   FormYearPickerDefaultProps,
@@ -128,20 +128,17 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
-      initDisabled == null ? formDisabled : initDisabled
-    );
-    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
-    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
     const [open, setOpen] = useState(false);
+
+    const [dataRef, , setData] = useAutoUpdateRefState(initData);
+    const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
+      useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
+    );
+    const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
 
     /********************************************************************************************************************
      * Function - getFinalValue
      * ******************************************************************************************************************/
-
-    const getFinalValue = useCallback((newValue: FormYearPickerValue | undefined): FormYearPickerValue => {
-      return newValue || DEFAULT_VALUE;
-    }, []);
 
     const setErrorErrorHelperText = useCallback(
       function (error: Props['error'], errorHelperText: Props['helperText']) {
@@ -179,28 +176,20 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
     );
 
     /********************************************************************************************************************
-     * State - value
+     * value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useState<FormYearPickerValue>(() => getFinalValue(initValue));
+    const getFinalValue = useCallback((newValue: FormYearPickerValue | undefined): FormYearPickerValue => {
+      return newValue || DEFAULT_VALUE;
+    }, []);
 
-    const changeValue = useCallback(
-      (newValue: FormYearPickerValue) => {
-        if (!equal(value, newValue)) {
-          setValue(newValue);
-          nextTick(() => {
-            if (error) validate(newValue);
-            if (onChange) onChange(newValue);
-            onValueChange(name, newValue);
-          });
-        }
-      },
-      [error, name, onChange, onValueChange, validate, value]
-    );
+    const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
-      changeValue(getFinalValue(initValue));
-    }, [initValue]);
+      if (error) validate(value);
+      if (onChange) onChange(value);
+      onValueChange(name, value);
+    }, [value]);
 
     /********************************************************************************************************************
      * Function
@@ -270,43 +259,23 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
      * ******************************************************************************************************************/
 
     useLayoutEffect(() => {
-      let lastValue = value;
-      let lastData = data;
-      let lastDisabled = !!disabled;
-      let lastHidden = !!hidden;
-
       const commands: FormYearPickerCommands = {
         getType: () => 'FormYearPicker',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
-        reset: () => {
-          lastValue = getFinalValue(initValue);
-          changeValue(lastValue);
-        },
-        getValue: () => lastValue,
-        setValue: (value) => {
-          lastValue = getFinalValue(value);
-          changeValue(lastValue);
-        },
-        getData: () => lastData,
-        setData: (data) => {
-          lastData = data;
-          setData(data);
-        },
+        reset: () => setValue(initValue),
+        getValue: () => valueRef.current,
+        setValue,
+        getData: () => dataRef.current,
+        setData,
         isExceptValue: () => !!exceptValue,
-        isDisabled: () => lastDisabled,
-        setDisabled: (disabled) => {
-          lastDisabled = disabled;
-          setDisabled(disabled);
-        },
-        isHidden: () => lastHidden,
-        setHidden: (hidden) => {
-          lastHidden = hidden;
-          setHidden(hidden);
-        },
+        isDisabled: () => !!disabledRef.current,
+        setDisabled,
+        isHidden: () => !!hiddenRef.current,
+        setHidden,
         focus,
         focusValidate: focus,
-        validate: () => validate(value),
+        validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
       };
@@ -333,25 +302,25 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
         }
       };
     }, [
-      name,
-      initValue,
-      value,
-      getFinalValue,
+      dataRef,
+      disabledRef,
       exceptValue,
-      disabled,
       focus,
-      validate,
-      ref,
+      getFinalValue,
+      hiddenRef,
+      id,
+      initValue,
+      name,
       onAddValueItem,
       onRemoveValueItem,
-      id,
+      ref,
+      setData,
       setDisabled,
       setErrorErrorHelperText,
-      data,
-      setData,
-      hidden,
       setHidden,
-      changeValue,
+      setValue,
+      validate,
+      valueRef,
     ]);
 
     /********************************************************************************************************************
@@ -389,25 +358,25 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
 
     const handleContainerChange = useCallback(
       (newValue: FormYearPickerBaseValue, isClick: boolean) => {
-        changeValue(newValue);
+        setValue(newValue);
         if (isClick) setOpen(false);
 
         nextTick(() => {
           onValueChangeByUser(name, newValue);
         });
       },
-      [changeValue, name, onValueChangeByUser]
+      [name, onValueChangeByUser, setValue]
     );
 
     const handleInputDatePickerChange = useCallback(
       (v: PrivateDatePickerValue) => {
         const newValue = v ? dateToValue(v) : v;
-        changeValue(newValue);
+        setValue(newValue);
         nextTick(() => {
           onValueChangeByUser(name, newValue);
         });
       },
-      [changeValue, dateToValue, name, onValueChangeByUser]
+      [dateToValue, name, onValueChangeByUser, setValue]
     );
 
     const handleInputDatePickerFocus = useCallback(() => {

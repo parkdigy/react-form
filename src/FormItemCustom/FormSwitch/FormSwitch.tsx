@@ -1,8 +1,8 @@
 import React, { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { FormControlLabel, Switch } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { equal, nextTick } from '@pdg/util';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { nextTick } from '@pdg/util';
 import { FormSwitchProps as Props, FormSwitchDefaultProps, FormSwitchCommands } from './FormSwitch.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
@@ -88,22 +88,12 @@ const FormSwitch = React.forwardRef<FormSwitchCommands, Props>(
 
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
-      initDisabled == null ? formDisabled : initDisabled
-    );
-    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
-    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
 
-    /********************************************************************************************************************
-     * Function - getFinalValue
-     * ******************************************************************************************************************/
-
-    const getFinalValue = useCallback(
-      (value: boolean): boolean => {
-        return onValue ? onValue(value) : value;
-      },
-      [onValue]
+    const [dataRef, , setData] = useAutoUpdateRefState(initData);
+    const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
+      useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
     );
+    const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
 
     /********************************************************************************************************************
      * Function
@@ -138,25 +128,21 @@ const FormSwitch = React.forwardRef<FormSwitchCommands, Props>(
      * State - value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useState<boolean>(() => getFinalValue(initValue || false));
-
-    const changeValue = useCallback(
-      (newValue: boolean) => {
-        if (!equal(value, newValue)) {
-          setValue(newValue);
-          nextTick(() => {
-            if (error) validate(newValue);
-            if (onChange) onChange(newValue);
-            onValueChange(name, newValue);
-          });
-        }
+    const getFinalValue = useCallback(
+      (value: Props['value']) => {
+        const finalValue = value || false;
+        return onValue ? onValue(finalValue) : finalValue;
       },
-      [error, name, onChange, onValueChange, validate, value]
+      [onValue]
     );
 
+    const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+
     useFirstSkipEffect(() => {
-      changeValue(getFinalValue(initValue || false));
-    }, [initValue]);
+      if (error) validate(value);
+      if (onChange) onChange(value);
+      onValueChange(name, value);
+    }, [value]);
 
     /********************************************************************************************************************
      * Function
@@ -174,43 +160,23 @@ const FormSwitch = React.forwardRef<FormSwitchCommands, Props>(
      * ******************************************************************************************************************/
 
     useLayoutEffect(() => {
-      let lastValue = value;
-      let lastData = data;
-      let lastDisabled = !!disabled;
-      let lastHidden = !!hidden;
-
       const commands: FormSwitchCommands = {
         getType: () => 'FormSwitch',
         getName: () => name,
-        getReset: () => getFinalValue(initValue || false),
-        reset: () => {
-          lastValue = getFinalValue(initValue || false);
-          changeValue(lastValue);
-        },
-        getValue: () => lastValue,
-        setValue: (value: boolean) => {
-          lastValue = getFinalValue(value);
-          changeValue(lastValue);
-        },
-        getData: () => lastData,
-        setData: (data) => {
-          lastData = data;
-          setData(data);
-        },
+        getReset: () => getFinalValue(initValue),
+        reset: () => setValue(initValue),
+        getValue: () => valueRef.current,
+        setValue,
+        getData: () => dataRef.current,
+        setData,
         isExceptValue: () => !!exceptValue,
-        isDisabled: () => lastDisabled,
-        setDisabled: (disabled) => {
-          lastDisabled = disabled;
-          setDisabled(disabled);
-        },
-        isHidden: () => lastHidden,
-        setHidden: (hidden) => {
-          lastHidden = hidden;
-          setHidden(hidden);
-        },
+        isDisabled: () => !!disabledRef.current,
+        setDisabled,
+        isHidden: () => !!hiddenRef.current,
+        setHidden,
         focus,
         focusValidate: focus,
-        validate: () => validate(value),
+        validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
       };
@@ -237,25 +203,25 @@ const FormSwitch = React.forwardRef<FormSwitchCommands, Props>(
         }
       };
     }, [
-      name,
-      initValue,
-      value,
-      getFinalValue,
+      dataRef,
+      disabledRef,
       exceptValue,
-      disabled,
       focus,
-      validate,
-      ref,
+      getFinalValue,
+      hiddenRef,
+      id,
+      initValue,
+      name,
       onAddValueItem,
       onRemoveValueItem,
-      id,
+      ref,
+      setData,
       setDisabled,
       setErrorErrorHelperText,
-      data,
-      setData,
-      hidden,
       setHidden,
-      changeValue,
+      setValue,
+      validate,
+      valueRef,
     ]);
 
     /********************************************************************************************************************
@@ -267,15 +233,14 @@ const FormSwitch = React.forwardRef<FormSwitchCommands, Props>(
         if (readOnly) {
           e.preventDefault();
         } else {
-          const finalValue = getFinalValue(checked);
-          changeValue(finalValue);
+          const finalValue = setValue(checked);
           nextTick(() => {
             onValueChangeByUser(name, finalValue);
             onRequestSearchSubmit(name, finalValue);
           });
         }
       },
-      [readOnly, getFinalValue, changeValue, onValueChangeByUser, name, onRequestSearchSubmit]
+      [readOnly, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     /********************************************************************************************************************

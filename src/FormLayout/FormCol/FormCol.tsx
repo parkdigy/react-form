@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useId, useCallback, useMemo, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useId, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import { FormHelperText, Grid, Box } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
@@ -6,7 +6,6 @@ import { FormColProps as Props, FormColDefaultProps } from './FormCol.types';
 import { useFormState } from '../../FormContext';
 import { FormLabel } from '../../FormCommon';
 import FormContextProvider from '../../FormContextProvider';
-import { useAutoUpdateState } from '@pdg/react-hook';
 
 const FormCol = React.forwardRef<HTMLDivElement, Props>(
   (
@@ -90,6 +89,10 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
      * ******************************************************************************************************************/
 
     const gap = useMemo(() => (initGap == null ? formFormColGap : initGap), [formFormColGap, initGap]);
+    const style = useMemo<Props['style']>(
+      () => (hidden ? { ...initStyle, display: 'none' } : initStyle),
+      [hidden, initStyle]
+    );
 
     /********************************************************************************************************************
      * ResizeDetector
@@ -100,20 +103,6 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
       handleWidth: true,
       handleHeight: false,
     });
-
-    /********************************************************************************************************************
-     * State - style
-     * ******************************************************************************************************************/
-
-    const [style] = useAutoUpdateState<Props['style']>(
-      useCallback(() => {
-        if (hidden) {
-          return { ...initStyle, display: 'none' };
-        } else {
-          return initStyle;
-        }
-      }, [initStyle, hidden])
-    );
 
     /********************************************************************************************************************
      * LayoutEffect

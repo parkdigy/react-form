@@ -10,7 +10,6 @@ import {
 import { PickersDay, PickersDayProps, StaticDatePicker } from '@mui/x-date-pickers';
 import { IconButton, IconButtonProps } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
-import { useAutoUpdateState } from '@pdg/react-hook';
 import './FormDateRangePickerTooltipPicker.scss';
 
 interface ClassNameMap {
@@ -38,12 +37,16 @@ const FormDateRangePickerTooltipPicker = React.forwardRef<FormDateRangePickerToo
      * State
      * ******************************************************************************************************************/
 
-    const [value] = useAutoUpdateState<FormDateRangePickerTooltipPickerValue>(
-      useCallback((): FormDateRangePickerTooltipPickerValue => {
-        return initValue ? initValue : [null, null];
-      }, [initValue])
-    );
     const [activeMonthValue, setActiveMonthValue] = useState<FormDateRangePickerTooltipPickerDateValue>(null);
+
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+
+    const value = useMemo<FormDateRangePickerTooltipPickerValue>(
+      () => (initValue ? initValue : [null, null]),
+      [initValue]
+    );
 
     /********************************************************************************************************************
      * Effect

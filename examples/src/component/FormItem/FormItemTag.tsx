@@ -26,6 +26,8 @@ const FormItemTag = () => {
 
   const additionalProps = { formValueSort };
 
+  ll(additionalProps);
+
   return (
     <>
       <OutlinedPaper>
@@ -37,7 +39,7 @@ const FormItemTag = () => {
                   name='formValueSort'
                   text='formValueSort'
                   checked={formValueSort}
-                  onChange={(checked) => setFormValueSort(checked)}
+                  onChange={setFormValueSort}
                 />
               </FormCol>
             </FormRow>

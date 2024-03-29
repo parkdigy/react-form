@@ -1,9 +1,9 @@
 import React, { ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util';
-import { equal, nextTick } from '@pdg/util';
+import { nextTick } from '@pdg/util';
 import {
   FormMonthRangePickerProps as Props,
   FormMonthRangePickerDefaultProps,
@@ -142,20 +142,13 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
     const [fromErrorHelperText, setFromErrorHelperText] = useState<Props['helperText']>();
     const [toError, setToError] = useState(false);
     const [toErrorHelperText, setToErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
-      initDisabled == null ? formDisabled : initDisabled
-    );
-    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
-    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
     const [open, setOpen] = useState(false);
 
-    /********************************************************************************************************************
-     * Function - getFinalValue
-     * ******************************************************************************************************************/
-
-    const getFinalValue = useCallback((value: FormMonthRangePickerValue | undefined): FormMonthRangePickerValue => {
-      return value || DEFAULT_VALUE;
-    }, []);
+    const [dataRef, , setData] = useAutoUpdateRefState(initData);
+    const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
+      useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
+    );
+    const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
 
     /********************************************************************************************************************
      * Function
@@ -225,25 +218,20 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
      * State - value
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useState<FormMonthRangePickerValue>(() => getFinalValue(initValue));
+    const getFinalValue = useCallback((value: FormMonthRangePickerValue | undefined): FormMonthRangePickerValue => {
+      return value || DEFAULT_VALUE;
+    }, []);
 
-    const changeValue = useCallback(
-      (newValue: FormMonthRangePickerValue) => {
-        if (!equal(value, newValue)) {
-          setValue(newValue);
-          nextTick(() => {
-            if (error || fromError || toError) validate(value);
-            if (onChange) onChange(newValue);
-            onValueChange(name, newValue);
-          });
-        }
-      },
-      [error, fromError, name, onChange, onValueChange, toError, validate, value]
+    const [valueRef, value, setValue] = useAutoUpdateRefState<FormMonthRangePickerValue, Props['value']>(
+      initValue,
+      getFinalValue
     );
 
     useFirstSkipEffect(() => {
-      changeValue(getFinalValue(initValue));
-    }, [initValue]);
+      if (error || fromError || toError) validate(value);
+      if (onChange) onChange(value);
+      onValueChange(name, value);
+    }, [value]);
 
     /********************************************************************************************************************
      * Function
@@ -337,101 +325,71 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
      * ******************************************************************************************************************/
 
     useLayoutEffect(() => {
-      let lastValue = value;
-      let lastData = data;
-      let lastDisabled = !!disabled;
-      let lastHidden = !!hidden;
-
       const commands: FormMonthRangePickerCommands = {
         getType: () => 'FormMonthRangePicker',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
-        reset: () => {
-          lastValue = getFinalValue(initValue);
-          changeValue(lastValue);
-        },
-        getValue: () => lastValue,
-        setValue: (value) => {
-          lastValue = getFinalValue(value);
-          changeValue(lastValue);
-        },
-        getData: () => lastData,
-        setData: (data) => {
-          lastData = data;
-          setData(data);
-        },
-        getFromValue: () => lastValue[0],
-        setFromValue: (value) => {
-          lastValue = [value, lastValue[1]];
-          changeValue(lastValue);
-        },
-        getToValue: () => lastValue[1],
-        setToValue: (value) => {
-          lastValue = [lastValue[0], value];
-          changeValue(lastValue);
-        },
-        getFromYear: () => (lastValue[0] ? lastValue[0].year : null),
+        reset: () => setValue(initValue),
+        getValue: () => valueRef.current,
+        setValue: (value) => setValue(value),
+        getData: () => dataRef.current,
+        setData: (data) => setData(data),
+        getFromValue: () => valueRef.current[0],
+        setFromValue: (value) => setValue([value, valueRef.current[1]]),
+        getToValue: () => valueRef.current[1],
+        setToValue: (value) => setValue([valueRef.current[0], value]),
+        getFromYear: () => (valueRef.current[0] ? valueRef.current[0].year : null),
         setFromYear: (year: number | null) => {
-          lastValue = getFinalValue([
+          setValue([
             year === null
               ? null
-              : lastValue[0]
-                ? { year, month: lastValue[0].month }
+              : valueRef.current[0]
+                ? { year, month: valueRef.current[0].month }
                 : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
-            lastValue[1],
+            valueRef.current[1],
           ]);
-          changeValue(lastValue);
         },
-        getFromMonth: () => (lastValue[0] ? lastValue[0].month : null),
+        getFromMonth: () => (valueRef.current[0] ? valueRef.current[0].month : null),
         setFromMonth: (month: number | null) => {
-          lastValue = getFinalValue([
+          setValue([
             month === null
               ? null
-              : lastValue[0]
-                ? { year: lastValue[0].year, month }
+              : valueRef.current[0]
+                ? { year: valueRef.current[0].year, month }
                 : { year: new Date().getFullYear(), month },
-            lastValue[1],
+            valueRef.current[1],
           ]);
-          changeValue(lastValue);
         },
-        getToYear: () => (lastValue[1] ? lastValue[1].year : null),
+        getToYear: () => (valueRef.current[1] ? valueRef.current[1].year : null),
         setToYear: (year: number | null) => {
-          lastValue = getFinalValue([
-            lastValue[0],
+          setValue([
+            valueRef.current[0],
             year === null
               ? null
-              : lastValue[1]
-                ? { year, month: lastValue[1].month }
+              : valueRef.current[1]
+                ? { year, month: valueRef.current[1].month }
                 : { year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
           ]);
-          changeValue(lastValue);
         },
-        getToMonth: () => (lastValue[1] ? lastValue[1].month : null),
+        getToMonth: () => (valueRef.current[1] ? valueRef.current[1].month : null),
         setToMonth: (month: number | null) => {
-          lastValue = getFinalValue([
-            lastValue[0],
+          setValue([
+            valueRef.current[0],
             month === null
               ? null
-              : lastValue[1]
-                ? { year: lastValue[1].year, month }
+              : valueRef.current[1]
+                ? { year: valueRef.current[1].year, month }
                 : { year: new Date().getFullYear(), month },
           ]);
-          changeValue(lastValue);
         },
         isExceptValue: () => !!exceptValue,
-        isDisabled: () => lastDisabled,
-        setDisabled: (disabled) => {
-          lastDisabled = disabled;
-          setDisabled(disabled);
-        },
-        isHidden: () => lastHidden,
-        setHidden: (hidden) => {
-          lastHidden = hidden;
-          setHidden(hidden);
-        },
+        isDisabled: () => !!disabledRef.current,
+        setDisabled: (disabled) => setDisabled(disabled),
+        isHidden: () => !!hiddenRef.current,
+        setHidden: (hidden) => setHidden(hidden),
         focus,
         focusValidate: focus,
-        validate: () => validate(value),
+        validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
         getFormValueFromYearNameSuffix: () =>
@@ -478,29 +436,29 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
         }
       };
     }, [
-      name,
-      initValue,
-      value,
-      getFinalValue,
+      dataRef,
+      disabledRef,
       exceptValue,
-      disabled,
       focus,
-      validate,
-      ref,
+      formValueFromMonthNameSuffix,
+      formValueFromYearNameSuffix,
+      formValueToMonthNameSuffix,
+      formValueToYearNameSuffix,
+      getFinalValue,
+      hiddenRef,
+      id,
+      initValue,
+      name,
       onAddValueItem,
       onRemoveValueItem,
-      id,
+      ref,
+      setData,
       setDisabled,
       setErrorErrorHelperText,
-      data,
-      setData,
-      formValueFromYearNameSuffix,
-      formValueFromMonthNameSuffix,
-      formValueToYearNameSuffix,
-      formValueToMonthNameSuffix,
-      hidden,
       setHidden,
-      changeValue,
+      setValue,
+      validate,
+      valueRef,
     ]);
 
     /********************************************************************************************************************
@@ -509,7 +467,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
 
     const handleContainerChange = useCallback(
       (newValue: FormMonthRangePickerValue, selectType: PrivateMonthRangePickerSelectType, isMonthSelect: boolean) => {
-        changeValue(newValue);
+        setValue(newValue);
         if (selectType === 'start' && isMonthSelect) {
           nextTick(() => {
             endInputRef.current?.focus();
@@ -522,14 +480,14 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
           onValueChangeByUser(name, newValue);
         });
       },
-      [changeValue, name, onValueChangeByUser]
+      [name, onValueChangeByUser, setValue]
     );
 
     const handleInputDatePickerChange = useCallback(
       (selectType: PrivateYearRangePickerSelectType, date: PrivateInputDatePickerValue) => {
         if (date == null || date.isValid()) {
           if (selectType === 'start') {
-            const newValue: FormMonthRangePickerValue = [date ? dateToValue(date) : null, value[1]];
+            const newValue: FormMonthRangePickerValue = [date ? dateToValue(date) : null, valueRef.current[1]];
             if (
               newValue[0] !== null &&
               valueToYm(newValue[0]) >= minAvailableYm &&
@@ -546,9 +504,9 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
             nextTick(() => {
               onValueChangeByUser(name, newValue);
             });
-            changeValue(newValue);
+            setValue(newValue);
           } else {
-            const newValue: FormMonthRangePickerValue = [value[0], date ? dateToValue(date) : null];
+            const newValue: FormMonthRangePickerValue = [valueRef.current[0], date ? dateToValue(date) : null];
             if (
               newValue[1] !== null &&
               valueToYm(newValue[1]) >= minAvailableYm &&
@@ -564,18 +522,18 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
             nextTick(() => {
               onValueChangeByUser(name, newValue);
             });
-            changeValue(newValue);
+            setValue(newValue);
           }
         }
       },
       [
         dateToValue,
-        value,
+        valueRef,
         valueToYm,
         minAvailableYm,
         maxAvailableYm,
         fromError,
-        changeValue,
+        setValue,
         validate,
         onValueChangeByUser,
         name,

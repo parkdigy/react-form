@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { FormControlLabel, Checkbox, Typography, ButtonBaseActions, useTheme } from '@mui/material';
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import {
   FormCheckboxProps as Props,
   FormCheckboxDefaultProps,
@@ -114,21 +114,64 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
      * State
      * ******************************************************************************************************************/
 
-    const [value, setValue] = useAutoUpdateState<Props['value']>(initValue);
-    const [uncheckedValue, setUncheckedValue] = useAutoUpdateState<Props['uncheckedValue']>(initUncheckedValue);
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
-      initDisabled == null ? formDisabled : initDisabled
+
+    const [dataRef, , setData] = useAutoUpdateRefState(initData);
+    const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
+      useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
     );
-    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
-    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
+    const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
+    const [uncheckedValueRef, , setUncheckedValue] = useAutoUpdateRefState<FormCheckboxValue, Props['uncheckedValue']>(
+      initUncheckedValue,
+      useCallback((newUncheckedValue) => (newUncheckedValue == null ? 0 : newUncheckedValue), [])
+    );
+    const [valueRef, , setValue] = useAutoUpdateRefState<FormCheckboxValue, Props['value']>(
+      initValue,
+      useCallback((newValue) => (newValue == null ? 0 : newValue), [])
+    );
+
+    /********************************************************************************************************************
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
+
+    const setErrorErrorHelperText = useCallback(
+      function (error: Props['error'], errorHelperText: Props['helperText']) {
+        setError(error);
+        setErrorHelperText(errorHelperText);
+      },
+      [setError]
+    );
+
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
+
+    const validate = useCallback(
+      function (checked: boolean) {
+        if (onValidate) {
+          const onValidateResult = onValidate(checked);
+          if (onValidateResult != null && onValidateResult !== true) {
+            setErrorErrorHelperText(true, onValidateResult);
+            return false;
+          }
+        }
+
+        setErrorErrorHelperText(false, undefined);
+
+        return true;
+      },
+      [onValidate, setErrorErrorHelperText]
+    );
 
     /********************************************************************************************************************
      * State - checked
      * ******************************************************************************************************************/
 
-    const [checked, setChecked] = useAutoUpdateState<boolean>(!!initChecked);
+    const [checkedRef, checked, setChecked] = useAutoUpdateRefState<boolean, Props['checked']>(
+      initChecked,
+      useCallback((newChecked) => !!newChecked, [])
+    );
 
     useFirstSkipEffect(() => {
       if (error) validate(checked);
@@ -166,89 +209,28 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
     );
 
     /********************************************************************************************************************
-     * Function - setErrorErrorHelperText
-     * ******************************************************************************************************************/
-
-    const setErrorErrorHelperText = useCallback(
-      function (error: Props['error'], errorHelperText: Props['helperText']) {
-        setError(error);
-        setErrorHelperText(errorHelperText);
-      },
-      [setError]
-    );
-
-    /********************************************************************************************************************
-     * Function - validate
-     * ******************************************************************************************************************/
-
-    const validate = useCallback(
-      function (checked: boolean) {
-        if (onValidate) {
-          const onValidateResult = onValidate(checked);
-          if (onValidateResult != null && onValidateResult !== true) {
-            setErrorErrorHelperText(true, onValidateResult);
-            return false;
-          }
-        }
-
-        setErrorErrorHelperText(false, undefined);
-
-        return true;
-      },
-      [onValidate, setErrorErrorHelperText]
-    );
-
-    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
 
     useLayoutEffect(() => {
-      let lastChecked: boolean = checked;
-      let lastValue: FormCheckboxValue = value == null ? 1 : value;
-      let lastData = data;
-      let lastUncheckedValue: FormCheckboxValue = uncheckedValue == null ? 0 : uncheckedValue;
-      let lastDisabled = !!disabled;
-      let lastHidden = !!hidden;
-
       const commands: FormCheckboxCommands = {
         getType: () => 'FormCheckbox',
         getName: () => name,
         getReset: () => !!initChecked,
-        reset: () => {
-          lastChecked = !!initChecked;
-          setChecked(lastChecked);
-        },
-        getValue: () => lastValue,
-        setValue: (value) => {
-          lastValue = value;
-          setValue(value);
-        },
-        getData: () => lastData,
-        setData: (data) => {
-          lastData = data;
-          setData(data);
-        },
-        getUncheckedValue: () => lastUncheckedValue,
-        setUncheckedValue: (uncheckedValue) => {
-          lastUncheckedValue = uncheckedValue;
-          setUncheckedValue(lastUncheckedValue);
-        },
-        getChecked: () => lastChecked,
-        setChecked: (checked: boolean) => {
-          lastChecked = checked;
-          setChecked(lastChecked);
-        },
+        reset: () => setChecked(initChecked),
+        getValue: () => valueRef.current,
+        setValue: (value) => setValue(value),
+        getData: () => dataRef.current,
+        setData: (data) => setData(data),
+        getUncheckedValue: () => uncheckedValueRef.current,
+        setUncheckedValue: (uncheckedValue) => setUncheckedValue(uncheckedValue),
+        getChecked: () => checkedRef.current,
+        setChecked: (checked: boolean) => setChecked(checked),
         isExceptValue: () => !!exceptValue,
-        isDisabled: () => lastDisabled,
-        setDisabled: (disabled: boolean) => {
-          lastDisabled = disabled;
-          setDisabled(disabled);
-        },
-        isHidden: () => lastHidden,
-        setHidden: (hidden) => {
-          lastHidden = hidden;
-          setHidden(hidden);
-        },
+        isDisabled: () => !!disabledRef.current,
+        setDisabled: (disabled: boolean) => setDisabled(disabled),
+        isHidden: () => !!hiddenRef.current,
+        setHidden: (hidden) => setHidden(hidden),
         focus,
         focusValidate: focus,
         validate: () => validate(checked),
@@ -278,28 +260,29 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         }
       };
     }, [
-      ref,
+      checked,
+      checkedRef,
+      dataRef,
+      disabledRef,
+      exceptValue,
+      focus,
+      hiddenRef,
+      id,
+      initChecked,
+      name,
       onAddValueItem,
       onRemoveValueItem,
-      focus,
-      name,
-      initChecked,
-      checked,
-      value,
-      uncheckedValue,
-      exceptValue,
-      disabled,
-      validate,
-      id,
+      ref,
       setChecked,
-      setValue,
-      setUncheckedValue,
+      setData,
       setDisabled,
       setErrorErrorHelperText,
-      data,
-      setData,
-      hidden,
       setHidden,
+      setUncheckedValue,
+      setValue,
+      uncheckedValueRef,
+      validate,
+      valueRef,
     ]);
 
     /********************************************************************************************************************

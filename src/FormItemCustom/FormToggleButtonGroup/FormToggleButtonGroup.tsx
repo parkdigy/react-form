@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEff
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
-import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util';
 import { empty, nextTick, notEmpty, equal } from '@pdg/util';
 import { PartialPick } from '../../@types';
@@ -164,15 +164,16 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
 
     const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
 
-    const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-    const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
-      initDisabled == null ? formDisabled : initDisabled
+
+    const [dataRef, , setData] = useAutoUpdateRefState(initData);
+    const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
+      useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
     );
-    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
-    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
+    const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
+    const [loadingRef, loading, setLoading] = useAutoUpdateRefState(initLoading);
+    const [itemsRef, items, setItems] = useAutoUpdateRefState(initItems);
 
     /********************************************************************************************************************
      * Memo
@@ -212,11 +213,48 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
     }, [formColWidth, fullWidth, initStyle, initWidth, isOnGetItemLoading, width]);
 
     /********************************************************************************************************************
-     * Function - getFinalValue
+     * Function - setErrorErrorHelperText
+     * ******************************************************************************************************************/
+
+    const setErrorErrorHelperText = useCallback(
+      (error: boolean, errorHelperText: ReactNode) => {
+        setError(error);
+        setErrorHelperText(errorHelperText);
+      },
+      [setError]
+    );
+
+    /********************************************************************************************************************
+     * Function - validate
+     * ******************************************************************************************************************/
+
+    const validate = useCallback(
+      (value: Props['value']) => {
+        if (required && empty(value)) {
+          setErrorErrorHelperText(true, '필수 선택 항목입니다.');
+          return false;
+        }
+        if (onValidate) {
+          const onValidateResult = onValidate(value);
+          if (onValidateResult != null && onValidateResult !== true) {
+            setErrorErrorHelperText(true, onValidateResult);
+            return false;
+          }
+        }
+
+        setErrorErrorHelperText(false, undefined);
+
+        return true;
+      },
+      [required, onValidate, setErrorErrorHelperText]
+    );
+
+    /********************************************************************************************************************
+     * State - value
      * ******************************************************************************************************************/
 
     const getFinalValue = useCallback(
-      (value: Props['value']): Props['value'] => {
+      (value: any) => {
         let finalValue = value;
         if (multiple) {
           if (!Array.isArray(finalValue)) {
@@ -265,69 +303,16 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       [multiple, formValueSeparator, itemsValues, onValue]
     );
 
-    /********************************************************************************************************************
-     * Function - setErrorErrorHelperText
-     * ******************************************************************************************************************/
-
-    const setErrorErrorHelperText = useCallback(
-      (error: boolean, errorHelperText: ReactNode) => {
-        setError(error);
-        setErrorHelperText(errorHelperText);
-      },
-      [setError]
-    );
-
-    /********************************************************************************************************************
-     * Function - validate
-     * ******************************************************************************************************************/
-
-    const validate = useCallback(
-      (value: Props['value']) => {
-        if (required && empty(value)) {
-          setErrorErrorHelperText(true, '필수 선택 항목입니다.');
-          return false;
-        }
-        if (onValidate) {
-          const onValidateResult = onValidate(value);
-          if (onValidateResult != null && onValidateResult !== true) {
-            setErrorErrorHelperText(true, onValidateResult);
-            return false;
-          }
-        }
-
-        setErrorErrorHelperText(false, undefined);
-
-        return true;
-      },
-      [required, onValidate, setErrorErrorHelperText]
-    );
-
-    /********************************************************************************************************************
-     * State - value
-     * ******************************************************************************************************************/
-
-    const [value, setValue] = useState<Props['value']>(() => getFinalValue(initValue));
-
-    const changeValue = useCallback(
-      (newValue: Props['value']) => {
-        if (!equal(value, newValue)) {
-          setValue(newValue);
-          nextTick(() => {
-            if (error) validate(newValue);
-            if (onChange) onChange(newValue);
-            onValueChange(name, newValue);
-          });
-        }
-      },
-      [error, name, onChange, onValueChange, validate, value]
-    );
+    const [valueRef, value, setValue] = useAutoUpdateRefState<Props['value'], any>(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
-      changeValue(getFinalValue(initValue));
-    }, [initValue]);
+      if (error) validate(value);
+      if (onChange) onChange(value);
+      onValueChange(name, value);
+    }, [value]);
 
     useFirstSkipEffect(() => {
-      changeValue(getFinalValue(value));
+      setValue(valueRef.current);
     }, [multiple]);
 
     /********************************************************************************************************************
@@ -361,7 +346,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           }
 
           if (setFirstItem) {
-            changeValue(getFinalValue((multiple ? [items[0].value] : items[0].value) as Props['value']));
+            setValue(getFinalValue((multiple ? [items[0].value] : items[0].value) as Props['value']));
           }
         }
       }
@@ -382,60 +367,32 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
 
     useLayoutEffect(() => {
       if (ref || onAddValueItem) {
-        let lastValue = value;
-        let lastData = data;
-        let lastItems = items;
-        let lastLoading = loading;
-        let lastDisabled = !!disabled;
-        let lastHidden = !!hidden;
-
         const commands: Commands = {
           getType: () => 'FormToggleButtonGroup',
           getName: () => name,
           getReset: () => getFinalValue(initValue),
-          reset: () => {
-            lastValue = getFinalValue(initValue);
-            changeValue(lastValue);
-          },
-          getValue: () => lastValue,
-          setValue: (value) => {
-            lastValue = getFinalValue(value);
-            changeValue(lastValue);
-          },
-          getData: () => lastData,
-          setData: (data) => {
-            lastData = data;
-            setData(data);
-          },
+          reset: () => setValue(initValue),
+          getValue: () => valueRef.current,
+          setValue,
+          getData: () => dataRef.current,
+          setData,
           isExceptValue: () => !!exceptValue,
-          isDisabled: () => lastDisabled,
-          setDisabled: (disabled) => {
-            lastDisabled = disabled;
-            setDisabled(disabled);
-          },
-          isHidden: () => lastHidden,
-          setHidden: (hidden) => {
-            lastHidden = hidden;
-            setHidden(hidden);
-          },
+          isDisabled: () => !!disabledRef.current,
+          setDisabled,
+          isHidden: () => !!hiddenRef.current,
+          setHidden,
           focus,
           focusValidate: focus,
-          validate: () => validate(value),
+          validate: () => validate(valueRef.current),
           setError: (error: boolean, errorText: ReactNode | undefined) =>
             setErrorErrorHelperText(error, error ? errorText : undefined),
           getFormValueSeparator: () => formValueSeparator,
           isFormValueSort: () => !!formValueSort,
-          getItems: () => lastItems,
-          setItems: (items) => {
-            lastItems = items;
-            setItems(lastItems);
-          },
+          getItems: () => itemsRef.current,
+          setItems,
           isMultiple: () => !!multiple,
-          getLoading: () => !!lastLoading,
-          setLoading: (loading) => {
-            lastLoading = loading;
-            setLoading(lastLoading);
-          },
+          getLoading: () => !!loadingRef.current,
+          setLoading,
         };
 
         if (ref) {
@@ -461,19 +418,18 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
         };
       }
     }, [
-      changeValue,
-      data,
-      disabled,
+      dataRef,
+      disabledRef,
       exceptValue,
       focus,
       formValueSeparator,
       formValueSort,
       getFinalValue,
-      hidden,
+      hiddenRef,
       id,
       initValue,
-      items,
-      loading,
+      itemsRef,
+      loadingRef,
       multiple,
       name,
       onAddValueItem,
@@ -485,8 +441,9 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       setHidden,
       setItems,
       setLoading,
+      setValue,
       validate,
-      value,
+      valueRef,
     ]);
 
     /********************************************************************************************************************
@@ -502,19 +459,19 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           if (notAllowEmptyValue) {
             if (multiple) {
               if (empty(finalValue)) {
-                if (Array.isArray(value) && value.length > 0) {
-                  finalValue = [value[0]] as Props['value'];
+                if (Array.isArray(valueRef.current) && valueRef.current.length > 0) {
+                  finalValue = [valueRef.current[0]] as Props['value'];
                 }
               }
             } else {
               if (finalValue == null) {
-                finalValue = value;
+                finalValue = valueRef.current;
               }
             }
           }
           finalValue = getFinalValue(finalValue);
-          if (!equal(value, finalValue)) {
-            changeValue(finalValue);
+          if (!equal(valueRef.current, finalValue)) {
+            setValue(finalValue, true);
             nextTick(() => {
               onValueChangeByUser(name, finalValue);
               onRequestSearchSubmit(name, finalValue);
@@ -526,9 +483,9 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
         readOnly,
         notAllowEmptyValue,
         getFinalValue,
-        value,
+        valueRef,
         multiple,
-        changeValue,
+        setValue,
         onValueChangeByUser,
         name,
         onRequestSearchSubmit,
