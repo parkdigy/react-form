@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, ReactNode, useCallback, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import { Box, Checkbox, Chip, CircularProgress, MenuItem } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
@@ -157,8 +157,8 @@ const FormSelect = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     const getFinalValue = useCallback(
-      (value?: any): any => {
-        let finalValue: any = value == null ? '' : value;
+      (newValue?: any): any => {
+        let finalValue: any = newValue == null ? '' : newValue;
         if (multiple) {
           if (!Array.isArray(finalValue)) {
             if (empty(finalValue)) {
@@ -201,7 +201,7 @@ const FormSelect = ToForwardRefExoticComponent(
 
         finalValue = onValue ? onValue(finalValue) : finalValue;
 
-        return equal(value, finalValue) ? value : finalValue;
+        return equal(newValue, finalValue) ? newValue : finalValue;
       },
       [multiple, formValueSeparator, itemsValues, onValue]
     );
@@ -210,6 +210,7 @@ const FormSelect = ToForwardRefExoticComponent(
      * State - value
      * ******************************************************************************************************************/
 
+    const valueRef = useRef(getFinalValue(initValue));
     const [value, setValue] = useState(() => getFinalValue(initValue));
 
     /********************************************************************************************************************
@@ -218,7 +219,8 @@ const FormSelect = ToForwardRefExoticComponent(
 
     const changeValue = useCallback(
       (newValue: any) => {
-        if (!equal(value, newValue)) {
+        if (!equal(valueRef.current, newValue)) {
+          valueRef.current = newValue;
           setValue(newValue);
           nextTick(() => {
             if (onChange) onChange(newValue);
@@ -226,7 +228,7 @@ const FormSelect = ToForwardRefExoticComponent(
           });
         }
       },
-      [name, onChange, onValueChange, value]
+      [name, onChange, onValueChange]
     );
 
     useFirstSkipEffect(() => {
@@ -234,7 +236,7 @@ const FormSelect = ToForwardRefExoticComponent(
     }, [initValue]);
 
     useFirstSkipEffect(() => {
-      changeValue(getFinalValue(value));
+      changeValue(getFinalValue(valueRef.current));
     }, [multiple]);
 
     /********************************************************************************************************************
@@ -271,7 +273,7 @@ const FormSelect = ToForwardRefExoticComponent(
         ...initSelectProps,
         displayEmpty: true,
         multiple: !!multiple,
-        value: value,
+        value,
       };
       if (multiple) {
         finalSelectProps.renderValue = (selected) => {
@@ -281,11 +283,11 @@ const FormSelect = ToForwardRefExoticComponent(
             return (
               <Box className='selected-list' sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                 {Array.isArray(selected) &&
-                  selected.map((value) => {
+                  selected.map((selectedValue) => {
                     if (isSelectedPlaceholder) {
-                      return <Chip key={value || '$$$EmptyValuePlaceholder$$$'} label='hahaha' size='small' />;
+                      return <Chip key={selectedValue || '$$$EmptyValuePlaceholder$$$'} label='hahaha' size='small' />;
                     } else {
-                      return <Chip key={value} label={itemValueLabels[`${value}`]} size='small' />;
+                      return <Chip key={selectedValue} label={itemValueLabels[`${selectedValue}`]} size='small' />;
                     }
                   })}
               </Box>
@@ -309,21 +311,17 @@ const FormSelect = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     const getBaseCommands = useCallback((): Partial<Commands> => {
-      let lastValue = value;
-
       return {
         getReset: () => getFinalValue(initValue),
         reset: () => {
-          lastValue = getFinalValue(initValue);
-          changeValue(lastValue);
+          changeValue(getFinalValue(initValue));
         },
-        getValue: () => lastValue,
+        getValue: () => valueRef.current,
         setValue: (value: Props['value']) => {
-          lastValue = getFinalValue(value);
-          changeValue(lastValue);
+          changeValue(getFinalValue(value));
         },
       };
-    }, [value, getFinalValue, initValue, changeValue]);
+    }, [getFinalValue, initValue, changeValue]);
 
     const getExtraCommands = useCallback((): FormSelectExtraCommands<any> => {
       let lastItems = items;

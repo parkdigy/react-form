@@ -1,4 +1,4 @@
-'use strict';var React=require('react'),classNames=require('classnames'),material=require('@mui/material'),util=require('@pdg/util'),dayjs=require('dayjs'),reactComponent=require('@pdg/react-component'),reactHook=require('@pdg/react-hook'),reactResizeDetector=require('react-resize-detector'),reactNumberFormat=require('react-number-format'),iconsMaterial=require('@mui/icons-material'),tinymceReact=require('@tinymce/tinymce-react'),CircularProgress=require('@mui/material/CircularProgress'),AdapterDayjs=require('@mui/x-date-pickers/AdapterDayjs'),xDatePickers=require('@mui/x-date-pickers'),SimpleBar=require('simplebar-react');require('dayjs/locale/ko');/******************************************************************************
+'use strict';var React=require('react'),classNames=require('classnames'),material=require('@mui/material'),util=require('@pdg/util'),dayjs=require('dayjs'),reactComponent=require('@pdg/react-component'),reactHook=require('@pdg/react-hook'),reactResizeDetector=require('react-resize-detector'),reactNumberFormat=require('react-number-format'),iconsMaterial=require('@mui/icons-material'),tinymceReact=require('@tinymce/tinymce-react'),AdapterDayjs=require('@mui/x-date-pickers/AdapterDayjs'),xDatePickers=require('@mui/x-date-pickers'),SimpleBar=require('simplebar-react');require('dayjs/locale/ko');/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -1065,9 +1065,37 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     var _d = reactHook.useAutoUpdateState(initError), error = _d[0], setError = _d[1];
     var _e = React.useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
     var _f = React.useState(false), showClear = _f[0], setShowClear = _f[1];
-    var _g = reactHook.useAutoUpdateState(initDisabled == null ? formDisabled : initDisabled), disabled = _g[0], setDisabled = _g[1];
-    var _h = reactHook.useAutoUpdateState(initHidden), hidden = _h[0], setHidden = _h[1];
-    var _j = reactHook.useAutoUpdateState(initData), data = _j[0], setData = _j[1];
+    /********************************************************************************************************************
+     * disabled
+     * ******************************************************************************************************************/
+    var disabledRef = React.useRef(initDisabled == null ? formDisabled : initDisabled);
+    var _g = React.useState(initDisabled == null ? formDisabled : initDisabled), disabled = _g[0], setDisabled = _g[1];
+    var changeDisabled = React.useCallback(function (newDisabled) {
+        disabledRef.current = newDisabled;
+        setDisabled(newDisabled);
+    }, []);
+    reactHook.useFirstSkipEffect(function () {
+        changeDisabled(initDisabled == null ? formDisabled : initDisabled);
+    }, [initDisabled, formDisabled]);
+    /********************************************************************************************************************
+     * hidden
+     * ******************************************************************************************************************/
+    var hiddenRef = React.useRef(initHidden);
+    var _h = React.useState(initHidden), hidden = _h[0], setHidden = _h[1];
+    var changeHidden = React.useCallback(function (newHidden) {
+        hiddenRef.current = newHidden;
+        setHidden(newHidden);
+    }, []);
+    reactHook.useFirstSkipEffect(function () {
+        changeHidden(initHidden);
+    }, [initHidden]);
+    /********************************************************************************************************************
+     * data
+     * ******************************************************************************************************************/
+    var dataRef = React.useRef(initData);
+    reactHook.useFirstSkipEffect(function () {
+        dataRef.current = initData;
+    }, [initData]);
     /********************************************************************************************************************
      * Memo - muiInputLabelProps
      * ******************************************************************************************************************/
@@ -1122,8 +1150,8 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     /********************************************************************************************************************
      * Function - getFinalValue
      * ******************************************************************************************************************/
-    var getFinalValue = React.useCallback(function (value) {
-        return onValue ? onValue(value) : value;
+    var getFinalValue = React.useCallback(function (newValue) {
+        return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -1165,9 +1193,11 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _k = React.useState(function () { return getFinalValue(initValue); }), value = _k[0], setValue = _k[1];
+    var valueRef = React.useRef(getFinalValue(initValue));
+    var _j = React.useState(function () { return getFinalValue(initValue); }), value = _j[0], setValue = _j[1];
     var changeValue = React.useCallback(function (newValue) {
-        if (!util.equal(value, newValue)) {
+        if (!util.equal(valueRef.current, newValue)) {
+            valueRef.current = newValue;
             setValue(newValue);
             util.nextTick(function () {
                 if (error)
@@ -1179,7 +1209,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
                 }
             });
         }
-    }, [error, name, noFormValueItem, onChange, onValueChange, validate, value]);
+    }, [error, name, noFormValueItem, onChange, onValueChange, validate]);
     reactHook.useFirstSkipEffect(function () {
         changeValue(getFinalValue(initValue));
     }, [initValue]);
@@ -1252,42 +1282,33 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
      * ******************************************************************************************************************/
     React.useLayoutEffect(function () {
         if (ref || (!noFormValueItem && onAddValueItem)) {
-            var lastValue_1 = value;
-            var lastData_1 = data;
-            var lastDisabled_1 = !!disabled;
-            var lastHidden_1 = !!hidden;
             var commands = {
                 getType: function () { return 'default'; },
                 getName: function () { return name; },
                 getReset: function () { return getFinalValue(initValue); },
                 reset: function () {
-                    lastValue_1 = getFinalValue(initValue);
-                    changeValue(lastValue_1);
+                    changeValue(getFinalValue(initValue));
                 },
-                getValue: function () { return lastValue_1; },
+                getValue: function () { return valueRef.current; },
                 setValue: function (value) {
-                    lastValue_1 = getFinalValue(value);
-                    changeValue(lastValue_1);
+                    changeValue(getFinalValue(value));
                 },
-                getData: function () { return lastData_1; },
+                getData: function () { return dataRef.current; },
                 setData: function (data) {
-                    lastData_1 = data;
-                    setData(data);
+                    dataRef.current = data;
                 },
                 isExceptValue: function () { return !!exceptValue; },
-                isDisabled: function () { return lastDisabled_1; },
+                isDisabled: function () { return !!disabledRef.current; },
                 setDisabled: function (disabled) {
-                    lastDisabled_1 = disabled;
-                    setDisabled(disabled);
+                    changeDisabled(disabled);
                 },
-                isHidden: function () { return lastHidden_1; },
+                isHidden: function () { return !!hiddenRef.current; },
                 setHidden: function (hidden) {
-                    lastHidden_1 = hidden;
-                    setHidden(hidden);
+                    changeHidden(hidden);
                 },
                 focus: focus,
                 focusValidate: focus,
-                validate: function () { return validate(lastValue_1); },
+                validate: function () { return validate(valueRef.current); },
                 setError: function (error, errorText) {
                     return setErrorErrorHelperText(error, error ? errorText : undefined);
                 },
@@ -1316,26 +1337,21 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
             };
         }
     }, [
-        name,
-        initValue,
-        value,
-        data,
-        getFinalValue,
+        changeDisabled,
+        changeHidden,
+        changeValue,
         exceptValue,
-        disabled,
         focus,
-        validate,
-        ref,
+        getFinalValue,
+        id,
+        initValue,
+        name,
         noFormValueItem,
         onAddValueItem,
         onRemoveValueItem,
-        id,
-        setDisabled,
+        ref,
         setErrorErrorHelperText,
-        setData,
-        hidden,
-        setHidden,
-        changeValue,
+        validate,
     ]);
     /********************************************************************************************************************
      * Event Handler
@@ -1354,10 +1370,10 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     }, [getFinalValue, changeValue, noFormValueItem, onValueChangeByUser, name, select, onRequestSearchSubmit]);
     var handleBlur = React.useCallback(function (e) {
         if (error)
-            validate(value);
+            validate(valueRef.current);
         if (onBlur)
             onBlur(e);
-    }, [error, value, validate, onBlur]);
+    }, [error, validate, onBlur]);
     var handleKeyDown = React.useCallback(function (e) {
         if (['Enter'].includes(e.key) &&
             !select &&
@@ -1365,11 +1381,11 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
             !noFormValueItem) {
             e.preventDefault();
             e.stopPropagation();
-            onRequestSearchSubmit(name, value);
+            onRequestSearchSubmit(name, valueRef.current);
         }
         if (onKeyDown)
             onKeyDown(e);
-    }, [select, multiline, disableReturnKey, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, value]);
+    }, [select, multiline, disableReturnKey, noFormValueItem, onKeyDown, onRequestSearchSubmit, name]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
@@ -2182,8 +2198,8 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
     /********************************************************************************************************************
      * Function - getFinalValue
      * ******************************************************************************************************************/
-    var getFinalValue = React.useCallback(function (value) {
-        var finalValue = value == null ? '' : value;
+    var getFinalValue = React.useCallback(function (newValue) {
+        var finalValue = newValue == null ? '' : newValue;
         if (multiple) {
             if (!Array.isArray(finalValue)) {
                 if (util.empty(finalValue)) {
@@ -2228,17 +2244,19 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
             }
         }
         finalValue = onValue ? onValue(finalValue) : finalValue;
-        return util.equal(value, finalValue) ? value : finalValue;
+        return util.equal(newValue, finalValue) ? newValue : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
+    var valueRef = React.useRef(getFinalValue(initValue));
     var _h = React.useState(function () { return getFinalValue(initValue); }), value = _h[0], setValue = _h[1];
     /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
     var changeValue = React.useCallback(function (newValue) {
-        if (!util.equal(value, newValue)) {
+        if (!util.equal(valueRef.current, newValue)) {
+            valueRef.current = newValue;
             setValue(newValue);
             util.nextTick(function () {
                 if (onChange)
@@ -2246,12 +2264,12 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
                 onValueChange(name, newValue);
             });
         }
-    }, [name, onChange, onValueChange, value]);
+    }, [name, onChange, onValueChange]);
     reactHook.useFirstSkipEffect(function () {
         changeValue(getFinalValue(initValue));
     }, [initValue]);
     reactHook.useFirstSkipEffect(function () {
-        changeValue(getFinalValue(value));
+        changeValue(getFinalValue(valueRef.current));
     }, [multiple]);
     /********************************************************************************************************************
      * State - isSelectedPlaceholder
@@ -2285,12 +2303,12 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
                 }
                 else {
                     return (React.createElement(material.Box, { className: 'selected-list', sx: { display: 'flex', flexWrap: 'wrap', gap: 0.5 } }, Array.isArray(selected) &&
-                        selected.map(function (value) {
+                        selected.map(function (selectedValue) {
                             if (isSelectedPlaceholder) {
-                                return React.createElement(material.Chip, { key: value || '$$$EmptyValuePlaceholder$$$', label: 'hahaha', size: 'small' });
+                                return React.createElement(material.Chip, { key: selectedValue || '$$$EmptyValuePlaceholder$$$', label: 'hahaha', size: 'small' });
                             }
                             else {
-                                return React.createElement(material.Chip, { key: value, label: itemValueLabels["".concat(value)], size: 'small' });
+                                return React.createElement(material.Chip, { key: selectedValue, label: itemValueLabels["".concat(selectedValue)], size: 'small' });
                             }
                         })));
                 }
@@ -2306,20 +2324,17 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
      * Function - getExtraCommands
      * ******************************************************************************************************************/
     var getBaseCommands = React.useCallback(function () {
-        var lastValue = value;
         return {
             getReset: function () { return getFinalValue(initValue); },
             reset: function () {
-                lastValue = getFinalValue(initValue);
-                changeValue(lastValue);
+                changeValue(getFinalValue(initValue));
             },
-            getValue: function () { return lastValue; },
+            getValue: function () { return valueRef.current; },
             setValue: function (value) {
-                lastValue = getFinalValue(value);
-                changeValue(lastValue);
+                changeValue(getFinalValue(value));
             },
         };
-    }, [value, getFinalValue, initValue, changeValue]);
+    }, [getFinalValue, initValue, changeValue]);
     var getExtraCommands = React.useCallback(function () {
         var lastItems = items;
         var lastLoading = loading;
@@ -4191,14 +4206,57 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
      * State
      * ******************************************************************************************************************/
     var _c = React.useState(false), isOnGetItemLoading = _c[0], setIsOnGetItemLoading = _c[1];
-    var _d = reactHook.useAutoUpdateState(initItems), items = _d[0], setItems = _d[1];
-    var _e = reactHook.useAutoUpdateState(initError), error = _e[0], setError = _e[1];
-    var _f = React.useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
-    var _g = reactHook.useAutoUpdateState(initLoading), loading = _g[0], setLoading = _g[1];
-    var _h = reactHook.useAutoUpdateState(initDisabled == null ? formDisabled : initDisabled), disabled = _h[0], setDisabled = _h[1];
-    var _j = reactHook.useAutoUpdateState(initHidden), hidden = _j[0], setHidden = _j[1];
-    var _k = React.useState(undefined), inputValue = _k[0], setInputValue = _k[1];
-    var _l = reactHook.useAutoUpdateState(initData), data = _l[0], setData = _l[1];
+    var _d = reactHook.useAutoUpdateState(initError), error = _d[0], setError = _d[1];
+    var _e = React.useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
+    var _f = React.useState(undefined), inputValue = _f[0], setInputValue = _f[1];
+    /********************************************************************************************************************
+     * disabled
+     * ******************************************************************************************************************/
+    var disabledRef = React.useRef(initDisabled == null ? formDisabled : initDisabled);
+    var _g = React.useState(initDisabled == null ? formDisabled : initDisabled), disabled = _g[0], setDisabled = _g[1];
+    var changeDisabled = React.useCallback(function (newDisabled) {
+        disabledRef.current = newDisabled;
+        setDisabled(newDisabled);
+    }, []);
+    reactHook.useFirstSkipEffect(function () {
+        changeDisabled(initDisabled == null ? formDisabled : initDisabled);
+    }, [initDisabled, formDisabled]);
+    /********************************************************************************************************************
+     * hidden
+     * ******************************************************************************************************************/
+    var hiddenRef = React.useRef(initHidden);
+    var _h = React.useState(initHidden), hidden = _h[0], setHidden = _h[1];
+    var changeHidden = React.useCallback(function (newHidden) {
+        hiddenRef.current = newHidden;
+        setHidden(newHidden);
+    }, []);
+    reactHook.useFirstSkipEffect(function () {
+        changeHidden(initHidden);
+    }, [initHidden]);
+    /********************************************************************************************************************
+     * loading
+     * ******************************************************************************************************************/
+    var loadingRef = React.useRef(initLoading);
+    var _j = React.useState(initLoading), loading = _j[0], setLoading = _j[1];
+    var changeLoading = React.useCallback(function (newLoading) {
+        loadingRef.current = newLoading;
+        setLoading(newLoading);
+    }, []);
+    reactHook.useFirstSkipEffect(function () {
+        changeLoading(initLoading);
+    }, [initLoading]);
+    /********************************************************************************************************************
+     * items
+     * ******************************************************************************************************************/
+    var itemsRef = React.useRef(initItems);
+    var _k = React.useState(initItems), items = _k[0], setItems = _k[1];
+    var changeItems = React.useCallback(function (newItems) {
+        itemsRef.current = newItems;
+        setItems(newItems);
+    }, []);
+    reactHook.useFirstSkipEffect(function () {
+        changeItems(initItems);
+    }, [initItems]);
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -4300,12 +4358,21 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         return true;
     }, [required, onValidate, setErrorErrorHelperText]);
     /********************************************************************************************************************
+     * Data
+     * ******************************************************************************************************************/
+    var dataRef = React.useRef(initData);
+    reactHook.useFirstSkipEffect(function () {
+        dataRef.current = initData;
+    }, [initData]);
+    /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _m = React.useState(function () { return getFinalValue(initValue); }), value = _m[0], setValue = _m[1];
-    var _o = React.useState(null), valueItem = _o[0], setValueItem = _o[1];
+    var valueRef = React.useRef(getFinalValue(initValue));
+    var _l = React.useState(function () { return getFinalValue(initValue); }), value = _l[0], setValue = _l[1];
+    var _m = React.useState(null), valueItem = _m[0], setValueItem = _m[1];
     var changeValue = React.useCallback(function (newValue) {
-        if (!util.equal(value, newValue)) {
+        if (!util.equal(valueRef.current, newValue)) {
+            valueRef.current = newValue;
             setValue(newValue);
             util.nextTick(function () {
                 if (error)
@@ -4315,12 +4382,12 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                 onValueChange(name, newValue);
             });
         }
-    }, [error, name, onChange, onValueChange, validate, value]);
+    }, [error, name, onChange, onValueChange, validate]);
     reactHook.useFirstSkipEffect(function () {
         changeValue(getFinalValue(initValue));
     }, [initValue]);
     reactHook.useFirstSkipEffect(function () {
-        changeValue(getFinalValue(value));
+        changeValue(getFinalValue(valueRef.current));
     }, [multiple]);
     var componentValue = React.useMemo(function () {
         var finalValue = value;
@@ -4379,10 +4446,10 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                         setValueItem(valueItem);
                         if (valueItem) {
                             if (Array.isArray(valueItem)) {
-                                setItems(valueItem);
+                                changeItems(valueItem);
                             }
                             else {
-                                setItems([valueItem]);
+                                changeItems([valueItem]);
                             }
                         }
                     });
@@ -4410,7 +4477,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         if (!async && onLoadItems) {
             showOnGetItemLoading();
             onLoadItems().then(function (items) {
-                setItems(items);
+                changeItems(items);
                 hideOnGetItemLoading();
             });
         }
@@ -4437,15 +4504,15 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
                         if (componentValue) {
                             if (Array.isArray(componentValue)) {
                                 var exceptValues_1 = componentValue.map(function (info) { return info.value; });
-                                setItems(__spreadArray(__spreadArray([], componentValue, true), items.filter(function (info) { return !exceptValues_1.includes(info.value); }), true));
+                                changeItems(__spreadArray(__spreadArray([], componentValue, true), items.filter(function (info) { return !exceptValues_1.includes(info.value); }), true));
                             }
                             else {
                                 var exceptValue_1 = componentValue.value;
-                                setItems(__spreadArray([componentValue], items.filter(function (info) { return info.value !== exceptValue_1; }), true));
+                                changeItems(__spreadArray([componentValue], items.filter(function (info) { return info.value !== exceptValue_1; }), true));
                             }
                         }
                         else {
-                            setItems(items);
+                            changeItems(items);
                         }
                     })
                         .finally(function () {
@@ -4455,14 +4522,14 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
             }
             else {
                 if (Array.isArray(componentValue)) {
-                    setItems(componentValue);
+                    changeItems(componentValue);
                 }
                 else {
                     if (componentValue) {
-                        setItems([componentValue]);
+                        changeItems([componentValue]);
                     }
                     else {
-                        setItems([]);
+                        changeItems([]);
                     }
                 }
                 hideOnGetItemLoading();
@@ -4482,59 +4549,46 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
      * ******************************************************************************************************************/
     React.useLayoutEffect(function () {
         if (ref || onAddValueItem) {
-            var lastValue_1 = value;
-            var lastData_1 = data;
-            var lastItems_1 = items;
-            var lastLoading_1 = loading;
-            var lastDisabled_1 = !!disabled;
-            var lastHidden_1 = !!hidden;
             var commands = {
                 getType: function () { return 'FormAutocomplete'; },
                 getName: function () { return name; },
                 getReset: function () { return getFinalValue(initValue); },
                 reset: function () {
-                    lastValue_1 = getFinalValue(initValue);
-                    changeValue(lastValue_1);
+                    changeValue(getFinalValue(initValue));
                 },
-                getValue: function () { return lastValue_1; },
-                setValue: function (value) {
-                    lastValue_1 = getFinalValue(value);
-                    changeValue(lastValue_1);
+                getValue: function () { return valueRef.current; },
+                setValue: function (newValue) {
+                    changeValue(getFinalValue(newValue));
                 },
-                getData: function () { return lastData_1; },
+                getData: function () { return dataRef.current; },
                 setData: function (data) {
-                    lastData_1 = data;
-                    setData(data);
+                    dataRef.current = data;
                 },
                 isExceptValue: function () { return !!exceptValue; },
-                isDisabled: function () { return lastDisabled_1; },
+                isDisabled: function () { return !!disabledRef.current; },
                 setDisabled: function (disabled) {
-                    lastDisabled_1 = disabled;
-                    setDisabled(disabled);
+                    changeDisabled(disabled);
                 },
-                isHidden: function () { return lastHidden_1; },
+                isHidden: function () { return !!hiddenRef.current; },
                 setHidden: function (hidden) {
-                    lastHidden_1 = hidden;
-                    setHidden(hidden);
+                    changeHidden(hidden);
                 },
                 focus: focus,
                 focusValidate: focus,
-                validate: function () { return validate(value); },
+                validate: function () { return validate(valueRef.current); },
                 setError: function (error, errorText) {
                     return setErrorErrorHelperText(error, error ? errorText : undefined);
                 },
                 getFormValueSeparator: function () { return formValueSeparator; },
                 isFormValueSort: function () { return !!formValueSort; },
-                getItems: function () { return lastItems_1; },
+                getItems: function () { return itemsRef.current; },
                 setItems: function (items) {
-                    lastItems_1 = items;
-                    setItems(lastItems_1);
+                    changeItems(items);
                 },
                 isMultiple: function () { return !!multiple; },
-                getLoading: function () { return !!lastLoading_1; },
+                getLoading: function () { return !!loadingRef.current; },
                 setLoading: function (loading) {
-                    lastLoading_1 = loading;
-                    setLoading(lastLoading_1);
+                    changeLoading(loading);
                 },
             };
             if (ref) {
@@ -4561,32 +4615,25 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
             };
         }
     }, [
-        name,
-        initValue,
-        value,
-        getFinalValue,
+        changeDisabled,
+        changeHidden,
+        changeItems,
+        changeLoading,
+        changeValue,
         exceptValue,
-        disabled,
-        multiple,
         focus,
-        validate,
         formValueSeparator,
         formValueSort,
-        items,
-        ref,
+        getFinalValue,
+        id,
+        initValue,
+        multiple,
+        name,
         onAddValueItem,
         onRemoveValueItem,
-        loading,
-        id,
-        setDisabled,
+        ref,
         setErrorErrorHelperText,
-        setItems,
-        setLoading,
-        data,
-        setData,
-        hidden,
-        setHidden,
-        changeValue,
+        validate,
     ]);
     /********************************************************************************************************************
      * Event Handler
@@ -4646,18 +4693,19 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(material.Autocomplete, { options: items || [], className: classNames(className, 'FormValueItem', 'FormAutocomplete'), sx: sx, multiple: multiple, fullWidth: !width && fullWidth, openOnFocus: openOnFocus, disableClearable: disableClearable, disablePortal: disablePortal, noOptionsText: noOptionsText, value: componentValue, style: style, isOptionEqualToValue: function (option, value) { return option.value === value.value; }, getOptionDisabled: handleGetOptionDisabled, disabled: disabled, readOnly: readOnly, loading: loading || isOnGetItemLoading, loadingText: loadingText, limitTags: limitTags, onChange: function (e, value, reason, details) { return handleChange(value, reason, details); }, renderOption: function (props, option) { return (React.createElement("li", __assign({}, props, { key: "".concat(option.value) }), onRenderItem ? onRenderItem(option) : option.label)); }, onInputChange: function (event, newInputValue, reason) {
-            if (reason === 'input') {
-                setInputValue(newInputValue);
-            }
-            else if (reason === 'reset') {
-                setInputValue(undefined);
-            }
-        }, renderTags: function (value, getTagProps) {
-            return value.map(function (option, index) { return (React.createElement(material.Chip, __assign({ size: 'small', label: onRenderTag ? onRenderTag(option) : option.label }, getTagProps({ index: index })))); });
-        }, renderInput: function (params) { return (React.createElement(FormTextField, __assign({}, params, { ref: textFieldRef, name: name, variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, labelShrink: labelShrink, required: required, focused: focused, error: error, readOnly: readOnly, helperText: error ? errorHelperText : helperText, placeholder: placeholder, noFormValueItem: true, InputProps: __assign(__assign({}, params.InputProps), { endAdornment: (React.createElement(React.Fragment, null,
-                    loading || isOnGetItemLoading ? React.createElement(CircularProgress, { color: 'inherit', size: 20 }) : null,
-                    params.InputProps.endAdornment)) }), inputProps: readOnly || disabled ? __assign(__assign({}, params.inputProps), { tabIndex: -1 }) : params.inputProps }))); } }));
+    return (React.createElement(React.Fragment, null,
+        React.createElement(material.Autocomplete, { options: items || [], className: classNames(className, 'FormValueItem', 'FormAutocomplete'), sx: sx, multiple: multiple, fullWidth: !width && fullWidth, openOnFocus: openOnFocus, disableClearable: disableClearable, disablePortal: disablePortal, noOptionsText: noOptionsText, value: componentValue, style: style, isOptionEqualToValue: function (option, value) { return option.value === value.value; }, getOptionDisabled: handleGetOptionDisabled, disabled: disabled, readOnly: readOnly, loading: loading || isOnGetItemLoading, loadingText: loadingText, limitTags: limitTags, onChange: function (e, value, reason, details) { return handleChange(value, reason, details); }, renderOption: function (props, option) { return (React.createElement("li", __assign({}, props, { key: "".concat(option.value) }), onRenderItem ? onRenderItem(option) : option.label)); }, onInputChange: function (event, newInputValue, reason) {
+                if (reason === 'input') {
+                    setInputValue(newInputValue);
+                }
+                else if (reason === 'reset') {
+                    setInputValue(undefined);
+                }
+            }, renderTags: function (value, getTagProps) {
+                return value.map(function (option, index) { return (React.createElement(material.Chip, __assign({ size: 'small', label: onRenderTag ? onRenderTag(option) : option.label }, getTagProps({ index: index })))); });
+            }, renderInput: function (params) { return (React.createElement(FormTextField, __assign({}, params, { ref: textFieldRef, name: name, variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, labelShrink: labelShrink, required: required, focused: focused, error: error, readOnly: readOnly, helperText: error ? errorHelperText : helperText, placeholder: placeholder, noFormValueItem: true, InputProps: __assign(__assign({}, params.InputProps), { endAdornment: (React.createElement(React.Fragment, null,
+                        loading || isOnGetItemLoading ? React.createElement(material.CircularProgress, { color: 'inherit', size: 20 }) : null,
+                        params.InputProps.endAdornment)) }), inputProps: readOnly || disabled ? __assign(__assign({}, params.inputProps), { tabIndex: -1 }) : params.inputProps }))); } })));
 }));
 FormAutocomplete.displayName = 'FormAutocomplete';
 FormAutocomplete.defaultProps = FormAutocompleteDefaultProps;var FormDatePickerDefaultProps = {};var PrivateDatePickerDefaultProps = {
@@ -10139,8 +10187,8 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Function - getFinalValue
      * ******************************************************************************************************************/
-    var getFinalValue = React.useCallback(function (value) {
-        return value || DEFAULT_VALUE$1;
+    var getFinalValue = React.useCallback(function (newValue) {
+        return newValue || DEFAULT_VALUE$1;
     }, []);
     var setErrorErrorHelperText = React.useCallback(function (error, errorHelperText) {
         setError(error);

@@ -1,6 +1,12 @@
 import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect, useRef, useMemo } from 'react';
 import classNames from 'classnames';
-import { Autocomplete, Chip, AutocompleteChangeReason, AutocompleteChangeDetails } from '@mui/material';
+import {
+  Autocomplete,
+  Chip,
+  AutocompleteChangeReason,
+  AutocompleteChangeDetails,
+  CircularProgress,
+} from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util';
 import { empty, nextTick, notEmpty, equal } from '@pdg/util';
@@ -14,8 +20,7 @@ import {
   FormAutocompleteSingleValue,
 } from './FormAutocomplete.types';
 import { useFormState } from '../../FormContext';
-import { FormTextField, FormTextFieldCommands } from '../../FormItemTextFieldBase';
-import CircularProgress from '@mui/material/CircularProgress';
+import { FormTextField, FormTextFieldCommands, FormTextFieldProps } from '../../FormItemTextFieldBase';
 
 const FormAutocomplete = ToForwardRefExoticComponent(
   AutoTypeForwardRef(function <T extends FormAutocompleteSingleValue, Multiple extends boolean | undefined>(
@@ -134,17 +139,74 @@ const FormAutocomplete = ToForwardRefExoticComponent(
 
     const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
 
-    const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
     const [error, setError] = useAutoUpdateState<Props['error']>(initError);
     const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
 
-    const [loading, setLoading] = useAutoUpdateState<Props['loading']>(initLoading);
-    const [disabled, setDisabled] = useAutoUpdateState<Props['disabled']>(
-      initDisabled == null ? formDisabled : initDisabled
-    );
-    const [hidden, setHidden] = useAutoUpdateState<Props['hidden']>(initHidden);
     const [inputValue, setInputValue] = useState<string | undefined>(undefined);
-    const [data, setData] = useAutoUpdateState<Props['data']>(initData);
+
+    /********************************************************************************************************************
+     * disabled
+     * ******************************************************************************************************************/
+
+    const disabledRef = useRef<Props['disabled']>(initDisabled == null ? formDisabled : initDisabled);
+    const [disabled, setDisabled] = useState<Props['disabled']>(initDisabled == null ? formDisabled : initDisabled);
+
+    const changeDisabled = useCallback((newDisabled: Props['disabled']) => {
+      disabledRef.current = newDisabled;
+      setDisabled(newDisabled);
+    }, []);
+
+    useFirstSkipEffect(() => {
+      changeDisabled(initDisabled == null ? formDisabled : initDisabled);
+    }, [initDisabled, formDisabled]);
+
+    /********************************************************************************************************************
+     * hidden
+     * ******************************************************************************************************************/
+
+    const hiddenRef = useRef<Props['hidden']>(initHidden);
+    const [hidden, setHidden] = useState<Props['hidden']>(initHidden);
+
+    const changeHidden = useCallback((newHidden: Props['hidden']) => {
+      hiddenRef.current = newHidden;
+      setHidden(newHidden);
+    }, []);
+
+    useFirstSkipEffect(() => {
+      changeHidden(initHidden);
+    }, [initHidden]);
+
+    /********************************************************************************************************************
+     * loading
+     * ******************************************************************************************************************/
+
+    const loadingRef = useRef<Props['loading']>(initLoading);
+    const [loading, setLoading] = useState<Props['loading']>(initLoading);
+
+    const changeLoading = useCallback((newLoading: Props['loading']) => {
+      loadingRef.current = newLoading;
+      setLoading(newLoading);
+    }, []);
+
+    useFirstSkipEffect(() => {
+      changeLoading(initLoading);
+    }, [initLoading]);
+
+    /********************************************************************************************************************
+     * items
+     * ******************************************************************************************************************/
+
+    const itemsRef = useRef<Props['items']>(initItems);
+    const [items, setItems] = useState<Props['items']>(initItems);
+
+    const changeItems = useCallback((newItems: Props['items']) => {
+      itemsRef.current = newItems;
+      setItems(newItems);
+    }, []);
+
+    useFirstSkipEffect(() => {
+      changeItems(initItems);
+    }, [initItems]);
 
     /********************************************************************************************************************
      * Memo
@@ -265,15 +327,27 @@ const FormAutocomplete = ToForwardRefExoticComponent(
     );
 
     /********************************************************************************************************************
+     * Data
+     * ******************************************************************************************************************/
+
+    const dataRef = useRef<FormTextFieldProps['data']>(initData);
+
+    useFirstSkipEffect(() => {
+      dataRef.current = initData;
+    }, [initData]);
+
+    /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
 
+    const valueRef = useRef<Props['value']>(getFinalValue(initValue));
     const [value, setValue] = useState<Props['value']>(() => getFinalValue(initValue));
     const [valueItem, setValueItem] = useState<ComponentValue>(null);
 
     const changeValue = useCallback(
       (newValue: Props['value']) => {
-        if (!equal(value, newValue)) {
+        if (!equal(valueRef.current, newValue)) {
+          valueRef.current = newValue;
           setValue(newValue);
           nextTick(() => {
             if (error) validate(newValue);
@@ -282,7 +356,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
           });
         }
       },
-      [error, name, onChange, onValueChange, validate, value]
+      [error, name, onChange, onValueChange, validate]
     );
 
     useFirstSkipEffect(() => {
@@ -290,7 +364,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
     }, [initValue]);
 
     useFirstSkipEffect(() => {
-      changeValue(getFinalValue(value));
+      changeValue(getFinalValue(valueRef.current));
     }, [multiple]);
 
     const componentValue = useMemo(() => {
@@ -353,9 +427,9 @@ const FormAutocomplete = ToForwardRefExoticComponent(
               setValueItem(valueItem);
               if (valueItem) {
                 if (Array.isArray(valueItem)) {
-                  setItems(valueItem);
+                  changeItems(valueItem);
                 } else {
-                  setItems([valueItem]);
+                  changeItems([valueItem]);
                 }
               }
             });
@@ -387,7 +461,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
       if (!async && onLoadItems) {
         showOnGetItemLoading();
         onLoadItems().then((items) => {
-          setItems(items);
+          changeItems(items);
           hideOnGetItemLoading();
         });
       }
@@ -419,13 +493,13 @@ const FormAutocomplete = ToForwardRefExoticComponent(
                 if (componentValue) {
                   if (Array.isArray(componentValue)) {
                     const exceptValues = componentValue.map((info) => info.value);
-                    setItems([...componentValue, ...items.filter((info) => !exceptValues.includes(info.value))]);
+                    changeItems([...componentValue, ...items.filter((info) => !exceptValues.includes(info.value))]);
                   } else {
                     const exceptValue = componentValue.value;
-                    setItems([componentValue, ...items.filter((info) => info.value !== exceptValue)]);
+                    changeItems([componentValue, ...items.filter((info) => info.value !== exceptValue)]);
                   }
                 } else {
-                  setItems(items);
+                  changeItems(items);
                 }
               })
               .finally(() => {
@@ -434,12 +508,12 @@ const FormAutocomplete = ToForwardRefExoticComponent(
           }, 300);
         } else {
           if (Array.isArray(componentValue)) {
-            setItems(componentValue);
+            changeItems(componentValue);
           } else {
             if (componentValue) {
-              setItems([componentValue]);
+              changeItems([componentValue]);
             } else {
-              setItems([]);
+              changeItems([]);
             }
           }
           hideOnGetItemLoading();
@@ -462,59 +536,45 @@ const FormAutocomplete = ToForwardRefExoticComponent(
 
     useLayoutEffect(() => {
       if (ref || onAddValueItem) {
-        let lastValue = value;
-        let lastData = data;
-        let lastItems = items;
-        let lastLoading = loading;
-        let lastDisabled = !!disabled;
-        let lastHidden = !!hidden;
-
         const commands: Commands = {
           getType: () => 'FormAutocomplete',
           getName: () => name,
           getReset: () => getFinalValue(initValue),
           reset: () => {
-            lastValue = getFinalValue(initValue);
-            changeValue(lastValue);
+            changeValue(getFinalValue(initValue));
           },
-          getValue: () => lastValue,
-          setValue: (value) => {
-            lastValue = getFinalValue(value);
-            changeValue(lastValue);
+          getValue: () => valueRef.current,
+          setValue: (newValue) => {
+            changeValue(getFinalValue(newValue));
           },
-          getData: () => lastData,
+          getData: () => dataRef.current,
           setData: (data) => {
-            lastData = data;
-            setData(data);
+            dataRef.current = data;
           },
           isExceptValue: () => !!exceptValue,
-          isDisabled: () => lastDisabled,
+          isDisabled: () => !!disabledRef.current,
           setDisabled: (disabled) => {
-            lastDisabled = disabled;
-            setDisabled(disabled);
+            changeDisabled(disabled);
           },
-          isHidden: () => lastHidden,
+          isHidden: () => !!hiddenRef.current,
           setHidden: (hidden) => {
-            lastHidden = hidden;
-            setHidden(hidden);
+            changeHidden(hidden);
           },
           focus,
           focusValidate: focus,
-          validate: () => validate(value),
+          validate: () => validate(valueRef.current),
           setError: (error: boolean, errorText: ReactNode | undefined) =>
             setErrorErrorHelperText(error, error ? errorText : undefined),
           getFormValueSeparator: () => formValueSeparator,
           isFormValueSort: () => !!formValueSort,
-          getItems: () => lastItems,
+          getItems: () => itemsRef.current,
           setItems: (items) => {
-            lastItems = items;
-            setItems(lastItems);
+            changeItems(items);
           },
           isMultiple: () => !!multiple,
-          getLoading: () => !!lastLoading,
+          getLoading: () => !!loadingRef.current,
           setLoading: (loading) => {
-            lastLoading = loading;
-            setLoading(lastLoading);
+            changeLoading(loading);
           },
         };
 
@@ -541,32 +601,25 @@ const FormAutocomplete = ToForwardRefExoticComponent(
         };
       }
     }, [
-      name,
-      initValue,
-      value,
-      getFinalValue,
+      changeDisabled,
+      changeHidden,
+      changeItems,
+      changeLoading,
+      changeValue,
       exceptValue,
-      disabled,
-      multiple,
       focus,
-      validate,
       formValueSeparator,
       formValueSort,
-      items,
-      ref,
+      getFinalValue,
+      id,
+      initValue,
+      multiple,
+      name,
       onAddValueItem,
       onRemoveValueItem,
-      loading,
-      id,
-      setDisabled,
+      ref,
       setErrorErrorHelperText,
-      setItems,
-      setLoading,
-      data,
-      setData,
-      hidden,
-      setHidden,
-      changeValue,
+      validate,
     ]);
 
     /********************************************************************************************************************
@@ -639,74 +692,77 @@ const FormAutocomplete = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     return (
-      <Autocomplete
-        options={items || []}
-        className={classNames(className, 'FormValueItem', 'FormAutocomplete')}
-        sx={sx}
-        multiple={multiple}
-        fullWidth={!width && fullWidth}
-        openOnFocus={openOnFocus}
-        disableClearable={disableClearable}
-        disablePortal={disablePortal}
-        noOptionsText={noOptionsText}
-        value={componentValue as any}
-        style={style}
-        isOptionEqualToValue={(option, value) => option.value === value.value}
-        getOptionDisabled={handleGetOptionDisabled}
-        disabled={disabled}
-        readOnly={readOnly}
-        loading={loading || isOnGetItemLoading}
-        loadingText={loadingText}
-        limitTags={limitTags}
-        onChange={(e, value, reason, details) => handleChange(value as any, reason, details)}
-        renderOption={(props, option) => (
-          <li {...props} key={`${option.value}`}>
-            {onRenderItem ? onRenderItem(option) : option.label}
-          </li>
-        )}
-        onInputChange={(event, newInputValue, reason) => {
-          if (reason === 'input') {
-            setInputValue(newInputValue);
-          } else if (reason === 'reset') {
-            setInputValue(undefined);
+      <>
+        {/*<CircularProgress color='inherit' size={20} />*/}
+        <Autocomplete
+          options={items || []}
+          className={classNames(className, 'FormValueItem', 'FormAutocomplete')}
+          sx={sx}
+          multiple={multiple}
+          fullWidth={!width && fullWidth}
+          openOnFocus={openOnFocus}
+          disableClearable={disableClearable}
+          disablePortal={disablePortal}
+          noOptionsText={noOptionsText}
+          value={componentValue as any}
+          style={style}
+          isOptionEqualToValue={(option, value) => option.value === value.value}
+          getOptionDisabled={handleGetOptionDisabled}
+          disabled={disabled}
+          readOnly={readOnly}
+          loading={loading || isOnGetItemLoading}
+          loadingText={loadingText}
+          limitTags={limitTags}
+          onChange={(e, value, reason, details) => handleChange(value as any, reason, details)}
+          renderOption={(props, option) => (
+            <li {...props} key={`${option.value}`}>
+              {onRenderItem ? onRenderItem(option) : option.label}
+            </li>
+          )}
+          onInputChange={(event, newInputValue, reason) => {
+            if (reason === 'input') {
+              setInputValue(newInputValue);
+            } else if (reason === 'reset') {
+              setInputValue(undefined);
+            }
+          }}
+          renderTags={(value: FormAutocompleteItems<T>, getTagProps) =>
+            value.map((option, index) => (
+              <Chip size='small' label={onRenderTag ? onRenderTag(option) : option.label} {...getTagProps({ index })} />
+            ))
           }
-        }}
-        renderTags={(value: FormAutocompleteItems<T>, getTagProps) =>
-          value.map((option, index) => (
-            <Chip size='small' label={onRenderTag ? onRenderTag(option) : option.label} {...getTagProps({ index })} />
-          ))
-        }
-        renderInput={(params) => (
-          <FormTextField
-            {...params}
-            ref={textFieldRef}
-            name={name}
-            variant={variant}
-            size={size}
-            color={color}
-            labelIcon={labelIcon}
-            label={label}
-            labelShrink={labelShrink}
-            required={required}
-            focused={focused}
-            error={error}
-            readOnly={readOnly}
-            helperText={error ? errorHelperText : helperText}
-            placeholder={placeholder}
-            noFormValueItem
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <React.Fragment>
-                  {loading || isOnGetItemLoading ? <CircularProgress color='inherit' size={20} /> : null}
-                  {params.InputProps.endAdornment}
-                </React.Fragment>
-              ),
-            }}
-            inputProps={readOnly || disabled ? { ...params.inputProps, tabIndex: -1 } : params.inputProps}
-          />
-        )}
-      />
+          renderInput={(params) => (
+            <FormTextField
+              {...params}
+              ref={textFieldRef}
+              name={name}
+              variant={variant}
+              size={size}
+              color={color}
+              labelIcon={labelIcon}
+              label={label}
+              labelShrink={labelShrink}
+              required={required}
+              focused={focused}
+              error={error}
+              readOnly={readOnly}
+              helperText={error ? errorHelperText : helperText}
+              placeholder={placeholder}
+              noFormValueItem
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <>
+                    {loading || isOnGetItemLoading ? <CircularProgress color='inherit' size={20} /> : null}
+                    {params.InputProps.endAdornment}
+                  </>
+                ),
+              }}
+              inputProps={readOnly || disabled ? { ...params.inputProps, tabIndex: -1 } : params.inputProps}
+            />
+          )}
+        />
+      </>
     );
   })
 );

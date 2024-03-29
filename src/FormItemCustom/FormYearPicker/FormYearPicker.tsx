@@ -139,8 +139,8 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
      * Function - getFinalValue
      * ******************************************************************************************************************/
 
-    const getFinalValue = useCallback((value: FormYearPickerValue | undefined): FormYearPickerValue => {
-      return value || DEFAULT_VALUE;
+    const getFinalValue = useCallback((newValue: FormYearPickerValue | undefined): FormYearPickerValue => {
+      return newValue || DEFAULT_VALUE;
     }, []);
 
     const setErrorErrorHelperText = useCallback(
