@@ -346,7 +346,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           }
 
           if (setFirstItem) {
-            setValue(getFinalValue((multiple ? [items[0].value] : items[0].value) as Props['value']));
+            setValue((multiple ? [items[0].value] : items[0].value) as Props['value']);
           }
         }
       }

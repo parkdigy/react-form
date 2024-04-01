@@ -379,20 +379,14 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
           getReset: () => getFinalValue(initValue),
           reset: () => setValue(initValue),
           getValue: () => valueRef.current,
-          setValue: (value) => setValue(value),
+          setValue,
           getData: () => dataRef.current,
-          setData: (data) => {
-            setData(data);
-          },
+          setData,
           isExceptValue: () => !!exceptValue,
           isDisabled: () => !!disabledRef.current,
-          setDisabled: (disabled) => {
-            setDisabled(disabled);
-          },
+          setDisabled,
           isHidden: () => !!hiddenRef.current,
-          setHidden: (hidden) => {
-            setHidden(hidden);
-          },
+          setHidden,
           focus,
           focusValidate: focus,
           validate: () => validate(valueRef.current),

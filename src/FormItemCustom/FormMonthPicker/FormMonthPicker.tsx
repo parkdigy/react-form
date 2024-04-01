@@ -292,9 +292,9 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
         getReset: () => getFinalValue(initValue),
         reset: () => setValue(initValue),
         getValue: () => valueRef.current,
-        setValue: (value) => setValue(value),
+        setValue,
         getData: () => dataRef.current,
-        setData: (data) => setData(data),
+        setData,
         getYear: () => (valueRef.current ? valueRef.current.year : null),
         setYear: (year: number | null) => {
           setValue(
@@ -317,9 +317,9 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
         },
         isExceptValue: () => !!exceptValue,
         isDisabled: () => !!disabledRef.current,
-        setDisabled: (disabled) => setDisabled(disabled),
+        setDisabled,
         isHidden: () => !!hiddenRef.current,
-        setHidden: (hidden) => setHidden(hidden),
+        setHidden,
         focus,
         focusValidate: focus,
         validate: () => validate(valueRef.current),

@@ -219,21 +219,21 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         getReset: () => !!initChecked,
         reset: () => setChecked(initChecked),
         getValue: () => valueRef.current,
-        setValue: (value) => setValue(value),
+        setValue,
         getData: () => dataRef.current,
-        setData: (data) => setData(data),
+        setData,
         getUncheckedValue: () => uncheckedValueRef.current,
-        setUncheckedValue: (uncheckedValue) => setUncheckedValue(uncheckedValue),
+        setUncheckedValue,
         getChecked: () => checkedRef.current,
-        setChecked: (checked: boolean) => setChecked(checked),
+        setChecked,
         isExceptValue: () => !!exceptValue,
         isDisabled: () => !!disabledRef.current,
-        setDisabled: (disabled: boolean) => setDisabled(disabled),
+        setDisabled,
         isHidden: () => !!hiddenRef.current,
-        setHidden: (hidden) => setHidden(hidden),
+        setHidden,
         focus,
         focusValidate: focus,
-        validate: () => validate(checked),
+        validate: () => validate(checkedRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
       };
@@ -260,7 +260,6 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         }
       };
     }, [
-      checked,
       checkedRef,
       dataRef,
       disabledRef,
