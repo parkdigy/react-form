@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import * as AdminLayout from '@pdg/react-admin-layout';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,21 @@ import MainRouter from '../../router';
 
 const DefaultLayout = () => {
   const navigate = useNavigate();
+
+  //--------------------------------------------------------------------------------------------------------------------
+
+  const finalMenu = useMemo(
+    () =>
+      menu.map((info) => ({
+        ...info,
+        uri: !info.uri ? info.uri : env === 'development' ? info.uri : `/react-form${info.uri}`,
+        items: info.items?.map((info) => ({
+          ...info,
+          uri: !info.uri ? info.uri : env === 'development' ? info.uri : `/react-form${info.uri}`,
+        })),
+      })),
+    []
+  );
 
   //--------------------------------------------------------------------------------------------------------------------
 
@@ -23,7 +38,7 @@ const DefaultLayout = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      <AdminLayout.DefaultLayout logo='@pdg/react-form' menu={menu} onMenuClick={handleMenuClick}>
+      <AdminLayout.DefaultLayout logo='@pdg/react-form' menu={finalMenu} onMenuClick={handleMenuClick}>
         <MainRouter />
       </AdminLayout.DefaultLayout>
     </ThemeProvider>

@@ -17,7 +17,7 @@ import {
   FormBody,
   FormFooter,
 } from '../../../../src';
-import { OutlinedPaper } from '#ccomp';
+import { OutlinedPaper } from '@ccomp';
 import { lv } from '@pdg/util';
 
 const _components: React.ForwardRefExoticComponent<any>[] = [

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import {
@@ -19,31 +19,51 @@ import {
   FormItemFile,
   FormItemDate,
   Search,
-} from '#comp';
+} from '@comp';
 
-const routes = () => {
+const RootRoutes = () => {
+  const rootPath = useMemo(() => (env === 'development' ? '/' : '/react-form/'), []);
+
+  const basicRoutes = useMemo(
+    () => (
+      <>
+        <Route path='/' element={<Home />} />
+        <Route path='/form' element={<FormBase />} />
+        <Route
+          path='/form_item/*'
+          element={
+            <Routes>
+              <Route path='/styling' element={<FormItemStyling />} />
+              <Route path='/text' element={<FormItemText />} />
+              <Route path='/number' element={<FormItemNumber />} />
+              <Route path='/tag' element={<FormItemTag />} />
+              <Route path='/select' element={<FormItemSelect />} />
+              <Route path='/autocomplete' element={<FormItemAutocomplete />} />
+              <Route path='/textarea' element={<FormItemTextarea />} />
+              <Route path='/checkbox' element={<FormItemCheckbox />} />
+              <Route path='/radio' element={<FormItemRadioGroup />} />
+              <Route path='/toggle_button' element={<FormItemToggleButtonGroup />} />
+              <Route path='/rating' element={<FormItemRating />} />
+              <Route path='/text_editor' element={<FormItemTextEditor />} />
+              <Route path='/file' element={<FormItemFile />} />
+              <Route path='/date' element={<FormItemDate />} />
+              <Route path='*' element={<Navigate to={rootPath} />} />
+            </Routes>
+          }
+        />
+        <Route path='/search' element={<Search />} />
+        <Route path='*' element={<Navigate to={rootPath} />} />
+      </>
+    ),
+    [rootPath]
+  );
+
   return (
     <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/form' element={<FormBase />} />
-      <Route path='/form_item/styling' element={<FormItemStyling />} />
-      <Route path='/form_item/text' element={<FormItemText />} />
-      <Route path='/form_item/number' element={<FormItemNumber />} />
-      <Route path='/form_item/tag' element={<FormItemTag />} />
-      <Route path='/form_item/select' element={<FormItemSelect />} />
-      <Route path='/form_item/autocomplete' element={<FormItemAutocomplete />} />
-      <Route path='/form_item/textarea' element={<FormItemTextarea />} />
-      <Route path='/form_item/checkbox' element={<FormItemCheckbox />} />
-      <Route path='/form_item/radio' element={<FormItemRadioGroup />} />
-      <Route path='/form_item/toggle_button' element={<FormItemToggleButtonGroup />} />
-      <Route path='/form_item/rating' element={<FormItemRating />} />
-      <Route path='/form_item/text_editor' element={<FormItemTextEditor />} />
-      <Route path='/form_item/file' element={<FormItemFile />} />
-      <Route path='/form_item/date' element={<FormItemDate />} />
-      <Route path='/search' element={<Search />} />
-      <Route path='*' element={<Navigate to='/' />} />
+      <Route path={`${rootPath}*`} element={<Routes>{basicRoutes}</Routes>} />
+      <Route path='*' element={<Navigate to={rootPath} />} />
     </Routes>
   );
 };
 
-export default routes;
+export default RootRoutes;

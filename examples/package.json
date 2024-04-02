@@ -4,6 +4,11 @@
     "dev": "cross-env NODE_ENV=development LIB_ENV=development webpack serve --config=webpack.config.js",
     "dev-prd-lib": "cross-env NODE_ENV=development LIB_ENV=production webpack serve --config=webpack.config.js",
     "lint": "eslint './src/**/*.{ts,tsx}'",
+    "clean:prod": "rm -rf build && rm -rf dist && mkdir dist",
+    "clean:prod:win": "rmdir /s /q build && rmdir /s /q dist && mkdir dist",
+    "copy:index": "cp ./dist/index.html ../index.html && cp ./dist/index.html ../404.html",
+    "build:webpack": "cross-env NODE_ENV=production webpack --progress --config webpack.config.js",
+    "build": "npm run clean:prod && npm run lint && npm run build:webpack && npm run copy:index",
     "reinstall-module": "rm -rf node_modules && rm -f package-lock.json && npm i"
   },
   "devDependencies": {
@@ -29,6 +34,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.10.0",
     "dayjs": "^1.11.10",
+    "eslint-webpack-plugin": "^4.1.0",
     "fork-ts-checker-webpack-plugin": "^9.0.2",
     "html-loader": "^5.0.0",
     "html-webpack-plugin": "^5.6.0",
@@ -44,6 +50,7 @@
     "ts-loader": "^9.5.1",
     "url-loader": "^4.1.1",
     "webpack": "^5.90.3",
+    "webpack-bundle-analyzer": "^4.10.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
     "webpack-shell-plugin-next": "^2.3.1"

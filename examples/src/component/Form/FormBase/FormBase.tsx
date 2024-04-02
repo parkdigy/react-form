@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { OutlinedPaper } from '#ccomp';
+import { OutlinedPaper } from '@ccomp';
 import {
   Form,
   FormProps,

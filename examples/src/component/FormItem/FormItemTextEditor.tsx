@@ -9,7 +9,7 @@ import {
   FormBody,
   FormFooter,
 } from '../../../../src';
-import { OutlinedPaper } from '#ccomp';
+import { OutlinedPaper } from '@ccomp';
 
 const FormItemTextEditor = () => {
   const [readOnly, setReadOnly] = useState(false);

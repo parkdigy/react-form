@@ -15,7 +15,7 @@ import {
   FormFooter,
   FormAutocompleteItems,
 } from '../../../../src';
-import { OutlinedPaper } from '#ccomp';
+import { OutlinedPaper } from '@ccomp';
 import { lv } from '@pdg/util';
 
 const DEFAULT_ITEMS: FormAutocompleteItem<number>[] = [

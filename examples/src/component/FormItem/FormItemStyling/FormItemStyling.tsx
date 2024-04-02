@@ -30,7 +30,7 @@ import {
   FormBody,
   FormFooter,
 } from '../../../../../src';
-import { OutlinedPaper } from '#ccomp';
+import { OutlinedPaper } from '@ccomp';
 import { BasicBlock, IconAdornmentBlock, NumberBlock, TextareaBlock, WidthBlock, ColorBlock, RatingBlock } from './sub';
 import { lv } from '@pdg/util';
 

@@ -4,6 +4,9 @@ declare global {
 
   function ll(message?: any, ...optionalParams: any[]): void;
   function getName(prefix: string, resetSeq?: boolean): string;
+
+  // eslint-disable-next-line no-var
+  var env: 'development' | 'production';
 }
 
 globalThis.ll = function (message?: any, ...optionalParams: any[]) {
@@ -18,5 +21,7 @@ globalThis.getName = (prefix: string, resetSeq?: boolean): string => {
   nameSeq += 1;
   return `${prefix}_${nameSeq}`;
 };
+
+globalThis.env = (window as any).$$AppConfig.env;
 
 export {};

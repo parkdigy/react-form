@@ -12,7 +12,7 @@ import {
   FormFooter,
   FormSelectItems,
 } from '../../../../src';
-import { OutlinedPaper } from '#ccomp';
+import { OutlinedPaper } from '@ccomp';
 import { lv } from '@pdg/util';
 
 const FormItemSelect = () => {

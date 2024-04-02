@@ -13,7 +13,7 @@ import {
   FormFooter,
   FormToggleButtonGroupItems,
 } from '../../../../src';
-import { OutlinedPaper } from '#ccomp';
+import { OutlinedPaper } from '@ccomp';
 import { lv } from '@pdg/util';
 
 const DEFAULT_ITEMS: FormToggleButtonGroupItem<number>[] = [
