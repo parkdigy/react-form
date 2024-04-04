@@ -311,7 +311,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
           <>
             {icon && (
               <InputAdornment position='start'>
-                <PdgIcon fontSize='small'>{icon}</PdgIcon>
+                <PdgIcon size='small'>{icon}</PdgIcon>
               </InputAdornment>
             )}
             {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
@@ -339,7 +339,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
                     }
                   }}
                 >
-                  <PdgIcon fontSize='inherit'>ClearRounded</PdgIcon>
+                  <PdgIcon size='inherit'>ClearRounded</PdgIcon>
                 </IconButton>
               </InputAdornment>
             )}

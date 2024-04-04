@@ -590,9 +590,9 @@ Form.defaultProps = FormDefaultProps;var FormButtonDefaultProps = {
      * ******************************************************************************************************************/
     return (React.createElement(Button, __assign({ ref: ref, className: classNames(className, 'FormButton'), type: type, variant: variant, size: size, color: color, fullWidth: fullWidth, onClick: onClick }, props),
         React.createElement(Box, { display: 'inline-flex', flexDirection: 'row', alignItems: 'center' },
-            (icon || startIcon) && (React.createElement(PdgIcon, { className: 'FormButton-StartIcon', fontSize: size, color: 'inherit', sx: { mr: children ? 0.5 : undefined } }, icon || startIcon)),
+            (icon || startIcon) && (React.createElement(PdgIcon, { className: 'FormButton-StartIcon', size: size, color: 'inherit', sx: { mr: children ? 0.5 : undefined } }, icon || startIcon)),
             children,
-            endIcon && (React.createElement(PdgIcon, { className: 'FormButton-EndIcon', fontSize: size, color: 'inherit', sx: { ml: children ? 0.5 : undefined } }, endIcon)))));
+            endIcon && (React.createElement(PdgIcon, { className: 'FormButton-EndIcon', size: size, color: 'inherit', sx: { ml: children ? 0.5 : undefined } }, endIcon)))));
 });
 FormButton.displayName = 'FormButton';
 FormButton.defaultProps = FormButtonDefaultProps;var FormLabelDefaultProps = {};var IconPdgIcon = styled(PdgIcon)(templateObject_1$g || (templateObject_1$g = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
@@ -700,7 +700,7 @@ var FormDivider = React.forwardRef(function (_a, ref) {
                 padding: 0,
                 cursor: collapse ? 'pointer' : undefined,
             }, onClick: handleClick },
-            icon && (React.createElement(PdgIcon, { style: { opacity: 0.54, marginRight: 5 }, color: error ? 'error' : warning ? 'warning' : undefined, fontSize: size }, icon)),
+            icon && (React.createElement(PdgIcon, { style: { opacity: 0.54, marginRight: 5 }, color: error ? 'error' : warning ? 'warning' : undefined, size: size }, icon)),
             label && (React.createElement(Box, { sx: {
                     paddingRight: '10px',
                     color: error ? 'error.main' : warning ? 'warning.main' : 'text.secondary',
@@ -1185,7 +1185,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
         if (startAdornment || icon || muiInputProps.startAdornment) {
             muiInputProps.startAdornment = (React.createElement(React.Fragment, null,
                 icon && (React.createElement(InputAdornment, { position: 'start' },
-                    React.createElement(PdgIcon, { fontSize: 'small' }, icon))),
+                    React.createElement(PdgIcon, { size: 'small' }, icon))),
                 startAdornment && React.createElement(InputAdornment, { position: 'start' }, startAdornment),
                 muiInputProps.startAdornment));
         }
@@ -1202,7 +1202,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
                                 });
                             }
                         } },
-                        React.createElement(PdgIcon, { fontSize: 'inherit' }, "ClearRounded")))),
+                        React.createElement(PdgIcon, { size: 'inherit' }, "ClearRounded")))),
                 muiInputProps.endAdornment,
                 endAdornment && React.createElement(InputAdornment, { position: 'end' }, endAdornment)));
         }
@@ -3676,7 +3676,7 @@ FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;var FormR
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormRating'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, required: required, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 21 : 26), controlVerticalCenter: true, control: React.createElement(Rating, { ref: ratingRef, size: size === 'medium' ? 'large' : 'medium', name: name, precision: precision, highlightSelectedOnly: highlightSelectedOnly, value: value, disabled: disabled || readOnly, max: max, icon: React.createElement(PdgIcon, { color: color, fontSize: 'inherit' }, icon ? icon : 'Star'), emptyIcon: React.createElement(PdgIcon, { fontSize: 'inherit' }, emptyIcon ? emptyIcon : 'StarBorder'), onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } }) }));
+    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormRating'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, required: required, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 21 : 26), controlVerticalCenter: true, control: React.createElement(Rating, { ref: ratingRef, size: size === 'medium' ? 'large' : 'medium', name: name, precision: precision, highlightSelectedOnly: highlightSelectedOnly, value: value, disabled: disabled || readOnly, max: max, icon: React.createElement(PdgIcon, { color: color, size: 'inherit' }, icon ? icon : 'Star'), emptyIcon: React.createElement(PdgIcon, { size: 'inherit' }, emptyIcon ? emptyIcon : 'StarBorder'), onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } }) }));
 });
 FormRating.displayName = 'FormRating';
 FormRating.defaultProps = FormRatingDefaultProps;var FormTextEditorDefaultProps = {
@@ -5264,7 +5264,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
         if (startAdornment || icon || muiInputProps.startAdornment) {
             muiInputProps.startAdornment = (React.createElement(React.Fragment, null,
                 icon && (React.createElement(InputAdornment, { position: 'start' },
-                    React.createElement(PdgIcon, { fontSize: 'small' }, icon))),
+                    React.createElement(PdgIcon, { size: 'small' }, icon))),
                 startAdornment && React.createElement(InputAdornment, { position: 'start' }, startAdornment),
                 muiInputProps.startAdornment));
         }
@@ -6012,7 +6012,7 @@ PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultPro
         if (startAdornment || icon || muiInputProps.startAdornment) {
             muiInputProps.startAdornment = (React.createElement(React.Fragment, null,
                 icon && (React.createElement(InputAdornment, { position: 'start' },
-                    React.createElement(PdgIcon, { fontSize: 'small' }, icon))),
+                    React.createElement(PdgIcon, { size: 'small' }, icon))),
                 startAdornment && React.createElement(InputAdornment, { position: 'start' }, startAdornment),
                 muiInputProps.startAdornment));
         }
@@ -6132,7 +6132,7 @@ styleInject(css_248z$4);var PrivateInputDatePicker = React.forwardRef(function (
         if (startAdornment || icon || muiInputProps.startAdornment) {
             muiInputProps.startAdornment = (React.createElement(React.Fragment, null,
                 icon && (React.createElement(InputAdornment, { position: 'start' },
-                    React.createElement(PdgIcon, { fontSize: 'small' }, icon))),
+                    React.createElement(PdgIcon, { size: 'small' }, icon))),
                 startAdornment && React.createElement(InputAdornment, { position: 'start' }, startAdornment),
                 muiInputProps.startAdornment));
         }
@@ -10448,7 +10448,7 @@ FormYearRangePicker.defaultProps = FormYearRangePickerDefaultProps;var FormSwitc
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    var switchControl = useMemo(function () { return (React.createElement(Switch, { size: size, name: name, checked: value, disabled: disabled, onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } })); }, [disabled, handleChange, initFocused, name, setFocused, size, value]);
+    var switchControl = useMemo(function () { return (React.createElement(Switch, { size: size, name: name, checked: value, color: color, disabled: disabled, onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } })); }, [color, disabled, handleChange, initFocused, name, setFocused, size, value]);
     return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormSwitch'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: size === 'small' ? 21 : 26, controlVerticalCenter: true, control: switchLabel ? (React.createElement(FormControlLabel, { control: switchControl, label: switchLabel, disabled: disabled })) : (switchControl) }));
 });
 FormSwitch.displayName = 'FormSwitch';

@@ -77,7 +77,7 @@ const FormButton = React.forwardRef<HTMLButtonElement, Props>(
           {(icon || startIcon) && (
             <PdgIcon
               className='FormButton-StartIcon'
-              fontSize={size}
+              size={size}
               color='inherit'
               sx={{ mr: children ? 0.5 : undefined }}
             >
@@ -86,12 +86,7 @@ const FormButton = React.forwardRef<HTMLButtonElement, Props>(
           )}
           {children}
           {endIcon && (
-            <PdgIcon
-              className='FormButton-EndIcon'
-              fontSize={size}
-              color='inherit'
-              sx={{ ml: children ? 0.5 : undefined }}
-            >
+            <PdgIcon className='FormButton-EndIcon' size={size} color='inherit' sx={{ ml: children ? 0.5 : undefined }}>
               {endIcon}
             </PdgIcon>
           )}

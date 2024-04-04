@@ -16,6 +16,8 @@ import {
   FormValueMap,
   FormBody,
   FormFooter,
+  FormCompanyNo,
+  FormPersonalNo,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
 import { lv } from '@pdg/util';
@@ -28,7 +30,13 @@ const _components: React.ForwardRefExoticComponent<any>[] = [
   FormMobile,
   FormUrl,
   FormSearch,
+  FormCompanyNo,
+  FormPersonalNo,
 ];
+
+const _componentsItems = _components.map<FormToggleButtonGroupItem<string>>((component) =>
+  lv(component.displayName?.substring(4), component.displayName || '')
+);
 
 const FormItemText = () => {
   const formRef = useRef(null);
@@ -62,6 +70,12 @@ const FormItemText = () => {
       case FormSearch.displayName:
         setValue('검색어');
         break;
+      case FormCompanyNo.displayName:
+        setValue('1234567890');
+        break;
+      case FormPersonalNo.displayName:
+        setValue('1234567890123');
+        break;
       default:
         setValue(componentName || '');
         break;
@@ -85,9 +99,7 @@ const FormItemText = () => {
               <FormToggleButtonGroup
                 name='type'
                 label='Component'
-                items={_components.map<FormToggleButtonGroupItem<string>>((component) =>
-                  lv(component.displayName?.substring(4), component.displayName || '')
-                )}
+                items={_componentsItems}
                 value={componentName}
                 onChange={(value) => setComponentName(value)}
                 fullWidth={false}

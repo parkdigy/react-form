@@ -93,7 +93,7 @@ const FormDivider = React.forwardRef<HTMLDivElement, Props>(
             <PdgIcon
               style={{ opacity: 0.54, marginRight: 5 }}
               color={error ? 'error' : warning ? 'warning' : undefined}
-              fontSize={size}
+              size={size}
             >
               {icon}
             </PdgIcon>

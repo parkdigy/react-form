@@ -322,11 +322,11 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
             disabled={disabled || readOnly}
             max={max}
             icon={
-              <PdgIcon color={color} fontSize='inherit'>
+              <PdgIcon color={color} size='inherit'>
                 {icon ? icon : 'Star'}
               </PdgIcon>
             }
-            emptyIcon={<PdgIcon fontSize='inherit'>{emptyIcon ? emptyIcon : 'StarBorder'}</PdgIcon>}
+            emptyIcon={<PdgIcon size='inherit'>{emptyIcon ? emptyIcon : 'StarBorder'}</PdgIcon>}
             onChange={handleChange}
             onFocus={() => setFocused(initFocused || true)}
             onBlur={() => setFocused(initFocused || false)}

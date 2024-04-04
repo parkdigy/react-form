@@ -4,12 +4,14 @@ const webpack = require('webpack');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WebpackShellPluginNext = require('webpack-shell-plugin-next');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { SourceMapDevToolPlugin } = require('webpack');
+const PackageJson = require('../package.json');
 /* eslint-enable */
 
 /********************************************************************************************************************
@@ -17,10 +19,32 @@ const { SourceMapDevToolPlugin } = require('webpack');
  * ******************************************************************************************************************/
 
 const isProduction = process.env.NODE_ENV === 'production';
-const rootPath = path.resolve(__dirname, '../');
 const outputPath = path.resolve(__dirname, 'dist');
 const devtool = isProduction ? false : 'eval';
 const mode = isProduction ? 'production' : 'development';
+
+/********************************************************************************************************************
+ * preBuildScripts
+ * ******************************************************************************************************************/
+
+const preBuildScripts = [];
+if (!isProduction) {
+  const packageJson = PackageJson;
+  const packageNames = Object.keys(packageJson.peerDependencies || {}).filter(
+    (packageName) => !packageName.startsWith('@emotion/')
+  );
+  if (packageNames.length > 0) {
+    packageNames.forEach((packageName) => {
+      preBuildScripts.push(
+        `echo ">>>>> node_modules/${packageName} npm link" && cd node_modules/${packageName} && npm link`
+      );
+    });
+  }
+
+  preBuildScripts.push(
+    `echo ">>>>> ../npm link ${packageNames.join(' ')}" && cd .. && npm link ${packageNames.join(' ')}`
+  );
+}
 
 /********************************************************************************************************************
  * MyHtmlPlugin
@@ -157,6 +181,13 @@ const options = {
           }),
         ]
       : [
+          new WebpackShellPluginNext({
+            dev: !isProduction,
+            onBuildStart: {
+              scripts: preBuildScripts,
+              blocking: true,
+            },
+          }),
           new SourceMapDevToolPlugin({
             filename: '[file].map',
           }),

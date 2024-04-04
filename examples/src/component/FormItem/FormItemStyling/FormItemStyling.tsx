@@ -29,6 +29,18 @@ import {
   FormProps,
   FormBody,
   FormFooter,
+  FormCompanyNo,
+  FormPersonalNo,
+  FormDateRangePicker,
+  FormDateTimePicker,
+  FormFile,
+  FormImageFile,
+  FormMonthPicker,
+  FormMonthRangePicker,
+  FormSwitch,
+  FormTimePicker,
+  FormYearPicker,
+  FormYearRangePicker,
 } from '../../../../../src';
 import { OutlinedPaper } from '@ccomp';
 import { BasicBlock, IconAdornmentBlock, NumberBlock, TextareaBlock, WidthBlock, ColorBlock, RatingBlock } from './sub';
@@ -42,17 +54,33 @@ const _components: React.ForwardRefExoticComponent<any>[] = [
   FormTel,
   FormMobile,
   FormUrl,
+  FormCompanyNo,
+  FormPersonalNo,
   FormSearch,
   FormTag,
   FormTextarea,
   FormSelect as React.ForwardRefExoticComponent<any>,
   FormAutocomplete as React.ForwardRefExoticComponent<any>,
   FormCheckbox,
+  FormSwitch,
   FormRadioGroup as React.ForwardRefExoticComponent<any>,
   FormToggleButtonGroup as React.ForwardRefExoticComponent<any>,
+  FormFile,
+  FormImageFile,
   FormRating,
   FormDatePicker,
+  FormDateRangePicker,
+  FormDateTimePicker,
+  FormTimePicker,
+  FormMonthPicker,
+  FormMonthRangePicker,
+  FormYearPicker,
+  FormYearRangePicker,
 ];
+
+const _componentsItems = _components.map((component) =>
+  lv(component.displayName?.substring(4), component.displayName || '')
+);
 
 function makeLabelValueItems<T>(count: number, leadText: string): T[] {
   return new Array(count).fill(0).map((v, idx) => ({ label: `${leadText}${idx + 1}`, value: `${idx + 1}` })) as T[];
@@ -107,6 +135,17 @@ const FormItemStyling = () => {
       case FormCheckbox.displayName:
         componentPros.text = componentName;
         componentPros.label = componentName;
+
+        break;
+      case FormDateRangePicker.displayName:
+      case FormMonthRangePicker.displayName:
+      case FormYearRangePicker.displayName:
+        componentPros.fromLabel = componentName;
+        componentPros.toLabel = componentName;
+        break;
+      case FormTimePicker.displayName:
+      case FormDateTimePicker.displayName:
+        componentPros.time = 'minute';
         break;
       default:
         componentPros.label = componentName;
@@ -133,16 +172,14 @@ const FormItemStyling = () => {
           <FormBody>
             <FormRow>
               <FormCol>
-                <FormToggleButtonGroup
+                <FormSelect
                   name='type'
                   label='Component'
-                  items={_components.map((component) =>
-                    lv(component.displayName?.substring(4), component.displayName || '')
-                  )}
+                  items={_componentsItems}
                   value={componentName}
                   onChange={(value) => setComponentName(value)}
-                  notAllowEmptyValue
                   fullWidth={false}
+                  width={300}
                 />
               </FormCol>
             </FormRow>

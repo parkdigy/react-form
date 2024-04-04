@@ -253,13 +253,14 @@ const FormSwitch = React.forwardRef<FormSwitchCommands, Props>(
           size={size}
           name={name}
           checked={value}
+          color={color}
           disabled={disabled}
           onChange={handleChange}
           onFocus={() => setFocused(initFocused || true)}
           onBlur={() => setFocused(initFocused || false)}
         />
       ),
-      [disabled, handleChange, initFocused, name, setFocused, size, value]
+      [color, disabled, handleChange, initFocused, name, setFocused, size, value]
     );
 
     return (

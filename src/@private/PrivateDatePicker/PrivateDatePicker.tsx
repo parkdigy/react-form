@@ -531,7 +531,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
           <>
             {icon && (
               <InputAdornment position='start'>
-                <PdgIcon fontSize='small'>{icon}</PdgIcon>
+                <PdgIcon size='small'>{icon}</PdgIcon>
               </InputAdornment>
             )}
             {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
