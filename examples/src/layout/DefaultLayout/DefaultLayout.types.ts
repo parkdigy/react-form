@@ -3,18 +3,7 @@ import LinkBehavior from './LinkBehavior';
 
 let theme = createTheme({
   typography: {
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
+    fontFamily: ['Pretendard', 'Apple Gothic', 'Dotum', 'sans-serif'].join(','),
     fontSize: 12,
     button: {
       textTransform: 'none',
