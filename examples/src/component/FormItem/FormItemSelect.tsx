@@ -137,6 +137,7 @@ const FormItemSelect = () => {
                 label='FormSelect'
                 placeholder='선택하세요'
                 helperText='onLoadItems'
+                value={1}
                 multiple={isMultiple}
                 checkbox={isCheckbox}
                 onLoadItems={handleLoadItems}
@@ -144,7 +145,7 @@ const FormItemSelect = () => {
             </FormCol>
             <FormCol>
               <FormSelect
-                name='onLoadItems'
+                name='onLoadItems2'
                 label='FormSelect'
                 placeholder='선택하세요'
                 helperText='onLoadItems'

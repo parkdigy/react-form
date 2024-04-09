@@ -2276,30 +2276,34 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    var finalValue;
-    if (notEmpty(items)) {
-        finalValue = value;
-    }
-    else {
-        finalValue = multiple ? emptyValue : '';
-    }
-    if (multiple) {
-        if (selectProps.value != null && !Array.isArray(selectProps.value)) {
-            selectProps.value = [selectProps.value];
+    var finalValue = useMemo(function () {
+        var newFinalValue;
+        if (notEmpty(items)) {
+            newFinalValue = value;
         }
-        if (finalValue !== undefined && !Array.isArray(finalValue)) {
-            finalValue = [finalValue];
+        else {
+            newFinalValue = multiple ? emptyValue : '';
         }
-    }
-    else {
-        if (Array.isArray(selectProps.value)) {
-            selectProps.value = selectProps.value[0];
+        selectProps.value = newFinalValue;
+        if (multiple) {
+            if (selectProps.value != null && !Array.isArray(selectProps.value)) {
+                selectProps.value = [selectProps.value];
+            }
+            if (newFinalValue !== undefined && !Array.isArray(newFinalValue)) {
+                newFinalValue = [newFinalValue];
+            }
         }
-        if (Array.isArray(finalValue)) {
-            finalValue = finalValue[0];
+        else {
+            if (Array.isArray(selectProps.value)) {
+                selectProps.value = selectProps.value[0];
+            }
+            if (Array.isArray(newFinalValue)) {
+                newFinalValue = newFinalValue[0];
+            }
+            newFinalValue = ifUndefined(newFinalValue, '');
         }
-        finalValue = ifUndefined(finalValue, '');
-    }
+        return newFinalValue;
+    }, [emptyValue, items, multiple, selectProps, value]);
     return (React.createElement(FormContextProvider, { value: __assign({ fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, 
             // eslint-disable-next-line
             onValueChange: function () { } }, otherFormState) },

@@ -370,30 +370,35 @@ const FormSelect = ToForwardRefExoticComponent(
      * Render
      * ******************************************************************************************************************/
 
-    let finalValue;
-    if (notEmpty(items)) {
-      finalValue = value;
-    } else {
-      finalValue = multiple ? emptyValue : '';
-    }
-
-    if (multiple) {
-      if (selectProps.value != null && !Array.isArray(selectProps.value)) {
-        selectProps.value = [selectProps.value];
-      }
-      if (finalValue !== undefined && !Array.isArray(finalValue)) {
-        finalValue = [finalValue];
-      }
-    } else {
-      if (Array.isArray(selectProps.value)) {
-        selectProps.value = selectProps.value[0];
-      }
-      if (Array.isArray(finalValue)) {
-        finalValue = finalValue[0];
+    const finalValue = useMemo(() => {
+      let newFinalValue;
+      if (notEmpty(items)) {
+        newFinalValue = value;
+      } else {
+        newFinalValue = multiple ? emptyValue : '';
       }
 
-      finalValue = ifUndefined(finalValue, '');
-    }
+      selectProps.value = newFinalValue;
+
+      if (multiple) {
+        if (selectProps.value != null && !Array.isArray(selectProps.value)) {
+          selectProps.value = [selectProps.value];
+        }
+        if (newFinalValue !== undefined && !Array.isArray(newFinalValue)) {
+          newFinalValue = [newFinalValue];
+        }
+      } else {
+        if (Array.isArray(selectProps.value)) {
+          selectProps.value = selectProps.value[0];
+        }
+        if (Array.isArray(newFinalValue)) {
+          newFinalValue = newFinalValue[0];
+        }
+
+        newFinalValue = ifUndefined(newFinalValue, '');
+      }
+      return newFinalValue;
+    }, [emptyValue, items, multiple, selectProps, value]);
 
     return (
       <FormContextProvider
