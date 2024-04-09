@@ -1,5 +1,5 @@
-import { FormButtonProps } from '../../FormCommon';
+import { PdgButtonProps } from '@pdg/react-component';
 
-export interface SearchButtonProps extends Omit<FormButtonProps, 'fullWidth'> {}
+export interface SearchButtonProps extends Omit<PdgButtonProps, 'fullWidth'> {}
 
 export const SearchButtonDefaultProps = {};

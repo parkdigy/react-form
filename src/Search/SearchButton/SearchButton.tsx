@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { SearchButtonProps as Props, SearchButtonDefaultProps } from './SearchButton.types';
-import { FormButton } from '../../FormCommon';
+import { PdgButton } from '@pdg/react-component';
 
 const SearchButton: React.FC<Props> = ({ children, className, sx: initSx, startIcon, endIcon, icon, ...props }) => {
   /********************************************************************************************************************
@@ -9,7 +9,7 @@ const SearchButton: React.FC<Props> = ({ children, className, sx: initSx, startI
    * ******************************************************************************************************************/
 
   const sx = useMemo(
-    () => ({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7, ...initSx }),
+    () => ({ minWidth: 0, px: `${!startIcon && !endIcon && !icon ? 9 : 13}px !important`, ...initSx }),
     [endIcon, icon, initSx, startIcon]
   );
 
@@ -18,7 +18,7 @@ const SearchButton: React.FC<Props> = ({ children, className, sx: initSx, startI
    * ******************************************************************************************************************/
 
   return (
-    <FormButton
+    <PdgButton
       className={classNames(className, 'SearchButton')}
       size='medium'
       sx={sx}
@@ -29,7 +29,7 @@ const SearchButton: React.FC<Props> = ({ children, className, sx: initSx, startI
       {...props}
     >
       {children}
-    </FormButton>
+    </PdgButton>
   );
 };
 

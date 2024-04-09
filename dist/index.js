@@ -587,7 +587,7 @@ Form.defaultProps = FormDefaultProps;var FormButtonDefaultProps = {
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
-    var initSize = _a.size, initColor = _a.color, initVariant = _a.variant, initFullWidth = _a.fullWidth, children = _a.children, className = _a.className, type = _a.type, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, onClick = _a.onClick, props = __rest(_a, ["size", "color", "variant", "fullWidth", "children", "className", "type", "icon", "startIcon", "endIcon", "onClick"]);
+    var initSize = _a.size, initColor = _a.color, initVariant = _a.variant, initFullWidth = _a.fullWidth, className = _a.className, type = _a.type, onClick = _a.onClick, props = __rest(_a, ["size", "color", "variant", "fullWidth", "className", "type", "onClick"]);
     var _b = useFormState(), formSize = _b.size, formColor = _b.color, formFullWidth = _b.fullWidth;
     /********************************************************************************************************************
      * Memo - FormState
@@ -614,11 +614,7 @@ Form.defaultProps = FormDefaultProps;var FormButtonDefaultProps = {
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(material.Button, __assign({ ref: ref, className: classNames(className, 'FormButton'), type: type, variant: variant, size: size, color: color, fullWidth: fullWidth, onClick: onClick }, props),
-        React.createElement(material.Box, { display: 'inline-flex', flexDirection: 'row', alignItems: 'center' },
-            (icon || startIcon) && (React.createElement(reactComponent.PdgIcon, { className: 'FormButton-StartIcon', size: size, color: 'inherit', sx: { mr: children ? 0.5 : undefined } }, icon || startIcon)),
-            children,
-            endIcon && (React.createElement(reactComponent.PdgIcon, { className: 'FormButton-EndIcon', size: size, color: 'inherit', sx: { ml: children ? 0.5 : undefined } }, endIcon)))));
+    return (React.createElement(reactComponent.PdgButton, __assign({ ref: ref, className: classNames(className, 'FormButton'), type: type, variant: variant, size: size, color: color, fullWidth: fullWidth, onClick: onClick }, props)));
 });
 FormButton.displayName = 'FormButton';
 FormButton.defaultProps = FormButtonDefaultProps;var FormLabelDefaultProps = {};var IconPdgIcon = material.styled(reactComponent.PdgIcon)(templateObject_1$g || (templateObject_1$g = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
@@ -10546,7 +10542,7 @@ SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React.forw
 });
 Search.displayName = 'Search';
 Search.defaultProps = SearchDefaultProps;var SearchGroupDefaultProps = {
-    spacing: 1.5,
+    spacing: 1,
 };var StyledItem = material.styled(material.Grid)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  &:has(> [style*='display: none;']) {\n    display: none;\n  }\n"], ["\n  &:has(> [style*='display: none;']) {\n    display: none;\n  }\n"])));
 var templateObject_1;var isReactFragment = function (child) {
     try {
@@ -10618,11 +10614,11 @@ SearchGroup.defaultProps = SearchGroupDefaultProps;var SearchButtonDefaultProps 
      * Memo
      * ******************************************************************************************************************/
     var children = _a.children, className = _a.className, initSx = _a.sx, startIcon = _a.startIcon, endIcon = _a.endIcon, icon = _a.icon, props = __rest(_a, ["children", "className", "sx", "startIcon", "endIcon", "icon"]);
-    var sx = React.useMemo(function () { return (__assign({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7 }, initSx)); }, [endIcon, icon, initSx, startIcon]);
+    var sx = React.useMemo(function () { return (__assign({ minWidth: 0, px: "".concat(!startIcon && !endIcon && !icon ? 9 : 13, "px !important") }, initSx)); }, [endIcon, icon, initSx, startIcon]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormButton, __assign({ className: classNames(className, 'SearchButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, endIcon: endIcon, icon: icon }, props), children));
+    return (React.createElement(reactComponent.PdgButton, __assign({ className: classNames(className, 'SearchButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, endIcon: endIcon, icon: icon }, props), children));
 };
 SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefaultProps = {};var SearchMenuButton = function (_a) {
     /********************************************************************************************************************
@@ -10651,7 +10647,7 @@ SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefault
      * Memo
      * ******************************************************************************************************************/
     var open = React.useMemo(function () { return !!anchorEl; }, [anchorEl]);
-    var sx = React.useMemo(function () { return (__assign({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7 }, initSx)); }, [endIcon, icon, initSx, startIcon]);
+    var sx = React.useMemo(function () { return (__assign({ minWidth: 0, px: "".concat(!startIcon && !endIcon && !icon ? 9 : 13, "px !important") }, initSx)); }, [endIcon, icon, initSx, startIcon]);
     var anchorOrigin = React.useMemo(function () {
         switch (placement || 'bottom') {
             case 'bottom':
@@ -10712,7 +10708,7 @@ SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefault
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(React.Fragment, null,
-        React.createElement(FormButton, __assign({ className: classNames(className, 'SearchMenuButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, icon: icon }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, onClick: handleClick }), children),
+        React.createElement(FormButton, __assign({ className: classNames(className, 'SearchMenuButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, icon: icon }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, endIconProps: { style: { marginRight: -5 } }, onClick: handleClick }), children),
         React.createElement(material.Menu, { id: menuId, "aria-labelledby": buttonId, anchorEl: anchorEl, open: open, onClose: handleClose, onClick: handleClose, anchorOrigin: anchorOrigin, transformOrigin: transformOrigin }, menuList)));
 };
 SearchMenuButton.defaultProps = SearchMenuButtonDefaultProps;exports.Form=Form;exports.FormAutocomplete=FormAutocomplete;exports.FormAutocompleteDefaultProps=FormAutocompleteDefaultProps;exports.FormBlock=FormBlock;exports.FormBlockDefaultProps=FormBlockDefaultProps;exports.FormBody=FormBody;exports.FormBodyDefaultProps=FormBodyDefaultProps;exports.FormButton=FormButton;exports.FormButtonDefaultProps=FormButtonDefaultProps;exports.FormCheckbox=FormCheckbox;exports.FormCheckboxDefaultProps=FormCheckboxDefaultProps;exports.FormCol=FormCol;exports.FormColDefaultProps=FormColDefaultProps;exports.FormCompanyNo=FormCompanyNo;exports.FormCompanyNoDefaultProps=FormCompanyNoDefaultProps;exports.FormContext=FormContext;exports.FormContextDefaultValue=FormContextDefaultValue;exports.FormContextProvider=FormContextProvider;exports.FormDatePicker=FormDatePicker;exports.FormDatePickerDefaultProps=FormDatePickerDefaultProps;exports.FormDateRangePicker=FormDateRangePicker;exports.FormDateRangePickerDefaultProps=FormDateRangePickerDefaultProps;exports.FormDateTimePicker=FormDateTimePicker;exports.FormDateTimePickerDefaultProps=FormDateTimePickerDefaultProps;exports.FormDefaultProps=FormDefaultProps;exports.FormDivider=FormDivider;exports.FormDividerDefaultProps=FormDividerDefaultProps;exports.FormEmail=FormEmail;exports.FormEmailDefaultProps=FormEmailDefaultProps;exports.FormFile=FormFile;exports.FormFileDefaultProps=FormFileDefaultProps;exports.FormFooter=FormFooter;exports.FormFooterDefaultProps=FormFooterDefaultProps;exports.FormHidden=FormHidden;exports.FormHiddenDefaultProps=FormHiddenDefaultProps;exports.FormImageFile=FormImageFile;exports.FormImageFileDefaultProps=FormImageFileDefaultProps;exports.FormLabel=FormLabel;exports.FormLabelDefaultProps=FormLabelDefaultProps;exports.FormMobile=FormMobile;exports.FormMobileDefaultProps=FormMobileDefaultProps;exports.FormMonthPicker=FormMonthPicker;exports.FormMonthPickerDefaultProps=FormMonthPickerDefaultProps;exports.FormMonthRangePicker=FormMonthRangePicker;exports.FormMonthRangePickerDefaultProps=FormMonthRangePickerDefaultProps;exports.FormNumber=FormNumber;exports.FormNumberDefaultProps=FormNumberDefaultProps;exports.FormPassword=FormPassword;exports.FormPasswordDefaultProps=FormPasswordDefaultProps;exports.FormPersonalNo=FormPersonalNo;exports.FormPersonalNoDefaultProps=FormPersonalNoDefaultProps;exports.FormRadioGroup=FormRadioGroup;exports.FormRadioGroupDefaultProps=FormRadioGroupDefaultProps;exports.FormRating=FormRating;exports.FormRatingDefaultProps=FormRatingDefaultProps;exports.FormRow=FormRow;exports.FormRowDefaultProps=FormRowDefaultProps;exports.FormSearch=FormSearch;exports.FormSearchDefaultProps=FormSearchDefaultProps;exports.FormSelect=FormSelect;exports.FormSelectDefaultProps=FormSelectDefaultProps;exports.FormSwitch=FormSwitch;exports.FormSwitchDefaultProps=FormSwitchDefaultProps;exports.FormTag=FormTag;exports.FormTagDefaultProps=FormTagDefaultProps;exports.FormTel=FormTel;exports.FormTelDefaultProps=FormTelDefaultProps;exports.FormText=FormText;exports.FormTextDefaultProps=FormTextDefaultProps;exports.FormTextEditor=FormTextEditor;exports.FormTextEditorDefaultProps=FormTextEditorDefaultProps;exports.FormTextField=FormTextField;exports.FormTextFieldDefaultProps=FormTextFieldDefaultProps;exports.FormTextarea=FormTextarea;exports.FormTextareaDefaultProps=FormTextareaDefaultProps;exports.FormTimePicker=FormTimePicker;exports.FormTimePickerDefaultProps=FormTimePickerDefaultProps;exports.FormToggleButtonGroup=FormToggleButtonGroup;exports.FormToggleButtonGroupDefaultProps=FormToggleButtonGroupDefaultProps;exports.FormUrl=FormUrl;exports.FormUrlDefaultProps=FormUrlDefaultProps;exports.FormYearPicker=FormYearPicker;exports.FormYearPickerDefaultProps=FormYearPickerDefaultProps;exports.FormYearRangePicker=FormYearRangePicker;exports.FormYearRangePickerDefaultProps=FormYearRangePickerDefaultProps;exports.Search=Search;exports.SearchButton=SearchButton;exports.SearchButtonDefaultProps=SearchButtonDefaultProps;exports.SearchDefaultProps=SearchDefaultProps;exports.SearchGroup=SearchGroup;exports.SearchGroupDefaultProps=SearchGroupDefaultProps;exports.SearchGroupRow=SearchGroupRow;exports.SearchGroupRowDefaultProps=SearchGroupRowDefaultProps;exports.SearchMenuButton=SearchMenuButton;exports.SearchMenuButtonDefaultProps=SearchMenuButtonDefaultProps;exports.useFormState=useFormState;

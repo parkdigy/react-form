@@ -9,5 +9,5 @@ export interface SearchGroupProps extends CommonSxProps {
 }
 
 export const SearchGroupDefaultProps: Pick<SearchGroupProps, 'spacing'> = {
-  spacing: 1.5,
+  spacing: 1,
 };

@@ -1,4 +1,4 @@
-import React,{createContext,useContext,useMemo,useRef,useState,useCallback,useLayoutEffect,useEffect,useId}from'react';import classNames from'classnames';import {Box,Button,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,nextTick,notEmpty,equal,telNoAutoDash,ifUndefined,companyNoAutoDash,personalNoAutoDash}from'@pdg/util';import dayjs from'dayjs';import {PdgIcon,PdgIconText}from'@pdg/react-component';import {useAutoUpdateState,useAutoUpdateRefState,useFirstSkipEffect}from'@pdg/react-hook';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';import'dayjs/locale/ko';function styleInject(css, ref) {
+import React,{createContext,useContext,useMemo,useRef,useState,useCallback,useLayoutEffect,useEffect,useId}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,nextTick,notEmpty,equal,telNoAutoDash,ifUndefined,companyNoAutoDash,personalNoAutoDash}from'@pdg/util';import dayjs from'dayjs';import {PdgButton,PdgIcon,PdgIconText}from'@pdg/react-component';import {useAutoUpdateState,useAutoUpdateRefState,useFirstSkipEffect}from'@pdg/react-hook';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';import'dayjs/locale/ko';function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
 
@@ -587,7 +587,7 @@ Form.defaultProps = FormDefaultProps;var FormButtonDefaultProps = {
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
-    var initSize = _a.size, initColor = _a.color, initVariant = _a.variant, initFullWidth = _a.fullWidth, children = _a.children, className = _a.className, type = _a.type, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, onClick = _a.onClick, props = __rest(_a, ["size", "color", "variant", "fullWidth", "children", "className", "type", "icon", "startIcon", "endIcon", "onClick"]);
+    var initSize = _a.size, initColor = _a.color, initVariant = _a.variant, initFullWidth = _a.fullWidth, className = _a.className, type = _a.type, onClick = _a.onClick, props = __rest(_a, ["size", "color", "variant", "fullWidth", "className", "type", "onClick"]);
     var _b = useFormState(), formSize = _b.size, formColor = _b.color, formFullWidth = _b.fullWidth;
     /********************************************************************************************************************
      * Memo - FormState
@@ -614,11 +614,7 @@ Form.defaultProps = FormDefaultProps;var FormButtonDefaultProps = {
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(Button, __assign({ ref: ref, className: classNames(className, 'FormButton'), type: type, variant: variant, size: size, color: color, fullWidth: fullWidth, onClick: onClick }, props),
-        React.createElement(Box, { display: 'inline-flex', flexDirection: 'row', alignItems: 'center' },
-            (icon || startIcon) && (React.createElement(PdgIcon, { className: 'FormButton-StartIcon', size: size, color: 'inherit', sx: { mr: children ? 0.5 : undefined } }, icon || startIcon)),
-            children,
-            endIcon && (React.createElement(PdgIcon, { className: 'FormButton-EndIcon', size: size, color: 'inherit', sx: { ml: children ? 0.5 : undefined } }, endIcon)))));
+    return (React.createElement(PdgButton, __assign({ ref: ref, className: classNames(className, 'FormButton'), type: type, variant: variant, size: size, color: color, fullWidth: fullWidth, onClick: onClick }, props)));
 });
 FormButton.displayName = 'FormButton';
 FormButton.defaultProps = FormButtonDefaultProps;var FormLabelDefaultProps = {};var IconPdgIcon = styled(PdgIcon)(templateObject_1$g || (templateObject_1$g = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
@@ -10546,7 +10542,7 @@ SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;var Search = React.forw
 });
 Search.displayName = 'Search';
 Search.defaultProps = SearchDefaultProps;var SearchGroupDefaultProps = {
-    spacing: 1.5,
+    spacing: 1,
 };var StyledItem = styled(Grid)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  &:has(> [style*='display: none;']) {\n    display: none;\n  }\n"], ["\n  &:has(> [style*='display: none;']) {\n    display: none;\n  }\n"])));
 var templateObject_1;var isReactFragment = function (child) {
     try {
@@ -10618,11 +10614,11 @@ SearchGroup.defaultProps = SearchGroupDefaultProps;var SearchButtonDefaultProps 
      * Memo
      * ******************************************************************************************************************/
     var children = _a.children, className = _a.className, initSx = _a.sx, startIcon = _a.startIcon, endIcon = _a.endIcon, icon = _a.icon, props = __rest(_a, ["children", "className", "sx", "startIcon", "endIcon", "icon"]);
-    var sx = useMemo(function () { return (__assign({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7 }, initSx)); }, [endIcon, icon, initSx, startIcon]);
+    var sx = useMemo(function () { return (__assign({ minWidth: 0, px: "".concat(!startIcon && !endIcon && !icon ? 9 : 13, "px !important") }, initSx)); }, [endIcon, icon, initSx, startIcon]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormButton, __assign({ className: classNames(className, 'SearchButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, endIcon: endIcon, icon: icon }, props), children));
+    return (React.createElement(PdgButton, __assign({ className: classNames(className, 'SearchButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, endIcon: endIcon, icon: icon }, props), children));
 };
 SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefaultProps = {};var SearchMenuButton = function (_a) {
     /********************************************************************************************************************
@@ -10651,7 +10647,7 @@ SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefault
      * Memo
      * ******************************************************************************************************************/
     var open = useMemo(function () { return !!anchorEl; }, [anchorEl]);
-    var sx = useMemo(function () { return (__assign({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7 }, initSx)); }, [endIcon, icon, initSx, startIcon]);
+    var sx = useMemo(function () { return (__assign({ minWidth: 0, px: "".concat(!startIcon && !endIcon && !icon ? 9 : 13, "px !important") }, initSx)); }, [endIcon, icon, initSx, startIcon]);
     var anchorOrigin = useMemo(function () {
         switch (placement || 'bottom') {
             case 'bottom':
@@ -10712,7 +10708,7 @@ SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefault
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(React.Fragment, null,
-        React.createElement(FormButton, __assign({ className: classNames(className, 'SearchMenuButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, icon: icon }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, onClick: handleClick }), children),
+        React.createElement(FormButton, __assign({ className: classNames(className, 'SearchMenuButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, icon: icon }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, endIconProps: { style: { marginRight: -5 } }, onClick: handleClick }), children),
         React.createElement(Menu, { id: menuId, "aria-labelledby": buttonId, anchorEl: anchorEl, open: open, onClose: handleClose, onClick: handleClose, anchorOrigin: anchorOrigin, transformOrigin: transformOrigin }, menuList)));
 };
 SearchMenuButton.defaultProps = SearchMenuButtonDefaultProps;export{Form,FormAutocomplete,FormAutocompleteDefaultProps,FormBlock,FormBlockDefaultProps,FormBody,FormBodyDefaultProps,FormButton,FormButtonDefaultProps,FormCheckbox,FormCheckboxDefaultProps,FormCol,FormColDefaultProps,FormCompanyNo,FormCompanyNoDefaultProps,FormContext,FormContextDefaultValue,FormContextProvider,FormDatePicker,FormDatePickerDefaultProps,FormDateRangePicker,FormDateRangePickerDefaultProps,FormDateTimePicker,FormDateTimePickerDefaultProps,FormDefaultProps,FormDivider,FormDividerDefaultProps,FormEmail,FormEmailDefaultProps,FormFile,FormFileDefaultProps,FormFooter,FormFooterDefaultProps,FormHidden,FormHiddenDefaultProps,FormImageFile,FormImageFileDefaultProps,FormLabel,FormLabelDefaultProps,FormMobile,FormMobileDefaultProps,FormMonthPicker,FormMonthPickerDefaultProps,FormMonthRangePicker,FormMonthRangePickerDefaultProps,FormNumber,FormNumberDefaultProps,FormPassword,FormPasswordDefaultProps,FormPersonalNo,FormPersonalNoDefaultProps,FormRadioGroup,FormRadioGroupDefaultProps,FormRating,FormRatingDefaultProps,FormRow,FormRowDefaultProps,FormSearch,FormSearchDefaultProps,FormSelect,FormSelectDefaultProps,FormSwitch,FormSwitchDefaultProps,FormTag,FormTagDefaultProps,FormTel,FormTelDefaultProps,FormText,FormTextDefaultProps,FormTextEditor,FormTextEditorDefaultProps,FormTextField,FormTextFieldDefaultProps,FormTextarea,FormTextareaDefaultProps,FormTimePicker,FormTimePickerDefaultProps,FormToggleButtonGroup,FormToggleButtonGroupDefaultProps,FormUrl,FormUrlDefaultProps,FormYearPicker,FormYearPickerDefaultProps,FormYearRangePicker,FormYearRangePickerDefaultProps,Search,SearchButton,SearchButtonDefaultProps,SearchDefaultProps,SearchGroup,SearchGroupDefaultProps,SearchGroupRow,SearchGroupRowDefaultProps,SearchMenuButton,SearchMenuButtonDefaultProps,useFormState};

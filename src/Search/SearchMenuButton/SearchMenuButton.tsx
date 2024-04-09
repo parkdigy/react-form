@@ -49,7 +49,7 @@ const SearchMenuButton: React.FC<Props> = ({
   const open = useMemo(() => !!anchorEl, [anchorEl]);
 
   const sx = useMemo(
-    () => ({ minWidth: 0, px: !startIcon && !endIcon && !icon ? 1.2 : 1.7, ...initSx }),
+    () => ({ minWidth: 0, px: `${!startIcon && !endIcon && !icon ? 9 : 13}px !important`, ...initSx }),
     [endIcon, icon, initSx, startIcon]
   );
 
@@ -130,6 +130,7 @@ const SearchMenuButton: React.FC<Props> = ({
         aria-haspopup='true'
         aria-expanded={open ? 'true' : undefined}
         endIcon={endIcon}
+        endIconProps={{ style: { marginRight: -5 } }}
         onClick={handleClick}
       >
         {children}
