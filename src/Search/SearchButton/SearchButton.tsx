@@ -8,10 +8,7 @@ const SearchButton: React.FC<Props> = ({ children, className, sx: initSx, startI
    * Memo
    * ******************************************************************************************************************/
 
-  const sx = useMemo(
-    () => ({ minWidth: 0, px: `${!startIcon && !endIcon && !icon ? 9 : 13}px !important`, ...initSx }),
-    [endIcon, icon, initSx, startIcon]
-  );
+  const sx = useMemo(() => ({ minWidth: 0, px: `${!children ? 9 : 13}px !important`, ...initSx }), [children, initSx]);
 
   /********************************************************************************************************************
    * Render

@@ -10614,7 +10614,7 @@ SearchGroup.defaultProps = SearchGroupDefaultProps;var SearchButtonDefaultProps 
      * Memo
      * ******************************************************************************************************************/
     var children = _a.children, className = _a.className, initSx = _a.sx, startIcon = _a.startIcon, endIcon = _a.endIcon, icon = _a.icon, props = __rest(_a, ["children", "className", "sx", "startIcon", "endIcon", "icon"]);
-    var sx = React.useMemo(function () { return (__assign({ minWidth: 0, px: "".concat(!startIcon && !endIcon && !icon ? 9 : 13, "px !important") }, initSx)); }, [endIcon, icon, initSx, startIcon]);
+    var sx = React.useMemo(function () { return (__assign({ minWidth: 0, px: "".concat(!children ? 9 : 13, "px !important") }, initSx)); }, [children, initSx]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
@@ -10647,7 +10647,7 @@ SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefault
      * Memo
      * ******************************************************************************************************************/
     var open = React.useMemo(function () { return !!anchorEl; }, [anchorEl]);
-    var sx = React.useMemo(function () { return (__assign({ minWidth: 0, px: "".concat(!startIcon && !endIcon && !icon ? 9 : 13, "px !important") }, initSx)); }, [endIcon, icon, initSx, startIcon]);
+    var sx = React.useMemo(function () { return (__assign({ minWidth: 0, px: "".concat(!children ? 9 : 13, "px !important") }, initSx)); }, [children, initSx]);
     var anchorOrigin = React.useMemo(function () {
         switch (placement || 'bottom') {
             case 'bottom':

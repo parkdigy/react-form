@@ -48,10 +48,7 @@ const SearchMenuButton: React.FC<Props> = ({
 
   const open = useMemo(() => !!anchorEl, [anchorEl]);
 
-  const sx = useMemo(
-    () => ({ minWidth: 0, px: `${!startIcon && !endIcon && !icon ? 9 : 13}px !important`, ...initSx }),
-    [endIcon, icon, initSx, startIcon]
-  );
+  const sx = useMemo(() => ({ minWidth: 0, px: `${!children ? 9 : 13}px !important`, ...initSx }), [children, initSx]);
 
   const anchorOrigin = useMemo((): PopoverOrigin => {
     switch (placement || 'bottom') {

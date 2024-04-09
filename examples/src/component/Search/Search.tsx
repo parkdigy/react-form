@@ -18,7 +18,6 @@ import {
 import { FormHelperText, Grid, MenuItem, MenuList } from '@mui/material';
 import dayjs from 'dayjs';
 import { lv } from '@pdg/util';
-import { PdgIcon } from '@pdg/react-component';
 
 const Search = () => {
   const searchRef = useRef<SearchCommands>(null);
@@ -72,9 +71,7 @@ const Search = () => {
             {leftSearchGroup}
 
             <SearchGroup align='right'>
-              <SearchButton>
-                <PdgIcon>download</PdgIcon>
-              </SearchButton>
+              <SearchButton icon='download' />
               <SearchButton
                 icon='add'
                 iconProps={{ style: { marginLeft: -6 } }}
