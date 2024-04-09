@@ -33,8 +33,8 @@ import {
   FormPersonalNo,
 } from '../../../../../src';
 import { ToggleButtonGroup, Checkbox, RadioGroup, Rating, FileUpload, Switch } from './sub';
-import TextFieldsIcon from '@mui/icons-material/TextFields';
 import { lv } from '@pdg/util';
+import { Box } from '@mui/material';
 
 const FormBase = () => {
   const formRef = useRef<FormCommands>(null);
@@ -67,7 +67,7 @@ const FormBase = () => {
   //--------------------------------------------------------------------------------------------------------------------
 
   return (
-    <div>
+    <Box flex={1} style={{ display: 'flex', flexDirection: 'column' }}>
       <OutlinedPaper>
         <Form size='small'>
           <FormBody>
@@ -211,7 +211,7 @@ const FormBase = () => {
         onSubmit={handleSubmit}
       >
         <FormBody>
-          <FormBlock icon={TextFieldsIcon} label='FormBlock 1' hidden={isFormBlock1Hidden} collapse collapseIn>
+          <FormBlock icon='TextFields' label='FormBlock 1' hidden={isFormBlock1Hidden} collapse collapseIn>
             <FormRow>
               <FormCol>
                 <FormText name='FormText' label='FormText' ref={formTextRef} helperText='FormText' />
@@ -319,7 +319,7 @@ const FormBase = () => {
           </FormRow>
         </FormFooter>
       </Form>
-    </div>
+    </Box>
   );
 };
 
