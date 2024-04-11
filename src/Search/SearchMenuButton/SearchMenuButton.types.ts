@@ -1,7 +1,8 @@
 import { FormButtonProps } from '../../FormCommon';
 import { ReactNode } from 'react';
 
-export interface SearchMenuButtonProps extends Omit<FormButtonProps, 'fullWidth' | 'endIcon' | 'onClick'> {
+export interface SearchMenuButtonProps
+  extends Omit<FormButtonProps, 'fullWidth' | 'endIcon' | 'endIconProps' | 'onClick'> {
   menuList: ReactNode;
   placement?:
     | 'top'

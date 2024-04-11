@@ -10607,18 +10607,18 @@ SearchGroup.defaultProps = SearchGroupDefaultProps;var SearchButtonDefaultProps 
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var children = _a.children, className = _a.className, initSx = _a.sx, startIcon = _a.startIcon, endIcon = _a.endIcon, icon = _a.icon, props = __rest(_a, ["children", "className", "sx", "startIcon", "endIcon", "icon"]);
+    var children = _a.children, className = _a.className, size = _a.size, initSx = _a.sx, startIcon = _a.startIcon, endIcon = _a.endIcon, icon = _a.icon, props = __rest(_a, ["children", "className", "size", "sx", "startIcon", "endIcon", "icon"]);
     var sx = useMemo(function () { return (__assign({ minWidth: 0, px: "".concat(!children ? 9 : 13, "px !important") }, initSx)); }, [children, initSx]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(PdgButton, __assign({ className: classNames(className, 'SearchButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, endIcon: endIcon, icon: icon }, props), children));
+    return (React.createElement(PdgButton, __assign({ className: classNames(className, 'SearchButton'), size: ifUndefined(size, 'medium'), sx: sx, fullWidth: false, startIcon: startIcon, endIcon: endIcon, icon: icon }, props), children));
 };
 SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefaultProps = {};var SearchMenuButton = function (_a) {
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
-    var children = _a.children, className = _a.className, initSx = _a.sx, menuList = _a.menuList, startIcon = _a.startIcon, icon = _a.icon, placement = _a.placement, props = __rest(_a, ["children", "className", "sx", "menuList", "startIcon", "icon", "placement"]);
+    var children = _a.children, className = _a.className, initSx = _a.sx, menuList = _a.menuList, placement = _a.placement, props = __rest(_a, ["children", "className", "sx", "menuList", "placement"]);
     var buttonId = useId();
     var menuId = useId();
     /********************************************************************************************************************
@@ -10702,7 +10702,7 @@ SearchButton.defaultProps = SearchButtonDefaultProps;var SearchMenuButtonDefault
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(React.Fragment, null,
-        React.createElement(FormButton, __assign({ className: classNames(className, 'SearchMenuButton'), size: 'medium', sx: sx, fullWidth: false, startIcon: startIcon, icon: icon }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, endIconProps: { style: { marginRight: -5 } }, onClick: handleClick }), children),
+        React.createElement(FormButton, __assign({ className: classNames(className, 'SearchMenuButton'), size: 'medium', sx: sx, fullWidth: false }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, endIconProps: { style: { marginRight: -5 } }, onClick: handleClick }), children),
         React.createElement(Menu, { id: menuId, "aria-labelledby": buttonId, anchorEl: anchorEl, open: open, onClose: handleClose, onClick: handleClose, anchorOrigin: anchorOrigin, transformOrigin: transformOrigin }, menuList)));
 };
 SearchMenuButton.defaultProps = SearchMenuButtonDefaultProps;export{Form,FormAutocomplete,FormAutocompleteDefaultProps,FormBlock,FormBlockDefaultProps,FormBody,FormBodyDefaultProps,FormButton,FormButtonDefaultProps,FormCheckbox,FormCheckboxDefaultProps,FormCol,FormColDefaultProps,FormCompanyNo,FormCompanyNoDefaultProps,FormContext,FormContextDefaultValue,FormContextProvider,FormDatePicker,FormDatePickerDefaultProps,FormDateRangePicker,FormDateRangePickerDefaultProps,FormDateTimePicker,FormDateTimePickerDefaultProps,FormDefaultProps,FormDivider,FormDividerDefaultProps,FormEmail,FormEmailDefaultProps,FormFile,FormFileDefaultProps,FormFooter,FormFooterDefaultProps,FormHidden,FormHiddenDefaultProps,FormImageFile,FormImageFileDefaultProps,FormLabel,FormLabelDefaultProps,FormMobile,FormMobileDefaultProps,FormMonthPicker,FormMonthPickerDefaultProps,FormMonthRangePicker,FormMonthRangePickerDefaultProps,FormNumber,FormNumberDefaultProps,FormPassword,FormPasswordDefaultProps,FormPersonalNo,FormPersonalNoDefaultProps,FormRadioGroup,FormRadioGroupDefaultProps,FormRating,FormRatingDefaultProps,FormRow,FormRowDefaultProps,FormSearch,FormSearchDefaultProps,FormSelect,FormSelectDefaultProps,FormSwitch,FormSwitchDefaultProps,FormTag,FormTagDefaultProps,FormTel,FormTelDefaultProps,FormText,FormTextDefaultProps,FormTextEditor,FormTextEditorDefaultProps,FormTextField,FormTextFieldDefaultProps,FormTextarea,FormTextareaDefaultProps,FormTimePicker,FormTimePickerDefaultProps,FormToggleButtonGroup,FormToggleButtonGroupDefaultProps,FormUrl,FormUrlDefaultProps,FormYearPicker,FormYearPickerDefaultProps,FormYearRangePicker,FormYearRangePickerDefaultProps,Search,SearchButton,SearchButtonDefaultProps,SearchDefaultProps,SearchGroup,SearchGroupDefaultProps,SearchGroupRow,SearchGroupRowDefaultProps,SearchMenuButton,SearchMenuButtonDefaultProps,useFormState};

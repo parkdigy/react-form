@@ -4,16 +4,7 @@ import { SearchMenuButtonProps as Props, SearchMenuButtonDefaultProps } from './
 import { FormButton } from '../../FormCommon';
 import { Menu, PopoverOrigin } from '@mui/material';
 
-const SearchMenuButton: React.FC<Props> = ({
-  children,
-  className,
-  sx: initSx,
-  menuList,
-  startIcon,
-  icon,
-  placement,
-  ...props
-}) => {
+const SearchMenuButton: React.FC<Props> = ({ children, className, sx: initSx, menuList, placement, ...props }) => {
   /********************************************************************************************************************
    * ID
    * ******************************************************************************************************************/
@@ -119,8 +110,6 @@ const SearchMenuButton: React.FC<Props> = ({
         size='medium'
         sx={sx}
         fullWidth={false}
-        startIcon={startIcon}
-        icon={icon}
         {...props}
         id={buttonId}
         aria-controls={open ? menuId : undefined}

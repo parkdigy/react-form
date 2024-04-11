@@ -74,7 +74,6 @@ const Search = () => {
               <SearchButton icon='download' />
               <SearchButton
                 icon='add'
-                iconProps={{ style: { marginLeft: -6 } }}
                 variant='contained'
                 onClick={() => {
                   ll(searchRef.current?.getItem('search_date_from'));
