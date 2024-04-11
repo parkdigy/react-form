@@ -4,16 +4,7 @@ import { SearchButtonProps as Props, SearchButtonDefaultProps } from './SearchBu
 import { PdgButton } from '@pdg/react-component';
 import { ifUndefined } from '@pdg/util';
 
-const SearchButton: React.FC<Props> = ({
-  children,
-  className,
-  size,
-  sx: initSx,
-  startIcon,
-  endIcon,
-  icon,
-  ...props
-}) => {
+const SearchButton: React.FC<Props> = ({ children, className, size, sx: initSx, ...props }) => {
   /********************************************************************************************************************
    * Memo
    * ******************************************************************************************************************/
@@ -30,9 +21,6 @@ const SearchButton: React.FC<Props> = ({
       size={ifUndefined(size, 'medium')}
       sx={sx}
       fullWidth={false}
-      startIcon={startIcon}
-      endIcon={endIcon}
-      icon={icon}
       {...props}
     >
       {children}

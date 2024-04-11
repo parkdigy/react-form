@@ -71,9 +71,10 @@ const Search = () => {
             {leftSearchGroup}
 
             <SearchGroup align='right'>
-              <SearchButton icon='download' />
+              <SearchButton startIcon='download' />
               <SearchButton
-                icon='add'
+                startIcon='add'
+                startIconMarginLeft={-5}
                 variant='contained'
                 onClick={() => {
                   ll(searchRef.current?.getItem('search_date_from'));
@@ -82,7 +83,7 @@ const Search = () => {
                 새 항목
               </SearchButton>
               <SearchMenuButton
-                icon='menu'
+                startIcon='menu'
                 variant='contained'
                 placement='bottom-right'
                 menuList={

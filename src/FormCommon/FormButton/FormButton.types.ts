@@ -1,14 +1,11 @@
 import { PartialPick } from '../../@types';
 import { FormContextValue } from '../../FormContext';
-import { PdgButtonProps, PdgIconProps } from '@pdg/react-component';
+import { PdgButtonProps } from '@pdg/react-component';
 
 export interface FormButtonProps
   extends PartialPick<FormContextValue, 'color' | 'size'>,
-    Omit<PdgButtonProps, 'color' | 'size' | 'startIcon' | 'endIcon'> {
+    Omit<PdgButtonProps, 'color' | 'size'> {
   type?: 'button' | 'submit';
-  icon?: PdgIconProps['children'];
-  startIcon?: PdgIconProps['children'];
-  endIcon?: PdgIconProps['children'];
 }
 
 export const FormButtonDefaultProps: FormButtonProps = {
