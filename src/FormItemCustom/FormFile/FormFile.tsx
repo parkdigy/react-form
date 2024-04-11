@@ -1,6 +1,6 @@
 import React, { ChangeEvent, ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { Button, InputAdornment, TextField, Typography } from '@mui/material';
+import { InputAdornment, TextField, Typography } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getFileSizeText } from '../../@util';
 import { empty, nextTick, notEmpty } from '@pdg/util';
@@ -11,6 +11,8 @@ import LinkDialog from './LinkDialog/LinkDialog';
 import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
 import { PdgIcon } from '@pdg/react-component';
 import './FormFile.scss';
+import { StyledPdgButton } from './FormFile.style';
+import { useResizeDetector } from 'react-resize-detector';
 
 const FILE_VALUE = '';
 
@@ -107,6 +109,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
      * Ref
      * ******************************************************************************************************************/
 
+    const innerRef = useRef<HTMLInputElement>(null);
     const textFieldRef = useRef<HTMLInputElement>(null);
     const fileUploadBtnRef = useRef<HTMLButtonElement>(null);
     const linkBtnRef = useRef<HTMLButtonElement>(null);
@@ -130,6 +133,16 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
     );
     const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
+
+    /********************************************************************************************************************
+     * State - width, height
+     * ******************************************************************************************************************/
+
+    const { height } = useResizeDetector({
+      targetRef: innerRef,
+      handleWidth: false,
+      handleHeight: true,
+    });
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -204,6 +217,25 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
         initLabel
       );
     }, [initLabel, labelIcon]);
+
+    const finalClassName = useMemo(
+      () =>
+        classNames(
+          className,
+          'FormValueItem',
+          'FormFile',
+          `variant-${variant}`,
+          `size-${size}`,
+          !!initLabel && 'with-label',
+          !!fullWidth && 'full-width',
+          !!hideUrl && 'hide-file-name',
+          !!hideLink && 'hide-link',
+          !!hideUpload && 'hide-upload',
+          !!hideRemove && 'hide-remove',
+          notEmpty(value) && 'with-value'
+        ),
+      [className, fullWidth, hideLink, hideRemove, hideUpload, hideUrl, initLabel, size, value, variant]
+    );
 
     /********************************************************************************************************************
      * Function - focus
@@ -392,26 +424,14 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
         size={size}
         color={color}
         focused={focused}
-        className={classNames(
-          className,
-          'FormValueItem',
-          'FormFile',
-          `variant-${variant}`,
-          `size-${size}`,
-          !!initLabel && 'with-label',
-          !!fullWidth && 'full-width',
-          !!hideUrl && 'hide-file-name',
-          !!hideLink && 'hide-link',
-          !!hideUpload && 'hide-upload',
-          !!hideRemove && 'hide-remove',
-          notEmpty(value) && 'with-value'
-        )}
+        className={finalClassName}
         labelIcon={hideUrl ? labelIcon : undefined}
         label={hideUrl ? initLabel : undefined}
         error={error}
         required={required}
         fullWidth={fullWidth}
         hidden={hidden}
+        controlHeight={height}
         helperText={
           <div>
             {preview}
@@ -419,18 +439,13 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
           </div>
         }
         hideLabel={!hideUrl}
-        helperTextProps={{
-          style: {
-            marginLeft: !hideUrl && variant !== 'standard' ? 14 : undefined,
-            marginTop: !hideUrl && variant === 'standard' ? 19 : undefined,
-          },
-        }}
         style={{ width: fullWidth ? '100%' : undefined }}
         control={
           <div className='control-wrap'>
             {!hideUrl && (
               <div className='file-name-wrap'>
                 <TextField
+                  ref={innerRef}
                   inputRef={textFieldRef}
                   className='file-name'
                   variant={variant}
@@ -450,7 +465,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                         <div className='input-file-wrap'>
                           {!hideUpload && (
                             <>
-                              <Button
+                              <StyledPdgButton
                                 variant='text'
                                 tabIndex={uploadTabIndex == null ? -1 : uploadTabIndex}
                                 className={classNames(
@@ -458,14 +473,13 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                                   !!hideUploadLabel && 'hidden-label'
                                 )}
                                 color={error ? 'error' : color}
+                                icon='upload'
+                                size={size}
                                 disabled={readOnly || disabled}
                                 ref={fileUploadBtnRef}
                               >
-                                <label htmlFor={id}>
-                                  <PdgIcon>upload</PdgIcon>
-                                  {!hideUploadLabel && (uploadLabel || '파일 업로드')}
-                                </label>
-                              </Button>
+                                {!hideUploadLabel && (uploadLabel || '파일 업로드')}
+                              </StyledPdgButton>
                               <input
                                 type='file'
                                 accept={accept}
@@ -477,35 +491,33 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                             </>
                           )}
                           {!hideLink && (
-                            <Button
+                            <StyledPdgButton
                               variant='text'
                               tabIndex={linkTabIndex == null ? -1 : linkTabIndex}
                               className={classNames('link-btn  form-file-btn', !!hideLinkLabel && 'hidden-label')}
                               color={error ? 'error' : color}
+                              icon='link'
+                              size={size}
                               disabled={readOnly || disabled}
                               ref={linkBtnRef}
                               onClick={handleLinkClick}
                             >
-                              <label>
-                                <PdgIcon>link</PdgIcon>
-                                {!hideLinkLabel && (linkLabel || '링크')}
-                              </label>
-                            </Button>
+                              {!hideLinkLabel && (linkLabel || '링크')}
+                            </StyledPdgButton>
                           )}
                           {!hideRemove && notEmpty(value) && (
-                            <Button
+                            <StyledPdgButton
                               variant='text'
                               tabIndex={removeTabIndex == null ? -1 : removeTabIndex}
                               className={classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label')}
                               color={error ? 'error' : color}
+                              icon='close'
+                              size={size}
                               disabled={readOnly || disabled}
                               onClick={handleRemoveClick}
                             >
-                              <label>
-                                <PdgIcon>Close</PdgIcon>
-                                {!hideRemoveLabel && (removeLabel || '삭제')}
-                              </label>
-                            </Button>
+                              {!hideRemoveLabel && (removeLabel || '삭제')}
+                            </StyledPdgButton>
                           )}
                         </div>
                       </InputAdornment>
@@ -519,19 +531,18 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
               <div className='input-file-wrap'>
                 {!hideUpload && (
                   <>
-                    <Button
+                    <StyledPdgButton
                       variant='outlined'
                       tabIndex={uploadTabIndex}
                       className={classNames('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label')}
                       color={error ? 'error' : color}
+                      icon='upload'
+                      size={size}
                       ref={fileUploadBtnRef}
                       disabled={disabled}
                     >
-                      <label htmlFor={id}>
-                        <PdgIcon>upload</PdgIcon>
-                        {!hideUploadLabel && (uploadLabel || '파일 업로드')}
-                      </label>
-                    </Button>
+                      {!hideUploadLabel && (uploadLabel || '파일 업로드')}
+                    </StyledPdgButton>
                     <input
                       type='file'
                       accept={accept}
@@ -543,35 +554,33 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                   </>
                 )}
                 {!hideLink && (
-                  <Button
+                  <StyledPdgButton
                     variant='outlined'
                     tabIndex={linkTabIndex}
                     className={classNames('link-btn form-file-btn', !!hideLinkLabel && 'hidden-label')}
                     color={error ? 'error' : color}
+                    icon='link'
+                    size={size}
                     onClick={handleLinkClick}
                     disabled={disabled}
                     ref={linkBtnRef}
                   >
-                    <label>
-                      <PdgIcon>link</PdgIcon>
-                      {!hideLinkLabel && (linkLabel || '링크')}
-                    </label>
-                  </Button>
+                    {!hideLinkLabel && (linkLabel || '링크')}
+                  </StyledPdgButton>
                 )}
                 {!hideRemove && notEmpty(value) && (
-                  <Button
+                  <StyledPdgButton
                     variant='outlined'
                     tabIndex={removeTabIndex}
                     className={classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label')}
                     color={error ? 'error' : color}
+                    icon='close'
+                    size={size}
                     disabled={disabled}
                     onClick={handleRemoveClick}
                   >
-                    <label>
-                      <PdgIcon>Close</PdgIcon>
-                      {!hideRemoveLabel && (removeLabel || '삭제')}
-                    </label>
-                  </Button>
+                    {!hideRemoveLabel && (removeLabel || '삭제')}
+                  </StyledPdgButton>
                 )}
               </div>
             )}
