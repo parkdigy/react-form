@@ -473,12 +473,16 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                                   !!hideUploadLabel && 'hidden-label'
                                 )}
                                 color={error ? 'error' : color}
-                                startIcon='upload'
                                 size={size}
                                 disabled={readOnly || disabled}
                                 ref={fileUploadBtnRef}
                               >
-                                {!hideUploadLabel && (uploadLabel || '파일 업로드')}
+                                <label htmlFor={id}>
+                                  <PdgIcon size={size} color={error ? 'error' : color}>
+                                    upload
+                                  </PdgIcon>
+                                  {!hideUploadLabel && (uploadLabel || '파일 업로드')}
+                                </label>
                               </StyledPdgButton>
                               <input
                                 type='file'
@@ -536,12 +540,16 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                       tabIndex={uploadTabIndex}
                       className={classNames('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label')}
                       color={error ? 'error' : color}
-                      startIcon='upload'
                       size={size}
                       ref={fileUploadBtnRef}
                       disabled={disabled}
                     >
-                      {!hideUploadLabel && (uploadLabel || '파일 업로드')}
+                      <label htmlFor={id}>
+                        <PdgIcon size={size} color={error ? 'error' : color}>
+                          upload
+                        </PdgIcon>
+                        {!hideUploadLabel && (uploadLabel || '파일 업로드')}
+                      </label>
                     </StyledPdgButton>
                     <input
                       type='file'

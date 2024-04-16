@@ -4,20 +4,34 @@ import { PdgButton } from '@pdg/react-component';
 export const StyledPdgButton = styled(PdgButton)`
   min-width: 0;
 
-  label {
-    cursor: pointer;
-    display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    padding: 0 10px;
+  &.input-file-btn {
+    padding: 0 !important;
+    position: relative;
 
-    .PdgIcon {
-      margin-right: 5px;
+    .PdgFlexRowBox {
+      height: 100%;
+      .PdgText {
+        height: 100%;
+
+        label {
+          cursor: pointer;
+          display: flex;
+          flex: 1;
+          width: 100%;
+          height: 100%;
+          justify-content: center;
+          align-items: center;
+          padding: 0 10px;
+
+          .PdgIcon {
+            margin-right: 0.2em;
+          }
+        }
+      }
     }
   }
-  &.hidden-label label .PdgIcon {
+
+  &.hidden-label.input-file-btn .PdgFlexRowBox .PdgText label .PdgIcon {
     margin-left: 0;
     margin-right: 0;
   }
