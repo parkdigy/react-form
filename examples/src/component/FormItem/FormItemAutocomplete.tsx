@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Form,
   FormAutocomplete,
@@ -14,6 +14,7 @@ import {
   FormBody,
   FormFooter,
   FormAutocompleteItems,
+  FormNumber,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
 import { lv } from '@pdg/util';
@@ -22,26 +23,43 @@ const DEFAULT_ITEMS: FormAutocompleteItem<number>[] = [
   lv('Item 1', 1),
   lv('Item 2', 2),
   lv('Item 3', 3, { disabled: true }),
+  lv('Item 4', 4),
+  lv('Item 5', 5),
+  lv('Item 6', 6),
+  lv('Item 7', 7),
+  lv('Item 8', 8),
 ];
 
 const FormItemAutocomplete = () => {
+  /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
+
   const asyncLoadAutocompleteRef = useRef<FormAutocompleteCommands<number>>(null);
 
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * State
+   * ******************************************************************************************************************/
 
   const [items] = useState(DEFAULT_ITEMS);
   const [multiple, setMultiple] = useState(false);
   const [openOnFocus, setOpenOnFocus] = useState(false);
+  const [limitTags, setLimitTags] = useState<number>();
 
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Effect
+   * ******************************************************************************************************************/
 
   useEffect(() => {
     loadList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Function
+   * ******************************************************************************************************************/
 
-  function loadList() {
+  const loadList = useCallback(() => {
     if (asyncLoadAutocompleteRef.current) {
       const { setLoading, setItems } = asyncLoadAutocompleteRef.current;
 
@@ -51,9 +69,11 @@ const FormItemAutocomplete = () => {
         if (setLoading) setLoading(false);
       }, 5000);
     }
-  }
+  }, []);
 
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
 
   const handleLoadItems = useCallback((keyword?: string) => {
     return new Promise<FormAutocompleteItems<number>>((resolve) => {
@@ -88,12 +108,28 @@ const FormItemAutocomplete = () => {
     ll(data);
   }, []);
 
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Memo
+   * ******************************************************************************************************************/
+
+  const additionalProps = useMemo(
+    () => ({
+      multiple,
+      openOnFocus,
+      limitTags,
+      getLimitTagsText: (more: number) => <span style={{ opacity: 0.5 }}>외 {more}개</span>,
+    }),
+    [limitTags, multiple, openOnFocus]
+  );
+
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <>
       <OutlinedPaper>
-        <Form>
+        <Form size='small'>
           <FormBody>
             <FormRow>
               <FormCol fullWidth={false}>
@@ -109,6 +145,14 @@ const FormItemAutocomplete = () => {
                   checked={openOnFocus}
                   onChange={(checked) => setOpenOnFocus(checked)}
                 />
+                <FormNumber
+                  name='limitTags'
+                  label='limitTags'
+                  helperText='값 표시 개수 지정'
+                  width={100}
+                  value={limitTags}
+                  onChange={setLimitTags}
+                />
               </FormCol>
             </FormRow>
           </FormBody>
@@ -120,8 +164,7 @@ const FormItemAutocomplete = () => {
           <FormRow>
             <FormCol>
               <FormAutocomplete
-                multiple={multiple}
-                openOnFocus={openOnFocus}
+                {...additionalProps}
                 name='label'
                 items={items}
                 value={1}
@@ -133,8 +176,7 @@ const FormItemAutocomplete = () => {
             </FormCol>
             <FormCol>
               <FormAutocomplete
-                multiple={multiple}
-                openOnFocus={openOnFocus}
+                {...additionalProps}
                 name='required'
                 items={items}
                 label='FormAutocomplete'
@@ -144,8 +186,7 @@ const FormItemAutocomplete = () => {
             </FormCol>
             <FormCol>
               <FormAutocomplete
-                multiple={multiple}
-                openOnFocus={openOnFocus}
+                {...additionalProps}
                 name='readOnly'
                 items={items}
                 label='FormAutocomplete'
@@ -156,8 +197,7 @@ const FormItemAutocomplete = () => {
             </FormCol>
             <FormCol>
               <FormAutocomplete
-                multiple={multiple}
-                openOnFocus={openOnFocus}
+                {...additionalProps}
                 name='disabled'
                 items={items}
                 label='FormAutocomplete'
@@ -169,8 +209,7 @@ const FormItemAutocomplete = () => {
           <FormRow>
             <FormCol xs={3}>
               <FormAutocomplete
-                multiple={multiple}
-                openOnFocus={openOnFocus}
+                {...additionalProps}
                 name='onLoadItems'
                 label='FormAutocomplete'
                 helperText='onLoadItems'
@@ -179,8 +218,7 @@ const FormItemAutocomplete = () => {
             </FormCol>
             <FormCol xs={3}>
               <FormAutocomplete
-                multiple={multiple}
-                openOnFocus={openOnFocus}
+                {...additionalProps}
                 ref={asyncLoadAutocompleteRef}
                 name='asyncLoadItems'
                 label='FormAutocomplete'
@@ -190,8 +228,8 @@ const FormItemAutocomplete = () => {
             <FormCol xs={3}>
               {multiple ? (
                 <FormAutocomplete
+                  {...additionalProps}
                   multiple
-                  openOnFocus={openOnFocus}
                   name='onLoadItems'
                   label='FormAutocomplete'
                   helperText='async=true'
@@ -201,7 +239,8 @@ const FormItemAutocomplete = () => {
                 />
               ) : (
                 <FormAutocomplete
-                  openOnFocus={openOnFocus}
+                  {...additionalProps}
+                  multiple={false}
                   name='onLoadItems'
                   label='FormAutocomplete'
                   helperText='async=true'

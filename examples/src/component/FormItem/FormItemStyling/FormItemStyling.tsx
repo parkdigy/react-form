@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Box } from '@mui/material';
 import {
   Form,
@@ -93,9 +93,15 @@ const DefaultRadioGroupItems = makeLabelValueItems<FormRadioGroupItem<string>>(5
 const DefaultToggleGroupItems = makeLabelValueItems<FormToggleButtonGroupItem<string>>(3, 'Btn ');
 
 const FormItemStyling = () => {
+  /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
+
   const formRef = useRef(null);
 
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * State
+   * ******************************************************************************************************************/
 
   const [componentName, setComponentName] = useState(FormText.displayName);
   const [componentProps, setComponentProps] = useState<any>();
@@ -107,7 +113,9 @@ const FormItemStyling = () => {
   const [labelShrink, setLabelShrink] = useState(false);
   const [focused, setFocused] = useState(false);
 
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Effect
+   * ******************************************************************************************************************/
 
   useEffect(() => {
     setComponent(_components.find((component) => component.displayName === componentName));
@@ -155,15 +163,17 @@ const FormItemStyling = () => {
     setComponentProps(componentPros);
   }, [componentName, variant, size, color]);
 
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
 
-  function handleSubmit(data: FormValueMap) {
+  const handleSubmit = useCallback((data: FormValueMap) => {
     ll(data);
-  }
+  }, []);
 
-  //--------------------------------------------------------------------------------------------------------------------
-
-  getName('FormItemStyling', true);
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   Form,
   FormButton,
@@ -9,37 +9,65 @@ import {
   FormValueMap,
   FormBody,
   FormFooter,
+  FormNumber,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
 
 const FormItemTag = () => {
+  /********************************************************************************************************************
+   * State
+   * ******************************************************************************************************************/
+
   const [value] = useState(['Tag2', 'Tag1']);
   const [formValueSort, setFormValueSort] = useState(false);
+  const [limitTags, setLimitTags] = useState<number>();
 
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
 
-  function handleSubmit(data: FormValueMap) {
+  const handleSubmit = useCallback((data: FormValueMap) => {
     ll(data);
-  }
+  }, []);
 
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Memo
+   * ******************************************************************************************************************/
 
-  const additionalProps = { formValueSort };
+  const additionalProps = useMemo(
+    () => ({
+      formValueSort,
+      limitTags,
+      getLimitTagsText: (more: number) => <span style={{ opacity: 0.5 }}>외 {more}개</span>,
+    }),
+    [formValueSort, limitTags]
+  );
 
-  ll(additionalProps);
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <>
       <OutlinedPaper>
-        <Form size='small'>
+        <Form size='small' fullWidth={false}>
           <FormBody>
             <FormRow>
               <FormCol>
                 <FormCheckbox
                   name='formValueSort'
                   text='formValueSort'
+                  helperText='Form 값 정렬'
                   checked={formValueSort}
                   onChange={setFormValueSort}
+                />
+                <FormNumber
+                  name='limitTags'
+                  label='limitTags'
+                  helperText='값 표시 개수 지정'
+                  width={100}
+                  value={limitTags}
+                  onChange={setLimitTags}
                 />
               </FormCol>
             </FormRow>

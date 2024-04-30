@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Form, FormCheckbox, FormRow, FormCol, FormButton, FormValueMap, FormBody, FormFooter } from '../../../../src';
 
 const FormItemCheckbox = () => {
-  function handleSubmit(data: FormValueMap) {
-    ll(data);
-  }
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
 
-  //--------------------------------------------------------------------------------------------------------------------
+  const handleSubmit = useCallback((data: FormValueMap) => {
+    ll(data);
+  }, []);
+
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <Form fullHeight onSubmit={handleSubmit}>

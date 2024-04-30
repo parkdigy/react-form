@@ -54,6 +54,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
       noOptionsText,
       loadingText,
       limitTags,
+      getLimitTagsText,
       openOnFocus,
       disableClearable,
       async,
@@ -624,6 +625,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
         loading={loading || isOnGetItemLoading}
         loadingText={loadingText}
         limitTags={limitTags}
+        getLimitTagsText={getLimitTagsText}
         onChange={(e, value, reason, details) => handleChange(value as any, reason, details)}
         renderOption={(props, option) => (
           <li {...props} key={`${option.value}`}>

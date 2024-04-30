@@ -32,6 +32,8 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       helperText,
       formValueSeparator,
       formValueSort,
+      limitTags,
+      getLimitTagsText,
       onValidate,
       onKeyDown,
       onChange,
@@ -322,6 +324,8 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           value={value}
           readOnly={readOnly}
           disableClearable
+          limitTags={limitTags}
+          getLimitTagsText={getLimitTagsText}
           disabled={disabled}
           renderTags={handleRenderTags}
           inputValue={inputValue}

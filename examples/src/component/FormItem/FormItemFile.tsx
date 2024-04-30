@@ -13,6 +13,10 @@ import {
 import { OutlinedPaper } from '@ccomp';
 
 const FormItemFile = () => {
+  /********************************************************************************************************************
+   * State
+   * ******************************************************************************************************************/
+
   const [hideUrl, setHideUrl] = useState(false);
   const [hideUpload, setHideUpload] = useState(false);
   const [hideUploadLabel, setHideUploadLabel] = useState(false);
@@ -25,7 +29,9 @@ const FormItemFile = () => {
   const [preview, setPreview] = useState(false);
   const [previewMaxHeight, setPreviewMaxHeight] = useState(false);
 
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <>

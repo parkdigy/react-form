@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   Form,
   FormButton,
@@ -14,30 +14,45 @@ import {
 import { OutlinedPaper } from '@ccomp';
 import { notEmpty } from '@pdg/util';
 
+const VALUE = 1234567890;
+
 const FormItemNumber = () => {
+  /********************************************************************************************************************
+   * State
+   * ******************************************************************************************************************/
+
   const [thousandSeparator, setThousandSeparator] = useState(false);
   const [allowNegative, setAllowNegative] = useState(false);
   const [allowDecimal, setAllowDecimal] = useState(false);
   const [decimalScale, setDecimalScale] = useState<number>();
 
-  const [value] = useState(1234567890);
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
 
-  //--------------------------------------------------------------------------------------------------------------------
-
-  function handleSubmit(data: FormValueMap) {
+  const handleSubmit = useCallback((data: FormValueMap) => {
     ll(data);
-  }
+  }, []);
 
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************
+   * Memo
+   * ******************************************************************************************************************/
 
-  const numberProps: Partial<FormNumberProps> = {
-    thousandSeparator,
-    allowNegative,
-    allowDecimal,
-  };
-  if (notEmpty(decimalScale) && Number(decimalScale)) {
-    numberProps.decimalScale = Number(decimalScale);
-  }
+  const numberProps = useMemo(() => {
+    const newNumberProps: Partial<FormNumberProps> = {
+      thousandSeparator,
+      allowNegative,
+      allowDecimal,
+    };
+    if (notEmpty(decimalScale) && Number(decimalScale)) {
+      numberProps.decimalScale = Number(decimalScale);
+    }
+    return newNumberProps;
+  }, [allowDecimal, allowNegative, decimalScale, thousandSeparator]);
+
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <>
@@ -100,7 +115,7 @@ const FormItemNumber = () => {
                 {...numberProps}
                 name='readOnly'
                 label={FormNumber.displayName}
-                value={value}
+                value={VALUE}
                 readOnly
                 helperText='readOnly=true'
               />
@@ -110,7 +125,7 @@ const FormItemNumber = () => {
                 {...numberProps}
                 name='disabled'
                 label={FormNumber.displayName}
-                value={value}
+                value={VALUE}
                 disabled
                 helperText='disabled=true'
               />

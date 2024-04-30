@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { FormArrayValueItemCommands } from '../../@types';
 import { FormTextFieldCommands, FormTextFieldProps } from '../FormTextField';
 export type FormTagValue = string[];
@@ -6,5 +7,7 @@ export type FormTagCommands = FormTextFieldCommands<FormTagValue, false> & FormT
 export type FormTagProps = Omit<FormTextFieldProps<FormTagValue, false>, 'type'> & {
     formValueSeparator?: string;
     formValueSort?: boolean;
+    limitTags?: number;
+    getLimitTagsText?: (more: number) => ReactNode;
 };
 export declare const FormTagDefaultProps: Pick<FormTagProps, 'value' | 'clear' | 'formValueSeparator'>;

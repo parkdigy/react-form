@@ -46,6 +46,7 @@ export interface FormAutocompleteProps<
   disablePortal?: boolean;
   noOptionsText?: string;
   limitTags?: number;
+  getLimitTagsText?: (more: number) => ReactNode;
   openOnFocus?: boolean;
   disableClearable?: boolean;
   async?: boolean;

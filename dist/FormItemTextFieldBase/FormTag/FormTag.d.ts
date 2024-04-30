@@ -5,5 +5,7 @@ import { FormTextFieldProps } from '../FormTextField';
 declare const FormTag: React.ForwardRefExoticComponent<Omit<FormTextFieldProps<FormTagValue, false, FormTagValue>, "type"> & {
     formValueSeparator?: string | undefined;
     formValueSort?: boolean | undefined;
+    limitTags?: number | undefined;
+    getLimitTagsText?: ((more: number) => React.ReactNode) | undefined;
 } & React.RefAttributes<FormTagCommands>>;
 export default FormTag;
