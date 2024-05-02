@@ -546,7 +546,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
                   </>
                 )
               )}
-              {label}
+              <span className='__label__'>{label}</span>
             </ToggleButton>
           );
         })

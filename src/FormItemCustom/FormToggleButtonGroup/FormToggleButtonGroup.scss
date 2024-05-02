@@ -15,11 +15,18 @@ $standard-small-label-height: 26px;
 
 .FormToggleButtonGroup {
   .ToggleButton {
-    display: inline-block;
+    display: inline-flex;
     padding: 0 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    align-items: center;
+
+    .__label__ {
+      height: 0;
+      line-height: 0 !important;
+      overflow: visible !important;
+    }
   }
 
   &.type-checkbox,
