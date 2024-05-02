@@ -79,7 +79,14 @@ const FormItemTag = () => {
         <FormBody>
           <FormRow>
             <FormCol>
-              <FormTag {...additionalProps} name='required' label='FormTag' required helperText='required=true' />
+              <FormTag
+                {...additionalProps}
+                name='required'
+                label='FormTag'
+                required
+                helperText='required=true'
+                value={value}
+              />
             </FormCol>
             <FormCol>
               <FormTag

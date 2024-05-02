@@ -1345,7 +1345,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
-    var className = _a.className, name = _a.name, initValue = _a.value, exceptValue = _a.exceptValue, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, initDisabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, limitTags = _a.limitTags, getLimitTagsText = _a.getLimitTagsText, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest(_a, ["className", "name", "value", "exceptValue", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "limitTags", "getLimitTagsText", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
+    var className = _a.className, name = _a.name, initValue = _a.value, exceptValue = _a.exceptValue, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, initDisabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, formValueSeparator = _a.formValueSeparator, formValueSort = _a.formValueSort, limitTags = _a.limitTags, getLimitTagsText = _a.getLimitTagsText, onAppendTag = _a.onAppendTag, onRemoveTag = _a.onRemoveTag, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest(_a, ["className", "name", "value", "exceptValue", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "limitTags", "getLimitTagsText", "onAppendTag", "onRemoveTag", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
     var _b = useFormState(), formFullWidth = _b.fullWidth, formDisabled = _b.disabled, onAddValueItem = _b.onAddValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSearchSubmit = _b.onRequestSearchSubmit, otherFormState = __rest(_b, ["fullWidth", "disabled", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
     /********************************************************************************************************************
      * State - FormState
@@ -1438,6 +1438,8 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
             setInputValue('');
         }
         else {
+            if (onAppendTag && !onAppendTag(tag))
+                return;
             valueSet.add(tag);
             var finalValue_1 = setValue(valueSet);
             util.nextTick(function () {
@@ -1446,9 +1448,11 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
                 onRequestSearchSubmit(name, finalValue_1);
             });
         }
-    }, [valueSet, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [valueSet, onAppendTag, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     var removeTag = React.useCallback(function (tag) {
         if (valueSet.has(tag)) {
+            if (onRemoveTag && !onRemoveTag(tag))
+                return;
             valueSet.delete(tag);
             var finalValue_2 = setValue(valueSet);
             util.nextTick(function () {
@@ -1456,7 +1460,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
                 onRequestSearchSubmit(name, finalValue_2);
             });
         }
-    }, [valueSet, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [valueSet, onRemoveTag, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/

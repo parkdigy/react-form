@@ -9,5 +9,7 @@ export type FormTagProps = Omit<FormTextFieldProps<FormTagValue, false>, 'type'>
     formValueSort?: boolean;
     limitTags?: number;
     getLimitTagsText?: (more: number) => ReactNode;
+    onAppendTag?: (tag: string) => boolean;
+    onRemoveTag?: (tag: string) => boolean;
 };
 export declare const FormTagDefaultProps: Pick<FormTagProps, 'value' | 'clear' | 'formValueSeparator'>;

@@ -34,6 +34,8 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       formValueSort,
       limitTags,
       getLimitTagsText,
+      onAppendTag,
+      onRemoveTag,
       onValidate,
       onKeyDown,
       onChange,
@@ -200,6 +202,8 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
         if (valueSet.has(tag)) {
           setInputValue('');
         } else {
+          if (onAppendTag && !onAppendTag(tag)) return;
+
           valueSet.add(tag);
           const finalValue = setValue(valueSet);
           nextTick(() => {
@@ -209,12 +213,14 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           });
         }
       },
-      [valueSet, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
+      [valueSet, onAppendTag, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     const removeTag = useCallback(
       (tag: string) => {
         if (valueSet.has(tag)) {
+          if (onRemoveTag && !onRemoveTag(tag)) return;
+
           valueSet.delete(tag);
           const finalValue = setValue(valueSet);
           nextTick(() => {
@@ -223,7 +229,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           });
         }
       },
-      [valueSet, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
+      [valueSet, onRemoveTag, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     /********************************************************************************************************************

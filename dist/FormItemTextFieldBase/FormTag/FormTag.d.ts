@@ -7,5 +7,7 @@ declare const FormTag: React.ForwardRefExoticComponent<Omit<FormTextFieldProps<F
     formValueSort?: boolean | undefined;
     limitTags?: number | undefined;
     getLimitTagsText?: ((more: number) => React.ReactNode) | undefined;
+    onAppendTag?: ((tag: string) => boolean) | undefined;
+    onRemoveTag?: ((tag: string) => boolean) | undefined;
 } & React.RefAttributes<FormTagCommands>>;
 export default FormTag;
