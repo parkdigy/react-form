@@ -3976,6 +3976,17 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
             return {};
         }
     }, [items]);
+    var itemsInfos = useMemo(function () {
+        if (items) {
+            return items.reduce(function (res, info) {
+                res[info.value.toString()] = info;
+                return res;
+            }, {});
+        }
+        else {
+            return {};
+        }
+    }, [items]);
     var style = useMemo(function () {
         var style = __assign({ minWidth: 120 }, initStyle);
         if (hidden) {
@@ -4097,7 +4108,11 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
         if (notEmpty(finalValue)) {
             if (items) {
                 if (Array.isArray(finalValue)) {
-                    newComponentValue = items.filter(function (info) { return Array.isArray(finalValue) && finalValue.includes(info.value); });
+                    finalValue.forEach(function (v) {
+                        if (itemsInfos[v]) {
+                            newComponentValue && newComponentValue.push(itemsInfos[v]);
+                        }
+                    });
                 }
                 else {
                     newComponentValue = (items.find(function (info) { return info.value === value; }) ||
@@ -4124,7 +4139,7 @@ FormTextEditor.defaultProps = FormTextEditorDefaultProps;var FormAutocompleteDef
             oldComponentValueRef.current = newComponentValue;
             return newComponentValue;
         }
-    }, [value, multiple, items, valueItem]);
+    }, [value, multiple, items, valueItem, itemsInfos]);
     useEffect(function () {
         if (async && onAsyncLoadValueItem) {
             if (value != null) {

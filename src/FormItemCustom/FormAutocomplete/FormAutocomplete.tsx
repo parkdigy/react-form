@@ -168,6 +168,17 @@ const FormAutocomplete = ToForwardRefExoticComponent(
       }
     }, [items]);
 
+    const itemsInfos = useMemo(() => {
+      if (items) {
+        return items.reduce<Record<string, any>>((res, info) => {
+          res[info.value.toString()] = info;
+          return res;
+        }, {});
+      } else {
+        return {};
+      }
+    }, [items]);
+
     const style = useMemo(() => {
       const style: Props['style'] = {
         minWidth: 120,
@@ -309,9 +320,11 @@ const FormAutocomplete = ToForwardRefExoticComponent(
       if (notEmpty(finalValue)) {
         if (items) {
           if (Array.isArray(finalValue)) {
-            newComponentValue = items.filter(
-              (info) => Array.isArray(finalValue) && finalValue.includes(info.value)
-            ) as ComponentValue;
+            finalValue.forEach((v) => {
+              if (itemsInfos[v]) {
+                newComponentValue && newComponentValue.push(itemsInfos[v]);
+              }
+            });
           } else {
             newComponentValue = (items.find((info) => info.value === value) ||
               (multiple ? [] : null)) as ComponentValue;
@@ -338,7 +351,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
         oldComponentValueRef.current = newComponentValue;
         return newComponentValue;
       }
-    }, [value, multiple, items, valueItem]);
+    }, [value, multiple, items, valueItem, itemsInfos]);
 
     useEffect(() => {
       if (async && onAsyncLoadValueItem) {
