@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import {
   PrivateMonthPickerProps as Props,
-  PrivateMonthPickerDefaultProps,
   PrivateMonthPickerValue,
   PrivateMonthPickerBaseValue,
 } from './PrivateMonthPicker.types';
@@ -19,10 +18,19 @@ import {
 } from './PrivateMonthPicker.style';
 import { PdgIcon } from '@pdg/react-component';
 
+const DEFAULT_MIN_VALUE = {
+  year: 2020,
+  month: 1,
+};
+const DEFAULT_MAX_VALUE = {
+  year: 2050,
+  month: 12,
+};
+
 const PrivateMonthPicker: React.FC<Props> = ({
-  value: initValue,
-  minValue: initMinValue,
-  maxValue: initMaxValue,
+  value: initValue = null,
+  minValue = DEFAULT_MIN_VALUE,
+  maxValue = DEFAULT_MAX_VALUE,
   disablePast,
   disableFuture,
   selectFromValue,
@@ -33,7 +41,7 @@ const PrivateMonthPicker: React.FC<Props> = ({
    * State
    * ******************************************************************************************************************/
 
-  const [value, setValue] = useAutoUpdateState<PrivateMonthPickerValue>(initValue || null);
+  const [value, setValue] = useAutoUpdateState<PrivateMonthPickerValue>(initValue);
 
   /********************************************************************************************************************
    * Function
@@ -49,9 +57,6 @@ const PrivateMonthPicker: React.FC<Props> = ({
 
   const nowValue = useMemo(() => dateToValue(dayjs()), [dateToValue]);
   const nowYm = useMemo(() => valueToYm(nowValue), [nowValue, valueToYm]);
-
-  const minValue = useMemo(() => initMinValue || PrivateMonthPickerDefaultProps.minValue, [initMinValue]);
-  const maxValue = useMemo(() => initMaxValue || PrivateMonthPickerDefaultProps.maxValue, [initMaxValue]);
 
   const minAvailableValue = useMemo(() => {
     if (disablePast) {
@@ -103,12 +108,6 @@ const PrivateMonthPicker: React.FC<Props> = ({
     [displayValueYm, maxAvailableYm, minAvailableYm]
   );
 
-  const prevBtnDisabled = useMemo(() => displayValueYm <= minAvailableYm, [displayValueYm, minAvailableYm]);
-  const nextBtnDisabled = useMemo(() => displayValueYm >= maxAvailableYm, [displayValueYm, maxAvailableYm]);
-
-  const selectFromYear = useMemo(() => (selectFromValue ? selectFromValue.year : undefined), [selectFromValue]);
-  const selectToYear = useMemo(() => (selectToValue ? selectToValue.year : undefined), [selectToValue]);
-
   /********************************************************************************************************************
    * Event Handler
    * ******************************************************************************************************************/
@@ -154,6 +153,11 @@ const PrivateMonthPicker: React.FC<Props> = ({
   /********************************************************************************************************************
    * Render
    * ******************************************************************************************************************/
+
+  const prevBtnDisabled = displayValueYm <= minAvailableYm;
+  const nextBtnDisabled = displayValueYm >= maxAvailableYm;
+  const selectFromYear = selectFromValue ? selectFromValue.year : undefined;
+  const selectToYear = selectToValue ? selectToValue.year : undefined;
 
   return (
     <StyledContainer className='PrivateMonthPicker'>
@@ -205,6 +209,5 @@ const PrivateMonthPicker: React.FC<Props> = ({
 };
 
 PrivateMonthPicker.displayName = 'PrivateMonthPicker';
-PrivateMonthPicker.defaultProps = PrivateMonthPickerDefaultProps;
 
 export default PrivateMonthPicker;

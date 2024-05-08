@@ -14,5 +14,3 @@ export interface FormColProps
   helperTextShift?: boolean;
   gap?: number;
 }
-
-export const FormColDefaultProps = {};

@@ -12,8 +12,6 @@ export interface FormRowProps
   helperText?: ReactNode;
 }
 
-export const FormRowDefaultProps = {};
-
 export interface FormColsInRowMap {
   [key: string]: number | undefined;
 }

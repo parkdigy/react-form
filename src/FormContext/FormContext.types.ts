@@ -1,5 +1,5 @@
 import { PartialPick, FormValueItemCommands } from '../@types';
-import { FormProps, FormDefaultProps } from '../Form/Form.types';
+import { FormProps } from '../Form/Form.types';
 
 export interface FormContextValue<T = any, AllowUndefinedValue extends boolean = true>
   extends PartialPick<
@@ -27,11 +27,11 @@ export interface FormContextValue<T = any, AllowUndefinedValue extends boolean =
 
 export const FormContextDefaultValue: FormContextValue = {
   id: 'init',
-  variant: FormDefaultProps.variant,
-  size: FormDefaultProps.size,
-  color: FormDefaultProps.color,
-  spacing: FormDefaultProps.spacing,
-  formColGap: FormDefaultProps.formColGap,
+  variant: 'outlined',
+  size: 'medium',
+  color: 'primary',
+  spacing: 2,
+  formColGap: 1.5,
   focused: false,
   labelShrink: false,
   // eslint-disable-next-line

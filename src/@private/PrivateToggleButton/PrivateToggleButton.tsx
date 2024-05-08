@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { PrivateToggleButtonProps as Props, PrivateToggleButtonDefaultProps } from './PrivateToggleButton.types';
+import { PrivateToggleButtonProps as Props } from './PrivateToggleButton.types';
 import { Button, useTheme, darken } from '@mui/material';
 import { CommonSxProps } from '../../@types';
 
@@ -45,6 +45,5 @@ const PrivateToggleButton = React.forwardRef<HTMLButtonElement, Props>(
 );
 
 PrivateToggleButton.displayName = 'PrivateToggleButton';
-PrivateToggleButton.defaultProps = PrivateToggleButtonDefaultProps;
 
 export default PrivateToggleButton;

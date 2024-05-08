@@ -1,8 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import {
-  PrivateMonthPickerMonthListProps as Props,
-  PrivateMonthPickerMonthListDefaultProps,
-} from './PrivateMonthPickerMonthList.types';
+import { PrivateMonthPickerMonthListProps as Props } from './PrivateMonthPickerMonthList.types';
 import PrivateMonthPickerMonth from '../PrivateMonthPickerMonth';
 import { FormMonthPickerBaseValue } from '../../../FormItemCustom';
 import dayjs, { Dayjs } from 'dayjs';
@@ -20,22 +17,15 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
   onChange,
 }) => {
   /********************************************************************************************************************
-   * Function
-   * ******************************************************************************************************************/
-
-  const valueToYm = useCallback((v: FormMonthPickerBaseValue) => v.year * 100 + v.month, []);
-  const dateToValue = useCallback((v: Dayjs) => ({ year: v.year(), month: v.month() + 1 }), []);
-
-  /********************************************************************************************************************
    * Memo
    * ******************************************************************************************************************/
 
   const nowDate = useMemo(() => dayjs(), []);
-  const nowValue = useMemo(() => dateToValue(nowDate), [dateToValue, nowDate]);
+  const nowValue = useMemo(() => dateToValue(nowDate), [nowDate]);
   const nowYm = useMemo(() => Number(nowDate.format('YYYYMM')), [nowDate]);
 
-  const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue, valueToYm]);
-  const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue, valueToYm]);
+  const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue]);
+  const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue]);
 
   const defaultValue = useMemo(() => {
     if (initDefaultValue) {
@@ -49,9 +39,8 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
     }
   }, [initDefaultValue, nowYm, minAvailableYm, maxAvailableYm, minAvailableValue, maxAvailableValue, nowValue]);
 
-  const defaultYear = useMemo(() => defaultValue.year, [defaultValue]);
-  const defaultMonth = useMemo(() => defaultValue.month, [defaultValue]);
-
+  const defaultYear = useMemo(() => defaultValue.year, [defaultValue.year]);
+  const defaultMonth = useMemo(() => defaultValue.month, [defaultValue.month]);
   const currentYear = useMemo(() => (value ? value.year : defaultYear), [value, defaultYear]);
 
   const months = useMemo(() => {
@@ -88,7 +77,6 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
     return newMonths;
   }, [
     selectFromValue,
-    valueToYm,
     value,
     selectToValue,
     currentYear,
@@ -99,6 +87,10 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
     nowYm,
     disableFuture,
   ]);
+
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
 
   const handleMonthChange = useCallback(
     (month: number) => {
@@ -133,6 +125,13 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
 };
 
 PrivateMonthPickerMonthList.displayName = 'PrivateMonthPickerMonthList';
-PrivateMonthPickerMonthList.defaultProps = PrivateMonthPickerMonthListDefaultProps;
 
 export default PrivateMonthPickerMonthList;
+
+/********************************************************************************************************************
+ * Function
+ * ******************************************************************************************************************/
+
+const valueToYm = (v: FormMonthPickerBaseValue) => v.year * 100 + v.month;
+
+const dateToValue = (v: Dayjs) => ({ year: v.year(), month: v.month() + 1 });

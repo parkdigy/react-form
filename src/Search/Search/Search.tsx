@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useMemo, useRef } from 'react';
 import { Paper } from '@mui/material';
-import { SearchProps as Props, SearchCommands, SearchDefaultProps } from './Search.types';
+import { SearchProps as Props, SearchCommands } from './Search.types';
 import { Form, FormCommands } from '../../Form';
 import { FormBody } from '../../FormLayout';
 import FormContextProvider from '../../FormContextProvider';
@@ -14,7 +14,7 @@ const Search = React.forwardRef<SearchCommands, Props>(
       style,
       sx,
       //----------------------------------------------------------------------------------------------------------------
-      color,
+      color = 'primary',
       spacing,
       focused,
       labelShrink,
@@ -127,6 +127,5 @@ const Search = React.forwardRef<SearchCommands, Props>(
 );
 
 Search.displayName = 'Search';
-Search.defaultProps = SearchDefaultProps;
 
 export default Search;

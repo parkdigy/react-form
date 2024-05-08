@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSta
 import classNames from 'classnames';
 import {
   PrivateStaticDatePickerProps as Props,
-  PrivateStaticDatePickerDefaultProps,
   PrivateStaticDatePickerCommands,
 } from './PrivateStaticDatePicker.types';
 import { PickersDay, PickersDayProps, StaticDatePicker } from '@mui/x-date-pickers';
@@ -497,6 +496,5 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
 );
 
 PrivateStaticDatePicker.displayName = 'PrivateStaticDatePicker';
-PrivateStaticDatePicker.defaultProps = PrivateStaticDatePickerDefaultProps;
 
 export default PrivateStaticDatePicker;

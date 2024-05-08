@@ -10,5 +10,3 @@ export interface PrivateYearRangePickerYearProps
   selectedEnd?: boolean;
   selectedTemp?: boolean;
 }
-
-export const PrivateYearRangePickerYearDefaultProps = {};

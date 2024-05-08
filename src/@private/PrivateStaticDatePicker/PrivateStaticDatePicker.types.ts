@@ -19,6 +19,4 @@ export interface PrivateStaticDatePickerProps
   onClose?(): void;
 }
 
-export const PrivateStaticDatePickerDefaultProps = {};
-
 export interface PrivateStaticDatePickerCommands {}

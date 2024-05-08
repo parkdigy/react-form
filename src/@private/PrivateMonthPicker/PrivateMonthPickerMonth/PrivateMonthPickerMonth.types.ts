@@ -12,5 +12,3 @@ export interface PrivateMonthPickerMonthProps extends Pick<ButtonProps, 'onMouse
   selectedTemp?: boolean;
   onClick?(month: number): void;
 }
-
-export const PrivateMonthPickerMonthDefaultProps = {};

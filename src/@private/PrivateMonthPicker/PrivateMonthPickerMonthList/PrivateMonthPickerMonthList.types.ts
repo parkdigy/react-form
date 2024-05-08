@@ -14,5 +14,3 @@ export interface PrivateMonthPickerMonthListProps
   maxAvailableValue: PrivateMonthPickerBaseValue;
   onChange(value: PrivateMonthPickerBaseValue): void;
 }
-
-export const PrivateMonthPickerMonthListDefaultProps = {};

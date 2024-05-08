@@ -11,5 +11,3 @@ export interface PrivateYearPickerYearProps extends Pick<ButtonProps, 'onClick' 
   selectedEnd?: boolean;
   selectedTemp?: boolean;
 }
-
-export const PrivateYearPickerYearDefaultProps = {};

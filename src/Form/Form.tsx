@@ -2,7 +2,7 @@ import React, { useState, useRef, useLayoutEffect, FormEvent, useCallback, useMe
 import classNames from 'classnames';
 import { Box } from '@mui/material';
 import { empty, nextTick, notEmpty } from '@pdg/util';
-import { FormProps as Props, FormDefaultProps, FormCommands, FormInvalidItems } from './Form.types';
+import { FormProps as Props, FormCommands, FormInvalidItems } from './Form.types';
 import FormContextProvider from '../FormContextProvider';
 import { useFormState } from '../FormContext';
 import {
@@ -28,15 +28,15 @@ const Form = React.forwardRef<FormCommands, Props>(
       style: initStyle,
       sx,
       //--------------------------------------------------------------------------------------------------------------------
-      variant: initVariant,
-      size: initSize,
-      color: initColor,
-      spacing: initSpacing,
-      formColGap: initFormColGap,
+      variant: initVariant = 'outlined',
+      size: initSize = 'medium',
+      color: initColor = 'primary',
+      spacing: initSpacing = 2,
+      formColGap: initFormColGap = 1.5,
       focused: initFocused,
       labelShrink: initLabelShrink,
-      fullWidth: initFullWidth,
-      fullHeight,
+      fullWidth: initFullWidth = true,
+      fullHeight = false,
       disabled,
       //----------------------------------------------------------------------------------------------------------------
       onSubmit,
@@ -577,6 +577,5 @@ const Form = React.forwardRef<FormCommands, Props>(
 );
 
 Form.displayName = 'Form';
-Form.defaultProps = FormDefaultProps;
 
 export default Form;

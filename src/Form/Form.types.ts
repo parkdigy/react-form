@@ -32,19 +32,6 @@ export interface FormProps
   onValueChangeByUser?(name: string, value: any): void;
 }
 
-export const FormDefaultProps: Pick<
-  FormProps,
-  'variant' | 'size' | 'color' | 'spacing' | 'formColGap' | 'fullWidth' | 'fullHeight'
-> = {
-  variant: 'outlined',
-  size: 'medium',
-  color: 'primary',
-  spacing: 2,
-  formColGap: 1.5,
-  fullWidth: true,
-  fullHeight: false,
-};
-
 //--------------------------------------------------------------------------------------------------------------------
 
 export interface FormCommands {

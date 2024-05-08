@@ -18,5 +18,3 @@ export interface SearchMenuButtonProps
     | 'bottom-left'
     | 'bottom-right';
 }
-
-export const SearchMenuButtonDefaultProps = {};

@@ -7,7 +7,3 @@ export interface FormButtonProps
     Omit<PdgButtonProps, 'color' | 'size'> {
   type?: 'button' | 'submit';
 }
-
-export const FormButtonDefaultProps: FormButtonProps = {
-  type: 'button',
-};

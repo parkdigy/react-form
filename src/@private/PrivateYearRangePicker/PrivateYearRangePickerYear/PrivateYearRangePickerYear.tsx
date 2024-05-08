@@ -1,8 +1,5 @@
 import React, { useMemo } from 'react';
-import {
-  PrivateYearRangePickerYearProps as Props,
-  PrivateYearRangePickerYearDefaultProps,
-} from './PrivateYearRangePickerYear.types';
+import { PrivateYearRangePickerYearProps as Props } from './PrivateYearRangePickerYear.types';
 import classNames from 'classnames';
 import { StyledContainer, StyledButton } from './PrivateYearRangePickerYear.style';
 
@@ -52,6 +49,5 @@ const PrivateYearRangePickerYear = React.forwardRef<HTMLDivElement, Props>(
 );
 
 PrivateYearRangePickerYear.displayName = 'PrivateYearRangePickerYear';
-PrivateYearRangePickerYear.defaultProps = PrivateYearRangePickerYearDefaultProps;
 
 export default PrivateYearRangePickerYear;

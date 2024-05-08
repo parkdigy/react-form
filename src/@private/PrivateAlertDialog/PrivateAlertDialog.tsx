@@ -1,11 +1,19 @@
 import React, { useCallback } from 'react';
-import { PrivateAlertDialogProps as Props, PrivateAlertDialogDefaultProps } from './PrivateAlertDialog.types';
+import { PrivateAlertDialogProps as Props } from './PrivateAlertDialog.types';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
-const PrivateAlertDialog: React.FC<Props> = ({ color, open, title, content, onClose }) => {
+const PrivateAlertDialog: React.FC<Props> = ({ color = 'primary', open, title, content, onClose }) => {
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
+
   const handleClose = useCallback(() => {
     onClose && onClose();
   }, [onClose]);
+
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <Dialog className={`color-${color}`} open={!!open} onClose={handleClose} aria-labelledby='alert-dialog-title'>
@@ -21,6 +29,5 @@ const PrivateAlertDialog: React.FC<Props> = ({ color, open, title, content, onCl
 };
 
 PrivateAlertDialog.displayName = 'PrivateAlertDialog';
-PrivateAlertDialog.defaultProps = PrivateAlertDialogDefaultProps;
 
 export default PrivateAlertDialog;

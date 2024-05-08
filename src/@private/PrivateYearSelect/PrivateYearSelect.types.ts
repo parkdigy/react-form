@@ -6,5 +6,3 @@ export interface PrivateYearSelectProps {
   availableDate: FormAvailableDate;
   onSelect(year: number): void;
 }
-
-export const PrivateYearSelectDefaultProps = {};

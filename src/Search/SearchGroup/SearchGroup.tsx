@@ -1,6 +1,6 @@
 import React, { ReactElement, useMemo } from 'react';
 import classNames from 'classnames';
-import { SearchGroupDefaultProps as Props, SearchGroupProps } from './SearchGroup.types';
+import { SearchGroupProps } from './SearchGroup.types';
 import { Grid } from '@mui/material';
 import { FormHidden } from '../../FormItemTextFieldBase';
 import { StyledItem } from './SearchGroup.style';
@@ -57,7 +57,7 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
   max,
   align,
   hidden,
-  spacing,
+  spacing = 1,
 }) => {
   /********************************************************************************************************************
    * State
@@ -105,7 +105,5 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
     </Grid>
   );
 };
-
-SearchGroup.defaultProps = Props;
 
 export default SearchGroup;

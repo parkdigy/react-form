@@ -18,16 +18,3 @@ export interface PrivateMonthRangePickerProps {
     isMonthSelect: boolean
   ): void;
 }
-
-export const PrivateMonthRangePickerDefaultProps: Required<
-  Pick<PrivateMonthRangePickerProps, 'minValue' | 'maxValue'>
-> = {
-  minValue: {
-    year: 2020,
-    month: 1,
-  },
-  maxValue: {
-    year: 2050,
-    month: 12,
-  },
-};

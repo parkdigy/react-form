@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import {
   PrivateMonthRangePickerProps as Props,
-  PrivateMonthRangePickerDefaultProps,
   PrivateMonthRangePickerValue,
   PrivateMonthRangePickerSelectType,
 } from './PrivateMonthRangePicker.types';
@@ -11,31 +10,30 @@ import PrivateMonthPicker, { PrivateMonthPickerBaseValue } from '../PrivateMonth
 import dayjs, { Dayjs } from 'dayjs';
 import { StyledActionButton, StyledActionContainer, StyledDiv } from './PrivateMonthRangePicker.style';
 
+const DEFAULT_MIN_VALUE = {
+  year: 2020,
+  month: 1,
+};
+const DEFAULT_MAX_VALUE = {
+  year: 2050,
+  month: 12,
+};
+
 const PrivateMonthRangePicker: React.FC<Props> = ({
   value,
-  minValue: initMinValue,
-  maxValue: initMaxValue,
+  minValue = DEFAULT_MIN_VALUE,
+  maxValue = DEFAULT_MAX_VALUE,
   disablePast,
   disableFuture,
   onChange,
 }) => {
   /********************************************************************************************************************
-   * Function
-   * ******************************************************************************************************************/
-
-  const valueToYm = useCallback((v: FormMonthPickerBaseValue) => v.year * 100 + v.month, []);
-  const dateToValue = useCallback((v: Dayjs) => ({ year: v.year(), month: v.month() + 1 }), []);
-
-  /********************************************************************************************************************
    * Memo
    * ******************************************************************************************************************/
 
   const nowDate = useMemo(() => dayjs(), []);
-  const nowValue = useMemo(() => dateToValue(nowDate), [dateToValue, nowDate]);
-  const nowYm = useMemo(() => valueToYm(nowValue), [nowValue, valueToYm]);
-
-  const minValue = useMemo(() => initMinValue || PrivateMonthRangePickerDefaultProps.minValue, [initMinValue]);
-  const maxValue = useMemo(() => initMaxValue || PrivateMonthRangePickerDefaultProps.maxValue, [initMaxValue]);
+  const nowValue = useMemo(() => dateToValue(nowDate), [nowDate]);
+  const nowYm = useMemo(() => valueToYm(nowValue), [nowValue]);
 
   const minAvailableValue = useMemo(() => {
     if (disablePast) {
@@ -44,8 +42,8 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
     } else {
       return minValue;
     }
-  }, [disablePast, valueToYm, minValue, nowYm, nowValue]);
-  const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue, valueToYm]);
+  }, [disablePast, minValue, nowYm, nowValue]);
+  const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue]);
 
   const maxAvailableValue = useMemo(() => {
     if (disableFuture) {
@@ -54,8 +52,8 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
     } else {
       return maxValue;
     }
-  }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
-  const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue, valueToYm]);
+  }, [disableFuture, maxValue, nowYm, nowValue]);
+  const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue]);
 
   /********************************************************************************************************************
    * Function
@@ -92,7 +90,7 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
       }
       return finalValue;
     },
-    [maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm, valueToYm]
+    [maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm]
   );
 
   /********************************************************************************************************************
@@ -205,6 +203,13 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
 };
 
 PrivateMonthRangePicker.displayName = 'PrivateMonthRangePicker';
-PrivateMonthRangePicker.defaultProps = PrivateMonthRangePickerDefaultProps;
 
 export default PrivateMonthRangePicker;
+
+/********************************************************************************************************************
+ * Function
+ * ******************************************************************************************************************/
+
+const valueToYm = (v: FormMonthPickerBaseValue) => v.year * 100 + v.month;
+
+const dateToValue = (v: Dayjs) => ({ year: v.year(), month: v.month() + 1 });

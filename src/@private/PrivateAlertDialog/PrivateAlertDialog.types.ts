@@ -7,7 +7,3 @@ export interface PrivateAlertDialogProps {
   open?: boolean;
   onClose?: () => void;
 }
-
-export const PrivateAlertDialogDefaultProps: Pick<PrivateAlertDialogProps, 'color'> = {
-  color: 'primary',
-};

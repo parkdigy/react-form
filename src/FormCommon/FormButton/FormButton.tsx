@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { FormButtonProps as Props, FormButtonDefaultProps } from './FormButton.types';
+import { FormButtonProps as Props } from './FormButton.types';
 import { useFormState } from '../../FormContext';
 import { PdgButton } from '@pdg/react-component';
+import { ifUndefined } from '@pdg/util';
 
 const FormButton = React.forwardRef<HTMLButtonElement, Props>(
   (
@@ -12,7 +13,7 @@ const FormButton = React.forwardRef<HTMLButtonElement, Props>(
       variant: initVariant,
       fullWidth: initFullWidth,
       className,
-      type,
+      type = 'button',
       onClick,
       ...props
     },
@@ -28,12 +29,9 @@ const FormButton = React.forwardRef<HTMLButtonElement, Props>(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
-    );
+    const size = useMemo(() => ifUndefined(initSize, formSize), [initSize, formSize]);
+    const color = useMemo(() => ifUndefined(initColor, formColor), [initColor, formColor]);
+    const fullWidth = useMemo(() => ifUndefined(initFullWidth, formFullWidth), [initFullWidth, formFullWidth]);
 
     /********************************************************************************************************************
      * Memo
@@ -73,6 +71,5 @@ const FormButton = React.forwardRef<HTMLButtonElement, Props>(
 );
 
 FormButton.displayName = 'FormButton';
-FormButton.defaultProps = FormButtonDefaultProps;
 
 export default FormButton;

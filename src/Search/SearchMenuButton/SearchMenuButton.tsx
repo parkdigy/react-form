@@ -1,6 +1,6 @@
 import React, { useCallback, useId, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { SearchMenuButtonProps as Props, SearchMenuButtonDefaultProps } from './SearchMenuButton.types';
+import { SearchMenuButtonProps as Props } from './SearchMenuButton.types';
 import { FormButton } from '../../FormCommon';
 import { Menu, PopoverOrigin } from '@mui/material';
 
@@ -136,7 +136,5 @@ const SearchMenuButton: React.FC<Props> = ({ children, className, sx: initSx, me
     </>
   );
 };
-
-SearchMenuButton.defaultProps = SearchMenuButtonDefaultProps;
 
 export default SearchMenuButton;

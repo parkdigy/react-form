@@ -1,9 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
-import {
-  PrivateTimeSelectProps as Props,
-  PrivateTimeSelectDefaultProps,
-  PrivateTimeSelectCommands,
-} from './PrivateTimeSelect.types';
+import { PrivateTimeSelectProps as Props, PrivateTimeSelectCommands } from './PrivateTimeSelect.types';
 import SimpleBar from 'simplebar-react';
 import PrivateToggleButton from '../PrivateToggleButton';
 import './PrivateTimeSelect.scss';
@@ -15,7 +11,7 @@ for (let i = 0; i < DEFAULT_MINUTES.length; i += 1) {
 }
 
 const PrivateTimeSelect = React.forwardRef<PrivateTimeSelectCommands, Props>(
-  ({ list, listInterval, unit, value, cols, disableList, onSelect }, ref) => {
+  ({ list, listInterval, unit, value, cols = 1, disableList, onSelect }, ref) => {
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -159,6 +155,5 @@ const PrivateTimeSelect = React.forwardRef<PrivateTimeSelectCommands, Props>(
 );
 
 PrivateTimeSelect.displayName = 'PrivateTimeSelect';
-PrivateTimeSelect.defaultProps = PrivateTimeSelectDefaultProps;
 
 export default PrivateTimeSelect;

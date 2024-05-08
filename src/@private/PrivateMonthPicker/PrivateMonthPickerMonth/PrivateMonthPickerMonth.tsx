@@ -1,8 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import {
-  PrivateMonthPickerMonthProps as Props,
-  PrivateMonthPickerMonthDefaultProps,
-} from './PrivateMonthPickerMonth.types';
+import { PrivateMonthPickerMonthProps as Props } from './PrivateMonthPickerMonth.types';
 import classNames from 'classnames';
 import { StyledButton, StyledContainer } from './PrivateMonthPickerMonth.style';
 
@@ -24,6 +21,10 @@ const PrivateMonthPickerMonth = React.forwardRef<HTMLDivElement, Props>(
     },
     ref
   ) => {
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+
     const className = useMemo(
       () =>
         classNames(
@@ -39,9 +40,17 @@ const PrivateMonthPickerMonth = React.forwardRef<HTMLDivElement, Props>(
       [range, isDefault, active, selected, selectedStart, selectedEnd, selectedTemp, disabled]
     );
 
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
+
     const handleClick = useCallback(() => {
       onClick && onClick(month);
     }, [month, onClick]);
+
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
 
     return (
       <StyledContainer className='PrivateMonthPickerMonth' ref={ref} item xs={4}>
@@ -60,6 +69,5 @@ const PrivateMonthPickerMonth = React.forwardRef<HTMLDivElement, Props>(
 );
 
 PrivateMonthPickerMonth.displayName = 'PrivateMonthPickerMonth';
-PrivateMonthPickerMonth.defaultProps = PrivateMonthPickerMonthDefaultProps;
 
 export default PrivateMonthPickerMonth;

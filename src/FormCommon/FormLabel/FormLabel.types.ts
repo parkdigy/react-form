@@ -6,5 +6,3 @@ export interface FormLabelProps extends PartialOmit<InputLabelProps, 'size'>, Pa
   icon?: string;
   warning?: boolean;
 }
-
-export const FormLabelDefaultProps = {};

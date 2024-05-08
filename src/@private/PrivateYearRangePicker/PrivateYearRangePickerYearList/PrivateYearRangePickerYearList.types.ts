@@ -11,5 +11,3 @@ export interface PrivateYearRangePickerYearListProps
   displayValue: PrivateYearRangePickerBaseValue[];
   onChange(year: number): void;
 }
-
-export const PrivateYearRangePickerYearListDefaultProps = {};

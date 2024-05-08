@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { PrivateYearSelectProps as Props, PrivateYearSelectDefaultProps } from './PrivateYearSelect.types';
+import { PrivateYearSelectProps as Props } from './PrivateYearSelect.types';
 import { Grid } from '@mui/material';
 import dayjs from 'dayjs';
 import './PrivateYearSelect.scss';
@@ -84,6 +84,5 @@ const PrivateYearSelect: React.FC<Props> = ({ selectYear, activeYear, availableD
 };
 
 PrivateYearSelect.displayName = 'PrivateYearSelect';
-PrivateYearSelect.defaultProps = PrivateYearSelectDefaultProps;
 
 export default PrivateYearSelect;

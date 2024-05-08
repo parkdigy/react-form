@@ -55,15 +55,6 @@ export interface PrivateDateTimePickerProps
   hidden?: boolean;
 }
 
-export const PrivateDateTimePickerDefaultProps: Pick<
-  PrivateDateTimePickerProps,
-  'showDaysOutsideCurrentMonth' | 'align' | 'value'
-> = {
-  showDaysOutsideCurrentMonth: true,
-  align: 'center',
-  value: null,
-};
-
 export interface PrivateDateTimePickerCommands
   extends FormValueItemBaseCommands<PrivateDateTimePickerValue, false>,
     FormDateValueItemCommands {}

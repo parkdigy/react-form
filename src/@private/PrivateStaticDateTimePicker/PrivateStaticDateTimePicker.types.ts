@@ -19,8 +19,6 @@ export interface PrivateStaticDateTimePickerProps
   onClose?(): void;
 }
 
-export const PrivateStaticDateTimePickerDefaultProps = {};
-
 export type TimeSelectScrollToDateUnit = 'hour' | 'minute' | 'second';
 
 export interface PrivateStaticDateTimePickerCommands {

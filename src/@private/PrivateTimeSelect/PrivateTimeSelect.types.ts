@@ -8,10 +8,6 @@ export interface PrivateTimeSelectProps {
   onSelect?(value: number): void;
 }
 
-export const PrivateTimeSelectDefaultProps: Pick<PrivateTimeSelectProps, 'cols'> = {
-  cols: 1,
-};
-
 export interface PrivateTimeSelectCommands {
   scrollToValue(value: number): void;
 }

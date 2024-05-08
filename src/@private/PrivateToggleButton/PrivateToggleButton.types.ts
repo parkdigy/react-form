@@ -5,5 +5,3 @@ export interface PrivateToggleButtonProps extends Omit<ButtonProps, 'variant' | 
   activated?: boolean;
   outlined?: boolean;
 }
-
-export const PrivateToggleButtonDefaultProps = {};

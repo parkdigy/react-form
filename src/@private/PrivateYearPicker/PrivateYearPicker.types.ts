@@ -16,8 +16,3 @@ export interface PrivateYearPickerProps {
   selectToYear?: PrivateYearPickerValue;
   onChange(value: PrivateYearPickerBaseValue, isClick: boolean): void;
 }
-
-export const PrivateYearPickerDefaultProps: Required<Pick<PrivateYearPickerProps, 'minYear' | 'maxYear'>> = {
-  minYear: 2020,
-  maxYear: 2050,
-};

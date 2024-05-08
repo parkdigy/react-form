@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useId, useMemo, useRef } from 'react
 import classNames from 'classnames';
 import { FormHelperText, Grid, Box } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
-import { FormColProps as Props, FormColDefaultProps } from './FormCol.types';
+import { FormColProps as Props } from './FormCol.types';
 import { useFormState } from '../../FormContext';
 import { FormLabel } from '../../FormCommon';
 import FormContextProvider from '../../FormContextProvider';
@@ -197,6 +197,5 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
 );
 
 FormCol.displayName = 'FormCol';
-FormCol.defaultProps = FormColDefaultProps;
 
 export default FormCol;

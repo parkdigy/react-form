@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  PrivateYearRangePickerYearListProps as Props,
-  PrivateYearRangePickerYearListDefaultProps,
-} from './PrivateYearRangePickerYearList.types';
+import { PrivateYearRangePickerYearListProps as Props } from './PrivateYearRangePickerYearList.types';
 import PrivateYearRangePickerYear from '../PrivateYearRangePickerYear';
 import { StyledContainer } from './PrivateYearRangePickerYearList.style';
 
@@ -186,6 +183,5 @@ const PrivateYearRangePickerYearList: React.FC<Props> = ({
 };
 
 PrivateYearRangePickerYearList.displayName = 'PrivateYearRangePickerYearList';
-PrivateYearRangePickerYearList.defaultProps = PrivateYearRangePickerYearListDefaultProps;
 
 export default PrivateYearRangePickerYearList;

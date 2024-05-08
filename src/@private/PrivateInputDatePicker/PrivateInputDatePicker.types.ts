@@ -35,7 +35,3 @@ export interface PrivateInputDatePickerProps
   onBlur?: TextFieldProps['onBlur'];
   onError?(reason: DateValidationError, value: PrivateInputDatePickerValue): void;
 }
-
-export const PrivateInputDatePickerDefaultProps: Pick<PrivateInputDatePickerProps, 'align'> = {
-  align: 'center',
-};

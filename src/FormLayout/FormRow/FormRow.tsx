@@ -1,10 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { FormHelperText, Grid } from '@mui/material';
-import { FormRowProps as Props, FormRowDefaultProps, FormColsInRowMap } from './FormRow.types';
+import { FormRowProps as Props, FormColsInRowMap } from './FormRow.types';
 import { FormContext, useFormState } from '../../FormContext';
 import FormDivider from '../FormDivider';
 import { StyledWrapGrid } from './FormRow.style';
+import { ifUndefined } from '@pdg/util';
 
 const FormRow = React.forwardRef<HTMLDivElement, Props>(
   (
@@ -50,22 +51,16 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
     } = useFormState();
 
     /********************************************************************************************************************
-     * Memo - FormState
+     * Value
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const spacing = useMemo(() => initSpacing || formSpacing, [initSpacing, formSpacing]);
-    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
-    const labelShrink = useMemo(
-      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
-      [initLabelShrink, formLabelShrink]
-    );
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
-    );
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const spacing = ifUndefined(initSpacing, formSpacing);
+    const focused = ifUndefined(initFocused, formFocused);
+    const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * State
@@ -185,6 +180,5 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
 );
 
 FormRow.displayName = 'FormRow';
-FormRow.defaultProps = FormRowDefaultProps;
 
 export default FormRow;

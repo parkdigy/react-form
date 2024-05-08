@@ -7,7 +7,3 @@ export interface SearchGroupProps extends CommonSxProps {
   hidden?: boolean;
   spacing?: GridProps['spacing'];
 }
-
-export const SearchGroupDefaultProps: Pick<SearchGroupProps, 'spacing'> = {
-  spacing: 1,
-};

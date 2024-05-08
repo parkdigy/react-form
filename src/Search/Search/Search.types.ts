@@ -10,7 +10,3 @@ export interface SearchProps
     > {
   autoSubmit?: boolean;
 }
-
-export const SearchDefaultProps: Pick<SearchProps, 'color' | 'spacing'> = {
-  color: 'primary',
-};

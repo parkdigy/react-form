@@ -1,9 +1,6 @@
 import React, { useId, useMemo } from 'react';
 import classNames from 'classnames';
-import {
-  PrivateInputDatePickerProps as Props,
-  PrivateInputDatePickerDefaultProps,
-} from './PrivateInputDatePicker.types';
+import { PrivateInputDatePickerProps as Props } from './PrivateInputDatePicker.types';
 import { InputProps, InputAdornment, InputBaseComponentProps } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { Dayjs } from 'dayjs';
@@ -36,7 +33,7 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
       icon,
       startAdornment,
       endAdornment,
-      align,
+      align = 'center',
       readOnlyInput,
       onFocus,
       onBlur,
@@ -176,6 +173,5 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
 );
 
 PrivateInputDatePicker.displayName = 'PrivateInputDatePicker';
-PrivateInputDatePicker.defaultProps = PrivateInputDatePickerDefaultProps;
 
 export default PrivateInputDatePicker;

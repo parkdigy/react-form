@@ -1,5 +1,5 @@
 import React from 'react';
-import { SearchGroupRowProps as Props, SearchGroupRowDefaultProps } from './SearchGroupRow.types';
+import { SearchGroupRowProps as Props } from './SearchGroupRow.types';
 import { FormCol, FormRow } from '../../FormLayout';
 import { Grid } from '@mui/material';
 
@@ -16,6 +16,5 @@ const SearchGroupRow: React.FC<Props> = ({ children, ...props }) => {
 };
 
 SearchGroupRow.displayName = 'SearchGroupRow';
-SearchGroupRow.defaultProps = SearchGroupRowDefaultProps;
 
 export default SearchGroupRow;

@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSta
 import classNames from 'classnames';
 import {
   PrivateStaticDateTimePickerProps as Props,
-  PrivateStaticDateTimePickerDefaultProps,
   PrivateStaticDateTimePickerCommands,
   TimeSelectScrollToDateUnit,
 } from './PrivateStaticDateTimePicker.types';
@@ -507,6 +506,5 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
 );
 
 PrivateStaticDateTimePicker.displayName = 'PrivateStaticDateTimePicker';
-PrivateStaticDateTimePicker.defaultProps = PrivateStaticDateTimePickerDefaultProps;
 
 export default PrivateStaticDateTimePicker;

@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import {
   PrivateYearPickerProps as Props,
-  PrivateYearPickerDefaultProps,
   PrivateYearPickerValue,
   PrivateYearPickerBaseValue,
 } from './PrivateYearPicker.types';
@@ -15,10 +14,13 @@ import {
 } from './PrivateYearPicker.style';
 import { PdgIcon } from '@pdg/react-component';
 
+const DEFAULT_MIN_YEAR = 2020;
+const DEFAULT_MAX_YEAR = 2050;
+
 const PrivateYearPicker: React.FC<Props> = ({
-  value: initValue,
-  minYear: initMinYear,
-  maxYear: initMaxYear,
+  value: initValue = null,
+  minYear = DEFAULT_MIN_YEAR,
+  maxYear = DEFAULT_MAX_YEAR,
   disablePast,
   disableFuture,
   hideHeader,
@@ -30,22 +32,13 @@ const PrivateYearPicker: React.FC<Props> = ({
    * State
    * ******************************************************************************************************************/
 
-  const [value, setValue] = useAutoUpdateState<PrivateYearPickerValue>(initValue || null);
+  const [value, setValue] = useAutoUpdateState<PrivateYearPickerValue>(initValue);
 
   /********************************************************************************************************************
    * Memo
    * ******************************************************************************************************************/
 
   const nowYear = useMemo(() => new Date().getFullYear(), []);
-
-  const minYear = useMemo(
-    () => (initMinYear === undefined ? PrivateYearPickerDefaultProps.minYear : initMinYear),
-    [initMinYear]
-  );
-  const maxYear = useMemo(
-    () => (initMaxYear === undefined ? PrivateYearPickerDefaultProps.maxYear : initMaxYear),
-    [initMaxYear]
-  );
 
   const minAvailableYear = useMemo(() => {
     if (disablePast) {
@@ -158,6 +151,5 @@ const PrivateYearPicker: React.FC<Props> = ({
 };
 
 PrivateYearPicker.displayName = 'PrivateYearPicker';
-PrivateYearPicker.defaultProps = PrivateYearPickerDefaultProps;
 
 export default PrivateYearPicker;

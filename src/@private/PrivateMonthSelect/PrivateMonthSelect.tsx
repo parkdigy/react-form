@@ -1,5 +1,5 @@
 import React from 'react';
-import { PrivateMonthSelectProps as Props, PrivateMonthSelectDefaultProps } from './PrivateMonthSelect.types';
+import { PrivateMonthSelectProps as Props } from './PrivateMonthSelect.types';
 import { Grid } from '@mui/material';
 import dayjs from 'dayjs';
 import PrivateToggleButton from '../PrivateToggleButton';
@@ -52,6 +52,5 @@ const PrivateMonthSelect: React.FC<Props> = ({
 };
 
 PrivateMonthSelect.displayName = 'PrivateMonthSelect';
-PrivateMonthSelect.defaultProps = PrivateMonthSelectDefaultProps;
 
 export default PrivateMonthSelect;

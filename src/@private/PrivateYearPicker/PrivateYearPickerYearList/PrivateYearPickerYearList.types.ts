@@ -7,5 +7,3 @@ export interface PrivateYearPickerYearListProps
   selectToYear?: PrivateYearPickerValue;
   onChange(year: PrivateYearPickerBaseValue): void;
 }
-
-export const PrivateYearPickerYearListDefaultProps = {};

@@ -8,5 +8,3 @@ export interface PrivateMonthSelectProps {
   availableDate: FormAvailableDate;
   onSelect(month: number): void;
 }
-
-export const PrivateMonthSelectDefaultProps = {};
