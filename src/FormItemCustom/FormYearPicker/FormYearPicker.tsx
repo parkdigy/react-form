@@ -18,7 +18,7 @@ import {
   PrivateInputDatePicker,
   PrivateStyledTooltip,
   PrivateYearPicker,
-} from '../../@common.private';
+} from '../../@private';
 import dayjs, { Dayjs } from 'dayjs';
 
 const DEFAULT_VALUE = null;

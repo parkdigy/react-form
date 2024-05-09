@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { FormImageFileProps as Props, FormImageFileCommands } from './FormImageFile.types';
 import FormFile from '../FormFile';
-import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@common.private';
+import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
 import { Tooltip, Typography } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import './FormImageFile.scss';

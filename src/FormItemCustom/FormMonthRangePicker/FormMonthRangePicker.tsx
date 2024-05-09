@@ -19,7 +19,7 @@ import {
   PrivateMonthRangePickerSelectType,
   PrivateStyledTooltip,
   PrivateYearRangePickerSelectType,
-} from '../../@common.private';
+} from '../../@private';
 import { FormMonthPickerBaseValue } from '../FormMonthPicker';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';

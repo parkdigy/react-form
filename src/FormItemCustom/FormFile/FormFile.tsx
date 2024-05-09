@@ -8,7 +8,7 @@ import { FormFileProps as Props, FormFileCommands, FormFileValue } from './FormF
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
 import LinkDialog from './LinkDialog.private';
-import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@common.private';
+import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
 import { PdgIcon } from '@pdg/react-component';
 import './FormFile.scss';
 import { StyledPdgButton } from './FormFile.style.private';

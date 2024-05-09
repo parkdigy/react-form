@@ -6,7 +6,7 @@ import {
 } from '../../@types';
 import { CommonSxProps } from '../../@types';
 import { ReactNode } from 'react';
-import { PrivateMonthPickerBaseValue, PrivateMonthPickerValue } from '../../@common.private';
+import { PrivateMonthPickerBaseValue, PrivateMonthPickerValue } from '../../@private';
 
 export type FormMonthPickerBaseValue = PrivateMonthPickerBaseValue;
 

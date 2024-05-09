@@ -11,7 +11,7 @@ import {
   PrivateInputDatePickerProps,
   PrivateMonthRangePickerBaseValue,
   PrivateMonthRangePickerValue,
-} from '../../@common.private';
+} from '../../@private';
 
 export type FormMonthRangePickerBaseValue = PrivateMonthRangePickerBaseValue;
 

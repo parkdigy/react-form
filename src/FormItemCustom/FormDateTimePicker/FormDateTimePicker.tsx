@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import { FormDateTimePickerProps as Props, FormDateTimePickerCommands } from './FormDateTimePicker.types';
-import { PrivateDateTimePickerCommands, PrivateDateTimePicker } from '../../@common.private';
+import { PrivateDateTimePickerCommands, PrivateDateTimePicker } from '../../@private';
 import FormContextProvider from '../../FormContextProvider';
 import { useFormState } from '../../FormContext';
 

@@ -1,6 +1,6 @@
 import { DateTimeValidationError, DateValidationError } from '@mui/x-date-pickers';
 import { FormDateType, FormTimeType } from '../@types';
-import { FormAvailableDate, FormAvailableDateItem, FormAvailableDateType } from '../@common.private/@types';
+import { FormAvailableDate, FormAvailableDateItem, FormAvailableDateType } from '../@private/@types';
 import dayjs, { Dayjs } from 'dayjs';
 
 export function getDateValidationErrorText(error: DateValidationError | DateTimeValidationError) {

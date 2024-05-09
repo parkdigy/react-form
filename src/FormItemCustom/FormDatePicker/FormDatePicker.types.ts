@@ -1,4 +1,4 @@
-import { PrivateDatePickerValue, PrivateDatePickerProps, PrivateDatePickerCommands } from '../../@common.private';
+import { PrivateDatePickerValue, PrivateDatePickerProps, PrivateDatePickerCommands } from '../../@private';
 
 export type FormDatePickerValue = PrivateDatePickerValue;
 

@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import {
   FormDateRangePickerTooltipPickerContainerCalendarCount,
   FormDateRangePickerTooltipPickerDateValue,
-} from './FormDateRangePickerTooltipPickerContainer.private';
+} from './FormDateRangePickerTooltipPickerContainer';
 import {
   CommonSxProps,
   FormRangeValueItemCommands,
@@ -12,7 +12,7 @@ import {
   FormRangeValueItemNameCommands,
 } from '../../@types';
 import { Dayjs } from 'dayjs';
-import { PrivateInputDatePickerProps } from '../../@common.private';
+import { PrivateInputDatePickerProps } from '../../@private';
 
 export type FormDateRangePickerDateValue = FormDateRangePickerTooltipPickerDateValue;
 

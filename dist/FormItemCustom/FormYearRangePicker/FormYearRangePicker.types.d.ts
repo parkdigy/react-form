@@ -1,7 +1,7 @@
 import { FormValueItemProps, FormValueItemBaseCommands, FormRangeValueItemCommands, FormRangeValueItemNameCommands } from '../../@types';
 import { CommonSxProps } from '../../@types';
 import { ReactNode } from 'react';
-import { PrivateInputDatePickerProps, PrivateYearRangePickerBaseValue, PrivateYearRangePickerValue } from '../../@common.private';
+import { PrivateInputDatePickerProps, PrivateYearRangePickerBaseValue, PrivateYearRangePickerValue } from '../../@private';
 export type FormYearRangePickerBaseValue = PrivateYearRangePickerBaseValue;
 export type FormYearRangePickerValue = PrivateYearRangePickerValue;
 export interface FormYearRangePickerProps extends CommonSxProps, Omit<FormValueItemProps<FormYearRangePickerValue, false>, 'label' | 'labelIcon' | 'width'>, Pick<PrivateInputDatePickerProps, 'align'> {

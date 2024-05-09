@@ -1,4 +1,4 @@
-import { PrivateDateTimePickerProps, PrivateDateTimePickerCommands } from '../../@common.private';
+import { PrivateDateTimePickerProps, PrivateDateTimePickerCommands } from '../../@private';
 export interface FormDateTimePickerProps extends Omit<PrivateDateTimePickerProps, 'type' | 'time'> {
     time: Required<PrivateDateTimePickerProps['time']>;
 }

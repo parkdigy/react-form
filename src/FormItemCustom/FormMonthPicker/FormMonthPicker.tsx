@@ -13,7 +13,7 @@ import {
 import { useFormState } from '../../FormContext';
 import { LocalizationProvider, DateValidationError } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { PrivateInputDatePicker, PrivateMonthPicker, PrivateStyledTooltip } from '../../@common.private';
+import { PrivateInputDatePicker, PrivateMonthPicker, PrivateStyledTooltip } from '../../@private';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 

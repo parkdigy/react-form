@@ -19,7 +19,7 @@ import {
   PrivateStyledTooltip,
   PrivateYearRangePicker,
   PrivateYearRangePickerSelectType,
-} from '../../@common.private';
+} from '../../@private';
 import dayjs, { Dayjs } from 'dayjs';
 
 const DEFAULT_VALUE: FormYearRangePickerValue = [null, null];

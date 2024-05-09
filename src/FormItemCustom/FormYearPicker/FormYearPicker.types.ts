@@ -1,7 +1,7 @@
 import { FormValueItemProps, FormValueItemBaseCommands } from '../../@types';
 import { CommonSxProps } from '../../@types';
 import { ReactNode } from 'react';
-import { PrivateYearPickerBaseValue, PrivateYearPickerValue } from '../../@common.private';
+import { PrivateYearPickerBaseValue, PrivateYearPickerValue } from '../../@private';
 
 export type FormYearPickerBaseValue = PrivateYearPickerBaseValue;
 

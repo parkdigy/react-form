@@ -10,7 +10,7 @@ import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
-import { PrivateInputDatePicker, PrivateInputDatePickerValue, PrivateStyledTooltip } from '../../@common.private';
+import { PrivateInputDatePicker, PrivateInputDatePickerValue, PrivateStyledTooltip } from '../../@private';
 
 import {
   FormDateRangePickerTooltipPickerContainer,
@@ -19,7 +19,7 @@ import {
   FormDateRangePickerTooltipPickerDateValue,
   FormDateRangePickerTooltipPickerSelectType,
   FormDateRangePickerTooltipPickerValue,
-} from './FormDateRangePickerTooltipPickerContainer.private';
+} from './FormDateRangePickerTooltipPickerContainer';
 import dayjs, { Dayjs } from 'dayjs';
 import { useFormState } from '../../FormContext';
 import { getDateValidationErrorText } from '../../@util.private';
