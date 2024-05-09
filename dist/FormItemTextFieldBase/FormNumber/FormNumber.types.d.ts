@@ -8,4 +8,3 @@ export type FormNumberProps = Omit<FormTextFieldProps<number>, 'type'> & {
     prefix?: string;
     suffix?: string;
 };
-export declare const FormNumberDefaultProps: Pick<FormNumberProps, 'clear'>;

@@ -56,6 +56,7 @@ const Search = () => {
       <FormDateRangePicker name='search_date' readOnlyInput minDate={dayjs().subtract(20, 'day')} />
       <FormToggleButtonGroup
         name='FormToggleButtonGroup'
+        label='옵션'
         value=''
         notAllowEmptyValue
         onLoadItems={handleToggleButtonGroupLoadItems}

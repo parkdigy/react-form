@@ -12,4 +12,3 @@ export type FormTagProps = Omit<FormTextFieldProps<FormTagValue, false>, 'type'>
     onAppendTag?: (tag: string) => boolean;
     onRemoveTag?: (tag: string) => boolean;
 };
-export declare const FormTagDefaultProps: Pick<FormTagProps, 'value' | 'clear' | 'formValueSeparator'>;

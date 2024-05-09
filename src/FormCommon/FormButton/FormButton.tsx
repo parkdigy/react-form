@@ -70,6 +70,4 @@ const FormButton = React.forwardRef<HTMLButtonElement, Props>(
   }
 );
 
-FormButton.displayName = 'FormButton';
-
 export default FormButton;

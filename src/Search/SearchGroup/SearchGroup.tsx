@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { SearchGroupProps } from './SearchGroup.types';
 import { Grid } from '@mui/material';
 import { FormHidden } from '../../FormItemTextFieldBase';
-import { StyledItem } from './SearchGroup.style';
+import { StyledItem } from './SearchGroup.style.private';
 
 const isReactFragment = (child: ReactElement) => {
   try {

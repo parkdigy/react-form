@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { NumericFormatProps } from 'react-number-format';
-import NumberFormatCustom from './NumberFormatCustom';
-import { FormNumberProps as Props, FormNumberDefaultProps, FormNumberCommands } from './FormNumber.types';
+import NumberFormatCustom from './NumberFormatCustom.private';
+import { FormNumberProps as Props, FormNumberCommands } from './FormNumber.types';
 import { InputBaseComponentProps } from '@mui/material/InputBase/InputBase';
 import FormTextField from '../FormTextField';
 import { empty } from '@pdg/util';
@@ -20,6 +20,7 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
       readOnly,
       tabIndex,
       labelShrink,
+      clear = true,
       InputProps: initMuiInputProps,
       inputProps: initInputProps,
       value: initValue,
@@ -133,6 +134,7 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
         labelShrink={strValue === '' || strValue === undefined ? labelShrink : true}
         InputProps={muiInputProps}
         readOnly={readOnly}
+        clear={clear}
         value={strValue}
         onChange={handleChange}
         onValue={handleValue}
@@ -142,8 +144,5 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
     );
   }
 );
-
-FormNumber.displayName = 'FormNumber';
-FormNumber.defaultProps = FormNumberDefaultProps;
 
 export default FormNumber;

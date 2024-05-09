@@ -4,12 +4,7 @@ import { useResizeDetector } from 'react-resize-detector';
 import { FormControlLabel, Checkbox, Typography, ButtonBaseActions, useTheme } from '@mui/material';
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import {
-  FormCheckboxProps as Props,
-  FormCheckboxDefaultProps,
-  FormCheckboxCommands,
-  FormCheckboxValue,
-} from './FormCheckbox.types';
+import { FormCheckboxProps as Props, FormCheckboxCommands, FormCheckboxValue } from './FormCheckbox.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
 import { nextTick } from '@pdg/util';
@@ -26,7 +21,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       name,
       labelIcon,
       label,
-      checked: initChecked,
+      checked: initChecked = false,
       inputRef: initInputRef,
       action: initAction,
       readOnly,
@@ -35,9 +30,9 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       text,
       error: initError,
       helperText,
-      value: initValue,
+      value: initValue = 1,
       data: initData,
-      uncheckedValue: initUncheckedValue,
+      uncheckedValue: initUncheckedValue = 0,
       exceptValue,
       onChange,
       onValidate,
@@ -216,7 +211,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       const commands: FormCheckboxCommands = {
         getType: () => 'FormCheckbox',
         getName: () => name,
-        getReset: () => !!initChecked,
+        getReset: () => initChecked,
         reset: () => setChecked(initChecked),
         getValue: () => valueRef.current,
         setValue,
@@ -358,8 +353,5 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
     );
   }
 );
-
-FormCheckbox.displayName = 'FormCheckbox';
-FormCheckbox.defaultProps = FormCheckboxDefaultProps;
 
 export default FormCheckbox;

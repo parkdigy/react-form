@@ -9,6 +9,4 @@ export interface FormSwitchProps extends CommonSxProps, Omit<FormValueItemProps<
   onValue?(value: boolean): boolean;
 }
 
-export const FormSwitchDefaultProps = {};
-
 export interface FormSwitchCommands extends FormValueItemBaseCommands<boolean, false> {}

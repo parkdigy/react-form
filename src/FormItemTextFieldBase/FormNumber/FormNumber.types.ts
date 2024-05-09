@@ -1,4 +1,4 @@
-import { FormTextFieldCommands, FormTextFieldDefaultProps, FormTextFieldProps } from '../FormTextField';
+import { FormTextFieldCommands, FormTextFieldProps } from '../FormTextField';
 
 export type FormNumberCommands = FormTextFieldCommands<number>;
 
@@ -9,9 +9,4 @@ export type FormNumberProps = Omit<FormTextFieldProps<number>, 'type'> & {
   decimalScale?: number;
   prefix?: string;
   suffix?: string;
-};
-
-export const FormNumberDefaultProps: Pick<FormNumberProps, 'clear'> = {
-  ...FormTextFieldDefaultProps,
-  clear: true,
 };

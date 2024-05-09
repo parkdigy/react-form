@@ -3,12 +3,7 @@ import classNames from 'classnames';
 import { IconButton, InputAdornment, InputProps, TextField } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick, notEmpty } from '@pdg/util';
-import {
-  FormTextFieldProps,
-  FormTextFieldDefaultProps,
-  FormTextFieldCommands,
-  FormTextFieldValue,
-} from './FormTextField.types';
+import { FormTextFieldProps, FormTextFieldCommands, FormTextFieldValue } from './FormTextField.types';
 import { useFormState } from '../../FormContext';
 import './FormTextField.scss';
 import { PdgIcon } from '@pdg/react-component';
@@ -520,8 +515,5 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     );
   }
 );
-
-FormTextField.displayName = 'FormText';
-FormTextField.defaultProps = FormTextFieldDefaultProps;
 
 export default FormTextField;

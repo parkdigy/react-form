@@ -1,6 +1,6 @@
 import React from 'react';
 import { Paper } from '@mui/material';
-import { OutlinedPaperProps, OutlinedPaperDefaultProps } from './OutlinedPaper.types';
+import { OutlinedPaperProps } from './OutlinedPaper.types';
 
 const OutlinedPaper: React.FC<OutlinedPaperProps> = ({ children }) => {
   return (
@@ -9,7 +9,5 @@ const OutlinedPaper: React.FC<OutlinedPaperProps> = ({ children }) => {
     </Paper>
   );
 };
-
-OutlinedPaper.defaultProps = OutlinedPaperDefaultProps;
 
 export default OutlinedPaper;

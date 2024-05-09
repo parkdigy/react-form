@@ -7,6 +7,5 @@ export interface FormSwitchProps extends CommonSxProps, Omit<FormValueItemProps<
     switchLabelProps?: Omit<FormControlLabelProps, 'children' | 'control' | 'label' | 'required' | 'disabled'>;
     onValue?(value: boolean): boolean;
 }
-export declare const FormSwitchDefaultProps: {};
 export interface FormSwitchCommands extends FormValueItemBaseCommands<boolean, false> {
 }

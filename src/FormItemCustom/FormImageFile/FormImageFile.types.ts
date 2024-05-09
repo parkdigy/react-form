@@ -1,4 +1,4 @@
-import { FormFileCommands, FormFileDefaultProps, FormFileProps } from '../FormFile';
+import { FormFileCommands, FormFileProps } from '../FormFile';
 
 export interface FormImageFileImageSize {
   width: number;
@@ -10,10 +10,5 @@ export interface FormImageFileProps extends Omit<FormFileProps, 'preview'> {
   preview?: boolean;
   previewMaxHeight?: number;
 }
-
-export const FormImageFileDefaultProps: Pick<FormImageFileProps, 'accept'> = {
-  ...FormFileDefaultProps,
-  accept: '.jpg,.jpeg,.png',
-};
 
 export type FormImageFileCommands = FormFileCommands;

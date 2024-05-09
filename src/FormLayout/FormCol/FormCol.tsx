@@ -196,6 +196,4 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
   }
 );
 
-FormCol.displayName = 'FormCol';
-
 export default FormCol;

@@ -47,14 +47,6 @@ export interface FormToggleButtonGroupProps<
   onValue?: (value: FormToggleButtonGroupValue<T, Multiple>) => FormToggleButtonGroupValue<T, Multiple>;
 }
 
-export const FormToggleButtonGroupDefaultProps: Pick<
-  FormToggleButtonGroupProps<any, false>,
-  'type' | 'formValueSeparator'
-> = {
-  type: 'button',
-  formValueSeparator: ',',
-};
-
 export interface FormToggleButtonGroupExtraCommands<T extends FormToggleButtonGroupSingleValue>
   extends FormArrayValueItemCommands,
     FormItemsValueItemCommands<FormToggleButtonGroupItem<T>>,

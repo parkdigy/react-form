@@ -10,4 +10,3 @@ export interface FormColProps extends CommonSxProps, PartialPick<FormContextValu
     helperTextShift?: boolean;
     gap?: number;
 }
-export declare const FormColDefaultProps: {};

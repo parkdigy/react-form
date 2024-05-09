@@ -15,6 +15,4 @@ const SearchGroupRow: React.FC<Props> = ({ children, ...props }) => {
   );
 };
 
-SearchGroupRow.displayName = 'SearchGroupRow';
-
 export default SearchGroupRow;

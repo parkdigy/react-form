@@ -17,4 +17,3 @@ export type FormTextFieldProps<T = FormTextFieldValue, AllowUndefinedValue exten
     disableReturnKey?: boolean;
     onValue?(value: V): V;
 };
-export declare const FormTextFieldDefaultProps: {};

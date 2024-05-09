@@ -4,4 +4,3 @@ export interface FormFooterProps {
     noLine?: boolean;
     hidden?: boolean;
 }
-export declare const FormFooterDefaultProps: {};

@@ -10,7 +10,7 @@ import {
   PrivateInputDatePickerProps,
   PrivateYearRangePickerBaseValue,
   PrivateYearRangePickerValue,
-} from '../../@private';
+} from '../../@common.private';
 
 export type FormYearRangePickerBaseValue = PrivateYearRangePickerBaseValue;
 
@@ -39,16 +39,6 @@ export interface FormYearRangePickerProps
   formValueFromNameSuffix?: string;
   formValueToNameSuffix?: string;
 }
-
-export const FormYearRangePickerDefaultProps: Required<
-  Pick<FormYearRangePickerProps, 'format' | 'minYear' | 'maxYear' | 'formValueFromNameSuffix' | 'formValueToNameSuffix'>
-> = {
-  format: 'YYYY년',
-  minYear: 2020,
-  maxYear: 2050,
-  formValueFromNameSuffix: '_from',
-  formValueToNameSuffix: '_to',
-};
 
 export interface FormYearRangePickerCommands
   extends FormValueItemBaseCommands<FormYearRangePickerValue, false>,

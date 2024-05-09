@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { FormControlLabel, Switch } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { nextTick } from '@pdg/util';
-import { FormSwitchProps as Props, FormSwitchDefaultProps, FormSwitchCommands } from './FormSwitch.types';
+import { FormSwitchProps as Props, FormSwitchCommands } from './FormSwitch.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
 
@@ -293,8 +293,5 @@ const FormSwitch = React.forwardRef<FormSwitchCommands, Props>(
     );
   }
 );
-
-FormSwitch.displayName = 'FormSwitch';
-FormSwitch.defaultProps = FormSwitchDefaultProps;
 
 export default FormSwitch;

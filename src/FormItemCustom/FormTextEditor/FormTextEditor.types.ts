@@ -18,9 +18,3 @@ export interface FormTextEditorProps
     progress?: (percent: number) => void
   ): void;
 }
-
-export const FormTextEditorDefaultProps: Pick<FormTextEditorProps, 'value' | 'menubar' | 'height'> = {
-  menubar: true,
-  height: 500,
-  value: '',
-};

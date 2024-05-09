@@ -12,13 +12,14 @@ import {
   FormNumber,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
+import { Button } from '@mui/material';
 
 const FormItemTag = () => {
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [value] = useState(['Tag2', 'Tag1']);
+  const [value] = useState(['Tag2', 'Tag1', 'Tag3', 'Tag4', 'Tag5']);
   const [formValueSort, setFormValueSort] = useState(false);
   const [limitTags, setLimitTags] = useState<number>();
 
@@ -86,6 +87,7 @@ const FormItemTag = () => {
                 required
                 helperText='required=true'
                 value={value}
+                endAdornment={<Button>추가</Button>}
               />
             </FormCol>
             <FormCol>

@@ -1,4 +1,4 @@
-import { PrivateDatePickerValue, PrivateDatePickerProps, PrivateDatePickerCommands } from '../../@private';
+import { PrivateDatePickerValue, PrivateDatePickerProps, PrivateDatePickerCommands } from '../../@common.private';
 
 export type FormDatePickerValue = PrivateDatePickerValue;
 
@@ -7,7 +7,5 @@ export interface FormDatePickerProps
     PrivateDatePickerProps,
     'type' | 'time' | 'hours' | 'minutes' | 'seconds' | 'minuteInterval' | 'secondInterval'
   > {}
-
-export const FormDatePickerDefaultProps = {};
 
 export interface FormDatePickerCommands extends PrivateDatePickerCommands {}

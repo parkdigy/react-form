@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { FormFooterProps as Props, FormFooterDefaultProps } from './FormFooter.types';
+import { FormFooterProps as Props } from './FormFooter.types';
 import { Grid } from '@mui/material';
 import { useFormState } from '../../FormContext';
 import FormDivider from '../FormDivider';
@@ -22,8 +22,5 @@ const FormFooter: React.FC<Props> = ({ children, noLine, hidden }) => {
     </Grid>
   );
 };
-
-FormFooter.displayName = 'FormFooter';
-FormFooter.defaultProps = FormFooterDefaultProps;
 
 export default FormFooter;

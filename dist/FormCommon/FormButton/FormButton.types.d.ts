@@ -4,4 +4,3 @@ import { PdgButtonProps } from '@pdg/react-component';
 export interface FormButtonProps extends PartialPick<FormContextValue, 'color' | 'size'>, Omit<PdgButtonProps, 'color' | 'size'> {
     type?: 'button' | 'submit';
 }
-export declare const FormButtonDefaultProps: FormButtonProps;

@@ -75,7 +75,7 @@ export interface FormValueItemBaseCommands<
 
 export interface FormArrayValueItemCommands {
   isFormValueSort(): boolean;
-  getFormValueSeparator(): string | undefined;
+  getFormValueSeparator(): string;
 }
 
 export interface FormItemsValueItemCommands<T> {

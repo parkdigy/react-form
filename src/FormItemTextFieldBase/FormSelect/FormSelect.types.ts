@@ -6,7 +6,7 @@ import {
   FormValueItemBaseCommands,
   FormMultipleValueItemCommands,
 } from '../../@types';
-import { FormTextFieldDefaultProps, FormTextFieldProps } from '../FormTextField';
+import { FormTextFieldProps } from '../FormTextField';
 
 export type FormSelectSingleValue = string | number | boolean;
 
@@ -47,13 +47,4 @@ export type FormSelectProps<T extends FormSelectSingleValue, Multiple extends bo
   minWidth?: string | number;
   loading?: boolean;
   onLoadItems?: () => Promise<FormSelectItem<T>[]>;
-};
-
-export const FormSelectDefaultProps: Pick<
-  FormSelectProps<FormSelectSingleValue, false>,
-  'formValueSeparator' | 'minWidth'
-> = {
-  ...FormTextFieldDefaultProps,
-  formValueSeparator: ',',
-  minWidth: 120,
 };

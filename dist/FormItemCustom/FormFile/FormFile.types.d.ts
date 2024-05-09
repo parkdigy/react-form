@@ -23,5 +23,4 @@ export interface FormFileProps extends CommonSxProps, FormValueItemProps<FormFil
     onFile?(file: File): Promise<string>;
     onLink?(url: string): Promise<string>;
 }
-export declare const FormFileDefaultProps: Pick<FormFileProps, 'value'>;
 export type FormFileCommands = FormValueItemCommands<FormFileValue, false>;

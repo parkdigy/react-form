@@ -24,7 +24,6 @@ export interface FormToggleButtonGroupProps<T extends FormToggleButtonGroupSingl
     onLoadItems?: () => Promise<FormToggleButtonGroupItem<T>[]>;
     onValue?: (value: FormToggleButtonGroupValue<T, Multiple>) => FormToggleButtonGroupValue<T, Multiple>;
 }
-export declare const FormToggleButtonGroupDefaultProps: Pick<FormToggleButtonGroupProps<any, false>, 'type' | 'formValueSeparator'>;
 export interface FormToggleButtonGroupExtraCommands<T extends FormToggleButtonGroupSingleValue> extends FormArrayValueItemCommands, FormItemsValueItemCommands<FormToggleButtonGroupItem<T>>, FormMultipleValueItemCommands, FormLoadingValueItemCommands {
 }
 export interface FormToggleButtonGroupCommands<T extends FormToggleButtonGroupSingleValue, Multiple extends boolean | undefined = undefined> extends FormValueItemBaseCommands<FormToggleButtonGroupValue<T, Multiple>, true>, FormToggleButtonGroupExtraCommands<T> {

@@ -21,9 +21,3 @@ export interface FormCheckboxProps
   action?: RefObject<ButtonBaseActions>;
   onChange?(checked: boolean): void;
 }
-
-export const FormCheckboxDefaultProps: Pick<FormCheckboxProps, 'checked' | 'value' | 'uncheckedValue'> = {
-  checked: false,
-  value: 1,
-  uncheckedValue: 0,
-};

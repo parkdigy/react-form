@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { Collapse, Grid } from '@mui/material';
-import { FormBlockProps as Props, FormBlockDefaultProps } from './FormBlock.types';
+import { FormBlockProps as Props } from './FormBlock.types';
 import { FormContext, useFormState } from '../../FormContext';
 import FormDivider from '../FormDivider';
 import { useAutoUpdateState } from '@pdg/react-hook';
-import { StyledWrapGrid } from './FormBlock.style';
+import { StyledWrapGrid } from './FormBlock.style.private';
 
 const FormBlock = React.forwardRef<HTMLDivElement, Props>(
   (
@@ -151,8 +151,5 @@ const FormBlock = React.forwardRef<HTMLDivElement, Props>(
     );
   }
 );
-
-FormBlock.displayName = 'FormBlock';
-FormBlock.defaultProps = FormBlockDefaultProps;
 
 export default FormBlock;

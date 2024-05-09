@@ -2,11 +2,10 @@ import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef,
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { getDateValidationErrorText } from '../../@util';
+import { getDateValidationErrorText } from '../../@util.private';
 import { empty, nextTick } from '@pdg/util';
 import {
   FormYearPickerProps as Props,
-  FormYearPickerDefaultProps,
   FormYearPickerCommands,
   FormYearPickerValue,
   FormYearPickerBaseValue,
@@ -19,7 +18,7 @@ import {
   PrivateInputDatePicker,
   PrivateStyledTooltip,
   PrivateYearPicker,
-} from '../../@private';
+} from '../../@common.private';
 import dayjs, { Dayjs } from 'dayjs';
 
 const DEFAULT_VALUE = null;
@@ -51,12 +50,12 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
       onValidate,
       // -------------------------------------------------------------------------------------------------------------------
       icon,
-      format: initFormat,
+      format: initFormat = 'YYYY년',
       labelShrink: initLabelShrink,
       disablePast,
       disableFuture,
-      minYear,
-      maxYear,
+      minYear = 2020,
+      maxYear = 2050,
       inputWidth,
       readOnlyInput,
       startAdornment,
@@ -498,8 +497,5 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
     );
   }
 );
-
-FormYearPicker.displayName = 'FormYearPicker';
-FormYearPicker.defaultProps = FormYearPickerDefaultProps;
 
 export default FormYearPicker;

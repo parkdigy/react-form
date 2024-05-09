@@ -1,26 +1,23 @@
 import React from 'react';
 import classNames from 'classnames';
 import FormTextField from '../FormTextField';
-import {
-  FormTextareaProps as Props,
-  FormTextareaDefaultProps,
-  FormTextareaCommands,
-  FormTextareaValue,
-} from './FormTextarea.types';
+import { FormTextareaProps as Props, FormTextareaCommands, FormTextareaValue } from './FormTextarea.types';
 import './FormTextarea.scss';
 
-const FormTextarea = React.forwardRef<FormTextareaCommands, Props>(({ className, ...props }, ref) => {
-  return (
-    <FormTextField<FormTextareaValue, false>
-      ref={ref}
-      className={classNames(className, 'FormTextarea')}
-      {...props}
-      multiline
-    />
-  );
-});
-
-FormTextarea.displayName = 'FormTextarea';
-FormTextarea.defaultProps = FormTextareaDefaultProps;
+const FormTextarea = React.forwardRef<FormTextareaCommands, Props>(
+  ({ className, clear = false, rows = 3, value = '', ...props }, ref) => {
+    return (
+      <FormTextField<FormTextareaValue, false>
+        ref={ref}
+        className={classNames(className, 'FormTextarea')}
+        clear={clear}
+        rows={rows}
+        value={value}
+        {...props}
+        multiline
+      />
+    );
+  }
+);
 
 export default FormTextarea;

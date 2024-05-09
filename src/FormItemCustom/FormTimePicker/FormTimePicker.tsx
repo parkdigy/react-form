@@ -1,11 +1,7 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import {
-  FormTimePickerProps as Props,
-  FormTimePickerDefaultProps,
-  FormTimePickerCommands,
-} from './FormTimePicker.types';
-import { PrivateDateTimePicker, PrivateDateTimePickerCommands } from '../../@private';
+import { FormTimePickerProps as Props, FormTimePickerCommands } from './FormTimePicker.types';
+import { PrivateDateTimePicker, PrivateDateTimePickerCommands } from '../../@common.private';
 import FormContextProvider from '../../FormContextProvider';
 import { useFormState } from '../../FormContext';
 
@@ -43,8 +39,5 @@ const FormTimePicker = React.forwardRef<FormTimePickerCommands, Props>(({ classN
     </FormContextProvider>
   );
 });
-
-FormTimePicker.displayName = 'FormTimePicker';
-FormTimePicker.defaultProps = FormTimePickerDefaultProps;
 
 export default FormTimePicker;

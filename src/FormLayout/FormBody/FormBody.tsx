@@ -1,9 +1,9 @@
 import React, { CSSProperties, useMemo, useRef, useState } from 'react';
-import { FormBodyProps as Props, FormBodyDefaultProps } from './FormBody.types';
+import { FormBodyProps as Props } from './FormBody.types';
 import { useResizeDetector } from 'react-resize-detector';
 import { useFormState } from '../../FormContext';
 import { Grid } from '@mui/material';
-import { StyledContainerDiv, StyledContentDiv } from './FormBody.style';
+import { StyledContainerDiv, StyledContentDiv } from './FormBody.style.private';
 
 const FormBody: React.FC<Props> = ({ children, hidden }) => {
   /********************************************************************************************************************
@@ -62,8 +62,5 @@ const FormBody: React.FC<Props> = ({ children, hidden }) => {
     </StyledContainerDiv>
   );
 };
-
-FormBody.displayName = 'FormBody';
-FormBody.defaultProps = FormBodyDefaultProps;
 
 export default FormBody;

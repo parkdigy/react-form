@@ -3,12 +3,7 @@ import classNames from 'classnames';
 import { InputAdornment, IconButton, Icon, styled } from '@mui/material';
 import FormText, { FormTextProps } from '../FormText';
 import { notEmpty } from '@pdg/util';
-import {
-  FormPasswordProps as Props,
-  FormPasswordDefaultProps,
-  FormPasswordValue,
-  FormPasswordCommands,
-} from './FormPassword.types';
+import { FormPasswordProps as Props, FormPasswordValue, FormPasswordCommands } from './FormPassword.types';
 import './FormPassword.scss';
 
 const StyledEyeInputAdornment = styled(InputAdornment)`
@@ -16,7 +11,7 @@ const StyledEyeInputAdornment = styled(InputAdornment)`
 `;
 
 const FormPassword = React.forwardRef<FormPasswordCommands, Props>(
-  ({ className, InputProps: initMuiInputProps, eye, onChange, ...props }, ref) => {
+  ({ className, InputProps: initMuiInputProps, clear = false, eye = true, onChange, ...props }, ref) => {
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -76,13 +71,11 @@ const FormPassword = React.forwardRef<FormPasswordCommands, Props>(
         onChange={handleChange}
         type={type}
         InputProps={muiInputProps}
+        clear={clear}
         {...props}
       />
     );
   }
 );
-
-FormPassword.displayName = 'FormPassword';
-FormPassword.defaultProps = FormPasswordDefaultProps;
 
 export default FormPassword;

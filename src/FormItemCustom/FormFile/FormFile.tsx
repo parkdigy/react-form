@@ -2,16 +2,16 @@ import React, { ChangeEvent, ReactNode, useCallback, useId, useLayoutEffect, use
 import classNames from 'classnames';
 import { InputAdornment, TextField, Typography } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { getFileSizeText } from '../../@util';
+import { getFileSizeText } from '../../@util.private';
 import { empty, nextTick, notEmpty } from '@pdg/util';
-import { FormFileProps as Props, FormFileDefaultProps, FormFileCommands, FormFileValue } from './FormFile.types';
+import { FormFileProps as Props, FormFileCommands, FormFileValue } from './FormFile.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
-import LinkDialog from './LinkDialog/LinkDialog';
-import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
+import LinkDialog from './LinkDialog.private';
+import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@common.private';
 import { PdgIcon } from '@pdg/react-component';
 import './FormFile.scss';
-import { StyledPdgButton } from './FormFile.style';
+import { StyledPdgButton } from './FormFile.style.private';
 import { useResizeDetector } from 'react-resize-detector';
 
 const FILE_VALUE = '';
@@ -54,7 +54,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       disabled: initDisabled,
       error: initError,
       helperText,
-      value: initValue,
+      value: initValue = '',
       data: initData,
       exceptValue,
       onChange,
@@ -605,8 +605,5 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
     );
   }
 );
-
-FormFile.displayName = 'FormFile';
-FormFile.defaultProps = FormFileDefaultProps;
 
 export default FormFile;

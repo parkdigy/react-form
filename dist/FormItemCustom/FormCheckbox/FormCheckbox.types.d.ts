@@ -13,4 +13,3 @@ export interface FormCheckboxProps extends CommonSxProps, Omit<CheckboxProps, 's
     action?: RefObject<ButtonBaseActions>;
     onChange?(checked: boolean): void;
 }
-export declare const FormCheckboxDefaultProps: Pick<FormCheckboxProps, 'checked' | 'value' | 'uncheckedValue'>;

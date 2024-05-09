@@ -1,11 +1,7 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import {
-  FormDatePickerProps as Props,
-  FormDatePickerDefaultProps,
-  FormDatePickerCommands,
-} from './FormDatePicker.types';
-import { PrivateDatePicker, PrivateDatePickerCommands } from '../../@private';
+import { FormDatePickerProps as Props, FormDatePickerCommands } from './FormDatePicker.types';
+import { PrivateDatePicker, PrivateDatePickerCommands } from '../../@common.private';
 import FormContextProvider from '../../FormContextProvider';
 import { useFormState } from '../../FormContext';
 
@@ -43,8 +39,5 @@ const FormDatePicker = React.forwardRef<FormDatePickerCommands, Props>(({ classN
     </FormContextProvider>
   );
 });
-
-FormDatePicker.displayName = 'FormDatePicker';
-FormDatePicker.defaultProps = FormDatePickerDefaultProps;
 
 export default FormDatePicker;

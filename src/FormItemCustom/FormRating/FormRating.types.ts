@@ -14,9 +14,4 @@ export interface FormRatingProps
   onValue?(value: FormRatingValue): FormRatingValue;
 }
 
-export const FormRatingDefaultProps: Pick<FormRatingProps, 'value' | 'precision'> = {
-  value: 0,
-  precision: 1,
-};
-
 export interface FormRatingCommands extends FormValueItemBaseCommands<FormRatingValue, false> {}

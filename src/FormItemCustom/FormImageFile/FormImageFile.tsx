@@ -1,14 +1,28 @@
 import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { FormImageFileProps as Props, FormImageFileDefaultProps, FormImageFileCommands } from './FormImageFile.types';
+import { FormImageFileProps as Props, FormImageFileCommands } from './FormImageFile.types';
 import FormFile from '../FormFile';
-import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
+import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@common.private';
 import { Tooltip, Typography } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import './FormImageFile.scss';
 
 const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
-  ({ className, imageSize, preview, previewMaxHeight, value: initValue, onChange, onFile, onLink, ...props }, ref) => {
+  (
+    {
+      className,
+      imageSize,
+      preview,
+      previewMaxHeight,
+      accept = '.jpg,.jpeg,.png',
+      value: initValue,
+      onChange,
+      onFile,
+      onLink,
+      ...props
+    },
+    ref
+  ) => {
     const [alertDialogProps, setAlertDialogProps] = useState<{
       open: boolean;
       color?: PrivateAlertDialogProps['color'];
@@ -191,6 +205,7 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
         <FormFile
           ref={ref}
           className={classNames(className, 'FormImageFile')}
+          accept={accept}
           value={value}
           preview={previewNode}
           onChange={handleChange}
@@ -203,8 +218,5 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
     );
   }
 );
-
-FormImageFile.displayName = 'FormImageFile';
-FormImageFile.defaultProps = FormImageFileDefaultProps;
 
 export default FormImageFile;

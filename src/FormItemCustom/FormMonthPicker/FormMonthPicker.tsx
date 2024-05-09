@@ -2,11 +2,10 @@ import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef,
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { getDateValidationErrorText } from '../../@util';
+import { getDateValidationErrorText } from '../../@util.private';
 import { empty, nextTick } from '@pdg/util';
 import {
   FormMonthPickerProps as Props,
-  FormMonthPickerDefaultProps,
   FormMonthPickerCommands,
   FormMonthPickerValue,
   FormMonthPickerBaseValue,
@@ -14,12 +13,20 @@ import {
 import { useFormState } from '../../FormContext';
 import { LocalizationProvider, DateValidationError } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { PrivateInputDatePicker, PrivateMonthPicker, PrivateStyledTooltip } from '../../@private';
+import { PrivateInputDatePicker, PrivateMonthPicker, PrivateStyledTooltip } from '../../@common.private';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 
 const DEFAULT_VALUE = null;
 const DEFAULT_FORMAT = 'YYYY년 MM월';
+const DEFAULT_MIN_VALUE = {
+  year: 2020,
+  month: 1,
+};
+const DEFAULT_MAX_VALUE = {
+  year: 2050,
+  month: 12,
+};
 
 const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
   (
@@ -51,14 +58,14 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
       labelShrink: initLabelShrink,
       disablePast,
       disableFuture,
-      minValue: initMinValue,
-      maxValue: initMaxValue,
+      minValue = DEFAULT_MIN_VALUE,
+      maxValue = DEFAULT_MAX_VALUE,
       inputWidth,
       readOnlyInput,
       startAdornment,
       endAdornment,
-      formValueYearNameSuffix,
-      formValueMonthNameSuffix,
+      formValueYearNameSuffix = '_year',
+      formValueMonthNameSuffix = '_month',
       //----------------------------------------------------------------------------------------------------------------
       className,
       style: initStyle,
@@ -207,9 +214,6 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
 
     const valueDate = useMemo(() => (value ? valueToDate(value) : null), [value, valueToDate]);
 
-    const minValue = useMemo(() => initMinValue || FormMonthPickerDefaultProps.minValue, [initMinValue]);
-    const maxValue = useMemo(() => initMaxValue || FormMonthPickerDefaultProps.maxValue, [initMaxValue]);
-
     const minDate = useMemo(() => valueToDate(minValue), [minValue, valueToDate]);
     const maxDate = useMemo(() => valueToDate(maxValue), [maxValue, valueToDate]);
 
@@ -325,15 +329,13 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
         validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
-        getFormValueYearNameSuffix: () =>
-          formValueYearNameSuffix || FormMonthPickerDefaultProps.formValueYearNameSuffix,
-        getFormValueMonthNameSuffix: () =>
-          formValueMonthNameSuffix || FormMonthPickerDefaultProps.formValueMonthNameSuffix,
+        getFormValueYearNameSuffix: () => formValueYearNameSuffix,
+        getFormValueMonthNameSuffix: () => formValueMonthNameSuffix,
         getFormValueYearName: () => {
-          return `${name}${formValueYearNameSuffix || FormMonthPickerDefaultProps.formValueYearNameSuffix}`;
+          return `${name}${formValueYearNameSuffix}`;
         },
         getFormValueMonthName: () => {
-          return `${name}${formValueMonthNameSuffix || FormMonthPickerDefaultProps.formValueMonthNameSuffix}`;
+          return `${name}${formValueMonthNameSuffix}`;
         },
       };
 
@@ -547,8 +549,5 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
     );
   }
 );
-
-FormMonthPicker.displayName = 'FormMonthPicker';
-FormMonthPicker.defaultProps = FormMonthPickerDefaultProps;
 
 export default FormMonthPicker;

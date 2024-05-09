@@ -5,5 +5,3 @@ export interface FormFooterProps {
   noLine?: boolean;
   hidden?: boolean;
 }
-
-export const FormFooterDefaultProps = {};

@@ -2,13 +2,7 @@ import React, { useEffect, useState, useCallback, ReactNode, useMemo } from 'rea
 import classNames from 'classnames';
 import { Autocomplete, Chip, InputLabelProps } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import {
-  FormTagProps,
-  FormTagDefaultProps,
-  FormTagExtraCommands,
-  FormTagCommands,
-  FormTagValue,
-} from './FormTag.types';
+import { FormTagProps, FormTagExtraCommands, FormTagCommands, FormTagValue } from './FormTag.types';
 import FormText, { FormTextCommands } from '../FormText';
 import { empty, nextTick, notEmpty, equal } from '@pdg/util';
 import { useFormState } from '../../FormContext';
@@ -21,8 +15,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     {
       className,
       name,
-      value: initValue,
+      value: initValue = [],
       exceptValue,
+      clear = true,
       required,
       readOnly,
       maxLength,
@@ -30,7 +25,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       fullWidth: initFullWidth,
       error: initError,
       helperText,
-      formValueSeparator,
+      formValueSeparator = ',',
       formValueSort,
       limitTags,
       getLimitTagsText,
@@ -337,7 +332,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           inputValue={inputValue}
           style={{ display: fullWidth ? 'block' : 'inline-block', width: fullWidth ? '100%' : undefined }}
           renderInput={(params) => {
-            const renderProps = { ...props };
+            const renderProps = { clear, ...props };
 
             renderProps.InputLabelProps = {
               ...renderProps.InputLabelProps,
@@ -397,8 +392,5 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     );
   }
 );
-
-FormTag.displayName = 'FormTag';
-FormTag.defaultProps = FormTagDefaultProps;
 
 export default FormTag;

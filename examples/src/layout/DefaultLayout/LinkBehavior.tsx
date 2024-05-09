@@ -8,6 +8,4 @@ const LinkBehavior = React.forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, '
   }
 );
 
-LinkBehavior.displayName = 'LinkBehavior';
-
 export default LinkBehavior;

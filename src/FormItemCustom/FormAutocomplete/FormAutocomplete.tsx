@@ -8,11 +8,10 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util';
-import { empty, nextTick, notEmpty, equal } from '@pdg/util';
+import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util.private';
+import { empty, nextTick, notEmpty, equal, Dict } from '@pdg/util';
 import {
   FormAutocompleteProps,
-  FormAutocompleteDefaultProps,
   FormAutocompleteCommands,
   FormAutocompleteItem,
   FormAutocompleteComponentValue,
@@ -48,10 +47,10 @@ const FormAutocomplete = ToForwardRefExoticComponent(
       width,
       placeholder,
       multiple,
-      formValueSeparator,
+      formValueSeparator = ',',
       formValueSort,
       disablePortal,
-      noOptionsText,
+      noOptionsText = '항목이 없습니다',
       loadingText,
       limitTags,
       getLimitTagsText,
@@ -170,10 +169,13 @@ const FormAutocomplete = ToForwardRefExoticComponent(
 
     const itemsInfos = useMemo(() => {
       if (items) {
-        return items.reduce<Record<string, any>>((res, info) => {
-          res[info.value.toString()] = info;
-          return res;
-        }, {});
+        return items.reduce(
+          (res, info) => {
+            res[info.value.toString()] = info;
+            return res;
+          },
+          {} as Dict<FormAutocompleteItem<T>>
+        );
       } else {
         return {};
       }
@@ -321,8 +323,9 @@ const FormAutocomplete = ToForwardRefExoticComponent(
         if (items) {
           if (Array.isArray(finalValue)) {
             finalValue.forEach((v) => {
-              if (itemsInfos[v]) {
-                newComponentValue && newComponentValue.push(itemsInfos[v]);
+              const key = v.toString();
+              if (itemsInfos[key]) {
+                newComponentValue && newComponentValue.push(itemsInfos[key]);
               }
             });
           } else {
@@ -691,8 +694,5 @@ const FormAutocomplete = ToForwardRefExoticComponent(
     );
   })
 );
-
-FormAutocomplete.displayName = 'FormAutocomplete';
-FormAutocomplete.defaultProps = FormAutocompleteDefaultProps;
 
 export default FormAutocomplete;

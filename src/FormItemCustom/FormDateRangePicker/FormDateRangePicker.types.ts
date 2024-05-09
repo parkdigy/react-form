@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
-import { FormDateRangePickerTooltipPickerContainerCalendarCount } from './FormDateRangePickerTooltipPickerContainer';
-import { FormDateRangePickerTooltipPickerDateValue } from './FormDateRangePickerTooltipPickerContainer/FormDateRangePickerTooltipPicker';
+import {
+  FormDateRangePickerTooltipPickerContainerCalendarCount,
+  FormDateRangePickerTooltipPickerDateValue,
+} from './FormDateRangePickerTooltipPickerContainer.private';
 import {
   CommonSxProps,
   FormRangeValueItemCommands,
@@ -10,7 +12,7 @@ import {
   FormRangeValueItemNameCommands,
 } from '../../@types';
 import { Dayjs } from 'dayjs';
-import { PrivateInputDatePickerProps } from '../../@private';
+import { PrivateInputDatePickerProps } from '../../@common.private';
 
 export type FormDateRangePickerDateValue = FormDateRangePickerTooltipPickerDateValue;
 
@@ -55,20 +57,6 @@ export interface FormDateRangePickerProps
   maxDate?: Dayjs;
   onGetActionButtons?(): { label: string; start: Dayjs; end: Dayjs }[];
 }
-
-export const FormDateRangePickerDefaultProps: Required<
-  Pick<
-    FormDateRangePickerProps,
-    'calendarCount' | 'format' | 'formValueFormat' | 'formValueFromNameSuffix' | 'formValueToNameSuffix' | 'align'
-  >
-> = {
-  calendarCount: 2,
-  format: 'YYYY-MM-DD',
-  formValueFormat: 'YYYY-MM-DD',
-  formValueFromNameSuffix: '_from',
-  formValueToNameSuffix: '_to',
-  align: 'center',
-};
 
 export interface FormDateRangePickerCommands
   extends FormValueItemBaseCommands<FormDateRangePickerValue, false>,

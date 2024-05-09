@@ -25,5 +25,3 @@ export type FormTextFieldProps<
     disableReturnKey?: boolean;
     onValue?(value: V): V;
   };
-
-export const FormTextFieldDefaultProps = {};

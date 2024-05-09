@@ -4,4 +4,3 @@ export interface SearchMenuButtonProps extends Omit<FormButtonProps, 'fullWidth'
     menuList: ReactNode;
     placement?: 'top' | 'top-left' | 'top-right' | 'left' | 'left-top' | 'left-bottom' | 'right' | 'right-top' | 'right-bottom' | 'bottom' | 'bottom-left' | 'bottom-right';
 }
-export declare const SearchMenuButtonDefaultProps: {};

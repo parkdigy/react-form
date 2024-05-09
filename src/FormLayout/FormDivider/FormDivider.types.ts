@@ -18,7 +18,3 @@ export interface FormDividerProps extends CommonSxProps {
   warning?: boolean;
   onCollapseChange?(collapseIn: boolean): void;
 }
-
-export const FormDividerDefaultProps: FormDividerProps = {
-  lineVerticalMargin: 9,
-};

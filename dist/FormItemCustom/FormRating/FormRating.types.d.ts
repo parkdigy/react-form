@@ -8,6 +8,5 @@ export interface FormRatingProps extends CommonSxProps, PartialPick<RatingProps,
     emptyIcon?: string;
     onValue?(value: FormRatingValue): FormRatingValue;
 }
-export declare const FormRatingDefaultProps: Pick<FormRatingProps, 'value' | 'precision'>;
 export interface FormRatingCommands extends FormValueItemBaseCommands<FormRatingValue, false> {
 }

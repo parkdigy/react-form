@@ -5,12 +5,7 @@ import { Editor as TinyMCEEditor } from 'tinymce';
 import { Skeleton } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick } from '@pdg/util';
-import {
-  FormTextEditorProps as Props,
-  FormTextEditorDefaultProps,
-  FormTextEditorCommands,
-  FormTextEditorValue,
-} from './FormTextEditor.types';
+import { FormTextEditorProps as Props, FormTextEditorCommands, FormTextEditorValue } from './FormTextEditor.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
 import './FormTextEditor.scss';
@@ -36,8 +31,8 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       apiKey,
       toolbar,
       //----------------------------------------------------------------------------------------------------------------
-      menubar,
-      height,
+      menubar = true,
+      height = 500,
       hidden: initHidden,
       onImageUpload,
       //----------------------------------------------------------------------------------------------------------------
@@ -49,7 +44,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       disabled: initDisabled,
       error: initError,
       helperText: helperText,
-      value: initValue,
+      value: initValue = '',
       data: initData,
       exceptValue,
       onChange,
@@ -366,8 +361,5 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
     );
   }
 );
-
-FormTextEditor.displayName = 'FormTextEditor';
-FormTextEditor.defaultProps = FormTextEditorDefaultProps;
 
 export default FormTextEditor;

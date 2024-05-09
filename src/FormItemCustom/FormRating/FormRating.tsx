@@ -4,12 +4,7 @@ import { useResizeDetector } from 'react-resize-detector';
 import { Rating } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, nextTick } from '@pdg/util';
-import {
-  FormRatingProps as Props,
-  FormRatingDefaultProps,
-  FormRatingCommands,
-  FormRatingValue,
-} from './FormRating.types';
+import { FormRatingProps as Props, FormRatingCommands, FormRatingValue } from './FormRating.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
 import { PdgIcon } from '@pdg/react-component';
@@ -22,7 +17,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       color: initColor,
       focused: initFocused,
       //----------------------------------------------------------------------------------------------------------------
-      precision,
+      precision = 1,
       highlightSelectedOnly,
       icon,
       emptyIcon,
@@ -37,7 +32,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       disabled: initDisabled,
       error: initError,
       helperText,
-      value: initValue,
+      value: initValue = 0,
       data: initData,
       exceptValue,
       onChange,
@@ -336,8 +331,5 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
     );
   }
 );
-
-FormRating.displayName = 'FormRating';
-FormRating.defaultProps = FormRatingDefaultProps;
 
 export default FormRating;

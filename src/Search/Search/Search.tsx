@@ -126,6 +126,4 @@ const Search = React.forwardRef<SearchCommands, Props>(
   }
 );
 
-Search.displayName = 'Search';
-
 export default Search;

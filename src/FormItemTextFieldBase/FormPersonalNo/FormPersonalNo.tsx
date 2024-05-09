@@ -2,15 +2,20 @@ import React, { useCallback } from 'react';
 import FormText from '../FormText';
 import classNames from 'classnames';
 import { notEmpty, personalNoAutoDash } from '@pdg/util';
-import {
-  FormPersonalNoProps as Props,
-  FormPersonalNoDefaultProps,
-  FormPersonalNoCommands,
-  FormPersonalNoValue,
-} from './FormPersonalNo.types';
+import { FormPersonalNoProps as Props, FormPersonalNoCommands, FormPersonalNoValue } from './FormPersonalNo.types';
 
 const FormPersonalNo = React.forwardRef<FormPersonalNoCommands, Props>(
-  ({ className, skipPersonalNumberValidateCheck, onValue, onValidate, ...props }, ref) => {
+  (
+    {
+      className,
+      skipPersonalNumberValidateCheck,
+      validPattern = /(([0-9]{6})([0-9]{7}))|(([0-9]{6})-([0-9]{7}))/,
+      onValue,
+      onValidate,
+      ...props
+    },
+    ref
+  ) => {
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -74,6 +79,7 @@ const FormPersonalNo = React.forwardRef<FormPersonalNoCommands, Props>(
         ref={ref}
         className={classNames(className, 'FormPersonalNo')}
         maxLength={14}
+        validPattern={validPattern}
         onValue={handleValue}
         onValidate={handleValidate}
         {...props}
@@ -81,8 +87,5 @@ const FormPersonalNo = React.forwardRef<FormPersonalNoCommands, Props>(
     );
   }
 );
-
-FormPersonalNo.displayName = 'FormPersonalNo';
-FormPersonalNo.defaultProps = FormPersonalNoDefaultProps;
 
 export default FormPersonalNo;

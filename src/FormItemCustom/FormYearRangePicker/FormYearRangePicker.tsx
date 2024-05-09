@@ -2,11 +2,10 @@ import React, { ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef,
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { getDateValidationErrorText } from '../../@util';
+import { getDateValidationErrorText } from '../../@util.private';
 import { nextTick } from '@pdg/util';
 import {
   FormYearRangePickerProps as Props,
-  FormYearRangePickerDefaultProps,
   FormYearRangePickerCommands,
   FormYearRangePickerValue,
   FormYearRangePickerBaseValue,
@@ -20,12 +19,10 @@ import {
   PrivateStyledTooltip,
   PrivateYearRangePicker,
   PrivateYearRangePickerSelectType,
-} from '../../@private';
+} from '../../@common.private';
 import dayjs, { Dayjs } from 'dayjs';
-import { FormDateRangePickerDefaultProps } from '../FormDateRangePicker';
 
 const DEFAULT_VALUE: FormYearRangePickerValue = [null, null];
-const DEFAULT_FORMAT = 'YYYY년 MM월';
 
 const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>(
   (
@@ -55,18 +52,18 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       onValidate,
       // -------------------------------------------------------------------------------------------------------------------
       icon,
-      format: initFormat,
+      format = 'YYYY년',
       labelShrink: initLabelShrink,
       disablePast,
       disableFuture,
-      minYear: initMinYear,
-      maxYear: initMaxYear,
+      minYear = 2020,
+      maxYear = 2050,
       inputWidth,
       readOnlyInput,
       startAdornment,
       endAdornment,
-      formValueFromNameSuffix,
-      formValueToNameSuffix,
+      formValueFromNameSuffix = '_from',
+      formValueToNameSuffix = '_to',
       align,
       //----------------------------------------------------------------------------------------------------------------
       className,
@@ -248,23 +245,8 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       [value, valueToDate]
     );
 
-    const minYear = useMemo(
-      () => Math.max(initMinYear || FormYearRangePickerDefaultProps.minYear, FormYearRangePickerDefaultProps.minYear),
-      [initMinYear]
-    );
-    const maxYear = useMemo(
-      () => Math.min(initMaxYear || FormYearRangePickerDefaultProps.maxYear, FormYearRangePickerDefaultProps.maxYear),
-      [initMaxYear]
-    );
-
-    const minDate = useMemo(() => (minYear ? valueToDate(minYear) : undefined), [minYear, valueToDate]);
-    const maxDate = useMemo(() => (maxYear ? valueToDate(maxYear) : undefined), [maxYear, valueToDate]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const format = useMemo(() => initFormat || DEFAULT_FORMAT, [initFormat]);
+    const minDate = useMemo(() => valueToDate(minYear), [minYear, valueToDate]);
+    const maxDate = useMemo(() => valueToDate(maxYear), [maxYear, valueToDate]);
 
     /********************************************************************************************************************
      * Effect
@@ -325,14 +307,13 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
         validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
-        getFormValueFromNameSuffix: () =>
-          formValueFromNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix,
-        getFormValueToNameSuffix: () => formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix,
+        getFormValueFromNameSuffix: () => formValueFromNameSuffix,
+        getFormValueToNameSuffix: () => formValueToNameSuffix,
         getFormValueFromName: () => {
-          return `${name}${formValueFromNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`;
+          return `${name}${formValueFromNameSuffix}`;
         },
         getFormValueToName: () => {
-          return `${name}${formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`;
+          return `${name}${formValueToNameSuffix}`;
         },
       };
 
@@ -602,8 +583,5 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
     );
   }
 );
-
-FormYearRangePicker.displayName = 'FormYearRangePicker';
-FormYearRangePicker.defaultProps = FormYearRangePickerDefaultProps;
 
 export default FormYearRangePicker;

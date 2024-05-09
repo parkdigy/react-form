@@ -26,4 +26,3 @@ export type FormSelectProps<T extends FormSelectSingleValue, Multiple extends bo
     loading?: boolean;
     onLoadItems?: () => Promise<FormSelectItem<T>[]>;
 };
-export declare const FormSelectDefaultProps: Pick<FormSelectProps<FormSelectSingleValue, false>, 'formValueSeparator' | 'minWidth'>;

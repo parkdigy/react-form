@@ -36,6 +36,5 @@ export interface FormAutocompleteProps<T extends FormAutocompleteSingleValue, Mu
     onAddItem?: (item: FormAutocompleteItem<T>) => boolean | Promise<boolean>;
     getOptionDisabled?: (item: FormAutocompleteItem<T>) => boolean;
 }
-export declare const FormAutocompleteDefaultProps: Pick<FormAutocompleteProps<any>, 'formValueSeparator' | 'noOptionsText'>;
 export interface FormAutocompleteCommands<T extends FormAutocompleteSingleValue, Multiple extends boolean | undefined = undefined> extends FormValueItemBaseCommands<FormAutocompleteValue<T, Multiple>, true>, FormArrayValueItemCommands, FormItemsValueItemCommands<FormAutocompleteItem<T>>, FormMultipleValueItemCommands, FormLoadingValueItemCommands {
 }

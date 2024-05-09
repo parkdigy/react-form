@@ -576,6 +576,4 @@ const Form = React.forwardRef<FormCommands, Props>(
   }
 );
 
-Form.displayName = 'Form';
-
 export default Form;

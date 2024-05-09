@@ -1,7 +1,7 @@
 import React, { CSSProperties, useMemo } from 'react';
 import { InputLabel, InputLabelProps, useTheme } from '@mui/material';
 import { FormLabelProps as Props } from './FormLabel.types';
-import { ChildrenSpan, IconPdgIcon } from './FormLabel.style';
+import { ChildrenSpan, IconPdgIcon } from './FormLabel.style.private';
 
 const FormLabel = React.forwardRef<HTMLLabelElement, Props>(
   ({ children, icon, size, style, error, warning, ...props }, ref) => {
@@ -52,7 +52,5 @@ const FormLabel = React.forwardRef<HTMLLabelElement, Props>(
     );
   }
 );
-
-FormLabel.displayName = 'FormLabel';
 
 export default FormLabel;

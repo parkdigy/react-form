@@ -42,7 +42,7 @@ export interface FormValueItemBaseCommands<T, AllowUndefinedValue extends boolea
 }
 export interface FormArrayValueItemCommands {
     isFormValueSort(): boolean;
-    getFormValueSeparator(): string | undefined;
+    getFormValueSeparator(): string;
 }
 export interface FormItemsValueItemCommands<T> {
     getItems(): T[] | undefined;

@@ -3,12 +3,11 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util';
+import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util.private';
 import { empty, nextTick, notEmpty, equal } from '@pdg/util';
 import { PartialPick } from '../../@types';
 import {
   FormToggleButtonGroupProps,
-  FormToggleButtonGroupDefaultProps,
   FormToggleButtonGroupCommands,
   FormToggleButtonGroupSingleValue,
 } from './FormToggleButtonGroup.types';
@@ -28,7 +27,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       name,
       labelIcon,
       label,
-      type,
+      type = 'button',
       loading: initLoading,
       items: initItems,
       value: initValue,
@@ -42,7 +41,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       exceptValue,
       width: initWidth,
       multiple,
-      formValueSeparator,
+      formValueSeparator = ',',
       formValueSort,
       hidden: initHidden,
       itemWidth,
@@ -260,7 +259,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           if (!Array.isArray(finalValue)) {
             if (finalValue != null && notEmpty(finalValue)) {
               if (typeof finalValue === 'string') {
-                finalValue = Array.from(new Set(finalValue.split(formValueSeparator || ','))) as Props['value'];
+                finalValue = Array.from(new Set(finalValue.split(formValueSeparator))) as Props['value'];
               } else {
                 finalValue = [finalValue] as unknown as Props['value'];
               }
@@ -652,8 +651,5 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
     );
   })
 );
-
-FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';
-FormToggleButtonGroup.defaultProps = FormToggleButtonGroupDefaultProps;
 
 export default FormToggleButtonGroup;

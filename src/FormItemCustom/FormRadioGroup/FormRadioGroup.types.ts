@@ -32,10 +32,6 @@ export interface FormRadioGroupProps<T extends FormRadioGroupSingleValue>
   onValue?(value: FormRadioGroupValue<T>): FormRadioGroupValue<T>;
 }
 
-export const FormRadioGroupDefaultProps: Pick<FormRadioGroupProps<any>, 'inline'> = {
-  inline: true,
-};
-
 export interface FormRadioGroupCommands<T extends FormRadioGroupSingleValue>
   extends FormValueItemBaseCommands<T, true>,
     FormItemsValueItemCommands<FormRadioGroupItem<T>>,

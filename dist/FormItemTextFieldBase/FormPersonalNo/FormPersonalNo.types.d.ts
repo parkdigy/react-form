@@ -5,4 +5,3 @@ export type FormPersonalNoProps = Omit<FormTextProps, 'type' | 'value' | 'maxLen
     value?: string;
     skipPersonalNumberValidateCheck?: boolean;
 };
-export declare const FormPersonalNoDefaultProps: Pick<FormPersonalNoProps, 'validPattern'>;

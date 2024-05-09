@@ -1,31 +1,45 @@
 import React, { useCallback } from 'react';
 import FormText from '../FormText';
-import { FormUrlProps as Props, FormUrlDefaultProps, FormUrlCommands, FormUrlValue } from './FormUrl.types';
+import { FormUrlProps as Props, FormUrlCommands, FormUrlValue } from './FormUrl.types';
 import classNames from 'classnames';
 
-const FormUrl = React.forwardRef<FormUrlCommands, Props>(({ className, onValue, ...props }, ref) => {
-  /********************************************************************************************************************
-   * Event Handler
-   * ******************************************************************************************************************/
-
-  const handleValue = useCallback(
-    (value: FormUrlValue) => {
-      const newValue = value.replace(/ /gi, '');
-      return onValue ? onValue(newValue) : newValue;
+const FormUrl = React.forwardRef<FormUrlCommands, Props>(
+  (
+    {
+      className,
+      validPattern = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'%()*+,;=.]+$/gim,
+      onValue,
+      ...props
     },
-    [onValue]
-  );
+    ref
+  ) => {
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
 
-  /********************************************************************************************************************
-   * Render
-   * ******************************************************************************************************************/
+    const handleValue = useCallback(
+      (value: FormUrlValue) => {
+        const newValue = value.replace(/ /gi, '');
+        return onValue ? onValue(newValue) : newValue;
+      },
+      [onValue]
+    );
 
-  return (
-    <FormText ref={ref} className={classNames(className, 'FormUrl')} type='url' onValue={handleValue} {...props} />
-  );
-});
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
 
-FormUrl.displayName = 'FormUrl';
-FormUrl.defaultProps = FormUrlDefaultProps;
+    return (
+      <FormText
+        ref={ref}
+        className={classNames(className, 'FormUrl')}
+        type='url'
+        validPattern={validPattern}
+        onValue={handleValue}
+        {...props}
+      />
+    );
+  }
+);
 
 export default FormUrl;

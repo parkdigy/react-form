@@ -14,11 +14,10 @@ import { useResizeDetector } from 'react-resize-detector';
 import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from '@mui/material';
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util';
+import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util.private';
 import { empty, nextTick } from '@pdg/util';
 import {
   FormRadioGroupProps,
-  FormRadioGroupDefaultProps,
   FormRadioGroupCommands,
   FormRadioGroupValue,
   FormRadioGroupSingleValue,
@@ -42,7 +41,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
       width: initWidth,
       labelIcon,
       label,
-      inline,
+      inline = true,
       loading: initLoading,
       nowrap,
       items: initItems,
@@ -544,8 +543,5 @@ const FormRadioGroup = ToForwardRefExoticComponent(
     );
   })
 );
-
-FormRadioGroup.displayName = 'FormRadioGroup';
-FormRadioGroup.defaultProps = FormRadioGroupDefaultProps;
 
 export default FormRadioGroup;

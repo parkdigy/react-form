@@ -4,7 +4,7 @@ import { FormHelperText, Grid } from '@mui/material';
 import { FormRowProps as Props, FormColsInRowMap } from './FormRow.types';
 import { FormContext, useFormState } from '../../FormContext';
 import FormDivider from '../FormDivider';
-import { StyledWrapGrid } from './FormRow.style';
+import { StyledWrapGrid } from './FormRow.style.private';
 import { ifUndefined } from '@pdg/util';
 
 const FormRow = React.forwardRef<HTMLDivElement, Props>(
@@ -178,7 +178,5 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
     );
   }
 );
-
-FormRow.displayName = 'FormRow';
 
 export default FormRow;

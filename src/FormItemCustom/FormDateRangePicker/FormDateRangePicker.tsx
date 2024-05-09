@@ -2,31 +2,27 @@ import React, { ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef,
 import classNames from 'classnames';
 import {
   FormDateRangePickerProps as Props,
-  FormDateRangePickerDefaultProps,
   FormDateRangePickerValue,
   FormDateRangePickerDateValue,
-  FormDateRangePickerCalendarCount,
   FormDateRangePickerCommands,
 } from './FormDateRangePicker.types';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
-import { PrivateInputDatePicker, PrivateInputDatePickerValue, PrivateStyledTooltip } from '../../@private';
+import { PrivateInputDatePicker, PrivateInputDatePickerValue, PrivateStyledTooltip } from '../../@common.private';
 
 import {
   FormDateRangePickerTooltipPickerContainer,
   FormDateRangePickerTooltipPickerContainerCommands,
   FormDateRangePickerTooltipPickerContainerMonths,
-} from './FormDateRangePickerTooltipPickerContainer';
-import {
   FormDateRangePickerTooltipPickerDateValue,
   FormDateRangePickerTooltipPickerSelectType,
   FormDateRangePickerTooltipPickerValue,
-} from './FormDateRangePickerTooltipPickerContainer/FormDateRangePickerTooltipPicker';
+} from './FormDateRangePickerTooltipPickerContainer.private';
 import dayjs, { Dayjs } from 'dayjs';
 import { useFormState } from '../../FormContext';
-import { getDateValidationErrorText } from '../../@util';
+import { getDateValidationErrorText } from '../../@util.private';
 import { nextTick, notEmpty } from '@pdg/util';
 import { DateValidationError } from '@mui/x-date-pickers';
 
@@ -50,9 +46,9 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       fromLabelIcon,
       toLabel,
       toLabelIcon,
-      calendarCount: initCalendarCount,
-      format: initFormat,
-      formValueFormat,
+      calendarCount = 2,
+      format = DEFAULT_FORMAT,
+      formValueFormat = DEFAULT_FORMAT,
       allowSingleSelect,
       required,
       requiredStart,
@@ -66,8 +62,8 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       exceptValue,
       error: initError,
       helperText,
-      formValueFromNameSuffix,
-      formValueToNameSuffix,
+      formValueFromNameSuffix = '_from',
+      formValueToNameSuffix = '_to',
       icon,
       startIcon,
       endIcon,
@@ -82,7 +78,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       minDate,
       maxDate,
       hidden: initHidden,
-      align,
+      align = 'center',
       onGetActionButtons,
       onChange,
       onValidate,
@@ -163,12 +159,6 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
     );
     const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const format = useMemo(() => initFormat || DEFAULT_FORMAT, [initFormat]);
 
     /********************************************************************************************************************
      * Function - focus
@@ -306,7 +296,6 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
     const [open, setOpen] = useState(false);
     const [selectType, setSelectType] = useState<FormDateRangePickerTooltipPickerSelectType>('start');
-    const [calendarCount] = useAutoUpdateState<FormDateRangePickerCalendarCount>(initCalendarCount || 2);
     const [months, setMonths] = useState<FormDateRangePickerTooltipPickerContainerMonths>(() => {
       const now = dayjs();
       return [now, now.add(1, 'month'), now.add(2, 'month')];
@@ -640,16 +629,14 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
           validate: () => validate(valueRef.current),
           setError: (error: boolean, errorText: ReactNode | undefined) =>
             setErrorErrorHelperText(error, error ? errorText : undefined),
-          getFormValueFormat: () => formValueFormat || FormDateRangePickerDefaultProps.format,
-          getFormValueFromNameSuffix: () =>
-            formValueFromNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix,
-          getFormValueToNameSuffix: () =>
-            formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix,
+          getFormValueFormat: () => formValueFormat,
+          getFormValueFromNameSuffix: () => formValueFromNameSuffix,
+          getFormValueToNameSuffix: () => formValueToNameSuffix,
           getFormValueFromName: () => {
-            return `${name}${formValueFromNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`;
+            return `${name}${formValueFromNameSuffix}`;
           },
           getFormValueToName: () => {
-            return `${name}${formValueToNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`;
+            return `${name}${formValueToNameSuffix}`;
           },
         };
 
@@ -820,8 +807,5 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     );
   }
 );
-
-FormDateRangePicker.displayName = 'FormDateRangePicker';
-FormDateRangePicker.defaultProps = FormDateRangePickerDefaultProps;
 
 export default FormDateRangePicker;

@@ -1,7 +1,7 @@
 import { FormValueItemProps, FormValueItemBaseCommands } from '../../@types';
 import { CommonSxProps } from '../../@types';
 import { ReactNode } from 'react';
-import { PrivateYearPickerBaseValue, PrivateYearPickerValue } from '../../@private';
+import { PrivateYearPickerBaseValue, PrivateYearPickerValue } from '../../@common.private';
 
 export type FormYearPickerBaseValue = PrivateYearPickerBaseValue;
 
@@ -21,11 +21,5 @@ export interface FormYearPickerProps extends CommonSxProps, FormValueItemProps<F
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
 }
-
-export const FormYearPickerDefaultProps: Required<Pick<FormYearPickerProps, 'format' | 'minYear' | 'maxYear'>> = {
-  format: 'YYYY년',
-  minYear: 2020,
-  maxYear: 2050,
-};
 
 export interface FormYearPickerCommands extends FormValueItemBaseCommands<FormYearPickerValue, false> {}

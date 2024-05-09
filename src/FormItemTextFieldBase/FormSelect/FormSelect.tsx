@@ -2,11 +2,10 @@ import React, { useState, useEffect, ReactNode, useCallback, useMemo } from 'rea
 import classNames from 'classnames';
 import { Box, Checkbox, Chip, CircularProgress, MenuItem } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util';
+import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util.private';
 import { empty, notEmpty, equal, ifUndefined } from '@pdg/util';
 import {
   FormSelectProps,
-  FormSelectDefaultProps,
   FormSelectExtraCommands,
   FormSelectCommands,
   FormSelectSingleValue,
@@ -36,10 +35,10 @@ const FormSelect = ToForwardRefExoticComponent(
       value: initValue,
       InputLabelProps: initInputLabelProps,
       SelectProps: initSelectProps,
-      formValueSeparator,
+      formValueSeparator = ',',
       formValueSort,
       width,
-      minWidth,
+      minWidth = 120,
       loading: initLoading,
       onChange,
       onValue,
@@ -163,7 +162,7 @@ const FormSelect = ToForwardRefExoticComponent(
               finalValue = [];
             } else {
               if (typeof finalValue === 'string') {
-                finalValue = Array.from(new Set(finalValue.split(formValueSeparator || ',')));
+                finalValue = Array.from(new Set(finalValue.split(formValueSeparator)));
               } else {
                 finalValue = [finalValue];
               }
@@ -274,9 +273,7 @@ const FormSelect = ToForwardRefExoticComponent(
           }
         };
       }
-      if (minWidth != null) {
-        finalSelectProps.style = { ...finalSelectProps.style, minWidth: width || minWidth };
-      }
+      finalSelectProps.style = { ...finalSelectProps.style, minWidth: width || minWidth };
       finalSelectProps.MenuProps = {
         ...finalSelectProps.MenuProps,
         className: classNames(finalSelectProps.MenuProps?.className, 'FormSelect-Menu-Popover'),
@@ -451,8 +448,5 @@ const FormSelect = ToForwardRefExoticComponent(
     );
   })
 );
-
-FormSelect.displayName = 'FormSelect';
-FormSelect.defaultProps = FormSelectDefaultProps;
 
 export default FormSelect;

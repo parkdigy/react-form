@@ -61,11 +61,6 @@ export interface FormAutocompleteProps<
   getOptionDisabled?: (item: FormAutocompleteItem<T>) => boolean;
 }
 
-export const FormAutocompleteDefaultProps: Pick<FormAutocompleteProps<any>, 'formValueSeparator' | 'noOptionsText'> = {
-  formValueSeparator: ',',
-  noOptionsText: '항목이 없습니다',
-};
-
 export interface FormAutocompleteCommands<
   T extends FormAutocompleteSingleValue,
   Multiple extends boolean | undefined = undefined,

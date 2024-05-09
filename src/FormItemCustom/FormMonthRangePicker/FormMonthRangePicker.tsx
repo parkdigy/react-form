@@ -2,11 +2,10 @@ import React, { ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef,
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { getDateValidationErrorText } from '../../@util';
+import { getDateValidationErrorText } from '../../@util.private';
 import { nextTick } from '@pdg/util';
 import {
   FormMonthRangePickerProps as Props,
-  FormMonthRangePickerDefaultProps,
   FormMonthRangePickerCommands,
   FormMonthRangePickerValue,
 } from './FormMonthRangePicker.types';
@@ -20,14 +19,21 @@ import {
   PrivateMonthRangePickerSelectType,
   PrivateStyledTooltip,
   PrivateYearRangePickerSelectType,
-} from '../../@private';
-import { FormDateRangePickerDefaultProps } from '../FormDateRangePicker';
+} from '../../@common.private';
 import { FormMonthPickerBaseValue } from '../FormMonthPicker';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
 
 const DEFAULT_VALUE: FormMonthRangePickerValue = [null, null];
 const DEFAULT_FORMAT = 'YYYY년 MM월';
+const DEFAULT_MIN_VALUE = {
+  year: 2020,
+  month: 1,
+};
+const DEFAULT_MAX_VALUE = {
+  year: 2050,
+  month: 12,
+};
 
 const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Props>(
   (
@@ -57,20 +63,20 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       onValidate,
       // -------------------------------------------------------------------------------------------------------------------
       icon,
-      format: initFormat,
+      format = DEFAULT_FORMAT,
       labelShrink: initLabelShrink,
       disablePast,
       disableFuture,
-      minValue: initMinValue,
-      maxValue: initMaxValue,
+      minValue = DEFAULT_MIN_VALUE,
+      maxValue = DEFAULT_MAX_VALUE,
       inputWidth,
       readOnlyInput,
       startAdornment,
       endAdornment,
-      formValueFromYearNameSuffix,
-      formValueFromMonthNameSuffix,
-      formValueToYearNameSuffix,
-      formValueToMonthNameSuffix,
+      formValueFromYearNameSuffix = '_from_year',
+      formValueFromMonthNameSuffix = '_from_month',
+      formValueToYearNameSuffix = '_to_year',
+      formValueToMonthNameSuffix = '_to_month',
       align,
       //----------------------------------------------------------------------------------------------------------------
       className,
@@ -257,9 +263,6 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       [value, valueToDate]
     );
 
-    const minValue = useMemo(() => initMinValue || FormMonthRangePickerDefaultProps.minValue, [initMinValue]);
-    const maxValue = useMemo(() => initMaxValue || FormMonthRangePickerDefaultProps.maxValue, [initMaxValue]);
-
     const minDate = useMemo(() => (minValue ? valueToDate(minValue) : undefined), [minValue, valueToDate]);
     const maxDate = useMemo(() => (maxValue ? valueToDate(maxValue) : undefined), [maxValue, valueToDate]);
 
@@ -282,12 +285,6 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       }
     }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
     const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue, valueToYm]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const format = useMemo(() => initFormat || DEFAULT_FORMAT, [initFormat]);
 
     /********************************************************************************************************************
      * Effect
@@ -392,25 +389,21 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
         validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
-        getFormValueFromYearNameSuffix: () =>
-          formValueFromYearNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix,
-        getFormValueFromMonthNameSuffix: () =>
-          formValueFromMonthNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix,
-        getFormValueToYearNameSuffix: () =>
-          formValueToYearNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix,
-        getFormValueToMonthNameSuffix: () =>
-          formValueToMonthNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix,
+        getFormValueFromYearNameSuffix: () => formValueFromYearNameSuffix,
+        getFormValueFromMonthNameSuffix: () => formValueFromMonthNameSuffix,
+        getFormValueToYearNameSuffix: () => formValueToYearNameSuffix,
+        getFormValueToMonthNameSuffix: () => formValueToMonthNameSuffix,
         getFormValueFromYearName: () => {
-          return `${name}${formValueFromYearNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`;
+          return `${name}${formValueFromYearNameSuffix}`;
         },
         getFormValueFromMonthName: () => {
-          return `${name}${formValueFromMonthNameSuffix || FormDateRangePickerDefaultProps.formValueFromNameSuffix}`;
+          return `${name}${formValueFromMonthNameSuffix}`;
         },
         getFormValueToYearName: () => {
-          return `${name}${formValueToYearNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`;
+          return `${name}${formValueToYearNameSuffix}`;
         },
         getFormValueToMonthName: () => {
-          return `${name}${formValueToMonthNameSuffix || FormDateRangePickerDefaultProps.formValueToNameSuffix}`;
+          return `${name}${formValueToMonthNameSuffix}`;
         },
       };
 
@@ -698,8 +691,5 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
     );
   }
 );
-
-FormMonthRangePicker.displayName = 'FormMonthRangePicker';
-FormMonthRangePicker.defaultProps = FormMonthRangePickerDefaultProps;
 
 export default FormMonthRangePicker;

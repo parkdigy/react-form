@@ -17,7 +17,6 @@ export interface FormProps extends CommonSxProps, PartialPick<FormControlProps, 
     onValueChange?(name: string, value: any): void;
     onValueChangeByUser?(name: string, value: any): void;
 }
-export declare const FormDefaultProps: Pick<FormProps, 'variant' | 'size' | 'color' | 'spacing' | 'formColGap' | 'fullWidth' | 'fullHeight'>;
 export interface FormCommands {
     submit(): void;
     getAllFormValue(): FormValueMap;

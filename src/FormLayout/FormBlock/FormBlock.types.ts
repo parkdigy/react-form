@@ -11,5 +11,3 @@ export interface FormBlockProps
   error?: boolean;
   warning?: boolean;
 }
-
-export const FormBlockDefaultProps = {};

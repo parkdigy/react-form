@@ -18,6 +18,5 @@ export interface FormRadioGroupProps<T extends FormRadioGroupSingleValue> extend
     onLoadItems?(): Promise<FormRadioGroupItem<T>[]>;
     onValue?(value: FormRadioGroupValue<T>): FormRadioGroupValue<T>;
 }
-export declare const FormRadioGroupDefaultProps: Pick<FormRadioGroupProps<any>, 'inline'>;
 export interface FormRadioGroupCommands<T extends FormRadioGroupSingleValue> extends FormValueItemBaseCommands<T, true>, FormItemsValueItemCommands<FormRadioGroupItem<T>>, FormLoadingValueItemCommands {
 }
