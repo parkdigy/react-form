@@ -5,6 +5,7 @@ import { Form, FormCommands } from '../../Form';
 import { FormBody } from '../../FormLayout';
 import FormContextProvider from '../../FormContextProvider';
 import SearchGroupRow from '../SearchGroupRow';
+import { FormContextValue } from '../../FormContext';
 
 const Search = React.forwardRef<SearchCommands, Props>(
   (
@@ -23,6 +24,7 @@ const Search = React.forwardRef<SearchCommands, Props>(
     },
     ref
   ) => {
+    ll('Render Search');
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -45,6 +47,7 @@ const Search = React.forwardRef<SearchCommands, Props>(
      * ******************************************************************************************************************/
 
     const renderChildren = useMemo(() => {
+      ll('children changed');
       const rowItems: ReactNode[] = [];
       const basicRowItems: ReactNode[] = [];
 
@@ -66,12 +69,12 @@ const Search = React.forwardRef<SearchCommands, Props>(
     }, [children]);
 
     /********************************************************************************************************************
-     * Render
+     * FormContextValue
      * ******************************************************************************************************************/
 
-    return (
-      <FormContextProvider
-        value={{
+    const formContextValue = useMemo(
+      () =>
+        ({
           id: 'search',
           variant: 'outlined',
           size: 'small',
@@ -93,8 +96,16 @@ const Search = React.forwardRef<SearchCommands, Props>(
               formRef.current?.submit();
             }
           },
-        }}
-      >
+        }) as FormContextValue,
+      [autoSubmit, color, focused, labelShrink, spacing]
+    );
+
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
+
+    return (
+      <FormContextProvider value={formContextValue}>
         <Paper variant='outlined' className={className} sx={{ p: 1.5, ...sx }} style={style}>
           <Form
             ref={(commands) => {

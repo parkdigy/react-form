@@ -10,8 +10,9 @@ import { Button, Grid, Icon, IconButton, IconButtonProps } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { PrivateYearSelect } from '../PrivateYearSelect';
 import { PrivateMonthSelect } from '../PrivateMonthSelect';
-import { PrivateTimeSelect, PrivateTimeSelectCommands } from '../PrivateTimeSelect';
+import { PrivateTimeSelectCommands } from '../PrivateTimeSelect';
 import { checkDateAvailable, getAvailableDate, isDateAvailable, makeAvailableDate } from '../../@util.private';
+import { PrivateTimeSection } from '../PrivateTimeSection';
 import './PrivateStaticDateTimePicker.scss';
 
 const DEFAULT_HOURS: number[] = new Array(24).fill(0);
@@ -37,9 +38,9 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
       defaultCalendarMonth,
       type,
       time,
-      hours: initHours,
-      minutes: initMinutes,
-      seconds: initSeconds,
+      hours = DEFAULT_HOURS,
+      minutes = DEFAULT_MINUTES,
+      seconds = DEFAULT_SECONDS,
       minuteInterval,
       secondInterval,
       minDate,
@@ -78,58 +79,11 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
      * Memo
      * ******************************************************************************************************************/
 
-    const hours = useMemo(() => initHours || DEFAULT_HOURS, [initHours]);
-    const minutes = useMemo(() => initMinutes || DEFAULT_MINUTES, [initMinutes]);
-    const seconds = useMemo(() => initSeconds || DEFAULT_SECONDS, [initSeconds]);
     const availableDate = useMemo(
       () =>
         initAvailableDate ? initAvailableDate : makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture),
       [initAvailableDate, minDate, maxDate, disablePast, disableFuture]
     );
-
-    const disableHours = useMemo(() => {
-      const newDisableHours: number[] = [];
-      if (time && value && (availableDate[0] || availableDate[1])) {
-        hours.forEach((h) => {
-          if (!isDateAvailable(value.set('hour', h), availableDate, 'hour')) {
-            newDisableHours.push(h);
-          }
-        });
-      }
-      return newDisableHours;
-    }, [time, value, availableDate, hours]);
-
-    const disableMinutes = useMemo(() => {
-      const newDisableMinutes: number[] = [];
-
-      if (time === 'minute' || time === 'second') {
-        if (value && (availableDate[0] || availableDate[1])) {
-          minutes.forEach((m) => {
-            if (!isDateAvailable(value.set('minute', m), availableDate, 'minute')) {
-              newDisableMinutes.push(m);
-            }
-          });
-        }
-      }
-
-      return newDisableMinutes;
-    }, [time, value, availableDate, minutes]);
-
-    const disableSeconds = useMemo(() => {
-      const newDisableSeconds: number[] = [];
-
-      if (time === 'second') {
-        if (value && (availableDate[0] || availableDate[1])) {
-          seconds.forEach((s) => {
-            if (!isDateAvailable(value.set('second', s), availableDate, 'second')) {
-              newDisableSeconds.push(s);
-            }
-          });
-        }
-      }
-
-      return newDisableSeconds;
-    }, [time, value, availableDate, seconds]);
 
     /********************************************************************************************************************
      * Effect
@@ -339,7 +293,7 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
                 <StaticDateTimePicker
                   {...props}
                   value={activeMonthValue}
-                  defaultCalendarMonth={month}
+                  referenceDate={month}
                   slots={{
                     previousIconButton: LeftArrowButton,
                     nextIconButton: RightArrowButton,
@@ -425,80 +379,23 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
           </Grid>
         )}
         {time && (
-          <Grid item className='time'>
-            <Grid container direction='column' className='time-container'>
-              <Grid item className='time-title'>
-                {time === 'hour' && (value ? value.format('HH시') : '00시')}
-                {time === 'minute' && (value ? value.format('HH시 mm분') : '00시 00분')}
-                {time === 'second' && (value ? value.format('HH시 mm분 ss초') : '00시 00분 00초')}
-              </Grid>
-              <Grid item className='time-select-wrap'>
-                <Grid container style={{ height: '100%' }}>
-                  <Grid item style={{ position: 'relative', width: type === 'time' ? 240 : 80 }}>
-                    <PrivateTimeSelect
-                      ref={hourSelectRef}
-                      value={value && value.hour()}
-                      unit='시'
-                      list={hours}
-                      disableList={disableHours}
-                      cols={type === 'time' ? 3 : 1}
-                      onSelect={(newValue: number) => {
-                        onChange(
-                          'hour',
-                          value ? value.set('hour', newValue) : dayjs().startOf('date').set('hour', newValue)
-                        );
-                      }}
-                    />
-                  </Grid>
-                  {(time === 'minute' || time === 'second') && (
-                    <Grid item style={{ position: 'relative', width: type === 'time' ? 240 : 80 }}>
-                      <PrivateTimeSelect
-                        ref={minuteSelectRef}
-                        value={value && value.minute()}
-                        unit='분'
-                        list={minutes}
-                        disableList={disableMinutes}
-                        cols={type === 'time' ? 3 : 1}
-                        listInterval={minuteInterval}
-                        onSelect={(newValue: number) => {
-                          onChange(
-                            'minute',
-                            value ? value.set('minute', newValue) : dayjs().startOf('date').set('minute', newValue)
-                          );
-                        }}
-                      />
-                    </Grid>
-                  )}
-                  {time === 'second' && (
-                    <Grid item style={{ position: 'relative', width: type === 'time' ? 240 : 80 }}>
-                      <PrivateTimeSelect
-                        ref={secondSelectRef}
-                        value={value && value.second()}
-                        unit='초'
-                        list={seconds}
-                        disableList={disableSeconds}
-                        cols={type === 'time' ? 3 : 1}
-                        listInterval={secondInterval}
-                        onSelect={(newValue: number) => {
-                          onChange(
-                            'second',
-                            value ? value.set('second', newValue) : dayjs().startOf('date').set('second', newValue)
-                          );
-                        }}
-                      />
-                    </Grid>
-                  )}
-                </Grid>
-              </Grid>
-              {onClose && (
-                <Grid item className='action-buttons'>
-                  <Button variant='text' onClick={onClose}>
-                    닫기
-                  </Button>
-                </Grid>
-              )}
-            </Grid>
-          </Grid>
+          <PrivateTimeSection
+            time={time}
+            cols={type === 'time' ? 3 : 1}
+            width={type === 'time' ? 240 : 80}
+            availableDate={availableDate}
+            hourSelectRef={hourSelectRef}
+            minuteSelectRef={minuteSelectRef}
+            secondSelectRef={secondSelectRef}
+            hours={hours}
+            minutes={minutes}
+            seconds={seconds}
+            minuteInterval={minuteInterval}
+            secondInterval={secondInterval}
+            value={value}
+            onChange={onChange}
+            onClose={onClose}
+          />
         )}
       </Grid>
     );

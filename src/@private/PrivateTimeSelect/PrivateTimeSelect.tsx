@@ -4,6 +4,7 @@ import SimpleBar from 'simplebar-react';
 import PrivateToggleButton from '../PrivateToggleButton';
 import './PrivateTimeSelect.scss';
 import { Grid } from '@mui/material';
+import { useAutoUpdateLayoutRef } from '@pdg/react-hook';
 
 const DEFAULT_MINUTES = new Array(60).fill(0);
 for (let i = 0; i < DEFAULT_MINUTES.length; i += 1) {
@@ -11,7 +12,7 @@ for (let i = 0; i < DEFAULT_MINUTES.length; i += 1) {
 }
 
 const PrivateTimeSelect = React.forwardRef<PrivateTimeSelectCommands, Props>(
-  ({ list, listInterval, unit, value, cols = 1, disableList, onSelect }, ref) => {
+  ({ list, listInterval, unit, value, cols = 1, disableList, onSelect: initOnSelect }, ref) => {
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -19,6 +20,7 @@ const PrivateTimeSelect = React.forwardRef<PrivateTimeSelectCommands, Props>(
     const containerRef = useRef<HTMLDivElement>(null);
     const simpleBarRef = useRef<HTMLDivElement>(null);
     const scrollTimerRef = useRef<NodeJS.Timeout>();
+    const onSelectRef = useAutoUpdateLayoutRef(initOnSelect);
 
     /********************************************************************************************************************
      * Function - scrollToValue
@@ -117,39 +119,49 @@ const PrivateTimeSelect = React.forwardRef<PrivateTimeSelectCommands, Props>(
     }, [ref, scrollToValue]);
 
     /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
+
+    const handleClick = useCallback(
+      (e: React.MouseEvent<HTMLButtonElement>) => {
+        onSelectRef.current && onSelectRef.current(Number((e.target as HTMLButtonElement).getAttribute('data-id')));
+      },
+      [onSelectRef]
+    );
+
+    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
 
     return (
-      <>
-        <div ref={containerRef} className='PrivateTimeSelect'>
-          <SimpleBar scrollableNodeProps={{ ref: simpleBarRef }} style={{ height: '100%' }}>
-            <Grid container>
-              {list
-                .filter((v) => (listInterval ? v % listInterval === 0 : true))
-                .map((v) => {
-                  const isSelected = v === value;
-                  const disabled = !!disableList && disableList.includes(v);
+      <div ref={containerRef} className='PrivateTimeSelect'>
+        <SimpleBar scrollableNodeProps={{ ref: simpleBarRef }} style={{ height: '100%' }}>
+          <Grid container>
+            {list
+              .filter((v) => (listInterval ? v % listInterval === 0 : true))
+              .map((v) => {
+                const isSelected = v === value;
+                const disabled = !!disableList && disableList.includes(v);
 
-                  return (
-                    <Grid item key={v} xs={12 / (cols || 1)}>
-                      <PrivateToggleButton
-                        className={`private-time-select-value-${v}`}
-                        fullWidth
-                        disabled={disabled}
-                        selected={isSelected}
-                        onClick={() => onSelect && onSelect(v)}
-                      >
-                        {v}
-                        {unit}
-                      </PrivateToggleButton>
-                    </Grid>
-                  );
-                })}
-            </Grid>
-          </SimpleBar>
-        </div>
-      </>
+                return (
+                  <Grid item key={v} xs={12 / (cols || 1)}>
+                    <PrivateToggleButton
+                      data-id={v}
+                      className={`private-time-select-value-${v}`}
+                      fullWidth
+                      disabled={disabled}
+                      selected={isSelected}
+                      onClick={handleClick}
+                    >
+                      {v}
+                      {unit}
+                    </PrivateToggleButton>
+                  </Grid>
+                );
+              })}
+          </Grid>
+        </SimpleBar>
+      </div>
     );
   }
 );

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { PrivateYearPickerYearProps as Props } from './PrivateYearPickerYear.types';
 import classNames from 'classnames';
 import { StyledButton, StyledContainer } from './PrivateYearPickerYear.style.private';
@@ -21,25 +21,19 @@ const PrivateYearPickerYear = React.forwardRef<HTMLDivElement, Props>(
     },
     ref
   ) => {
-    const className = useMemo(
-      () =>
-        classNames(
-          range && 'range',
-          isDefault && 'default',
-          selected && 'selected',
-          selectedStart && 'selected-start',
-          selectedEnd && 'selected-end',
-          selectedTemp && 'selected-temp',
-          active && 'active',
-          disabled && 'disabled'
-        ),
-      [range, isDefault, selected, selectedStart, selectedEnd, selectedTemp, active, disabled]
-    );
-
     return (
       <StyledContainer className='PrivateYearPickerYear' ref={ref} item xs={4}>
         <StyledButton
-          className={className}
+          className={classNames(
+            range && 'range',
+            isDefault && 'default',
+            selected && 'selected',
+            selectedStart && 'selected-start',
+            selectedEnd && 'selected-end',
+            selectedTemp && 'selected-temp',
+            active && 'active',
+            disabled && 'disabled'
+          )}
           disabled={disabled}
           onClick={onClick}
           onMouseEnter={onMouseEnter}

@@ -47,58 +47,66 @@ const PrivateMonthPicker: React.FC<Props> = ({
    * Memo
    * ******************************************************************************************************************/
 
-  const nowValue = useMemo(() => dateToValue(dayjs()), []);
-  const nowYm = useMemo(() => valueToYm(nowValue), [nowValue]);
+  const dateInfo = useMemo(() => {
+    const nowValue = dateToValue(dayjs());
+    const nowYm = valueToYm(nowValue);
 
-  const minAvailableValue = useMemo(() => {
+    let minAvailableValue: PrivateMonthPickerBaseValue;
     if (disablePast) {
       const minYm = valueToYm(minValue);
-      return nowYm > minYm ? nowValue : minValue;
+      minAvailableValue = nowYm > minYm ? nowValue : minValue;
     } else {
-      return minValue;
+      minAvailableValue = minValue;
     }
-  }, [disablePast, minValue, nowYm, nowValue]);
-  const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue]);
+    const minAvailableYm = valueToYm(minAvailableValue);
 
-  const maxAvailableValue = useMemo(() => {
+    let maxAvailableValue: PrivateMonthPickerBaseValue;
     if (disableFuture) {
       const maxYm = valueToYm(maxValue);
-      return nowYm < maxYm ? nowValue : maxValue;
+      maxAvailableValue = nowYm < maxYm ? nowValue : maxValue;
     } else {
-      return maxValue;
+      maxAvailableValue = maxValue;
     }
-  }, [disableFuture, maxValue, nowYm, nowValue]);
-  const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue]);
+    const maxAvailableYm = valueToYm(maxAvailableValue);
 
-  const displayValue = useMemo(() => {
+    return {
+      now: {
+        value: nowValue,
+        ym: nowYm,
+      },
+      available: {
+        min: {
+          value: minAvailableValue,
+          ym: minAvailableYm,
+        },
+        max: {
+          value: maxAvailableValue,
+          ym: maxAvailableYm,
+        },
+      },
+    };
+  }, [disableFuture, disablePast, maxValue, minValue]);
+
+  const displayInfo = useMemo(() => {
+    let displayValue: PrivateMonthPickerBaseValue;
     if (value && !Number.isNaN(value.year) && !Number.isNaN(value.month)) {
-      return value;
+      displayValue = value;
     } else {
-      if (nowYm < minAvailableYm) {
-        return minAvailableValue;
-      } else if (nowYm > maxAvailableYm) {
-        return maxAvailableValue;
+      if (dateInfo.now.ym < dateInfo.available.min.ym) {
+        displayValue = dateInfo.available.min.value;
+      } else if (dateInfo.now.ym > dateInfo.available.max.ym) {
+        displayValue = dateInfo.available.max.value;
       } else {
-        return selectFromValue || selectToValue || nowValue;
+        displayValue = selectFromValue || selectToValue || dateInfo.now.value;
       }
     }
-  }, [
-    maxAvailableValue,
-    maxAvailableYm,
-    minAvailableValue,
-    minAvailableYm,
-    nowValue,
-    nowYm,
-    selectFromValue,
-    selectToValue,
-    value,
-  ]);
-  const displayValueDate = useMemo(() => valueToDate(displayValue), [displayValue]);
-  const displayValueYm = useMemo(() => displayValue.year * 100 + displayValue.month, [displayValue]);
-  const displayValueError = useMemo(
-    () => displayValueYm < minAvailableYm || displayValueYm > maxAvailableYm,
-    [displayValueYm, maxAvailableYm, minAvailableYm]
-  );
+
+    const displayValueDate = valueToDate(displayValue);
+    const displayValueYm = displayValue.year * 100 + displayValue.month;
+    const displayValueError = displayValueYm < dateInfo.available.min.ym || displayValueYm > dateInfo.available.max.ym;
+
+    return { value: displayValue, date: displayValueDate, ym: displayValueYm, error: displayValueError };
+  }, [dateInfo, selectFromValue, selectToValue, value]);
 
   /********************************************************************************************************************
    * Event Handler
@@ -106,20 +114,20 @@ const PrivateMonthPicker: React.FC<Props> = ({
 
   const handleYearChange = useCallback(
     (year: number) => {
-      const newValue = { ...displayValue, year };
+      const newValue = { ...displayInfo.value, year };
       const valueYm = valueToYm(newValue);
-      if (valueYm < minAvailableYm) {
-        setValue(minAvailableValue);
-        onChange(minAvailableValue, false);
-      } else if (valueYm > maxAvailableYm) {
-        setValue(maxAvailableValue);
-        onChange(maxAvailableValue, false);
+      if (valueYm < dateInfo.available.min.ym) {
+        setValue(dateInfo.available.min.value);
+        onChange(dateInfo.available.min.value, false);
+      } else if (valueYm > dateInfo.available.max.ym) {
+        setValue(dateInfo.available.max.value);
+        onChange(dateInfo.available.max.value, false);
       } else {
         setValue(newValue);
         onChange(newValue, false);
       }
     },
-    [displayValue, maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm, onChange, setValue]
+    [dateInfo, displayInfo, onChange, setValue]
   );
 
   const handleMonthChange = useCallback(
@@ -131,23 +139,23 @@ const PrivateMonthPicker: React.FC<Props> = ({
   );
 
   const handlePrevClick = useCallback(() => {
-    const newValue = dateToValue(displayValueDate.subtract(1, 'months'));
+    const newValue = dateToValue(displayInfo.date.subtract(1, 'months'));
     setValue(newValue);
     onChange(newValue, false);
-  }, [displayValueDate, onChange, setValue]);
+  }, [displayInfo, onChange, setValue]);
 
   const handleNextClick = useCallback(() => {
-    const newValue = dateToValue(displayValueDate.add(1, 'months'));
+    const newValue = dateToValue(displayInfo.date.add(1, 'months'));
     setValue(newValue);
     onChange(newValue, false);
-  }, [displayValueDate, onChange, setValue]);
+  }, [displayInfo, onChange, setValue]);
 
   /********************************************************************************************************************
    * Render
    * ******************************************************************************************************************/
 
-  const prevBtnDisabled = displayValueYm <= minAvailableYm;
-  const nextBtnDisabled = displayValueYm >= maxAvailableYm;
+  const prevBtnDisabled = displayInfo.ym <= dateInfo.available.min.ym;
+  const nextBtnDisabled = displayInfo.ym >= dateInfo.available.max.ym;
   const selectFromYear = selectFromValue ? selectFromValue.year : undefined;
   const selectToYear = selectToValue ? selectToValue.year : undefined;
 
@@ -157,13 +165,13 @@ const PrivateMonthPicker: React.FC<Props> = ({
         <StyledIconButton disabled={prevBtnDisabled} onClick={handlePrevClick}>
           <PdgIcon>KeyboardArrowLeft</PdgIcon>
         </StyledIconButton>
-        {displayValueError ? (
+        {displayInfo.error ? (
           <StyledYearMonthError>
-            {displayValue.year}년 {displayValue.month}월
+            {displayInfo.value.year}년 {displayInfo.value.month}월
           </StyledYearMonthError>
         ) : (
           <StyledYearMonth>
-            {displayValue.year}년 {displayValue.month}월
+            {displayInfo.value.year}년 {displayInfo.value.month}월
           </StyledYearMonth>
         )}
         <StyledIconButton disabled={nextBtnDisabled} onClick={handleNextClick}>
@@ -187,8 +195,8 @@ const PrivateMonthPicker: React.FC<Props> = ({
         <PrivateMonthPickerMonthList
           value={value}
           defaultValue={selectFromValue || selectToValue}
-          minAvailableValue={minAvailableValue}
-          maxAvailableValue={maxAvailableValue}
+          minAvailableValue={dateInfo.available.min.value}
+          maxAvailableValue={dateInfo.available.max.value}
           disablePast={disablePast}
           disableFuture={disableFuture}
           selectFromValue={selectFromValue}

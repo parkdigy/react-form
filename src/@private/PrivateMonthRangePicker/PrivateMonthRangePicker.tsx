@@ -9,6 +9,7 @@ import { Grid } from '@mui/material';
 import PrivateMonthPicker, { PrivateMonthPickerBaseValue } from '../PrivateMonthPicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { StyledActionButton, StyledActionContainer, StyledDiv } from './PrivateMonthRangePicker.style.private';
+import { useAutoUpdateLayoutRef } from '@pdg/react-hook';
 
 const DEFAULT_MIN_VALUE = {
   year: 2020,
@@ -25,35 +26,60 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
   maxValue = DEFAULT_MAX_VALUE,
   disablePast,
   disableFuture,
-  onChange,
+  onChange: initOnChange,
 }) => {
+  /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
+
+  const onChangeRef = useAutoUpdateLayoutRef(initOnChange);
+
   /********************************************************************************************************************
    * Memo
    * ******************************************************************************************************************/
 
-  const nowDate = useMemo(() => dayjs(), []);
-  const nowValue = useMemo(() => dateToValue(nowDate), [nowDate]);
-  const nowYm = useMemo(() => valueToYm(nowValue), [nowValue]);
+  const dateInfo = useMemo(() => {
+    const nowDate = dayjs();
+    const nowValue = dateToValue(nowDate);
+    const nowYm = valueToYm(nowValue);
 
-  const minAvailableValue = useMemo(() => {
+    let minAvailableValue: { year: number; month: number };
     if (disablePast) {
       const minYm = valueToYm(minValue);
-      return nowYm > minYm ? nowValue : minValue;
+      minAvailableValue = nowYm > minYm ? nowValue : minValue;
     } else {
-      return minValue;
+      minAvailableValue = minValue;
     }
-  }, [disablePast, minValue, nowYm, nowValue]);
-  const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue]);
+    const minAvailableYm = valueToYm(minAvailableValue);
 
-  const maxAvailableValue = useMemo(() => {
+    let maxAvailableValue: { year: number; month: number };
     if (disableFuture) {
       const maxYm = valueToYm(maxValue);
-      return nowYm < maxYm ? nowValue : maxValue;
+      maxAvailableValue = nowYm < maxYm ? nowValue : maxValue;
     } else {
-      return maxValue;
+      maxAvailableValue = maxValue;
     }
-  }, [disableFuture, maxValue, nowYm, nowValue]);
-  const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue]);
+
+    const maxAvailableYm = valueToYm(maxAvailableValue);
+
+    return {
+      now: {
+        date: nowDate,
+        value: nowValue,
+        ym: nowYm,
+      },
+      available: {
+        min: {
+          value: minAvailableValue,
+          ym: minAvailableYm,
+        },
+        max: {
+          value: maxAvailableValue,
+          ym: maxAvailableYm,
+        },
+      },
+    };
+  }, [disableFuture, disablePast, maxValue, minValue]);
 
   /********************************************************************************************************************
    * Function
@@ -64,10 +90,10 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
       const finalValue: PrivateMonthRangePickerValue = [v[0], v[1]];
       if (finalValue[0]) {
         const startYm = valueToYm(finalValue[0]);
-        if (startYm < minAvailableYm) {
-          finalValue[0] = minAvailableValue;
-        } else if (startYm > maxAvailableYm) {
-          finalValue[0] = maxAvailableValue;
+        if (startYm < dateInfo.available.min.ym) {
+          finalValue[0] = dateInfo.available.min.value;
+        } else if (startYm > dateInfo.available.max.ym) {
+          finalValue[0] = dateInfo.available.max.value;
         }
       }
       if (finalValue[1]) {
@@ -82,15 +108,15 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
           }
         }
         endYm = valueToYm(finalValue[1]);
-        if (endYm < minAvailableYm) {
-          finalValue[1] = minAvailableValue;
-        } else if (endYm > maxAvailableYm) {
-          finalValue[1] = maxAvailableValue;
+        if (endYm < dateInfo.available.min.ym) {
+          finalValue[1] = dateInfo.available.min.value;
+        } else if (endYm > dateInfo.available.max.ym) {
+          finalValue[1] = dateInfo.available.max.value;
         }
       }
       return finalValue;
     },
-    [maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm]
+    [dateInfo]
   );
 
   /********************************************************************************************************************
@@ -103,48 +129,49 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
       const fromYm = valueToYm(fromValue);
       const toValue = dateToValue(toDate);
       const toYm = valueToYm(toValue);
-      if (strict && (fromYm < minAvailableYm || toYm > maxAvailableYm)) {
+      if (strict && (fromYm < dateInfo.available.min.ym || toYm > dateInfo.available.max.ym)) {
         return undefined;
       } else if (
         !strict &&
-        ((fromYm < minAvailableYm && toYm < minAvailableYm) || (fromYm > maxAvailableYm && toYm > maxAvailableYm))
+        ((fromYm < dateInfo.available.min.ym && toYm < dateInfo.available.min.ym) ||
+          (fromYm > dateInfo.available.max.ym && toYm > dateInfo.available.max.ym))
       ) {
         return undefined;
       } else {
         return (
           <StyledActionButton
             variant='text'
-            onClick={() => onChange(getFinalValue([fromValue, toValue], 'end'), 'end', true)}
+            onClick={() => onChangeRef.current(getFinalValue([fromValue, toValue], 'end'), 'end', true)}
           >
             {label}
           </StyledActionButton>
         );
       }
     },
-    [getFinalValue, maxAvailableYm, minAvailableYm, onChange]
+    [getFinalValue, dateInfo, onChangeRef]
   );
 
   const actionButtons = useMemo(() => {
     return (
       <StyledActionContainer>
-        {getActionButton(dayjs(nowDate).subtract(2, 'months'), nowDate, '최근 3개월', true)}
-        {getActionButton(dayjs(nowDate).subtract(5, 'months'), nowDate, '최근 6개월', true)}
-        {getActionButton(dayjs(nowDate).subtract(11, 'months'), nowDate, '최근 12개월', true)}
-        {getActionButton(dayjs(nowDate).subtract(23, 'months'), nowDate, '최근 24개월', true)}
+        {getActionButton(dayjs(dateInfo.now.date).subtract(2, 'months'), dateInfo.now.date, '최근 3개월', true)}
+        {getActionButton(dayjs(dateInfo.now.date).subtract(5, 'months'), dateInfo.now.date, '최근 6개월', true)}
+        {getActionButton(dayjs(dateInfo.now.date).subtract(11, 'months'), dateInfo.now.date, '최근 12개월', true)}
+        {getActionButton(dayjs(dateInfo.now.date).subtract(23, 'months'), dateInfo.now.date, '최근 24개월', true)}
         {getActionButton(
-          dayjs(nowDate).subtract(2, 'years').set('months', 0),
-          dayjs(nowDate).subtract(2, 'years').set('months', 11),
+          dayjs(dateInfo.now.date).subtract(2, 'years').set('months', 0),
+          dayjs(dateInfo.now.date).subtract(2, 'years').set('months', 11),
           '재작년'
         )}
         {getActionButton(
-          dayjs(nowDate).subtract(1, 'years').set('months', 0),
-          dayjs(nowDate).subtract(1, 'years').set('months', 11),
+          dayjs(dateInfo.now.date).subtract(1, 'years').set('months', 0),
+          dayjs(dateInfo.now.date).subtract(1, 'years').set('months', 11),
           '작년'
         )}
-        {getActionButton(dayjs(nowDate).set('months', 0), dayjs(nowDate).set('months', 11), '올해')}
+        {getActionButton(dayjs(dateInfo.now.date).set('months', 0), dayjs(dateInfo.now.date).set('months', 11), '올해')}
       </StyledActionContainer>
     );
-  }, [getActionButton, nowDate]);
+  }, [getActionButton, dateInfo]);
 
   /********************************************************************************************************************
    * Event Handler
@@ -153,17 +180,17 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
   const handleStartMonthChange = useCallback(
     (v: PrivateMonthPickerBaseValue, isMonthSelect: boolean) => {
       const finalValue: PrivateMonthRangePickerValue = getFinalValue([v, value[1]], 'start');
-      onChange(finalValue, 'start', isMonthSelect);
+      onChangeRef.current(finalValue, 'start', isMonthSelect);
     },
-    [getFinalValue, onChange, value]
+    [getFinalValue, onChangeRef, value]
   );
 
   const handleEndMonthChange = useCallback(
     (v: PrivateMonthPickerBaseValue, isMonthSelect: boolean) => {
       const finalValue: PrivateMonthRangePickerValue = getFinalValue([value[0], v], 'end');
-      onChange(finalValue, 'end', isMonthSelect);
+      onChangeRef.current(finalValue, 'end', isMonthSelect);
     },
-    [getFinalValue, onChange, value]
+    [getFinalValue, onChangeRef, value]
   );
 
   /********************************************************************************************************************

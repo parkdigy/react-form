@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useMe
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DesktopDatePicker, DateValidationError } from '@mui/x-date-pickers';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutRef, useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
 import { PdgIcon, PdgIconText } from '@pdg/react-component';
 import {
@@ -76,7 +76,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       hidden: initHidden,
       showDaysOutsideCurrentMonth = true,
       onChange,
-      onValidate,
+      onValidate: initOnValidate,
       //--------------------------------------------------------------------------------------------------------------------
       className,
       style: initStyle,
@@ -101,6 +101,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
     const mouseDownTimeRef = useRef<number>();
     const datePickerErrorRef = useRef<DateValidationError>(null);
     const openValueRef = useRef<PrivateDatePickerValue>(null);
+    const onValidateRef = useAutoUpdateLayoutRef(initOnValidate);
 
     /********************************************************************************************************************
      * FormState
@@ -196,8 +197,8 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
           setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
           return false;
         }
-        if (onValidate) {
-          const onValidateResult = onValidate(value);
+        if (onValidateRef.current) {
+          const onValidateResult = onValidateRef.current(value);
           if (onValidateResult != null && onValidateResult !== true) {
             setErrorErrorHelperText(true, onValidateResult);
             return false;
@@ -208,7 +209,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
 
         return true;
       },
-      [required, timeError, onValidate, setErrorErrorHelperText]
+      [required, timeError, onValidateRef, setErrorErrorHelperText]
     );
 
     /********************************************************************************************************************

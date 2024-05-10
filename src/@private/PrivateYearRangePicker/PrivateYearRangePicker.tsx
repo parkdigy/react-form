@@ -35,46 +35,48 @@ const PrivateYearRangePicker: React.FC<Props> = ({
    * Memo
    * ******************************************************************************************************************/
 
-  const nowYear = useMemo(() => new Date().getFullYear(), []);
+  const yearInfo = useMemo(() => {
+    const nowYear = new Date().getFullYear();
 
-  const minAvailableYear = useMemo(() => {
+    let minAvailableYear: number;
     if (disablePast) {
-      return nowYear > minYear ? nowYear : minYear;
+      minAvailableYear = nowYear > minYear ? nowYear : minYear;
     } else {
-      return minYear;
+      minAvailableYear = minYear;
     }
-  }, [disablePast, minYear, nowYear]);
 
-  const maxAvailableYear = useMemo(() => {
+    let maxAvailableYear: number;
     if (disableFuture) {
-      return nowYear < maxYear ? nowYear : maxYear;
+      maxAvailableYear = nowYear < maxYear ? nowYear : maxYear;
     } else {
-      return maxYear;
+      maxAvailableYear = maxYear;
     }
-  }, [disableFuture, maxYear, nowYear]);
 
-  const displayValue = useMemo(() => {
-    let defaultYear = nowYear;
-    if (minAvailableYear > defaultYear) {
+    return { now: nowYear, available: { min: minAvailableYear, max: maxAvailableYear } };
+  }, [disableFuture, disablePast, maxYear, minYear]);
+
+  const displayInfo = useMemo(() => {
+    let displayValue: [number, number];
+    let defaultYear = yearInfo.now;
+    if (yearInfo.available.min > defaultYear) {
       defaultYear = minYear;
-    } else if (maxAvailableYear < defaultYear) {
-      defaultYear = maxAvailableYear;
+    } else if (yearInfo.available.max < defaultYear) {
+      defaultYear = yearInfo.available.max;
     }
 
     if (value) {
-      return [value[0] || value[1] || defaultYear, value[1] || value[0] || defaultYear];
+      displayValue = [value[0] || value[1] || defaultYear, value[1] || value[0] || defaultYear];
     } else {
-      return [defaultYear, defaultYear];
+      displayValue = [defaultYear, defaultYear];
     }
-  }, [maxAvailableYear, minAvailableYear, minYear, nowYear, value]);
 
-  const displayValueError = useMemo(
-    () => [
-      displayValue[0] < minAvailableYear || displayValue[0] > maxAvailableYear,
-      displayValue[1] < minAvailableYear || displayValue[1] > maxAvailableYear,
-    ],
-    [displayValue, minAvailableYear, maxAvailableYear]
-  );
+    const displayValueError: [boolean, boolean] = [
+      displayValue[0] < yearInfo.available.min || displayValue[0] > yearInfo.available.max,
+      displayValue[1] < yearInfo.available.min || displayValue[1] > yearInfo.available.max,
+    ];
+
+    return { value: displayValue, error: displayValueError };
+  }, [minYear, value, yearInfo]);
 
   /********************************************************************************************************************
    * action button
@@ -82,12 +84,12 @@ const PrivateYearRangePicker: React.FC<Props> = ({
 
   const getActionButton = useCallback(
     (fromYear: number, toYear: number, label: string) => {
-      if (fromYear < minAvailableYear || toYear > maxAvailableYear) {
+      if (fromYear < yearInfo.available.min || toYear > yearInfo.available.max) {
         return undefined;
       } else {
         const newValue: PrivateYearRangePickerValue = [
-          Math.max(fromYear, minAvailableYear),
-          Math.min(toYear, maxAvailableYear),
+          Math.max(fromYear, yearInfo.available.min),
+          Math.min(toYear, yearInfo.available.max),
         ];
         return (
           <StyledActionButton
@@ -102,18 +104,18 @@ const PrivateYearRangePicker: React.FC<Props> = ({
         );
       }
     },
-    [maxAvailableYear, minAvailableYear, onChange, setValue]
+    [yearInfo, onChange, setValue]
   );
 
   const actionButtons = useMemo(() => {
     return (
       <StyledActionContainer>
-        {getActionButton(nowYear - 2, nowYear, '최근 3년')}
-        {getActionButton(nowYear - 4, nowYear, '최근 5년')}
-        {getActionButton(nowYear - 9, nowYear, '최근 10년')}
+        {getActionButton(yearInfo.now - 2, yearInfo.now, '최근 3년')}
+        {getActionButton(yearInfo.now - 4, yearInfo.now, '최근 5년')}
+        {getActionButton(yearInfo.now - 9, yearInfo.now, '최근 10년')}
       </StyledActionContainer>
     );
-  }, [getActionButton, nowYear]);
+  }, [getActionButton, yearInfo]);
 
   /********************************************************************************************************************
    * Event Handler
@@ -123,10 +125,10 @@ const PrivateYearRangePicker: React.FC<Props> = ({
     (valueYear: number) => {
       const newValue: PrivateYearRangePickerValue = [...value];
 
-      if (minAvailableYear && valueYear < minAvailableYear) {
-        valueYear = minAvailableYear;
-      } else if (maxAvailableYear && valueYear > maxAvailableYear) {
-        valueYear = maxAvailableYear;
+      if (yearInfo.available.min && valueYear < yearInfo.available.min) {
+        valueYear = yearInfo.available.min;
+      } else if (yearInfo.available.max && valueYear > yearInfo.available.max) {
+        valueYear = yearInfo.available.max;
       }
 
       if (selectType === 'start') {
@@ -153,7 +155,7 @@ const PrivateYearRangePicker: React.FC<Props> = ({
 
       setValue(newValue);
     },
-    [value, minAvailableYear, maxAvailableYear, selectType, setValue, onChange]
+    [value, yearInfo, selectType, setValue, onChange]
   );
 
   /********************************************************************************************************************
@@ -164,16 +166,16 @@ const PrivateYearRangePicker: React.FC<Props> = ({
     <div className='PrivateYearRangePicker'>
       {!hideHeader && (
         <StyledTitleContainer>
-          {displayValueError[0] ? (
-            <StyledYearError>{displayValue[0]}년</StyledYearError>
+          {displayInfo.error[0] ? (
+            <StyledYearError>{displayInfo.value[0]}년</StyledYearError>
           ) : (
-            <StyledYear>{displayValue[0]}년</StyledYear>
+            <StyledYear>{displayInfo.value[0]}년</StyledYear>
           )}
           <StyledTitleGap>~</StyledTitleGap>
-          {displayValueError[1] ? (
-            <StyledYearError>{displayValue[1]}년</StyledYearError>
+          {displayInfo.error[1] ? (
+            <StyledYearError>{displayInfo.value[1]}년</StyledYearError>
           ) : (
-            <StyledYear>{displayValue[1]}년</StyledYear>
+            <StyledYear>{displayInfo.value[1]}년</StyledYear>
           )}
         </StyledTitleContainer>
       )}
@@ -181,7 +183,7 @@ const PrivateYearRangePicker: React.FC<Props> = ({
         <PrivateYearRangePickerYearList
           value={value}
           selectType={selectType}
-          displayValue={displayValue}
+          displayValue={displayInfo.value}
           minYear={minYear}
           maxYear={maxYear}
           disablePast={disablePast}

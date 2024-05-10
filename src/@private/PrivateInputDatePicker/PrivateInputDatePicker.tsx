@@ -7,6 +7,7 @@ import { Dayjs } from 'dayjs';
 import { DesktopDatePickerSlotsComponentsProps } from '@mui/x-date-pickers/DesktopDatePicker/DesktopDatePicker.types';
 import './PrivateInputDatePicker.scss';
 import { PdgIcon } from '@pdg/react-component';
+import { useAutoUpdateLayoutRef } from '@pdg/react-hook';
 
 const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
   (
@@ -35,8 +36,8 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
       endAdornment,
       align = 'center',
       readOnlyInput,
-      onFocus,
-      onBlur,
+      onFocus: initOnFocus,
+      onBlur: initOnBlur,
       ...props
     },
     ref
@@ -48,31 +49,19 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
     const id = useId();
 
     /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
+
+    const onFocusRef = useAutoUpdateLayoutRef(initOnFocus);
+    const onBlurRef = useAutoUpdateLayoutRef(initOnBlur);
+
+    /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
 
-    const label = useMemo(
-      () =>
-        labelIcon ? (
-          <>
-            <PdgIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PdgIcon>
-            <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
-          </>
-        ) : (
-          initLabel
-        ),
-      [initLabel, labelIcon]
-    );
-
-    const inputLabelProps = useMemo(() => {
-      if (labelShrink) {
-        return {
-          shrink: true,
-        };
-      }
-    }, [labelShrink]);
-
     const slotProps = useMemo<DesktopDatePickerSlotsComponentsProps<Dayjs>>(() => {
+      const inputLabelProps = labelShrink ? { shrink: true } : undefined;
+
       const muiInputProps: InputProps = {
         endAdornment: undefined,
       };
@@ -110,7 +99,14 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
           fullWidth,
           required,
           name: id,
-          label,
+          label: labelIcon ? (
+            <>
+              <PdgIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PdgIcon>
+              <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
+            </>
+          ) : (
+            initLabel
+          ),
           style,
           sx,
           error,
@@ -122,12 +118,8 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
             }
           },
           InputLabelProps: inputLabelProps,
-          onFocus: (e) => {
-            if (onFocus) onFocus(e);
-          },
-          onBlur: (e) => {
-            if (onBlur) onBlur(e);
-          },
+          onFocus: onFocusRef.current,
+          onBlur: onBlurRef.current,
         },
       };
     }, [
@@ -138,11 +130,12 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
       fullWidth,
       icon,
       id,
-      inputLabelProps,
+      initLabel,
       inputRef,
-      label,
-      onBlur,
-      onFocus,
+      labelIcon,
+      labelShrink,
+      onBlurRef,
+      onFocusRef,
       readOnly,
       required,
       size,

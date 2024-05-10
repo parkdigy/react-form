@@ -281,7 +281,7 @@ const FormDateRangePickerTooltipPicker = React.forwardRef<FormDateRangePickerToo
           day: handleRenderDay,
         }}
         value={activeMonthValue}
-        defaultCalendarMonth={month}
+        referenceDate={month}
         disableFuture={disableFuture}
         disablePast={disablePast}
         minDate={minDate}

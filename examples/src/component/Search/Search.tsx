@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   FormText,
   Search as _Search,
@@ -20,6 +20,14 @@ import dayjs from 'dayjs';
 import { lv } from '@pdg/util';
 
 const Search = () => {
+  const [testVal, setTestVal] = useState(0);
+  React.useEffect(() => {
+    const tm = setInterval(() => {
+      setTestVal((old) => old + 1);
+    }, 1000);
+  }, []);
+  ll('FormBase render', testVal);
+
   const searchRef = useRef<SearchCommands>(null);
 
   const handleSubmit = (data: FormValueMap) => {

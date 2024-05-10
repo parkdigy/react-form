@@ -4,7 +4,7 @@ import {
   PrivateYearPickerValue,
   PrivateYearPickerBaseValue,
 } from './PrivateYearPicker.types';
-import { useAutoUpdateState } from '@pdg/react-hook';
+import { useAutoUpdateLayoutRef, useAutoUpdateState } from '@pdg/react-hook';
 import PrivateYearPickerYearList from './PrivateYearPickerYearList';
 import {
   StyledIconButton,
@@ -26,8 +26,14 @@ const PrivateYearPicker: React.FC<Props> = ({
   hideHeader,
   selectFromYear,
   selectToYear,
-  onChange,
+  onChange: initOnChange,
 }) => {
+  /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
+
+  const onChangeRef = useAutoUpdateLayoutRef(initOnChange);
+
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
@@ -38,44 +44,44 @@ const PrivateYearPicker: React.FC<Props> = ({
    * Memo
    * ******************************************************************************************************************/
 
-  const nowYear = useMemo(() => new Date().getFullYear(), []);
+  const yearInfo = useMemo(() => {
+    const nowYear = new Date().getFullYear();
 
-  const minAvailableYear = useMemo(() => {
+    let minAvailableYear: number;
     if (disablePast) {
-      return nowYear > minYear ? nowYear : minYear;
+      minAvailableYear = nowYear > minYear ? nowYear : minYear;
     } else {
-      return minYear;
+      minAvailableYear = minYear;
     }
-  }, [disablePast, minYear, nowYear]);
 
-  const maxAvailableYear = useMemo(() => {
+    let maxAvailableYear: number;
     if (disableFuture) {
-      return nowYear < maxYear ? nowYear : maxYear;
+      maxAvailableYear = nowYear < maxYear ? nowYear : maxYear;
     } else {
-      return maxYear;
+      maxAvailableYear = maxYear;
     }
-  }, [disableFuture, maxYear, nowYear]);
 
-  const displayYear = useMemo(() => {
+    return { now: nowYear, available: { min: minAvailableYear, max: maxAvailableYear } };
+  }, [disableFuture, disablePast, maxYear, minYear]);
+
+  const displayInfo = useMemo(() => {
+    let displayYear: number;
     if (value) {
-      return value;
+      displayYear = value;
     } else {
-      let year = selectFromYear || selectToYear || nowYear;
-      if (minAvailableYear > year) {
-        year = minAvailableYear;
-      } else if (maxAvailableYear < year) {
-        year = maxAvailableYear;
+      let year = selectFromYear || selectToYear || yearInfo.now;
+      if (yearInfo.available.min > year) {
+        year = yearInfo.available.min;
+      } else if (yearInfo.available.max < year) {
+        year = yearInfo.available.max;
       }
-      return year;
+      displayYear = year;
     }
-  }, [maxAvailableYear, minAvailableYear, nowYear, selectFromYear, selectToYear, value]);
-  const displayError = useMemo(
-    () => displayYear < minAvailableYear || displayYear > maxAvailableYear,
-    [displayYear, minAvailableYear, maxAvailableYear]
-  );
 
-  const prevBtnDisabled = useMemo(() => displayYear <= minAvailableYear, [displayYear, minAvailableYear]);
-  const nextBtnDisabled = useMemo(() => displayYear >= maxAvailableYear, [displayYear, maxAvailableYear]);
+    const displayError = displayYear < yearInfo.available.min || displayYear > yearInfo.available.max;
+
+    return { year: displayYear, error: displayError };
+  }, [selectFromYear, selectToYear, value, yearInfo]);
 
   /********************************************************************************************************************
    * Event Handler
@@ -83,35 +89,35 @@ const PrivateYearPicker: React.FC<Props> = ({
 
   const handleYearChange = useCallback(
     (v: PrivateYearPickerBaseValue) => {
-      if (minAvailableYear && v < minAvailableYear) {
-        setValue(minAvailableYear);
-        onChange(minAvailableYear, true);
-      } else if (maxAvailableYear && v > maxAvailableYear) {
-        setValue(maxAvailableYear);
-        onChange(maxAvailableYear, true);
+      if (yearInfo.available.min && v < yearInfo.available.min) {
+        setValue(yearInfo.available.min);
+        onChangeRef.current(yearInfo.available.min, true);
+      } else if (yearInfo.available.max && v > yearInfo.available.max) {
+        setValue(yearInfo.available.max);
+        onChangeRef.current(yearInfo.available.max, true);
       } else {
         setValue(v);
-        onChange(v, true);
+        onChangeRef.current(v, true);
       }
     },
-    [maxAvailableYear, minAvailableYear, onChange, setValue]
+    [yearInfo, setValue, onChangeRef]
   );
 
   const handlePrevClick = useCallback(() => {
-    if (displayYear) {
-      const newValue = displayYear - 1;
+    if (displayInfo.year) {
+      const newValue = displayInfo.year - 1;
       setValue(newValue);
-      onChange(newValue, false);
+      onChangeRef.current(newValue, false);
     }
-  }, [displayYear, onChange, setValue]);
+  }, [displayInfo, onChangeRef, setValue]);
 
   const handleNextClick = useCallback(() => {
-    if (displayYear) {
-      const newValue = displayYear + 1;
+    if (displayInfo.year) {
+      const newValue = displayInfo.year + 1;
       setValue(newValue);
-      onChange(newValue, false);
+      onChangeRef.current(newValue, false);
     }
-  }, [displayYear, onChange, setValue]);
+  }, [displayInfo, onChangeRef, setValue]);
 
   /********************************************************************************************************************
    * Render
@@ -121,15 +127,15 @@ const PrivateYearPicker: React.FC<Props> = ({
     <div className='PrivateYearPicker'>
       {!hideHeader && (
         <StyledTitleContainer>
-          <StyledIconButton disabled={prevBtnDisabled} onClick={handlePrevClick}>
+          <StyledIconButton disabled={displayInfo.year <= yearInfo.available.min} onClick={handlePrevClick}>
             <PdgIcon>KeyboardArrowLeft</PdgIcon>
           </StyledIconButton>
-          {displayError ? (
-            <StyledYearMonthError>{displayYear}년</StyledYearMonthError>
+          {displayInfo.error ? (
+            <StyledYearMonthError>{displayInfo.year}년</StyledYearMonthError>
           ) : (
-            <StyledYearMonth>{displayYear}년</StyledYearMonth>
+            <StyledYearMonth>{displayInfo.year}년</StyledYearMonth>
           )}
-          <StyledIconButton disabled={nextBtnDisabled} onClick={handleNextClick}>
+          <StyledIconButton disabled={displayInfo.year >= yearInfo.available.max} onClick={handleNextClick}>
             <PdgIcon>KeyboardArrowRight</PdgIcon>
           </StyledIconButton>
         </StyledTitleContainer>

@@ -1,23 +1,25 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { PrivateYearSelectProps as Props } from './PrivateYearSelect.types';
 import { Grid } from '@mui/material';
 import dayjs from 'dayjs';
 import './PrivateYearSelect.scss';
 import PrivateToggleButton from '../PrivateToggleButton';
 import SimpleBar from 'simplebar-react';
+import { useAutoUpdateLayoutRef } from '@pdg/react-hook';
 
 const YEARS = new Array(200).fill(0);
 for (let i = 0; i < 200; i += 1) {
   YEARS[i] = 1900 + i;
 }
 
-const PrivateYearSelect: React.FC<Props> = ({ selectYear, activeYear, availableDate, onSelect }) => {
+const PrivateYearSelect: React.FC<Props> = ({ selectYear, activeYear, availableDate, onSelect: initOnSelect }) => {
   /********************************************************************************************************************
    * Ref
    * ******************************************************************************************************************/
 
   const containerRef = useRef<HTMLDivElement>(null);
   const simpleBarRef = useRef<HTMLDivElement>(null);
+  const onSelectRef = useAutoUpdateLayoutRef(initOnSelect);
 
   /********************************************************************************************************************
    * Effect
@@ -45,6 +47,17 @@ const PrivateYearSelect: React.FC<Props> = ({ selectYear, activeYear, availableD
   }, []);
 
   /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
+
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      onSelectRef.current && onSelectRef.current(Number((e.target as HTMLButtonElement).getAttribute('data-id')));
+    },
+    [onSelectRef]
+  );
+
+  /********************************************************************************************************************
    * Render
    * ******************************************************************************************************************/
 
@@ -64,13 +77,14 @@ const PrivateYearSelect: React.FC<Props> = ({ selectYear, activeYear, availableD
             return (
               <Grid key={y} item xs={3}>
                 <PrivateToggleButton
+                  data-id={y}
                   className={`private-year-select-value-${y}`}
                   fullWidth
                   selected={isSelected}
                   activated={isActive}
                   outlined={isToday}
                   disabled={disabled}
-                  onClick={() => onSelect(y)}
+                  onClick={handleClick}
                 >
                   {y}
                 </PrivateToggleButton>

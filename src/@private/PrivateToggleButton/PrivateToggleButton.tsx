@@ -5,13 +5,16 @@ import { Button, useTheme, darken } from '@mui/material';
 import { CommonSxProps } from '../../@types';
 
 const PrivateToggleButton = React.forwardRef<HTMLButtonElement, Props>(
-  ({ children, className: initClassName, selected, activated, outlined, ...props }, ref) => {
+  ({ children, className, selected, activated, outlined, ...props }, ref) => {
+    /********************************************************************************************************************
+     * Use
+     * ******************************************************************************************************************/
+
     const theme = useTheme();
 
-    const className = useMemo(
-      () => classNames(initClassName, selected && 'selected', activated && 'activated', outlined && 'outlined'),
-      [activated, initClassName, outlined, selected]
-    );
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
 
     const sx = useMemo(() => {
       const newSx: CommonSxProps['sx'] = {
@@ -36,8 +39,24 @@ const PrivateToggleButton = React.forwardRef<HTMLButtonElement, Props>(
       return newSx;
     }, [activated, outlined, selected, theme]);
 
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
+
     return (
-      <Button {...props} ref={ref} sx={sx} variant='text' className={classNames(className, selected && 'selected')}>
+      <Button
+        {...props}
+        ref={ref}
+        sx={sx}
+        variant='text'
+        className={classNames(
+          className,
+          selected && 'selected',
+          activated && 'activated',
+          outlined && 'outlined',
+          selected && 'selected'
+        )}
+      >
         {children}
       </Button>
     );

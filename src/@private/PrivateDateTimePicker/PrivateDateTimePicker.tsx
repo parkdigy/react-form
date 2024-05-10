@@ -7,7 +7,7 @@ import {
   DesktopDateTimePicker,
   DesktopDateTimePickerSlotsComponentsProps,
 } from '@mui/x-date-pickers';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateLayoutRef, useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
 import { PdgIcon, PdgIconText } from '@pdg/react-component';
 import {
@@ -77,7 +77,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
       hidden: initHidden,
       showDaysOutsideCurrentMonth = true,
       onChange,
-      onValidate,
+      onValidate: initOnValidate,
       //--------------------------------------------------------------------------------------------------------------------
       className,
       style: initStyle,
@@ -102,6 +102,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
     const mouseDownTimeRef = useRef<number>();
     const datePickerErrorRef = useRef<DateTimeValidationError>(null);
     const openValueRef = useRef<PrivateDateTimePickerValue>(null);
+    const onValidateRef = useAutoUpdateLayoutRef(initOnValidate);
 
     /********************************************************************************************************************
      * FormState
@@ -158,15 +159,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
      * Memo
      * ******************************************************************************************************************/
 
-    const label = useMemo(
-      () => (labelIcon ? <PdgIconText icon={labelIcon}>{initLabel}</PdgIconText> : initLabel),
-      [initLabel, labelIcon]
-    );
     const format = useMemo(() => (initFormat ? initFormat : getDateTimeFormat(type, time)), [initFormat, time, type]);
-    const formValueFormat = useMemo(
-      () => (initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time)),
-      [initFormValueFormat, time, type]
-    );
     const availableDate = useMemo(
       () => makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture),
       [disableFuture, disablePast, maxDate, minDate]
@@ -207,8 +200,8 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
           setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
           return false;
         }
-        if (onValidate) {
-          const onValidateResult = onValidate(value);
+        if (onValidateRef.current) {
+          const onValidateResult = onValidateRef.current(value);
           if (onValidateResult != null && onValidateResult !== true) {
             setErrorErrorHelperText(true, onValidateResult);
             return false;
@@ -219,7 +212,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
 
         return true;
       },
-      [required, timeError, onValidate, setErrorErrorHelperText]
+      [required, timeError, onValidateRef, setErrorErrorHelperText]
     );
 
     /********************************************************************************************************************
@@ -231,21 +224,12 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
     }, []);
 
     const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+    const [inputValue, setInputValue] = useAutoUpdateState<PrivateDateTimePickerValue>(value);
 
     useFirstSkipEffect(() => {
       if (error) validate(value);
       if (onChange) onChange(value);
       onValueChange(name, value);
-    }, [value]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const [inputValue, setInputValue] = useState<PrivateDateTimePickerValue>(value);
-
-    useFirstSkipEffect(() => {
-      setInputValue(value);
     }, [value]);
 
     /********************************************************************************************************************
@@ -296,18 +280,6 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
     }, [value]);
 
     /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const wrapStyle = useMemo(
-      () => ({
-        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
-        flex: fullWidth ? 1 : undefined,
-      }),
-      [hidden, fullWidth]
-    );
-
-    /********************************************************************************************************************
      * Function - focus
      * ******************************************************************************************************************/
 
@@ -340,7 +312,8 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
           validate: () => validate(valueRef.current),
           setError: (error: boolean, errorText: ReactNode | undefined) =>
             setErrorErrorHelperText(error, error ? errorText : undefined),
-          getFormValueFormat: () => formValueFormat,
+          getFormValueFormat: () =>
+            initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time),
         };
 
         if (ref) {
@@ -370,10 +343,10 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
       disabledRef,
       exceptValue,
       focus,
-      formValueFormat,
       getFinalValue,
       hiddenRef,
       id,
+      initFormValueFormat,
       initValue,
       name,
       onAddValueItem,
@@ -384,6 +357,8 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
       setErrorErrorHelperText,
       setHidden,
       setValue,
+      time,
+      type,
       validate,
       valueRef,
     ]);
@@ -457,7 +432,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
 
         setInputValue(finalValue);
       },
-      [type, time, setValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]
+      [setInputValue, type, time, setValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     const handleContainerFocus = useCallback(() => {
@@ -583,7 +558,10 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
           <div
             className={classNames(className, 'PrivateDateTimePicker')}
-            style={wrapStyle}
+            style={{
+              display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+              flex: fullWidth ? 1 : undefined,
+            }}
             onMouseDown={handleContainerMouseDown}
             onFocus={handleContainerFocus}
             onBlur={handleContainerBlur}
@@ -627,7 +605,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
               <div style={{ display: fullWidth ? 'block' : 'inline-block' }}>
                 <DesktopDateTimePicker
                   value={inputValue}
-                  label={label}
+                  label={labelIcon ? <PdgIconText icon={labelIcon}>{initLabel}</PdgIconText> : initLabel}
                   open={false}
                   format={format}
                   disabled={disabled}
