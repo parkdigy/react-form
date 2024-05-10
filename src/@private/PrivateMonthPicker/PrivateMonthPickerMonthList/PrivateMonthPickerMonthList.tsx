@@ -20,28 +20,34 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
    * Memo
    * ******************************************************************************************************************/
 
-  const nowDate = useMemo(() => dayjs(), []);
-  const nowValue = useMemo(() => dateToValue(nowDate), [nowDate]);
-  const nowYm = useMemo(() => Number(nowDate.format('YYYYMM')), [nowDate]);
+  const dateInfo = useMemo(() => {
+    const nowDate = dayjs();
+    const nowValue = dateToValue(nowDate);
+    const nowYm = valueToYm(nowValue);
+    const availableYm = {
+      min: valueToYm(minAvailableValue),
+      max: valueToYm(maxAvailableValue),
+    };
+    const defaultValue = initDefaultValue
+      ? initDefaultValue
+      : nowYm < availableYm.min
+        ? minAvailableValue
+        : nowYm > availableYm.max
+          ? maxAvailableValue
+          : nowValue;
 
-  const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue]);
-  const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue]);
+    return { nowDate, nowValue, nowYm, availableYm, defaultValue };
+  }, [initDefaultValue, maxAvailableValue, minAvailableValue]);
 
-  const defaultValue = useMemo(() => {
-    if (initDefaultValue) {
-      return initDefaultValue;
-    } else if (nowYm < minAvailableYm) {
-      return minAvailableValue;
-    } else if (nowYm > maxAvailableYm) {
-      return maxAvailableValue;
-    } else {
-      return nowValue;
-    }
-  }, [initDefaultValue, nowYm, minAvailableYm, maxAvailableYm, minAvailableValue, maxAvailableValue, nowValue]);
+  /********************************************************************************************************************
+   * Variable
+   * ******************************************************************************************************************/
 
-  const defaultYear = useMemo(() => defaultValue.year, [defaultValue.year]);
-  const defaultMonth = useMemo(() => defaultValue.month, [defaultValue.month]);
-  const currentYear = useMemo(() => (value ? value.year : defaultYear), [value, defaultYear]);
+  const currentYear = value ? value.year : dateInfo.defaultValue.year;
+
+  /********************************************************************************************************************
+   * Memo
+   * ******************************************************************************************************************/
 
   const months = useMemo(() => {
     const newMonths: {
@@ -65,26 +71,29 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
       newMonths.push({
         month: i,
         range,
-        isDefault: !value && i === defaultMonth,
+        isDefault: !value && i === dateInfo.defaultValue.month,
         active: (!!selectFromValue || !!selectToValue) && !!value && ym === valueToYm(value),
         selected: !!value && ym >= startYm && ym <= endYm,
         selectedStart: !!value && ym === startYm,
         selectedEnd: !!value && ym === endYm,
         disabled:
-          ym < minAvailableYm || ym > maxAvailableYm || (disablePast && ym < nowYm) || (disableFuture && ym > nowYm),
+          ym < dateInfo.availableYm.min ||
+          ym > dateInfo.availableYm.max ||
+          (disablePast && ym < dateInfo.nowYm) ||
+          (disableFuture && ym > dateInfo.nowYm),
       });
     }
     return newMonths;
   }, [
     selectFromValue,
-    value,
     selectToValue,
+    value,
     currentYear,
-    defaultMonth,
-    minAvailableYm,
-    maxAvailableYm,
+    dateInfo.defaultValue.month,
+    dateInfo.availableYm.min,
+    dateInfo.availableYm.max,
+    dateInfo.nowYm,
     disablePast,
-    nowYm,
     disableFuture,
   ]);
 

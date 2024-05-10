@@ -692,4 +692,6 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
   }
 );
 
+FormMonthRangePicker.displayName = 'FormMonthRangePicker';
+
 export default FormMonthRangePicker;

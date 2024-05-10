@@ -40,4 +40,6 @@ const FormTimePicker = React.forwardRef<FormTimePickerCommands, Props>(({ classN
   );
 });
 
+FormTimePicker.displayName = 'FormTimePicker';
+
 export default FormTimePicker;

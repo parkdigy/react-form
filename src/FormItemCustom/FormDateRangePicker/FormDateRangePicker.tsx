@@ -808,4 +808,6 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
   }
 );
 
+FormDateRangePicker.displayName = 'FormDateRangePicker';
+
 export default FormDateRangePicker;

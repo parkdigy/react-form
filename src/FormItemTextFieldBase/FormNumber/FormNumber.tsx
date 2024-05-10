@@ -145,4 +145,6 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
   }
 );
 
+FormNumber.displayName = 'FormNumber';
+
 export default FormNumber;

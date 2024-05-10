@@ -362,4 +362,6 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
   }
 );
 
+FormTextEditor.displayName = 'FormTextEditor';
+
 export default FormTextEditor;

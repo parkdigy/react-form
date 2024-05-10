@@ -219,4 +219,6 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
   }
 );
 
+FormImageFile.displayName = 'FormImageFile';
+
 export default FormImageFile;

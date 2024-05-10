@@ -544,4 +544,6 @@ const FormRadioGroup = ToForwardRefExoticComponent(
   })
 );
 
+FormRadioGroup.displayName = 'FormRadioGroup';
+
 export default FormRadioGroup;

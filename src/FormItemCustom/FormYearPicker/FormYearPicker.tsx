@@ -498,4 +498,6 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
   }
 );
 
+FormYearPicker.displayName = 'FormYearPicker';
+
 export default FormYearPicker;

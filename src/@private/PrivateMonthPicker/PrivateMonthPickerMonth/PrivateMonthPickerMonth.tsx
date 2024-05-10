@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { PrivateMonthPickerMonthProps as Props } from './PrivateMonthPickerMonth.types';
 import classNames from 'classnames';
 import { StyledButton, StyledContainer } from './PrivateMonthPickerMonth.style.private';
@@ -22,25 +22,6 @@ const PrivateMonthPickerMonth = React.forwardRef<HTMLDivElement, Props>(
     ref
   ) => {
     /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const className = useMemo(
-      () =>
-        classNames(
-          range && 'range',
-          isDefault && 'default',
-          active && 'active',
-          selected && 'selected',
-          selectedStart && 'selected-start',
-          selectedEnd && 'selected-end',
-          selectedTemp && 'selected-temp',
-          disabled && 'disabled'
-        ),
-      [range, isDefault, active, selected, selectedStart, selectedEnd, selectedTemp, disabled]
-    );
-
-    /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
 
@@ -55,7 +36,16 @@ const PrivateMonthPickerMonth = React.forwardRef<HTMLDivElement, Props>(
     return (
       <StyledContainer className='PrivateMonthPickerMonth' ref={ref} item xs={4}>
         <StyledButton
-          className={className}
+          className={classNames(
+            range && 'range',
+            isDefault && 'default',
+            active && 'active',
+            selected && 'selected',
+            selectedStart && 'selected-start',
+            selectedEnd && 'selected-end',
+            selectedTemp && 'selected-temp',
+            disabled && 'disabled'
+          )}
           disabled={disabled}
           onClick={handleClick}
           onMouseEnter={onMouseEnter}

@@ -294,4 +294,6 @@ const FormSwitch = React.forwardRef<FormSwitchCommands, Props>(
   }
 );
 
+FormSwitch.displayName = 'FormSwitch';
+
 export default FormSwitch;

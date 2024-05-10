@@ -16,4 +16,6 @@ const FormMobile = React.forwardRef<FormMobileCommands, Props>(
   }
 );
 
+FormMobile.displayName = 'FormMobile';
+
 export default FormMobile;

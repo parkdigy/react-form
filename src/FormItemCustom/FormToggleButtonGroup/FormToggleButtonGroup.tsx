@@ -652,4 +652,6 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
   })
 );
 
+FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';
+
 export default FormToggleButtonGroup;

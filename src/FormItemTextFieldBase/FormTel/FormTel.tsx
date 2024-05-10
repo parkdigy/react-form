@@ -43,4 +43,6 @@ const FormTel = React.forwardRef<FormTelCommands, Props>(
   }
 );
 
+FormTel.displayName = 'FormTel';
+
 export default FormTel;

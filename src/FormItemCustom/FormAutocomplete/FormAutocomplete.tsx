@@ -695,4 +695,6 @@ const FormAutocomplete = ToForwardRefExoticComponent(
   })
 );
 
+FormAutocomplete.displayName = 'FormAutocomplete';
+
 export default FormAutocomplete;

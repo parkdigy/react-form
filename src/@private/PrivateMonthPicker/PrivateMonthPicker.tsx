@@ -4,10 +4,9 @@ import {
   PrivateMonthPickerValue,
   PrivateMonthPickerBaseValue,
 } from './PrivateMonthPicker.types';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { useAutoUpdateState } from '@pdg/react-hook';
 import PrivateYearPicker from '../PrivateYearPicker';
-import { FormMonthPickerBaseValue } from '../../FormItemCustom';
 import PrivateMonthPickerMonthList from './PrivateMonthPickerMonthList';
 import {
   StyledContainer,
@@ -17,6 +16,7 @@ import {
   TitleContainer,
 } from './PrivateMonthPicker.style.private';
 import { PdgIcon } from '@pdg/react-component';
+import { dateToValue, valueToDate, valueToYm } from './PrivateMonthPicker.function.private';
 
 const DEFAULT_MIN_VALUE = {
   year: 2020,
@@ -44,19 +44,11 @@ const PrivateMonthPicker: React.FC<Props> = ({
   const [value, setValue] = useAutoUpdateState<PrivateMonthPickerValue>(initValue);
 
   /********************************************************************************************************************
-   * Function
-   * ******************************************************************************************************************/
-
-  const valueToDate = useCallback((v: PrivateMonthPickerBaseValue) => dayjs(`${v.year}-${v.month}-01`), []);
-  const valueToYm = useCallback((v: FormMonthPickerBaseValue) => v.year * 100 + v.month, []);
-  const dateToValue = useCallback((v: Dayjs) => ({ year: v.year(), month: v.month() + 1 }), []);
-
-  /********************************************************************************************************************
    * Memo
    * ******************************************************************************************************************/
 
-  const nowValue = useMemo(() => dateToValue(dayjs()), [dateToValue]);
-  const nowYm = useMemo(() => valueToYm(nowValue), [nowValue, valueToYm]);
+  const nowValue = useMemo(() => dateToValue(dayjs()), []);
+  const nowYm = useMemo(() => valueToYm(nowValue), [nowValue]);
 
   const minAvailableValue = useMemo(() => {
     if (disablePast) {
@@ -65,8 +57,8 @@ const PrivateMonthPicker: React.FC<Props> = ({
     } else {
       return minValue;
     }
-  }, [disablePast, valueToYm, minValue, nowYm, nowValue]);
-  const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue, valueToYm]);
+  }, [disablePast, minValue, nowYm, nowValue]);
+  const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue]);
 
   const maxAvailableValue = useMemo(() => {
     if (disableFuture) {
@@ -75,8 +67,8 @@ const PrivateMonthPicker: React.FC<Props> = ({
     } else {
       return maxValue;
     }
-  }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
-  const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue, valueToYm]);
+  }, [disableFuture, maxValue, nowYm, nowValue]);
+  const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue]);
 
   const displayValue = useMemo(() => {
     if (value && !Number.isNaN(value.year) && !Number.isNaN(value.month)) {
@@ -101,7 +93,7 @@ const PrivateMonthPicker: React.FC<Props> = ({
     selectToValue,
     value,
   ]);
-  const displayValueDate = useMemo(() => valueToDate(displayValue), [displayValue, valueToDate]);
+  const displayValueDate = useMemo(() => valueToDate(displayValue), [displayValue]);
   const displayValueYm = useMemo(() => displayValue.year * 100 + displayValue.month, [displayValue]);
   const displayValueError = useMemo(
     () => displayValueYm < minAvailableYm || displayValueYm > maxAvailableYm,
@@ -127,7 +119,7 @@ const PrivateMonthPicker: React.FC<Props> = ({
         onChange(newValue, false);
       }
     },
-    [displayValue, maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm, onChange, setValue, valueToYm]
+    [displayValue, maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm, onChange, setValue]
   );
 
   const handleMonthChange = useCallback(
@@ -142,13 +134,13 @@ const PrivateMonthPicker: React.FC<Props> = ({
     const newValue = dateToValue(displayValueDate.subtract(1, 'months'));
     setValue(newValue);
     onChange(newValue, false);
-  }, [dateToValue, displayValueDate, onChange, setValue]);
+  }, [displayValueDate, onChange, setValue]);
 
   const handleNextClick = useCallback(() => {
     const newValue = dateToValue(displayValueDate.add(1, 'months'));
     setValue(newValue);
     onChange(newValue, false);
-  }, [dateToValue, displayValueDate, onChange, setValue]);
+  }, [displayValueDate, onChange, setValue]);
 
   /********************************************************************************************************************
    * Render

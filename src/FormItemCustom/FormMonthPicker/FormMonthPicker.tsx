@@ -550,4 +550,6 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
   }
 );
 
+FormMonthPicker.displayName = 'FormMonthPicker';
+
 export default FormMonthPicker;

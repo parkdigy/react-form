@@ -393,4 +393,6 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
   }
 );
 
+FormTag.displayName = 'FormTag';
+
 export default FormTag;

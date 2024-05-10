@@ -16,4 +16,6 @@ const FormHidden = React.forwardRef<FormHiddenCommands, Props>(({ className, ...
   );
 });
 
+FormHidden.displayName = 'FormHidden';
+
 export default FormHidden;

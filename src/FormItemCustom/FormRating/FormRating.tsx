@@ -332,4 +332,6 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
   }
 );
 
+FormRating.displayName = 'FormRating';
+
 export default FormRating;

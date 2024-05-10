@@ -516,4 +516,6 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
   }
 );
 
+FormTextField.displayName = 'FormTextField';
+
 export default FormTextField;

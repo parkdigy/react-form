@@ -42,4 +42,6 @@ const FormUrl = React.forwardRef<FormUrlCommands, Props>(
   }
 );
 
+FormUrl.displayName = 'FormUrl';
+
 export default FormUrl;

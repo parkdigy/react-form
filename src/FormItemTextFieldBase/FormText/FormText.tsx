@@ -18,4 +18,6 @@ const FormText = React.forwardRef<FormTextCommands, FormTextProps>(
   }
 );
 
+FormText.displayName = 'FormText';
+
 export default FormText;

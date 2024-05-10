@@ -8,4 +8,6 @@ const FormSearch = React.forwardRef<FormSearchCommands, Props>(({ className, ...
   return <FormText className={classNames(className, 'FormSearch')} ref={ref} type='search' {...props} />;
 });
 
+FormSearch.displayName = 'FormSearch';
+
 export default FormSearch;

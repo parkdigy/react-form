@@ -20,4 +20,6 @@ const FormTextarea = React.forwardRef<FormTextareaCommands, Props>(
   }
 );
 
+FormTextarea.displayName = 'FormTextarea';
+
 export default FormTextarea;

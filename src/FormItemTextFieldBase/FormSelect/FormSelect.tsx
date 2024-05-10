@@ -449,4 +449,6 @@ const FormSelect = ToForwardRefExoticComponent(
   })
 );
 
+FormSelect.displayName = 'FormSelect';
+
 export default FormSelect;

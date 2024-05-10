@@ -354,4 +354,6 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
   }
 );
 
+FormCheckbox.displayName = 'FormCheckbox';
+
 export default FormCheckbox;

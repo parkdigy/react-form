@@ -43,4 +43,6 @@ const FormCompanyNo = React.forwardRef<FormCompanyNoCommands, Props>(
   }
 );
 
+FormCompanyNo.displayName = 'FormCompanyNo';
+
 export default FormCompanyNo;

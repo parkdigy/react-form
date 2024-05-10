@@ -606,4 +606,6 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
   }
 );
 
+FormFile.displayName = 'FormFile';
+
 export default FormFile;

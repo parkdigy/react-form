@@ -78,4 +78,6 @@ const FormPassword = React.forwardRef<FormPasswordCommands, Props>(
   }
 );
 
+FormPassword.displayName = 'FormPassword';
+
 export default FormPassword;

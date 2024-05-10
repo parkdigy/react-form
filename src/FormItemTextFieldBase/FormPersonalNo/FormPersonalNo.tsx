@@ -88,4 +88,6 @@ const FormPersonalNo = React.forwardRef<FormPersonalNoCommands, Props>(
   }
 );
 
+FormPersonalNo.displayName = 'FormPersonalNo';
+
 export default FormPersonalNo;

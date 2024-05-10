@@ -38,4 +38,6 @@ const FormEmail = React.forwardRef<FormEmailCommands, FormEmailProps>(
   }
 );
 
+FormEmail.displayName = 'FormEmail';
+
 export default FormEmail;

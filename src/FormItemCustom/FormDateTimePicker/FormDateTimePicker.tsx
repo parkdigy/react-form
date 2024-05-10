@@ -45,4 +45,6 @@ const FormDateTimePicker = React.forwardRef<FormDateTimePickerCommands, Props>((
   );
 });
 
+FormDateTimePicker.displayName = 'FormDateTimePicker';
+
 export default FormDateTimePicker;

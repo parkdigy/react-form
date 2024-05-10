@@ -12,7 +12,6 @@ import {
   FormNumber,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
-import { Button } from '@mui/material';
 
 const FormItemTag = () => {
   /********************************************************************************************************************
@@ -87,7 +86,6 @@ const FormItemTag = () => {
                 required
                 helperText='required=true'
                 value={value}
-                endAdornment={<Button>추가</Button>}
               />
             </FormCol>
             <FormCol>

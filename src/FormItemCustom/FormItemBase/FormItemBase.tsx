@@ -255,4 +255,6 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
   }
 );
 
+FormItemBase.displayName = 'FormItemBase';
+
 export default FormItemBase;
