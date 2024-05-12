@@ -31,8 +31,8 @@ const FormTimePicker = React.forwardRef<FormTimePickerCommands, Props>(({ classN
   return (
     <FormContextProvider
       value={{
-        onAddValueItem: handleAddValueItem,
         ...otherFormState,
+        onAddValueItem: handleAddValueItem,
       }}
     >
       <PrivateDateTimePicker className={classNames(className, 'FormTimePicker')} {...props} ref={ref} type='time' />

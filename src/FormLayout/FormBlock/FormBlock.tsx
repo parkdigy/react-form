@@ -113,7 +113,7 @@ const FormBlock = React.forwardRef<HTMLDivElement, Props>(
 
     return (
       <FormContext.Provider
-        value={{ variant, size, color, spacing, focused, labelShrink, fullWidth, ...otherFormState }}
+        value={{ ...otherFormState, variant, size, color, spacing, focused, labelShrink, fullWidth }}
       >
         <Grid item ref={ref} xs={12} className={classNames(className, 'FormBlock')} style={style} sx={sx}>
           <Grid container spacing={spacing}>

@@ -1,10 +1,9 @@
-import React, { ReactNode, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Paper } from '@mui/material';
 import { SearchProps as Props, SearchCommands } from './Search.types';
 import { Form, FormCommands } from '../../Form';
 import { FormBody } from '../../FormLayout';
 import FormContextProvider from '../../FormContextProvider';
-import SearchGroupRow from '../SearchGroupRow';
 import { FormContextValue } from '../../FormContext';
 
 const Search = React.forwardRef<SearchCommands, Props>(
@@ -24,7 +23,6 @@ const Search = React.forwardRef<SearchCommands, Props>(
     },
     ref
   ) => {
-    ll('Render Search');
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -42,31 +40,31 @@ const Search = React.forwardRef<SearchCommands, Props>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const renderChildren = useMemo(() => {
-      ll('children changed');
-      const rowItems: ReactNode[] = [];
-      const basicRowItems: ReactNode[] = [];
-
-      React.Children.forEach(children, (child) => {
-        if (React.isValidElement(child)) {
-          if (child.type.toString() === SearchGroupRow.toString()) {
-            rowItems.push(child);
-          } else {
-            basicRowItems.push(child);
-          }
-        }
-      });
-
-      if (basicRowItems.length > 0) {
-        return [<SearchGroupRow key='$basicRow$'>{basicRowItems}</SearchGroupRow>, ...rowItems];
-      } else {
-        return rowItems;
-      }
-    }, [children]);
+    // /********************************************************************************************************************
+    //  * Memo
+    //  * ******************************************************************************************************************/
+    //
+    // const renderChildren = useMemo(() => {
+    //   ll('children changed');
+    //   const rowItems: ReactNode[] = [];
+    //   const basicRowItems: ReactNode[] = [];
+    //
+    //   React.Children.forEach(children, (child) => {
+    //     if (React.isValidElement(child)) {
+    //       if (child.type.toString() === SearchGroupRow.toString()) {
+    //         rowItems.push(child);
+    //       } else {
+    //         basicRowItems.push(child);
+    //       }
+    //     }
+    //   });
+    //
+    //   if (basicRowItems.length > 0) {
+    //     return [<SearchGroupRow key='$basicRow$'>{basicRowItems}</SearchGroupRow>, ...rowItems];
+    //   } else {
+    //     return rowItems;
+    //   }
+    // }, [children]);
 
     /********************************************************************************************************************
      * FormContextValue
@@ -101,6 +99,25 @@ const Search = React.forwardRef<SearchCommands, Props>(
     );
 
     /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
+
+    const handleRef = useCallback(
+      (commands: FormCommands | null) => {
+        if (ref) {
+          if (typeof ref === 'function') {
+            ref(commands);
+          } else {
+            ref.current = commands;
+          }
+        }
+
+        formRef.current = commands || undefined;
+      },
+      [ref]
+    );
+
+    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
 
@@ -108,17 +125,7 @@ const Search = React.forwardRef<SearchCommands, Props>(
       <FormContextProvider value={formContextValue}>
         <Paper variant='outlined' className={className} sx={{ p: 1.5, ...sx }} style={style}>
           <Form
-            ref={(commands) => {
-              if (ref) {
-                if (typeof ref === 'function') {
-                  ref(commands);
-                } else {
-                  ref.current = commands;
-                }
-              }
-
-              formRef.current = commands || undefined;
-            }}
+            ref={handleRef}
             className='Search'
             variant='outlined'
             size='small'
@@ -129,7 +136,7 @@ const Search = React.forwardRef<SearchCommands, Props>(
             fullWidth={false}
             {...otherProps}
           >
-            <FormBody>{renderChildren}</FormBody>
+            <FormBody>{children}</FormBody>
           </Form>
         </Paper>
       </FormContextProvider>

@@ -1,11 +1,12 @@
 import React, { useEffect, useLayoutEffect, useId, useMemo, useRef } from 'react';
 import classNames from 'classnames';
-import { FormHelperText, Grid, Box } from '@mui/material';
+import { FormHelperText, Grid } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
 import { FormColProps as Props } from './FormCol.types';
 import { useFormState } from '../../FormContext';
-import { FormLabel } from '../../FormCommon';
 import FormContextProvider from '../../FormContextProvider';
+import { StyledContentContainerBox, StyledFormLabel, StyledFormLabelContainerDiv } from './FormCol.style.private';
+import { ifUndefined } from '@pdg/util';
 
 const FormCol = React.forwardRef<HTMLDivElement, Props>(
   (
@@ -70,28 +71,35 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const spacing = useMemo(() => initSpacing || formSpacing, [initSpacing, formSpacing]);
-    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
-    const labelShrink = useMemo(
-      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
-      [initLabelShrink, formLabelShrink]
-    );
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
-    );
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const gap = useMemo(() => (initGap == null ? formFormColGap : initGap), [formFormColGap, initGap]);
-    const style = useMemo<Props['style']>(
-      () => (hidden ? { ...initStyle, display: 'none' } : initStyle),
-      [hidden, initStyle]
+    const formState = useMemo(
+      () => ({
+        variant: ifUndefined(initVariant, formVariant),
+        size: ifUndefined(initSize, formSize),
+        color: ifUndefined(initColor, formColor),
+        spacing: ifUndefined(initSpacing, formSpacing),
+        focused: ifUndefined(initFocused, formFocused),
+        labelShrink: ifUndefined(initLabelShrink, formLabelShrink),
+        fullWidth: ifUndefined(initFullWidth, formFullWidth),
+        formColGap: ifUndefined(initGap, formFormColGap),
+      }),
+      [
+        formColor,
+        formFocused,
+        formFormColGap,
+        formFullWidth,
+        formLabelShrink,
+        formSize,
+        formSpacing,
+        formVariant,
+        initColor,
+        initFocused,
+        initFullWidth,
+        initGap,
+        initLabelShrink,
+        initSize,
+        initSpacing,
+        initVariant,
+      ]
     );
 
     /********************************************************************************************************************
@@ -138,18 +146,12 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
     return (
       <FormContextProvider
         value={{
-          variant,
-          size,
-          color,
-          spacing,
-          focused,
-          labelShrink,
-          fullWidth,
+          ...otherFormState,
+          ...formState,
           formColXs: xs || formColAutoXs || 12,
           formColWidth,
           formColWithLabel: !!label,
           formColWithHelperText: !!helperText,
-          ...otherFormState,
         }}
       >
         <Grid
@@ -157,30 +159,29 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
           item
           xs={xs || formColAutoXs || 12}
           className={classNames(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text')}
-          style={style}
+          style={hidden ? { ...initStyle, display: 'none' } : initStyle}
           sx={sx}
         >
           <Grid container direction='column'>
             {label && (
               <Grid item className='FormCol-header'>
-                <div style={{ position: 'relative', height: 20 }}>
-                  <FormLabel
+                <StyledFormLabelContainerDiv>
+                  <StyledFormLabel
                     className='FormCol-FormLabel'
-                    size={size}
+                    size={formState.size}
                     icon={icon}
-                    focused={focused}
-                    color={color}
+                    focused={formState.focused}
+                    color={formState.color}
                     error={error}
                     warning={warning}
-                    style={{ position: 'absolute', left: 5, top: 0 }}
                   >
                     {label}
-                  </FormLabel>
-                </div>
+                  </StyledFormLabel>
+                </StyledFormLabelContainerDiv>
               </Grid>
             )}
             <Grid item xs={2} className='FormCol-content'>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap }}>{children}</Box>
+              <StyledContentContainerBox gap={formState.formColGap}>{children}</StyledContentContainerBox>
             </Grid>
             {helperText && (
               <Grid item className='FormCol-helper-text'>

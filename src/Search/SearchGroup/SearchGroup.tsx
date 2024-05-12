@@ -4,6 +4,7 @@ import { SearchGroupProps } from './SearchGroup.types';
 import { Grid } from '@mui/material';
 import { FormHidden } from '../../FormItemTextFieldBase';
 import { StyledItem } from './SearchGroup.style.private';
+import { contains } from '@pdg/util';
 
 const isReactFragment = (child: ReactElement) => {
   try {
@@ -59,26 +60,6 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
   hidden,
   spacing = 1,
 }) => {
-  /********************************************************************************************************************
-   * State
-   * ******************************************************************************************************************/
-
-  const justifyContent = useMemo(() => {
-    switch (align) {
-      case undefined:
-      case 'left':
-        return 'start';
-      case 'center':
-        return 'center';
-      case 'right':
-        return 'end';
-    }
-  }, [align]);
-
-  /********************************************************************************************************************
-   * Render
-   * ******************************************************************************************************************/
-
   return (
     <Grid
       item
@@ -89,7 +70,7 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
         container
         wrap='wrap'
         spacing={spacing}
-        justifyContent={justifyContent}
+        justifyContent={align === undefined || align === 'left' ? 'start' : align === 'center' ? 'center' : 'end'}
         alignItems='start'
         style={style}
         sx={sx}

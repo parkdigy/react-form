@@ -13,6 +13,10 @@ const FormEmail = React.forwardRef<FormEmailCommands, FormEmailProps>(
     },
     ref
   ) => {
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
+
     const handleValue = useCallback(
       (value: FormEmailValue) => {
         const newValue = value.replace(/ /gi, '');

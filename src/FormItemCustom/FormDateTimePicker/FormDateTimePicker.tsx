@@ -31,8 +31,8 @@ const FormDateTimePicker = React.forwardRef<FormDateTimePickerCommands, Props>((
   return (
     <FormContextProvider
       value={{
-        onAddValueItem: handleAddValueItem,
         ...otherFormState,
+        onAddValueItem: handleAddValueItem,
       }}
     >
       <PrivateDateTimePicker

@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util.private';
-import { empty, nextTick, notEmpty, equal, Dict } from '@pdg/util';
+import { empty, nextTick, notEmpty, equal, Dict, ifUndefined } from '@pdg/util';
 import {
   FormAutocompleteProps,
   FormAutocompleteCommands,
@@ -120,17 +120,29 @@ const FormAutocomplete = ToForwardRefExoticComponent(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
-    const labelShrink = useMemo(
-      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
-      [initLabelShrink, formLabelShrink]
-    );
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
+    const formState = useMemo(
+      () => ({
+        variant: ifUndefined(initVariant, formVariant),
+        size: ifUndefined(initSize, formSize),
+        color: ifUndefined(initColor, formColor),
+        focused: ifUndefined(initFocused, formFocused),
+        labelShrink: ifUndefined(initLabelShrink, formLabelShrink),
+        fullWidth: ifUndefined(initFullWidth, formFullWidth),
+      }),
+      [
+        formColor,
+        formFocused,
+        formFullWidth,
+        formLabelShrink,
+        formSize,
+        formVariant,
+        initColor,
+        initFocused,
+        initFullWidth,
+        initLabelShrink,
+        initSize,
+        initVariant,
+      ]
     );
 
     /********************************************************************************************************************
@@ -180,20 +192,6 @@ const FormAutocomplete = ToForwardRefExoticComponent(
         return {};
       }
     }, [items]);
-
-    const style = useMemo(() => {
-      const style: Props['style'] = {
-        minWidth: 120,
-        ...initStyle,
-      };
-      if (hidden) {
-        style.display = 'none';
-      }
-      if (width != null) {
-        style.width = width;
-      }
-      return style;
-    }, [initStyle, width, hidden]);
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -471,9 +469,9 @@ const FormAutocomplete = ToForwardRefExoticComponent(
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      if (ref || onAddValueItem) {
-        const commands: Commands = {
+    const commands = useMemo(
+      () =>
+        ({
           getType: () => 'FormAutocomplete',
           getName: () => name,
           getReset: () => getFinalValue(initValue),
@@ -499,8 +497,35 @@ const FormAutocomplete = ToForwardRefExoticComponent(
           isMultiple: () => !!multiple,
           getLoading: () => !!loadingRef.current,
           setLoading: (loading) => setLoading(loading),
-        };
+        }) as Commands,
+      [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        formValueSeparator,
+        formValueSort,
+        getFinalValue,
+        hiddenRef,
+        initValue,
+        itemsRef,
+        loadingRef,
+        multiple,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        setItems,
+        setLoading,
+        setValue,
+        validate,
+        valueRef,
+      ]
+    );
 
+    useLayoutEffect(() => {
+      if (ref || onAddValueItem) {
         if (ref) {
           if (typeof ref === 'function') {
             ref(commands);
@@ -523,34 +548,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
           if (onRemoveValueItem) onRemoveValueItem(id);
         };
       }
-    }, [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      formValueSeparator,
-      formValueSort,
-      getFinalValue,
-      hiddenRef,
-      id,
-      initValue,
-      itemsRef,
-      loadingRef,
-      multiple,
-      name,
-      onAddValueItem,
-      onRemoveValueItem,
-      ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      setItems,
-      setLoading,
-      setValue,
-      validate,
-      valueRef,
-    ]);
+    }, [commands, id, onAddValueItem, onRemoveValueItem, ref]);
 
     /********************************************************************************************************************
      * Event Handler
@@ -618,6 +616,21 @@ const FormAutocomplete = ToForwardRefExoticComponent(
     );
 
     /********************************************************************************************************************
+     * Render - Variables
+     * ******************************************************************************************************************/
+
+    const style: Props['style'] = {
+      minWidth: 120,
+      ...initStyle,
+    };
+    if (hidden) {
+      style.display = 'none';
+    }
+    if (width != null) {
+      style.width = width;
+    }
+
+    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
 
@@ -627,7 +640,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
         className={classNames(className, 'FormValueItem', 'FormAutocomplete')}
         sx={sx}
         multiple={multiple}
-        fullWidth={!width && fullWidth}
+        fullWidth={!width && formState.fullWidth}
         openOnFocus={openOnFocus}
         disableClearable={disableClearable}
         disablePortal={disablePortal}
@@ -665,14 +678,14 @@ const FormAutocomplete = ToForwardRefExoticComponent(
             {...params}
             ref={textFieldRef}
             name={name}
-            variant={variant}
-            size={size}
-            color={color}
+            variant={formState.variant}
+            size={formState.size}
+            color={formState.color}
             labelIcon={labelIcon}
             label={label}
-            labelShrink={labelShrink}
+            labelShrink={formState.labelShrink}
             required={required}
-            focused={focused}
+            focused={formState.focused}
             error={error}
             readOnly={readOnly}
             helperText={error ? errorHelperText : helperText}

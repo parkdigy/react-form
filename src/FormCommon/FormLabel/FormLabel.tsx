@@ -1,5 +1,5 @@
-import React, { CSSProperties, useMemo } from 'react';
-import { InputLabel, InputLabelProps, useTheme } from '@mui/material';
+import React, { CSSProperties } from 'react';
+import { InputLabel, useTheme } from '@mui/material';
 import { FormLabelProps as Props } from './FormLabel.types';
 import { ChildrenSpan, IconPdgIcon } from './FormLabel.style.private';
 
@@ -15,31 +15,29 @@ const FormLabel = React.forwardRef<HTMLLabelElement, Props>(
      * Memo
      * ******************************************************************************************************************/
 
-    const finalProps = useMemo((): InputLabelProps => {
-      const newStyle: CSSProperties = {
-        height: 20,
-        transform: size === 'small' ? 'translate(0, -1.5px) scale(0.7)' : undefined,
-        ...style,
-      };
-      if (!error) {
-        newStyle.color = warning ? theme.palette.warning.main : style?.color;
-      }
-      return {
-        shrink: true,
-        className: 'FormItemBase-InputLabel',
-        size: size === 'medium' ? 'normal' : size,
-        error,
-        style: newStyle,
-        ...props,
-      };
-    }, [size, style, warning, error, props, theme.palette.warning.main]);
+    const newStyle: CSSProperties = {
+      height: 20,
+      transform: size === 'small' ? 'translate(0, -1.5px) scale(0.7)' : undefined,
+      ...style,
+    };
+    if (!error) {
+      newStyle.color = warning ? theme.palette.warning.main : style?.color;
+    }
 
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
 
     return (
-      <InputLabel ref={ref} {...finalProps}>
+      <InputLabel
+        ref={ref}
+        shrink={true}
+        className='FormItemBase-InputLabel'
+        size={size === 'medium' ? 'normal' : size}
+        error={error}
+        style={newStyle}
+        {...props}
+      >
         {icon ? (
           <>
             <IconPdgIcon>{icon}</IconPdgIcon>
@@ -53,4 +51,4 @@ const FormLabel = React.forwardRef<HTMLLabelElement, Props>(
   }
 );
 
-export default FormLabel;
+export default React.memo(FormLabel);

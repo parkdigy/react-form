@@ -2,11 +2,11 @@ import React, { useId, useRef, useState, useCallback, ReactNode, useLayoutEffect
 import classNames from 'classnames';
 import { IconButton, InputAdornment, InputProps, TextField } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, nextTick, notEmpty } from '@pdg/util';
+import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
 import { FormTextFieldProps, FormTextFieldCommands, FormTextFieldValue } from './FormTextField.types';
 import { useFormState } from '../../FormContext';
-import './FormTextField.scss';
 import { PdgIcon } from '@pdg/react-component';
+import './FormTextField.scss';
 
 interface WithForwardRefType<T = FormTextFieldValue, AllowUndefinedValue extends boolean = true>
   extends React.FC<FormTextFieldProps<T, AllowUndefinedValue>> {
@@ -107,17 +107,29 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
-    const labelShrink = useMemo(
-      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
-      [initLabelShrink, formLabelShrink]
-    );
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
+    const forState = useMemo(
+      () => ({
+        variant: ifUndefined(initVariant, formVariant),
+        size: ifUndefined(initSize, formSize),
+        color: ifUndefined(initColor, formColor),
+        focused: ifUndefined(initFocused, formFocused),
+        labelShrink: ifUndefined(initLabelShrink, formLabelShrink),
+        fullWidth: ifUndefined(initFullWidth, formFullWidth),
+      }),
+      [
+        formColor,
+        formFocused,
+        formFullWidth,
+        formLabelShrink,
+        formSize,
+        formVariant,
+        initColor,
+        initFocused,
+        initFullWidth,
+        initLabelShrink,
+        initSize,
+        initVariant,
+      ]
     );
 
     /********************************************************************************************************************
@@ -134,19 +146,16 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState<FormTextFieldProps['hidden']>(initHidden);
 
     /********************************************************************************************************************
-     * Memo - muiInputLabelProps
+     * Variables
      * ******************************************************************************************************************/
 
-    const muiInputLabelProps = useMemo(() => {
-      if (labelShrink || placeholder) {
-        return {
-          ...initMuiInputLabelProps,
-          shrink: true,
-        };
-      } else {
-        return initMuiInputLabelProps;
-      }
-    }, [initMuiInputLabelProps, labelShrink, placeholder]);
+    const muiInputLabelProps =
+      forState.labelShrink || placeholder
+        ? {
+            ...initMuiInputLabelProps,
+            shrink: true,
+          }
+        : initMuiInputLabelProps;
 
     /********************************************************************************************************************
      * Memo - inputProps
@@ -187,21 +196,6 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       }
       return newStyle;
     }, [initStyle, width, hidden]);
-
-    /********************************************************************************************************************
-     * Memo - label
-     * ******************************************************************************************************************/
-
-    const label = useMemo(() => {
-      return labelIcon ? (
-        <>
-          <PdgIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PdgIcon>
-          <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
-        </>
-      ) : (
-        initLabel
-      );
-    }, [initLabel, labelIcon]);
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -485,18 +479,27 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     return (
       <TextField
         {...props}
-        variant={variant}
-        size={size}
-        color={color}
-        focused={focused || undefined}
+        variant={forState.variant}
+        size={forState.size}
+        color={forState.color}
+        focused={forState.focused || undefined}
         name={name}
-        label={label}
+        label={
+          labelIcon ? (
+            <>
+              <PdgIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PdgIcon>
+              <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
+            </>
+          ) : (
+            initLabel
+          )
+        }
         placeholder={placeholder}
-        className={classNames(className, 'FormValueItem', 'FormTextField', `variant-${variant}`)}
+        className={classNames(className, 'FormValueItem', 'FormTextField', `variant-${forState.variant}`)}
         inputRef={initInputRef ? initInputRef : inputRef}
         value={value}
         required={required}
-        fullWidth={!width && fullWidth}
+        fullWidth={!width && forState.fullWidth}
         error={error}
         helperText={formColWithHelperText ? undefined : error ? errorHelperText : helperText}
         FormHelperTextProps={{ component: 'div' } as any}

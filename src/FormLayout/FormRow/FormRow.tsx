@@ -2,10 +2,11 @@ import React, { useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { FormHelperText, Grid } from '@mui/material';
 import { FormRowProps as Props, FormColsInRowMap } from './FormRow.types';
-import { FormContext, useFormState } from '../../FormContext';
+import { useFormState } from '../../FormContext';
 import FormDivider from '../FormDivider';
 import { StyledWrapGrid } from './FormRow.style.private';
 import { ifUndefined } from '@pdg/util';
+import FormContextProvider from '../../FormContextProvider';
 
 const FormRow = React.forwardRef<HTMLDivElement, Props>(
   (
@@ -122,11 +123,14 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
       [formCols, makeFormColXs]
     );
 
-    //------------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
 
     return (
-      <FormContext.Provider
+      <FormContextProvider
         value={{
+          ...otherFormState,
           variant,
           size,
           color,
@@ -137,7 +141,6 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
           formColAutoXs,
           onAddFormCol: handleAddFormCol,
           onRemoveFormCol: handleRemoveFormCol,
-          ...otherFormState,
         }}
       >
         <Grid item ref={ref} xs={12} className={classNames(className, 'FormRow')} style={style} sx={sx}>
@@ -174,7 +177,7 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
             </StyledWrapGrid>
           </Grid>
         </Grid>
-      </FormContext.Provider>
+      </FormContextProvider>
     );
   }
 );

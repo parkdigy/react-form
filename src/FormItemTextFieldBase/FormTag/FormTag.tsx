@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
-import { Autocomplete, Chip, InputLabelProps } from '@mui/material';
+import { Autocomplete, AutocompleteRenderInputParams, Chip, InputLabelProps } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { FormTagProps, FormTagExtraCommands, FormTagCommands, FormTagValue } from './FormTag.types';
 import FormText, { FormTextCommands } from '../FormText';
-import { empty, nextTick, notEmpty, equal } from '@pdg/util';
+import { empty, nextTick, notEmpty, equal, ifUndefined } from '@pdg/util';
 import { useFormState } from '../../FormContext';
 import FormContextProvider from '../../FormContextProvider';
 import './FormTag.scss';
@@ -55,12 +55,10 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
     } = useFormState();
 
     /********************************************************************************************************************
-     * State - FormState
+     * FormState - Variables
      * ******************************************************************************************************************/
 
-    const [fullWidth] = useAutoUpdateState<FormTagProps['fullWidth']>(
-      initFullWidth == null ? formFullWidth : initFullWidth
-    );
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * State
@@ -304,18 +302,94 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
      * Render
      * ******************************************************************************************************************/
 
+    const handleRenderInput = useCallback(
+      (params: AutocompleteRenderInputParams) => {
+        const renderProps = { clear, ...props };
+
+        renderProps.InputLabelProps = {
+          ...renderProps.InputLabelProps,
+          htmlFor: (params.InputLabelProps as InputLabelProps).htmlFor,
+          id: params.InputLabelProps.id,
+        };
+        renderProps.InputProps = {
+          ...renderProps.InputProps,
+          className: classNames(renderProps.InputProps?.className, params.InputProps.className),
+          ref: params.InputProps.ref,
+        };
+        if (notEmpty(params.InputProps.startAdornment)) {
+          renderProps.InputProps.startAdornment = (
+            <>
+              {renderProps.InputProps.startAdornment}
+              {params.InputProps.startAdornment}
+            </>
+          );
+        }
+        renderProps.inputProps = { ...renderProps.inputProps, ...params.inputProps };
+        renderProps.inputProps.className = classNames(renderProps.inputProps.className, 'FormTag-Input');
+
+        renderProps.inputProps.readOnly = readOnly;
+        if (readOnly) {
+          renderProps.inputProps.tabIndex = -1;
+        }
+
+        renderProps.inputProps.maxLength = maxLength;
+        if (readOnly) {
+          renderProps.inputProps.className = classNames(renderProps.inputProps.className, 'Mui-disabled');
+        }
+
+        delete renderProps.inputProps.onChange;
+        delete renderProps.inputProps.value;
+
+        return (
+          <FormText
+            {...renderProps}
+            ref={handleRef}
+            name={name}
+            className={classNames(className, 'FormValueItem', 'FormTag')}
+            error={error}
+            disabled={disabled}
+            fullWidth={fullWidth}
+            required={required}
+            value={inputValue}
+            exceptValue={exceptValue}
+            helperText={error ? errorHelperText : helperText}
+            onKeyDown={handleInputKeyDown}
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+          />
+        );
+      },
+      [
+        className,
+        clear,
+        disabled,
+        error,
+        errorHelperText,
+        exceptValue,
+        fullWidth,
+        handleBlur,
+        handleInputChange,
+        handleInputKeyDown,
+        handleRef,
+        helperText,
+        inputValue,
+        maxLength,
+        name,
+        props,
+        readOnly,
+        required,
+      ]
+    );
+
     return (
       <FormContextProvider
         value={{
+          ...otherFormState,
           fullWidth: formFullWidth,
           onAddValueItem: handleAddValueItem,
-          // eslint-disable-next-line
           onValueChange: () => {},
-          // eslint-disable-next-line
           onValueChangeByUser: () => {},
-          // eslint-disable-next-line
           onRequestSearchSubmit: () => {},
-          ...otherFormState,
         }}
       >
         <Autocomplete
@@ -331,62 +405,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           renderTags={handleRenderTags}
           inputValue={inputValue}
           style={{ display: fullWidth ? 'block' : 'inline-block', width: fullWidth ? '100%' : undefined }}
-          renderInput={(params) => {
-            const renderProps = { clear, ...props };
-
-            renderProps.InputLabelProps = {
-              ...renderProps.InputLabelProps,
-              htmlFor: (params.InputLabelProps as InputLabelProps).htmlFor,
-              id: params.InputLabelProps.id,
-            };
-            renderProps.InputProps = {
-              ...renderProps.InputProps,
-              className: classNames(renderProps.InputProps?.className, params.InputProps.className),
-              ref: params.InputProps.ref,
-            };
-            if (notEmpty(params.InputProps.startAdornment)) {
-              renderProps.InputProps.startAdornment = (
-                <>
-                  {renderProps.InputProps.startAdornment}
-                  {params.InputProps.startAdornment}
-                </>
-              );
-            }
-            renderProps.inputProps = { ...renderProps.inputProps, ...params.inputProps };
-            renderProps.inputProps.className = classNames(renderProps.inputProps.className, 'FormTag-Input');
-
-            renderProps.inputProps.readOnly = readOnly;
-            if (readOnly) {
-              renderProps.inputProps.tabIndex = -1;
-            }
-
-            renderProps.inputProps.maxLength = maxLength;
-            if (readOnly) {
-              renderProps.inputProps.className = classNames(renderProps.inputProps.className, 'Mui-disabled');
-            }
-
-            delete renderProps.inputProps.onChange;
-            delete renderProps.inputProps.value;
-
-            return (
-              <FormText
-                {...renderProps}
-                ref={handleRef}
-                name={name}
-                className={classNames(className, 'FormValueItem', 'FormTag')}
-                error={error}
-                disabled={disabled}
-                fullWidth={fullWidth}
-                required={required}
-                value={inputValue}
-                exceptValue={exceptValue}
-                helperText={error ? errorHelperText : helperText}
-                onKeyDown={handleInputKeyDown}
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-              />
-            );
-          }}
+          renderInput={handleRenderInput}
         />
       </FormContextProvider>
     );

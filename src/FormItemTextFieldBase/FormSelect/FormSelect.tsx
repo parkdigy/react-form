@@ -12,8 +12,8 @@ import {
 } from './FormSelect.types';
 import { useFormState } from '../../FormContext';
 import FormContextProvider from '../../FormContextProvider';
-import './FormSelect.scss';
 import FormTextField, { FormTextFieldProps } from '../FormTextField';
+import './FormSelect.scss';
 
 interface ItemValueLabelMap {
   [key: string]: ReactNode;
@@ -63,10 +63,7 @@ const FormSelect = ToForwardRefExoticComponent(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
-    );
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * State
@@ -241,10 +238,7 @@ const FormSelect = ToForwardRefExoticComponent(
      * Memo
      * ******************************************************************************************************************/
 
-    const isSelectedPlaceholder = useMemo(
-      () => notEmpty(items) && empty(value) && !!placeholder && !hasEmptyValue,
-      [hasEmptyValue, items, placeholder, value]
-    );
+    const isSelectedPlaceholder = notEmpty(items) && empty(value) && !!placeholder && !hasEmptyValue;
 
     const selectProps = useMemo(() => {
       const finalSelectProps: FormTextFieldProps['SelectProps'] = {
@@ -400,14 +394,13 @@ const FormSelect = ToForwardRefExoticComponent(
     return (
       <FormContextProvider
         value={{
+          ...otherFormState,
           fullWidth: formFullWidth,
           onAddValueItem: handleAddValueItem,
-          // eslint-disable-next-line
           onValueChange: () => {},
-          ...otherFormState,
         }}
       >
-        <FormTextField<any>
+        <FormTextField
           select
           ref={handleRef}
           name={name}

@@ -26,29 +26,12 @@ const FormButton = React.forwardRef<HTMLButtonElement, Props>(
     const { size: formSize, color: formColor, fullWidth: formFullWidth } = useFormState();
 
     /********************************************************************************************************************
-     * Memo - FormState
+     * FormState
      * ******************************************************************************************************************/
 
-    const size = useMemo(() => ifUndefined(initSize, formSize), [initSize, formSize]);
-    const color = useMemo(() => ifUndefined(initColor, formColor), [initColor, formColor]);
-    const fullWidth = useMemo(() => ifUndefined(initFullWidth, formFullWidth), [initFullWidth, formFullWidth]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const variant = useMemo(() => {
-      if (initVariant) {
-        return initVariant;
-      } else {
-        switch (type) {
-          case 'submit':
-            return 'contained';
-          default:
-            return 'outlined';
-        }
-      }
-    }, [initVariant, type]);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * Render
@@ -59,7 +42,7 @@ const FormButton = React.forwardRef<HTMLButtonElement, Props>(
         ref={ref}
         className={classNames(className, 'FormButton')}
         type={type}
-        variant={variant}
+        variant={initVariant ? initVariant : type === 'submit' ? 'contained' : 'outlined'}
         size={size}
         color={color}
         fullWidth={fullWidth}
@@ -70,4 +53,4 @@ const FormButton = React.forwardRef<HTMLButtonElement, Props>(
   }
 );
 
-export default FormButton;
+export default React.memo(FormButton);

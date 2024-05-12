@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
-import { nextTick } from '@pdg/util';
+import { ifUndefined, nextTick } from '@pdg/util';
 import {
   FormYearRangePickerProps as Props,
   FormYearRangePickerCommands,
@@ -15,6 +15,7 @@ import { LocalizationProvider, DateValidationError } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
   PrivateInputDatePicker,
+  PrivateInputDatePickerProps,
   PrivateInputDatePickerValue,
   PrivateStyledTooltip,
   PrivateYearRangePicker,
@@ -102,17 +103,29 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
-    const labelShrink = useMemo(
-      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
-      [initLabelShrink, formLabelShrink]
-    );
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
+    const formState = useMemo(
+      () => ({
+        variant: ifUndefined(initVariant, formVariant),
+        size: ifUndefined(initSize, formSize),
+        color: ifUndefined(initColor, formColor),
+        focused: ifUndefined(initFocused, formFocused),
+        labelShrink: ifUndefined(initLabelShrink, formLabelShrink),
+        fullWidth: ifUndefined(initFullWidth, formFullWidth),
+      }),
+      [
+        formColor,
+        formFocused,
+        formFullWidth,
+        formLabelShrink,
+        formSize,
+        formVariant,
+        initColor,
+        initFocused,
+        initFullWidth,
+        initLabelShrink,
+        initSize,
+        initVariant,
+      ]
     );
 
     /********************************************************************************************************************
@@ -447,37 +460,25 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
     );
 
     /********************************************************************************************************************
-     * Memo
+     * Variable
      * ******************************************************************************************************************/
 
-    const inputDatePickerProps = useMemo(
-      () => ({
-        align,
-        variant,
-        size,
-        color,
-        labelShrink,
-        fullWidth,
-        disabled,
-        format,
-        minDate,
-        maxDate,
-      }),
-      [align, variant, size, color, labelShrink, fullWidth, disabled, format, minDate, maxDate]
-    );
-
-    const inputStyle = useMemo(
-      () => (inputWidth != null ? { width: inputWidth } : { width: fullWidth ? undefined : 150, ...initStyle }),
-      [inputWidth, fullWidth, initStyle]
-    );
-
-    const wrapStyle = useMemo(
-      () => ({
-        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
-        flex: fullWidth ? 1 : undefined,
-      }),
-      [hidden, fullWidth]
-    );
+    const privateInputDatePickerProps = {
+      ...formState,
+      align,
+      disabled,
+      format,
+      minDate,
+      maxDate,
+      style: inputWidth != null ? { width: inputWidth } : { width: formState.fullWidth ? undefined : 150 },
+      sx,
+      required,
+      readOnly,
+      readOnlyInput,
+      icon,
+      startAdornment,
+      endAdornment,
+    };
 
     /********************************************************************************************************************
      * Render
@@ -486,7 +487,13 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
-          <div className={classNames(className, 'FormYearRangePicker')} style={wrapStyle}>
+          <div
+            className={classNames(className, 'FormYearRangePicker')}
+            style={{
+              display: hidden ? 'none' : formState.fullWidth ? 'block' : 'inline-block',
+              flex: formState.fullWidth ? 1 : undefined,
+            }}
+          >
             <PrivateStyledTooltip
               open={open}
               PopperProps={{
@@ -516,21 +523,13 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
               <Grid container alignItems='center'>
                 <Grid item flex={1}>
                   <PrivateInputDatePicker
-                    {...inputDatePickerProps}
-                    style={inputStyle}
-                    sx={sx}
+                    {...privateInputDatePickerProps}
+                    inputRef={startInputRef}
                     value={valueDate[0]}
                     label={fromLabel}
                     labelIcon={fromLabelIcon}
                     error={error || fromError}
-                    focused={focused || (open && selectType === 'start')}
-                    required={required}
-                    readOnly={readOnly}
-                    readOnlyInput={readOnlyInput}
-                    icon={icon}
-                    startAdornment={startAdornment}
-                    endAdornment={endAdornment}
-                    inputRef={startInputRef}
+                    focused={formState.focused || (open && selectType === 'start')}
                     onChange={(v) => handleInputDatePickerChange('start', v)}
                     onFocus={() => handleInputDatePickerFocus('start')}
                     onError={(reason) => (startInputDatePickerErrorRef.current = reason)}
@@ -542,21 +541,13 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
                 </Grid>
                 <Grid item flex={1}>
                   <PrivateInputDatePicker
-                    {...inputDatePickerProps}
-                    style={inputStyle}
-                    sx={sx}
+                    {...privateInputDatePickerProps}
+                    inputRef={endInputRef}
                     value={valueDate[1]}
                     label={toLabel}
                     labelIcon={toLabelIcon}
                     error={error || toError}
-                    focused={focused || (open && selectType === 'end')}
-                    required={required}
-                    readOnly={readOnly}
-                    readOnlyInput={readOnlyInput}
-                    icon={icon}
-                    startAdornment={startAdornment}
-                    endAdornment={endAdornment}
-                    inputRef={endInputRef}
+                    focused={formState.focused || (open && selectType === 'end')}
                     onChange={(v) => handleInputDatePickerChange('end', v)}
                     onFocus={() => handleInputDatePickerFocus('end')}
                     onError={(reason) => (endInputDatePickerErrorRef.current = reason)}
@@ -572,7 +563,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
                 (toError && toErrorHelperText)) && (
                 <FormHelperText
                   error={error || fromError || toError}
-                  style={{ marginLeft: variant === 'standard' ? 0 : 14 }}
+                  style={{ marginLeft: formState.variant === 'standard' ? 0 : 14 }}
                 >
                   {error ? errorHelperText : fromError ? fromErrorHelperText : toError ? toErrorHelperText : helperText}
                 </FormHelperText>
