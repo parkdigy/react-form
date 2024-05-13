@@ -1,4 +1,4 @@
-import React, { useCallback, useId, useMemo, useState } from 'react';
+import React, { useCallback, useId, useState } from 'react';
 import classNames from 'classnames';
 import { SearchMenuButtonProps as Props } from './SearchMenuButton.types';
 import { FormButton } from '../../FormCommon';
@@ -37,67 +37,61 @@ const SearchMenuButton: React.FC<Props> = ({ children, className, sx: initSx, me
    * Memo
    * ******************************************************************************************************************/
 
-  const open = useMemo(() => !!anchorEl, [anchorEl]);
+  const open = !!anchorEl;
 
-  const sx = useMemo(() => ({ minWidth: 0, px: `${!children ? 9 : 13}px !important`, ...initSx }), [children, initSx]);
+  const anchorOrigin: PopoverOrigin =
+    placement || 'bottom' === 'bottom'
+      ? { vertical: 'bottom', horizontal: 'center' }
+      : placement === 'bottom-left'
+        ? { vertical: 'bottom', horizontal: 'left' }
+        : placement === 'bottom-right'
+          ? { vertical: 'bottom', horizontal: 'right' }
+          : placement === 'top'
+            ? { vertical: 'top', horizontal: 'center' }
+            : placement === 'top-left'
+              ? { vertical: 'top', horizontal: 'left' }
+              : placement === 'top-right'
+                ? { vertical: 'top', horizontal: 'right' }
+                : placement === 'left'
+                  ? { vertical: 'center', horizontal: 'left' }
+                  : placement === 'left-top'
+                    ? { vertical: 'top', horizontal: 'left' }
+                    : placement === 'left-bottom'
+                      ? { vertical: 'bottom', horizontal: 'left' }
+                      : placement === 'right'
+                        ? { vertical: 'center', horizontal: 'right' }
+                        : placement === 'right-top'
+                          ? { vertical: 'top', horizontal: 'right' }
+                          : placement === 'right-bottom'
+                            ? { vertical: 'bottom', horizontal: 'right' }
+                            : { vertical: 'bottom', horizontal: 'center' };
 
-  const anchorOrigin = useMemo((): PopoverOrigin => {
-    switch (placement || 'bottom') {
-      case 'bottom':
-        return { vertical: 'bottom', horizontal: 'center' };
-      case 'bottom-left':
-        return { vertical: 'bottom', horizontal: 'left' };
-      case 'bottom-right':
-        return { vertical: 'bottom', horizontal: 'right' };
-      case 'top':
-        return { vertical: 'top', horizontal: 'center' };
-      case 'top-left':
-        return { vertical: 'top', horizontal: 'left' };
-      case 'top-right':
-        return { vertical: 'top', horizontal: 'right' };
-      case 'left':
-        return { vertical: 'center', horizontal: 'left' };
-      case 'left-top':
-        return { vertical: 'top', horizontal: 'left' };
-      case 'left-bottom':
-        return { vertical: 'bottom', horizontal: 'left' };
-      case 'right':
-        return { vertical: 'center', horizontal: 'right' };
-      case 'right-top':
-        return { vertical: 'top', horizontal: 'right' };
-      case 'right-bottom':
-        return { vertical: 'bottom', horizontal: 'right' };
-    }
-  }, [placement]);
-
-  const transformOrigin = useMemo((): PopoverOrigin => {
-    switch (placement || 'bottom') {
-      case 'bottom':
-        return { vertical: 'top', horizontal: 'center' };
-      case 'bottom-left':
-        return { vertical: 'top', horizontal: 'left' };
-      case 'bottom-right':
-        return { vertical: 'top', horizontal: 'right' };
-      case 'top':
-        return { vertical: 'bottom', horizontal: 'center' };
-      case 'top-left':
-        return { vertical: 'bottom', horizontal: 'left' };
-      case 'top-right':
-        return { vertical: 'bottom', horizontal: 'right' };
-      case 'left':
-        return { vertical: 'center', horizontal: 'right' };
-      case 'left-top':
-        return { vertical: 'top', horizontal: 'right' };
-      case 'left-bottom':
-        return { vertical: 'bottom', horizontal: 'right' };
-      case 'right':
-        return { vertical: 'center', horizontal: 'left' };
-      case 'right-top':
-        return { vertical: 'top', horizontal: 'left' };
-      case 'right-bottom':
-        return { vertical: 'bottom', horizontal: 'left' };
-    }
-  }, [placement]);
+  const transformOrigin: PopoverOrigin =
+    placement || 'bottom' === 'bottom'
+      ? { vertical: 'top', horizontal: 'center' }
+      : placement === 'bottom-left'
+        ? { vertical: 'top', horizontal: 'left' }
+        : placement === 'bottom-right'
+          ? { vertical: 'top', horizontal: 'right' }
+          : placement === 'top'
+            ? { vertical: 'bottom', horizontal: 'center' }
+            : placement === 'top-left'
+              ? { vertical: 'bottom', horizontal: 'left' }
+              : placement === 'top-right'
+                ? { vertical: 'bottom', horizontal: 'right' }
+                : placement === 'left'
+                  ? { vertical: 'center', horizontal: 'right' }
+                  : placement === 'left-top'
+                    ? { vertical: 'top', horizontal: 'right' }
+                    : placement === 'left-bottom'
+                      ? { vertical: 'bottom', horizontal: 'right' }
+                      : placement === 'right'
+                        ? { vertical: 'center', horizontal: 'left' }
+                        : placement === 'right-top'
+                          ? { vertical: 'top', horizontal: 'left' }
+                          : placement === 'right-bottom'
+                            ? { vertical: 'bottom', horizontal: 'left' }
+                            : { vertical: 'top', horizontal: 'center' };
 
   /********************************************************************************************************************
    * Render
@@ -108,7 +102,7 @@ const SearchMenuButton: React.FC<Props> = ({ children, className, sx: initSx, me
       <FormButton
         className={classNames(className, 'SearchMenuButton')}
         size='medium'
-        sx={sx}
+        sx={{ minWidth: 0, px: `${!children ? 9 : 13}px !important`, ...initSx }}
         fullWidth={false}
         {...props}
         id={buttonId}

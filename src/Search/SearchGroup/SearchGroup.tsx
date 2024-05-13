@@ -1,10 +1,9 @@
-import React, { ReactElement, useMemo } from 'react';
+import React, { ReactElement } from 'react';
 import classNames from 'classnames';
 import { SearchGroupProps } from './SearchGroup.types';
 import { Grid } from '@mui/material';
 import { FormHidden } from '../../FormItemTextFieldBase';
 import { StyledItem } from './SearchGroup.style.private';
-import { contains } from '@pdg/util';
 
 const isReactFragment = (child: ReactElement) => {
   try {

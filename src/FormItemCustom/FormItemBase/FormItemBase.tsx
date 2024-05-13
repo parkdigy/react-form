@@ -6,6 +6,7 @@ import { FormItemBaseProps as Props } from './FormItemBase.types';
 import { useFormState } from '../../FormContext';
 import './FormItemBase.scss';
 import { PdgIcon } from '@pdg/react-component';
+import { ifUndefined } from '@pdg/util';
 
 const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
   (
@@ -59,28 +60,10 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
-    );
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const wrapStyle = useMemo(() => {
-      const wrapStyle: CSSProperties = {
-        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-flex',
-        width: fullWidth ? '100%' : undefined,
-      };
-      if (formColWithLabel) {
-        wrapStyle.marginTop = -20;
-      }
-      return wrapStyle;
-    }, [formColWithLabel, fullWidth, hidden]);
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * State - inputHeight
@@ -164,6 +147,19 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
 
       return controlMarginTop;
     }, [controlHeight, controlVerticalCenter, formColWithLabel, inputHeight, label, size, variant]);
+
+    /********************************************************************************************************************
+     * Variable
+     * ******************************************************************************************************************/
+
+    // wrapStyle
+    const wrapStyle: CSSProperties = {
+      display: hidden ? 'none' : fullWidth ? 'block' : 'inline-flex',
+      width: fullWidth ? '100%' : undefined,
+    };
+    if (formColWithLabel) {
+      wrapStyle.marginTop = -20;
+    }
 
     /********************************************************************************************************************
      * Render

@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useState } from 'react';
 import classNames from 'classnames';
 import { FormImageFileProps as Props, FormImageFileCommands } from './FormImageFile.types';
 import FormFile from '../FormFile';
@@ -6,6 +6,7 @@ import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
 import { Tooltip, Typography } from '@mui/material';
 import { useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import './FormImageFile.scss';
+import { getFinalValue } from './FormImageFile.function.private';
 
 const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
   (
@@ -39,10 +40,6 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
     /********************************************************************************************************************
      * value
      * ******************************************************************************************************************/
-
-    const getFinalValue = useCallback((value: Props['value']): string => {
-      return value || '';
-    }, []);
 
     const [value, setValue] = useAutoUpdateState(initValue, getFinalValue);
 
@@ -175,28 +172,6 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
     );
 
     /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const previewNode = useMemo(() => {
-      if (preview && value) {
-        return (
-          <a href={value} target='_blank'>
-            <Tooltip
-              title={
-                <div style={{ paddingTop: 3, paddingBottom: 3 }}>
-                  <img src={value} style={{ maxWidth: '100%', verticalAlign: 'middle' }} alt='' />
-                </div>
-              }
-            >
-              <img className='preview-img' src={value} style={{ maxHeight: previewMaxHeight || undefined }} alt='' />
-            </Tooltip>
-          </a>
-        );
-      }
-    }, [preview, previewMaxHeight, value]);
-
-    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
 
@@ -207,7 +182,26 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
           className={classNames(className, 'FormImageFile')}
           accept={accept}
           value={value}
-          preview={previewNode}
+          preview={
+            preview && value ? (
+              <a href={value} target='_blank'>
+                <Tooltip
+                  title={
+                    <div style={{ paddingTop: 3, paddingBottom: 3 }}>
+                      <img src={value} style={{ maxWidth: '100%', verticalAlign: 'middle' }} alt='' />
+                    </div>
+                  }
+                >
+                  <img
+                    className='preview-img'
+                    src={value}
+                    style={{ maxHeight: previewMaxHeight || undefined }}
+                    alt=''
+                  />
+                </Tooltip>
+              </a>
+            ) : undefined
+          }
           onChange={handleChange}
           onFile={handleFile}
           onLink={handleLink}

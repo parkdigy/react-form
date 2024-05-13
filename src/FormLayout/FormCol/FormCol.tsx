@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useId, useMemo, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useId, useRef } from 'react';
 import classNames from 'classnames';
 import { FormHelperText, Grid } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
@@ -71,36 +71,14 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const formState = useMemo(
-      () => ({
-        variant: ifUndefined(initVariant, formVariant),
-        size: ifUndefined(initSize, formSize),
-        color: ifUndefined(initColor, formColor),
-        spacing: ifUndefined(initSpacing, formSpacing),
-        focused: ifUndefined(initFocused, formFocused),
-        labelShrink: ifUndefined(initLabelShrink, formLabelShrink),
-        fullWidth: ifUndefined(initFullWidth, formFullWidth),
-        formColGap: ifUndefined(initGap, formFormColGap),
-      }),
-      [
-        formColor,
-        formFocused,
-        formFormColGap,
-        formFullWidth,
-        formLabelShrink,
-        formSize,
-        formSpacing,
-        formVariant,
-        initColor,
-        initFocused,
-        initFullWidth,
-        initGap,
-        initLabelShrink,
-        initSize,
-        initSpacing,
-        initVariant,
-      ]
-    );
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const spacing = ifUndefined(initSpacing, formSpacing);
+    const focused = ifUndefined(initFocused, formFocused);
+    const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+    const formColGap = ifUndefined(initGap, formFormColGap);
 
     /********************************************************************************************************************
      * ResizeDetector
@@ -147,7 +125,14 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
       <FormContextProvider
         value={{
           ...otherFormState,
-          ...formState,
+          variant,
+          size,
+          color,
+          spacing,
+          focused,
+          labelShrink,
+          fullWidth,
+          formColGap,
           formColXs: xs || formColAutoXs || 12,
           formColWidth,
           formColWithLabel: !!label,
@@ -168,10 +153,10 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
                 <StyledFormLabelContainerDiv>
                   <StyledFormLabel
                     className='FormCol-FormLabel'
-                    size={formState.size}
+                    size={size}
                     icon={icon}
-                    focused={formState.focused}
-                    color={formState.color}
+                    focused={focused}
+                    color={color}
                     error={error}
                     warning={warning}
                   >
@@ -181,7 +166,7 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
               </Grid>
             )}
             <Grid item xs={2} className='FormCol-content'>
-              <StyledContentContainerBox gap={formState.formColGap}>{children}</StyledContentContainerBox>
+              <StyledContentContainerBox gap={formColGap}>{children}</StyledContentContainerBox>
             </Grid>
             {helperText && (
               <Grid item className='FormCol-helper-text'>

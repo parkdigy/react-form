@@ -7,6 +7,7 @@ import { FormTextFieldProps, FormTextFieldCommands, FormTextFieldValue } from '.
 import { useFormState } from '../../FormContext';
 import { PdgIcon } from '@pdg/react-component';
 import './FormTextField.scss';
+import { FormTextProps } from '../FormText';
 
 interface WithForwardRefType<T = FormTextFieldValue, AllowUndefinedValue extends boolean = true>
   extends React.FC<FormTextFieldProps<T, AllowUndefinedValue>> {
@@ -107,30 +108,12 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const forState = useMemo(
-      () => ({
-        variant: ifUndefined(initVariant, formVariant),
-        size: ifUndefined(initSize, formSize),
-        color: ifUndefined(initColor, formColor),
-        focused: ifUndefined(initFocused, formFocused),
-        labelShrink: ifUndefined(initLabelShrink, formLabelShrink),
-        fullWidth: ifUndefined(initFullWidth, formFullWidth),
-      }),
-      [
-        formColor,
-        formFocused,
-        formFullWidth,
-        formLabelShrink,
-        formSize,
-        formVariant,
-        initColor,
-        initFocused,
-        initFullWidth,
-        initLabelShrink,
-        initSize,
-        initVariant,
-      ]
-    );
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const focused = ifUndefined(initFocused, formFocused);
+    const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * State
@@ -144,58 +127,6 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
     );
     const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState<FormTextFieldProps['hidden']>(initHidden);
-
-    /********************************************************************************************************************
-     * Variables
-     * ******************************************************************************************************************/
-
-    const muiInputLabelProps =
-      forState.labelShrink || placeholder
-        ? {
-            ...initMuiInputLabelProps,
-            shrink: true,
-          }
-        : initMuiInputLabelProps;
-
-    /********************************************************************************************************************
-     * Memo - inputProps
-     * ******************************************************************************************************************/
-
-    const inputProps = useMemo(() => {
-      if (readOnly != null || maxLength != null) {
-        const finalInputProps = {
-          ...initInputProps,
-          readOnly: readOnly,
-          maxLength: maxLength,
-        };
-
-        if (readOnly) {
-          finalInputProps.tabIndex = -1;
-          finalInputProps.className = classNames(finalInputProps.className, 'Mui-disabled');
-        } else {
-          finalInputProps.tabIndex = tabIndex;
-        }
-
-        return finalInputProps;
-      } else {
-        return initInputProps;
-      }
-    }, [initInputProps, readOnly, tabIndex, maxLength]);
-
-    /********************************************************************************************************************
-     * Memo - style
-     * ******************************************************************************************************************/
-
-    const style = useMemo(() => {
-      const newStyle = { ...initStyle };
-      if (width != null) {
-        newStyle.width = width;
-      }
-      if (hidden) {
-        newStyle.display = 'none';
-      }
-      return newStyle;
-    }, [initStyle, width, hidden]);
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -269,10 +200,10 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     }, [value]);
 
     /********************************************************************************************************************
-     * Memo
+     * Variables
      * ******************************************************************************************************************/
 
-    const showClear = useMemo(() => (clear ? notEmpty(value) : false), [clear, value]);
+    const showClear = clear ? notEmpty(value) : false;
 
     /********************************************************************************************************************
      * Function - focus
@@ -473,16 +404,55 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     );
 
     /********************************************************************************************************************
+     * Variable
+     * ******************************************************************************************************************/
+
+    // style
+    const style = { ...initStyle };
+    if (width != null) {
+      style.width = width;
+    }
+    if (hidden) {
+      style.display = 'none';
+    }
+
+    // muiInputLabelProps
+    const muiInputLabelProps =
+      labelShrink || placeholder
+        ? {
+            ...initMuiInputLabelProps,
+            shrink: true,
+          }
+        : initMuiInputLabelProps;
+
+    // inputProps
+    let inputProps: FormTextProps['inputProps'] = initInputProps;
+    if ((!initInputProps?.className?.includes('FormTag-Input') && readOnly != null) || maxLength != null) {
+      inputProps = {
+        ...initInputProps,
+        readOnly: readOnly,
+        maxLength: maxLength,
+      };
+
+      if (readOnly) {
+        inputProps.tabIndex = -1;
+        inputProps.className = classNames(inputProps.className, 'Mui-disabled');
+      } else {
+        inputProps.tabIndex = tabIndex;
+      }
+    }
+
+    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
 
     return (
       <TextField
         {...props}
-        variant={forState.variant}
-        size={forState.size}
-        color={forState.color}
-        focused={forState.focused || undefined}
+        variant={variant}
+        size={size}
+        color={color}
+        focused={focused || undefined}
         name={name}
         label={
           labelIcon ? (
@@ -495,11 +465,11 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
           )
         }
         placeholder={placeholder}
-        className={classNames(className, 'FormValueItem', 'FormTextField', `variant-${forState.variant}`)}
+        className={classNames(className, 'FormValueItem', 'FormTextField', `variant-${variant}`)}
         inputRef={initInputRef ? initInputRef : inputRef}
         value={value}
         required={required}
-        fullWidth={!width && forState.fullWidth}
+        fullWidth={!width && fullWidth}
         error={error}
         helperText={formColWithHelperText ? undefined : error ? errorHelperText : helperText}
         FormHelperTextProps={{ component: 'div' } as any}

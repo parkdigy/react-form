@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, FormEvent, useCallback, useMemo, useEffect } from 'react';
+import React, { useRef, useLayoutEffect, FormEvent, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { Box } from '@mui/material';
 import { ifUndefined, nextTick, notEmpty } from '@pdg/util';
@@ -79,42 +79,16 @@ const Form = React.forwardRef<FormCommands, Props>(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const formState = useMemo(
-      () => ({
-        variant: ifUndefined(initVariant, formVariant),
-        size: ifUndefined(initSize, formSize),
-        color: ifUndefined(initColor, formColor),
-        spacing: ifUndefined(initSpacing, formSpacing),
-        formColGap: ifUndefined(initFormColGap, formFormColGap),
-        focused: ifUndefined(initFocused, formFocused),
-        labelShrink: ifUndefined(initLabelShrink, formLabelShrink),
-        fullWidth: ifUndefined(ifUndefined(initFullWidth, formFullWidth), true),
-        fullHeight: ifUndefined(ifUndefined(initFullHeight, formFullHeight), false),
-        disabled: ifUndefined(ifUndefined(initDisabled, formDisabled), false),
-      }),
-      [
-        formColor,
-        formDisabled,
-        formFocused,
-        formFormColGap,
-        formFullHeight,
-        formFullWidth,
-        formLabelShrink,
-        formSize,
-        formSpacing,
-        formVariant,
-        initColor,
-        initDisabled,
-        initFocused,
-        initFormColGap,
-        initFullHeight,
-        initFullWidth,
-        initLabelShrink,
-        initSize,
-        initSpacing,
-        initVariant,
-      ]
-    );
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const spacing = ifUndefined(initSpacing, formSpacing);
+    const formColGap = ifUndefined(initFormColGap, formFormColGap);
+    const focused = ifUndefined(initFocused, formFocused);
+    const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    const fullWidth = ifUndefined(ifUndefined(initFullWidth, formFullWidth), true);
+    const fullHeight = ifUndefined(ifUndefined(initFullHeight, formFullHeight), false);
+    const disabled = ifUndefined(ifUndefined(initDisabled, formDisabled), false);
 
     /********************************************************************************************************************
      * Ref
@@ -392,11 +366,11 @@ const Form = React.forwardRef<FormCommands, Props>(
       (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!formState.disabled) {
+        if (!disabled) {
           submit();
         }
       },
-      [formState.disabled, submit]
+      [disabled, submit]
     );
 
     /********************************************************************************************************************
@@ -407,7 +381,16 @@ const Form = React.forwardRef<FormCommands, Props>(
       () =>
         ({
           id: formId || 'form',
-          ...formState,
+          variant,
+          size,
+          color,
+          spacing,
+          formColGap,
+          focused,
+          labelShrink,
+          fullWidth,
+          fullHeight,
+          disabled,
           onAddValueItem(id, item) {
             valueItems.current[id] = item;
             if (formAddValueItem) formAddValueItem(id, item);
@@ -435,7 +418,16 @@ const Form = React.forwardRef<FormCommands, Props>(
         }) as FormContextValue,
       [
         formId,
-        formState,
+        variant,
+        size,
+        color,
+        spacing,
+        formColGap,
+        focused,
+        labelShrink,
+        fullWidth,
+        fullHeight,
+        disabled,
         formRequestSearchSubmit,
         formColAutoXs,
         formColWidth,
@@ -460,25 +452,20 @@ const Form = React.forwardRef<FormCommands, Props>(
     return (
       <FormContextProvider value={formContextValue}>
         <Box
-          className={classNames(
-            'Form',
-            `Form-variant-${formState.variant}`,
-            formState.fullHeight && 'full-height',
-            className
-          )}
+          className={classNames('Form', `Form-variant-${variant}`, fullHeight && 'full-height', className)}
           component='form'
           ref={formRef}
           noValidate
           autoComplete='off'
           onSubmit={handleSubmit}
-          style={formState.fullHeight ? { ...initStyle, flex: 1, height: '100%' } : initStyle}
+          style={fullHeight ? { ...initStyle, flex: 1, height: '100%' } : initStyle}
           sx={sx}
         >
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
-              height: formState.fullHeight ? '100%' : undefined,
+              height: fullHeight ? '100%' : undefined,
             }}
           >
             {children}

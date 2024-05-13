@@ -33,6 +33,7 @@ import './PrivateDateTimePicker.scss';
 import { Dayjs } from 'dayjs';
 import PrivateStaticDateTimePicker from '../PrivateStaticDateTimePicker';
 import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
+import { getFinalValue } from './PrivateDateTimePicker.function.private';
 
 const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Props>(
   (
@@ -219,10 +220,6 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
      * State - value
      * ******************************************************************************************************************/
 
-    const getFinalValue = useCallback((value: Props['value']): PrivateDateTimePickerValue => {
-      return value || null;
-    }, []);
-
     const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
     const [inputValue, setInputValue] = useAutoUpdateState<PrivateDateTimePickerValue>(value);
 
@@ -343,7 +340,6 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
       disabledRef,
       exceptValue,
       focus,
-      getFinalValue,
       hiddenRef,
       id,
       initFormValueFormat,

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
-import { nextTick } from '@pdg/util';
+import { ifUndefined, nextTick } from '@pdg/util';
 import {
   FormMonthRangePickerProps as Props,
   FormMonthRangePickerCommands,
@@ -20,11 +20,10 @@ import {
   PrivateStyledTooltip,
   PrivateYearRangePickerSelectType,
 } from '../../@private';
-import { FormMonthPickerBaseValue } from '../FormMonthPicker';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
+import { dateToValue, getFinalValue, valueToDate, valueToYm } from './FormMonthRangePicker.function.private';
 
-const DEFAULT_VALUE: FormMonthRangePickerValue = [null, null];
 const DEFAULT_FORMAT = 'YYYY년 MM월';
 const DEFAULT_MIN_VALUE = {
   year: 2020,
@@ -115,18 +114,12 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
-    const labelShrink = useMemo(
-      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
-      [initLabelShrink, formLabelShrink]
-    );
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
-    );
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const focused = ifUndefined(initFocused, formFocused);
+    const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * Ref
@@ -224,10 +217,6 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
      * State - value
      * ******************************************************************************************************************/
 
-    const getFinalValue = useCallback((value: FormMonthRangePickerValue | undefined): FormMonthRangePickerValue => {
-      return value || DEFAULT_VALUE;
-    }, []);
-
     const [valueRef, value, setValue] = useAutoUpdateRefState<FormMonthRangePickerValue, Props['value']>(
       initValue,
       getFinalValue
@@ -240,51 +229,42 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
     }, [value]);
 
     /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-
-    const valueToDate = useCallback((v: FormMonthPickerBaseValue) => dayjs(`${v.year}-${v.month}-01`), []);
-    const valueToYm = useCallback((v: FormMonthPickerBaseValue) => v.year * 100 + v.month, []);
-    const dateToValue = useCallback((v: Dayjs) => ({ year: v.year(), month: v.month() + 1 }), []);
-
-    /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
 
-    const nowDate = useMemo(() => dayjs(), []);
-    const nowValue = useMemo(() => dateToValue(nowDate), [dateToValue, nowDate]);
-    const nowYm = useMemo(() => valueToYm(nowValue), [nowValue, valueToYm]);
+    const dateInfo = useMemo(() => {
+      const nowDate = dayjs();
+      const nowValue = dateToValue(nowDate);
+      const nowYm = valueToYm(nowValue);
 
-    const valueDate = useMemo(
-      () => [
-        !!value && !!value[0] ? valueToDate(value[0]) : null,
-        !!value && !!value[1] ? valueToDate(value[1]) : null,
-      ],
-      [value, valueToDate]
-    );
+      const minDate = minValue ? valueToDate(minValue) : undefined;
+      const maxDate = maxValue ? valueToDate(maxValue) : undefined;
 
-    const minDate = useMemo(() => (minValue ? valueToDate(minValue) : undefined), [minValue, valueToDate]);
-    const maxDate = useMemo(() => (maxValue ? valueToDate(maxValue) : undefined), [maxValue, valueToDate]);
-
-    const minAvailableValue = useMemo(() => {
+      let minAvailableValue: { year: number; month: number };
       if (disablePast) {
         const minYm = valueToYm(minValue);
-        return nowYm > minYm ? nowValue : minValue;
+        minAvailableValue = nowYm > minYm ? nowValue : minValue;
       } else {
-        return minValue;
+        minAvailableValue = minValue;
       }
-    }, [disablePast, valueToYm, minValue, nowYm, nowValue]);
-    const minAvailableYm = useMemo(() => valueToYm(minAvailableValue), [minAvailableValue, valueToYm]);
+      const minAvailableYm = valueToYm(minAvailableValue);
 
-    const maxAvailableValue = useMemo(() => {
+      let maxAvailableValue: { year: number; month: number };
       if (disableFuture) {
         const maxYm = valueToYm(maxValue);
-        return nowYm < maxYm ? nowValue : maxValue;
+        maxAvailableValue = nowYm < maxYm ? nowValue : maxValue;
       } else {
-        return maxValue;
+        maxAvailableValue = maxValue;
       }
-    }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
-    const maxAvailableYm = useMemo(() => valueToYm(maxAvailableValue), [maxAvailableValue, valueToYm]);
+      const maxAvailableYm = valueToYm(maxAvailableValue);
+
+      return {
+        minDate,
+        maxDate,
+        minAvailableYm,
+        maxAvailableYm,
+      };
+    }, [disableFuture, disablePast, maxValue, minValue]);
 
     /********************************************************************************************************************
      * Effect
@@ -437,7 +417,6 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       formValueFromYearNameSuffix,
       formValueToMonthNameSuffix,
       formValueToYearNameSuffix,
-      getFinalValue,
       hiddenRef,
       id,
       initValue,
@@ -483,8 +462,8 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
             const newValue: FormMonthRangePickerValue = [date ? dateToValue(date) : null, valueRef.current[1]];
             if (
               newValue[0] !== null &&
-              valueToYm(newValue[0]) >= minAvailableYm &&
-              valueToYm(newValue[0]) <= maxAvailableYm
+              valueToYm(newValue[0]) >= dateInfo.minAvailableYm &&
+              valueToYm(newValue[0]) <= dateInfo.maxAvailableYm
             ) {
               if (newValue[1] !== null && newValue[1] < newValue[0]) {
                 newValue[1] = newValue[0];
@@ -502,8 +481,8 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
             const newValue: FormMonthRangePickerValue = [valueRef.current[0], date ? dateToValue(date) : null];
             if (
               newValue[1] !== null &&
-              valueToYm(newValue[1]) >= minAvailableYm &&
-              valueToYm(newValue[1]) <= maxAvailableYm
+              valueToYm(newValue[1]) >= dateInfo.minAvailableYm &&
+              valueToYm(newValue[1]) <= dateInfo.maxAvailableYm
             ) {
               if (newValue[0] !== null && newValue[0] > newValue[1]) {
                 newValue[0] = newValue[1];
@@ -519,19 +498,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
           }
         }
       },
-      [
-        dateToValue,
-        valueRef,
-        valueToYm,
-        minAvailableYm,
-        maxAvailableYm,
-        fromError,
-        setValue,
-        validate,
-        onValueChangeByUser,
-        name,
-        toError,
-      ]
+      [valueRef, dateInfo, fromError, setValue, validate, onValueChangeByUser, name, toError]
     );
 
     const handleInputDatePickerFocus = useCallback(
@@ -550,43 +517,35 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
     const handleInputDatePickerShouldDisableYear = useCallback(
       (dt: Dayjs) => {
         const ym = dt.year() * 100 + (dt.month() + 1);
-        return ym < minAvailableYm || ym > maxAvailableYm;
+        return ym < dateInfo.minAvailableYm || ym > dateInfo.maxAvailableYm;
       },
-      [maxAvailableYm, minAvailableYm]
+      [dateInfo]
     );
 
     /********************************************************************************************************************
-     * Memo
+     * Variable
      * ******************************************************************************************************************/
 
-    const inputDatePickerProps = useMemo(
-      () => ({
-        align,
-        variant,
-        size,
-        color,
-        labelShrink,
-        fullWidth,
-        disabled,
-        format,
-        minDate,
-        maxDate,
-      }),
-      [align, variant, size, color, labelShrink, fullWidth, disabled, format, minDate, maxDate]
-    );
+    const valueDate = [
+      !!value && !!value[0] ? valueToDate(value[0]) : null,
+      !!value && !!value[1] ? valueToDate(value[1]) : null,
+    ];
 
-    const inputStyle = useMemo(
-      () => (inputWidth != null ? { width: inputWidth } : { width: fullWidth ? undefined : 150, ...initStyle }),
-      [inputWidth, fullWidth, initStyle]
-    );
+    const inputDatePickerProps = {
+      align,
+      variant,
+      size,
+      color,
+      labelShrink,
+      fullWidth,
+      disabled,
+      format,
+      minDate: dateInfo.minDate,
+      maxDate: dateInfo.maxDate,
+    };
 
-    const wrapStyle = useMemo(
-      () => ({
-        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
-        flex: fullWidth ? 1 : undefined,
-      }),
-      [hidden, fullWidth]
-    );
+    const inputStyle =
+      inputWidth != null ? { width: inputWidth, ...initStyle } : { width: fullWidth ? undefined : 150, ...initStyle };
 
     /********************************************************************************************************************
      * Render
@@ -595,7 +554,13 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ko'>
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
-          <div className={classNames(className, 'FormMonthRangePicker')} style={wrapStyle}>
+          <div
+            className={classNames(className, 'FormMonthRangePicker')}
+            style={{
+              display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+              flex: fullWidth ? 1 : undefined,
+            }}
+          >
             <PrivateStyledTooltip
               open={open}
               PopperProps={{

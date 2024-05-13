@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { FormButtonProps as Props } from './FormButton.types';
 import { useFormState } from '../../FormContext';

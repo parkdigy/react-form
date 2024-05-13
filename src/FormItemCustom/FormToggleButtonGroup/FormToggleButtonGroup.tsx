@@ -4,7 +4,7 @@ import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util.private';
-import { empty, nextTick, notEmpty, equal } from '@pdg/util';
+import { empty, nextTick, notEmpty, equal, ifUndefined } from '@pdg/util';
 import { PartialPick } from '../../@types';
 import {
   FormToggleButtonGroupProps,
@@ -99,22 +99,19 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
     } = useFormState();
 
     /********************************************************************************************************************
-     * Memo - FormState
+     * Variables - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const fullWidth = useMemo(
-      () => (type === 'checkbox' || type === 'radio' ? true : initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth, type]
-    );
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const fullWidth = type === 'checkbox' || type === 'radio' ? true : ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * State - FormState
      * ******************************************************************************************************************/
 
-    const [focused, setFocused] = useAutoUpdateState<Props['focused']>(initFocused == null ? formFocused : initFocused);
+    const [focused, setFocused] = useAutoUpdateState<Props['focused']>(ifUndefined(initFocused, formFocused));
 
     /********************************************************************************************************************
      * Theme

@@ -7,7 +7,7 @@ import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@
 import { FormCheckboxProps as Props, FormCheckboxCommands, FormCheckboxValue } from './FormCheckbox.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
-import { nextTick } from '@pdg/util';
+import { ifUndefined, nextTick } from '@pdg/util';
 
 const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
   (
@@ -78,14 +78,11 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
-    );
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const focused = ifUndefined(initFocused, formFocused);
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * Ref
@@ -173,15 +170,6 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       if (onChange) onChange(checked);
       onValueChange(name, checked);
     }, [checked]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const style = useMemo(
-      () => ({ width: fullWidth ? '100%' : width || 100, paddingLeft: 3, ...initStyle }),
-      [initStyle, fullWidth, width]
-    );
 
     /********************************************************************************************************************
      * Function - focus
@@ -315,7 +303,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         fullWidth={fullWidth}
         helperText={error ? errorHelperText : helperText}
         helperTextProps={{ style: { marginLeft: 2 } }}
-        style={style}
+        style={{ width: fullWidth ? '100%' : width || 100, paddingLeft: 3, ...initStyle }}
         sx={sx}
         hidden={hidden}
         autoSize

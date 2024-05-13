@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { Rating } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, nextTick } from '@pdg/util';
+import { empty, ifUndefined, nextTick } from '@pdg/util';
 import { FormRatingProps as Props, FormRatingCommands, FormRatingValue } from './FormRating.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
@@ -72,9 +72,9 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
 
     /********************************************************************************************************************
      * State - FormState
@@ -165,12 +165,6 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
       if (onChange) onChange(value);
       onValueChange(name, value);
     }, [value]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const style = useMemo(() => ({ width: width || 100, ...initStyle }), [initStyle, width]);
 
     /********************************************************************************************************************
      * Effect
@@ -300,7 +294,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         required={required}
         helperText={error ? errorHelperText : helperText}
         helperTextProps={{ style: { marginLeft: 5 } }}
-        style={style}
+        style={{ width: width || 100, ...initStyle }}
         sx={sx}
         hidden={hidden}
         autoSize

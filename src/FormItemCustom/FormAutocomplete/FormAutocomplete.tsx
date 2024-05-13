@@ -120,30 +120,12 @@ const FormAutocomplete = ToForwardRefExoticComponent(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const formState = useMemo(
-      () => ({
-        variant: ifUndefined(initVariant, formVariant),
-        size: ifUndefined(initSize, formSize),
-        color: ifUndefined(initColor, formColor),
-        focused: ifUndefined(initFocused, formFocused),
-        labelShrink: ifUndefined(initLabelShrink, formLabelShrink),
-        fullWidth: ifUndefined(initFullWidth, formFullWidth),
-      }),
-      [
-        formColor,
-        formFocused,
-        formFullWidth,
-        formLabelShrink,
-        formSize,
-        formVariant,
-        initColor,
-        initFocused,
-        initFullWidth,
-        initLabelShrink,
-        initSize,
-        initVariant,
-      ]
-    );
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const focused = ifUndefined(initFocused, formFocused);
+    const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * State
@@ -640,7 +622,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
         className={classNames(className, 'FormValueItem', 'FormAutocomplete')}
         sx={sx}
         multiple={multiple}
-        fullWidth={!width && formState.fullWidth}
+        fullWidth={!width && fullWidth}
         openOnFocus={openOnFocus}
         disableClearable={disableClearable}
         disablePortal={disablePortal}
@@ -678,14 +660,14 @@ const FormAutocomplete = ToForwardRefExoticComponent(
             {...params}
             ref={textFieldRef}
             name={name}
-            variant={formState.variant}
-            size={formState.size}
-            color={formState.color}
+            variant={variant}
+            size={size}
+            color={color}
             labelIcon={labelIcon}
             label={label}
-            labelShrink={formState.labelShrink}
+            labelShrink={labelShrink}
             required={required}
-            focused={formState.focused}
+            focused={focused}
             error={error}
             readOnly={readOnly}
             helperText={error ? errorHelperText : helperText}

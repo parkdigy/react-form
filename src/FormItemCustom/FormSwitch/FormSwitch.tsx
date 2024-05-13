@@ -2,7 +2,7 @@ import React, { useCallback, useId, useLayoutEffect, useMemo, useRef, useState }
 import classNames from 'classnames';
 import { FormControlLabel, Switch } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { nextTick } from '@pdg/util';
+import { ifUndefined, nextTick } from '@pdg/util';
 import { FormSwitchProps as Props, FormSwitchCommands } from './FormSwitch.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
@@ -66,9 +66,9 @@ const FormSwitch = React.forwardRef<FormSwitchCommands, Props>(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
 
     /********************************************************************************************************************
      * State - FormState

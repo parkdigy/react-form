@@ -8,22 +8,19 @@ import {
   FormYearRangePickerProps as Props,
   FormYearRangePickerCommands,
   FormYearRangePickerValue,
-  FormYearRangePickerBaseValue,
 } from './FormYearRangePicker.types';
 import { useFormState } from '../../FormContext';
 import { LocalizationProvider, DateValidationError } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
   PrivateInputDatePicker,
-  PrivateInputDatePickerProps,
   PrivateInputDatePickerValue,
   PrivateStyledTooltip,
   PrivateYearRangePicker,
   PrivateYearRangePickerSelectType,
 } from '../../@private';
-import dayjs, { Dayjs } from 'dayjs';
-
-const DEFAULT_VALUE: FormYearRangePickerValue = [null, null];
+import { Dayjs } from 'dayjs';
+import { dateToValue, getFinalValue, valueToDate } from './FormYearRangePicker.function.private';
 
 const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>(
   (
@@ -103,30 +100,12 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const formState = useMemo(
-      () => ({
-        variant: ifUndefined(initVariant, formVariant),
-        size: ifUndefined(initSize, formSize),
-        color: ifUndefined(initColor, formColor),
-        focused: ifUndefined(initFocused, formFocused),
-        labelShrink: ifUndefined(initLabelShrink, formLabelShrink),
-        fullWidth: ifUndefined(initFullWidth, formFullWidth),
-      }),
-      [
-        formColor,
-        formFocused,
-        formFullWidth,
-        formLabelShrink,
-        formSize,
-        formVariant,
-        initColor,
-        initFocused,
-        initFullWidth,
-        initLabelShrink,
-        initSize,
-        initVariant,
-      ]
-    );
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const focused = ifUndefined(initFocused, formFocused);
+    const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * Ref
@@ -225,10 +204,6 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
      * State - value
      * ******************************************************************************************************************/
 
-    const getFinalValue = useCallback((value: FormYearRangePickerValue | undefined): FormYearRangePickerValue => {
-      return value || DEFAULT_VALUE;
-    }, []);
-
     const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
@@ -238,28 +213,15 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
     }, [value]);
 
     /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-
-    const valueToDate = useCallback((v: FormYearRangePickerBaseValue) => dayjs(`${v}-01-01`), []);
-    const dateToValue = useCallback((v: Dayjs) => v.year(), []);
-
-    /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
 
-    const nowYear = useMemo(() => new Date().getFullYear(), []);
-
-    const valueDate = useMemo(
-      () => [
-        !!value && !!value[0] ? valueToDate(value[0]) : null,
-        !!value && !!value[1] ? valueToDate(value[1]) : null,
-      ],
-      [value, valueToDate]
-    );
-
-    const minDate = useMemo(() => valueToDate(minYear), [minYear, valueToDate]);
-    const maxDate = useMemo(() => valueToDate(maxYear), [maxYear, valueToDate]);
+    const dateInfo = useMemo(() => {
+      const nowYear = new Date().getFullYear();
+      const minDate = valueToDate(minYear);
+      const maxDate = valueToDate(maxYear);
+      return { nowYear: nowYear, min: minDate, max: maxDate };
+    }, [maxYear, minYear]);
 
     /********************************************************************************************************************
      * Effect
@@ -358,7 +320,6 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       focus,
       formValueFromNameSuffix,
       formValueToNameSuffix,
-      getFinalValue,
       hiddenRef,
       id,
       initValue,
@@ -435,7 +396,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
           }
         }
       },
-      [dateToValue, valueRef, minYear, maxYear, fromError, setValue, validate, onValueChangeByUser, name, toError]
+      [valueRef, minYear, maxYear, fromError, setValue, validate, onValueChangeByUser, name, toError]
     );
 
     const handleInputDatePickerFocus = useCallback(
@@ -454,23 +415,34 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
 
     const handleInputDatePickerShouldDisableYear = useCallback(
       (year: Dayjs) => {
-        return (!!disablePast && year.year() < nowYear) || (!!disableFuture && year.year() > nowYear);
+        return (!!disablePast && year.year() < dateInfo.nowYear) || (!!disableFuture && year.year() > dateInfo.nowYear);
       },
-      [disableFuture, disablePast, nowYear]
+      [disableFuture, disablePast, dateInfo.nowYear]
     );
 
     /********************************************************************************************************************
      * Variable
      * ******************************************************************************************************************/
 
+    const valueDate = [
+      !!value && !!value[0] ? valueToDate(value[0]) : null,
+      !!value && !!value[1] ? valueToDate(value[1]) : null,
+    ];
+
     const privateInputDatePickerProps = {
-      ...formState,
+      variant,
+      size,
+      color,
+      focused,
+      labelShrink,
+      fullWidth,
       align,
       disabled,
       format,
-      minDate,
-      maxDate,
-      style: inputWidth != null ? { width: inputWidth } : { width: formState.fullWidth ? undefined : 150 },
+      minDate: dateInfo.min,
+      maxDate: dateInfo.max,
+      style:
+        inputWidth != null ? { width: inputWidth, ...initStyle } : { width: fullWidth ? undefined : 150, ...initStyle },
       sx,
       required,
       readOnly,
@@ -490,8 +462,8 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
           <div
             className={classNames(className, 'FormYearRangePicker')}
             style={{
-              display: hidden ? 'none' : formState.fullWidth ? 'block' : 'inline-block',
-              flex: formState.fullWidth ? 1 : undefined,
+              display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+              flex: fullWidth ? 1 : undefined,
             }}
           >
             <PrivateStyledTooltip
@@ -529,7 +501,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
                     label={fromLabel}
                     labelIcon={fromLabelIcon}
                     error={error || fromError}
-                    focused={formState.focused || (open && selectType === 'start')}
+                    focused={focused || (open && selectType === 'start')}
                     onChange={(v) => handleInputDatePickerChange('start', v)}
                     onFocus={() => handleInputDatePickerFocus('start')}
                     onError={(reason) => (startInputDatePickerErrorRef.current = reason)}
@@ -547,7 +519,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
                     label={toLabel}
                     labelIcon={toLabelIcon}
                     error={error || toError}
-                    focused={formState.focused || (open && selectType === 'end')}
+                    focused={focused || (open && selectType === 'end')}
                     onChange={(v) => handleInputDatePickerChange('end', v)}
                     onFocus={() => handleInputDatePickerFocus('end')}
                     onError={(reason) => (endInputDatePickerErrorRef.current = reason)}
@@ -563,7 +535,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
                 (toError && toErrorHelperText)) && (
                 <FormHelperText
                   error={error || fromError || toError}
-                  style={{ marginLeft: formState.variant === 'standard' ? 0 : 14 }}
+                  style={{ marginLeft: variant === 'standard' ? 0 : 14 }}
                 >
                   {error ? errorHelperText : fromError ? fromErrorHelperText : toError ? toErrorHelperText : helperText}
                 </FormHelperText>

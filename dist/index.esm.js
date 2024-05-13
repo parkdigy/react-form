@@ -1,4 +1,4 @@
-import React,{createContext,useContext,useMemo,useRef,useState,useCallback,useLayoutEffect,useEffect,useId}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,nextTick,notEmpty,ifUndefined,equal,telNoAutoDash,companyNoAutoDash,personalNoAutoDash}from'@pdg/util';import dayjs from'dayjs';import {PdgButton,PdgIcon,PdgIconText}from'@pdg/react-component';import {useAutoUpdateState,useAutoUpdateRefState,useFirstSkipEffect}from'@pdg/react-hook';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';import'dayjs/locale/ko';function styleInject(css, ref) {
+import React,{createContext,useContext,useRef,useCallback,useMemo,useLayoutEffect,useEffect,useState,useId}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,ifUndefined,nextTick,notEmpty,equal,telNoAutoDash,companyNoAutoDash,personalNoAutoDash}from'@pdg/util';import dayjs from'dayjs';import {useAutoUpdateLayoutRef,useAutoUpdateState,useAutoUpdateRefState,useFirstSkipEffect}from'@pdg/react-hook';import {PdgButton,PdgIcon,PdgIconText}from'@pdg/react-component';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';import'dayjs/locale/ko';function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
 
@@ -109,6 +109,121 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
 }var FormContextProvider = function (_a) {
     var children = _a.children, value = _a.value;
     return React.createElement(FormContext.Provider, { value: value }, children);
+};/********************************************************************************************************************
+ * getItemFormValue
+ * ******************************************************************************************************************/
+var getItemFormValue = function (commands, reset) {
+    var type = commands.getType();
+    var value;
+    switch (type) {
+        case 'FormCheckbox':
+            {
+                var itemCommands = commands;
+                var checked = reset ? itemCommands.getReset() : itemCommands.getChecked();
+                value = checked ? itemCommands.getValue() : itemCommands.getUncheckedValue();
+            }
+            break;
+        case 'FormDatePicker':
+        case 'FormDateTimePicker':
+        case 'FormTimePicker':
+            {
+                value = reset ? commands.getReset() : commands.getValue();
+                if (value) {
+                    value = dayjs(value).format(commands.getFormValueFormat());
+                }
+            }
+            break;
+        default:
+            value = reset ? commands.getReset() : commands.getValue();
+    }
+    switch (type) {
+        case 'FormDateRangePicker':
+            {
+                var startValue = value[0];
+                var endValue = value[1];
+                var format = commands.getFormValueFormat();
+                value = [startValue ? startValue.format(format) : '', endValue ? endValue.format(format) : ''];
+            }
+            break;
+        case 'FormYearRangePicker':
+            {
+                var startValue = value[0];
+                var endValue = value[1];
+                value = [startValue ? startValue : '', endValue ? endValue : ''];
+            }
+            break;
+        case 'FormMonthPicker':
+            value = { year: value ? value.year : '', month: value ? value.month : '' };
+            break;
+        case 'FormMonthRangePicker':
+            {
+                var startValue = value[0];
+                var endValue = value[1];
+                value = [startValue ? startValue : { year: '', month: '' }, endValue ? endValue : { year: '', month: '' }];
+            }
+            break;
+        default:
+            if (empty(value)) {
+                value = '';
+            }
+            else if (Array.isArray(value)) {
+                if (commands.isFormValueSort && commands.isFormValueSort()) {
+                    value = __spreadArray([], value, true);
+                    value.sort();
+                }
+                value = value.join(commands.getFormValueSeparator ? commands.getFormValueSeparator() : ',');
+            }
+            break;
+    }
+    return value;
+};
+/********************************************************************************************************************
+ * appendFormValueData
+ * ******************************************************************************************************************/
+var appendFormValueData = function (data, itemCommands) {
+    switch (itemCommands.getType()) {
+        case 'FormDateRangePicker':
+            {
+                var commands = itemCommands;
+                var value = getItemFormValue(itemCommands);
+                data[commands.getFormValueFromName()] = value[0];
+                data[commands.getFormValueToName()] = value[1];
+            }
+            break;
+        case 'FormMonthPicker':
+            {
+                var commands = itemCommands;
+                var value = getItemFormValue(itemCommands);
+                data[commands.getFormValueYearName()] = value.year;
+                data[commands.getFormValueMonthName()] = value.month;
+            }
+            break;
+        case 'FormYearRangePicker':
+            {
+                var commands = itemCommands;
+                var value = getItemFormValue(itemCommands);
+                data[commands.getFormValueFromName()] = value[0];
+                data[commands.getFormValueToName()] = value[1];
+            }
+            break;
+        case 'FormMonthRangePicker':
+            {
+                var commands = itemCommands;
+                var value = getItemFormValue(itemCommands);
+                data[commands.getFormValueFromYearName()] = value[0].year;
+                data[commands.getFormValueFromMonthName()] = value[0].month;
+                data[commands.getFormValueToYearName()] = value[1].year;
+                data[commands.getFormValueToMonthName()] = value[1].month;
+            }
+            break;
+        default:
+            {
+                var name_1 = itemCommands.getName();
+                var value = getItemFormValue(itemCommands);
+                data[name_1] = value == null ? '' : value;
+            }
+            break;
+    }
 };var Form = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * FormState
@@ -117,166 +232,32 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
     //--------------------------------------------------------------------------------------------------------------------
     _b = _a.variant, 
     //--------------------------------------------------------------------------------------------------------------------
-    initVariant = _b === void 0 ? 'outlined' : _b, _c = _a.size, initSize = _c === void 0 ? 'medium' : _c, _d = _a.color, initColor = _d === void 0 ? 'primary' : _d, _e = _a.spacing, initSpacing = _e === void 0 ? 2 : _e, _f = _a.formColGap, initFormColGap = _f === void 0 ? 1.5 : _f, initFocused = _a.focused, initLabelShrink = _a.labelShrink, _g = _a.fullWidth, initFullWidth = _g === void 0 ? true : _g, _h = _a.fullHeight, fullHeight = _h === void 0 ? false : _h, disabled = _a.disabled, 
+    initVariant = _b === void 0 ? 'outlined' : _b, _c = _a.size, initSize = _c === void 0 ? 'medium' : _c, _d = _a.color, initColor = _d === void 0 ? 'primary' : _d, _e = _a.spacing, initSpacing = _e === void 0 ? 2 : _e, _f = _a.formColGap, initFormColGap = _f === void 0 ? 1.5 : _f, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, initFullHeight = _a.fullHeight, initDisabled = _a.disabled, 
     //----------------------------------------------------------------------------------------------------------------
-    onSubmit = _a.onSubmit, onInvalid = _a.onInvalid, onValueChange = _a.onValueChange, onValueChangeByUser = _a.onValueChangeByUser;
-    var _j = useFormState(), formId = _j.id, formVariant = _j.variant, formSize = _j.size, formColor = _j.color, formSpacing = _j.spacing, formFormColGap = _j.formColGap, formFocused = _j.focused, formLabelShrink = _j.labelShrink, formFullWidth = _j.fullWidth, formAddValueItem = _j.onAddValueItem, formRemoveValueItem = _j.onRemoveValueItem, formValueChange = _j.onValueChange, formValueChangeByUser = _j.onValueChangeByUser, otherFormState = __rest(_j, ["id", "variant", "size", "color", "spacing", "formColGap", "focused", "labelShrink", "fullWidth", "onAddValueItem", "onRemoveValueItem", "onValueChange", "onValueChangeByUser"]);
+    initOnSubmit = _a.onSubmit, initOnValid = _a.onInvalid, initOnValueChange = _a.onValueChange, initOnValueChangeByUser = _a.onValueChangeByUser;
+    var _g = useFormState(), formId = _g.id, formVariant = _g.variant, formSize = _g.size, formColor = _g.color, formDisabled = _g.disabled, formSpacing = _g.spacing, formFormColGap = _g.formColGap, formFocused = _g.focused, formLabelShrink = _g.labelShrink, formFullWidth = _g.fullWidth, formFullHeight = _g.fullHeight, formColAutoXs = _g.formColAutoXs, formColWidth = _g.formColWidth, onAddFormCol = _g.onAddFormCol, onRemoveFormCol = _g.onRemoveFormCol, formColXs = _g.formColXs, formColWithLabel = _g.formColWithLabel, formColWithHelperText = _g.formColWithHelperText, formAddValueItem = _g.onAddValueItem, formRemoveValueItem = _g.onRemoveValueItem, formValueChange = _g.onValueChange, formValueChangeByUser = _g.onValueChangeByUser, formRequestSearchSubmit = _g.onRequestSearchSubmit;
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var spacing = useMemo(function () { return initSpacing || formSpacing; }, [initSpacing, formSpacing]);
-    var formColGap = useMemo(function () { return (initFormColGap == null ? formFormColGap : initFormColGap); }, [initFormColGap, formFormColGap]);
-    var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
-    var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var spacing = ifUndefined(initSpacing, formSpacing);
+    var formColGap = ifUndefined(initFormColGap, formFormColGap);
+    var focused = ifUndefined(initFocused, formFocused);
+    var labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    var fullWidth = ifUndefined(ifUndefined(initFullWidth, formFullWidth), true);
+    var fullHeight = ifUndefined(ifUndefined(initFullHeight, formFullHeight), false);
+    var disabled = ifUndefined(ifUndefined(initDisabled, formDisabled), false);
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
     var formRef = useRef(null);
-    /********************************************************************************************************************
-     * State
-     * ******************************************************************************************************************/
-    var valueItems = useState({})[0];
-    /********************************************************************************************************************
-     * Function - getItemFormValue
-     * ******************************************************************************************************************/
-    var getItemFormValue = useCallback(function (commands, reset) {
-        var type = commands.getType();
-        var value;
-        switch (type) {
-            case 'FormCheckbox':
-                {
-                    var itemCommands = commands;
-                    var checked = reset ? itemCommands.getReset() : itemCommands.getChecked();
-                    value = checked ? itemCommands.getValue() : itemCommands.getUncheckedValue();
-                }
-                break;
-            case 'FormDatePicker':
-            case 'FormDateTimePicker':
-            case 'FormTimePicker':
-                {
-                    value = reset ? commands.getReset() : commands.getValue();
-                    if (value) {
-                        value = dayjs(value).format(commands.getFormValueFormat());
-                    }
-                }
-                break;
-            default:
-                value = reset ? commands.getReset() : commands.getValue();
-        }
-        switch (type) {
-            case 'FormDateRangePicker':
-                {
-                    var startValue = value[0];
-                    var endValue = value[1];
-                    var format = commands.getFormValueFormat();
-                    value = [startValue ? startValue.format(format) : '', endValue ? endValue.format(format) : ''];
-                }
-                break;
-            case 'FormYearRangePicker':
-                {
-                    var startValue = value[0];
-                    var endValue = value[1];
-                    value = [startValue ? startValue : '', endValue ? endValue : ''];
-                }
-                break;
-            case 'FormMonthPicker':
-                value = { year: value ? value.year : '', month: value ? value.month : '' };
-                break;
-            case 'FormMonthRangePicker':
-                {
-                    var startValue = value[0];
-                    var endValue = value[1];
-                    value = [
-                        startValue ? startValue : { year: '', month: '' },
-                        endValue ? endValue : { year: '', month: '' },
-                    ];
-                }
-                break;
-            default:
-                if (empty(value)) {
-                    value = '';
-                }
-                else if (Array.isArray(value)) {
-                    if (commands.isFormValueSort && commands.isFormValueSort()) {
-                        value = __spreadArray([], value, true);
-                        value.sort();
-                    }
-                    value = value.join(commands.getFormValueSeparator ? commands.getFormValueSeparator() : ',');
-                }
-                break;
-        }
-        return value;
-    }, []);
-    /********************************************************************************************************************
-     * Function - resetAll
-     * ******************************************************************************************************************/
-    var resetAll = useCallback(function () {
-        Object.keys(valueItems).forEach(function (id) {
-            var _a;
-            (_a = valueItems[id]) === null || _a === void 0 ? void 0 : _a.reset();
-        });
-    }, [valueItems]);
-    var appendFormValueData = useCallback(function (data, itemCommands) {
-        switch (itemCommands.getType()) {
-            case 'FormDateRangePicker':
-                {
-                    var commands = itemCommands;
-                    var value = getItemFormValue(itemCommands);
-                    data[commands.getFormValueFromName()] = value[0];
-                    data[commands.getFormValueToName()] = value[1];
-                }
-                break;
-            case 'FormMonthPicker':
-                {
-                    var commands = itemCommands;
-                    var value = getItemFormValue(itemCommands);
-                    data[commands.getFormValueYearName()] = value.year;
-                    data[commands.getFormValueMonthName()] = value.month;
-                }
-                break;
-            case 'FormYearRangePicker':
-                {
-                    var commands = itemCommands;
-                    var value = getItemFormValue(itemCommands);
-                    data[commands.getFormValueFromName()] = value[0];
-                    data[commands.getFormValueToName()] = value[1];
-                }
-                break;
-            case 'FormMonthRangePicker':
-                {
-                    var commands = itemCommands;
-                    var value = getItemFormValue(itemCommands);
-                    data[commands.getFormValueFromYearName()] = value[0].year;
-                    data[commands.getFormValueFromMonthName()] = value[0].month;
-                    data[commands.getFormValueToYearName()] = value[1].year;
-                    data[commands.getFormValueToMonthName()] = value[1].month;
-                }
-                break;
-            default:
-                {
-                    var name_1 = itemCommands.getName();
-                    var value = getItemFormValue(itemCommands);
-                    data[name_1] = value == null ? '' : value;
-                }
-                break;
-        }
-    }, [getItemFormValue]);
-    var getAllFormValue = useCallback(function () {
-        var data = {};
-        Object.keys(valueItems).forEach(function (id) {
-            var itemCommands = valueItems[id];
-            if (itemCommands) {
-                if (!itemCommands.isDisabled() && !itemCommands.isExceptValue()) {
-                    appendFormValueData(data, itemCommands);
-                }
-            }
-        });
-        return data;
-    }, [valueItems, appendFormValueData]);
+    var valueItems = useRef({});
+    var onSubmitRef = useAutoUpdateLayoutRef(initOnSubmit);
+    var onInvalidRef = useAutoUpdateLayoutRef(initOnValid);
+    var onValueChangeRef = useAutoUpdateLayoutRef(initOnValueChange);
+    var onValueChangeByUserRef = useAutoUpdateLayoutRef(initOnValueChangeByUser);
     /********************************************************************************************************************
      * Function - submit
      * ******************************************************************************************************************/
@@ -285,8 +266,8 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
         var firstInvalidItemId;
         var data = {};
         var invalidItems = [];
-        Object.keys(valueItems).forEach(function (id) {
-            var itemCommands = valueItems[id];
+        Object.keys(valueItems.current).forEach(function (id) {
+            var itemCommands = valueItems.current[id];
             if (itemCommands) {
                 if (!itemCommands.isDisabled()) {
                     if (itemCommands.validate()) {
@@ -305,217 +286,235 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
             }
         });
         if (isAllValid) {
-            onSubmit && onSubmit(data);
+            onSubmitRef.current && onSubmitRef.current(data);
         }
         else {
-            onInvalid && onInvalid(invalidItems);
+            onInvalidRef.current && onInvalidRef.current(invalidItems);
             nextTick(function () {
                 var _a;
-                (_a = valueItems[firstInvalidItemId]) === null || _a === void 0 ? void 0 : _a.focusValidate();
+                (_a = valueItems.current[firstInvalidItemId]) === null || _a === void 0 ? void 0 : _a.focusValidate();
             });
         }
-    }, [valueItems, appendFormValueData, onSubmit, onInvalid]);
+    }, [onSubmitRef, onInvalidRef]);
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        if (ref) {
-            var findValueItem_1 = function (name) {
-                return Object.values(valueItems).find(function (commands) {
-                    if (commands) {
-                        if (commands.getName() === name) {
-                            return true;
+    var commands = useMemo(function () {
+        var findValueItem = function (name) {
+            return Object.values(valueItems.current).find(function (commands) {
+                if (commands) {
+                    if (commands.getName() === name) {
+                        return true;
+                    }
+                    switch (commands.getType()) {
+                        case 'FormDateRangePicker':
+                        case 'FormYearRangePicker':
+                            return (name === commands.getFormValueFromName() ||
+                                name === commands.getFormValueToName());
+                        case 'FormMonthPicker':
+                            return (name === commands.getFormValueYearName() ||
+                                name === commands.getFormValueMonthName());
+                        case 'FormMonthRangePicker':
+                            return (name === commands.getFormValueFromYearName() ||
+                                name === commands.getFormValueFromMonthName() ||
+                                name === commands.getFormValueToYearName() ||
+                                name === commands.getFormValueToMonthName());
+                    }
+                }
+            });
+        };
+        var getFormValue = function (name, subKey, isReset) {
+            var valueItem = findValueItem(name);
+            if (valueItem) {
+                switch (valueItem.getType()) {
+                    case 'FormDateRangePicker':
+                    case 'FormYearRangePicker': {
+                        var commands_1 = valueItem;
+                        var value = getItemFormValue(valueItem, !!isReset);
+                        if (notEmpty(subKey)) {
+                            if (subKey === commands_1.getFormValueFromNameSuffix()) {
+                                return value[0];
+                            }
+                            else if (subKey === commands_1.getFormValueToNameSuffix()) {
+                                return value[1];
+                            }
+                            else {
+                                throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 subKey \uAC12\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."));
+                            }
                         }
-                        switch (commands.getType()) {
-                            case 'FormDateRangePicker':
-                            case 'FormYearRangePicker':
-                                return (name === commands.getFormValueFromName() ||
-                                    name === commands.getFormValueToName());
-                            case 'FormMonthPicker':
-                                return (name === commands.getFormValueYearName() ||
-                                    name === commands.getFormValueMonthName());
-                            case 'FormMonthRangePicker':
-                                return (name === commands.getFormValueFromYearName() ||
-                                    name === commands.getFormValueFromMonthName() ||
-                                    name === commands.getFormValueToYearName() ||
-                                    name === commands.getFormValueToMonthName());
+                        else {
+                            throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 \uAC12\uC744 \uAC00\uC838\uC624\uB824\uBA74 subKey \uB97C \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
+                        }
+                    }
+                    case 'FormMonthPicker': {
+                        var commands_2 = valueItem;
+                        var value = getItemFormValue(valueItem, !!isReset);
+                        if (notEmpty(subKey)) {
+                            if (subKey === commands_2.getFormValueYearNameSuffix()) {
+                                return value.year;
+                            }
+                            else if (subKey === commands_2.getFormValueMonthNameSuffix()) {
+                                return value.month;
+                            }
+                            else {
+                                throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 subKey \uAC12\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."));
+                            }
+                        }
+                        else {
+                            throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 \uAC12\uC744 \uAC00\uC838\uC624\uB824\uBA74 subKey \uB97C \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
+                        }
+                    }
+                    case 'FormMonthRangePicker': {
+                        var commands_3 = valueItem;
+                        var value = getItemFormValue(valueItem, !!isReset);
+                        if (notEmpty(subKey)) {
+                            if (subKey === commands_3.getFormValueFromYearNameSuffix()) {
+                                return value[0].year;
+                            }
+                            else if (subKey === commands_3.getFormValueFromMonthNameSuffix()) {
+                                return value[0].month;
+                            }
+                            else if (subKey === commands_3.getFormValueToYearNameSuffix()) {
+                                return value[1].year;
+                            }
+                            else if (subKey === commands_3.getFormValueToMonthNameSuffix()) {
+                                return value[1].month;
+                            }
+                            else {
+                                throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 subKey \uAC12\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."));
+                            }
+                        }
+                        else {
+                            throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 \uAC12\uC744 \uAC00\uC838\uC624\uB824\uBA74 subKey \uB97C \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
+                        }
+                    }
+                    default:
+                        return getItemFormValue(valueItem, !!isReset);
+                }
+            }
+            else
+                throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+        };
+        return {
+            submit: submit,
+            getAllFormValue: function () {
+                var data = {};
+                Object.keys(valueItems.current).forEach(function (id) {
+                    var itemCommands = valueItems.current[id];
+                    if (itemCommands) {
+                        if (!itemCommands.isDisabled() && !itemCommands.isExceptValue()) {
+                            appendFormValueData(data, itemCommands);
                         }
                     }
                 });
-            };
-            var getFormValue_1 = function (name, subKey, isReset) {
-                var valueItem = findValueItem_1(name);
-                if (valueItem) {
-                    switch (valueItem.getType()) {
-                        case 'FormDateRangePicker':
-                        case 'FormYearRangePicker': {
-                            var commands_1 = valueItem;
-                            var value = getItemFormValue(valueItem, !!isReset);
-                            if (notEmpty(subKey)) {
-                                if (subKey === commands_1.getFormValueFromNameSuffix()) {
-                                    return value[0];
-                                }
-                                else if (subKey === commands_1.getFormValueToNameSuffix()) {
-                                    return value[1];
-                                }
-                                else {
-                                    throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 subKey \uAC12\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."));
-                                }
-                            }
-                            else {
-                                throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 \uAC12\uC744 \uAC00\uC838\uC624\uB824\uBA74 subKey \uB97C \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
-                            }
-                        }
-                        case 'FormMonthPicker': {
-                            var commands_2 = valueItem;
-                            var value = getItemFormValue(valueItem, !!isReset);
-                            if (notEmpty(subKey)) {
-                                if (subKey === commands_2.getFormValueYearNameSuffix()) {
-                                    return value.year;
-                                }
-                                else if (subKey === commands_2.getFormValueMonthNameSuffix()) {
-                                    return value.month;
-                                }
-                                else {
-                                    throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 subKey \uAC12\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."));
-                                }
-                            }
-                            else {
-                                throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 \uAC12\uC744 \uAC00\uC838\uC624\uB824\uBA74 subKey \uB97C \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
-                            }
-                        }
-                        case 'FormMonthRangePicker': {
-                            var commands_3 = valueItem;
-                            var value = getItemFormValue(valueItem, !!isReset);
-                            if (notEmpty(subKey)) {
-                                if (subKey === commands_3.getFormValueFromYearNameSuffix()) {
-                                    return value[0].year;
-                                }
-                                else if (subKey === commands_3.getFormValueFromMonthNameSuffix()) {
-                                    return value[0].month;
-                                }
-                                else if (subKey === commands_3.getFormValueToYearNameSuffix()) {
-                                    return value[1].year;
-                                }
-                                else if (subKey === commands_3.getFormValueToMonthNameSuffix()) {
-                                    return value[1].month;
-                                }
-                                else {
-                                    throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 subKey \uAC12\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."));
-                                }
-                            }
-                            else {
-                                throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 \uAC12\uC744 \uAC00\uC838\uC624\uB824\uBA74 subKey \uB97C \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
-                            }
-                        }
-                        default:
-                            return getItemFormValue(valueItem, !!isReset);
-                    }
-                }
+                return data;
+            },
+            resetAll: function () {
+                Object.keys(valueItems.current).forEach(function (id) {
+                    var _a;
+                    (_a = valueItems.current[id]) === null || _a === void 0 ? void 0 : _a.reset();
+                });
+            },
+            getItem: function (name) {
+                return findValueItem(name);
+            },
+            exists: function (name) {
+                return !!findValueItem(name);
+            },
+            getReset: function (name) {
+                var valueItem = findValueItem(name);
+                if (valueItem)
+                    return valueItem.getReset();
                 else
                     throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
-            };
-            var commands = {
-                submit: submit,
-                getAllFormValue: getAllFormValue,
-                resetAll: resetAll,
-                getItem: function (name) {
-                    return findValueItem_1(name);
-                },
-                exists: function (name) {
-                    return !!findValueItem_1(name);
-                },
-                getReset: function (name) {
-                    var valueItem = findValueItem_1(name);
-                    if (valueItem)
-                        return valueItem.getReset();
-                    else
-                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
-                },
-                getFormReset: function (name, subKey) {
-                    return getFormValue_1(name, subKey, true);
-                },
-                reset: function (name) {
-                    var valueItem = findValueItem_1(name);
-                    if (valueItem)
-                        return valueItem.reset();
-                    else
-                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
-                },
-                getValue: function (name) {
-                    var valueItem = findValueItem_1(name);
-                    if (valueItem)
-                        return valueItem.getValue();
-                    else
-                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
-                },
-                getFormValue: function (name, subKey) {
-                    return getFormValue_1(name, subKey, false);
-                },
-                setValue: function (name, value) {
-                    var valueItem = findValueItem_1(name);
-                    if (valueItem)
-                        valueItem.setValue(value);
-                    else
-                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
-                },
-                isExceptValue: function (name) {
-                    var valueItem = findValueItem_1(name);
-                    if (valueItem)
-                        return valueItem.isExceptValue();
-                    else
-                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
-                },
-                isDisabled: function (name) {
-                    var valueItem = findValueItem_1(name);
-                    if (valueItem)
-                        return valueItem.isDisabled();
-                    else
-                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
-                },
-                setDisabled: function (name, disabled) {
-                    var valueItem = findValueItem_1(name);
-                    if (valueItem)
-                        valueItem.setDisabled(disabled);
-                    else
-                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
-                },
-                isHidden: function (name) {
-                    var valueItem = findValueItem_1(name);
-                    if (valueItem)
-                        return valueItem.isHidden();
-                    else
-                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
-                },
-                setHidden: function (name, hidden) {
-                    var valueItem = findValueItem_1(name);
-                    if (valueItem)
-                        valueItem.setHidden(hidden);
-                    else
-                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
-                },
-                focus: function (name) {
-                    var valueItem = findValueItem_1(name);
-                    if (valueItem)
-                        valueItem.focus();
-                    else
-                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
-                },
-                validate: function (name) {
-                    var valueItem = findValueItem_1(name);
-                    if (valueItem)
-                        return valueItem.validate();
-                    else
-                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
-                },
-                setError: function (name, error, helperText) {
-                    var valueItem = findValueItem_1(name);
-                    if (valueItem)
-                        valueItem.setError(error, helperText);
-                    else
-                        throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
-                },
-            };
+            },
+            getFormReset: function (name, subKey) {
+                return getFormValue(name, subKey, true);
+            },
+            reset: function (name) {
+                var valueItem = findValueItem(name);
+                if (valueItem)
+                    return valueItem.reset();
+                else
+                    throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+            },
+            getValue: function (name) {
+                var valueItem = findValueItem(name);
+                if (valueItem)
+                    return valueItem.getValue();
+                else
+                    throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+            },
+            getFormValue: function (name, subKey) {
+                return getFormValue(name, subKey, false);
+            },
+            setValue: function (name, value) {
+                var valueItem = findValueItem(name);
+                if (valueItem)
+                    valueItem.setValue(value);
+                else
+                    throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+            },
+            isExceptValue: function (name) {
+                var valueItem = findValueItem(name);
+                if (valueItem)
+                    return valueItem.isExceptValue();
+                else
+                    throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+            },
+            isDisabled: function (name) {
+                var valueItem = findValueItem(name);
+                if (valueItem)
+                    return valueItem.isDisabled();
+                else
+                    throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+            },
+            setDisabled: function (name, disabled) {
+                var valueItem = findValueItem(name);
+                if (valueItem)
+                    valueItem.setDisabled(disabled);
+                else
+                    throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+            },
+            isHidden: function (name) {
+                var valueItem = findValueItem(name);
+                if (valueItem)
+                    return valueItem.isHidden();
+                else
+                    throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+            },
+            setHidden: function (name, hidden) {
+                var valueItem = findValueItem(name);
+                if (valueItem)
+                    valueItem.setHidden(hidden);
+                else
+                    throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+            },
+            focus: function (name) {
+                var valueItem = findValueItem(name);
+                if (valueItem)
+                    valueItem.focus();
+                else
+                    throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+            },
+            validate: function (name) {
+                var valueItem = findValueItem(name);
+                if (valueItem)
+                    return valueItem.validate();
+                else
+                    throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+            },
+            setError: function (name, error, helperText) {
+                var valueItem = findValueItem(name);
+                if (valueItem)
+                    valueItem.setError(error, helperText);
+                else
+                    throw new Error("'".concat(name, "' \uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."));
+            },
+        };
+    }, [submit]);
+    useLayoutEffect(function () {
+        if (ref) {
             if (typeof ref === 'function') {
                 ref(commands);
             }
@@ -531,7 +530,7 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
                 }
             };
         }
-    }, [ref, valueItems, submit, resetAll, getAllFormValue, getItemFormValue]);
+    }, [commands, ref]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -542,37 +541,89 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
         }
     }, [disabled, submit]);
     /********************************************************************************************************************
-     * Render
+     * FormContextValue
      * ******************************************************************************************************************/
-    var style = useMemo(function () {
-        return fullHeight ? __assign(__assign({}, initStyle), { flex: 1, height: '100%' }) : initStyle;
-    }, [initStyle, fullHeight]);
-    var contentWrapStyle = useMemo(function () { return ({
-        display: 'flex',
-        flexDirection: 'column',
-        height: fullHeight ? '100%' : undefined,
-    }); }, [fullHeight]);
-    return (React.createElement(FormContextProvider, { value: __assign({ id: formId || 'form', variant: variant, size: size, color: color, spacing: spacing, formColGap: formColGap, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, fullHeight: fullHeight, disabled: disabled, onAddValueItem: function (id, item) {
-                valueItems[id] = item;
+    var formContextValue = useMemo(function () {
+        return ({
+            id: formId || 'form',
+            variant: variant,
+            size: size,
+            color: color,
+            spacing: spacing,
+            formColGap: formColGap,
+            focused: focused,
+            labelShrink: labelShrink,
+            fullWidth: fullWidth,
+            fullHeight: fullHeight,
+            disabled: disabled,
+            onAddValueItem: function (id, item) {
+                valueItems.current[id] = item;
                 if (formAddValueItem)
                     formAddValueItem(id, item);
-            }, onRemoveValueItem: function (id) {
-                valueItems[id] = undefined;
+            },
+            onRemoveValueItem: function (id) {
+                valueItems.current[id] = undefined;
                 if (formRemoveValueItem)
                     formRemoveValueItem(id);
-            }, onValueChange: function (name, value) {
-                if (onValueChange)
-                    onValueChange(name, value);
+            },
+            onValueChange: function (name, value) {
+                if (onValueChangeRef.current)
+                    onValueChangeRef.current(name, value);
                 if (formValueChange)
                     formValueChange(name, value);
-            }, onValueChangeByUser: function (name, value) {
-                if (onValueChangeByUser)
-                    onValueChangeByUser(name, value);
+            },
+            onValueChangeByUser: function (name, value) {
+                if (onValueChangeByUserRef.current)
+                    onValueChangeByUserRef.current(name, value);
                 if (formValueChangeByUser)
                     formValueChangeByUser(name, value);
-            } }, otherFormState) },
-        React.createElement(Box, { className: classNames('Form', "Form-variant-".concat(variant), fullHeight && 'full-height', className), component: 'form', ref: formRef, noValidate: true, autoComplete: 'off', onSubmit: handleSubmit, style: style, sx: sx },
-            React.createElement("div", { style: contentWrapStyle }, children))));
+            },
+            onRequestSearchSubmit: formRequestSearchSubmit,
+            formColAutoXs: formColAutoXs,
+            formColWidth: formColWidth,
+            onAddFormCol: onAddFormCol,
+            onRemoveFormCol: onRemoveFormCol,
+            formColXs: formColXs,
+            formColWithLabel: formColWithLabel,
+            formColWithHelperText: formColWithHelperText,
+        });
+    }, [
+        formId,
+        variant,
+        size,
+        color,
+        spacing,
+        formColGap,
+        focused,
+        labelShrink,
+        fullWidth,
+        fullHeight,
+        disabled,
+        formRequestSearchSubmit,
+        formColAutoXs,
+        formColWidth,
+        onAddFormCol,
+        onRemoveFormCol,
+        formColXs,
+        formColWithLabel,
+        formColWithHelperText,
+        formAddValueItem,
+        formRemoveValueItem,
+        onValueChangeRef,
+        formValueChange,
+        onValueChangeByUserRef,
+        formValueChangeByUser,
+    ]);
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
+    return (React.createElement(FormContextProvider, { value: formContextValue },
+        React.createElement(Box, { className: classNames('Form', "Form-variant-".concat(variant), fullHeight && 'full-height', className), component: 'form', ref: formRef, noValidate: true, autoComplete: 'off', onSubmit: handleSubmit, style: fullHeight ? __assign(__assign({}, initStyle), { flex: 1, height: '100%' }) : initStyle, sx: sx },
+            React.createElement("div", { style: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: fullHeight ? '100%' : undefined,
+                } }, children))));
 });var FormButton = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * FormState
@@ -580,34 +631,19 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
     var initSize = _a.size, initColor = _a.color, initVariant = _a.variant, initFullWidth = _a.fullWidth, className = _a.className, _b = _a.type, type = _b === void 0 ? 'button' : _b, onClick = _a.onClick, props = __rest(_a, ["size", "color", "variant", "fullWidth", "className", "type", "onClick"]);
     var _c = useFormState(), formSize = _c.size, formColor = _c.color, formFullWidth = _c.fullWidth;
     /********************************************************************************************************************
-     * Memo - FormState
+     * FormState
      * ******************************************************************************************************************/
-    var size = useMemo(function () { return ifUndefined(initSize, formSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return ifUndefined(initColor, formColor); }, [initColor, formColor]);
-    var fullWidth = useMemo(function () { return ifUndefined(initFullWidth, formFullWidth); }, [initFullWidth, formFullWidth]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var variant = useMemo(function () {
-        if (initVariant) {
-            return initVariant;
-        }
-        else {
-            switch (type) {
-                case 'submit':
-                    return 'contained';
-                default:
-                    return 'outlined';
-            }
-        }
-    }, [initVariant, type]);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(PdgButton, __assign({ ref: ref, className: classNames(className, 'FormButton'), type: type, variant: variant, size: size, color: color, fullWidth: fullWidth, onClick: onClick }, props)));
-});var IconPdgIcon = styled(PdgIcon)(templateObject_1$h || (templateObject_1$h = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
-var ChildrenSpan = styled('span')(templateObject_2$8 || (templateObject_2$8 = __makeTemplateObject(["\n  vertical-align: middle;\n"], ["\n  vertical-align: middle;\n"])));
-var templateObject_1$h, templateObject_2$8;var FormLabel = React.forwardRef(function (_a, ref) {
+    return (React.createElement(PdgButton, __assign({ ref: ref, className: classNames(className, 'FormButton'), type: type, variant: initVariant ? initVariant : type === 'submit' ? 'contained' : 'outlined', size: size, color: color, fullWidth: fullWidth, onClick: onClick }, props)));
+});
+var FormButton$1 = React.memo(FormButton);var IconPdgIcon = styled(PdgIcon)(templateObject_1$i || (templateObject_1$i = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
+var ChildrenSpan = styled('span')(templateObject_2$9 || (templateObject_2$9 = __makeTemplateObject(["\n  vertical-align: middle;\n"], ["\n  vertical-align: middle;\n"])));
+var templateObject_1$i, templateObject_2$9;var FormLabel = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Use
      * ******************************************************************************************************************/
@@ -616,20 +652,18 @@ var templateObject_1$h, templateObject_2$8;var FormLabel = React.forwardRef(func
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var finalProps = useMemo(function () {
-        var newStyle = __assign({ height: 20, transform: size === 'small' ? 'translate(0, -1.5px) scale(0.7)' : undefined }, style);
-        if (!error) {
-            newStyle.color = warning ? theme.palette.warning.main : style === null || style === void 0 ? void 0 : style.color;
-        }
-        return __assign({ shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size, error: error, style: newStyle }, props);
-    }, [size, style, warning, error, props, theme.palette.warning.main]);
+    var newStyle = __assign({ height: 20, transform: size === 'small' ? 'translate(0, -1.5px) scale(0.7)' : undefined }, style);
+    if (!error) {
+        newStyle.color = warning ? theme.palette.warning.main : style === null || style === void 0 ? void 0 : style.color;
+    }
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(InputLabel, __assign({ ref: ref }, finalProps), icon ? (React.createElement(React.Fragment, null,
+    return (React.createElement(InputLabel, __assign({ ref: ref, shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size, error: error, style: newStyle }, props), icon ? (React.createElement(React.Fragment, null,
         React.createElement(IconPdgIcon, null, icon),
         React.createElement(ChildrenSpan, null, children))) : (children)));
-});var StyledLineBox = styled(Box)(templateObject_1$g || (templateObject_1$g = __makeTemplateObject(["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"], ["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"])));
+});
+var FormLabel$1 = React.memo(FormLabel);var StyledLineBox = styled(Box)(templateObject_1$h || (templateObject_1$h = __makeTemplateObject(["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"], ["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"])));
 var StyledErrorLineBox = styled(Box)(function (_a) {
     var theme = _a.theme;
     return ({
@@ -652,7 +686,7 @@ var StyledWarningLineBox = styled(Box)(function (_a) {
         opacity: 0.4,
     });
 });
-var templateObject_1$g;var DEFAULT_LINE_STYLE = { flex: 1, position: 'relative' };
+var templateObject_1$h;var DEFAULT_LINE_STYLE = { flex: 1, position: 'relative' };
 var FormDivider = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * FormState
@@ -715,8 +749,8 @@ var FormDivider = React.forwardRef(function (_a, ref) {
                 } }, label)),
             (line || collapse) && (React.createElement("div", { style: lineStyle }, error ? React.createElement(StyledErrorLineBox, null) : warning ? React.createElement(StyledWarningLineBox, null) : React.createElement(StyledLineBox, null))),
             collapse && (React.createElement(PdgIcon, { sx: { opacity: 0.6, ml: 1 }, color: error ? 'error' : warning ? 'warning' : undefined }, collapseIn ? 'KeyboardDoubleArrowUp' : 'KeyboardDoubleArrowDown')))));
-});var StyledWrapGrid$1 = styled(Grid)(templateObject_1$f || (templateObject_1$f = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
-var templateObject_1$f;var FormBlock = React.forwardRef(function (_a, ref) {
+});var StyledWrapGrid$1 = styled(Grid)(templateObject_1$g || (templateObject_1$g = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
+var templateObject_1$g;var FormBlock = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
@@ -731,13 +765,13 @@ var templateObject_1$f;var FormBlock = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var spacing = useMemo(function () { return initSpacing || formSpacing; }, [initSpacing, formSpacing]);
-    var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
-    var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var spacing = ifUndefined(initSpacing, formSpacing);
+    var focused = ifUndefined(initFocused, formFocused);
+    var labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -771,7 +805,7 @@ var templateObject_1$f;var FormBlock = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormContext.Provider, { value: __assign({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth }, otherFormState) },
+    return (React.createElement(FormContext.Provider, { value: __assign(__assign({}, otherFormState), { variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth }) },
         React.createElement(Grid, { item: true, ref: ref, xs: 12, className: classNames(className, 'FormBlock'), style: style, sx: sx },
             React.createElement(Grid, { container: true, spacing: spacing },
                 (icon || label || line || collapse) && (React.createElement(FormDivider, { className: 'FormBlock-header', collapse: collapse, collapseIn: collapseIn, size: size, icon: icon, color: color, label: label, line: line, error: error, warning: warning, lineVerticalMargin: lineVerticalMargin, hidden: hidden, onCollapseChange: collapse ? function (newCollapseIn) { return setCollapseIn(newCollapseIn); } : undefined })),
@@ -780,8 +814,8 @@ var templateObject_1$f;var FormBlock = React.forwardRef(function (_a, ref) {
                         React.createElement(Grid, { container: true, spacing: spacing },
                             React.createElement(StyledWrapGrid$1, { item: true, xs: 12, className: 'FormBlock-body' },
                                 React.createElement(Grid, { className: 'FormBlock-content', container: true, spacing: spacing }, children)))))))));
-});var StyledWrapGrid = styled(Grid)(templateObject_1$e || (templateObject_1$e = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
-var templateObject_1$e;var FormRow = React.forwardRef(function (_a, ref) {
+});var StyledWrapGrid = styled(Grid)(templateObject_1$f || (templateObject_1$f = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
+var templateObject_1$f;var FormRow = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
@@ -845,15 +879,20 @@ var templateObject_1$e;var FormRow = React.forwardRef(function (_a, ref) {
         delete formCols[id];
         makeFormColXs();
     }, [formCols, makeFormColXs]);
-    //------------------------------------------------------------------------------------------------------------------
-    return (React.createElement(FormContext.Provider, { value: __assign({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColAutoXs: formColAutoXs, onAddFormCol: handleAddFormCol, onRemoveFormCol: handleRemoveFormCol }, otherFormState) },
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
+    return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColAutoXs: formColAutoXs, onAddFormCol: handleAddFormCol, onRemoveFormCol: handleRemoveFormCol }) },
         React.createElement(Grid, { item: true, ref: ref, xs: 12, className: classNames(className, 'FormRow'), style: style, sx: sx },
             React.createElement(Grid, { container: true, spacing: spacing },
                 (icon || label || line) && (React.createElement(FormDivider, { className: classNames(className, 'FormRow-header'), size: size, icon: icon, color: color, label: label, line: line, error: error, warning: warning, lineVerticalMargin: lineVerticalMargin, hidden: hidden })),
                 React.createElement(StyledWrapGrid, { item: true, xs: 12, className: 'FormRow-body' },
                     React.createElement(Grid, { className: 'FormRow-content', container: true, spacing: spacing, direction: 'row', style: { flexWrap: 'nowrap' } }, children),
                     helperText && (React.createElement(FormHelperText, { className: 'FormRow-helper-text', component: 'div', error: error }, helperText)))))));
-});var FormCol = React.forwardRef(function (_a, ref) {
+});var StyledFormLabelContainerDiv = styled('div')(templateObject_1$e || (templateObject_1$e = __makeTemplateObject(["\n  position: relative;\n  height: 20px;\n"], ["\n  position: relative;\n  height: 20px;\n"])));
+var StyledFormLabel = styled(FormLabel$1)(templateObject_2$8 || (templateObject_2$8 = __makeTemplateObject(["\n  position: absolute;\n  left: 5px;\n  top: 0;\n"], ["\n  position: absolute;\n  left: 5px;\n  top: 0;\n"])));
+var StyledContentContainerBox = styled(Box)(templateObject_3$4 || (templateObject_3$4 = __makeTemplateObject(["\n  display: flex;\n  flex-wrap: wrap;\n"], ["\n  display: flex;\n  flex-wrap: wrap;\n"])));
+var templateObject_1$e, templateObject_2$8, templateObject_3$4;var FormCol = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
@@ -874,18 +913,14 @@ var templateObject_1$e;var FormRow = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var spacing = useMemo(function () { return initSpacing || formSpacing; }, [initSpacing, formSpacing]);
-    var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
-    var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var gap = useMemo(function () { return (initGap == null ? formFormColGap : initGap); }, [formFormColGap, initGap]);
-    var style = useMemo(function () { return (hidden ? __assign(__assign({}, initStyle), { display: 'none' }) : initStyle); }, [hidden, initStyle]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var spacing = ifUndefined(initSpacing, formSpacing);
+    var focused = ifUndefined(initFocused, formFocused);
+    var labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
+    var formColGap = ifUndefined(initGap, formFormColGap);
     /********************************************************************************************************************
      * ResizeDetector
      * ******************************************************************************************************************/
@@ -923,14 +958,14 @@ var templateObject_1$e;var FormRow = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormContextProvider, { value: __assign({ variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColXs: xs || formColAutoXs || 12, formColWidth: formColWidth, formColWithLabel: !!label, formColWithHelperText: !!helperText }, otherFormState) },
-        React.createElement(Grid, { ref: gridRef, item: true, xs: xs || formColAutoXs || 12, className: classNames(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text'), style: style, sx: sx },
+    return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColGap: formColGap, formColXs: xs || formColAutoXs || 12, formColWidth: formColWidth, formColWithLabel: !!label, formColWithHelperText: !!helperText }) },
+        React.createElement(Grid, { ref: gridRef, item: true, xs: xs || formColAutoXs || 12, className: classNames(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text'), style: hidden ? __assign(__assign({}, initStyle), { display: 'none' }) : initStyle, sx: sx },
             React.createElement(Grid, { container: true, direction: 'column' },
                 label && (React.createElement(Grid, { item: true, className: 'FormCol-header' },
-                    React.createElement("div", { style: { position: 'relative', height: 20 } },
-                        React.createElement(FormLabel, { className: 'FormCol-FormLabel', size: size, icon: icon, focused: focused, color: color, error: error, warning: warning, style: { position: 'absolute', left: 5, top: 0 } }, label)))),
+                    React.createElement(StyledFormLabelContainerDiv, null,
+                        React.createElement(StyledFormLabel, { className: 'FormCol-FormLabel', size: size, icon: icon, focused: focused, color: color, error: error, warning: warning }, label)))),
                 React.createElement(Grid, { item: true, xs: 2, className: 'FormCol-content' },
-                    React.createElement(Box, { sx: { display: 'flex', flexWrap: 'wrap', gap: gap } }, children)),
+                    React.createElement(StyledContentContainerBox, { gap: formColGap }, children)),
                 helperText && (React.createElement(Grid, { item: true, className: 'FormCol-helper-text' },
                     React.createElement(FormHelperText, { component: 'div', error: error, style: { marginLeft: helperTextShift ? 14 : 5 } }, helperText)))))));
 });var StyledContainerDiv = styled('div')(templateObject_1$d || (templateObject_1$d = __makeTemplateObject(["\n  flex: 1;\n  position: relative;\n"], ["\n  flex: 1;\n  position: relative;\n"])));
@@ -990,7 +1025,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
-    var _b;
+    var _b, _c;
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, required = _a.required, initValue = _a.value, initData = _a.data, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, helperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, initHidden = _a.hidden, disableReturnKey = _a.disableReturnKey, 
@@ -1008,75 +1043,24 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
-    var _c = useFormState(), formVariant = _c.variant, formSize = _c.size, formColor = _c.color, formFocused = _c.focused, formLabelShrink = _c.labelShrink, formFullWidth = _c.fullWidth, formDisabled = _c.disabled, formColWithHelperText = _c.formColWithHelperText, onAddValueItem = _c.onAddValueItem, onRemoveValueItem = _c.onRemoveValueItem, onValueChange = _c.onValueChange, onValueChangeByUser = _c.onValueChangeByUser, onRequestSearchSubmit = _c.onRequestSearchSubmit;
+    var _d = useFormState(), formVariant = _d.variant, formSize = _d.size, formColor = _d.color, formFocused = _d.focused, formLabelShrink = _d.labelShrink, formFullWidth = _d.fullWidth, formDisabled = _d.disabled, formColWithHelperText = _d.formColWithHelperText, onAddValueItem = _d.onAddValueItem, onRemoveValueItem = _d.onRemoveValueItem, onValueChange = _d.onValueChange, onValueChangeByUser = _d.onValueChangeByUser, onRequestSearchSubmit = _d.onRequestSearchSubmit;
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
-    var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var focused = ifUndefined(initFocused, formFocused);
+    var labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var _d = useAutoUpdateState(initError), error = _d[0], setError = _d[1];
-    var _e = useState(), errorHelperText = _e[0], setErrorHelperText = _e[1];
-    var _f = useAutoUpdateRefState(initData), dataRef = _f[0], setData = _f[2];
-    var _g = useAutoUpdateRefState(useMemo(function () { return (initDisabled == null ? formDisabled : initDisabled); }, [initDisabled, formDisabled])), disabledRef = _g[0], disabled = _g[1], setDisabled = _g[2];
-    var _h = useAutoUpdateRefState(initHidden), hiddenRef = _h[0], hidden = _h[1], setHidden = _h[2];
-    /********************************************************************************************************************
-     * Memo - muiInputLabelProps
-     * ******************************************************************************************************************/
-    var muiInputLabelProps = useMemo(function () {
-        if (labelShrink || placeholder) {
-            return __assign(__assign({}, initMuiInputLabelProps), { shrink: true });
-        }
-        else {
-            return initMuiInputLabelProps;
-        }
-    }, [initMuiInputLabelProps, labelShrink, placeholder]);
-    /********************************************************************************************************************
-     * Memo - inputProps
-     * ******************************************************************************************************************/
-    var inputProps = useMemo(function () {
-        if (readOnly != null || maxLength != null) {
-            var finalInputProps = __assign(__assign({}, initInputProps), { readOnly: readOnly, maxLength: maxLength });
-            if (readOnly) {
-                finalInputProps.tabIndex = -1;
-                finalInputProps.className = classNames(finalInputProps.className, 'Mui-disabled');
-            }
-            else {
-                finalInputProps.tabIndex = tabIndex;
-            }
-            return finalInputProps;
-        }
-        else {
-            return initInputProps;
-        }
-    }, [initInputProps, readOnly, tabIndex, maxLength]);
-    /********************************************************************************************************************
-     * Memo - style
-     * ******************************************************************************************************************/
-    var style = useMemo(function () {
-        var newStyle = __assign({}, initStyle);
-        if (width != null) {
-            newStyle.width = width;
-        }
-        if (hidden) {
-            newStyle.display = 'none';
-        }
-        return newStyle;
-    }, [initStyle, width, hidden]);
-    /********************************************************************************************************************
-     * Memo - label
-     * ******************************************************************************************************************/
-    var label = useMemo(function () {
-        return labelIcon ? (React.createElement(React.Fragment, null,
-            React.createElement(PdgIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
-            React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
-    }, [initLabel, labelIcon]);
+    var _e = useAutoUpdateState(initError), error = _e[0], setError = _e[1];
+    var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
+    var _g = useAutoUpdateRefState(initData), dataRef = _g[0], setData = _g[2];
+    var _h = useAutoUpdateRefState(useMemo(function () { return (initDisabled == null ? formDisabled : initDisabled); }, [initDisabled, formDisabled])), disabledRef = _h[0], disabled = _h[1], setDisabled = _h[2];
+    var _j = useAutoUpdateRefState(initHidden), hiddenRef = _j[0], hidden = _j[1], setHidden = _j[2];
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
      * ******************************************************************************************************************/
@@ -1120,7 +1104,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     var getFinalValue = useCallback(function (newValue) {
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
-    var _j = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _j[0], value = _j[1], setValue = _j[2];
+    var _k = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _k[0], value = _k[1], setValue = _k[2];
     useFirstSkipEffect(function () {
         if (error)
             validate(value);
@@ -1131,9 +1115,9 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
         }
     }, [value]);
     /********************************************************************************************************************
-     * Memo
+     * Variables
      * ******************************************************************************************************************/
-    var showClear = useMemo(function () { return (clear ? notEmpty(value) : false); }, [clear, value]);
+    var showClear = clear ? notEmpty(value) : false;
     /********************************************************************************************************************
      * Function - focus
      * ******************************************************************************************************************/
@@ -1296,9 +1280,37 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
             onKeyDown(e);
     }, [select, multiline, disableReturnKey, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, valueRef]);
     /********************************************************************************************************************
+     * Variable
+     * ******************************************************************************************************************/
+    // style
+    var style = __assign({}, initStyle);
+    if (width != null) {
+        style.width = width;
+    }
+    if (hidden) {
+        style.display = 'none';
+    }
+    // muiInputLabelProps
+    var muiInputLabelProps = labelShrink || placeholder
+        ? __assign(__assign({}, initMuiInputLabelProps), { shrink: true }) : initMuiInputLabelProps;
+    // inputProps
+    var inputProps = initInputProps;
+    if ((!((_b = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _b === void 0 ? void 0 : _b.includes('FormTag-Input')) && readOnly != null) || maxLength != null) {
+        inputProps = __assign(__assign({}, initInputProps), { readOnly: readOnly, maxLength: maxLength });
+        if (readOnly) {
+            inputProps.tabIndex = -1;
+            inputProps.className = classNames(inputProps.className, 'Mui-disabled');
+        }
+        else {
+            inputProps.tabIndex = tabIndex;
+        }
+    }
+    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(TextField, __assign({}, props, { variant: variant, size: size, color: color, focused: focused || undefined, name: name, label: label, placeholder: placeholder, className: classNames(className, 'FormValueItem', 'FormTextField', "variant-".concat(variant)), inputRef: initInputRef ? initInputRef : inputRef, value: value, required: required, fullWidth: !width && fullWidth, error: error, helperText: formColWithHelperText ? undefined : error ? errorHelperText : helperText, FormHelperTextProps: { component: 'div' }, disabled: disabled, InputProps: muiInputProps, InputLabelProps: muiInputLabelProps, inputProps: ((_b = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _b === void 0 ? void 0 : _b.includes('FormTag-Input')) ? initInputProps : inputProps, style: style, select: select, SelectProps: SelectProps, multiline: multiline, onChange: handleChange, onBlur: handleBlur, onKeyDown: handleKeyDown })));
+    return (React.createElement(TextField, __assign({}, props, { variant: variant, size: size, color: color, focused: focused || undefined, name: name, label: labelIcon ? (React.createElement(React.Fragment, null,
+            React.createElement(PdgIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
+            React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel), placeholder: placeholder, className: classNames(className, 'FormValueItem', 'FormTextField', "variant-".concat(variant)), inputRef: initInputRef ? initInputRef : inputRef, value: value, required: required, fullWidth: !width && fullWidth, error: error, helperText: formColWithHelperText ? undefined : error ? errorHelperText : helperText, FormHelperTextProps: { component: 'div' }, disabled: disabled, InputProps: muiInputProps, InputLabelProps: muiInputLabelProps, inputProps: ((_c = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _c === void 0 ? void 0 : _c.includes('FormTag-Input')) ? initInputProps : inputProps, style: style, select: select, SelectProps: SelectProps, multiline: multiline, onChange: handleChange, onBlur: handleBlur, onKeyDown: handleKeyDown })));
 });
 FormTextField.displayName = 'FormTextField';var css_248z$k = ".FormHidden {\n  display: none !important;\n}";
 styleInject(css_248z$k);var FormHidden = React.forwardRef(function (_a, ref) {
@@ -1317,9 +1329,9 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
     var className = _a.className, name = _a.name, _b = _a.value, initValue = _b === void 0 ? [] : _b, exceptValue = _a.exceptValue, _c = _a.clear, clear = _c === void 0 ? true : _c, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, initDisabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, _d = _a.formValueSeparator, formValueSeparator = _d === void 0 ? ',' : _d, formValueSort = _a.formValueSort, limitTags = _a.limitTags, getLimitTagsText = _a.getLimitTagsText, onAppendTag = _a.onAppendTag, onRemoveTag = _a.onRemoveTag, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest(_a, ["className", "name", "value", "exceptValue", "clear", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "limitTags", "getLimitTagsText", "onAppendTag", "onRemoveTag", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
     var _e = useFormState(), formFullWidth = _e.fullWidth, formDisabled = _e.disabled, onAddValueItem = _e.onAddValueItem, onValueChange = _e.onValueChange, onValueChangeByUser = _e.onValueChangeByUser, onRequestSearchSubmit = _e.onRequestSearchSubmit, otherFormState = __rest(_e, ["fullWidth", "disabled", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
     /********************************************************************************************************************
-     * State - FormState
+     * FormState - Variables
      * ******************************************************************************************************************/
-    var fullWidth = useAutoUpdateState(initFullWidth == null ? formFullWidth : initFullWidth)[0];
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -1477,39 +1489,56 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormContextProvider, { value: __assign({ fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, 
-            // eslint-disable-next-line
-            onValueChange: function () { }, 
-            // eslint-disable-next-line
-            onValueChangeByUser: function () { }, 
-            // eslint-disable-next-line
-            onRequestSearchSubmit: function () { } }, otherFormState) },
-        React.createElement(Autocomplete, { options: [], multiple: true, freeSolo: true, value: value, readOnly: readOnly, disableClearable: true, limitTags: limitTags, getLimitTagsText: getLimitTagsText, disabled: disabled, renderTags: handleRenderTags, inputValue: inputValue, style: { display: fullWidth ? 'block' : 'inline-block', width: fullWidth ? '100%' : undefined }, renderInput: function (params) {
-                var _a;
-                var renderProps = __assign({ clear: clear }, props);
-                renderProps.InputLabelProps = __assign(__assign({}, renderProps.InputLabelProps), { htmlFor: params.InputLabelProps.htmlFor, id: params.InputLabelProps.id });
-                renderProps.InputProps = __assign(__assign({}, renderProps.InputProps), { className: classNames((_a = renderProps.InputProps) === null || _a === void 0 ? void 0 : _a.className, params.InputProps.className), ref: params.InputProps.ref });
-                if (notEmpty(params.InputProps.startAdornment)) {
-                    renderProps.InputProps.startAdornment = (React.createElement(React.Fragment, null,
-                        renderProps.InputProps.startAdornment,
-                        params.InputProps.startAdornment));
-                }
-                renderProps.inputProps = __assign(__assign({}, renderProps.inputProps), params.inputProps);
-                renderProps.inputProps.className = classNames(renderProps.inputProps.className, 'FormTag-Input');
-                renderProps.inputProps.readOnly = readOnly;
-                if (readOnly) {
-                    renderProps.inputProps.tabIndex = -1;
-                }
-                renderProps.inputProps.maxLength = maxLength;
-                if (readOnly) {
-                    renderProps.inputProps.className = classNames(renderProps.inputProps.className, 'Mui-disabled');
-                }
-                delete renderProps.inputProps.onChange;
-                delete renderProps.inputProps.value;
-                return (React.createElement(FormText, __assign({}, renderProps, { ref: handleRef, name: name, className: classNames(className, 'FormValueItem', 'FormTag'), error: error, disabled: disabled, fullWidth: fullWidth, required: required, value: inputValue, exceptValue: exceptValue, helperText: error ? errorHelperText : helperText, onKeyDown: handleInputKeyDown, onChange: handleInputChange, onBlur: handleBlur })));
-            } })));
+    var handleRenderInput = useCallback(function (params) {
+        var _a;
+        var renderProps = __assign({ clear: clear }, props);
+        renderProps.InputLabelProps = __assign(__assign({}, renderProps.InputLabelProps), { htmlFor: params.InputLabelProps.htmlFor, id: params.InputLabelProps.id });
+        renderProps.InputProps = __assign(__assign({}, renderProps.InputProps), { className: classNames((_a = renderProps.InputProps) === null || _a === void 0 ? void 0 : _a.className, params.InputProps.className), ref: params.InputProps.ref });
+        if (notEmpty(params.InputProps.startAdornment)) {
+            renderProps.InputProps.startAdornment = (React.createElement(React.Fragment, null,
+                renderProps.InputProps.startAdornment,
+                params.InputProps.startAdornment));
+        }
+        renderProps.inputProps = __assign(__assign({}, renderProps.inputProps), params.inputProps);
+        renderProps.inputProps.className = classNames(renderProps.inputProps.className, 'FormTag-Input');
+        renderProps.inputProps.readOnly = readOnly;
+        if (readOnly) {
+            renderProps.inputProps.tabIndex = -1;
+        }
+        renderProps.inputProps.maxLength = maxLength;
+        if (readOnly) {
+            renderProps.inputProps.className = classNames(renderProps.inputProps.className, 'Mui-disabled');
+        }
+        delete renderProps.inputProps.onChange;
+        delete renderProps.inputProps.value;
+        return (React.createElement(FormText, __assign({}, renderProps, { ref: handleRef, name: name, className: classNames(className, 'FormValueItem', 'FormTag'), error: error, disabled: disabled, fullWidth: fullWidth, required: required, value: inputValue, exceptValue: exceptValue, helperText: error ? errorHelperText : helperText, onKeyDown: handleInputKeyDown, onChange: handleInputChange, onBlur: handleBlur })));
+    }, [
+        className,
+        clear,
+        disabled,
+        error,
+        errorHelperText,
+        exceptValue,
+        fullWidth,
+        handleBlur,
+        handleInputChange,
+        handleInputKeyDown,
+        handleRef,
+        helperText,
+        inputValue,
+        maxLength,
+        name,
+        props,
+        readOnly,
+        required,
+    ]);
+    return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, onValueChange: function () { }, onValueChangeByUser: function () { }, onRequestSearchSubmit: function () { } }) },
+        React.createElement(Autocomplete, { options: [], multiple: true, freeSolo: true, value: value, readOnly: readOnly, disableClearable: true, limitTags: limitTags, getLimitTagsText: getLimitTagsText, disabled: disabled, renderTags: handleRenderTags, inputValue: inputValue, style: { display: fullWidth ? 'block' : 'inline-block', width: fullWidth ? '100%' : undefined }, renderInput: handleRenderInput })));
 });
 FormTag.displayName = 'FormTag';var FormEmail = React.forwardRef(function (_a, ref) {
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
     var className = _a.className, _b = _a.validPattern, validPattern = _b === void 0 ? /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/g : _b, onValue = _a.onValue, props = __rest(_a, ["className", "validPattern", "onValue"]);
     var handleValue = useCallback(function (value) {
         var newValue = value.replace(/ /gi, '');
@@ -2000,7 +2029,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -2150,7 +2179,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var isSelectedPlaceholder = useMemo(function () { return notEmpty(items) && empty(value) && !!placeholder && !hasEmptyValue; }, [hasEmptyValue, items, placeholder, value]);
+    var isSelectedPlaceholder = notEmpty(items) && empty(value) && !!placeholder && !hasEmptyValue;
     var selectProps = useMemo(function () {
         var _a;
         var finalSelectProps = __assign(__assign({}, initSelectProps), { displayEmpty: true, multiple: !!multiple, value: value });
@@ -2261,9 +2290,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
         }
         return newFinalValue;
     }, [emptyValue, items, multiple, selectProps, value]);
-    return (React.createElement(FormContextProvider, { value: __assign({ fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, 
-            // eslint-disable-next-line
-            onValueChange: function () { } }, otherFormState) },
+    return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, onValueChange: function () { } }) },
         React.createElement(FormTextField, __assign({ select: true, ref: handleRef, name: name, className: classNames(className, 'FormSelect', isSelectedPlaceholder && 'is-selected-placeholder'), fullWidth: fullWidth }, props, { startAdornment: startAdornment, value: finalValue, clear: false, readOnly: readOnly || empty(items), InputLabelProps: inputLabelProps, SelectProps: selectProps, onChange: handleChange, onValue: handleValue }),
             isSelectedPlaceholder && (React.createElement(MenuItem, { key: '$$$EmptyValuePlaceholder$$$', value: '', disabled: true, sx: { display: 'none' } }, placeholder)),
             items && notEmpty(items) ? (items.map(function (_a) {
@@ -2354,23 +2381,10 @@ styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var wrapStyle = useMemo(function () {
-        var wrapStyle = {
-            display: hidden ? 'none' : fullWidth ? 'block' : 'inline-flex',
-            width: fullWidth ? '100%' : undefined,
-        };
-        if (formColWithLabel) {
-            wrapStyle.marginTop = -20;
-        }
-        return wrapStyle;
-    }, [formColWithLabel, fullWidth, hidden]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * State - inputHeight
      * ******************************************************************************************************************/
@@ -2445,6 +2459,17 @@ styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
         return controlMarginTop;
     }, [controlHeight, controlVerticalCenter, formColWithLabel, inputHeight, label, size, variant]);
     /********************************************************************************************************************
+     * Variable
+     * ******************************************************************************************************************/
+    // wrapStyle
+    var wrapStyle = {
+        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-flex',
+        width: fullWidth ? '100%' : undefined,
+    };
+    if (formColWithLabel) {
+        wrapStyle.marginTop = -20;
+    }
+    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     return (React.createElement("div", { style: wrapStyle },
@@ -2489,11 +2514,11 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var focused = ifUndefined(initFocused, formFocused);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -2550,10 +2575,6 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
             onChange(checked);
         onValueChange(name, checked);
     }, [checked]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var style = useMemo(function () { return (__assign({ width: fullWidth ? '100%' : width || 100, paddingLeft: 3 }, initStyle)); }, [initStyle, fullWidth, width]);
     /********************************************************************************************************************
      * Function - focus
      * ******************************************************************************************************************/
@@ -2663,7 +2684,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormCheckbox'), labelIcon: labelIcon, label: label, error: error, fullWidth: fullWidth, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React.createElement(FormControlLabel, { ref: labelRef, control: React.createElement(Checkbox, __assign({ name: name, color: color, size: size, inputRef: initInputRef ? initInputRef : inputRef, action: initAction ? initAction : actionRef, checked: checked, checkedIcon: React.createElement(CheckBox, { color: error ? 'error' : undefined }), icon: React.createElement(CheckBoxOutlineBlank, { color: error ? 'error' : undefined }), onChange: handleChange, disabled: disabled || readOnly }, props)), label: React.createElement(Typography, { color: error ? 'error' : readOnly || disabled ? theme.palette.text.disabled : undefined, whiteSpace: 'nowrap' }, text) }) }));
+    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormCheckbox'), labelIcon: labelIcon, label: label, error: error, fullWidth: fullWidth, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: __assign({ width: fullWidth ? '100%' : width || 100, paddingLeft: 3 }, initStyle), sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React.createElement(FormControlLabel, { ref: labelRef, control: React.createElement(Checkbox, __assign({ name: name, color: color, size: size, inputRef: initInputRef ? initInputRef : inputRef, action: initAction ? initAction : actionRef, checked: checked, checkedIcon: React.createElement(CheckBox, { color: error ? 'error' : undefined }), icon: React.createElement(CheckBoxOutlineBlank, { color: error ? 'error' : undefined }), onChange: handleChange, disabled: disabled || readOnly }, props)), label: React.createElement(Typography, { color: error ? 'error' : readOnly || disabled ? theme.palette.text.disabled : undefined, whiteSpace: 'nowrap' }, text) }) }));
 });
 FormCheckbox.displayName = 'FormCheckbox';var PADDING_LEFT = 3;
 var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
@@ -2688,10 +2709,10 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var focused = ifUndefined(initFocused, formFocused);
     /********************************************************************************************************************
      * State - FormState
      * ******************************************************************************************************************/
@@ -2773,10 +2794,6 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
             onChange(value);
         onValueChange(name, value);
     }, [value]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var style = useMemo(function () { return (__assign({ width: width, paddingLeft: PADDING_LEFT }, initStyle)); }, [initStyle, width]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -2957,7 +2974,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormItemBase, { focused: focused, ref: baseRef, className: classNames(className, 'FormValueItem', 'FormRadioGroup'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, fullWidth: fullWidth, required: required, error: error, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React.createElement(React.Fragment, null,
+    return (React.createElement(FormItemBase, { focused: focused, ref: baseRef, className: classNames(className, 'FormValueItem', 'FormRadioGroup'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, fullWidth: fullWidth, required: required, error: error, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: __assign({ width: width, paddingLeft: PADDING_LEFT }, initStyle), sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React.createElement(React.Fragment, null,
             !fullWidth && !isOnGetItemLoading && !loading && items && (React.createElement("div", { ref: resizeWidthDetectorRef, style: {
                     display: 'grid',
                     position: 'absolute',
@@ -3012,16 +3029,16 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
     var _d = useFormState(), formVariant = _d.variant, formSize = _d.size, formColor = _d.color, formFocused = _d.focused, formFullWidth = _d.fullWidth, formDisabled = _d.disabled, formColWidth = _d.formColWidth, onAddValueItem = _d.onAddValueItem, onRemoveValueItem = _d.onRemoveValueItem, onValueChange = _d.onValueChange, onValueChangeByUser = _d.onValueChangeByUser, onRequestSearchSubmit = _d.onRequestSearchSubmit;
     /********************************************************************************************************************
-     * Memo - FormState
+     * Variables - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var fullWidth = useMemo(function () { return (type === 'checkbox' || type === 'radio' ? true : initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth, type]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var fullWidth = type === 'checkbox' || type === 'radio' ? true : ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * State - FormState
      * ******************************************************************************************************************/
-    var _e = useAutoUpdateState(initFocused == null ? formFocused : initFocused), focused = _e[0], setFocused = _e[1];
+    var _e = useAutoUpdateState(ifUndefined(initFocused, formFocused)), focused = _e[0], setFocused = _e[1];
     /********************************************************************************************************************
      * Theme
      * ******************************************************************************************************************/
@@ -3445,9 +3462,9 @@ FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';var FormRating = Rea
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
     /********************************************************************************************************************
      * State - FormState
      * ******************************************************************************************************************/
@@ -3510,10 +3527,6 @@ FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';var FormRating = Rea
             onChange(value);
         onValueChange(name, value);
     }, [value]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var style = useMemo(function () { return (__assign({ width: width || 100 }, initStyle)); }, [initStyle, width]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -3618,10 +3631,12 @@ FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';var FormRating = Rea
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormRating'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, required: required, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 21 : 26), controlVerticalCenter: true, control: React.createElement(Rating, { ref: ratingRef, size: size === 'medium' ? 'large' : 'medium', name: name, precision: precision, highlightSelectedOnly: highlightSelectedOnly, value: value, disabled: disabled || readOnly, max: max, icon: React.createElement(PdgIcon, { color: color, size: 'inherit' }, icon ? icon : 'Star'), emptyIcon: React.createElement(PdgIcon, { size: 'inherit' }, emptyIcon ? emptyIcon : 'StarBorder'), onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } }) }));
+    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormRating'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, required: required, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: __assign({ width: width || 100 }, initStyle), sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 21 : 26), controlVerticalCenter: true, control: React.createElement(Rating, { ref: ratingRef, size: size === 'medium' ? 'large' : 'medium', name: name, precision: precision, highlightSelectedOnly: highlightSelectedOnly, value: value, disabled: disabled || readOnly, max: max, icon: React.createElement(PdgIcon, { color: color, size: 'inherit' }, icon ? icon : 'Star'), emptyIcon: React.createElement(PdgIcon, { size: 'inherit' }, emptyIcon ? emptyIcon : 'StarBorder'), onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } }) }));
 });
 FormRating.displayName = 'FormRating';var css_248z$c = ".FormTextEditor.initializing textarea {\n  display: none;\n}\n.FormTextEditor.error .tox-tinymce {\n  border-color: #d32f2f;\n}\n\n.tox-menu.tox-collection.tox-collection--list .tox-collection__group .tox-menu-nav__js.tox-collection__item {\n  padding-right: 20px !important;\n}\n\n.tox-notifications-container {\n  display: none;\n}";
-styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref) {
+styleInject(css_248z$c);var getFinalValue$8 = function (value) {
+    return value || '';
+};var FormTextEditor = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
@@ -3644,13 +3659,13 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
     /********************************************************************************************************************
      * State - FormState
      * ******************************************************************************************************************/
-    var _f = useAutoUpdateState(initFocused == null ? formFocused : initFocused), focused = _f[0], setFocused = _f[1];
+    var _f = useAutoUpdateState(ifUndefined(initFocused, formFocused)), focused = _f[0], setFocused = _f[1];
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -3694,10 +3709,7 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var getFinalValue = useCallback(function (value) {
-        return value || '';
-    }, []);
-    var _o = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _o[0], value = _o[1], setValue = _o[2];
+    var _o = useAutoUpdateRefState(initValue, getFinalValue$8), valueRef = _o[0], value = _o[1], setValue = _o[2];
     useFirstSkipEffect(function () {
         if (error)
             validate(value);
@@ -3719,7 +3731,7 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
         var commands = {
             getType: function () { return 'FormTextEditor'; },
             getName: function () { return name; },
-            getReset: function () { return getFinalValue(initValue); },
+            getReset: function () { return getFinalValue$8(initValue); },
             reset: function () { return setValue(initValue); },
             getValue: function () { return valueRef.current; },
             setValue: setValue,
@@ -3762,7 +3774,6 @@ styleInject(css_248z$c);var FormTextEditor = React.forwardRef(function (_a, ref)
         disabledRef,
         exceptValue,
         focus,
-        getFinalValue,
         hiddenRef,
         id,
         initValue,
@@ -3873,12 +3884,12 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
-    var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var focused = ifUndefined(initFocused, formFocused);
+    var labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -3917,16 +3928,6 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
             return {};
         }
     }, [items]);
-    var style = useMemo(function () {
-        var style = __assign({ minWidth: 120 }, initStyle);
-        if (hidden) {
-            style.display = 'none';
-        }
-        if (width != null) {
-            style.width = width;
-        }
-        return style;
-    }, [initStyle, width, hidden]);
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
      * ******************************************************************************************************************/
@@ -4180,36 +4181,61 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
+    var commands = useMemo(function () {
+        return ({
+            getType: function () { return 'FormAutocomplete'; },
+            getName: function () { return name; },
+            getReset: function () { return getFinalValue(initValue); },
+            reset: function () { return setValue(initValue); },
+            getValue: function () { return valueRef.current; },
+            setValue: function (newValue) { return setValue(newValue); },
+            getData: function () { return dataRef.current; },
+            setData: function (data) { return setData(data); },
+            isExceptValue: function () { return !!exceptValue; },
+            isDisabled: function () { return !!disabledRef.current; },
+            setDisabled: function (disabled) { return setDisabled(disabled); },
+            isHidden: function () { return !!hiddenRef.current; },
+            setHidden: function (hidden) { return setHidden(hidden); },
+            focus: focus,
+            focusValidate: focus,
+            validate: function () { return validate(valueRef.current); },
+            setError: function (error, errorText) {
+                return setErrorErrorHelperText(error, error ? errorText : undefined);
+            },
+            getFormValueSeparator: function () { return formValueSeparator; },
+            isFormValueSort: function () { return !!formValueSort; },
+            getItems: function () { return itemsRef.current; },
+            setItems: function (items) { return setItems(items); },
+            isMultiple: function () { return !!multiple; },
+            getLoading: function () { return !!loadingRef.current; },
+            setLoading: function (loading) { return setLoading(loading); },
+        });
+    }, [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        formValueSeparator,
+        formValueSort,
+        getFinalValue,
+        hiddenRef,
+        initValue,
+        itemsRef,
+        loadingRef,
+        multiple,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        setItems,
+        setLoading,
+        setValue,
+        validate,
+        valueRef,
+    ]);
     useLayoutEffect(function () {
         if (ref || onAddValueItem) {
-            var commands = {
-                getType: function () { return 'FormAutocomplete'; },
-                getName: function () { return name; },
-                getReset: function () { return getFinalValue(initValue); },
-                reset: function () { return setValue(initValue); },
-                getValue: function () { return valueRef.current; },
-                setValue: function (newValue) { return setValue(newValue); },
-                getData: function () { return dataRef.current; },
-                setData: function (data) { return setData(data); },
-                isExceptValue: function () { return !!exceptValue; },
-                isDisabled: function () { return !!disabledRef.current; },
-                setDisabled: function (disabled) { return setDisabled(disabled); },
-                isHidden: function () { return !!hiddenRef.current; },
-                setHidden: function (hidden) { return setHidden(hidden); },
-                focus: focus,
-                focusValidate: focus,
-                validate: function () { return validate(valueRef.current); },
-                setError: function (error, errorText) {
-                    return setErrorErrorHelperText(error, error ? errorText : undefined);
-                },
-                getFormValueSeparator: function () { return formValueSeparator; },
-                isFormValueSort: function () { return !!formValueSort; },
-                getItems: function () { return itemsRef.current; },
-                setItems: function (items) { return setItems(items); },
-                isMultiple: function () { return !!multiple; },
-                getLoading: function () { return !!loadingRef.current; },
-                setLoading: function (loading) { return setLoading(loading); },
-            };
             if (ref) {
                 if (typeof ref === 'function') {
                     ref(commands);
@@ -4233,34 +4259,7 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
                     onRemoveValueItem(id);
             };
         }
-    }, [
-        dataRef,
-        disabledRef,
-        exceptValue,
-        focus,
-        formValueSeparator,
-        formValueSort,
-        getFinalValue,
-        hiddenRef,
-        id,
-        initValue,
-        itemsRef,
-        loadingRef,
-        multiple,
-        name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
-        setData,
-        setDisabled,
-        setErrorErrorHelperText,
-        setHidden,
-        setItems,
-        setLoading,
-        setValue,
-        validate,
-        valueRef,
-    ]);
+    }, [commands, id, onAddValueItem, onRemoveValueItem, ref]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -4317,6 +4316,16 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
         }
     }, [getOptionDisabled]);
     /********************************************************************************************************************
+     * Render - Variables
+     * ******************************************************************************************************************/
+    var style = __assign({ minWidth: 120 }, initStyle);
+    if (hidden) {
+        style.display = 'none';
+    }
+    if (width != null) {
+        style.width = width;
+    }
+    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(Autocomplete, { options: items || [], className: classNames(className, 'FormValueItem', 'FormAutocomplete'), sx: sx, multiple: multiple, fullWidth: !width && fullWidth, openOnFocus: openOnFocus, disableClearable: disableClearable, disablePortal: disablePortal, noOptionsText: noOptionsText, value: componentValue, style: style, isOptionEqualToValue: function (option, value) { return option.value === value.value; }, getOptionDisabled: handleGetOptionDisabled, disabled: disabled, readOnly: readOnly, loading: loading || isOnGetItemLoading, loadingText: loadingText, limitTags: limitTags, getLimitTagsText: getLimitTagsText, onChange: function (e, value, reason, details) { return handleChange(value, reason, details); }, renderOption: function (props, option) { return (React.createElement("li", __assign({}, props, { key: "".concat(option.value) }), onRenderItem ? onRenderItem(option) : option.label)); }, onInputChange: function (event, newInputValue, reason) {
@@ -4334,9 +4343,14 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
 }));
 FormAutocomplete.displayName = 'FormAutocomplete';var css_248z$b = ".PrivateYearSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateYearSelect button {\n  font-size: 14px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
 styleInject(css_248z$b);var PrivateToggleButton = React.forwardRef(function (_a, ref) {
-    var children = _a.children, initClassName = _a.className, selected = _a.selected, activated = _a.activated, outlined = _a.outlined, props = __rest(_a, ["children", "className", "selected", "activated", "outlined"]);
+    /********************************************************************************************************************
+     * Use
+     * ******************************************************************************************************************/
+    var children = _a.children, className = _a.className, selected = _a.selected, activated = _a.activated, outlined = _a.outlined, props = __rest(_a, ["children", "className", "selected", "activated", "outlined"]);
     var theme = useTheme();
-    var className = useMemo(function () { return classNames(initClassName, selected && 'selected', activated && 'activated', outlined && 'outlined'); }, [activated, initClassName, outlined, selected]);
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var sx = useMemo(function () {
         var newSx = {
             color: 'inherit',
@@ -4359,18 +4373,22 @@ styleInject(css_248z$b);var PrivateToggleButton = React.forwardRef(function (_a,
         }
         return newSx;
     }, [activated, outlined, selected, theme]);
-    return (React.createElement(Button, __assign({}, props, { ref: ref, sx: sx, variant: 'text', className: classNames(className, selected && 'selected') }), children));
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
+    return (React.createElement(Button, __assign({}, props, { ref: ref, sx: sx, variant: 'text', className: classNames(className, selected && 'selected', activated && 'activated', outlined && 'outlined', selected && 'selected') }), children));
 });var YEARS$1 = new Array(200).fill(0);
-for (var i$5 = 0; i$5 < 200; i$5 += 1) {
-    YEARS$1[i$5] = 1900 + i$5;
+for (var i$6 = 0; i$6 < 200; i$6 += 1) {
+    YEARS$1[i$6] = 1900 + i$6;
 }
 var PrivateYearSelect = function (_a) {
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
-    var selectYear = _a.selectYear, activeYear = _a.activeYear, availableDate = _a.availableDate, onSelect = _a.onSelect;
+    var selectYear = _a.selectYear, activeYear = _a.activeYear, availableDate = _a.availableDate, initOnSelect = _a.onSelect;
     var containerRef = useRef(null);
     var simpleBarRef = useRef(null);
+    var onSelectRef = useAutoUpdateLayoutRef(initOnSelect);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -4393,6 +4411,12 @@ var PrivateYearSelect = function (_a) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
+    var handleClick = useCallback(function (e) {
+        onSelectRef.current && onSelectRef.current(Number(e.target.getAttribute('data-id')));
+    }, [onSelectRef]);
+    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     var today = dayjs().startOf('date');
@@ -4404,12 +4428,12 @@ var PrivateYearSelect = function (_a) {
                 var isSelected = y === selectYear;
                 var disabled = (!!availableDate[0] && y < availableDate[0].year) || (!!availableDate[1] && y > availableDate[1].year);
                 return (React.createElement(Grid, { key: y, item: true, xs: 3 },
-                    React.createElement(PrivateToggleButton, { className: "private-year-select-value-".concat(y), fullWidth: true, selected: isSelected, activated: isActive, outlined: isToday, disabled: disabled, onClick: function () { return onSelect(y); } }, y)));
+                    React.createElement(PrivateToggleButton, { "data-id": y, className: "private-year-select-value-".concat(y), fullWidth: true, selected: isSelected, activated: isActive, outlined: isToday, disabled: disabled, onClick: handleClick }, y)));
             })))));
 };var css_248z$a = ".PrivateMonthSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateMonthSelect button {\n  font-size: 15px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
 styleInject(css_248z$a);var MONTHS$1 = new Array(12).fill(0);
-for (var i$4 = 0; i$4 < 12; i$4 += 1) {
-    MONTHS$1[i$4] = i$4;
+for (var i$5 = 0; i$5 < 12; i$5 += 1) {
+    MONTHS$1[i$5] = i$5;
 }
 var PrivateMonthSelect = function (_a) {
     var year = _a.year, selectYear = _a.selectYear, selectMonth = _a.selectMonth, activeMonth = _a.activeMonth, availableDate = _a.availableDate, onSelect = _a.onSelect;
@@ -4427,18 +4451,19 @@ var PrivateMonthSelect = function (_a) {
                     "\uC6D4")));
         }))));
 };var css_248z$9 = ".PrivateTimeSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n}\n.PrivateTimeSelect button {\n  border-radius: 0;\n}";
-styleInject(css_248z$9);var DEFAULT_MINUTES$2 = new Array(60).fill(0);
-for (var i$3 = 0; i$3 < DEFAULT_MINUTES$2.length; i$3 += 1) {
-    DEFAULT_MINUTES$2[i$3] = i$3;
+styleInject(css_248z$9);var DEFAULT_MINUTES$3 = new Array(60).fill(0);
+for (var i$4 = 0; i$4 < DEFAULT_MINUTES$3.length; i$4 += 1) {
+    DEFAULT_MINUTES$3[i$4] = i$4;
 }
 var PrivateTimeSelect = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
-    var list = _a.list, listInterval = _a.listInterval, unit = _a.unit, value = _a.value, _b = _a.cols, cols = _b === void 0 ? 1 : _b, disableList = _a.disableList, onSelect = _a.onSelect;
+    var list = _a.list, listInterval = _a.listInterval, unit = _a.unit, value = _a.value, _b = _a.cols, cols = _b === void 0 ? 1 : _b, disableList = _a.disableList, initOnSelect = _a.onSelect;
     var containerRef = useRef(null);
     var simpleBarRef = useRef(null);
     var scrollTimerRef = useRef();
+    var onSelectRef = useAutoUpdateLayoutRef(initOnSelect);
     /********************************************************************************************************************
      * Function - scrollToValue
      * ******************************************************************************************************************/
@@ -4526,65 +4551,43 @@ var PrivateTimeSelect = React.forwardRef(function (_a, ref) {
         }
     }, [ref, scrollToValue]);
     /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
+    var handleClick = useCallback(function (e) {
+        onSelectRef.current && onSelectRef.current(Number(e.target.getAttribute('data-id')));
+    }, [onSelectRef]);
+    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(React.Fragment, null,
-        React.createElement("div", { ref: containerRef, className: 'PrivateTimeSelect' },
-            React.createElement(SimpleBar, { scrollableNodeProps: { ref: simpleBarRef }, style: { height: '100%' } },
-                React.createElement(Grid, { container: true }, list
-                    .filter(function (v) { return (listInterval ? v % listInterval === 0 : true); })
-                    .map(function (v) {
-                    var isSelected = v === value;
-                    var disabled = !!disableList && disableList.includes(v);
-                    return (React.createElement(Grid, { item: true, key: v, xs: 12 / (cols || 1) },
-                        React.createElement(PrivateToggleButton, { className: "private-time-select-value-".concat(v), fullWidth: true, disabled: disabled, selected: isSelected, onClick: function () { return onSelect && onSelect(v); } },
-                            v,
-                            unit)));
-                }))))));
-});var css_248z$8 = ".PrivateStaticDatePicker.time {\n  height: 400px;\n}\n.PrivateStaticDatePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDatePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDatePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDatePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDatePicker .action-buttons button:not(:first-of-type) {\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDatePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDatePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDatePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDatePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDatePicker.time .time .time-container .time-select-wrap > div > div:not(:first-of-type) {\n  border-left: 1px solid #efefef;\n}";
-styleInject(css_248z$8);var DEFAULT_HOURS$1 = new Array(24).fill(0);
-for (var i$2 = 0; i$2 < DEFAULT_HOURS$1.length; i$2 += 1) {
-    DEFAULT_HOURS$1[i$2] = i$2;
+    return (React.createElement("div", { ref: containerRef, className: 'PrivateTimeSelect' },
+        React.createElement(SimpleBar, { scrollableNodeProps: { ref: simpleBarRef }, style: { height: '100%' } },
+            React.createElement(Grid, { container: true }, list
+                .filter(function (v) { return (listInterval ? v % listInterval === 0 : true); })
+                .map(function (v) {
+                var isSelected = v === value;
+                var disabled = !!disableList && disableList.includes(v);
+                return (React.createElement(Grid, { item: true, key: v, xs: 12 / (cols || 1) },
+                    React.createElement(PrivateToggleButton, { "data-id": v, className: "private-time-select-value-".concat(v), fullWidth: true, disabled: disabled, selected: isSelected, onClick: handleClick },
+                        v,
+                        unit)));
+            })))));
+});var DEFAULT_HOURS$2 = new Array(24).fill(0);
+for (var i$3 = 0; i$3 < DEFAULT_HOURS$2.length; i$3 += 1) {
+    DEFAULT_HOURS$2[i$3] = i$3;
 }
-var DEFAULT_MINUTES$1 = new Array(60).fill(0);
-for (var i$2 = 0; i$2 < DEFAULT_MINUTES$1.length; i$2 += 1) {
-    DEFAULT_MINUTES$1[i$2] = i$2;
+var DEFAULT_MINUTES$2 = new Array(60).fill(0);
+for (var i$3 = 0; i$3 < DEFAULT_MINUTES$2.length; i$3 += 1) {
+    DEFAULT_MINUTES$2[i$3] = i$3;
 }
-var DEFAULT_SECONDS$1 = new Array(60).fill(0);
-for (var i$2 = 0; i$2 < DEFAULT_SECONDS$1.length; i$2 += 1) {
-    DEFAULT_SECONDS$1[i$2] = i$2;
+var DEFAULT_SECONDS$2 = new Array(60).fill(0);
+for (var i$3 = 0; i$3 < DEFAULT_SECONDS$2.length; i$3 += 1) {
+    DEFAULT_SECONDS$2[i$3] = i$3;
 }
-var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
-    /********************************************************************************************************************
-     * Ref
-     * ******************************************************************************************************************/
-    var value = _a.value, initAvailableDate = _a.availableDate, defaultCalendarMonth = _a.defaultCalendarMonth, type = _a.type, time = _a.time, initHours = _a.hours, initMinutes = _a.minutes, initSeconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest(_a, ["value", "availableDate", "defaultCalendarMonth", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
-    var hourSelectRef = useRef(null);
-    var minuteSelectRef = useRef(null);
-    var secondSelectRef = useRef(null);
-    /********************************************************************************************************************
-     * State
-     * ******************************************************************************************************************/
-    var _b = useState(function () {
-        if (value)
-            return value;
-        else if (defaultCalendarMonth)
-            return defaultCalendarMonth;
-        else
-            return dayjs();
-    }), month = _b[0], setMonth = _b[1];
-    var _c = useState(null), activeMonthValue = _c[0], setActiveMonthValue = _c[1];
-    var _d = useState(false), yearSelectOpen = _d[0], setYearSelectOpen = _d[1];
-    var _e = useState(false), monthSelectOpen = _e[0], setMonthSelectOpen = _e[1];
+var PrivateTimeSection = function (_a) {
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var hours = useMemo(function () { return initHours || DEFAULT_HOURS$1; }, [initHours]);
-    var minutes = useMemo(function () { return initMinutes || DEFAULT_MINUTES$1; }, [initMinutes]);
-    var seconds = useMemo(function () { return initSeconds || DEFAULT_SECONDS$1; }, [initSeconds]);
-    var availableDate = useMemo(function () {
-        return initAvailableDate ? initAvailableDate : makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture);
-    }, [initAvailableDate, minDate, maxDate, disablePast, disableFuture]);
+    var time = _a.time, width = _a.width, cols = _a.cols, _b = _a.hours, hours = _b === void 0 ? DEFAULT_HOURS$2 : _b, _c = _a.minutes, minutes = _c === void 0 ? DEFAULT_MINUTES$2 : _c, _d = _a.seconds, seconds = _d === void 0 ? DEFAULT_SECONDS$2 : _d, availableDate = _a.availableDate, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, value = _a.value, hourSelectRef = _a.hourSelectRef, minuteSelectRef = _a.minuteSelectRef, secondSelectRef = _a.secondSelectRef, onClose = _a.onClose, onChange = _a.onChange;
     var disableHours = useMemo(function () {
         var newDisableHours = [];
         if (time && value && (availableDate[0] || availableDate[1])) {
@@ -4623,6 +4626,72 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
         return newDisableSeconds;
     }, [time, value, availableDate, seconds]);
     /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
+    return (React.createElement(Grid, { item: true, className: 'time' },
+        React.createElement(Grid, { container: true, direction: 'column', className: 'time-container' },
+            React.createElement(Grid, { item: true, className: 'time-title' },
+                time === 'hour' && (value ? value.format('HH시') : '00시'),
+                time === 'minute' && (value ? value.format('HH시 mm분') : '00시 00분'),
+                time === 'second' && (value ? value.format('HH시 mm분 ss초') : '00시 00분 00초')),
+            React.createElement(Grid, { item: true, className: 'time-select-wrap' },
+                React.createElement(Grid, { container: true, style: { height: '100%' } },
+                    React.createElement(Grid, { item: true, style: { position: 'relative', width: width } },
+                        React.createElement(PrivateTimeSelect, { ref: hourSelectRef, value: value && value.hour(), unit: '\uC2DC', list: hours, disableList: disableHours, cols: cols, onSelect: function (newValue) {
+                                onChange('hour', value ? value.set('hour', newValue) : dayjs().startOf('date').set('hour', newValue));
+                            } })),
+                    (time === 'minute' || time === 'second') && (React.createElement(Grid, { item: true, style: { position: 'relative', width: width } },
+                        React.createElement(PrivateTimeSelect, { ref: minuteSelectRef, value: value && value.minute(), unit: '\uBD84', list: minutes, disableList: disableMinutes, cols: cols, listInterval: minuteInterval, onSelect: function (newValue) {
+                                onChange('minute', value ? value.set('minute', newValue) : dayjs().startOf('date').set('minute', newValue));
+                            } }))),
+                    time === 'second' && (React.createElement(Grid, { item: true, style: { position: 'relative', width: width } },
+                        React.createElement(PrivateTimeSelect, { ref: secondSelectRef, value: value && value.second(), unit: '\uCD08', list: seconds, disableList: disableSeconds, cols: cols, listInterval: secondInterval, onSelect: function (newValue) {
+                                onChange('second', value ? value.set('second', newValue) : dayjs().startOf('date').set('second', newValue));
+                            } }))))),
+            onClose && (React.createElement(Grid, { item: true, className: 'action-buttons' },
+                React.createElement(Button, { variant: 'text', onClick: onClose }, "\uB2EB\uAE30"))))));
+};var css_248z$8 = ".PrivateStaticDatePicker.time {\n  height: 400px;\n}\n.PrivateStaticDatePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDatePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDatePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDatePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDatePicker .action-buttons button:not(:first-of-type) {\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDatePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDatePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDatePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDatePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDatePicker.time .time .time-container .time-select-wrap > div > div:not(:first-of-type) {\n  border-left: 1px solid #efefef;\n}";
+styleInject(css_248z$8);var DEFAULT_HOURS$1 = new Array(24).fill(0);
+for (var i$2 = 0; i$2 < DEFAULT_HOURS$1.length; i$2 += 1) {
+    DEFAULT_HOURS$1[i$2] = i$2;
+}
+var DEFAULT_MINUTES$1 = new Array(60).fill(0);
+for (var i$2 = 0; i$2 < DEFAULT_MINUTES$1.length; i$2 += 1) {
+    DEFAULT_MINUTES$1[i$2] = i$2;
+}
+var DEFAULT_SECONDS$1 = new Array(60).fill(0);
+for (var i$2 = 0; i$2 < DEFAULT_SECONDS$1.length; i$2 += 1) {
+    DEFAULT_SECONDS$1[i$2] = i$2;
+}
+var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
+    var value = _a.value, initAvailableDate = _a.availableDate, defaultCalendarMonth = _a.defaultCalendarMonth, type = _a.type, time = _a.time, _b = _a.hours, hours = _b === void 0 ? DEFAULT_HOURS$1 : _b, _c = _a.minutes, minutes = _c === void 0 ? DEFAULT_MINUTES$1 : _c, _d = _a.seconds, seconds = _d === void 0 ? DEFAULT_SECONDS$1 : _d, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest(_a, ["value", "availableDate", "defaultCalendarMonth", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
+    var hourSelectRef = useRef(null);
+    var minuteSelectRef = useRef(null);
+    var secondSelectRef = useRef(null);
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
+    var _e = useState(function () {
+        if (value)
+            return value;
+        else if (defaultCalendarMonth)
+            return defaultCalendarMonth;
+        else
+            return dayjs();
+    }), month = _e[0], setMonth = _e[1];
+    var _f = useState(null), activeMonthValue = _f[0], setActiveMonthValue = _f[1];
+    var _g = useState(false), yearSelectOpen = _g[0], setYearSelectOpen = _g[1];
+    var _h = useState(false), monthSelectOpen = _h[0], setMonthSelectOpen = _h[1];
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+    var availableDate = useMemo(function () {
+        return initAvailableDate ? initAvailableDate : makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture);
+    }, [disableFuture, disablePast, initAvailableDate, maxDate, minDate]);
+    /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
     useEffect(function () {
@@ -4630,23 +4699,23 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
             setActiveMonthValue(null);
         }
     }, [yearSelectOpen]);
-    //--------------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Arrow
+     * ******************************************************************************************************************/
     var leftArrowOnClickRef = useRef();
     var rightArrowOnClickRef = useRef();
-    var LeftArrowButton = useState(function () {
-        var ArrowButton = function (props) {
+    var LeftArrowButton = useMemo(function () {
+        return function (props) {
             leftArrowOnClickRef.current = props.onClick;
             return React.createElement(IconButton, __assign({}, props));
         };
-        return ArrowButton;
-    })[0];
-    var RightArrowButton = useState(function () {
-        var ArrowButton = function (props) {
+    }, []);
+    var RightArrowButton = useMemo(function () {
+        return function (props) {
             rightArrowOnClickRef.current = props.onClick;
             return React.createElement(IconButton, __assign({}, props));
         };
-        return ArrowButton;
-    })[0];
+    }, []);
     /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
@@ -4761,7 +4830,7 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
                             React.createElement(IconButton, { onClick: nextMonth },
                                 React.createElement(Icon, null, "keyboard_arrow_right")))))),
                 React.createElement(Grid, { item: true, style: { position: 'relative' } },
-                    React.createElement(StaticDatePicker, __assign({}, props, { value: activeMonthValue, defaultCalendarMonth: month, slots: {
+                    React.createElement(StaticDatePicker, __assign({}, props, { value: activeMonthValue, referenceDate: month, slots: {
                             previousIconButton: LeftArrowButton,
                             nextIconButton: RightArrowButton,
                             day: handleRenderDay,
@@ -4803,28 +4872,7 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
                         .set('hour', value ? value.hour() : 0)
                         .set('minute', value ? value.minute() : 0)
                         .set('second', value ? value.second() : 0), '오늘'))))),
-        time && (React.createElement(Grid, { item: true, className: 'time' },
-            React.createElement(Grid, { container: true, direction: 'column', className: 'time-container' },
-                React.createElement(Grid, { item: true, className: 'time-title' },
-                    time === 'hour' && (value ? value.format('HH시') : '00시'),
-                    time === 'minute' && (value ? value.format('HH시 mm분') : '00시 00분'),
-                    time === 'second' && (value ? value.format('HH시 mm분 ss초') : '00시 00분 00초')),
-                React.createElement(Grid, { item: true, className: 'time-select-wrap' },
-                    React.createElement(Grid, { container: true, style: { height: '100%' } },
-                        React.createElement(Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
-                            React.createElement(PrivateTimeSelect, { ref: hourSelectRef, value: value && value.hour(), unit: '\uC2DC', list: hours, disableList: disableHours, cols: type === 'time' ? 3 : 1, onSelect: function (newValue) {
-                                    onChange('hour', value ? value.set('hour', newValue) : dayjs().startOf('date').set('hour', newValue));
-                                } })),
-                        (time === 'minute' || time === 'second') && (React.createElement(Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
-                            React.createElement(PrivateTimeSelect, { ref: minuteSelectRef, value: value && value.minute(), unit: '\uBD84', list: minutes, disableList: disableMinutes, cols: type === 'time' ? 3 : 1, listInterval: minuteInterval, onSelect: function (newValue) {
-                                    onChange('minute', value ? value.set('minute', newValue) : dayjs().startOf('date').set('minute', newValue));
-                                } }))),
-                        time === 'second' && (React.createElement(Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
-                            React.createElement(PrivateTimeSelect, { ref: secondSelectRef, value: value && value.second(), unit: '\uCD08', list: seconds, disableList: disableSeconds, cols: type === 'time' ? 3 : 1, listInterval: secondInterval, onSelect: function (newValue) {
-                                    onChange('second', value ? value.set('second', newValue) : dayjs().startOf('date').set('second', newValue));
-                                } }))))),
-                onClose && (React.createElement(Grid, { item: true, className: 'action-buttons' },
-                    React.createElement(Button, { variant: 'text', onClick: onClose }, "\uB2EB\uAE30"))))))));
+        time && (React.createElement(PrivateTimeSection, { time: time, cols: type === 'time' ? 3 : 1, width: type === 'time' ? 240 : 80, availableDate: availableDate, hourSelectRef: hourSelectRef, minuteSelectRef: minuteSelectRef, secondSelectRef: secondSelectRef, hours: hours, minutes: minutes, seconds: seconds, minuteInterval: minuteInterval, secondInterval: secondInterval, value: value, onChange: onChange, onClose: onClose }))));
 });var PrivateStyledTooltip = styled(function (_a) {
     var className = _a.className, props = __rest(_a, ["className"]);
     return (React.createElement(Tooltip, __assign({}, props, { classes: { popper: className } })));
@@ -4851,7 +4899,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
      * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, type = _a.type, time = _a.time, _b = _a.value, initValue = _b === void 0 ? null : _b, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, format = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, helperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, _c = _a.align, align = _c === void 0 ? 'center' : _c, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, initHidden = _a.hidden, _d = _a.showDaysOutsideCurrentMonth, showDaysOutsideCurrentMonth = _d === void 0 ? true : _d, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, type = _a.type, time = _a.time, _b = _a.value, initValue = _b === void 0 ? null : _b, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, format = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, helperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, _c = _a.align, align = _c === void 0 ? 'center' : _c, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, initHidden = _a.hidden, _d = _a.showDaysOutsideCurrentMonth, showDaysOutsideCurrentMonth = _d === void 0 ? true : _d, onChange = _a.onChange, initOnValidate = _a.onValidate, 
     //--------------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "showDaysOutsideCurrentMonth", "onChange", "onValidate", "className", "style", "sx"]);
     var id = useId();
@@ -4864,6 +4912,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
     var mouseDownTimeRef = useRef();
     var datePickerErrorRef = useRef(null);
     var openValueRef = useRef(null);
+    var onValidateRef = useAutoUpdateLayoutRef(initOnValidate);
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
@@ -4921,8 +4970,8 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
             setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
             return false;
         }
-        if (onValidate) {
-            var onValidateResult = onValidate(value);
+        if (onValidateRef.current) {
+            var onValidateResult = onValidateRef.current(value);
             if (onValidateResult != null && onValidateResult !== true) {
                 setErrorErrorHelperText(true, onValidateResult);
                 return false;
@@ -4930,7 +4979,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
         }
         setErrorErrorHelperText(false, undefined);
         return true;
-    }, [required, timeError, onValidate, setErrorErrorHelperText]);
+    }, [required, timeError, onValidateRef, setErrorErrorHelperText]);
     /********************************************************************************************************************
      * value
      * ******************************************************************************************************************/
@@ -5256,70 +5305,30 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
-    var value = _a.value, initAvailableDate = _a.availableDate, defaultCalendarMonth = _a.defaultCalendarMonth, type = _a.type, time = _a.time, initHours = _a.hours, initMinutes = _a.minutes, initSeconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest(_a, ["value", "availableDate", "defaultCalendarMonth", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
+    var value = _a.value, initAvailableDate = _a.availableDate, defaultCalendarMonth = _a.defaultCalendarMonth, type = _a.type, time = _a.time, _b = _a.hours, hours = _b === void 0 ? DEFAULT_HOURS : _b, _c = _a.minutes, minutes = _c === void 0 ? DEFAULT_MINUTES : _c, _d = _a.seconds, seconds = _d === void 0 ? DEFAULT_SECONDS : _d, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest(_a, ["value", "availableDate", "defaultCalendarMonth", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
     var hourSelectRef = useRef(null);
     var minuteSelectRef = useRef(null);
     var secondSelectRef = useRef(null);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var _b = useState(function () {
+    var _e = useState(function () {
         if (value)
             return value;
         else if (defaultCalendarMonth)
             return defaultCalendarMonth;
         else
             return dayjs();
-    }), month = _b[0], setMonth = _b[1];
-    var _c = useState(null), activeMonthValue = _c[0], setActiveMonthValue = _c[1];
-    var _d = useState(false), yearSelectOpen = _d[0], setYearSelectOpen = _d[1];
-    var _e = useState(false), monthSelectOpen = _e[0], setMonthSelectOpen = _e[1];
+    }), month = _e[0], setMonth = _e[1];
+    var _f = useState(null), activeMonthValue = _f[0], setActiveMonthValue = _f[1];
+    var _g = useState(false), yearSelectOpen = _g[0], setYearSelectOpen = _g[1];
+    var _h = useState(false), monthSelectOpen = _h[0], setMonthSelectOpen = _h[1];
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var hours = useMemo(function () { return initHours || DEFAULT_HOURS; }, [initHours]);
-    var minutes = useMemo(function () { return initMinutes || DEFAULT_MINUTES; }, [initMinutes]);
-    var seconds = useMemo(function () { return initSeconds || DEFAULT_SECONDS; }, [initSeconds]);
     var availableDate = useMemo(function () {
         return initAvailableDate ? initAvailableDate : makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture);
     }, [initAvailableDate, minDate, maxDate, disablePast, disableFuture]);
-    var disableHours = useMemo(function () {
-        var newDisableHours = [];
-        if (time && value && (availableDate[0] || availableDate[1])) {
-            hours.forEach(function (h) {
-                if (!isDateAvailable(value.set('hour', h), availableDate, 'hour')) {
-                    newDisableHours.push(h);
-                }
-            });
-        }
-        return newDisableHours;
-    }, [time, value, availableDate, hours]);
-    var disableMinutes = useMemo(function () {
-        var newDisableMinutes = [];
-        if (time === 'minute' || time === 'second') {
-            if (value && (availableDate[0] || availableDate[1])) {
-                minutes.forEach(function (m) {
-                    if (!isDateAvailable(value.set('minute', m), availableDate, 'minute')) {
-                        newDisableMinutes.push(m);
-                    }
-                });
-            }
-        }
-        return newDisableMinutes;
-    }, [time, value, availableDate, minutes]);
-    var disableSeconds = useMemo(function () {
-        var newDisableSeconds = [];
-        if (time === 'second') {
-            if (value && (availableDate[0] || availableDate[1])) {
-                seconds.forEach(function (s) {
-                    if (!isDateAvailable(value.set('second', s), availableDate, 'second')) {
-                        newDisableSeconds.push(s);
-                    }
-                });
-            }
-        }
-        return newDisableSeconds;
-    }, [time, value, availableDate, seconds]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -5470,7 +5479,7 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
                             React.createElement(IconButton, { onClick: nextMonth },
                                 React.createElement(Icon, null, "keyboard_arrow_right")))))),
                 React.createElement(Grid, { item: true, style: { position: 'relative' } },
-                    React.createElement(StaticDateTimePicker, __assign({}, props, { value: activeMonthValue, defaultCalendarMonth: month, slots: {
+                    React.createElement(StaticDateTimePicker, __assign({}, props, { value: activeMonthValue, referenceDate: month, slots: {
                             previousIconButton: LeftArrowButton,
                             nextIconButton: RightArrowButton,
                             day: handleRenderDay,
@@ -5512,35 +5521,16 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
                         .set('hour', value ? value.hour() : 0)
                         .set('minute', value ? value.minute() : 0)
                         .set('second', value ? value.second() : 0), '오늘'))))),
-        time && (React.createElement(Grid, { item: true, className: 'time' },
-            React.createElement(Grid, { container: true, direction: 'column', className: 'time-container' },
-                React.createElement(Grid, { item: true, className: 'time-title' },
-                    time === 'hour' && (value ? value.format('HH시') : '00시'),
-                    time === 'minute' && (value ? value.format('HH시 mm분') : '00시 00분'),
-                    time === 'second' && (value ? value.format('HH시 mm분 ss초') : '00시 00분 00초')),
-                React.createElement(Grid, { item: true, className: 'time-select-wrap' },
-                    React.createElement(Grid, { container: true, style: { height: '100%' } },
-                        React.createElement(Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
-                            React.createElement(PrivateTimeSelect, { ref: hourSelectRef, value: value && value.hour(), unit: '\uC2DC', list: hours, disableList: disableHours, cols: type === 'time' ? 3 : 1, onSelect: function (newValue) {
-                                    onChange('hour', value ? value.set('hour', newValue) : dayjs().startOf('date').set('hour', newValue));
-                                } })),
-                        (time === 'minute' || time === 'second') && (React.createElement(Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
-                            React.createElement(PrivateTimeSelect, { ref: minuteSelectRef, value: value && value.minute(), unit: '\uBD84', list: minutes, disableList: disableMinutes, cols: type === 'time' ? 3 : 1, listInterval: minuteInterval, onSelect: function (newValue) {
-                                    onChange('minute', value ? value.set('minute', newValue) : dayjs().startOf('date').set('minute', newValue));
-                                } }))),
-                        time === 'second' && (React.createElement(Grid, { item: true, style: { position: 'relative', width: type === 'time' ? 240 : 80 } },
-                            React.createElement(PrivateTimeSelect, { ref: secondSelectRef, value: value && value.second(), unit: '\uCD08', list: seconds, disableList: disableSeconds, cols: type === 'time' ? 3 : 1, listInterval: secondInterval, onSelect: function (newValue) {
-                                    onChange('second', value ? value.set('second', newValue) : dayjs().startOf('date').set('second', newValue));
-                                } }))))),
-                onClose && (React.createElement(Grid, { item: true, className: 'action-buttons' },
-                    React.createElement(Button, { variant: 'text', onClick: onClose }, "\uB2EB\uAE30"))))))));
-});var PrivateDateTimePicker = React.forwardRef(function (_a, ref) {
+        time && (React.createElement(PrivateTimeSection, { time: time, cols: type === 'time' ? 3 : 1, width: type === 'time' ? 240 : 80, availableDate: availableDate, hourSelectRef: hourSelectRef, minuteSelectRef: minuteSelectRef, secondSelectRef: secondSelectRef, hours: hours, minutes: minutes, seconds: seconds, minuteInterval: minuteInterval, secondInterval: secondInterval, value: value, onChange: onChange, onClose: onClose }))));
+});var getFinalValue$7 = function (value) {
+    return value || null;
+};var PrivateDateTimePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, type = _a.type, time = _a.time, _b = _a.value, initValue = _b === void 0 ? null : _b, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, helperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, _c = _a.align, align = _c === void 0 ? 'center' : _c, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, initHidden = _a.hidden, _d = _a.showDaysOutsideCurrentMonth, showDaysOutsideCurrentMonth = _d === void 0 ? true : _d, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, type = _a.type, time = _a.time, _b = _a.value, initValue = _b === void 0 ? null : _b, initData = _a.data, initLabel = _a.label, labelIcon = _a.labelIcon, initFormat = _a.format, initFormValueFormat = _a.formValueFormat, required = _a.required, readOnly = _a.readOnly, initDisabled = _a.disabled, width = _a.width, initError = _a.error, helperText = _a.helperText, minDate = _a.minDate, maxDate = _a.maxDate, disableFuture = _a.disableFuture, disablePast = _a.disablePast, exceptValue = _a.exceptValue, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, _c = _a.align, align = _c === void 0 ? 'center' : _c, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, readOnlyInput = _a.readOnlyInput, initHidden = _a.hidden, _d = _a.showDaysOutsideCurrentMonth, showDaysOutsideCurrentMonth = _d === void 0 ? true : _d, onChange = _a.onChange, initOnValidate = _a.onValidate, 
     //--------------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx, otherProps = __rest(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "readOnlyInput", "hidden", "showDaysOutsideCurrentMonth", "onChange", "onValidate", "className", "style", "sx"]);
     var id = useId();
@@ -5553,6 +5543,7 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
     var mouseDownTimeRef = useRef();
     var datePickerErrorRef = useRef(null);
     var openValueRef = useRef(null);
+    var onValidateRef = useAutoUpdateLayoutRef(initOnValidate);
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
@@ -5582,9 +5573,7 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var label = useMemo(function () { return (labelIcon ? React.createElement(PdgIconText, { icon: labelIcon }, initLabel) : initLabel); }, [initLabel, labelIcon]);
     var format = useMemo(function () { return (initFormat ? initFormat : getDateTimeFormat(type, time)); }, [initFormat, time, type]);
-    var formValueFormat = useMemo(function () { return (initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time)); }, [initFormValueFormat, time, type]);
     var availableDate = useMemo(function () { return makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture); }, [disableFuture, disablePast, maxDate, minDate]);
     var style = useMemo(function () { return (width != null ? __assign(__assign({}, initStyle), { width: width }) : initStyle); }, [initStyle, width]);
     /********************************************************************************************************************
@@ -5614,8 +5603,8 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
             setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
             return false;
         }
-        if (onValidate) {
-            var onValidateResult = onValidate(value);
+        if (onValidateRef.current) {
+            var onValidateResult = onValidateRef.current(value);
             if (onValidateResult != null && onValidateResult !== true) {
                 setErrorErrorHelperText(true, onValidateResult);
                 return false;
@@ -5623,27 +5612,18 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
         }
         setErrorErrorHelperText(false, undefined);
         return true;
-    }, [required, timeError, onValidate, setErrorErrorHelperText]);
+    }, [required, timeError, onValidateRef, setErrorErrorHelperText]);
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var getFinalValue = useCallback(function (value) {
-        return value || null;
-    }, []);
-    var _o = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _o[0], value = _o[1], setValue = _o[2];
+    var _o = useAutoUpdateRefState(initValue, getFinalValue$7), valueRef = _o[0], value = _o[1], setValue = _o[2];
+    var _p = useAutoUpdateState(value), inputValue = _p[0], setInputValue = _p[1];
     useFirstSkipEffect(function () {
         if (error)
             validate(value);
         if (onChange)
             onChange(value);
         onValueChange(name, value);
-    }, [value]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var _p = useState(value), inputValue = _p[0], setInputValue = _p[1];
-    useFirstSkipEffect(function () {
-        setInputValue(value);
     }, [value]);
     /********************************************************************************************************************
      * Effect
@@ -5690,13 +5670,6 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
     /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var wrapStyle = useMemo(function () { return ({
-        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
-        flex: fullWidth ? 1 : undefined,
-    }); }, [hidden, fullWidth]);
-    /********************************************************************************************************************
      * Function - focus
      * ******************************************************************************************************************/
     var focus = useCallback(function () {
@@ -5711,7 +5684,7 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
             var commands = {
                 getType: function () { return 'default'; },
                 getName: function () { return name; },
-                getReset: function () { return getFinalValue(initValue); },
+                getReset: function () { return getFinalValue$7(initValue); },
                 reset: function () { return setValue(initValue); },
                 getValue: function () { return valueRef.current; },
                 setValue: setValue,
@@ -5728,7 +5701,9 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
                 setError: function (error, errorText) {
                     return setErrorErrorHelperText(error, error ? errorText : undefined);
                 },
-                getFormValueFormat: function () { return formValueFormat; },
+                getFormValueFormat: function () {
+                    return initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time);
+                },
             };
             if (ref) {
                 if (typeof ref === 'function') {
@@ -5758,10 +5733,9 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
         disabledRef,
         exceptValue,
         focus,
-        formValueFormat,
-        getFinalValue,
         hiddenRef,
         id,
+        initFormValueFormat,
         initValue,
         name,
         onAddValueItem,
@@ -5772,6 +5746,8 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
         setErrorErrorHelperText,
         setHidden,
         setValue,
+        time,
+        type,
         validate,
         valueRef,
     ]);
@@ -5840,7 +5816,7 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
             }
         }
         setInputValue(finalValue);
-    }, [type, time, setValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [setInputValue, type, time, setValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]);
     var handleContainerFocus = useCallback(function () {
         if (closeTimeoutRef.current) {
             clearTimeout(closeTimeoutRef.current);
@@ -5943,7 +5919,10 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
      * ******************************************************************************************************************/
     return (React.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs },
         React.createElement(ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
-            React.createElement("div", { className: classNames(className, 'PrivateDateTimePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
+            React.createElement("div", { className: classNames(className, 'PrivateDateTimePicker'), style: {
+                    display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+                    flex: fullWidth ? 1 : undefined,
+                }, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
                 React.createElement(PrivateStyledTooltip, { open: disabled || readOnly ? false : open, PopperProps: {
                         modifiers: [
                             {
@@ -5955,16 +5934,20 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
                         ],
                     }, title: React.createElement(PrivateStaticDateTimePicker, __assign({}, otherProps, { ref: privateStaticDateTimePickerRef, type: type, time: time, value: value, availableDate: availableDate, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, hours: hours, minutes: minutes, seconds: seconds, minuteInterval: minuteInterval, secondInterval: secondInterval, showDaysOutsideCurrentMonth: showDaysOutsideCurrentMonth, onChange: handleChange, onAccept: function () { return !time && setOpen(false); }, onClose: function () { return setOpen(false); } })) },
                     React.createElement("div", { style: { display: fullWidth ? 'block' : 'inline-block' } },
-                        React.createElement(DesktopDateTimePicker, __assign({ value: inputValue, label: label, open: false, format: format, disabled: disabled, readOnly: readOnly, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, onClose: function () { return setOpen(false); }, onError: function (reason) { return (datePickerErrorRef.current = reason); }, onChange: function (newValue) { return handleChange('date', newValue); }, slotProps: slotProps, showDaysOutsideCurrentMonth: showDaysOutsideCurrentMonth }, otherProps)))),
+                        React.createElement(DesktopDateTimePicker, __assign({ value: inputValue, label: labelIcon ? React.createElement(PdgIconText, { icon: labelIcon }, initLabel) : initLabel, open: false, format: format, disabled: disabled, readOnly: readOnly, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, onClose: function () { return setOpen(false); }, onError: function (reason) { return (datePickerErrorRef.current = reason); }, onChange: function (newValue) { return handleChange('date', newValue); }, slotProps: slotProps, showDaysOutsideCurrentMonth: showDaysOutsideCurrentMonth }, otherProps)))),
                 !formColWithHelperText && (helperText || (error && errorHelperText)) && (React.createElement(FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error ? errorHelperText : helperText))))));
 });var PrivateAlertDialog = function (_a) {
     /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
+    var _b = _a.color, color = _b === void 0 ? 'primary' : _b, open = _a.open, title = _a.title, content = _a.content, initOnClose = _a.onClose;
+    var onCloseRef = useAutoUpdateLayoutRef(initOnClose);
+    /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
-    var _b = _a.color, color = _b === void 0 ? 'primary' : _b, open = _a.open, title = _a.title, content = _a.content, onClose = _a.onClose;
     var handleClose = useCallback(function () {
-        onClose && onClose();
-    }, [onClose]);
+        onCloseRef.current && onCloseRef.current();
+    }, [onCloseRef]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
@@ -5980,24 +5963,18 @@ styleInject(css_248z$4);var PrivateInputDatePicker = React.forwardRef(function (
      * ******************************************************************************************************************/
     var variant = _a.variant, size = _a.size, color = _a.color, focused = _a.focused, fullWidth = _a.fullWidth, disabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, labelShrink = _a.labelShrink, 
     //--------------------------------------------------------------------------------------------------------------------
-    className = _a.className, style = _a.style, sx = _a.sx, value = _a.value, initLabel = _a.label, labelIcon = _a.labelIcon, inputRef = _a.inputRef, format = _a.format, error = _a.error, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, _b = _a.align, align = _b === void 0 ? 'center' : _b, readOnlyInput = _a.readOnlyInput, onFocus = _a.onFocus, onBlur = _a.onBlur, props = __rest(_a, ["variant", "size", "color", "focused", "fullWidth", "disabled", "readOnly", "required", "labelShrink", "className", "style", "sx", "value", "label", "labelIcon", "inputRef", "format", "error", "icon", "startAdornment", "endAdornment", "align", "readOnlyInput", "onFocus", "onBlur"]);
+    className = _a.className, style = _a.style, sx = _a.sx, value = _a.value, initLabel = _a.label, labelIcon = _a.labelIcon, inputRef = _a.inputRef, format = _a.format, error = _a.error, icon = _a.icon, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, _b = _a.align, align = _b === void 0 ? 'center' : _b, readOnlyInput = _a.readOnlyInput, initOnFocus = _a.onFocus, initOnBlur = _a.onBlur, props = __rest(_a, ["variant", "size", "color", "focused", "fullWidth", "disabled", "readOnly", "required", "labelShrink", "className", "style", "sx", "value", "label", "labelIcon", "inputRef", "format", "error", "icon", "startAdornment", "endAdornment", "align", "readOnlyInput", "onFocus", "onBlur"]);
     var id = useId();
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
+    var onFocusRef = useAutoUpdateLayoutRef(initOnFocus);
+    var onBlurRef = useAutoUpdateLayoutRef(initOnBlur);
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var label = useMemo(function () {
-        return labelIcon ? (React.createElement(React.Fragment, null,
-            React.createElement(PdgIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
-            React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
-    }, [initLabel, labelIcon]);
-    var inputLabelProps = useMemo(function () {
-        if (labelShrink) {
-            return {
-                shrink: true,
-            };
-        }
-    }, [labelShrink]);
     var slotProps = useMemo(function () {
+        var inputLabelProps = labelShrink ? { shrink: true } : undefined;
         var muiInputProps = {
             endAdornment: undefined,
         };
@@ -6025,7 +6002,9 @@ styleInject(css_248z$4);var PrivateInputDatePicker = React.forwardRef(function (
                 fullWidth: fullWidth,
                 required: required,
                 name: id,
-                label: label,
+                label: labelIcon ? (React.createElement(React.Fragment, null,
+                    React.createElement(PdgIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
+                    React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel),
                 style: style,
                 sx: sx,
                 error: error,
@@ -6037,14 +6016,8 @@ styleInject(css_248z$4);var PrivateInputDatePicker = React.forwardRef(function (
                     }
                 },
                 InputLabelProps: inputLabelProps,
-                onFocus: function (e) {
-                    if (onFocus)
-                        onFocus(e);
-                },
-                onBlur: function (e) {
-                    if (onBlur)
-                        onBlur(e);
-                },
+                onFocus: onFocusRef.current,
+                onBlur: onBlurRef.current,
             },
         };
     }, [
@@ -6055,11 +6028,12 @@ styleInject(css_248z$4);var PrivateInputDatePicker = React.forwardRef(function (
         fullWidth,
         icon,
         id,
-        inputLabelProps,
+        initLabel,
         inputRef,
-        label,
-        onBlur,
-        onFocus,
+        labelIcon,
+        labelShrink,
+        onBlurRef,
+        onFocusRef,
         readOnly,
         required,
         size,
@@ -6076,11 +6050,8 @@ styleInject(css_248z$4);var PrivateInputDatePicker = React.forwardRef(function (
 var StyledButton$2 = styled(Button)(templateObject_2$6 || (templateObject_2$6 = __makeTemplateObject(["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"], ["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"])));
 var templateObject_1$b, templateObject_2$6;var PrivateYearRangePickerYear = React.forwardRef(function (_a, ref) {
     var year = _a.year, disabled = _a.disabled, isDefault = _a.isDefault, selected = _a.selected, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, selectedTemp = _a.selectedTemp, onClick = _a.onClick, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
-    var className = useMemo(function () {
-        return classNames(isDefault && 'default', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', disabled && 'disabled');
-    }, [isDefault, selected, selectedStart, selectedEnd, selectedTemp, disabled]);
     return (React.createElement(StyledContainer$6, { className: 'PrivateYearRangePickerYear', ref: ref, item: true, xs: 4 },
-        React.createElement(StyledButton$2, { className: className, disabled: disabled, onClick: onClick, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave }, year)));
+        React.createElement(StyledButton$2, { className: classNames(isDefault && 'default', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', disabled && 'disabled'), disabled: disabled, onClick: onClick, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave }, year)));
 });var StyledContainer$5 = styled(Grid)(templateObject_1$a || (templateObject_1$a = __makeTemplateObject(["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"], ["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"])));
 var templateObject_1$a;var _lastCloseTime$1 = 0;
 var PrivateYearRangePickerYearList = function (_a) {
@@ -6219,86 +6190,89 @@ var StyledActionContainer$1 = styled('div')(templateObject_5$1 || (templateObjec
 var StyledActionButton$1 = styled(Button)(templateObject_6 || (templateObject_6 = __makeTemplateObject(["\n  min-width: 0;\n  color: unset;\n  &:not(:first-of-type) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"], ["\n  min-width: 0;\n  color: unset;\n  &:not(:first-of-type) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"])));
 var templateObject_1$9, templateObject_2$5, templateObject_3$3, templateObject_4$2, templateObject_5$1, templateObject_6;var DEFAULT_MIN_YEAR$1 = 2020;
 var DEFAULT_MAX_YEAR$1 = 2050;
-var DEFAULT_VALUE$5 = [null, null];
+var DEFAULT_VALUE$3 = [null, null];
 var PrivateYearRangePicker = function (_a) {
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var selectType = _a.selectType, _b = _a.value, initValue = _b === void 0 ? DEFAULT_VALUE$5 : _b, _c = _a.minYear, minYear = _c === void 0 ? DEFAULT_MIN_YEAR$1 : _c, _d = _a.maxYear, maxYear = _d === void 0 ? DEFAULT_MAX_YEAR$1 : _d, disablePast = _a.disablePast, disableFuture = _a.disableFuture, hideHeader = _a.hideHeader, onChange = _a.onChange;
+    var selectType = _a.selectType, _b = _a.value, initValue = _b === void 0 ? DEFAULT_VALUE$3 : _b, _c = _a.minYear, minYear = _c === void 0 ? DEFAULT_MIN_YEAR$1 : _c, _d = _a.maxYear, maxYear = _d === void 0 ? DEFAULT_MAX_YEAR$1 : _d, disablePast = _a.disablePast, disableFuture = _a.disableFuture, hideHeader = _a.hideHeader, onChange = _a.onChange;
     var _e = useAutoUpdateState(initValue), value = _e[0], setValue = _e[1];
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var nowYear = useMemo(function () { return new Date().getFullYear(); }, []);
-    var minAvailableYear = useMemo(function () {
+    var yearInfo = useMemo(function () {
+        var nowYear = new Date().getFullYear();
+        var minAvailableYear;
         if (disablePast) {
-            return nowYear > minYear ? nowYear : minYear;
+            minAvailableYear = nowYear > minYear ? nowYear : minYear;
         }
         else {
-            return minYear;
+            minAvailableYear = minYear;
         }
-    }, [disablePast, minYear, nowYear]);
-    var maxAvailableYear = useMemo(function () {
+        var maxAvailableYear;
         if (disableFuture) {
-            return nowYear < maxYear ? nowYear : maxYear;
+            maxAvailableYear = nowYear < maxYear ? nowYear : maxYear;
         }
         else {
-            return maxYear;
+            maxAvailableYear = maxYear;
         }
-    }, [disableFuture, maxYear, nowYear]);
-    var displayValue = useMemo(function () {
-        var defaultYear = nowYear;
-        if (minAvailableYear > defaultYear) {
+        return { now: nowYear, available: { min: minAvailableYear, max: maxAvailableYear } };
+    }, [disableFuture, disablePast, maxYear, minYear]);
+    var displayInfo = useMemo(function () {
+        var displayValue;
+        var defaultYear = yearInfo.now;
+        if (yearInfo.available.min > defaultYear) {
             defaultYear = minYear;
         }
-        else if (maxAvailableYear < defaultYear) {
-            defaultYear = maxAvailableYear;
+        else if (yearInfo.available.max < defaultYear) {
+            defaultYear = yearInfo.available.max;
         }
         if (value) {
-            return [value[0] || value[1] || defaultYear, value[1] || value[0] || defaultYear];
+            displayValue = [value[0] || value[1] || defaultYear, value[1] || value[0] || defaultYear];
         }
         else {
-            return [defaultYear, defaultYear];
+            displayValue = [defaultYear, defaultYear];
         }
-    }, [maxAvailableYear, minAvailableYear, minYear, nowYear, value]);
-    var displayValueError = useMemo(function () { return [
-        displayValue[0] < minAvailableYear || displayValue[0] > maxAvailableYear,
-        displayValue[1] < minAvailableYear || displayValue[1] > maxAvailableYear,
-    ]; }, [displayValue, minAvailableYear, maxAvailableYear]);
+        var displayValueError = [
+            displayValue[0] < yearInfo.available.min || displayValue[0] > yearInfo.available.max,
+            displayValue[1] < yearInfo.available.min || displayValue[1] > yearInfo.available.max,
+        ];
+        return { value: displayValue, error: displayValueError };
+    }, [minYear, value, yearInfo]);
     /********************************************************************************************************************
      * action button
      * ******************************************************************************************************************/
     var getActionButton = useCallback(function (fromYear, toYear, label) {
-        if (fromYear < minAvailableYear || toYear > maxAvailableYear) {
+        if (fromYear < yearInfo.available.min || toYear > yearInfo.available.max) {
             return undefined;
         }
         else {
             var newValue_1 = [
-                Math.max(fromYear, minAvailableYear),
-                Math.min(toYear, maxAvailableYear),
+                Math.max(fromYear, yearInfo.available.min),
+                Math.min(toYear, yearInfo.available.max),
             ];
             return (React.createElement(StyledActionButton$1, { variant: 'text', onClick: function () {
                     setValue(newValue_1);
                     onChange(newValue_1, 'end');
                 } }, label));
         }
-    }, [maxAvailableYear, minAvailableYear, onChange, setValue]);
+    }, [yearInfo, onChange, setValue]);
     var actionButtons = useMemo(function () {
         return (React.createElement(StyledActionContainer$1, null,
-            getActionButton(nowYear - 2, nowYear, '최근 3년'),
-            getActionButton(nowYear - 4, nowYear, '최근 5년'),
-            getActionButton(nowYear - 9, nowYear, '최근 10년')));
-    }, [getActionButton, nowYear]);
+            getActionButton(yearInfo.now - 2, yearInfo.now, '최근 3년'),
+            getActionButton(yearInfo.now - 4, yearInfo.now, '최근 5년'),
+            getActionButton(yearInfo.now - 9, yearInfo.now, '최근 10년')));
+    }, [getActionButton, yearInfo]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
     var handleYearChange = useCallback(function (valueYear) {
         var newValue = __spreadArray([], value, true);
-        if (minAvailableYear && valueYear < minAvailableYear) {
-            valueYear = minAvailableYear;
+        if (yearInfo.available.min && valueYear < yearInfo.available.min) {
+            valueYear = yearInfo.available.min;
         }
-        else if (maxAvailableYear && valueYear > maxAvailableYear) {
-            valueYear = maxAvailableYear;
+        else if (yearInfo.available.max && valueYear > yearInfo.available.max) {
+            valueYear = yearInfo.available.max;
         }
         if (selectType === 'start') {
             newValue[0] = valueYear;
@@ -6325,35 +6299,32 @@ var PrivateYearRangePicker = function (_a) {
             onChange(newValue, selectType);
         }
         setValue(newValue);
-    }, [value, minAvailableYear, maxAvailableYear, selectType, setValue, onChange]);
+    }, [value, yearInfo, selectType, setValue, onChange]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     return (React.createElement("div", { className: 'PrivateYearRangePicker' },
         !hideHeader && (React.createElement(StyledTitleContainer$1, null,
-            displayValueError[0] ? (React.createElement(StyledYearError, null,
-                displayValue[0],
+            displayInfo.error[0] ? (React.createElement(StyledYearError, null,
+                displayInfo.value[0],
                 "\uB144")) : (React.createElement(StyledYear, null,
-                displayValue[0],
+                displayInfo.value[0],
                 "\uB144")),
             React.createElement(StyledTitleGap, null, "~"),
-            displayValueError[1] ? (React.createElement(StyledYearError, null,
-                displayValue[1],
+            displayInfo.error[1] ? (React.createElement(StyledYearError, null,
+                displayInfo.value[1],
                 "\uB144")) : (React.createElement(StyledYear, null,
-                displayValue[1],
+                displayInfo.value[1],
                 "\uB144")))),
         React.createElement("div", null,
-            React.createElement(PrivateYearRangePickerYearList, { value: value, selectType: selectType, displayValue: displayValue, minYear: minYear, maxYear: maxYear, disablePast: disablePast, disableFuture: disableFuture, onChange: handleYearChange })),
+            React.createElement(PrivateYearRangePickerYearList, { value: value, selectType: selectType, displayValue: displayInfo.value, minYear: minYear, maxYear: maxYear, disablePast: disablePast, disableFuture: disableFuture, onChange: handleYearChange })),
         actionButtons));
 };var StyledContainer$4 = styled(Grid)(templateObject_1$8 || (templateObject_1$8 = __makeTemplateObject(["\n  padding: 4px;\n  position: relative;\n"], ["\n  padding: 4px;\n  position: relative;\n"])));
 var StyledButton$1 = styled(Button)(templateObject_2$4 || (templateObject_2$4 = __makeTemplateObject(["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n\n    &.range:not(.active) {\n      background-color: rgba(25, 118, 210, 0.8);\n    }\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"], ["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n\n    &.range:not(.active) {\n      background-color: rgba(25, 118, 210, 0.8);\n    }\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"])));
 var templateObject_1$8, templateObject_2$4;var PrivateYearPickerYear = React.forwardRef(function (_a, ref) {
     var year = _a.year, disabled = _a.disabled, active = _a.active, range = _a.range, isDefault = _a.isDefault, selected = _a.selected, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, selectedTemp = _a.selectedTemp, onClick = _a.onClick, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
-    var className = useMemo(function () {
-        return classNames(range && 'range', isDefault && 'default', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', active && 'active', disabled && 'disabled');
-    }, [range, isDefault, selected, selectedStart, selectedEnd, selectedTemp, active, disabled]);
     return (React.createElement(StyledContainer$4, { className: 'PrivateYearPickerYear', ref: ref, item: true, xs: 4 },
-        React.createElement(StyledButton$1, { className: className, disabled: disabled, onClick: onClick, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave }, year)));
+        React.createElement(StyledButton$1, { className: classNames(range && 'range', isDefault && 'default', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', active && 'active', disabled && 'disabled'), disabled: disabled, onClick: onClick, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave }, year)));
 });var StyledContainer$3 = styled(Grid)(templateObject_1$7 || (templateObject_1$7 = __makeTemplateObject(["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"], ["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"])));
 var templateObject_1$7;var _lastCloseTime = 0;
 var PrivateYearPickerYearList = function (_a) {
@@ -6523,92 +6494,97 @@ var templateObject_1$6, templateObject_2$3, templateObject_3$2, templateObject_4
 var DEFAULT_MAX_YEAR = 2050;
 var PrivateYearPicker = function (_a) {
     /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
+    var _b = _a.value, initValue = _b === void 0 ? null : _b, _c = _a.minYear, minYear = _c === void 0 ? DEFAULT_MIN_YEAR : _c, _d = _a.maxYear, maxYear = _d === void 0 ? DEFAULT_MAX_YEAR : _d, disablePast = _a.disablePast, disableFuture = _a.disableFuture, hideHeader = _a.hideHeader, selectFromYear = _a.selectFromYear, selectToYear = _a.selectToYear, initOnChange = _a.onChange;
+    var onChangeRef = useAutoUpdateLayoutRef(initOnChange);
+    /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var _b = _a.value, initValue = _b === void 0 ? null : _b, _c = _a.minYear, minYear = _c === void 0 ? DEFAULT_MIN_YEAR : _c, _d = _a.maxYear, maxYear = _d === void 0 ? DEFAULT_MAX_YEAR : _d, disablePast = _a.disablePast, disableFuture = _a.disableFuture, hideHeader = _a.hideHeader, selectFromYear = _a.selectFromYear, selectToYear = _a.selectToYear, onChange = _a.onChange;
     var _e = useAutoUpdateState(initValue), value = _e[0], setValue = _e[1];
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var nowYear = useMemo(function () { return new Date().getFullYear(); }, []);
-    var minAvailableYear = useMemo(function () {
+    var yearInfo = useMemo(function () {
+        var nowYear = new Date().getFullYear();
+        var minAvailableYear;
         if (disablePast) {
-            return nowYear > minYear ? nowYear : minYear;
+            minAvailableYear = nowYear > minYear ? nowYear : minYear;
         }
         else {
-            return minYear;
+            minAvailableYear = minYear;
         }
-    }, [disablePast, minYear, nowYear]);
-    var maxAvailableYear = useMemo(function () {
+        var maxAvailableYear;
         if (disableFuture) {
-            return nowYear < maxYear ? nowYear : maxYear;
+            maxAvailableYear = nowYear < maxYear ? nowYear : maxYear;
         }
         else {
-            return maxYear;
+            maxAvailableYear = maxYear;
         }
-    }, [disableFuture, maxYear, nowYear]);
-    var displayYear = useMemo(function () {
+        return { now: nowYear, available: { min: minAvailableYear, max: maxAvailableYear } };
+    }, [disableFuture, disablePast, maxYear, minYear]);
+    var displayInfo = useMemo(function () {
+        var displayYear;
         if (value) {
-            return value;
+            displayYear = value;
         }
         else {
-            var year = selectFromYear || selectToYear || nowYear;
-            if (minAvailableYear > year) {
-                year = minAvailableYear;
+            var year = selectFromYear || selectToYear || yearInfo.now;
+            if (yearInfo.available.min > year) {
+                year = yearInfo.available.min;
             }
-            else if (maxAvailableYear < year) {
-                year = maxAvailableYear;
+            else if (yearInfo.available.max < year) {
+                year = yearInfo.available.max;
             }
-            return year;
+            displayYear = year;
         }
-    }, [maxAvailableYear, minAvailableYear, nowYear, selectFromYear, selectToYear, value]);
-    var displayError = useMemo(function () { return displayYear < minAvailableYear || displayYear > maxAvailableYear; }, [displayYear, minAvailableYear, maxAvailableYear]);
-    var prevBtnDisabled = useMemo(function () { return displayYear <= minAvailableYear; }, [displayYear, minAvailableYear]);
-    var nextBtnDisabled = useMemo(function () { return displayYear >= maxAvailableYear; }, [displayYear, maxAvailableYear]);
+        var displayError = displayYear < yearInfo.available.min || displayYear > yearInfo.available.max;
+        return { year: displayYear, error: displayError };
+    }, [selectFromYear, selectToYear, value, yearInfo]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
     var handleYearChange = useCallback(function (v) {
-        if (minAvailableYear && v < minAvailableYear) {
-            setValue(minAvailableYear);
-            onChange(minAvailableYear, true);
+        if (yearInfo.available.min && v < yearInfo.available.min) {
+            setValue(yearInfo.available.min);
+            onChangeRef.current(yearInfo.available.min, true);
         }
-        else if (maxAvailableYear && v > maxAvailableYear) {
-            setValue(maxAvailableYear);
-            onChange(maxAvailableYear, true);
+        else if (yearInfo.available.max && v > yearInfo.available.max) {
+            setValue(yearInfo.available.max);
+            onChangeRef.current(yearInfo.available.max, true);
         }
         else {
             setValue(v);
-            onChange(v, true);
+            onChangeRef.current(v, true);
         }
-    }, [maxAvailableYear, minAvailableYear, onChange, setValue]);
+    }, [yearInfo, setValue, onChangeRef]);
     var handlePrevClick = useCallback(function () {
-        if (displayYear) {
-            var newValue = displayYear - 1;
+        if (displayInfo.year) {
+            var newValue = displayInfo.year - 1;
             setValue(newValue);
-            onChange(newValue, false);
+            onChangeRef.current(newValue, false);
         }
-    }, [displayYear, onChange, setValue]);
+    }, [displayInfo, onChangeRef, setValue]);
     var handleNextClick = useCallback(function () {
-        if (displayYear) {
-            var newValue = displayYear + 1;
+        if (displayInfo.year) {
+            var newValue = displayInfo.year + 1;
             setValue(newValue);
-            onChange(newValue, false);
+            onChangeRef.current(newValue, false);
         }
-    }, [displayYear, onChange, setValue]);
+    }, [displayInfo, onChangeRef, setValue]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     return (React.createElement("div", { className: 'PrivateYearPicker' },
         !hideHeader && (React.createElement(StyledTitleContainer, null,
-            React.createElement(StyledIconButton$1, { disabled: prevBtnDisabled, onClick: handlePrevClick },
+            React.createElement(StyledIconButton$1, { disabled: displayInfo.year <= yearInfo.available.min, onClick: handlePrevClick },
                 React.createElement(PdgIcon, null, "KeyboardArrowLeft")),
-            displayError ? (React.createElement(StyledYearMonthError$1, null,
-                displayYear,
+            displayInfo.error ? (React.createElement(StyledYearMonthError$1, null,
+                displayInfo.year,
                 "\uB144")) : (React.createElement(StyledYearMonth$1, null,
-                displayYear,
+                displayInfo.year,
                 "\uB144")),
-            React.createElement(StyledIconButton$1, { disabled: nextBtnDisabled, onClick: handleNextClick },
+            React.createElement(StyledIconButton$1, { disabled: displayInfo.year >= yearInfo.available.max, onClick: handleNextClick },
                 React.createElement(PdgIcon, null, "KeyboardArrowRight")))),
         React.createElement("div", null,
             React.createElement(PrivateYearPickerYearList, { value: value, minYear: minYear, maxYear: maxYear, disablePast: disablePast, disableFuture: disableFuture, selectFromYear: selectFromYear, selectToYear: selectToYear, onChange: handleYearChange }))));
@@ -6637,11 +6613,11 @@ var templateObject_1$4;var PrivateMonthPickerMonthList = function (_a) {
     var value = _a.value, initDefaultValue = _a.defaultValue, minAvailableValue = _a.minAvailableValue, maxAvailableValue = _a.maxAvailableValue, disablePast = _a.disablePast, disableFuture = _a.disableFuture, selectFromValue = _a.selectFromValue, selectToValue = _a.selectToValue, onChange = _a.onChange;
     var dateInfo = useMemo(function () {
         var nowDate = dayjs();
-        var nowValue = dateToValue$2(nowDate);
-        var nowYm = valueToYm$2(nowValue);
+        var nowValue = dateToValue$6(nowDate);
+        var nowYm = valueToYm$4(nowValue);
         var availableYm = {
-            min: valueToYm$2(minAvailableValue),
-            max: valueToYm$2(maxAvailableValue),
+            min: valueToYm$4(minAvailableValue),
+            max: valueToYm$4(maxAvailableValue),
         };
         var defaultValue = initDefaultValue
             ? initDefaultValue
@@ -6662,15 +6638,15 @@ var templateObject_1$4;var PrivateMonthPickerMonthList = function (_a) {
     var months = useMemo(function () {
         var newMonths = [];
         var range = !!selectFromValue || !!selectToValue;
-        var startYm = selectFromValue ? valueToYm$2(selectFromValue) : value ? valueToYm$2(value) : 0;
-        var endYm = selectToValue ? valueToYm$2(selectToValue) : value ? valueToYm$2(value) : 0;
+        var startYm = selectFromValue ? valueToYm$4(selectFromValue) : value ? valueToYm$4(value) : 0;
+        var endYm = selectToValue ? valueToYm$4(selectToValue) : value ? valueToYm$4(value) : 0;
         for (var i = 1; i <= 12; i += 1) {
             var ym = currentYear * 100 + i;
             newMonths.push({
                 month: i,
                 range: range,
                 isDefault: !value && i === dateInfo.defaultValue.month,
-                active: (!!selectFromValue || !!selectToValue) && !!value && ym === valueToYm$2(value),
+                active: (!!selectFromValue || !!selectToValue) && !!value && ym === valueToYm$4(value),
                 selected: !!value && ym >= startYm && ym <= endYm,
                 selectedStart: !!value && ym === startYm,
                 selectedEnd: !!value && ym === endYm,
@@ -6707,8 +6683,8 @@ var templateObject_1$4;var PrivateMonthPickerMonthList = function (_a) {
 /********************************************************************************************************************
  * Function
  * ******************************************************************************************************************/
-var valueToYm$2 = function (v) { return v.year * 100 + v.month; };
-var dateToValue$2 = function (v) { return ({ year: v.year(), month: v.month() + 1 }); };var StyledContainer = styled('div')(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  .PrivateYearPickerYearList {\n    max-height: 130px;\n  }\n"], ["\n  .PrivateYearPickerYearList {\n    max-height: 130px;\n  }\n"])));
+var valueToYm$4 = function (v) { return v.year * 100 + v.month; };
+var dateToValue$6 = function (v) { return ({ year: v.year(), month: v.month() + 1 }); };var StyledContainer = styled('div')(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  .PrivateYearPickerYearList {\n    max-height: 130px;\n  }\n"], ["\n  .PrivateYearPickerYearList {\n    max-height: 130px;\n  }\n"])));
 var TitleContainer = styled('div')(templateObject_2$1 || (templateObject_2$1 = __makeTemplateObject(["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"], ["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"])));
 var StyledIconButton = styled(IconButton)(templateObject_3$1 || (templateObject_3$1 = __makeTemplateObject(["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"], ["\n  margin-top: -8px;\n  margin-bottom: -10px;\n"])));
 var StyledYearMonth = styled('div')(templateObject_4 || (templateObject_4 = __makeTemplateObject(["\n  flex: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n"], ["\n  flex: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n"])));
@@ -6716,9 +6692,9 @@ var StyledYearMonthError = styled('div')(templateObject_5 || (templateObject_5 =
     var theme = _a.theme;
     return theme.palette.error.main;
 });
-var templateObject_1$3, templateObject_2$1, templateObject_3$1, templateObject_4, templateObject_5;var valueToDate = function (v) { return dayjs("".concat(v.year, "-").concat(v.month, "-01")); };
-var valueToYm$1 = function (v) { return v.year * 100 + v.month; };
-var dateToValue$1 = function (v) { return ({ year: v.year(), month: v.month() + 1 }); };var DEFAULT_MIN_VALUE$3 = {
+var templateObject_1$3, templateObject_2$1, templateObject_3$1, templateObject_4, templateObject_5;var valueToDate$4 = function (v) { return dayjs("".concat(v.year, "-").concat(v.month, "-01")); };
+var valueToYm$3 = function (v) { return v.year * 100 + v.month; };
+var dateToValue$5 = function (v) { return ({ year: v.year(), month: v.month() + 1 }); };var DEFAULT_MIN_VALUE$3 = {
     year: 2020,
     month: 1,
 };
@@ -6735,116 +6711,124 @@ var PrivateMonthPicker = function (_a) {
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var nowValue = useMemo(function () { return dateToValue$1(dayjs()); }, []);
-    var nowYm = useMemo(function () { return valueToYm$1(nowValue); }, [nowValue]);
-    var minAvailableValue = useMemo(function () {
+    var dateInfo = useMemo(function () {
+        var nowValue = dateToValue$5(dayjs());
+        var nowYm = valueToYm$3(nowValue);
+        var minAvailableValue;
         if (disablePast) {
-            var minYm = valueToYm$1(minValue);
-            return nowYm > minYm ? nowValue : minValue;
+            var minYm = valueToYm$3(minValue);
+            minAvailableValue = nowYm > minYm ? nowValue : minValue;
         }
         else {
-            return minValue;
+            minAvailableValue = minValue;
         }
-    }, [disablePast, minValue, nowYm, nowValue]);
-    var minAvailableYm = useMemo(function () { return valueToYm$1(minAvailableValue); }, [minAvailableValue]);
-    var maxAvailableValue = useMemo(function () {
+        var minAvailableYm = valueToYm$3(minAvailableValue);
+        var maxAvailableValue;
         if (disableFuture) {
-            var maxYm = valueToYm$1(maxValue);
-            return nowYm < maxYm ? nowValue : maxValue;
+            var maxYm = valueToYm$3(maxValue);
+            maxAvailableValue = nowYm < maxYm ? nowValue : maxValue;
         }
         else {
-            return maxValue;
+            maxAvailableValue = maxValue;
         }
-    }, [disableFuture, maxValue, nowYm, nowValue]);
-    var maxAvailableYm = useMemo(function () { return valueToYm$1(maxAvailableValue); }, [maxAvailableValue]);
-    var displayValue = useMemo(function () {
+        var maxAvailableYm = valueToYm$3(maxAvailableValue);
+        return {
+            now: {
+                value: nowValue,
+                ym: nowYm,
+            },
+            available: {
+                min: {
+                    value: minAvailableValue,
+                    ym: minAvailableYm,
+                },
+                max: {
+                    value: maxAvailableValue,
+                    ym: maxAvailableYm,
+                },
+            },
+        };
+    }, [disableFuture, disablePast, maxValue, minValue]);
+    var displayInfo = useMemo(function () {
+        var displayValue;
         if (value && !Number.isNaN(value.year) && !Number.isNaN(value.month)) {
-            return value;
+            displayValue = value;
         }
         else {
-            if (nowYm < minAvailableYm) {
-                return minAvailableValue;
+            if (dateInfo.now.ym < dateInfo.available.min.ym) {
+                displayValue = dateInfo.available.min.value;
             }
-            else if (nowYm > maxAvailableYm) {
-                return maxAvailableValue;
+            else if (dateInfo.now.ym > dateInfo.available.max.ym) {
+                displayValue = dateInfo.available.max.value;
             }
             else {
-                return selectFromValue || selectToValue || nowValue;
+                displayValue = selectFromValue || selectToValue || dateInfo.now.value;
             }
         }
-    }, [
-        maxAvailableValue,
-        maxAvailableYm,
-        minAvailableValue,
-        minAvailableYm,
-        nowValue,
-        nowYm,
-        selectFromValue,
-        selectToValue,
-        value,
-    ]);
-    var displayValueDate = useMemo(function () { return valueToDate(displayValue); }, [displayValue]);
-    var displayValueYm = useMemo(function () { return displayValue.year * 100 + displayValue.month; }, [displayValue]);
-    var displayValueError = useMemo(function () { return displayValueYm < minAvailableYm || displayValueYm > maxAvailableYm; }, [displayValueYm, maxAvailableYm, minAvailableYm]);
+        var displayValueDate = valueToDate$4(displayValue);
+        var displayValueYm = displayValue.year * 100 + displayValue.month;
+        var displayValueError = displayValueYm < dateInfo.available.min.ym || displayValueYm > dateInfo.available.max.ym;
+        return { value: displayValue, date: displayValueDate, ym: displayValueYm, error: displayValueError };
+    }, [dateInfo, selectFromValue, selectToValue, value]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
     var handleYearChange = useCallback(function (year) {
-        var newValue = __assign(__assign({}, displayValue), { year: year });
-        var valueYm = valueToYm$1(newValue);
-        if (valueYm < minAvailableYm) {
-            setValue(minAvailableValue);
-            onChange(minAvailableValue, false);
+        var newValue = __assign(__assign({}, displayInfo.value), { year: year });
+        var valueYm = valueToYm$3(newValue);
+        if (valueYm < dateInfo.available.min.ym) {
+            setValue(dateInfo.available.min.value);
+            onChange(dateInfo.available.min.value, false);
         }
-        else if (valueYm > maxAvailableYm) {
-            setValue(maxAvailableValue);
-            onChange(maxAvailableValue, false);
+        else if (valueYm > dateInfo.available.max.ym) {
+            setValue(dateInfo.available.max.value);
+            onChange(dateInfo.available.max.value, false);
         }
         else {
             setValue(newValue);
             onChange(newValue, false);
         }
-    }, [displayValue, maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm, onChange, setValue]);
+    }, [dateInfo, displayInfo, onChange, setValue]);
     var handleMonthChange = useCallback(function (newValue) {
         setValue(newValue);
         onChange(newValue, true);
     }, [onChange, setValue]);
     var handlePrevClick = useCallback(function () {
-        var newValue = dateToValue$1(displayValueDate.subtract(1, 'months'));
+        var newValue = dateToValue$5(displayInfo.date.subtract(1, 'months'));
         setValue(newValue);
         onChange(newValue, false);
-    }, [displayValueDate, onChange, setValue]);
+    }, [displayInfo, onChange, setValue]);
     var handleNextClick = useCallback(function () {
-        var newValue = dateToValue$1(displayValueDate.add(1, 'months'));
+        var newValue = dateToValue$5(displayInfo.date.add(1, 'months'));
         setValue(newValue);
         onChange(newValue, false);
-    }, [displayValueDate, onChange, setValue]);
+    }, [displayInfo, onChange, setValue]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    var prevBtnDisabled = displayValueYm <= minAvailableYm;
-    var nextBtnDisabled = displayValueYm >= maxAvailableYm;
+    var prevBtnDisabled = displayInfo.ym <= dateInfo.available.min.ym;
+    var nextBtnDisabled = displayInfo.ym >= dateInfo.available.max.ym;
     var selectFromYear = selectFromValue ? selectFromValue.year : undefined;
     var selectToYear = selectToValue ? selectToValue.year : undefined;
     return (React.createElement(StyledContainer, { className: 'PrivateMonthPicker' },
         React.createElement(TitleContainer, null,
             React.createElement(StyledIconButton, { disabled: prevBtnDisabled, onClick: handlePrevClick },
                 React.createElement(PdgIcon, null, "KeyboardArrowLeft")),
-            displayValueError ? (React.createElement(StyledYearMonthError, null,
-                displayValue.year,
+            displayInfo.error ? (React.createElement(StyledYearMonthError, null,
+                displayInfo.value.year,
                 "\uB144 ",
-                displayValue.month,
+                displayInfo.value.month,
                 "\uC6D4")) : (React.createElement(StyledYearMonth, null,
-                displayValue.year,
+                displayInfo.value.year,
                 "\uB144 ",
-                displayValue.month,
+                displayInfo.value.month,
                 "\uC6D4")),
             React.createElement(StyledIconButton, { disabled: nextBtnDisabled, onClick: handleNextClick },
                 React.createElement(PdgIcon, null, "KeyboardArrowRight"))),
         React.createElement("div", null,
             React.createElement(PrivateYearPicker, { value: (value === null || value === void 0 ? void 0 : value.year) || null, minYear: minValue.year, maxYear: maxValue.year, disablePast: disablePast, disableFuture: disableFuture, onChange: handleYearChange, hideHeader: true, selectFromYear: selectFromYear, selectToYear: selectToYear })),
         React.createElement("div", { style: { borderTop: '1px solid #efefef' } },
-            React.createElement(PrivateMonthPickerMonthList, { value: value, defaultValue: selectFromValue || selectToValue, minAvailableValue: minAvailableValue, maxAvailableValue: maxAvailableValue, disablePast: disablePast, disableFuture: disableFuture, selectFromValue: selectFromValue, selectToValue: selectToValue, onChange: handleMonthChange }))));
+            React.createElement(PrivateMonthPickerMonthList, { value: value, defaultValue: selectFromValue || selectToValue, minAvailableValue: dateInfo.available.min.value, maxAvailableValue: dateInfo.available.max.value, disablePast: disablePast, disableFuture: disableFuture, selectFromValue: selectFromValue, selectToValue: selectToValue, onChange: handleMonthChange }))));
 };var StyledDiv = styled(Grid)(templateObject_1$2 || (templateObject_1$2 = __makeTemplateObject(["\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 14px;\n  width: 30px;\n  border-left: 1px solid #efefef;\n  border-right: 1px solid #efefef;\n  background-color: #fafafa;\n"], ["\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 14px;\n  width: 30px;\n  border-left: 1px solid #efefef;\n  border-right: 1px solid #efefef;\n  background-color: #fafafa;\n"])));
 var StyledActionContainer = styled('div')(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n  &:empty {\n    display: none;\n  }\n"], ["\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n  &:empty {\n    display: none;\n  }\n"])));
 var StyledActionButton = styled(Button)(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n  min-width: 0;\n  color: unset;\n  &:not(:first-of-type) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"], ["\n  min-width: 0;\n  color: unset;\n  &:not(:first-of-type) {\n    margin-left: 5px;\n  }\n  &.disabled {\n    color: rgba(0, 0, 0, 0.5);\n  }\n"])));
@@ -6858,50 +6842,71 @@ var DEFAULT_MAX_VALUE$2 = {
 };
 var PrivateMonthRangePicker = function (_a) {
     /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
+    var value = _a.value, _b = _a.minValue, minValue = _b === void 0 ? DEFAULT_MIN_VALUE$2 : _b, _c = _a.maxValue, maxValue = _c === void 0 ? DEFAULT_MAX_VALUE$2 : _c, disablePast = _a.disablePast, disableFuture = _a.disableFuture, initOnChange = _a.onChange;
+    var onChangeRef = useAutoUpdateLayoutRef(initOnChange);
+    /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var value = _a.value, _b = _a.minValue, minValue = _b === void 0 ? DEFAULT_MIN_VALUE$2 : _b, _c = _a.maxValue, maxValue = _c === void 0 ? DEFAULT_MAX_VALUE$2 : _c, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange;
-    var nowDate = useMemo(function () { return dayjs(); }, []);
-    var nowValue = useMemo(function () { return dateToValue(nowDate); }, [nowDate]);
-    var nowYm = useMemo(function () { return valueToYm(nowValue); }, [nowValue]);
-    var minAvailableValue = useMemo(function () {
+    var dateInfo = useMemo(function () {
+        var nowDate = dayjs();
+        var nowValue = dateToValue$4(nowDate);
+        var nowYm = valueToYm$2(nowValue);
+        var minAvailableValue;
         if (disablePast) {
-            var minYm = valueToYm(minValue);
-            return nowYm > minYm ? nowValue : minValue;
+            var minYm = valueToYm$2(minValue);
+            minAvailableValue = nowYm > minYm ? nowValue : minValue;
         }
         else {
-            return minValue;
+            minAvailableValue = minValue;
         }
-    }, [disablePast, minValue, nowYm, nowValue]);
-    var minAvailableYm = useMemo(function () { return valueToYm(minAvailableValue); }, [minAvailableValue]);
-    var maxAvailableValue = useMemo(function () {
+        var minAvailableYm = valueToYm$2(minAvailableValue);
+        var maxAvailableValue;
         if (disableFuture) {
-            var maxYm = valueToYm(maxValue);
-            return nowYm < maxYm ? nowValue : maxValue;
+            var maxYm = valueToYm$2(maxValue);
+            maxAvailableValue = nowYm < maxYm ? nowValue : maxValue;
         }
         else {
-            return maxValue;
+            maxAvailableValue = maxValue;
         }
-    }, [disableFuture, maxValue, nowYm, nowValue]);
-    var maxAvailableYm = useMemo(function () { return valueToYm(maxAvailableValue); }, [maxAvailableValue]);
+        var maxAvailableYm = valueToYm$2(maxAvailableValue);
+        return {
+            now: {
+                date: nowDate,
+                value: nowValue,
+                ym: nowYm,
+            },
+            available: {
+                min: {
+                    value: minAvailableValue,
+                    ym: minAvailableYm,
+                },
+                max: {
+                    value: maxAvailableValue,
+                    ym: maxAvailableYm,
+                },
+            },
+        };
+    }, [disableFuture, disablePast, maxValue, minValue]);
     /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
     var getFinalValue = useCallback(function (v, selectType) {
         var finalValue = [v[0], v[1]];
         if (finalValue[0]) {
-            var startYm = valueToYm(finalValue[0]);
-            if (startYm < minAvailableYm) {
-                finalValue[0] = minAvailableValue;
+            var startYm = valueToYm$2(finalValue[0]);
+            if (startYm < dateInfo.available.min.ym) {
+                finalValue[0] = dateInfo.available.min.value;
             }
-            else if (startYm > maxAvailableYm) {
-                finalValue[0] = maxAvailableValue;
+            else if (startYm > dateInfo.available.max.ym) {
+                finalValue[0] = dateInfo.available.max.value;
             }
         }
         if (finalValue[1]) {
-            var endYm = valueToYm(finalValue[1]);
+            var endYm = valueToYm$2(finalValue[1]);
             if (finalValue[0]) {
-                if (valueToYm(finalValue[0]) > endYm) {
+                if (valueToYm$2(finalValue[0]) > endYm) {
                     if (selectType === 'start') {
                         finalValue[1] = finalValue[0];
                     }
@@ -6910,56 +6915,57 @@ var PrivateMonthRangePicker = function (_a) {
                     }
                 }
             }
-            endYm = valueToYm(finalValue[1]);
-            if (endYm < minAvailableYm) {
-                finalValue[1] = minAvailableValue;
+            endYm = valueToYm$2(finalValue[1]);
+            if (endYm < dateInfo.available.min.ym) {
+                finalValue[1] = dateInfo.available.min.value;
             }
-            else if (endYm > maxAvailableYm) {
-                finalValue[1] = maxAvailableValue;
+            else if (endYm > dateInfo.available.max.ym) {
+                finalValue[1] = dateInfo.available.max.value;
             }
         }
         return finalValue;
-    }, [maxAvailableValue, maxAvailableYm, minAvailableValue, minAvailableYm]);
+    }, [dateInfo]);
     /********************************************************************************************************************
      * action button
      * ******************************************************************************************************************/
     var getActionButton = useCallback(function (fromDate, toDate, label, strict) {
-        var fromValue = dateToValue(fromDate);
-        var fromYm = valueToYm(fromValue);
-        var toValue = dateToValue(toDate);
-        var toYm = valueToYm(toValue);
-        if (strict && (fromYm < minAvailableYm || toYm > maxAvailableYm)) {
+        var fromValue = dateToValue$4(fromDate);
+        var fromYm = valueToYm$2(fromValue);
+        var toValue = dateToValue$4(toDate);
+        var toYm = valueToYm$2(toValue);
+        if (strict && (fromYm < dateInfo.available.min.ym || toYm > dateInfo.available.max.ym)) {
             return undefined;
         }
         else if (!strict &&
-            ((fromYm < minAvailableYm && toYm < minAvailableYm) || (fromYm > maxAvailableYm && toYm > maxAvailableYm))) {
+            ((fromYm < dateInfo.available.min.ym && toYm < dateInfo.available.min.ym) ||
+                (fromYm > dateInfo.available.max.ym && toYm > dateInfo.available.max.ym))) {
             return undefined;
         }
         else {
-            return (React.createElement(StyledActionButton, { variant: 'text', onClick: function () { return onChange(getFinalValue([fromValue, toValue], 'end'), 'end', true); } }, label));
+            return (React.createElement(StyledActionButton, { variant: 'text', onClick: function () { return onChangeRef.current(getFinalValue([fromValue, toValue], 'end'), 'end', true); } }, label));
         }
-    }, [getFinalValue, maxAvailableYm, minAvailableYm, onChange]);
+    }, [getFinalValue, dateInfo, onChangeRef]);
     var actionButtons = useMemo(function () {
         return (React.createElement(StyledActionContainer, null,
-            getActionButton(dayjs(nowDate).subtract(2, 'months'), nowDate, '최근 3개월', true),
-            getActionButton(dayjs(nowDate).subtract(5, 'months'), nowDate, '최근 6개월', true),
-            getActionButton(dayjs(nowDate).subtract(11, 'months'), nowDate, '최근 12개월', true),
-            getActionButton(dayjs(nowDate).subtract(23, 'months'), nowDate, '최근 24개월', true),
-            getActionButton(dayjs(nowDate).subtract(2, 'years').set('months', 0), dayjs(nowDate).subtract(2, 'years').set('months', 11), '재작년'),
-            getActionButton(dayjs(nowDate).subtract(1, 'years').set('months', 0), dayjs(nowDate).subtract(1, 'years').set('months', 11), '작년'),
-            getActionButton(dayjs(nowDate).set('months', 0), dayjs(nowDate).set('months', 11), '올해')));
-    }, [getActionButton, nowDate]);
+            getActionButton(dayjs(dateInfo.now.date).subtract(2, 'months'), dateInfo.now.date, '최근 3개월', true),
+            getActionButton(dayjs(dateInfo.now.date).subtract(5, 'months'), dateInfo.now.date, '최근 6개월', true),
+            getActionButton(dayjs(dateInfo.now.date).subtract(11, 'months'), dateInfo.now.date, '최근 12개월', true),
+            getActionButton(dayjs(dateInfo.now.date).subtract(23, 'months'), dateInfo.now.date, '최근 24개월', true),
+            getActionButton(dayjs(dateInfo.now.date).subtract(2, 'years').set('months', 0), dayjs(dateInfo.now.date).subtract(2, 'years').set('months', 11), '재작년'),
+            getActionButton(dayjs(dateInfo.now.date).subtract(1, 'years').set('months', 0), dayjs(dateInfo.now.date).subtract(1, 'years').set('months', 11), '작년'),
+            getActionButton(dayjs(dateInfo.now.date).set('months', 0), dayjs(dateInfo.now.date).set('months', 11), '올해')));
+    }, [getActionButton, dateInfo]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
     var handleStartMonthChange = useCallback(function (v, isMonthSelect) {
         var finalValue = getFinalValue([v, value[1]], 'start');
-        onChange(finalValue, 'start', isMonthSelect);
-    }, [getFinalValue, onChange, value]);
+        onChangeRef.current(finalValue, 'start', isMonthSelect);
+    }, [getFinalValue, onChangeRef, value]);
     var handleEndMonthChange = useCallback(function (v, isMonthSelect) {
         var finalValue = getFinalValue([value[0], v], 'end');
-        onChange(finalValue, 'end', isMonthSelect);
-    }, [getFinalValue, onChange, value]);
+        onChangeRef.current(finalValue, 'end', isMonthSelect);
+    }, [getFinalValue, onChangeRef, value]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
@@ -6975,8 +6981,8 @@ var PrivateMonthRangePicker = function (_a) {
 /********************************************************************************************************************
  * Function
  * ******************************************************************************************************************/
-var valueToYm = function (v) { return v.year * 100 + v.month; };
-var dateToValue = function (v) { return ({ year: v.year(), month: v.month() + 1 }); };var FormDatePicker = React.forwardRef(function (_a, ref) {
+var valueToYm$2 = function (v) { return v.year * 100 + v.month; };
+var dateToValue$4 = function (v) { return ({ year: v.year(), month: v.month() + 1 }); };var FormDatePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
@@ -6992,7 +6998,7 @@ var dateToValue = function (v) { return ({ year: v.year(), month: v.month() + 1 
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormContextProvider, { value: __assign({ onAddValueItem: handleAddValueItem }, otherFormState) },
+    return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { onAddValueItem: handleAddValueItem }) },
         React.createElement(PrivateDatePicker, __assign({ className: classNames(className, 'FormDatePicker') }, props, { ref: ref, type: 'date' }))));
 });
 FormDatePicker.displayName = 'FormDatePicker';var FormDateTimePicker = React.forwardRef(function (_a, ref) {
@@ -7011,7 +7017,7 @@ FormDatePicker.displayName = 'FormDatePicker';var FormDateTimePicker = React.for
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormContextProvider, { value: __assign({ onAddValueItem: handleAddValueItem }, otherFormState) },
+    return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { onAddValueItem: handleAddValueItem }) },
         React.createElement(PrivateDateTimePicker, __assign({ className: classNames(className, 'FormDateTimePicker') }, props, { ref: ref, type: 'date_time' }))));
 });
 FormDateTimePicker.displayName = 'FormDateTimePicker';var FormTimePicker = React.forwardRef(function (_a, ref) {
@@ -7030,7 +7036,7 @@ FormDateTimePicker.displayName = 'FormDateTimePicker';var FormTimePicker = React
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormContextProvider, { value: __assign({ onAddValueItem: handleAddValueItem }, otherFormState) },
+    return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { onAddValueItem: handleAddValueItem }) },
         React.createElement(PrivateDateTimePicker, __assign({ className: classNames(className, 'FormTimePicker') }, props, { ref: ref, type: 'time' }))));
 });
 FormTimePicker.displayName = 'FormTimePicker';var css_248z$3 = ".FormDateRangePickerTooltipPicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.FormDateRangePickerTooltipPicker .MuiDayPicker-header > span {\n  margin: 0;\n}\n.FormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content {\n  min-width: 292px;\n}\n.FormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root > div {\n  width: 292px;\n}\n.FormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root > div .MuiCalendarPicker-root {\n  width: 292px;\n}\n.FormDateRangePickerTooltipPicker .selected-bg {\n  display: none;\n  position: absolute;\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel {\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background-color: rgba(66, 165, 245, 0.6);\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel.ui-start, .FormDateRangePickerTooltipPicker .selected-bg.sel.s-start {\n  border-top-left-radius: 50%;\n  border-bottom-left-radius: 50%;\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel.ui-end, .FormDateRangePickerTooltipPicker .selected-bg.sel.s-end {\n  border-top-right-radius: 50%;\n  border-bottom-right-radius: 50%;\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel ~ .MuiPickersDay-root {\n  border: 0;\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel ~ .MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected) {\n  background-color: transparent;\n}\n.FormDateRangePickerTooltipPicker .focused-bg {\n  display: none;\n  position: absolute;\n}\n.FormDateRangePickerTooltipPicker .focused-bg.focused {\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  border: 2px solid #efefef;\n  border-left: 0;\n  border-right: 0;\n}\n.FormDateRangePickerTooltipPicker .focused-bg.focused.ui-start, .FormDateRangePickerTooltipPicker .focused-bg.focused.f-start {\n  border-left: 2px solid #efefef;\n  border-top-left-radius: 50%;\n  border-bottom-left-radius: 50%;\n}\n.FormDateRangePickerTooltipPicker .focused-bg.focused.ui-end, .FormDateRangePickerTooltipPicker .focused-bg.focused.f-end {\n  border-right: 2px solid #efefef;\n  border-top-right-radius: 50%;\n  border-bottom-right-radius: 50%;\n}\n.FormDateRangePickerTooltipPicker .focused-bg.focused ~ .MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected) {\n  background-color: transparent;\n}";
@@ -7216,7 +7222,7 @@ styleInject(css_248z$3);var FormDateRangePickerTooltipPicker = React.forwardRef(
             previousIconButton: LeftArrowButton,
             nextIconButton: RightArrowButton,
             day: handleRenderDay,
-        }, value: activeMonthValue, defaultCalendarMonth: month, disableFuture: disableFuture, disablePast: disablePast, minDate: minDate, maxDate: maxDate, onChange: function (newValue) { return onValueChange && onValueChange(selectType, newValue); }, 
+        }, value: activeMonthValue, referenceDate: month, disableFuture: disableFuture, disablePast: disablePast, minDate: minDate, maxDate: maxDate, onChange: function (newValue) { return onValueChange && onValueChange(selectType, newValue); }, 
         // renderDay={handleRenderDay}
         // renderInput={(params) => <TextField {...params} />}
         // format='YYYY-MM-DD HH:mm:ss'
@@ -7505,15 +7511,17 @@ var FormDateRangePickerTooltipPickerContainer = React.forwardRef(function (_a, r
                                     "\uC6D4")));
                         })))))),
             React.createElement(Grid, { className: 'action-buttons', item: true, style: { borderTop: '1px solid #efefef', padding: 10, textAlign: 'right' } }, actionButtons))));
-});var DEFAULT_VALUE$4 = [null, null];
-var DEFAULT_FORMAT$3 = 'YYYY-MM-DD';
+});var DEFAULT_VALUE$2 = [null, null];
+var getFinalValue$6 = function (value) {
+    return value || DEFAULT_VALUE$2;
+};var DEFAULT_FORMAT$2 = 'YYYY-MM-DD';
 var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //--------------------------------------------------------------------------------------------------------------------
-    name = _a.name, initValue = _a.value, initData = _a.data, fromLabel = _a.fromLabel, fromLabelIcon = _a.fromLabelIcon, toLabel = _a.toLabel, toLabelIcon = _a.toLabelIcon, _b = _a.calendarCount, calendarCount = _b === void 0 ? 2 : _b, _c = _a.format, format = _c === void 0 ? DEFAULT_FORMAT$3 : _c, _d = _a.formValueFormat, formValueFormat = _d === void 0 ? DEFAULT_FORMAT$3 : _d, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, helperText = _a.helperText, _e = _a.formValueFromNameSuffix, formValueFromNameSuffix = _e === void 0 ? '_from' : _e, _f = _a.formValueToNameSuffix, formValueToNameSuffix = _f === void 0 ? '_to' : _f, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, initHidden = _a.hidden, _g = _a.align, align = _g === void 0 ? 'center' : _g, onGetActionButtons = _a.onGetActionButtons, onChange = _a.onChange, onValidate = _a.onValidate, 
+    name = _a.name, initValue = _a.value, initData = _a.data, fromLabel = _a.fromLabel, fromLabelIcon = _a.fromLabelIcon, toLabel = _a.toLabel, toLabelIcon = _a.toLabelIcon, _b = _a.calendarCount, calendarCount = _b === void 0 ? 2 : _b, _c = _a.format, format = _c === void 0 ? DEFAULT_FORMAT$2 : _c, _d = _a.formValueFormat, formValueFormat = _d === void 0 ? DEFAULT_FORMAT$2 : _d, allowSingleSelect = _a.allowSingleSelect, required = _a.required, requiredStart = _a.requiredStart, requiredEnd = _a.requiredEnd, readOnly = _a.readOnly, readOnlyStart = _a.readOnlyStart, readOnlyEnd = _a.readOnlyEnd, readOnlyInput = _a.readOnlyInput, initDisabled = _a.disabled, inputWidth = _a.inputWidth, exceptValue = _a.exceptValue, initError = _a.error, helperText = _a.helperText, _e = _a.formValueFromNameSuffix, formValueFromNameSuffix = _e === void 0 ? '_from' : _e, _f = _a.formValueToNameSuffix, formValueToNameSuffix = _f === void 0 ? '_to' : _f, icon = _a.icon, startIcon = _a.startIcon, endIcon = _a.endIcon, startAdornment = _a.startAdornment, startStartAdornment = _a.startStartAdornment, endStartAdornment = _a.endStartAdornment, endAdornment = _a.endAdornment, startEndAdornment = _a.startEndAdornment, endEndAdornment = _a.endEndAdornment, disablePast = _a.disablePast, disableFuture = _a.disableFuture, minDate = _a.minDate, maxDate = _a.maxDate, initHidden = _a.hidden, _g = _a.align, align = _g === void 0 ? 'center' : _g, onGetActionButtons = _a.onGetActionButtons, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
     className = _a.className;
     var id = useId();
@@ -7524,12 +7532,12 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
-    var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var focused = ifUndefined(initFocused, formFocused);
+    var labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -7678,10 +7686,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * value
      * ******************************************************************************************************************/
-    var getFinalValue = useCallback(function (value) {
-        return value || DEFAULT_VALUE$4;
-    }, []);
-    var _w = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _w[0], value = _w[1], setValue = _w[2];
+    var _w = useAutoUpdateRefState(initValue, getFinalValue$6), valueRef = _w[0], value = _w[1], setValue = _w[2];
     useFirstSkipEffect(function () {
         if (error || fromError || toError)
             validate(value);
@@ -7689,37 +7694,6 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
             onChange(value);
         onValueChange(name, value);
     }, [value]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var inputDatePickerProps = useMemo(function () { return ({
-        align: align,
-        variant: variant,
-        size: size,
-        color: color,
-        labelShrink: labelShrink,
-        fullWidth: fullWidth,
-        disabled: disabled,
-        format: format,
-        disablePast: disablePast,
-        disableFuture: disableFuture,
-        minDate: minDate,
-        maxDate: maxDate,
-    }); }, [
-        align,
-        variant,
-        size,
-        color,
-        labelShrink,
-        fullWidth,
-        disabled,
-        format,
-        disablePast,
-        disableFuture,
-        minDate,
-        maxDate,
-    ]);
-    var inputStyle = useMemo(function () { return (inputWidth != null ? { width: inputWidth } : { width: fullWidth ? undefined : 150 }); }, [inputWidth, fullWidth]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -7758,13 +7732,6 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
             }
         }
     }, [open]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var wrapStyle = useMemo(function () { return ({
-        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
-        flex: fullWidth ? 1 : undefined,
-    }); }, [hidden, fullWidth]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -7946,7 +7913,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
             var commands = {
                 getType: function () { return 'FormDateRangePicker'; },
                 getName: function () { return name; },
-                getReset: function () { return getFinalValue(initValue); },
+                getReset: function () { return getFinalValue$6(initValue); },
                 reset: function () { return setValue(initValue); },
                 getValue: function () { return valueRef.current; },
                 setValue: setValue,
@@ -8009,7 +7976,6 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
         formValueFormat,
         formValueFromNameSuffix,
         formValueToNameSuffix,
-        getFinalValue,
         hiddenRef,
         id,
         initValue,
@@ -8026,11 +7992,32 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
         valueRef,
     ]);
     /********************************************************************************************************************
+     * Variable
+     * ******************************************************************************************************************/
+    var inputDatePickerProps = {
+        align: align,
+        variant: variant,
+        size: size,
+        color: color,
+        labelShrink: labelShrink,
+        fullWidth: fullWidth,
+        disabled: disabled,
+        format: format,
+        disablePast: disablePast,
+        disableFuture: disableFuture,
+        minDate: minDate,
+        maxDate: maxDate,
+    };
+    var inputStyle = inputWidth != null ? { width: inputWidth } : { width: fullWidth ? undefined : 150 };
+    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs },
         React.createElement(ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
-            React.createElement("div", { className: classNames(className, 'FormDateRangePicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
+            React.createElement("div", { className: classNames(className, 'FormDateRangePicker'), style: {
+                    display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+                    flex: fullWidth ? 1 : undefined,
+                }, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
                 React.createElement(PrivateStyledTooltip, { open: open, PopperProps: {
                         modifiers: [
                             {
@@ -8121,7 +8108,7 @@ FormDateRangePicker.displayName = 'FormDateRangePicker';var LinkDialog = functio
             React.createElement(Button, { variant: 'text', onClick: handleSubmit }, "\uD655\uC778"))));
 };var css_248z$1 = ".FormFile .control-wrap {\n  display: inline-flex;\n}\n.FormFile .control-wrap .file-name-wrap .file-name {\n  min-width: 350px;\n}\n.FormFile .control-wrap .file-name-wrap .file-name .MuiInputBase-root {\n  padding-right: 7px;\n}\n.FormFile .control-wrap .input-file {\n  display: none;\n}\n.FormFile .control-wrap .input-file-wrap {\n  display: flex;\n}\n.FormFile .control-wrap .input-file-wrap .input-file-btn:not(.hidden-label) .PdgIcon {\n  margin-left: -3px;\n}\n.FormFile.full-width .control-wrap {\n  display: flex;\n}\n.FormFile.full-width .control-wrap .file-name-wrap {\n  flex: 1;\n}\n.FormFile.variant-standard .file-name-wrap .file-name .MuiInputBase-root {\n  padding-right: 0;\n}\n.FormFile:not(.hide-file-name).variant-outlined .form-file-btn label, .FormFile:not(.hide-file-name).variant-filled .form-file-btn label {\n  padding-top: 10px;\n  padding-bottom: 10px;\n}\n.FormFile:not(.hide-file-name).variant-standard .form-file-btn label {\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n.FormFile:not(.hide-file-name).size-small .form-file-btn label {\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n\n.FormFile.hide-file-name:not(.with-label).variant-outlined .form-file-btn {\n  height: 52px;\n}\n.FormFile.hide-file-name:not(.with-label).variant-filled .form-file-btn {\n  height: 52px;\n}\n.FormFile.hide-file-name:not(.with-label).variant-standard .form-file-btn {\n  height: 28px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-filled .form-file-btn {\n  height: 44px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-standard .form-file-btn {\n  height: 26px;\n}\n.FormFile.hide-file-name.with-label.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name.with-label.variant-filled .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name.with-label.variant-standard .form-file-btn {\n  height: 28px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-outlined .form-file-btn {\n  height: 24px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-filled .form-file-btn {\n  height: 31px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-standard .form-file-btn {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-filled .form-file-btn {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-standard .form-file-btn {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-outlined .form-file-btn {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-filled .form-file-btn {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-standard .form-file-btn {\n  height: 26px;\n}";
 styleInject(css_248z$1);var StyledPdgButton = styled(PdgButton)(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  min-width: 0;\n\n  &.input-file-btn {\n    padding: 0 !important;\n    position: relative;\n\n    .PdgFlexRowBox {\n      height: 100%;\n      .PdgText {\n        height: 100%;\n\n        label {\n          cursor: pointer;\n          display: flex;\n          flex: 1;\n          width: 100%;\n          height: 100%;\n          justify-content: center;\n          align-items: center;\n          padding: 0 10px;\n\n          .PdgIcon {\n            margin-right: 0.2em;\n          }\n        }\n      }\n    }\n  }\n\n  &.hidden-label.input-file-btn .PdgFlexRowBox .PdgText label .PdgIcon {\n    margin-left: 0;\n    margin-right: 0;\n  }\n\n  &.MuiButton-outlined {\n    &:first-of-type:not(:last-of-type) {\n      border-right: 0;\n      border-top-right-radius: 0;\n      border-bottom-right-radius: 0;\n    }\n    &:last-of-type:not(:first-of-type) {\n      border-top-left-radius: 0;\n      border-bottom-left-radius: 0;\n    }\n    &:not(:first-of-type):not(:last-of-type) {\n      border-right: 0;\n      border-radius: 0;\n    }\n  }\n"], ["\n  min-width: 0;\n\n  &.input-file-btn {\n    padding: 0 !important;\n    position: relative;\n\n    .PdgFlexRowBox {\n      height: 100%;\n      .PdgText {\n        height: 100%;\n\n        label {\n          cursor: pointer;\n          display: flex;\n          flex: 1;\n          width: 100%;\n          height: 100%;\n          justify-content: center;\n          align-items: center;\n          padding: 0 10px;\n\n          .PdgIcon {\n            margin-right: 0.2em;\n          }\n        }\n      }\n    }\n  }\n\n  &.hidden-label.input-file-btn .PdgFlexRowBox .PdgText label .PdgIcon {\n    margin-left: 0;\n    margin-right: 0;\n  }\n\n  &.MuiButton-outlined {\n    &:first-of-type:not(:last-of-type) {\n      border-right: 0;\n      border-top-right-radius: 0;\n      border-bottom-right-radius: 0;\n    }\n    &:last-of-type:not(:first-of-type) {\n      border-top-left-radius: 0;\n      border-bottom-left-radius: 0;\n    }\n    &:not(:first-of-type):not(:last-of-type) {\n      border-right: 0;\n      border-radius: 0;\n    }\n  }\n"])));
-var templateObject_1$1;var FILE_VALUE = '';
+var templateObject_1$1;var getFinalValue$5 = function (value) { return value || ''; };var FILE_VALUE = '';
 var FormFile = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * ID
@@ -8141,12 +8128,12 @@ var FormFile = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
-    var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var focused = ifUndefined(initFocused, formFocused);
+    var labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -8207,8 +8194,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var getFinalValue = useCallback(function (value) { return value || ''; }, []);
-    var _l = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _l[0], value = _l[1], setValue = _l[2];
+    var _l = useAutoUpdateRefState(initValue, getFinalValue$5), valueRef = _l[0], value = _l[1], setValue = _l[2];
     useFirstSkipEffect(function () {
         if (error)
             validate(value);
@@ -8216,17 +8202,6 @@ var FormFile = React.forwardRef(function (_a, ref) {
             onChange(value);
         onValueChange(name, value);
     }, [value]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var label = useMemo(function () {
-        return labelIcon ? (React.createElement(React.Fragment, null,
-            React.createElement(PdgIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
-            React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel);
-    }, [initLabel, labelIcon]);
-    var finalClassName = useMemo(function () {
-        return classNames(className, 'FormValueItem', 'FormFile', "variant-".concat(variant), "size-".concat(size), !!initLabel && 'with-label', !!fullWidth && 'full-width', !!hideUrl && 'hide-file-name', !!hideLink && 'hide-link', !!hideUpload && 'hide-upload', !!hideRemove && 'hide-remove', notEmpty(value) && 'with-value');
-    }, [className, fullWidth, hideLink, hideRemove, hideUpload, hideUrl, initLabel, size, value, variant]);
     /********************************************************************************************************************
      * Function - focus
      * ******************************************************************************************************************/
@@ -8251,7 +8226,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
         var commands = {
             getType: function () { return 'FormFile'; },
             getName: function () { return name; },
-            getReset: function () { return getFinalValue(initValue); },
+            getReset: function () { return getFinalValue$5(initValue); },
             reset: function () { return setValue(initValue); },
             getValue: function () { return valueRef.current; },
             setValue: setValue,
@@ -8294,7 +8269,6 @@ var FormFile = React.forwardRef(function (_a, ref) {
         disabledRef,
         exceptValue,
         focus,
-        getFinalValue,
         hiddenRef,
         id,
         initValue,
@@ -8396,11 +8370,13 @@ var FormFile = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: finalClassName, labelIcon: hideUrl ? labelIcon : undefined, label: hideUrl ? initLabel : undefined, error: error, required: required, fullWidth: fullWidth, hidden: hidden, controlHeight: height, helperText: React.createElement("div", null,
+    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormFile', "variant-".concat(variant), "size-".concat(size), !!initLabel && 'with-label', !!fullWidth && 'full-width', !!hideUrl && 'hide-file-name', !!hideLink && 'hide-link', !!hideUpload && 'hide-upload', !!hideRemove && 'hide-remove', notEmpty(value) && 'with-value'), labelIcon: hideUrl ? labelIcon : undefined, label: hideUrl ? initLabel : undefined, error: error, required: required, fullWidth: fullWidth, hidden: hidden, controlHeight: height, helperText: React.createElement("div", null,
             preview,
             React.createElement("div", null, error ? errorHelperText : helperText)), hideLabel: !hideUrl, style: { width: fullWidth ? '100%' : undefined }, control: React.createElement("div", { className: 'control-wrap' },
             !hideUrl && (React.createElement("div", { className: 'file-name-wrap' },
-                React.createElement(TextField, { ref: innerRef, inputRef: textFieldRef, className: 'file-name', variant: variant, label: label, size: size, required: required, value: value || '', focused: focused, disabled: disabled, fullWidth: true, error: error, InputLabelProps: labelShrink ? { shrink: labelShrink } : undefined, inputProps: { readOnly: true }, InputProps: {
+                React.createElement(TextField, { ref: innerRef, inputRef: textFieldRef, className: 'file-name', variant: variant, label: labelIcon ? (React.createElement(React.Fragment, null,
+                        React.createElement(PdgIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
+                        React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel), size: size, required: required, value: value || '', focused: focused, disabled: disabled, fullWidth: true, error: error, InputLabelProps: labelShrink ? { shrink: labelShrink } : undefined, inputProps: { readOnly: true }, InputProps: {
                         endAdornment: (React.createElement(InputAdornment, { position: 'end' },
                             React.createElement("div", { className: 'input-file-wrap' },
                                 !hideUpload && (React.createElement(React.Fragment, null,
@@ -8425,7 +8401,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
             React.createElement(LinkDialog, { open: isOpenLinkDialog, onConfirm: handleLinkDialogConfirm, onClose: function () { return setIsOpenLinkDialog(false); } })) }));
 });
 FormFile.displayName = 'FormFile';var css_248z = ".FormImageFile .preview-img {\n  max-width: 100%;\n}\n.FormImageFile:not(.hide-file-name):not(.variant-standard) .preview-img {\n  padding-right: 14px;\n}";
-styleInject(css_248z);var FormImageFile = React.forwardRef(function (_a, ref) {
+styleInject(css_248z);var getFinalValue$4 = function (value) { return value || ''; };var FormImageFile = React.forwardRef(function (_a, ref) {
     var className = _a.className, imageSize = _a.imageSize, preview = _a.preview, previewMaxHeight = _a.previewMaxHeight, _b = _a.accept, accept = _b === void 0 ? '.jpg,.jpeg,.png' : _b, initValue = _a.value, onChange = _a.onChange, onFile = _a.onFile, onLink = _a.onLink, props = __rest(_a, ["className", "imageSize", "preview", "previewMaxHeight", "accept", "value", "onChange", "onFile", "onLink"]);
     var _c = useState({
         open: false,
@@ -8439,10 +8415,7 @@ styleInject(css_248z);var FormImageFile = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * value
      * ******************************************************************************************************************/
-    var getFinalValue = useCallback(function (value) {
-        return value || '';
-    }, []);
-    var _d = useAutoUpdateState(initValue, getFinalValue), value = _d[0], setValue = _d[1];
+    var _d = useAutoUpdateState(initValue, getFinalValue$4), value = _d[0], setValue = _d[1];
     useFirstSkipEffect(function () {
         if (onChange)
             onChange(value);
@@ -8556,26 +8529,21 @@ styleInject(css_248z);var FormImageFile = React.forwardRef(function (_a, ref) {
         });
     }, [onLink, imageSizeCheck]);
     /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var previewNode = useMemo(function () {
-        if (preview && value) {
-            return (React.createElement("a", { href: value, target: '_blank' },
-                React.createElement(Tooltip, { title: React.createElement("div", { style: { paddingTop: 3, paddingBottom: 3 } },
-                        React.createElement("img", { src: value, style: { maxWidth: '100%', verticalAlign: 'middle' }, alt: '' })) },
-                    React.createElement("img", { className: 'preview-img', src: value, style: { maxHeight: previewMaxHeight || undefined }, alt: '' }))));
-        }
-    }, [preview, previewMaxHeight, value]);
-    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(React.Fragment, null,
-        React.createElement(FormFile, __assign({ ref: ref, className: classNames(className, 'FormImageFile'), accept: accept, value: value, preview: previewNode, onChange: handleChange, onFile: handleFile, onLink: handleLink }, props)),
+        React.createElement(FormFile, __assign({ ref: ref, className: classNames(className, 'FormImageFile'), accept: accept, value: value, preview: preview && value ? (React.createElement("a", { href: value, target: '_blank' },
+                React.createElement(Tooltip, { title: React.createElement("div", { style: { paddingTop: 3, paddingBottom: 3 } },
+                        React.createElement("img", { src: value, style: { maxWidth: '100%', verticalAlign: 'middle' }, alt: '' })) },
+                    React.createElement("img", { className: 'preview-img', src: value, style: { maxHeight: previewMaxHeight || undefined }, alt: '' })))) : undefined, onChange: handleChange, onFile: handleFile, onLink: handleLink }, props)),
         React.createElement(PrivateAlertDialog, __assign({}, alertDialogProps, { onClose: function () { return setAlertDialogProps({ open: false }); } }))));
 });
-FormImageFile.displayName = 'FormImageFile';var DEFAULT_VALUE$3 = null;
-var DEFAULT_FORMAT$2 = 'YYYY년 MM월';
-var DEFAULT_MIN_VALUE$1 = {
+FormImageFile.displayName = 'FormImageFile';var getFinalValue$3 = function (value) {
+    return value || null;
+};
+var valueToDate$3 = function (v) { return dayjs("".concat(v.year, "-").concat(v.month, "-01")); };
+var valueToYm$1 = function (v) { return v.year * 100 + v.month; };
+var dateToValue$3 = function (v) { return ({ year: v.year(), month: v.month() + 1 }); };var DEFAULT_MIN_VALUE$1 = {
     year: 2020,
     month: 1,
 };
@@ -8593,23 +8561,23 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initFullWidth = _a.fullWidth, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
-    icon = _a.icon, initFormat = _a.format, initLabelShrink = _a.labelShrink, disablePast = _a.disablePast, disableFuture = _a.disableFuture, _b = _a.minValue, minValue = _b === void 0 ? DEFAULT_MIN_VALUE$1 : _b, _c = _a.maxValue, maxValue = _c === void 0 ? DEFAULT_MAX_VALUE$1 : _c, inputWidth = _a.inputWidth, readOnlyInput = _a.readOnlyInput, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, _d = _a.formValueYearNameSuffix, formValueYearNameSuffix = _d === void 0 ? '_year' : _d, _e = _a.formValueMonthNameSuffix, formValueMonthNameSuffix = _e === void 0 ? '_month' : _e, 
+    icon = _a.icon, _b = _a.format, format = _b === void 0 ? 'YYYY년 MM월' : _b, initLabelShrink = _a.labelShrink, disablePast = _a.disablePast, disableFuture = _a.disableFuture, _c = _a.minValue, minValue = _c === void 0 ? DEFAULT_MIN_VALUE$1 : _c, _d = _a.maxValue, maxValue = _d === void 0 ? DEFAULT_MAX_VALUE$1 : _d, inputWidth = _a.inputWidth, readOnlyInput = _a.readOnlyInput, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, _e = _a.formValueYearNameSuffix, formValueYearNameSuffix = _e === void 0 ? '_year' : _e, _f = _a.formValueMonthNameSuffix, formValueMonthNameSuffix = _f === void 0 ? '_month' : _f, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = useId();
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
-    var _f = useFormState(), formVariant = _f.variant, formSize = _f.size, formColor = _f.color, formFocused = _f.focused, formLabelShrink = _f.labelShrink, formFullWidth = _f.fullWidth, formDisabled = _f.disabled, formColWithHelperText = _f.formColWithHelperText, onAddValueItem = _f.onAddValueItem, onRemoveValueItem = _f.onRemoveValueItem, onValueChange = _f.onValueChange, onValueChangeByUser = _f.onValueChangeByUser, onRequestSearchSubmit = _f.onRequestSearchSubmit;
+    var _g = useFormState(), formVariant = _g.variant, formSize = _g.size, formColor = _g.color, formFocused = _g.focused, formLabelShrink = _g.labelShrink, formFullWidth = _g.fullWidth, formDisabled = _g.disabled, formColWithHelperText = _g.formColWithHelperText, onAddValueItem = _g.onAddValueItem, onRemoveValueItem = _g.onRemoveValueItem, onValueChange = _g.onValueChange, onValueChangeByUser = _g.onValueChangeByUser, onRequestSearchSubmit = _g.onRequestSearchSubmit;
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
-    var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var focused = ifUndefined(initFocused, formFocused);
+    var labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -8622,12 +8590,12 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var _g = useAutoUpdateState(initError), error = _g[0], setError = _g[1];
-    var _h = useState(), errorHelperText = _h[0], setErrorHelperText = _h[1];
-    var _j = useState(false), open = _j[0], setOpen = _j[1];
-    var _k = useAutoUpdateRefState(initData), dataRef = _k[0], setData = _k[2];
-    var _l = useAutoUpdateRefState(useMemo(function () { return (initDisabled == null ? formDisabled : initDisabled); }, [initDisabled, formDisabled])), disabledRef = _l[0], disabled = _l[1], setDisabled = _l[2];
-    var _m = useAutoUpdateRefState(initHidden), hiddenRef = _m[0], hidden = _m[1], setHidden = _m[2];
+    var _h = useAutoUpdateState(initError), error = _h[0], setError = _h[1];
+    var _j = useState(), errorHelperText = _j[0], setErrorHelperText = _j[1];
+    var _k = useState(false), open = _k[0], setOpen = _k[1];
+    var _l = useAutoUpdateRefState(initData), dataRef = _l[0], setData = _l[2];
+    var _m = useAutoUpdateRefState(useMemo(function () { return (initDisabled == null ? formDisabled : initDisabled); }, [initDisabled, formDisabled])), disabledRef = _m[0], disabled = _m[1], setDisabled = _m[2];
+    var _o = useAutoUpdateRefState(initHidden), hiddenRef = _o[0], hidden = _o[1], setHidden = _o[2];
     /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
@@ -8657,10 +8625,7 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * value
      * ******************************************************************************************************************/
-    var getFinalValue = useCallback(function (value) {
-        return value || DEFAULT_VALUE$3;
-    }, []);
-    var _o = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _o[0], value = _o[1], setValue = _o[2];
+    var _p = useAutoUpdateRefState(initValue, getFinalValue$3), valueRef = _p[0], value = _p[1], setValue = _p[2];
     useFirstSkipEffect(function () {
         if (error)
             validate(value);
@@ -8669,44 +8634,39 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
         onValueChange(name, value);
     }, [value]);
     /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-    var valueToDate = useCallback(function (v) { return dayjs("".concat(v.year, "-").concat(v.month, "-01")); }, []);
-    var valueToYm = useCallback(function (v) { return v.year * 100 + v.month; }, []);
-    var dateToValue = useCallback(function (v) { return ({ year: v.year(), month: v.month() + 1 }); }, []);
-    /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var nowDate = useMemo(function () { return dayjs(); }, []);
-    var nowValue = useMemo(function () { return dateToValue(nowDate); }, [dateToValue, nowDate]);
-    var nowYm = useMemo(function () { return valueToYm(nowValue); }, [nowValue, valueToYm]);
-    var valueDate = useMemo(function () { return (value ? valueToDate(value) : null); }, [value, valueToDate]);
-    var minDate = useMemo(function () { return valueToDate(minValue); }, [minValue, valueToDate]);
-    var maxDate = useMemo(function () { return valueToDate(maxValue); }, [maxValue, valueToDate]);
-    var minAvailableValue = useMemo(function () {
+    var dateInfo = useMemo(function () {
+        var nowDate = dayjs();
+        var nowValue = dateToValue$3(nowDate);
+        var nowYm = valueToYm$1(nowValue);
+        var minDate = valueToDate$3(minValue);
+        var maxDate = valueToDate$3(maxValue);
+        var minAvailableValue;
         if (disablePast) {
-            var minYm = valueToYm(minValue);
-            return nowYm > minYm ? nowValue : minValue;
+            var minYm = valueToYm$1(minValue);
+            minAvailableValue = nowYm > minYm ? nowValue : minValue;
         }
         else {
-            return minValue;
+            minAvailableValue = minValue;
         }
-    }, [disablePast, valueToYm, minValue, nowYm, nowValue]);
-    var minAvailableYm = useMemo(function () { return valueToYm(minAvailableValue); }, [minAvailableValue, valueToYm]);
-    var maxAvailableValue = useMemo(function () {
+        var minAvailableYm = valueToYm$1(minAvailableValue);
+        var maxAvailableValue;
         if (disableFuture) {
-            var maxYm = valueToYm(maxValue);
-            return nowYm < maxYm ? nowValue : maxValue;
+            var maxYm = valueToYm$1(maxValue);
+            maxAvailableValue = nowYm < maxYm ? nowValue : maxValue;
         }
         else {
-            return maxValue;
+            maxAvailableValue = maxValue;
         }
-    }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
-    var maxAvailableYm = useMemo(function () { return valueToYm(maxAvailableValue); }, [maxAvailableValue, valueToYm]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var format = useMemo(function () { return initFormat || DEFAULT_FORMAT$2; }, [initFormat]);
+        var maxAvailableYm = valueToYm$1(maxAvailableValue);
+        return {
+            minDate: minDate,
+            maxDate: maxDate,
+            minAvailableYm: minAvailableYm,
+            maxAvailableYm: maxAvailableYm,
+        };
+    }, [disableFuture, disablePast, maxValue, minValue]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -8754,7 +8714,7 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
         var commands = {
             getType: function () { return 'FormMonthPicker'; },
             getName: function () { return name; },
-            getReset: function () { return getFinalValue(initValue); },
+            getReset: function () { return getFinalValue$3(initValue); },
             reset: function () { return setValue(initValue); },
             getValue: function () { return valueRef.current; },
             setValue: setValue,
@@ -8823,7 +8783,6 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
         focus,
         formValueMonthNameSuffix,
         formValueYearNameSuffix,
-        getFinalValue,
         hiddenRef,
         id,
         initValue,
@@ -8882,12 +8841,13 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
     }, [readOnly, disabled]);
     var handleInputDatePickerShouldDisableYear = useCallback(function (date) {
         var dateYm = Number(date.format('YYYYMM'));
-        return dateYm < minAvailableYm || dateYm > maxAvailableYm;
-    }, [maxAvailableYm, minAvailableYm]);
+        return dateYm < dateInfo.minAvailableYm || dateYm > dateInfo.maxAvailableYm;
+    }, [dateInfo]);
     /********************************************************************************************************************
-     * Memo
+     * Variables
      * ******************************************************************************************************************/
-    var inputDatePickerProps = useMemo(function () { return ({
+    var valueDate = value ? valueToDate$3(value) : null;
+    var inputDatePickerProps = {
         variant: variant,
         size: size,
         color: color,
@@ -8895,20 +8855,18 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
         fullWidth: fullWidth,
         disabled: disabled,
         format: format,
-        minDate: minDate,
-        maxDate: maxDate,
-    }); }, [variant, size, color, labelShrink, fullWidth, disabled, format, minDate, maxDate]);
-    var inputStyle = useMemo(function () { return (inputWidth != null ? { width: inputWidth } : __assign({ width: fullWidth ? undefined : 150 }, initStyle)); }, [inputWidth, fullWidth, initStyle]);
-    var wrapStyle = useMemo(function () { return ({
-        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
-        flex: fullWidth ? 1 : undefined,
-    }); }, [hidden, fullWidth]);
+        minDate: dateInfo.minDate,
+        maxDate: dateInfo.maxDate,
+    };
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs, adapterLocale: 'ko' },
         React.createElement(ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
-            React.createElement("div", { className: classNames(className, 'FormMonthPicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
+            React.createElement("div", { className: classNames(className, 'FormMonthPicker'), style: {
+                    display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+                    flex: fullWidth ? 1 : undefined,
+                }, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
                 React.createElement(PrivateStyledTooltip, { open: open, PopperProps: {
                         modifiers: [
                             {
@@ -8921,11 +8879,17 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
                     }, title: React.createElement("div", { style: { display: 'flex' } },
                         React.createElement(PrivateMonthPicker, { minValue: minValue, maxValue: maxValue, disablePast: disablePast, disableFuture: disableFuture, value: value, onChange: handleContainerChange })) },
                     React.createElement("div", null,
-                        React.createElement(PrivateInputDatePicker, __assign({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate, label: label, labelIcon: labelIcon, error: error, focused: focused, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: inputRef, onChange: function (v) { return setValue(v ? dateToValue(v) : v); }, onFocus: handleInputDatePickerFocus, onError: function (reason) { return (inputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear })))),
+                        React.createElement(PrivateInputDatePicker, __assign({}, inputDatePickerProps, { style: inputWidth != null
+                                ? __assign({ width: inputWidth }, initStyle) : __assign({ width: fullWidth ? undefined : 150 }, initStyle), sx: sx, value: valueDate, label: label, labelIcon: labelIcon, error: error, focused: focused, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: inputRef, onChange: function (v) { return setValue(v ? dateToValue$3(v) : v); }, onFocus: handleInputDatePickerFocus, onError: function (reason) { return (inputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear })))),
                 !formColWithHelperText && (!!helperText || (error && !!errorHelperText)) && (React.createElement(FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error ? errorHelperText : helperText))))));
 });
-FormMonthPicker.displayName = 'FormMonthPicker';var DEFAULT_VALUE$2 = [null, null];
-var DEFAULT_FORMAT$1 = 'YYYY년 MM월';
+FormMonthPicker.displayName = 'FormMonthPicker';var DEFAULT_VALUE$1 = [null, null];
+var getFinalValue$2 = function (value) {
+    return value || DEFAULT_VALUE$1;
+};
+var valueToDate$2 = function (v) { return dayjs("".concat(v.year, "-").concat(v.month, "-01")); };
+var valueToYm = function (v) { return v.year * 100 + v.month; };
+var dateToValue$2 = function (v) { return ({ year: v.year(), month: v.month() + 1 }); };var DEFAULT_FORMAT$1 = 'YYYY년 MM월';
 var DEFAULT_MIN_VALUE = {
     year: 2020,
     month: 1,
@@ -8955,12 +8919,12 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
-    var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var focused = ifUndefined(initFocused, formFocused);
+    var labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -9036,10 +9000,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var getFinalValue = useCallback(function (value) {
-        return value || DEFAULT_VALUE$2;
-    }, []);
-    var _v = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _v[0], value = _v[1], setValue = _v[2];
+    var _v = useAutoUpdateRefState(initValue, getFinalValue$2), valueRef = _v[0], value = _v[1], setValue = _v[2];
     useFirstSkipEffect(function () {
         if (error || fromError || toError)
             validate(value);
@@ -9048,43 +9009,39 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         onValueChange(name, value);
     }, [value]);
     /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-    var valueToDate = useCallback(function (v) { return dayjs("".concat(v.year, "-").concat(v.month, "-01")); }, []);
-    var valueToYm = useCallback(function (v) { return v.year * 100 + v.month; }, []);
-    var dateToValue = useCallback(function (v) { return ({ year: v.year(), month: v.month() + 1 }); }, []);
-    /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var nowDate = useMemo(function () { return dayjs(); }, []);
-    var nowValue = useMemo(function () { return dateToValue(nowDate); }, [dateToValue, nowDate]);
-    var nowYm = useMemo(function () { return valueToYm(nowValue); }, [nowValue, valueToYm]);
-    var valueDate = useMemo(function () { return [
-        !!value && !!value[0] ? valueToDate(value[0]) : null,
-        !!value && !!value[1] ? valueToDate(value[1]) : null,
-    ]; }, [value, valueToDate]);
-    var minDate = useMemo(function () { return (minValue ? valueToDate(minValue) : undefined); }, [minValue, valueToDate]);
-    var maxDate = useMemo(function () { return (maxValue ? valueToDate(maxValue) : undefined); }, [maxValue, valueToDate]);
-    var minAvailableValue = useMemo(function () {
+    var dateInfo = useMemo(function () {
+        var nowDate = dayjs();
+        var nowValue = dateToValue$2(nowDate);
+        var nowYm = valueToYm(nowValue);
+        var minDate = minValue ? valueToDate$2(minValue) : undefined;
+        var maxDate = maxValue ? valueToDate$2(maxValue) : undefined;
+        var minAvailableValue;
         if (disablePast) {
             var minYm = valueToYm(minValue);
-            return nowYm > minYm ? nowValue : minValue;
+            minAvailableValue = nowYm > minYm ? nowValue : minValue;
         }
         else {
-            return minValue;
+            minAvailableValue = minValue;
         }
-    }, [disablePast, valueToYm, minValue, nowYm, nowValue]);
-    var minAvailableYm = useMemo(function () { return valueToYm(minAvailableValue); }, [minAvailableValue, valueToYm]);
-    var maxAvailableValue = useMemo(function () {
+        var minAvailableYm = valueToYm(minAvailableValue);
+        var maxAvailableValue;
         if (disableFuture) {
             var maxYm = valueToYm(maxValue);
-            return nowYm < maxYm ? nowValue : maxValue;
+            maxAvailableValue = nowYm < maxYm ? nowValue : maxValue;
         }
         else {
-            return maxValue;
+            maxAvailableValue = maxValue;
         }
-    }, [disableFuture, valueToYm, maxValue, nowYm, nowValue]);
-    var maxAvailableYm = useMemo(function () { return valueToYm(maxAvailableValue); }, [maxAvailableValue, valueToYm]);
+        var maxAvailableYm = valueToYm(maxAvailableValue);
+        return {
+            minDate: minDate,
+            maxDate: maxDate,
+            minAvailableYm: minAvailableYm,
+            maxAvailableYm: maxAvailableYm,
+        };
+    }, [disableFuture, disablePast, maxValue, minValue]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -9121,7 +9078,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         var commands = {
             getType: function () { return 'FormMonthRangePicker'; },
             getName: function () { return name; },
-            getReset: function () { return getFinalValue(initValue); },
+            getReset: function () { return getFinalValue$2(initValue); },
             reset: function () { return setValue(initValue); },
             getValue: function () { return valueRef.current; },
             setValue: setValue,
@@ -9232,7 +9189,6 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         formValueFromYearNameSuffix,
         formValueToMonthNameSuffix,
         formValueToYearNameSuffix,
-        getFinalValue,
         hiddenRef,
         id,
         initValue,
@@ -9269,10 +9225,10 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
     var handleInputDatePickerChange = useCallback(function (selectType, date) {
         if (date == null || date.isValid()) {
             if (selectType === 'start') {
-                var newValue_1 = [date ? dateToValue(date) : null, valueRef.current[1]];
+                var newValue_1 = [date ? dateToValue$2(date) : null, valueRef.current[1]];
                 if (newValue_1[0] !== null &&
-                    valueToYm(newValue_1[0]) >= minAvailableYm &&
-                    valueToYm(newValue_1[0]) <= maxAvailableYm) {
+                    valueToYm(newValue_1[0]) >= dateInfo.minAvailableYm &&
+                    valueToYm(newValue_1[0]) <= dateInfo.maxAvailableYm) {
                     if (newValue_1[1] !== null && newValue_1[1] < newValue_1[0]) {
                         newValue_1[1] = newValue_1[0];
                     }
@@ -9286,10 +9242,10 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                 setValue(newValue_1);
             }
             else {
-                var newValue_2 = [valueRef.current[0], date ? dateToValue(date) : null];
+                var newValue_2 = [valueRef.current[0], date ? dateToValue$2(date) : null];
                 if (newValue_2[1] !== null &&
-                    valueToYm(newValue_2[1]) >= minAvailableYm &&
-                    valueToYm(newValue_2[1]) <= maxAvailableYm) {
+                    valueToYm(newValue_2[1]) >= dateInfo.minAvailableYm &&
+                    valueToYm(newValue_2[1]) <= dateInfo.maxAvailableYm) {
                     if (newValue_2[0] !== null && newValue_2[0] > newValue_2[1]) {
                         newValue_2[0] = newValue_2[1];
                     }
@@ -9303,19 +9259,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                 setValue(newValue_2);
             }
         }
-    }, [
-        dateToValue,
-        valueRef,
-        valueToYm,
-        minAvailableYm,
-        maxAvailableYm,
-        fromError,
-        setValue,
-        validate,
-        onValueChangeByUser,
-        name,
-        toError,
-    ]);
+    }, [valueRef, dateInfo, fromError, setValue, validate, onValueChangeByUser, name, toError]);
     var handleInputDatePickerFocus = useCallback(function (selectType) {
         var _a;
         if (readOnly || disabled)
@@ -9329,12 +9273,16 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
     }, [readOnly, disabled, value]);
     var handleInputDatePickerShouldDisableYear = useCallback(function (dt) {
         var ym = dt.year() * 100 + (dt.month() + 1);
-        return ym < minAvailableYm || ym > maxAvailableYm;
-    }, [maxAvailableYm, minAvailableYm]);
+        return ym < dateInfo.minAvailableYm || ym > dateInfo.maxAvailableYm;
+    }, [dateInfo]);
     /********************************************************************************************************************
-     * Memo
+     * Variable
      * ******************************************************************************************************************/
-    var inputDatePickerProps = useMemo(function () { return ({
+    var valueDate = [
+        !!value && !!value[0] ? valueToDate$2(value[0]) : null,
+        !!value && !!value[1] ? valueToDate$2(value[1]) : null,
+    ];
+    var inputDatePickerProps = {
         align: align,
         variant: variant,
         size: size,
@@ -9343,20 +9291,19 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         fullWidth: fullWidth,
         disabled: disabled,
         format: format,
-        minDate: minDate,
-        maxDate: maxDate,
-    }); }, [align, variant, size, color, labelShrink, fullWidth, disabled, format, minDate, maxDate]);
-    var inputStyle = useMemo(function () { return (inputWidth != null ? { width: inputWidth } : __assign({ width: fullWidth ? undefined : 150 }, initStyle)); }, [inputWidth, fullWidth, initStyle]);
-    var wrapStyle = useMemo(function () { return ({
-        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
-        flex: fullWidth ? 1 : undefined,
-    }); }, [hidden, fullWidth]);
+        minDate: dateInfo.minDate,
+        maxDate: dateInfo.maxDate,
+    };
+    var inputStyle = inputWidth != null ? __assign({ width: inputWidth }, initStyle) : __assign({ width: fullWidth ? undefined : 150 }, initStyle);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs, adapterLocale: 'ko' },
         React.createElement(ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
-            React.createElement("div", { className: classNames(className, 'FormMonthRangePicker'), style: wrapStyle },
+            React.createElement("div", { className: classNames(className, 'FormMonthRangePicker'), style: {
+                    display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+                    flex: fullWidth ? 1 : undefined,
+                } },
                 React.createElement(PrivateStyledTooltip, { open: open, PopperProps: {
                         modifiers: [
                             {
@@ -9380,8 +9327,11 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                         (fromError && fromErrorHelperText) ||
                         (toError && toErrorHelperText)) && (React.createElement(FormHelperText, { error: error || fromError || toError, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error ? errorHelperText : fromError ? fromErrorHelperText : toError ? toErrorHelperText : helperText))))));
 });
-FormMonthRangePicker.displayName = 'FormMonthRangePicker';var DEFAULT_VALUE$1 = null;
-var DEFAULT_FORMAT = 'YYYY년 MM월';
+FormMonthRangePicker.displayName = 'FormMonthRangePicker';var valueToDate$1 = function (v) { return dayjs("".concat(v, "-01-01")); };
+var dateToValue$1 = function (v) { return v.year(); };
+var getFinalValue$1 = function (newValue) {
+    return newValue || null;
+};var DEFAULT_FORMAT = 'YYYY년';
 var FormYearPicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * ID
@@ -9392,7 +9342,7 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, label = _a.label, readOnly = _a.readOnly, required = _a.required, initFullWidth = _a.fullWidth, initDisabled = _a.disabled, initError = _a.error, helperText = _a.helperText, initValue = _a.value, initData = _a.data, exceptValue = _a.exceptValue, onChange = _a.onChange, onValidate = _a.onValidate, 
     // -------------------------------------------------------------------------------------------------------------------
-    icon = _a.icon, _b = _a.format, initFormat = _b === void 0 ? 'YYYY년' : _b, initLabelShrink = _a.labelShrink, disablePast = _a.disablePast, disableFuture = _a.disableFuture, _c = _a.minYear, minYear = _c === void 0 ? 2020 : _c, _d = _a.maxYear, maxYear = _d === void 0 ? 2050 : _d, inputWidth = _a.inputWidth, readOnlyInput = _a.readOnlyInput, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, 
+    icon = _a.icon, _b = _a.format, format = _b === void 0 ? DEFAULT_FORMAT : _b, initLabelShrink = _a.labelShrink, disablePast = _a.disablePast, disableFuture = _a.disableFuture, _c = _a.minYear, minYear = _c === void 0 ? 2020 : _c, _d = _a.maxYear, maxYear = _d === void 0 ? 2050 : _d, inputWidth = _a.inputWidth, readOnlyInput = _a.readOnlyInput, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     var id = useId();
@@ -9403,12 +9353,12 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
-    var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var focused = ifUndefined(initFocused, formFocused);
+    var labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -9425,7 +9375,7 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
     var _g = useState(), errorHelperText = _g[0], setErrorHelperText = _g[1];
     var _h = useState(false), open = _h[0], setOpen = _h[1];
     var _j = useAutoUpdateRefState(initData), dataRef = _j[0], setData = _j[2];
-    var _k = useAutoUpdateRefState(useMemo(function () { return (initDisabled == null ? formDisabled : initDisabled); }, [initDisabled, formDisabled])), disabledRef = _k[0], disabled = _k[1], setDisabled = _k[2];
+    var _k = useAutoUpdateRefState(useMemo(function () { return ifUndefined(initDisabled, formDisabled); }, [initDisabled, formDisabled])), disabledRef = _k[0], disabled = _k[1], setDisabled = _k[2];
     var _l = useAutoUpdateRefState(initHidden), hiddenRef = _l[0], hidden = _l[1], setHidden = _l[2];
     /********************************************************************************************************************
      * Function - getFinalValue
@@ -9456,10 +9406,7 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * value
      * ******************************************************************************************************************/
-    var getFinalValue = useCallback(function (newValue) {
-        return newValue || DEFAULT_VALUE$1;
-    }, []);
-    var _m = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _m[0], value = _m[1], setValue = _m[2];
+    var _m = useAutoUpdateRefState(initValue, getFinalValue$1), valueRef = _m[0], value = _m[1], setValue = _m[2];
     useFirstSkipEffect(function () {
         if (error)
             validate(value);
@@ -9468,21 +9415,14 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
         onValueChange(name, value);
     }, [value]);
     /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-    var valueToDate = useCallback(function (v) { return dayjs("".concat(v, "-01-01")); }, []);
-    var dateToValue = useCallback(function (v) { return v.year(); }, []);
-    /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var nowYear = useMemo(function () { return new Date().getFullYear(); }, []);
-    var valueDate = useMemo(function () { return (value ? valueToDate(value) : null); }, [value, valueToDate]);
-    var minDate = useMemo(function () { return (minYear ? valueToDate(minYear) : undefined); }, [minYear, valueToDate]);
-    var maxDate = useMemo(function () { return (maxYear ? valueToDate(maxYear) : undefined); }, [maxYear, valueToDate]);
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var format = useMemo(function () { return initFormat || DEFAULT_FORMAT; }, [initFormat]);
+    var dateInfo = useMemo(function () {
+        var nowYear = new Date().getFullYear();
+        var minDate = minYear ? valueToDate$1(minYear) : undefined;
+        var maxDate = maxYear ? valueToDate$1(maxYear) : undefined;
+        return { nowYear: nowYear, min: minDate, max: maxDate };
+    }, [maxYear, minYear]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -9529,7 +9469,7 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
         var commands = {
             getType: function () { return 'FormYearPicker'; },
             getName: function () { return name; },
-            getReset: function () { return getFinalValue(initValue); },
+            getReset: function () { return getFinalValue$1(initValue); },
             reset: function () { return setValue(initValue); },
             getValue: function () { return valueRef.current; },
             setValue: setValue,
@@ -9572,7 +9512,6 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
         disabledRef,
         exceptValue,
         focus,
-        getFinalValue,
         hiddenRef,
         id,
         initValue,
@@ -9625,45 +9564,33 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
         });
     }, [name, onValueChangeByUser, setValue]);
     var handleInputDatePickerChange = useCallback(function (v) {
-        var newValue = v ? dateToValue(v) : v;
+        var newValue = v ? dateToValue$1(v) : v;
         setValue(newValue);
         nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
-    }, [dateToValue, name, onValueChangeByUser, setValue]);
+    }, [name, onValueChangeByUser, setValue]);
     var handleInputDatePickerFocus = useCallback(function () {
         if (readOnly || disabled)
             return;
         setOpen(true);
     }, [readOnly, disabled]);
     var handleInputDatePickerShouldDisableYear = useCallback(function (year) {
-        return (!!disablePast && year.year() < nowYear) || (!!disableFuture && year.year() > nowYear);
-    }, [disableFuture, disablePast, nowYear]);
+        return (!!disablePast && year.year() < dateInfo.nowYear) || (!!disableFuture && year.year() > dateInfo.nowYear);
+    }, [disableFuture, disablePast, dateInfo.nowYear]);
     /********************************************************************************************************************
-     * Memo
+     * Variable
      * ******************************************************************************************************************/
-    var inputDatePickerProps = useMemo(function () { return ({
-        variant: variant,
-        size: size,
-        color: color,
-        labelShrink: labelShrink,
-        fullWidth: fullWidth,
-        disabled: disabled,
-        format: format,
-        minDate: minDate,
-        maxDate: maxDate,
-    }); }, [variant, size, color, labelShrink, fullWidth, disabled, format, minDate, maxDate]);
-    var inputStyle = useMemo(function () { return (inputWidth != null ? { width: inputWidth } : __assign({ width: fullWidth ? undefined : 150 }, initStyle)); }, [inputWidth, fullWidth, initStyle]);
-    var wrapStyle = useMemo(function () { return ({
-        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
-        flex: fullWidth ? 1 : undefined,
-    }); }, [hidden, fullWidth]);
+    var valueDate = value ? valueToDate$1(value) : null;
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs },
         React.createElement(ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
-            React.createElement("div", { className: classNames(className, 'FormYearPicker'), style: wrapStyle, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
+            React.createElement("div", { className: classNames(className, 'FormYearPicker'), style: {
+                    display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+                    flex: fullWidth ? 1 : undefined,
+                }, onMouseDown: handleContainerMouseDown, onFocus: handleContainerFocus, onBlur: handleContainerBlur },
                 React.createElement(PrivateStyledTooltip, { open: open, PopperProps: {
                         modifiers: [
                             {
@@ -9676,11 +9603,16 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
                     }, title: React.createElement("div", { style: { display: 'flex' } },
                         React.createElement(PrivateYearPicker, { minYear: minYear, maxYear: maxYear, disablePast: disablePast, disableFuture: disableFuture, value: value, onChange: handleContainerChange })) },
                     React.createElement("div", null,
-                        React.createElement(PrivateInputDatePicker, __assign({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate, label: label, labelIcon: labelIcon, error: error, focused: focused, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: inputRef, onChange: handleInputDatePickerChange, onFocus: handleInputDatePickerFocus, onError: function (reason) { return (inputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear })))),
+                        React.createElement(PrivateInputDatePicker, { variant: variant, size: size, color: color, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, disabled: disabled, format: format, minDate: dateInfo.min, maxDate: dateInfo.max, style: inputWidth != null
+                                ? __assign({ width: inputWidth }, initStyle) : __assign({ width: fullWidth ? undefined : 150 }, initStyle), sx: sx, value: valueDate, label: label, labelIcon: labelIcon, error: error, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: inputRef, onChange: handleInputDatePickerChange, onFocus: handleInputDatePickerFocus, onError: function (reason) { return (inputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))),
                 !formColWithHelperText && (!!helperText || (error && !!errorHelperText)) && (React.createElement(FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error ? errorHelperText : helperText))))));
 });
 FormYearPicker.displayName = 'FormYearPicker';var DEFAULT_VALUE = [null, null];
-var FormYearRangePicker = React.forwardRef(function (_a, ref) {
+var valueToDate = function (v) { return dayjs("".concat(v, "-01-01")); };
+var dateToValue = function (v) { return v.year(); };
+var getFinalValue = function (value) {
+    return value || DEFAULT_VALUE;
+};var FormYearRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
@@ -9701,12 +9633,12 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
-    var focused = useMemo(function () { return (initFocused == null ? formFocused : initFocused); }, [initFocused, formFocused]);
-    var labelShrink = useMemo(function () { return (initLabelShrink == null ? formLabelShrink : initLabelShrink); }, [initLabelShrink, formLabelShrink]);
-    var fullWidth = useMemo(function () { return (initFullWidth == null ? formFullWidth : initFullWidth); }, [initFullWidth, formFullWidth]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
+    var focused = ifUndefined(initFocused, formFocused);
+    var labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -9783,9 +9715,6 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var getFinalValue = useCallback(function (value) {
-        return value || DEFAULT_VALUE;
-    }, []);
     var _u = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _u[0], value = _u[1], setValue = _u[2];
     useFirstSkipEffect(function () {
         if (error || fromError || toError)
@@ -9795,20 +9724,14 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
         onValueChange(name, value);
     }, [value]);
     /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-    var valueToDate = useCallback(function (v) { return dayjs("".concat(v, "-01-01")); }, []);
-    var dateToValue = useCallback(function (v) { return v.year(); }, []);
-    /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var nowYear = useMemo(function () { return new Date().getFullYear(); }, []);
-    var valueDate = useMemo(function () { return [
-        !!value && !!value[0] ? valueToDate(value[0]) : null,
-        !!value && !!value[1] ? valueToDate(value[1]) : null,
-    ]; }, [value, valueToDate]);
-    var minDate = useMemo(function () { return valueToDate(minYear); }, [minYear, valueToDate]);
-    var maxDate = useMemo(function () { return valueToDate(maxYear); }, [maxYear, valueToDate]);
+    var dateInfo = useMemo(function () {
+        var nowYear = new Date().getFullYear();
+        var minDate = valueToDate(minYear);
+        var maxDate = valueToDate(maxYear);
+        return { nowYear: nowYear, min: minDate, max: maxDate };
+    }, [maxYear, minYear]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -9902,7 +9825,6 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
         focus,
         formValueFromNameSuffix,
         formValueToNameSuffix,
-        getFinalValue,
         hiddenRef,
         id,
         initValue,
@@ -9970,7 +9892,7 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
                 setValue(newValue_2);
             }
         }
-    }, [dateToValue, valueRef, minYear, maxYear, fromError, setValue, validate, onValueChangeByUser, name, toError]);
+    }, [valueRef, minYear, maxYear, fromError, setValue, validate, onValueChangeByUser, name, toError]);
     var handleInputDatePickerFocus = useCallback(function (selectType) {
         var _a;
         if (readOnly || disabled)
@@ -9984,34 +9906,45 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
         }
     }, [readOnly, disabled, valueRef]);
     var handleInputDatePickerShouldDisableYear = useCallback(function (year) {
-        return (!!disablePast && year.year() < nowYear) || (!!disableFuture && year.year() > nowYear);
-    }, [disableFuture, disablePast, nowYear]);
+        return (!!disablePast && year.year() < dateInfo.nowYear) || (!!disableFuture && year.year() > dateInfo.nowYear);
+    }, [disableFuture, disablePast, dateInfo.nowYear]);
     /********************************************************************************************************************
-     * Memo
+     * Variable
      * ******************************************************************************************************************/
-    var inputDatePickerProps = useMemo(function () { return ({
-        align: align,
+    var valueDate = [
+        !!value && !!value[0] ? valueToDate(value[0]) : null,
+        !!value && !!value[1] ? valueToDate(value[1]) : null,
+    ];
+    var privateInputDatePickerProps = {
         variant: variant,
         size: size,
         color: color,
+        focused: focused,
         labelShrink: labelShrink,
         fullWidth: fullWidth,
+        align: align,
         disabled: disabled,
         format: format,
-        minDate: minDate,
-        maxDate: maxDate,
-    }); }, [align, variant, size, color, labelShrink, fullWidth, disabled, format, minDate, maxDate]);
-    var inputStyle = useMemo(function () { return (inputWidth != null ? { width: inputWidth } : __assign({ width: fullWidth ? undefined : 150 }, initStyle)); }, [inputWidth, fullWidth, initStyle]);
-    var wrapStyle = useMemo(function () { return ({
-        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
-        flex: fullWidth ? 1 : undefined,
-    }); }, [hidden, fullWidth]);
+        minDate: dateInfo.min,
+        maxDate: dateInfo.max,
+        style: inputWidth != null ? __assign({ width: inputWidth }, initStyle) : __assign({ width: fullWidth ? undefined : 150 }, initStyle),
+        sx: sx,
+        required: required,
+        readOnly: readOnly,
+        readOnlyInput: readOnlyInput,
+        icon: icon,
+        startAdornment: startAdornment,
+        endAdornment: endAdornment,
+    };
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(LocalizationProvider, { dateAdapter: AdapterDayjs },
         React.createElement(ClickAwayListener, { mouseEvent: 'onMouseDown', touchEvent: 'onTouchStart', onClickAway: function () { return setOpen(false); } },
-            React.createElement("div", { className: classNames(className, 'FormYearRangePicker'), style: wrapStyle },
+            React.createElement("div", { className: classNames(className, 'FormYearRangePicker'), style: {
+                    display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+                    flex: fullWidth ? 1 : undefined,
+                } },
                 React.createElement(PrivateStyledTooltip, { open: open, PopperProps: {
                         modifiers: [
                             {
@@ -10025,10 +9958,10 @@ var FormYearRangePicker = React.forwardRef(function (_a, ref) {
                         React.createElement(PrivateYearRangePicker, { selectType: selectType, minYear: minYear, maxYear: maxYear, disablePast: disablePast, disableFuture: disableFuture, value: value, onChange: handleContainerChange })) },
                     React.createElement(Grid, { container: true, alignItems: 'center' },
                         React.createElement(Grid, { item: true, flex: 1 },
-                            React.createElement(PrivateInputDatePicker, __assign({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate[0], label: fromLabel, labelIcon: fromLabelIcon, error: error || fromError, focused: focused || (open && selectType === 'start'), required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: startInputRef, onChange: function (v) { return handleInputDatePickerChange('start', v); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))),
+                            React.createElement(PrivateInputDatePicker, __assign({}, privateInputDatePickerProps, { inputRef: startInputRef, value: valueDate[0], label: fromLabel, labelIcon: fromLabelIcon, error: error || fromError, focused: focused || (open && selectType === 'start'), onChange: function (v) { return handleInputDatePickerChange('start', v); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))),
                         React.createElement(Grid, { item: true, sx: { px: 1 } }, "~"),
                         React.createElement(Grid, { item: true, flex: 1 },
-                            React.createElement(PrivateInputDatePicker, __assign({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate[1], label: toLabel, labelIcon: toLabelIcon, error: error || toError, focused: focused || (open && selectType === 'end'), required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: endInputRef, onChange: function (v) { return handleInputDatePickerChange('end', v); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))))),
+                            React.createElement(PrivateInputDatePicker, __assign({}, privateInputDatePickerProps, { inputRef: endInputRef, value: valueDate[1], label: toLabel, labelIcon: toLabelIcon, error: error || toError, focused: focused || (open && selectType === 'end'), onChange: function (v) { return handleInputDatePickerChange('end', v); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))))),
                 !formColWithHelperText &&
                     (helperText ||
                         (error && errorHelperText) ||
@@ -10056,9 +9989,9 @@ FormYearRangePicker.displayName = 'FormYearRangePicker';var FormSwitch = React.f
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
-    var variant = useMemo(function () { return (initVariant == null ? formVariant : initVariant); }, [initVariant, formVariant]);
-    var size = useMemo(function () { return (initSize == null ? formSize : initSize); }, [initSize, formSize]);
-    var color = useMemo(function () { return (initColor == null ? formColor : initColor); }, [initColor, formColor]);
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
+    var color = ifUndefined(initColor, formColor);
     /********************************************************************************************************************
      * State - FormState
      * ******************************************************************************************************************/
@@ -10206,12 +10139,7 @@ FormYearRangePicker.displayName = 'FormYearRangePicker';var FormSwitch = React.f
     var switchControl = useMemo(function () { return (React.createElement(Switch, { size: size, name: name, checked: value, color: color, disabled: disabled, onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } })); }, [color, disabled, handleChange, initFocused, name, setFocused, size, value]);
     return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormSwitch'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: size === 'small' ? 21 : 26, controlVerticalCenter: true, control: switchLabel ? (React.createElement(FormControlLabel, { control: switchControl, label: switchLabel, disabled: disabled })) : (switchControl) }));
 });
-FormSwitch.displayName = 'FormSwitch';var SearchGroupRow = function (_a) {
-    var children = _a.children, props = __rest(_a, ["children"]);
-    return (React.createElement(FormRow, __assign({}, props),
-        React.createElement(FormCol, null,
-            React.createElement(Grid, { container: true, spacing: 1, alignItems: 'center' }, children))));
-};var Search = React.forwardRef(function (_a, ref) {
+FormSwitch.displayName = 'FormSwitch';var Search = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -10231,33 +10159,36 @@ FormSwitch.displayName = 'FormSwitch';var SearchGroupRow = function (_a) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    // /********************************************************************************************************************
+    //  * Memo
+    //  * ******************************************************************************************************************/
+    //
+    // const renderChildren = useMemo(() => {
+    //   ll('children changed');
+    //   const rowItems: ReactNode[] = [];
+    //   const basicRowItems: ReactNode[] = [];
+    //
+    //   React.Children.forEach(children, (child) => {
+    //     if (React.isValidElement(child)) {
+    //       if (child.type.toString() === SearchGroupRow.toString()) {
+    //         rowItems.push(child);
+    //       } else {
+    //         basicRowItems.push(child);
+    //       }
+    //     }
+    //   });
+    //
+    //   if (basicRowItems.length > 0) {
+    //     return [<SearchGroupRow key='$basicRow$'>{basicRowItems}</SearchGroupRow>, ...rowItems];
+    //   } else {
+    //     return rowItems;
+    //   }
+    // }, [children]);
     /********************************************************************************************************************
-     * Memo
+     * FormContextValue
      * ******************************************************************************************************************/
-    var renderChildren = useMemo(function () {
-        var rowItems = [];
-        var basicRowItems = [];
-        React.Children.forEach(children, function (child) {
-            if (React.isValidElement(child)) {
-                if (child.type.toString() === SearchGroupRow.toString()) {
-                    rowItems.push(child);
-                }
-                else {
-                    basicRowItems.push(child);
-                }
-            }
-        });
-        if (basicRowItems.length > 0) {
-            return __spreadArray([React.createElement(SearchGroupRow, { key: '$basicRow$' }, basicRowItems)], rowItems, true);
-        }
-        else {
-            return rowItems;
-        }
-    }, [children]);
-    /********************************************************************************************************************
-     * Render
-     * ******************************************************************************************************************/
-    return (React.createElement(FormContextProvider, { value: {
+    var formContextValue = useMemo(function () {
+        return ({
             id: 'search',
             variant: 'outlined',
             size: 'small',
@@ -10280,20 +10211,29 @@ FormSwitch.displayName = 'FormSwitch';var SearchGroupRow = function (_a) {
                     (_a = formRef.current) === null || _a === void 0 ? void 0 : _a.submit();
                 }
             },
-        } },
+        });
+    }, [autoSubmit, color, focused, labelShrink, spacing]);
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
+    var handleRef = useCallback(function (commands) {
+        if (ref) {
+            if (typeof ref === 'function') {
+                ref(commands);
+            }
+            else {
+                ref.current = commands;
+            }
+        }
+        formRef.current = commands || undefined;
+    }, [ref]);
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
+    return (React.createElement(FormContextProvider, { value: formContextValue },
         React.createElement(Paper, { variant: 'outlined', className: className, sx: __assign({ p: 1.5 }, sx), style: style },
-            React.createElement(Form, __assign({ ref: function (commands) {
-                    if (ref) {
-                        if (typeof ref === 'function') {
-                            ref(commands);
-                        }
-                        else {
-                            ref.current = commands;
-                        }
-                    }
-                    formRef.current = commands || undefined;
-                }, className: 'Search', variant: 'outlined', size: 'small', color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: false }, otherProps),
-                React.createElement(FormBody, null, renderChildren)))));
+            React.createElement(Form, __assign({ ref: handleRef, className: 'Search', variant: 'outlined', size: 'small', color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: false }, otherProps),
+                React.createElement(FormBody, null, children)))));
 });var StyledItem = styled(Grid)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  &:has(> [style*='display: none;']) {\n    display: none;\n  }\n"], ["\n  &:has(> [style*='display: none;']) {\n    display: none;\n  }\n"])));
 var templateObject_1;var isReactFragment = function (child) {
     try {
@@ -10330,28 +10270,11 @@ var removeReactFragment = function (el) {
     }
 };
 var SearchGroup = function (_a) {
-    /********************************************************************************************************************
-     * State
-     * ******************************************************************************************************************/
     var children = _a.children, className = _a.className, style = _a.style, sx = _a.sx, 
     //--------------------------------------------------------------------------------------------------------------------
     max = _a.max, align = _a.align, hidden = _a.hidden, _b = _a.spacing, spacing = _b === void 0 ? 1 : _b;
-    var justifyContent = useMemo(function () {
-        switch (align) {
-            case undefined:
-            case 'left':
-                return 'start';
-            case 'center':
-                return 'center';
-            case 'right':
-                return 'end';
-        }
-    }, [align]);
-    /********************************************************************************************************************
-     * Render
-     * ******************************************************************************************************************/
     return (React.createElement(Grid, { item: true, className: classNames(className, 'SearchGroup'), style: { flex: max ? 1 : undefined, display: hidden ? 'none' : undefined } },
-        React.createElement(Grid, { container: true, wrap: 'wrap', spacing: spacing, justifyContent: justifyContent, alignItems: 'start', style: style, sx: sx }, React.Children.map(children, function (child) {
+        React.createElement(Grid, { container: true, wrap: 'wrap', spacing: spacing, justifyContent: align === undefined || align === 'left' ? 'start' : align === 'center' ? 'center' : 'end', alignItems: 'start', style: style, sx: sx }, React.Children.map(children, function (child) {
             if (React.isValidElement(child)) {
                 return removeReactFragment(child);
             }
@@ -10361,15 +10284,12 @@ var SearchGroup = function (_a) {
         }))));
 };var SearchButton = function (_a) {
     /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var children = _a.children, className = _a.className, size = _a.size, initSx = _a.sx, props = __rest(_a, ["children", "className", "size", "sx"]);
-    var sx = useMemo(function () { return (__assign({ minWidth: 0, px: "".concat(!children ? 9 : 13, "px !important") }, initSx)); }, [children, initSx]);
-    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(PdgButton, __assign({ className: classNames(className, 'SearchButton'), size: ifUndefined(size, 'medium'), sx: sx, fullWidth: false }, props), children));
-};var SearchMenuButton = function (_a) {
+    var children = _a.children, className = _a.className, size = _a.size, initSx = _a.sx, props = __rest(_a, ["children", "className", "size", "sx"]);
+    return (React.createElement(PdgButton, __assign({ className: classNames(className, 'SearchButton'), size: ifUndefined(size, 'medium'), sx: __assign({ minWidth: 0, px: "".concat(!children ? 9 : 13, "px !important") }, initSx), fullWidth: false }, props), children));
+};
+var SearchButton$1 = React.memo(SearchButton);var SearchMenuButton = function (_a) {
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
@@ -10395,68 +10315,66 @@ var SearchGroup = function (_a) {
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var open = useMemo(function () { return !!anchorEl; }, [anchorEl]);
-    var sx = useMemo(function () { return (__assign({ minWidth: 0, px: "".concat(!children ? 9 : 13, "px !important") }, initSx)); }, [children, initSx]);
-    var anchorOrigin = useMemo(function () {
-        switch (placement || 'bottom') {
-            case 'bottom':
-                return { vertical: 'bottom', horizontal: 'center' };
-            case 'bottom-left':
-                return { vertical: 'bottom', horizontal: 'left' };
-            case 'bottom-right':
-                return { vertical: 'bottom', horizontal: 'right' };
-            case 'top':
-                return { vertical: 'top', horizontal: 'center' };
-            case 'top-left':
-                return { vertical: 'top', horizontal: 'left' };
-            case 'top-right':
-                return { vertical: 'top', horizontal: 'right' };
-            case 'left':
-                return { vertical: 'center', horizontal: 'left' };
-            case 'left-top':
-                return { vertical: 'top', horizontal: 'left' };
-            case 'left-bottom':
-                return { vertical: 'bottom', horizontal: 'left' };
-            case 'right':
-                return { vertical: 'center', horizontal: 'right' };
-            case 'right-top':
-                return { vertical: 'top', horizontal: 'right' };
-            case 'right-bottom':
-                return { vertical: 'bottom', horizontal: 'right' };
-        }
-    }, [placement]);
-    var transformOrigin = useMemo(function () {
-        switch (placement || 'bottom') {
-            case 'bottom':
-                return { vertical: 'top', horizontal: 'center' };
-            case 'bottom-left':
-                return { vertical: 'top', horizontal: 'left' };
-            case 'bottom-right':
-                return { vertical: 'top', horizontal: 'right' };
-            case 'top':
-                return { vertical: 'bottom', horizontal: 'center' };
-            case 'top-left':
-                return { vertical: 'bottom', horizontal: 'left' };
-            case 'top-right':
-                return { vertical: 'bottom', horizontal: 'right' };
-            case 'left':
-                return { vertical: 'center', horizontal: 'right' };
-            case 'left-top':
-                return { vertical: 'top', horizontal: 'right' };
-            case 'left-bottom':
-                return { vertical: 'bottom', horizontal: 'right' };
-            case 'right':
-                return { vertical: 'center', horizontal: 'left' };
-            case 'right-top':
-                return { vertical: 'top', horizontal: 'left' };
-            case 'right-bottom':
-                return { vertical: 'bottom', horizontal: 'left' };
-        }
-    }, [placement]);
+    var open = !!anchorEl;
+    var anchorOrigin = placement || 'bottom' === 'bottom'
+        ? { vertical: 'bottom', horizontal: 'center' }
+        : placement === 'bottom-left'
+            ? { vertical: 'bottom', horizontal: 'left' }
+            : placement === 'bottom-right'
+                ? { vertical: 'bottom', horizontal: 'right' }
+                : placement === 'top'
+                    ? { vertical: 'top', horizontal: 'center' }
+                    : placement === 'top-left'
+                        ? { vertical: 'top', horizontal: 'left' }
+                        : placement === 'top-right'
+                            ? { vertical: 'top', horizontal: 'right' }
+                            : placement === 'left'
+                                ? { vertical: 'center', horizontal: 'left' }
+                                : placement === 'left-top'
+                                    ? { vertical: 'top', horizontal: 'left' }
+                                    : placement === 'left-bottom'
+                                        ? { vertical: 'bottom', horizontal: 'left' }
+                                        : placement === 'right'
+                                            ? { vertical: 'center', horizontal: 'right' }
+                                            : placement === 'right-top'
+                                                ? { vertical: 'top', horizontal: 'right' }
+                                                : placement === 'right-bottom'
+                                                    ? { vertical: 'bottom', horizontal: 'right' }
+                                                    : { vertical: 'bottom', horizontal: 'center' };
+    var transformOrigin = placement || 'bottom' === 'bottom'
+        ? { vertical: 'top', horizontal: 'center' }
+        : placement === 'bottom-left'
+            ? { vertical: 'top', horizontal: 'left' }
+            : placement === 'bottom-right'
+                ? { vertical: 'top', horizontal: 'right' }
+                : placement === 'top'
+                    ? { vertical: 'bottom', horizontal: 'center' }
+                    : placement === 'top-left'
+                        ? { vertical: 'bottom', horizontal: 'left' }
+                        : placement === 'top-right'
+                            ? { vertical: 'bottom', horizontal: 'right' }
+                            : placement === 'left'
+                                ? { vertical: 'center', horizontal: 'right' }
+                                : placement === 'left-top'
+                                    ? { vertical: 'top', horizontal: 'right' }
+                                    : placement === 'left-bottom'
+                                        ? { vertical: 'bottom', horizontal: 'right' }
+                                        : placement === 'right'
+                                            ? { vertical: 'center', horizontal: 'left' }
+                                            : placement === 'right-top'
+                                                ? { vertical: 'top', horizontal: 'left' }
+                                                : placement === 'right-bottom'
+                                                    ? { vertical: 'bottom', horizontal: 'left' }
+                                                    : { vertical: 'top', horizontal: 'center' };
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(React.Fragment, null,
-        React.createElement(FormButton, __assign({ className: classNames(className, 'SearchMenuButton'), size: 'medium', sx: sx, fullWidth: false }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, endIconProps: { style: { marginRight: -5 } }, onClick: handleClick }), children),
+        React.createElement(FormButton$1, __assign({ className: classNames(className, 'SearchMenuButton'), size: 'medium', sx: __assign({ minWidth: 0, px: "".concat(!children ? 9 : 13, "px !important") }, initSx), fullWidth: false }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, endIconProps: { style: { marginRight: -5 } }, onClick: handleClick }), children),
         React.createElement(Menu, { id: menuId, "aria-labelledby": buttonId, anchorEl: anchorEl, open: open, onClose: handleClose, onClick: handleClose, anchorOrigin: anchorOrigin, transformOrigin: transformOrigin }, menuList)));
-};export{Form,FormAutocomplete,FormBlock,FormBody,FormButton,FormCheckbox,FormCol,FormCompanyNo,FormContext,FormContextDefaultValue,FormContextProvider,FormDatePicker,FormDateRangePicker,FormDateTimePicker,FormDivider,FormEmail,FormFile,FormFooter,FormHidden,FormImageFile,FormLabel,FormMobile,FormMonthPicker,FormMonthRangePicker,FormNumber,FormPassword,FormPersonalNo,FormRadioGroup,FormRating,FormRow,FormSearch,FormSelect,FormSwitch,FormTag,FormTel,FormText,FormTextEditor,FormTextField,FormTextarea,FormTimePicker,FormToggleButtonGroup,FormUrl,FormYearPicker,FormYearRangePicker,Search,SearchButton,SearchGroup,SearchGroupRow,SearchMenuButton,useFormState};
+};var SearchGroupRow = function (_a) {
+    var children = _a.children, props = __rest(_a, ["children"]);
+    return (React.createElement(FormRow, __assign({}, props),
+        React.createElement(FormCol, null,
+            React.createElement(Grid, { container: true, spacing: 1, alignItems: 'center' }, children))));
+};export{Form,FormAutocomplete,FormBlock,FormBody,FormButton$1 as FormButton,FormCheckbox,FormCol,FormCompanyNo,FormContext,FormContextDefaultValue,FormContextProvider,FormDatePicker,FormDateRangePicker,FormDateTimePicker,FormDivider,FormEmail,FormFile,FormFooter,FormHidden,FormImageFile,FormLabel$1 as FormLabel,FormMobile,FormMonthPicker,FormMonthRangePicker,FormNumber,FormPassword,FormPersonalNo,FormRadioGroup,FormRating,FormRow,FormSearch,FormSelect,FormSwitch,FormTag,FormTel,FormText,FormTextEditor,FormTextField,FormTextarea,FormTimePicker,FormToggleButtonGroup,FormUrl,FormYearPicker,FormYearRangePicker,Search,SearchButton$1 as SearchButton,SearchGroup,SearchGroupRow,SearchMenuButton,useFormState};

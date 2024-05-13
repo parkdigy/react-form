@@ -4,11 +4,12 @@ import { Editor } from '@tinymce/tinymce-react';
 import { Editor as TinyMCEEditor } from 'tinymce';
 import { Skeleton } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, nextTick } from '@pdg/util';
+import { empty, ifUndefined, nextTick } from '@pdg/util';
 import { FormTextEditorProps as Props, FormTextEditorCommands, FormTextEditorValue } from './FormTextEditor.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
 import './FormTextEditor.scss';
+import { getFinalValue } from './FormTextEditor.function.private';
 
 interface BlobInfo {
   id: () => string;
@@ -80,15 +81,15 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
 
     /********************************************************************************************************************
      * State - FormState
      * ******************************************************************************************************************/
 
-    const [focused, setFocused] = useAutoUpdateState<Props['focused']>(initFocused == null ? formFocused : initFocused);
+    const [focused, setFocused] = useAutoUpdateState<Props['focused']>(ifUndefined(initFocused, formFocused));
 
     /********************************************************************************************************************
      * Ref
@@ -152,10 +153,6 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-
-    const getFinalValue = useCallback((value: Props['value']) => {
-      return value || '';
-    }, []);
 
     const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
@@ -228,7 +225,6 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       disabledRef,
       exceptValue,
       focus,
-      getFinalValue,
       hiddenRef,
       id,
       initValue,

@@ -15,7 +15,7 @@ import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from 
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util.private';
-import { empty, nextTick } from '@pdg/util';
+import { empty, ifUndefined, nextTick } from '@pdg/util';
 import {
   FormRadioGroupProps,
   FormRadioGroupCommands,
@@ -102,10 +102,10 @@ const FormRadioGroup = ToForwardRefExoticComponent(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const focused = ifUndefined(initFocused, formFocused);
 
     /********************************************************************************************************************
      * State - FormState
@@ -221,12 +221,6 @@ const FormRadioGroup = ToForwardRefExoticComponent(
       if (onChange) onChange(value);
       onValueChange(name, value);
     }, [value]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const style = useMemo(() => ({ width, paddingLeft: PADDING_LEFT, ...initStyle }), [initStyle, width]);
 
     /********************************************************************************************************************
      * Effect
@@ -438,7 +432,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
         error={error}
         helperText={error ? errorHelperText : helperText}
         helperTextProps={{ style: { marginLeft: 2 } }}
-        style={style}
+        style={{ width, paddingLeft: PADDING_LEFT, ...initStyle }}
         sx={sx}
         hidden={hidden}
         autoSize

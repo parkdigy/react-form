@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
-import { empty, nextTick } from '@pdg/util';
+import { empty, ifUndefined, nextTick } from '@pdg/util';
 import {
   FormYearPickerProps as Props,
   FormYearPickerCommands,
@@ -19,10 +19,10 @@ import {
   PrivateStyledTooltip,
   PrivateYearPicker,
 } from '../../@private';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
+import { dateToValue, getFinalValue, valueToDate } from './FormYearPicker.function.private';
 
-const DEFAULT_VALUE = null;
-const DEFAULT_FORMAT = 'YYYY년 MM월';
+const DEFAULT_FORMAT = 'YYYY년';
 
 const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
   (
@@ -50,7 +50,7 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
       onValidate,
       // -------------------------------------------------------------------------------------------------------------------
       icon,
-      format: initFormat = 'YYYY년',
+      format = DEFAULT_FORMAT,
       labelShrink: initLabelShrink,
       disablePast,
       disableFuture,
@@ -97,18 +97,12 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
-    const labelShrink = useMemo(
-      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
-      [initLabelShrink, formLabelShrink]
-    );
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
-    );
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const focused = ifUndefined(initFocused, formFocused);
+    const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * Ref
@@ -131,7 +125,7 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
 
     const [dataRef, , setData] = useAutoUpdateRefState(initData);
     const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
-      useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
+      useMemo(() => ifUndefined(initDisabled, formDisabled), [initDisabled, formDisabled])
     );
     const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
 
@@ -178,10 +172,6 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
      * value
      * ******************************************************************************************************************/
 
-    const getFinalValue = useCallback((newValue: FormYearPickerValue | undefined): FormYearPickerValue => {
-      return newValue || DEFAULT_VALUE;
-    }, []);
-
     const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
@@ -191,26 +181,15 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
     }, [value]);
 
     /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-
-    const valueToDate = useCallback((v: FormYearPickerBaseValue) => dayjs(`${v}-01-01`), []);
-    const dateToValue = useCallback((v: Dayjs) => v.year(), []);
-
-    /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
 
-    const nowYear = useMemo(() => new Date().getFullYear(), []);
-    const valueDate = useMemo(() => (value ? valueToDate(value) : null), [value, valueToDate]);
-    const minDate = useMemo(() => (minYear ? valueToDate(minYear) : undefined), [minYear, valueToDate]);
-    const maxDate = useMemo(() => (maxYear ? valueToDate(maxYear) : undefined), [maxYear, valueToDate]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const format = useMemo(() => initFormat || DEFAULT_FORMAT, [initFormat]);
+    const dateInfo = useMemo(() => {
+      const nowYear = new Date().getFullYear();
+      const minDate = minYear ? valueToDate(minYear) : undefined;
+      const maxDate = maxYear ? valueToDate(maxYear) : undefined;
+      return { nowYear, min: minDate, max: maxDate };
+    }, [maxYear, minYear]);
 
     /********************************************************************************************************************
      * Effect
@@ -305,7 +284,6 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
       disabledRef,
       exceptValue,
       focus,
-      getFinalValue,
       hiddenRef,
       id,
       initValue,
@@ -375,7 +353,7 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
           onValueChangeByUser(name, newValue);
         });
       },
-      [dateToValue, name, onValueChangeByUser, setValue]
+      [name, onValueChangeByUser, setValue]
     );
 
     const handleInputDatePickerFocus = useCallback(() => {
@@ -386,42 +364,16 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
 
     const handleInputDatePickerShouldDisableYear = useCallback(
       (year: Dayjs) => {
-        return (!!disablePast && year.year() < nowYear) || (!!disableFuture && year.year() > nowYear);
+        return (!!disablePast && year.year() < dateInfo.nowYear) || (!!disableFuture && year.year() > dateInfo.nowYear);
       },
-      [disableFuture, disablePast, nowYear]
+      [disableFuture, disablePast, dateInfo.nowYear]
     );
 
     /********************************************************************************************************************
-     * Memo
+     * Variable
      * ******************************************************************************************************************/
 
-    const inputDatePickerProps = useMemo(
-      () => ({
-        variant,
-        size,
-        color,
-        labelShrink,
-        fullWidth,
-        disabled,
-        format,
-        minDate,
-        maxDate,
-      }),
-      [variant, size, color, labelShrink, fullWidth, disabled, format, minDate, maxDate]
-    );
-
-    const inputStyle = useMemo(
-      () => (inputWidth != null ? { width: inputWidth } : { width: fullWidth ? undefined : 150, ...initStyle }),
-      [inputWidth, fullWidth, initStyle]
-    );
-
-    const wrapStyle = useMemo(
-      () => ({
-        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
-        flex: fullWidth ? 1 : undefined,
-      }),
-      [hidden, fullWidth]
-    );
+    const valueDate = value ? valueToDate(value) : null;
 
     /********************************************************************************************************************
      * Render
@@ -432,7 +384,10 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
           <div
             className={classNames(className, 'FormYearPicker')}
-            style={wrapStyle}
+            style={{
+              display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+              flex: fullWidth ? 1 : undefined,
+            }}
             onMouseDown={handleContainerMouseDown}
             onFocus={handleContainerFocus}
             onBlur={handleContainerBlur}
@@ -464,14 +419,26 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
             >
               <div>
                 <PrivateInputDatePicker
-                  {...inputDatePickerProps}
-                  style={inputStyle}
+                  variant={variant}
+                  size={size}
+                  color={color}
+                  focused={focused}
+                  labelShrink={labelShrink}
+                  fullWidth={fullWidth}
+                  disabled={disabled}
+                  format={format}
+                  minDate={dateInfo.min}
+                  maxDate={dateInfo.max}
+                  style={
+                    inputWidth != null
+                      ? { width: inputWidth, ...initStyle }
+                      : { width: fullWidth ? undefined : 150, ...initStyle }
+                  }
                   sx={sx}
                   value={valueDate}
                   label={label}
                   labelIcon={labelIcon}
                   error={error}
-                  focused={focused}
                   required={required}
                   readOnly={readOnly}
                   readOnlyInput={readOnlyInput}

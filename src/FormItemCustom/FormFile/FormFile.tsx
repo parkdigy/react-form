@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { InputAdornment, TextField, Typography } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getFileSizeText } from '../../@util.private';
-import { empty, nextTick, notEmpty } from '@pdg/util';
+import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
 import { FormFileProps as Props, FormFileCommands, FormFileValue } from './FormFile.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
@@ -13,6 +13,7 @@ import { PdgIcon } from '@pdg/react-component';
 import './FormFile.scss';
 import { StyledPdgButton } from './FormFile.style.private';
 import { useResizeDetector } from 'react-resize-detector';
+import { getFinalValue } from './FormFile.function.private';
 
 const FILE_VALUE = '';
 
@@ -92,18 +93,12 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
-    const labelShrink = useMemo(
-      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
-      [initLabelShrink, formLabelShrink]
-    );
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
-    );
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const focused = ifUndefined(initFocused, formFocused);
+    const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * Ref
@@ -193,8 +188,6 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
      * State - value
      * ******************************************************************************************************************/
 
-    const getFinalValue = useCallback((value: Props['value']): FormFileValue => value || '', []);
-
     const [valueRef, value, setValue] = useAutoUpdateRefState<FormFileValue, Props['value']>(initValue, getFinalValue);
 
     useFirstSkipEffect(() => {
@@ -202,40 +195,6 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       if (onChange) onChange(value);
       onValueChange(name, value);
     }, [value]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const label = useMemo(() => {
-      return labelIcon ? (
-        <>
-          <PdgIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PdgIcon>
-          <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
-        </>
-      ) : (
-        initLabel
-      );
-    }, [initLabel, labelIcon]);
-
-    const finalClassName = useMemo(
-      () =>
-        classNames(
-          className,
-          'FormValueItem',
-          'FormFile',
-          `variant-${variant}`,
-          `size-${size}`,
-          !!initLabel && 'with-label',
-          !!fullWidth && 'full-width',
-          !!hideUrl && 'hide-file-name',
-          !!hideLink && 'hide-link',
-          !!hideUpload && 'hide-upload',
-          !!hideRemove && 'hide-remove',
-          notEmpty(value) && 'with-value'
-        ),
-      [className, fullWidth, hideLink, hideRemove, hideUpload, hideUrl, initLabel, size, value, variant]
-    );
 
     /********************************************************************************************************************
      * Function - focus
@@ -305,7 +264,6 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       disabledRef,
       exceptValue,
       focus,
-      getFinalValue,
       hiddenRef,
       id,
       initValue,
@@ -424,7 +382,20 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
         size={size}
         color={color}
         focused={focused}
-        className={finalClassName}
+        className={classNames(
+          className,
+          'FormValueItem',
+          'FormFile',
+          `variant-${variant}`,
+          `size-${size}`,
+          !!initLabel && 'with-label',
+          !!fullWidth && 'full-width',
+          !!hideUrl && 'hide-file-name',
+          !!hideLink && 'hide-link',
+          !!hideUpload && 'hide-upload',
+          !!hideRemove && 'hide-remove',
+          notEmpty(value) && 'with-value'
+        )}
         labelIcon={hideUrl ? labelIcon : undefined}
         label={hideUrl ? initLabel : undefined}
         error={error}
@@ -449,7 +420,16 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                   inputRef={textFieldRef}
                   className='file-name'
                   variant={variant}
-                  label={label}
+                  label={
+                    labelIcon ? (
+                      <>
+                        <PdgIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PdgIcon>
+                        <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
+                      </>
+                    ) : (
+                      initLabel
+                    )
+                  }
                   size={size}
                   required={required}
                   value={value || ''}

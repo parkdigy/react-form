@@ -6,6 +6,7 @@ import { FormContext, useFormState } from '../../FormContext';
 import FormDivider from '../FormDivider';
 import { useAutoUpdateState } from '@pdg/react-hook';
 import { StyledWrapGrid } from './FormBlock.style.private';
+import { ifUndefined } from '@pdg/util';
 
 const FormBlock = React.forwardRef<HTMLDivElement, Props>(
   (
@@ -55,19 +56,13 @@ const FormBlock = React.forwardRef<HTMLDivElement, Props>(
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const spacing = useMemo(() => initSpacing || formSpacing, [initSpacing, formSpacing]);
-    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
-    const labelShrink = useMemo(
-      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
-      [initLabelShrink, formLabelShrink]
-    );
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
-    );
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const spacing = ifUndefined(initSpacing, formSpacing);
+    const focused = ifUndefined(initFocused, formFocused);
+    const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * State

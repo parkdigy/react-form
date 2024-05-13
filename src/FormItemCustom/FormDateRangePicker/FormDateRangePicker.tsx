@@ -23,10 +23,10 @@ import {
 import dayjs, { Dayjs } from 'dayjs';
 import { useFormState } from '../../FormContext';
 import { getDateValidationErrorText } from '../../@util.private';
-import { nextTick, notEmpty } from '@pdg/util';
+import { ifUndefined, nextTick, notEmpty } from '@pdg/util';
 import { DateValidationError } from '@mui/x-date-pickers';
+import { getFinalValue } from './FormDateRangePicker.function.private';
 
-const DEFAULT_VALUE: FormDateRangePickerValue = [null, null];
 const DEFAULT_FORMAT = 'YYYY-MM-DD';
 
 const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>(
@@ -117,18 +117,12 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
      * Memo - FormState
      * ******************************************************************************************************************/
 
-    const variant = useMemo(() => (initVariant == null ? formVariant : initVariant), [initVariant, formVariant]);
-    const size = useMemo(() => (initSize == null ? formSize : initSize), [initSize, formSize]);
-    const color = useMemo(() => (initColor == null ? formColor : initColor), [initColor, formColor]);
-    const focused = useMemo(() => (initFocused == null ? formFocused : initFocused), [initFocused, formFocused]);
-    const labelShrink = useMemo(
-      () => (initLabelShrink == null ? formLabelShrink : initLabelShrink),
-      [initLabelShrink, formLabelShrink]
-    );
-    const fullWidth = useMemo(
-      () => (initFullWidth == null ? formFullWidth : initFullWidth),
-      [initFullWidth, formFullWidth]
-    );
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
+    const color = ifUndefined(initColor, formColor);
+    const focused = ifUndefined(initFocused, formFocused);
+    const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
      * Ref
@@ -305,10 +299,6 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
      * value
      * ******************************************************************************************************************/
 
-    const getFinalValue = useCallback((value: FormDateRangePickerValue | undefined): FormDateRangePickerValue => {
-      return value || DEFAULT_VALUE;
-    }, []);
-
     const [valueRef, value, setValue] = useAutoUpdateRefState<FormDateRangePickerValue, Props['value']>(
       initValue,
       getFinalValue
@@ -319,46 +309,6 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       if (onChange) onChange(value);
       onValueChange(name, value);
     }, [value]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const inputDatePickerProps = useMemo(
-      () => ({
-        align,
-        variant,
-        size,
-        color,
-        labelShrink,
-        fullWidth,
-        disabled,
-        format,
-        disablePast,
-        disableFuture,
-        minDate,
-        maxDate,
-      }),
-      [
-        align,
-        variant,
-        size,
-        color,
-        labelShrink,
-        fullWidth,
-        disabled,
-        format,
-        disablePast,
-        disableFuture,
-        minDate,
-        maxDate,
-      ]
-    );
-
-    const inputStyle = useMemo(
-      () => (inputWidth != null ? { width: inputWidth } : { width: fullWidth ? undefined : 150 }),
-      [inputWidth, fullWidth]
-    );
 
     /********************************************************************************************************************
      * Effect
@@ -398,18 +348,6 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
         }
       }
     }, [open]);
-
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-
-    const wrapStyle = useMemo(
-      () => ({
-        display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
-        flex: fullWidth ? 1 : undefined,
-      }),
-      [hidden, fullWidth]
-    );
 
     /********************************************************************************************************************
      * Event Handler
@@ -671,7 +609,6 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       formValueFormat,
       formValueFromNameSuffix,
       formValueToNameSuffix,
-      getFinalValue,
       hiddenRef,
       id,
       initValue,
@@ -689,6 +626,27 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
     ]);
 
     /********************************************************************************************************************
+     * Variable
+     * ******************************************************************************************************************/
+
+    const inputDatePickerProps = {
+      align,
+      variant,
+      size,
+      color,
+      labelShrink,
+      fullWidth,
+      disabled,
+      format,
+      disablePast,
+      disableFuture,
+      minDate,
+      maxDate,
+    };
+
+    const inputStyle = inputWidth != null ? { width: inputWidth } : { width: fullWidth ? undefined : 150 };
+
+    /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
 
@@ -697,7 +655,10 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
         <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
           <div
             className={classNames(className, 'FormDateRangePicker')}
-            style={wrapStyle}
+            style={{
+              display: hidden ? 'none' : fullWidth ? 'block' : 'inline-block',
+              flex: fullWidth ? 1 : undefined,
+            }}
             onMouseDown={handleContainerMouseDown}
             onFocus={handleContainerFocus}
             onBlur={handleContainerBlur}
