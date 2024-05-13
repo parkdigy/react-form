@@ -23,16 +23,6 @@
     }
   }
 
-  .FormItemBase-Control-wrap {
-    position: relative;
-  }
-
-  .FormItemBase-Control {
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-
   &.variant-standard {
     .FormItemBase-Control-wrap {
       margin-top: 16px;

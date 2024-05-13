@@ -41,7 +41,6 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
      * ******************************************************************************************************************/
 
     const inputRef = useRef<HTMLInputElement>(null);
-    const realControlContainerRef = useRef<HTMLDivElement>(null);
 
     /********************************************************************************************************************
      * FormState
@@ -81,40 +80,8 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
     });
 
     /********************************************************************************************************************
-     * State - realControlHeight
-     * ******************************************************************************************************************/
-
-    const [realControlHeight, setRealControlHeight] = useState(0);
-
-    useResizeDetector({
-      targetRef: realControlContainerRef,
-      handleWidth: false,
-      handleHeight: true,
-      onResize() {
-        setRealControlHeight(realControlContainerRef.current?.getBoundingClientRect()?.height || 0);
-      },
-    });
-
-    /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-
-    const bottomMargin = useMemo(() => {
-      const realHeight = realControlHeight || 0;
-      const height = controlHeight || 0;
-      const checkInputHeight = variant === 'standard' ? inputHeight + 16 : inputHeight;
-
-      let bottomMargin = 0;
-      if (height > checkInputHeight) {
-        bottomMargin = height - checkInputHeight;
-      } else {
-        if (realHeight > 0 && height > 0 && realHeight > height) {
-          bottomMargin = realHeight - height;
-        }
-      }
-
-      return bottomMargin;
-    }, [variant, realControlHeight, controlHeight, inputHeight]);
 
     const controlMarginTop = useMemo(() => {
       let topMargin = 0;
@@ -207,22 +174,42 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
             {autoSize ? (
               <>
                 {variant === 'standard' && (
-                  <Input ref={inputRef} size={size} fullWidth disabled style={{ visibility: 'hidden' }} />
+                  <Input
+                    ref={inputRef}
+                    size={size}
+                    fullWidth={false}
+                    disabled
+                    style={{ visibility: 'hidden', width: 0 }}
+                  />
                 )}
                 {variant === 'outlined' && (
-                  <OutlinedInput ref={inputRef} size={size} fullWidth disabled style={{ visibility: 'hidden' }} />
+                  <OutlinedInput
+                    ref={inputRef}
+                    size={size}
+                    fullWidth={false}
+                    disabled
+                    style={{ visibility: 'hidden', width: 0 }}
+                  />
                 )}
                 {variant === 'filled' && (
-                  <FilledInput ref={inputRef} size={size} fullWidth disabled style={{ visibility: 'hidden' }} />
+                  <FilledInput
+                    ref={inputRef}
+                    size={size}
+                    fullWidth={false}
+                    disabled
+                    style={{ visibility: 'hidden', width: 0 }}
+                  />
                 )}
-                <div style={{ height: bottomMargin, visibility: 'hidden' }} />
                 <div
-                  ref={realControlContainerRef}
                   className='FormItemBase-Control'
                   style={{
                     width: fullWidth ? '100%' : 'auto',
                     display: 'grid',
-                    marginTop: controlMarginTop,
+                    marginTop: -inputHeight,
+                    height: inputHeight,
+                    alignItems: 'flex-start',
+                    paddingTop: controlMarginTop,
+                    position: 'relative',
                   }}
                 >
                   {control}

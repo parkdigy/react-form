@@ -280,7 +280,7 @@ const FormSwitch = React.forwardRef<FormSwitchCommands, Props>(
         sx={sx}
         hidden={hidden}
         autoSize
-        controlHeight={size === 'small' ? 21 : 26}
+        controlHeight={size === 'small' ? 24 : 38}
         controlVerticalCenter
         control={
           switchLabel ? (
