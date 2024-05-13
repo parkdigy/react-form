@@ -2362,7 +2362,7 @@ FormCompanyNo.displayName = 'FormCompanyNo';var FormPersonalNo = React.forwardRe
      * ******************************************************************************************************************/
     return (React.createElement(FormText, __assign({ ref: ref, className: classNames(className, 'FormPersonalNo'), maxLength: 14, validPattern: validPattern, onValue: handleValue, onValidate: handleValidate }, props)));
 });
-FormPersonalNo.displayName = 'FormPersonalNo';var css_248z$e = ".FormItemBase .FormItemBase-InputLabel {\n  overflow: visible;\n  padding-left: 5px;\n}\n.FormItemBase .FormItemBase-InputLabel.MuiInputLabel-sizeSmall {\n  transform: translate(0, -1.5px) scale(0.7);\n}\n.FormItemBase .FormItemBase-Control-wrap {\n  position: relative;\n}\n.FormItemBase .FormItemBase-Control {\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n.FormItemBase.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 16px;\n}";
+FormPersonalNo.displayName = 'FormPersonalNo';var css_248z$e = ".FormItemBase .FormItemBase-InputLabel {\n  overflow: visible;\n  padding-left: 5px;\n}\n.FormItemBase .FormItemBase-InputLabel.MuiInputLabel-sizeSmall {\n  transform: translate(0, -1.5px) scale(0.7);\n}\n.FormItemBase.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 16px;\n}";
 styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Ref
@@ -2373,7 +2373,6 @@ styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, style = _a.style, sx = _a.sx;
     var inputRef = useRef(null);
-    var realControlContainerRef = useRef(null);
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
@@ -2399,36 +2398,8 @@ styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
         },
     });
     /********************************************************************************************************************
-     * State - realControlHeight
-     * ******************************************************************************************************************/
-    var _d = useState(0), realControlHeight = _d[0], setRealControlHeight = _d[1];
-    useResizeDetector({
-        targetRef: realControlContainerRef,
-        handleWidth: false,
-        handleHeight: true,
-        onResize: function () {
-            var _a, _b;
-            setRealControlHeight(((_b = (_a = realControlContainerRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height) || 0);
-        },
-    });
-    /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var bottomMargin = useMemo(function () {
-        var realHeight = realControlHeight || 0;
-        var height = controlHeight || 0;
-        var checkInputHeight = variant === 'standard' ? inputHeight + 16 : inputHeight;
-        var bottomMargin = 0;
-        if (height > checkInputHeight) {
-            bottomMargin = height - checkInputHeight;
-        }
-        else {
-            if (realHeight > 0 && height > 0 && realHeight > height) {
-                bottomMargin = realHeight - height;
-            }
-        }
-        return bottomMargin;
-    }, [variant, realControlHeight, controlHeight, inputHeight]);
     var controlMarginTop = useMemo(function () {
         var topMargin = 0;
         if (inputHeight && controlHeight && controlVerticalCenter) {
@@ -2478,14 +2449,17 @@ styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
                 React.createElement(PdgIcon, { style: { verticalAlign: 'middle', marginRight: 3, marginTop: -4, marginBottom: -2 } }, labelIcon),
                 React.createElement("span", { style: { verticalAlign: 'middle' } }, label))) : (label))),
             React.createElement("div", { className: 'FormItemBase-Control-wrap', style: { display: 'grid', marginTop: hideLabel ? 0 : undefined } }, autoSize ? (React.createElement(React.Fragment, null,
-                variant === 'standard' && (React.createElement(Input, { ref: inputRef, size: size, fullWidth: true, disabled: true, style: { visibility: 'hidden' } })),
-                variant === 'outlined' && (React.createElement(OutlinedInput, { ref: inputRef, size: size, fullWidth: true, disabled: true, style: { visibility: 'hidden' } })),
-                variant === 'filled' && (React.createElement(FilledInput, { ref: inputRef, size: size, fullWidth: true, disabled: true, style: { visibility: 'hidden' } })),
-                React.createElement("div", { style: { height: bottomMargin, visibility: 'hidden' } }),
-                React.createElement("div", { ref: realControlContainerRef, className: 'FormItemBase-Control', style: {
+                variant === 'standard' && (React.createElement(Input, { ref: inputRef, size: size, fullWidth: false, disabled: true, style: { visibility: 'hidden', width: 0 } })),
+                variant === 'outlined' && (React.createElement(OutlinedInput, { ref: inputRef, size: size, fullWidth: false, disabled: true, style: { visibility: 'hidden', width: 0 } })),
+                variant === 'filled' && (React.createElement(FilledInput, { ref: inputRef, size: size, fullWidth: false, disabled: true, style: { visibility: 'hidden', width: 0 } })),
+                React.createElement("div", { className: 'FormItemBase-Control', style: {
                         width: fullWidth ? '100%' : 'auto',
                         display: 'grid',
-                        marginTop: controlMarginTop,
+                        marginTop: -inputHeight,
+                        height: inputHeight,
+                        alignItems: 'flex-start',
+                        paddingTop: controlMarginTop,
+                        position: 'relative',
                     } }, control))) : (React.createElement("div", { style: {
                     width: fullWidth ? '100%' : 'auto',
                     display: 'grid',
@@ -10137,7 +10111,7 @@ FormYearRangePicker.displayName = 'FormYearRangePicker';var FormSwitch = React.f
      * Render
      * ******************************************************************************************************************/
     var switchControl = useMemo(function () { return (React.createElement(Switch, { size: size, name: name, checked: value, color: color, disabled: disabled, onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } })); }, [color, disabled, handleChange, initFocused, name, setFocused, size, value]);
-    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormSwitch'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: size === 'small' ? 21 : 26, controlVerticalCenter: true, control: switchLabel ? (React.createElement(FormControlLabel, { control: switchControl, label: switchLabel, disabled: disabled })) : (switchControl) }));
+    return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormSwitch'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: size === 'small' ? 24 : 38, controlVerticalCenter: true, control: switchLabel ? (React.createElement(FormControlLabel, { control: switchControl, label: switchLabel, disabled: disabled })) : (switchControl) }));
 });
 FormSwitch.displayName = 'FormSwitch';var Search = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
