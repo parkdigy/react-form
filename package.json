@@ -1,7 +1,7 @@
 {
   "name": "@pdg/react-form",
   "title": "React Form",
-  "version": "1.0.125",
+  "version": "1.0.126",
   "description": "React Form",
   "type": "module",
   "types": "dist/index.d.ts",
@@ -45,7 +45,7 @@
     "@mui/icons-material": "^5.15.17",
     "@mui/material": "^5.15.17",
     "@mui/x-date-pickers": "^6.19.9",
-    "@pdg/react-component": "^1.0.24",
+    "@pdg/react-component": "^1.0.25",
     "@pdg/react-hook": "^1.0.21",
     "@pdg/util": "^1.0.22",
     "@tinymce/tinymce-react": "^4.3.2",
