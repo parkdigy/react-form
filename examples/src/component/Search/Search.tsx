@@ -68,36 +68,34 @@ const Search = () => {
     <Grid container direction='column' spacing={2}>
       <Grid item>
         <_Search ref={searchRef} autoSubmit onSubmit={handleSubmit}>
-          <SearchGroupRow>
-            {leftSearchGroup}
+          {leftSearchGroup}
 
-            <SearchGroup align='right'>
-              <SearchButton startIcon='download' />
-              <SearchButton
-                startIcon='add'
-                startIconMarginLeft={-5}
-                variant='contained'
-                onClick={() => {
-                  ll(searchRef.current?.getItem('search_date_from'));
-                }}
-              >
-                새 항목
-              </SearchButton>
-              <SearchMenuButton
-                startIcon='menu'
-                variant='contained'
-                placement='bottom-right'
-                menuList={
-                  <MenuList>
-                    <MenuItem onClick={() => ll('Menu 1 Click')}>Menu 1</MenuItem>
-                    <MenuItem onClick={() => ll('Menu 2 Click')}>Menu 2</MenuItem>
-                  </MenuList>
-                }
-              >
-                메뉴 버튼
-              </SearchMenuButton>
-            </SearchGroup>
-          </SearchGroupRow>
+          <SearchGroup align='right'>
+            <SearchButton startIcon='download' />
+            <SearchButton
+              startIcon='add'
+              startIconMarginLeft={-5}
+              variant='contained'
+              onClick={() => {
+                ll(searchRef.current?.getItem('search_date_from'));
+              }}
+            >
+              새 항목
+            </SearchButton>
+            <SearchMenuButton
+              startIcon='menu'
+              variant='contained'
+              placement='bottom-right'
+              menuList={
+                <MenuList>
+                  <MenuItem onClick={() => ll('Menu 1 Click')}>Menu 1</MenuItem>
+                  <MenuItem onClick={() => ll('Menu 2 Click')}>Menu 2</MenuItem>
+                </MenuList>
+              }
+            >
+              메뉴 버튼
+            </SearchMenuButton>
+          </SearchGroup>
 
           <SearchGroupRow>
             <SearchGroup>

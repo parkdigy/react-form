@@ -10113,7 +10113,12 @@ FormYearRangePicker.displayName = 'FormYearRangePicker';var FormSwitch = React.f
     var switchControl = React.useMemo(function () { return (React.createElement(material.Switch, { size: size, name: name, checked: value, color: color, disabled: disabled, onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } })); }, [color, disabled, handleChange, initFocused, name, setFocused, size, value]);
     return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormSwitch'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: size === 'small' ? 24 : 38, controlVerticalCenter: true, control: switchLabel ? (React.createElement(material.FormControlLabel, { control: switchControl, label: switchLabel, disabled: disabled })) : (switchControl) }));
 });
-FormSwitch.displayName = 'FormSwitch';var Search = React.forwardRef(function (_a, ref) {
+FormSwitch.displayName = 'FormSwitch';var SearchGroupRow = function (_a) {
+    var children = _a.children, props = __rest(_a, ["children"]);
+    return (React.createElement(FormRow, __assign({}, props),
+        React.createElement(FormCol, null,
+            React.createElement(material.Grid, { container: true, spacing: 1, alignItems: 'center' }, children))));
+};var Search = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -10133,31 +10138,29 @@ FormSwitch.displayName = 'FormSwitch';var Search = React.forwardRef(function (_a
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    // /********************************************************************************************************************
-    //  * Memo
-    //  * ******************************************************************************************************************/
-    //
-    // const renderChildren = useMemo(() => {
-    //   ll('children changed');
-    //   const rowItems: ReactNode[] = [];
-    //   const basicRowItems: ReactNode[] = [];
-    //
-    //   React.Children.forEach(children, (child) => {
-    //     if (React.isValidElement(child)) {
-    //       if (child.type.toString() === SearchGroupRow.toString()) {
-    //         rowItems.push(child);
-    //       } else {
-    //         basicRowItems.push(child);
-    //       }
-    //     }
-    //   });
-    //
-    //   if (basicRowItems.length > 0) {
-    //     return [<SearchGroupRow key='$basicRow$'>{basicRowItems}</SearchGroupRow>, ...rowItems];
-    //   } else {
-    //     return rowItems;
-    //   }
-    // }, [children]);
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+    var renderChildren = React.useMemo(function () {
+        var rowItems = [];
+        var basicRowItems = [];
+        React.Children.forEach(children, function (child) {
+            if (React.isValidElement(child)) {
+                if (child.type.toString() === SearchGroupRow.toString()) {
+                    rowItems.push(child);
+                }
+                else {
+                    basicRowItems.push(child);
+                }
+            }
+        });
+        if (basicRowItems.length > 0) {
+            return __spreadArray([React.createElement(SearchGroupRow, { key: '$basicRow$' }, basicRowItems)], rowItems, true);
+        }
+        else {
+            return rowItems;
+        }
+    }, [children]);
     /********************************************************************************************************************
      * FormContextValue
      * ******************************************************************************************************************/
@@ -10207,7 +10210,7 @@ FormSwitch.displayName = 'FormSwitch';var Search = React.forwardRef(function (_a
     return (React.createElement(FormContextProvider, { value: formContextValue },
         React.createElement(material.Paper, { variant: 'outlined', className: className, sx: __assign({ p: 1.5 }, sx), style: style },
             React.createElement(Form, __assign({ ref: handleRef, className: 'Search', variant: 'outlined', size: 'small', color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: false }, otherProps),
-                React.createElement(FormBody, null, children)))));
+                React.createElement(FormBody, null, renderChildren)))));
 });var StyledItem = material.styled(material.Grid)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  &:has(> [style*='display: none;']) {\n    display: none;\n  }\n"], ["\n  &:has(> [style*='display: none;']) {\n    display: none;\n  }\n"])));
 var templateObject_1;var isReactFragment = function (child) {
     try {
@@ -10346,9 +10349,4 @@ var SearchButton$1 = React.memo(SearchButton);var SearchMenuButton = function (_
     return (React.createElement(React.Fragment, null,
         React.createElement(FormButton$1, __assign({ className: classNames(className, 'SearchMenuButton'), size: 'medium', sx: __assign({ minWidth: 0, px: "".concat(!children ? 9 : 13, "px !important") }, initSx), fullWidth: false }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, endIconProps: { style: { marginRight: -5 } }, onClick: handleClick }), children),
         React.createElement(material.Menu, { id: menuId, "aria-labelledby": buttonId, anchorEl: anchorEl, open: open, onClose: handleClose, onClick: handleClose, anchorOrigin: anchorOrigin, transformOrigin: transformOrigin }, menuList)));
-};var SearchGroupRow = function (_a) {
-    var children = _a.children, props = __rest(_a, ["children"]);
-    return (React.createElement(FormRow, __assign({}, props),
-        React.createElement(FormCol, null,
-            React.createElement(material.Grid, { container: true, spacing: 1, alignItems: 'center' }, children))));
 };exports.Form=Form;exports.FormAutocomplete=FormAutocomplete;exports.FormBlock=FormBlock;exports.FormBody=FormBody;exports.FormButton=FormButton$1;exports.FormCheckbox=FormCheckbox;exports.FormCol=FormCol;exports.FormCompanyNo=FormCompanyNo;exports.FormContext=FormContext;exports.FormContextDefaultValue=FormContextDefaultValue;exports.FormContextProvider=FormContextProvider;exports.FormDatePicker=FormDatePicker;exports.FormDateRangePicker=FormDateRangePicker;exports.FormDateTimePicker=FormDateTimePicker;exports.FormDivider=FormDivider;exports.FormEmail=FormEmail;exports.FormFile=FormFile;exports.FormFooter=FormFooter;exports.FormHidden=FormHidden;exports.FormImageFile=FormImageFile;exports.FormLabel=FormLabel$1;exports.FormMobile=FormMobile;exports.FormMonthPicker=FormMonthPicker;exports.FormMonthRangePicker=FormMonthRangePicker;exports.FormNumber=FormNumber;exports.FormPassword=FormPassword;exports.FormPersonalNo=FormPersonalNo;exports.FormRadioGroup=FormRadioGroup;exports.FormRating=FormRating;exports.FormRow=FormRow;exports.FormSearch=FormSearch;exports.FormSelect=FormSelect;exports.FormSwitch=FormSwitch;exports.FormTag=FormTag;exports.FormTel=FormTel;exports.FormText=FormText;exports.FormTextEditor=FormTextEditor;exports.FormTextField=FormTextField;exports.FormTextarea=FormTextarea;exports.FormTimePicker=FormTimePicker;exports.FormToggleButtonGroup=FormToggleButtonGroup;exports.FormUrl=FormUrl;exports.FormYearPicker=FormYearPicker;exports.FormYearRangePicker=FormYearRangePicker;exports.Search=Search;exports.SearchButton=SearchButton$1;exports.SearchGroup=SearchGroup;exports.SearchGroupRow=SearchGroupRow;exports.SearchMenuButton=SearchMenuButton;exports.useFormState=useFormState;
