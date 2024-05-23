@@ -8356,7 +8356,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
                                 !hideUpload && (React.createElement(React.Fragment, null,
                                     React.createElement(StyledPdgButton, { variant: 'text', tabIndex: uploadTabIndex == null ? -1 : uploadTabIndex, className: classNames('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label'), color: error ? 'error' : color, size: size, disabled: readOnly || disabled, ref: fileUploadBtnRef },
                                         React.createElement("label", { htmlFor: id },
-                                            React.createElement(PdgIcon, { size: size, color: error ? 'error' : color }, "upload"),
+                                            React.createElement(PdgIcon, { size: size }, "upload"),
                                             !hideUploadLabel && (uploadLabel || '파일 업로드'))),
                                     React.createElement("input", { type: 'file', accept: accept, id: id, value: FILE_VALUE, className: 'input-file', onChange: handleFileChange }))),
                                 !hideLink && (React.createElement(StyledPdgButton, { variant: 'text', tabIndex: linkTabIndex == null ? -1 : linkTabIndex, className: classNames('link-btn  form-file-btn', !!hideLinkLabel && 'hidden-label'), color: error ? 'error' : color, startIcon: 'link', size: size, disabled: readOnly || disabled, ref: linkBtnRef, onClick: handleLinkClick }, !hideLinkLabel && (linkLabel || '링크'))),

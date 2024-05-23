@@ -458,9 +458,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                                 ref={fileUploadBtnRef}
                               >
                                 <label htmlFor={id}>
-                                  <PdgIcon size={size} color={error ? 'error' : color}>
-                                    upload
-                                  </PdgIcon>
+                                  <PdgIcon size={size}>upload</PdgIcon>
                                   {!hideUploadLabel && (uploadLabel || '파일 업로드')}
                                 </label>
                               </StyledPdgButton>
