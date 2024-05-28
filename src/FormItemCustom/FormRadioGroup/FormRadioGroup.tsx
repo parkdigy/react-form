@@ -15,7 +15,7 @@ import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from 
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util.private';
-import { empty, ifUndefined, nextTick } from '@pdg/util';
+import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
 import {
   FormRadioGroupProps,
   FormRadioGroupCommands,
@@ -435,7 +435,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
         required={required}
         error={error}
         helperText={error ? errorHelperText : helperText}
-        helperTextProps={{ style: { marginLeft: 2, marginTop: isMultiline ? 20 : 0 } }}
+        helperTextProps={{ style: { marginLeft: 2, marginTop: isMultiline && notEmpty(label) ? 20 : 0 } }}
         style={{ width, paddingLeft: PADDING_LEFT, ...initStyle }}
         sx={sx}
         hidden={hidden}

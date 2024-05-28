@@ -2973,7 +2973,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
      * ******************************************************************************************************************/
     var singleHeight = height || (size === 'small' ? 35 : 39);
     var isMultiline = singleHeight <= ifUndefined(realHeight, 0);
-    return (React.createElement(FormItemBase, { focused: focused, ref: baseRef, className: classNames(className, 'FormValueItem', 'FormRadioGroup'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, fullWidth: fullWidth, required: required, error: error, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2, marginTop: isMultiline ? 20 : 0 } }, style: __assign({ width: width, paddingLeft: PADDING_LEFT }, initStyle), sx: sx, hidden: hidden, autoSize: true, controlHeight: realHeight ? realHeight : singleHeight, controlContainerStyle: {
+    return (React.createElement(FormItemBase, { focused: focused, ref: baseRef, className: classNames(className, 'FormValueItem', 'FormRadioGroup'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, fullWidth: fullWidth, required: required, error: error, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2, marginTop: isMultiline && notEmpty(label) ? 20 : 0 } }, style: __assign({ width: width, paddingLeft: PADDING_LEFT }, initStyle), sx: sx, hidden: hidden, autoSize: true, controlHeight: realHeight ? realHeight : singleHeight, controlContainerStyle: {
             paddingTop: isMultiline && size === 'medium' ? 4 : undefined,
         }, controlVerticalCenter: !isMultiline, control: React.createElement(React.Fragment, null,
             !fullWidth && !isOnGetItemLoading && !loading && items && (React.createElement("div", { ref: resizeWidthDetectorRef, style: {
@@ -3033,6 +3033,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
     var refForResizeWidthDetect = useRef(null);
     var refForButtonResizeHeightDetect = useRef(null);
+    var refForButtonsResizeHeightDetect = useRef(null);
     var refForLoadingResizeHeightDetect = useRef(null);
     /********************************************************************************************************************
      * FormState
@@ -3069,12 +3070,21 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
      * State - height (ResizeDetector)
      * ******************************************************************************************************************/
     var _g = useState(), height = _g[0], setHeight = _g[1];
+    var _h = useState(), realHeight = _h[0], setRealHeight = _h[1];
     useResizeDetector({
         targetRef: refForButtonResizeHeightDetect,
         handleHeight: true,
         onResize: function () {
             var _a, _b;
             setHeight((_b = (_a = refForButtonResizeHeightDetect.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height);
+        },
+    });
+    useResizeDetector({
+        targetRef: refForButtonsResizeHeightDetect,
+        handleHeight: true,
+        onResize: function () {
+            var _a, _b;
+            setRealHeight((_b = (_a = refForButtonsResizeHeightDetect.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height);
         },
     });
     useResizeDetector({
@@ -3088,14 +3098,14 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var _h = useState(false), isOnGetItemLoading = _h[0], setIsOnGetItemLoading = _h[1];
-    var _j = useAutoUpdateState(initError), error = _j[0], setError = _j[1];
-    var _k = useState(), errorHelperText = _k[0], setErrorHelperText = _k[1];
-    var _l = useAutoUpdateRefState(initData), dataRef = _l[0], setData = _l[2];
-    var _m = useAutoUpdateRefState(useMemo(function () { return (initDisabled == null ? formDisabled : initDisabled); }, [initDisabled, formDisabled])), disabledRef = _m[0], disabled = _m[1], setDisabled = _m[2];
-    var _o = useAutoUpdateRefState(initHidden), hiddenRef = _o[0], hidden = _o[1], setHidden = _o[2];
-    var _p = useAutoUpdateRefState(initLoading), loadingRef = _p[0], loading = _p[1], setLoading = _p[2];
-    var _q = useAutoUpdateRefState(initItems), itemsRef = _q[0], items = _q[1], setItems = _q[2];
+    var _j = useState(false), isOnGetItemLoading = _j[0], setIsOnGetItemLoading = _j[1];
+    var _k = useAutoUpdateState(initError), error = _k[0], setError = _k[1];
+    var _l = useState(), errorHelperText = _l[0], setErrorHelperText = _l[1];
+    var _m = useAutoUpdateRefState(initData), dataRef = _m[0], setData = _m[2];
+    var _o = useAutoUpdateRefState(useMemo(function () { return (initDisabled == null ? formDisabled : initDisabled); }, [initDisabled, formDisabled])), disabledRef = _o[0], disabled = _o[1], setDisabled = _o[2];
+    var _p = useAutoUpdateRefState(initHidden), hiddenRef = _p[0], hidden = _p[1], setHidden = _p[2];
+    var _q = useAutoUpdateRefState(initLoading), loadingRef = _q[0], loading = _q[1], setLoading = _q[2];
+    var _r = useAutoUpdateRefState(initItems), itemsRef = _r[0], items = _r[1], setItems = _r[2];
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -3210,7 +3220,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         finalValue = onValue ? onValue(finalValue) : finalValue;
         return equal(value, finalValue) ? value : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
-    var _r = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _r[0], value = _r[1], setValue = _r[2];
+    var _s = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _s[0], value = _s[1], setValue = _s[2];
     useFirstSkipEffect(function () {
         if (error)
             validate(value);
@@ -3435,7 +3445,9 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         theme.palette.error.main,
         type,
     ]);
-    return (React.createElement(FormItemBase, __assign({}, formControlBaseProps, { className: classNames(className, 'FormValueItem', 'FormToggleButtonGroup', "variant-".concat(variant), "size-".concat(size), !!label && 'with-label', !!fullWidth && 'full-width', "type-".concat(type)), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, required: required, fullWidth: fullWidth, error: error, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: height || 0, controlVerticalCenter: isOnGetItemLoading || loading, control: isOnGetItemLoading || loading ? (React.createElement("div", { style: { opacity: 0.54 }, ref: refForLoadingResizeHeightDetect },
+    var controlHeight = height || 0;
+    var isMultiline = controlHeight <= ifUndefined(realHeight, 0);
+    return (React.createElement(FormItemBase, __assign({}, formControlBaseProps, { className: classNames(className, 'FormValueItem', 'FormToggleButtonGroup', "variant-".concat(variant), "size-".concat(size), !!label && 'with-label', !!fullWidth && 'full-width', "type-".concat(type)), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, required: required, fullWidth: fullWidth, error: error, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: realHeight ? realHeight + (isMultiline ? 13 : 0) : controlHeight, controlVerticalCenter: isMultiline ? false : isOnGetItemLoading || loading, control: isOnGetItemLoading || loading ? (React.createElement("div", { style: { opacity: 0.54 }, ref: refForLoadingResizeHeightDetect },
             React.createElement(CircularProgress, { size: 16, color: 'inherit' }))) : (React.createElement(React.Fragment, null,
             !fullWidth && !isOnGetItemLoading && !loading && items && (React.createElement("div", { ref: refForResizeWidthDetect, style: {
                     display: 'grid',
@@ -3444,7 +3456,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                     visibility: 'hidden',
                 } },
                 React.createElement(ToggleButtonGroup, { className: 'ToggleButtonGroup', exclusive: !multiple }, buttons))),
-            React.createElement(ToggleButtonGroup, { className: 'ToggleButtonGroup', exclusive: !multiple, fullWidth: fullWidth, value: value == null ? null : value, onChange: handleChange, style: {
+            React.createElement(ToggleButtonGroup, { ref: refForButtonsResizeHeightDetect, className: 'ToggleButtonGroup', exclusive: !multiple, fullWidth: fullWidth, value: value == null ? null : value, onChange: handleChange, style: {
                     width: !fullWidth && formColWidth && typeof width === 'number' && width > formColWidth
                         ? formColWidth
                         : undefined,

@@ -77,6 +77,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
 
     const refForResizeWidthDetect = useRef<HTMLDivElement>(null);
     const refForButtonResizeHeightDetect = useRef<HTMLButtonElement>(null);
+    const refForButtonsResizeHeightDetect = useRef<HTMLDivElement>(null);
     const refForLoadingResizeHeightDetect = useRef<HTMLDivElement>(null);
 
     /********************************************************************************************************************
@@ -138,12 +139,20 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     const [height, setHeight] = useState<number>();
+    const [realHeight, setRealHeight] = useState<number>();
 
     useResizeDetector({
       targetRef: refForButtonResizeHeightDetect,
       handleHeight: true,
       onResize() {
         setHeight(refForButtonResizeHeightDetect.current?.getBoundingClientRect()?.height);
+      },
+    });
+    useResizeDetector({
+      targetRef: refForButtonsResizeHeightDetect,
+      handleHeight: true,
+      onResize() {
+        setRealHeight(refForButtonsResizeHeightDetect.current?.getBoundingClientRect()?.height);
       },
     });
     useResizeDetector({
@@ -562,6 +571,9 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       type,
     ]);
 
+    const controlHeight = height || 0;
+    const isMultiline = controlHeight <= ifUndefined(realHeight, 0);
+
     return (
       <FormItemBase
         {...formControlBaseProps}
@@ -589,8 +601,8 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
         sx={sx}
         hidden={hidden}
         autoSize
-        controlHeight={height || 0}
-        controlVerticalCenter={isOnGetItemLoading || loading}
+        controlHeight={realHeight ? realHeight + (isMultiline ? 13 : 0) : controlHeight}
+        controlVerticalCenter={isMultiline ? false : isOnGetItemLoading || loading}
         control={
           isOnGetItemLoading || loading ? (
             <div style={{ opacity: 0.54 }} ref={refForLoadingResizeHeightDetect}>
@@ -614,6 +626,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
                 </div>
               )}
               <ToggleButtonGroup
+                ref={refForButtonsResizeHeightDetect}
                 className='ToggleButtonGroup'
                 exclusive={!multiple}
                 fullWidth={fullWidth}
