@@ -165,6 +165,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     const { height, ref: resizeHeightDetectorRef } = useResizeDetector<HTMLDivElement>();
+    const { height: realHeight, ref: resizeRealHeightDetectorRef } = useResizeDetector<HTMLDivElement>();
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -417,6 +418,9 @@ const FormRadioGroup = ToForwardRefExoticComponent(
      * Render
      * ******************************************************************************************************************/
 
+    const singleHeight = height || (size === 'small' ? 35 : 39);
+    const isMultiline = singleHeight <= ifUndefined(realHeight, 0);
+
     return (
       <FormItemBase
         focused={focused}
@@ -431,13 +435,16 @@ const FormRadioGroup = ToForwardRefExoticComponent(
         required={required}
         error={error}
         helperText={error ? errorHelperText : helperText}
-        helperTextProps={{ style: { marginLeft: 2 } }}
+        helperTextProps={{ style: { marginLeft: 2, marginTop: isMultiline ? 20 : 0 } }}
         style={{ width, paddingLeft: PADDING_LEFT, ...initStyle }}
         sx={sx}
         hidden={hidden}
         autoSize
-        controlHeight={height || (size === 'small' ? 35 : 39)}
-        controlVerticalCenter
+        controlHeight={realHeight ? realHeight : singleHeight}
+        controlContainerStyle={{
+          paddingTop: isMultiline && size === 'medium' ? 4 : undefined,
+        }}
+        controlVerticalCenter={!isMultiline}
         control={
           <>
             {!fullWidth && !isOnGetItemLoading && !loading && items && (
@@ -452,7 +459,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
               >
                 <RadioGroup
                   {...props}
-                  style={{ marginTop: 10, display: 'inline-flex', flexWrap: 'nowrap' }}
+                  style={{ display: 'inline-flex', flexWrap: 'nowrap' }}
                   name={name}
                   row={inline}
                   value={value === undefined ? null : value}
@@ -471,7 +478,12 @@ const FormRadioGroup = ToForwardRefExoticComponent(
                         />
                       }
                       label={label}
-                      style={{ color: error ? theme.palette.error.main : '', marginTop: -10, whiteSpace: 'nowrap' }}
+                      style={{
+                        color: error ? theme.palette.error.main : '',
+                        marginTop: -5,
+                        marginBottom: -5,
+                        whiteSpace: 'nowrap',
+                      }}
                       value={value}
                       disabled={disabled || readOnly || itemDisabled}
                     />
@@ -482,8 +494,8 @@ const FormRadioGroup = ToForwardRefExoticComponent(
             <div>
               <RadioGroup
                 {...props}
+                ref={resizeRealHeightDetectorRef}
                 style={{
-                  marginTop: 10,
                   display: 'inline-flex',
                   visibility: width == null ? 'hidden' : undefined,
                   position: width == null ? 'absolute' : undefined,
@@ -497,12 +509,11 @@ const FormRadioGroup = ToForwardRefExoticComponent(
                 {isOnGetItemLoading || loading ? (
                   <div style={{ position: 'relative' }}>
                     <FormControlLabel
-                      ref={resizeHeightDetectorRef}
                       label=''
                       control={<Radio color={color} size={size} />}
-                      style={{ marginTop: -10, visibility: 'hidden' }}
+                      style={{ visibility: 'hidden' }}
                     />
-                    <div style={{ position: 'absolute', left: 0, top: 1, opacity: 0.54 }}>
+                    <div style={{ position: 'absolute', left: 0, top: 11, opacity: 0.54 }}>
                       <CircularProgress size={size === 'small' ? 12 : 16} color='inherit' />
                     </div>
                   </div>
@@ -522,7 +533,12 @@ const FormRadioGroup = ToForwardRefExoticComponent(
                             />
                           }
                           label={label}
-                          style={{ color: error ? theme.palette.error.main : '', marginTop: -10, whiteSpace: 'nowrap' }}
+                          style={{
+                            color: error ? theme.palette.error.main : '',
+                            whiteSpace: 'nowrap',
+                            marginTop: -5,
+                            marginBottom: -5,
+                          }}
                           value={value}
                           disabled={disabled || readOnly || itemDisabled}
                         />

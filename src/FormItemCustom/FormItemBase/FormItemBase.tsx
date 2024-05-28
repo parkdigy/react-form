@@ -18,7 +18,9 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
       //----------------------------------------------------------------------------------------------------------------
       control,
       controlHeight,
+      controlSingleHeight,
       controlVerticalCenter,
+      controlContainerStyle,
       required,
       labelIcon,
       label,
@@ -86,7 +88,17 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
     const controlMarginTop = useMemo(() => {
       let topMargin = 0;
       if (inputHeight && controlHeight && controlVerticalCenter) {
-        topMargin = inputHeight / 2 - controlHeight / 2;
+        if (controlHeight > inputHeight) {
+          if (controlSingleHeight) {
+            topMargin = inputHeight / 2 - controlSingleHeight / 2;
+          } else {
+            topMargin = 0;
+          }
+        } else {
+          topMargin = inputHeight / 2 - controlHeight / 2;
+        }
+      } else {
+        topMargin = 0;
       }
 
       let withLabelControlAddTopMargin: number;
@@ -113,7 +125,16 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
       }
 
       return controlMarginTop;
-    }, [controlHeight, controlVerticalCenter, formColWithLabel, inputHeight, label, size, variant]);
+    }, [
+      controlHeight,
+      controlSingleHeight,
+      controlVerticalCenter,
+      formColWithLabel,
+      inputHeight,
+      label,
+      size,
+      variant,
+    ]);
 
     /********************************************************************************************************************
      * Variable
@@ -170,7 +191,10 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
               )}
             </InputLabel>
           )}
-          <div className='FormItemBase-Control-wrap' style={{ display: 'grid', marginTop: hideLabel ? 0 : undefined }}>
+          <div
+            className='FormItemBase-Control-wrap'
+            style={{ display: 'grid', marginTop: hideLabel ? 0 : undefined, ...controlContainerStyle }}
+          >
             {autoSize ? (
               <>
                 {variant === 'standard' && (
@@ -206,7 +230,7 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
                     width: fullWidth ? '100%' : 'auto',
                     display: 'grid',
                     marginTop: -inputHeight,
-                    height: inputHeight,
+                    height: ifUndefined(controlHeight, inputHeight) > inputHeight ? controlHeight : undefined,
                     alignItems: 'flex-start',
                     paddingTop: controlMarginTop,
                     position: 'relative',

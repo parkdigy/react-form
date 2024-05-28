@@ -2369,7 +2369,7 @@ styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
      * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    control = _a.control, controlHeight = _a.controlHeight, controlVerticalCenter = _a.controlVerticalCenter, required = _a.required, labelIcon = _a.labelIcon, label = _a.label, focused = _a.focused, helperText = _a.helperText, helperTextProps = _a.helperTextProps, error = _a.error, hideLabel = _a.hideLabel, hidden = _a.hidden, autoSize = _a.autoSize, 
+    control = _a.control, controlHeight = _a.controlHeight, controlSingleHeight = _a.controlSingleHeight, controlVerticalCenter = _a.controlVerticalCenter, controlContainerStyle = _a.controlContainerStyle, required = _a.required, labelIcon = _a.labelIcon, label = _a.label, focused = _a.focused, helperText = _a.helperText, helperTextProps = _a.helperTextProps, error = _a.error, hideLabel = _a.hideLabel, hidden = _a.hidden, autoSize = _a.autoSize, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, style = _a.style, sx = _a.sx;
     var inputRef = useRef(null);
@@ -2403,7 +2403,20 @@ styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
     var controlMarginTop = useMemo(function () {
         var topMargin = 0;
         if (inputHeight && controlHeight && controlVerticalCenter) {
-            topMargin = inputHeight / 2 - controlHeight / 2;
+            if (controlHeight > inputHeight) {
+                if (controlSingleHeight) {
+                    topMargin = inputHeight / 2 - controlSingleHeight / 2;
+                }
+                else {
+                    topMargin = 0;
+                }
+            }
+            else {
+                topMargin = inputHeight / 2 - controlHeight / 2;
+            }
+        }
+        else {
+            topMargin = 0;
         }
         var withLabelControlAddTopMargin;
         if (size === 'small') {
@@ -2428,7 +2441,16 @@ styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
                 break;
         }
         return controlMarginTop;
-    }, [controlHeight, controlVerticalCenter, formColWithLabel, inputHeight, label, size, variant]);
+    }, [
+        controlHeight,
+        controlSingleHeight,
+        controlVerticalCenter,
+        formColWithLabel,
+        inputHeight,
+        label,
+        size,
+        variant,
+    ]);
     /********************************************************************************************************************
      * Variable
      * ******************************************************************************************************************/
@@ -2448,7 +2470,7 @@ styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
             !formColWithLabel && label && (React.createElement(InputLabel, { shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size, required: required }, labelIcon ? (React.createElement(React.Fragment, null,
                 React.createElement(PdgIcon, { style: { verticalAlign: 'middle', marginRight: 3, marginTop: -4, marginBottom: -2 } }, labelIcon),
                 React.createElement("span", { style: { verticalAlign: 'middle' } }, label))) : (label))),
-            React.createElement("div", { className: 'FormItemBase-Control-wrap', style: { display: 'grid', marginTop: hideLabel ? 0 : undefined } }, autoSize ? (React.createElement(React.Fragment, null,
+            React.createElement("div", { className: 'FormItemBase-Control-wrap', style: __assign({ display: 'grid', marginTop: hideLabel ? 0 : undefined }, controlContainerStyle) }, autoSize ? (React.createElement(React.Fragment, null,
                 variant === 'standard' && (React.createElement(Input, { ref: inputRef, size: size, fullWidth: false, disabled: true, style: { visibility: 'hidden', width: 0 } })),
                 variant === 'outlined' && (React.createElement(OutlinedInput, { ref: inputRef, size: size, fullWidth: false, disabled: true, style: { visibility: 'hidden', width: 0 } })),
                 variant === 'filled' && (React.createElement(FilledInput, { ref: inputRef, size: size, fullWidth: false, disabled: true, style: { visibility: 'hidden', width: 0 } })),
@@ -2456,7 +2478,7 @@ styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
                         width: fullWidth ? '100%' : 'auto',
                         display: 'grid',
                         marginTop: -inputHeight,
-                        height: inputHeight,
+                        height: ifUndefined(controlHeight, inputHeight) > inputHeight ? controlHeight : undefined,
                         alignItems: 'flex-start',
                         paddingTop: controlMarginTop,
                         position: 'relative',
@@ -2729,6 +2751,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
      * State - height (ResizeDetector)
      * ******************************************************************************************************************/
     var _r = useResizeDetector(), height = _r.height, resizeHeightDetectorRef = _r.ref;
+    var _s = useResizeDetector(), realHeight = _s.height, resizeRealHeightDetectorRef = _s.ref;
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
      * ******************************************************************************************************************/
@@ -2760,7 +2783,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
     var getFinalValue = useCallback(function (value) {
         return onValue ? onValue(value) : value;
     }, [onValue]);
-    var _s = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _s[0], value = _s[1], setValue = _s[2];
+    var _t = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _t[0], value = _t[1], setValue = _t[2];
     useFirstSkipEffect(function () {
         if (error)
             validate(value);
@@ -2948,31 +2971,44 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormItemBase, { focused: focused, ref: baseRef, className: classNames(className, 'FormValueItem', 'FormRadioGroup'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, fullWidth: fullWidth, required: required, error: error, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: __assign({ width: width, paddingLeft: PADDING_LEFT }, initStyle), sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React.createElement(React.Fragment, null,
+    var singleHeight = height || (size === 'small' ? 35 : 39);
+    var isMultiline = singleHeight <= ifUndefined(realHeight, 0);
+    return (React.createElement(FormItemBase, { focused: focused, ref: baseRef, className: classNames(className, 'FormValueItem', 'FormRadioGroup'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, fullWidth: fullWidth, required: required, error: error, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2, marginTop: isMultiline ? 20 : 0 } }, style: __assign({ width: width, paddingLeft: PADDING_LEFT }, initStyle), sx: sx, hidden: hidden, autoSize: true, controlHeight: realHeight ? realHeight : singleHeight, controlContainerStyle: {
+            paddingTop: isMultiline && size === 'medium' ? 4 : undefined,
+        }, controlVerticalCenter: !isMultiline, control: React.createElement(React.Fragment, null,
             !fullWidth && !isOnGetItemLoading && !loading && items && (React.createElement("div", { ref: resizeWidthDetectorRef, style: {
                     display: 'grid',
                     position: 'absolute',
                     whiteSpace: 'nowrap',
                     visibility: 'hidden',
                 } },
-                React.createElement(RadioGroup, __assign({}, props, { style: { marginTop: 10, display: 'inline-flex', flexWrap: 'nowrap' }, name: name, row: inline, value: value === undefined ? null : value, onChange: handleChange }), items.map(function (_a, idx) {
+                React.createElement(RadioGroup, __assign({}, props, { style: { display: 'inline-flex', flexWrap: 'nowrap' }, name: name, row: inline, value: value === undefined ? null : value, onChange: handleChange }), items.map(function (_a, idx) {
                     var value = _a.value, label = _a.label, itemDisabled = _a.disabled;
-                    return (React.createElement(FormControlLabel, { ref: idx === 0 ? resizeHeightDetectorRef : null, key: idx, control: React.createElement(Radio, { icon: React.createElement(RadioButtonUnchecked, { color: error ? 'error' : undefined }), checkedIcon: React.createElement(RadioButtonChecked, { color: error ? 'error' : undefined }), color: color, size: size }), label: label, style: { color: error ? theme.palette.error.main : '', marginTop: -10, whiteSpace: 'nowrap' }, value: value, disabled: disabled || readOnly || itemDisabled }));
+                    return (React.createElement(FormControlLabel, { ref: idx === 0 ? resizeHeightDetectorRef : null, key: idx, control: React.createElement(Radio, { icon: React.createElement(RadioButtonUnchecked, { color: error ? 'error' : undefined }), checkedIcon: React.createElement(RadioButtonChecked, { color: error ? 'error' : undefined }), color: color, size: size }), label: label, style: {
+                            color: error ? theme.palette.error.main : '',
+                            marginTop: -5,
+                            marginBottom: -5,
+                            whiteSpace: 'nowrap',
+                        }, value: value, disabled: disabled || readOnly || itemDisabled }));
                 })))),
             React.createElement("div", null,
-                React.createElement(RadioGroup, __assign({}, props, { style: {
-                        marginTop: 10,
+                React.createElement(RadioGroup, __assign({}, props, { ref: resizeRealHeightDetectorRef, style: {
                         display: 'inline-flex',
                         visibility: width == null ? 'hidden' : undefined,
                         position: width == null ? 'absolute' : undefined,
                         flexWrap: nowrap ? 'nowrap' : undefined,
                     }, name: name, row: inline, value: value === undefined ? null : value, onChange: handleChange }), isOnGetItemLoading || loading ? (React.createElement("div", { style: { position: 'relative' } },
-                    React.createElement(FormControlLabel, { ref: resizeHeightDetectorRef, label: '', control: React.createElement(Radio, { color: color, size: size }), style: { marginTop: -10, visibility: 'hidden' } }),
-                    React.createElement("div", { style: { position: 'absolute', left: 0, top: 1, opacity: 0.54 } },
+                    React.createElement(FormControlLabel, { label: '', control: React.createElement(Radio, { color: color, size: size }), style: { visibility: 'hidden' } }),
+                    React.createElement("div", { style: { position: 'absolute', left: 0, top: 11, opacity: 0.54 } },
                         React.createElement(CircularProgress, { size: size === 'small' ? 12 : 16, color: 'inherit' })))) : (React.createElement(React.Fragment, null, items &&
                     items.map(function (_a, idx) {
                         var value = _a.value, label = _a.label, itemDisabled = _a.disabled;
-                        return (React.createElement(FormControlLabel, { key: idx, control: React.createElement(Radio, { icon: React.createElement(RadioButtonUnchecked, { color: error ? 'error' : undefined }), checkedIcon: React.createElement(RadioButtonChecked, { color: error ? 'error' : undefined }), color: color, size: size, inputRef: idx === 0 ? firstInputRef : null }), label: label, style: { color: error ? theme.palette.error.main : '', marginTop: -10, whiteSpace: 'nowrap' }, value: value, disabled: disabled || readOnly || itemDisabled }));
+                        return (React.createElement(FormControlLabel, { key: idx, control: React.createElement(Radio, { icon: React.createElement(RadioButtonUnchecked, { color: error ? 'error' : undefined }), checkedIcon: React.createElement(RadioButtonChecked, { color: error ? 'error' : undefined }), color: color, size: size, inputRef: idx === 0 ? firstInputRef : null }), label: label, style: {
+                                color: error ? theme.palette.error.main : '',
+                                whiteSpace: 'nowrap',
+                                marginTop: -5,
+                                marginBottom: -5,
+                            }, value: value, disabled: disabled || readOnly || itemDisabled }));
                     })))))) }));
 }));
 FormRadioGroup.displayName = 'FormRadioGroup';var css_248z$d = ".FormToggleButtonGroup .ToggleButton {\n  display: inline-flex;\n  padding: 0 10px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  align-items: center;\n}\n.FormToggleButtonGroup .ToggleButton .__label__ {\n  height: 0;\n  line-height: 0 !important;\n  overflow: visible !important;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton, .FormToggleButtonGroup.type-radio .ToggleButton {\n  padding-left: 3px;\n  padding-right: 5px;\n  border: 0 !important;\n  margin-left: 0 !important;\n  justify-content: flex-start;\n  display: flex;\n  background-color: transparent !important;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton:not(:last-child), .FormToggleButtonGroup.type-radio .ToggleButton:not(:last-child) {\n  margin-right: 5px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-unchecked__ {\n  margin-right: 3px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__ {\n  display: none;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-checked__ {\n  display: block;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-unchecked__ {\n  display: none;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 15px;\n  margin-bottom: -15px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .FormItemBase-Control-wrap {\n  margin-top: 15px;\n  margin-bottom: -15px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 13px;\n  margin-bottom: -13px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 13px;\n  margin-bottom: -13px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}";

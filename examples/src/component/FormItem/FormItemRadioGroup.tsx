@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import {
   Form,
   FormRadioGroup,
@@ -14,7 +14,13 @@ import {
 } from '../../../../src';
 import { lv } from '@pdg/util';
 
-const DEFAULT_ITEMS: FormRadioGroupItem<number>[] = [lv('Item 1', 1), lv('Item 2', 2), lv('Item 3', 3)];
+const DEFAULT_ITEMS: FormRadioGroupItem<number>[] = new Array(3)
+  .fill(0)
+  .map((v, idx) => lv(`Item ${idx + 1}`, idx + 1));
+
+const DEFAULT_ITEMS_2: FormRadioGroupItem<number>[] = new Array(10)
+  .fill(0)
+  .map((v, idx) => lv(`Item ${idx + 1}`, idx + 1));
 
 const FormItemRadioGroup = () => {
   /********************************************************************************************************************
@@ -22,12 +28,6 @@ const FormItemRadioGroup = () => {
    * ******************************************************************************************************************/
 
   const asyncLoadRadioGroupRef = useRef<FormRadioGroupCommands<number>>(null);
-
-  /********************************************************************************************************************
-   * State
-   * ******************************************************************************************************************/
-
-  const [items] = useState(DEFAULT_ITEMS);
 
   /********************************************************************************************************************
    * Ref
@@ -81,20 +81,38 @@ const FormItemRadioGroup = () => {
           <FormCol>
             <FormRadioGroup
               name='label'
-              items={items}
+              items={DEFAULT_ITEMS}
               labelIcon='RadioButtonChecked'
               label='FormRadioGroup'
               helperText='labelIcon'
             />
           </FormCol>
           <FormCol>
-            <FormRadioGroup name='required' items={items} label='FormRadioGroup' required helperText='required=true' />
+            <FormRadioGroup
+              name='required'
+              items={DEFAULT_ITEMS_2}
+              label='FormRadioGroup'
+              required
+              helperText='required=true'
+            />
           </FormCol>
           <FormCol>
-            <FormRadioGroup name='readOnly' items={items} label='FormRadioGroup' readOnly helperText='readOnly=true' />
+            <FormRadioGroup
+              name='readOnly'
+              items={DEFAULT_ITEMS}
+              label='FormRadioGroup'
+              readOnly
+              helperText='readOnly=true'
+            />
           </FormCol>
           <FormCol>
-            <FormRadioGroup name='disabled' items={items} label='FormRadioGroup' disabled helperText='disabled=true' />
+            <FormRadioGroup
+              name='disabled'
+              items={DEFAULT_ITEMS}
+              label='FormRadioGroup'
+              disabled
+              helperText='disabled=true'
+            />
           </FormCol>
         </FormRow>
 
@@ -121,7 +139,7 @@ const FormItemRadioGroup = () => {
           <FormCol>
             <FormRadioGroup
               name='inline'
-              items={items}
+              items={DEFAULT_ITEMS}
               inline={false}
               label='FormRadioGroup'
               helperText='inline=false'
