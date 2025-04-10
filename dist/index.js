@@ -99,6 +99,8 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
     // eslint-disable-next-line
     onValueChangeByUser: function () { },
     // eslint-disable-next-line
+    onRequestSubmit: function () { },
+    // eslint-disable-next-line
     onRequestSearchSubmit: function () { },
 };var FormContext = React.createContext(FormContextDefaultValue);function useFormState() {
     var value = React.useContext(FormContext);
@@ -232,10 +234,10 @@ var appendFormValueData = function (data, itemCommands) {
     //--------------------------------------------------------------------------------------------------------------------
     _b = _a.variant, 
     //--------------------------------------------------------------------------------------------------------------------
-    initVariant = _b === void 0 ? 'outlined' : _b, _c = _a.size, initSize = _c === void 0 ? 'medium' : _c, _d = _a.color, initColor = _d === void 0 ? 'primary' : _d, _e = _a.spacing, initSpacing = _e === void 0 ? 2 : _e, _f = _a.formColGap, initFormColGap = _f === void 0 ? 1.5 : _f, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, initFullHeight = _a.fullHeight, initDisabled = _a.disabled, 
+    initVariant = _b === void 0 ? 'outlined' : _b, _c = _a.size, initSize = _c === void 0 ? 'medium' : _c, _d = _a.color, initColor = _d === void 0 ? 'primary' : _d, _e = _a.spacing, initSpacing = _e === void 0 ? 2 : _e, _f = _a.formColGap, initFormColGap = _f === void 0 ? 1.5 : _f, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, initFullHeight = _a.fullHeight, initDisabled = _a.disabled, initSubmitWhenReturnKey = _a.submitWhenReturnKey, 
     //----------------------------------------------------------------------------------------------------------------
     initOnSubmit = _a.onSubmit, initOnValid = _a.onInvalid, initOnValueChange = _a.onValueChange, initOnValueChangeByUser = _a.onValueChangeByUser;
-    var _g = useFormState(), formId = _g.id, formVariant = _g.variant, formSize = _g.size, formColor = _g.color, formDisabled = _g.disabled, formSpacing = _g.spacing, formFormColGap = _g.formColGap, formFocused = _g.focused, formLabelShrink = _g.labelShrink, formFullWidth = _g.fullWidth, formFullHeight = _g.fullHeight, formColAutoXs = _g.formColAutoXs, formColWidth = _g.formColWidth, onAddFormCol = _g.onAddFormCol, onRemoveFormCol = _g.onRemoveFormCol, formColXs = _g.formColXs, formColWithLabel = _g.formColWithLabel, formColWithHelperText = _g.formColWithHelperText, formAddValueItem = _g.onAddValueItem, formRemoveValueItem = _g.onRemoveValueItem, formValueChange = _g.onValueChange, formValueChangeByUser = _g.onValueChangeByUser, formRequestSearchSubmit = _g.onRequestSearchSubmit;
+    var _g = useFormState(), formId = _g.id, formVariant = _g.variant, formSize = _g.size, formColor = _g.color, formDisabled = _g.disabled, formSubmitWhenReturnKey = _g.submitWhenReturnKey, formSpacing = _g.spacing, formFormColGap = _g.formColGap, formFocused = _g.focused, formLabelShrink = _g.labelShrink, formFullWidth = _g.fullWidth, formFullHeight = _g.fullHeight, formColAutoXs = _g.formColAutoXs, formColWidth = _g.formColWidth, onAddFormCol = _g.onAddFormCol, onRemoveFormCol = _g.onRemoveFormCol, formColXs = _g.formColXs, formColWithLabel = _g.formColWithLabel, formColWithHelperText = _g.formColWithHelperText, formAddValueItem = _g.onAddValueItem, formRemoveValueItem = _g.onRemoveValueItem, formValueChange = _g.onValueChange, formValueChangeByUser = _g.onValueChangeByUser, formRequestSubmit = _g.onRequestSubmit, formRequestSearchSubmit = _g.onRequestSearchSubmit;
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
@@ -249,6 +251,7 @@ var appendFormValueData = function (data, itemCommands) {
     var fullWidth = util.ifUndefined(util.ifUndefined(initFullWidth, formFullWidth), true);
     var fullHeight = util.ifUndefined(util.ifUndefined(initFullHeight, formFullHeight), false);
     var disabled = util.ifUndefined(util.ifUndefined(initDisabled, formDisabled), false);
+    var submitWhenReturnKey = util.ifUndefined(util.ifUndefined(initSubmitWhenReturnKey, formSubmitWhenReturnKey), false);
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
@@ -556,6 +559,7 @@ var appendFormValueData = function (data, itemCommands) {
             fullWidth: fullWidth,
             fullHeight: fullHeight,
             disabled: disabled,
+            submitWhenReturnKey: submitWhenReturnKey,
             onAddValueItem: function (id, item) {
                 valueItems.current[id] = item;
                 if (formAddValueItem)
@@ -578,6 +582,12 @@ var appendFormValueData = function (data, itemCommands) {
                 if (formValueChangeByUser)
                     formValueChangeByUser(name, value);
             },
+            onRequestSubmit: function (name, value) {
+                if (!disabled)
+                    submit();
+                if (formRequestSubmit)
+                    formRequestSubmit(name, value);
+            },
             onRequestSearchSubmit: formRequestSearchSubmit,
             formColAutoXs: formColAutoXs,
             formColWidth: formColWidth,
@@ -599,6 +609,7 @@ var appendFormValueData = function (data, itemCommands) {
         fullWidth,
         fullHeight,
         disabled,
+        submitWhenReturnKey,
         formRequestSearchSubmit,
         formColAutoXs,
         formColWidth,
@@ -613,6 +624,8 @@ var appendFormValueData = function (data, itemCommands) {
         formValueChange,
         onValueChangeByUserRef,
         formValueChangeByUser,
+        submit,
+        formRequestSubmit,
     ]);
     /********************************************************************************************************************
      * Render
@@ -1026,7 +1039,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
      * ID
      * ******************************************************************************************************************/
     var _b, _c;
-    var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
+    var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, initSubmitWhenReturnKey = _a.submitWhenReturnKey, 
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, required = _a.required, initValue = _a.value, initData = _a.data, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, helperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, initHidden = _a.hidden, disableReturnKey = _a.disableReturnKey, 
     //----------------------------------------------------------------------------------------------------------------
@@ -1034,7 +1047,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, 
     //----------------------------------------------------------------------------------------------------------------
-    props = __rest(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "required", "value", "data", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "disableReturnKey", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
+    props = __rest(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "submitWhenReturnKey", "name", "required", "value", "data", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "disableReturnKey", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
     var id = React.useId();
     /********************************************************************************************************************
      * Ref
@@ -1043,7 +1056,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
-    var _d = useFormState(), formVariant = _d.variant, formSize = _d.size, formColor = _d.color, formFocused = _d.focused, formLabelShrink = _d.labelShrink, formFullWidth = _d.fullWidth, formDisabled = _d.disabled, formColWithHelperText = _d.formColWithHelperText, onAddValueItem = _d.onAddValueItem, onRemoveValueItem = _d.onRemoveValueItem, onValueChange = _d.onValueChange, onValueChangeByUser = _d.onValueChangeByUser, onRequestSearchSubmit = _d.onRequestSearchSubmit;
+    var _d = useFormState(), formVariant = _d.variant, formSize = _d.size, formColor = _d.color, formFocused = _d.focused, formLabelShrink = _d.labelShrink, formFullWidth = _d.fullWidth, formDisabled = _d.disabled, formSubmitWhenReturnKey = _d.submitWhenReturnKey, formColWithHelperText = _d.formColWithHelperText, onAddValueItem = _d.onAddValueItem, onRemoveValueItem = _d.onRemoveValueItem, onValueChange = _d.onValueChange, onValueChangeByUser = _d.onValueChangeByUser, onRequestSubmit = _d.onRequestSubmit, onRequestSearchSubmit = _d.onRequestSearchSubmit;
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
@@ -1053,6 +1066,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     var focused = util.ifUndefined(initFocused, formFocused);
     var labelShrink = util.ifUndefined(initLabelShrink, formLabelShrink);
     var fullWidth = util.ifUndefined(initFullWidth, formFullWidth);
+    var submitWhenReturnKey = util.ifUndefined(initSubmitWhenReturnKey, formSubmitWhenReturnKey);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -1274,11 +1288,25 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
             !noFormValueItem) {
             e.preventDefault();
             e.stopPropagation();
+            if (submitWhenReturnKey) {
+                onRequestSubmit(name, valueRef.current);
+            }
             onRequestSearchSubmit(name, valueRef.current);
         }
         if (onKeyDown)
             onKeyDown(e);
-    }, [select, multiline, disableReturnKey, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, valueRef]);
+    }, [
+        select,
+        multiline,
+        disableReturnKey,
+        noFormValueItem,
+        onKeyDown,
+        submitWhenReturnKey,
+        onRequestSearchSubmit,
+        name,
+        valueRef,
+        onRequestSubmit,
+    ]);
     /********************************************************************************************************************
      * Variable
      * ******************************************************************************************************************/
@@ -10230,6 +10258,10 @@ FormSwitch.displayName = 'FormSwitch';var SearchGroupRow = function (_a) {
             onValueChange: function () { },
             // eslint-disable-next-line
             onValueChangeByUser: function () { },
+            onRequestSubmit: function () {
+                var _a;
+                (_a = formRef.current) === null || _a === void 0 ? void 0 : _a.submit();
+            },
             onRequestSearchSubmit: function () {
                 var _a;
                 if (autoSubmit) {

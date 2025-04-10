@@ -58,6 +58,7 @@ const FormBase = () => {
   const [fullWidth, setFullWidth] = useState<FormProps['fullWidth']>(true);
   const [fullHeight, setFullHeight] = useState<FormProps['fullHeight']>(false);
   const [disabled, setDisabled] = useState<FormProps['disabled']>(false);
+  const [submitWhenReturnKey, setSubmitWhenReturnKey] = useState<FormProps['submitWhenReturnKey']>(false);
   const [isFormBlock1Hidden, setIsFormBlock1Hidden] = useState(false);
   const [isFormBlock2Hidden, setIsFormBlock2Hidden] = useState(false);
   const [isFormBlock3Hidden, setIsFormBlock3Hidden] = useState(false);
@@ -76,6 +77,7 @@ const FormBase = () => {
    * Render
    * ******************************************************************************************************************/
 
+  ll(submitWhenReturnKey)
   return (
     <Box flex={1} style={{ display: 'flex', flexDirection: 'column' }}>
       <OutlinedPaper>
@@ -171,6 +173,13 @@ const FormBase = () => {
                   onChange={setDisabled}
                   fullWidth={false}
                 />
+                <FormCheckbox
+                  name='submitWhenReturnKey'
+                  text='submitWhenReturnKey'
+                  checked={submitWhenReturnKey}
+                  onChange={setSubmitWhenReturnKey}
+                  fullWidth={false}
+                />
               </FormCol>
             </FormRow>
           </FormBody>
@@ -217,6 +226,7 @@ const FormBase = () => {
         fullWidth={fullWidth}
         fullHeight={fullHeight}
         disabled={disabled}
+        submitWhenReturnKey={submitWhenReturnKey}
         style={{ marginTop: 20 }}
         onSubmit={handleSubmit}
       >

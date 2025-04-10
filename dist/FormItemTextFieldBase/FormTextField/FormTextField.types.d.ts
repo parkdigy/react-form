@@ -15,5 +15,6 @@ export type FormTextFieldProps<T = FormTextFieldValue, AllowUndefinedValue exten
     endAdornment?: ReactNode;
     noFormValueItem?: boolean;
     disableReturnKey?: boolean;
+    submitWhenReturnKey?: boolean;
     onValue?(value: V): V;
 };

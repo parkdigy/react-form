@@ -89,6 +89,9 @@ const Search = React.forwardRef<SearchCommands, Props>(
           onValueChange() {},
           // eslint-disable-next-line
           onValueChangeByUser() {},
+          onRequestSubmit() {
+            formRef.current?.submit();
+          },
           onRequestSearchSubmit() {
             if (autoSubmit) {
               formRef.current?.submit();

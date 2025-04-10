@@ -12,6 +12,7 @@ export interface FormProps extends CommonSxProps, PartialPick<FormControlProps, 
     fullHeight?: boolean;
     formColGap?: number;
     disabled?: boolean;
+    submitWhenReturnKey?: boolean;
     onSubmit?(data: FormValueMap): void;
     onInvalid?(invalidItems: FormInvalidItems): void;
     onValueChange?(name: string, value: any): void;

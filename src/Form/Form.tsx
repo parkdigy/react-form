@@ -37,6 +37,7 @@ const Form = React.forwardRef<FormCommands, Props>(
       fullWidth: initFullWidth,
       fullHeight: initFullHeight,
       disabled: initDisabled,
+      submitWhenReturnKey: initSubmitWhenReturnKey,
       //----------------------------------------------------------------------------------------------------------------
       onSubmit: initOnSubmit,
       onInvalid: initOnValid,
@@ -55,6 +56,7 @@ const Form = React.forwardRef<FormCommands, Props>(
       size: formSize,
       color: formColor,
       disabled: formDisabled,
+      submitWhenReturnKey: formSubmitWhenReturnKey,
       spacing: formSpacing,
       formColGap: formFormColGap,
       focused: formFocused,
@@ -72,6 +74,7 @@ const Form = React.forwardRef<FormCommands, Props>(
       onRemoveValueItem: formRemoveValueItem,
       onValueChange: formValueChange,
       onValueChangeByUser: formValueChangeByUser,
+      onRequestSubmit: formRequestSubmit,
       onRequestSearchSubmit: formRequestSearchSubmit,
     } = useFormState();
 
@@ -89,12 +92,13 @@ const Form = React.forwardRef<FormCommands, Props>(
     const fullWidth = ifUndefined(ifUndefined(initFullWidth, formFullWidth), true);
     const fullHeight = ifUndefined(ifUndefined(initFullHeight, formFullHeight), false);
     const disabled = ifUndefined(ifUndefined(initDisabled, formDisabled), false);
+    const submitWhenReturnKey = ifUndefined(ifUndefined(initSubmitWhenReturnKey, formSubmitWhenReturnKey), false);
 
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
 
-    const formRef = useRef(null);
+    const formRef = useRef<HTMLFormElement>(null);
     const valueItems = useRef<FormValueItemCommandsMap<any>>({});
     const onSubmitRef = useAutoUpdateLayoutRef(initOnSubmit);
     const onInvalidRef = useAutoUpdateLayoutRef(initOnValid);
@@ -391,6 +395,7 @@ const Form = React.forwardRef<FormCommands, Props>(
           fullWidth,
           fullHeight,
           disabled,
+          submitWhenReturnKey,
           onAddValueItem(id, item) {
             valueItems.current[id] = item;
             if (formAddValueItem) formAddValueItem(id, item);
@@ -406,6 +411,10 @@ const Form = React.forwardRef<FormCommands, Props>(
           onValueChangeByUser(name, value) {
             if (onValueChangeByUserRef.current) onValueChangeByUserRef.current(name, value);
             if (formValueChangeByUser) formValueChangeByUser(name, value);
+          },
+          onRequestSubmit(name: string, value: any) {
+            if (!disabled) submit();
+            if (formRequestSubmit) formRequestSubmit(name, value);
           },
           onRequestSearchSubmit: formRequestSearchSubmit,
           formColAutoXs,
@@ -428,6 +437,7 @@ const Form = React.forwardRef<FormCommands, Props>(
         fullWidth,
         fullHeight,
         disabled,
+        submitWhenReturnKey,
         formRequestSearchSubmit,
         formColAutoXs,
         formColWidth,
@@ -442,6 +452,8 @@ const Form = React.forwardRef<FormCommands, Props>(
         formValueChange,
         onValueChangeByUserRef,
         formValueChangeByUser,
+        submit,
+        formRequestSubmit,
       ]
     );
 

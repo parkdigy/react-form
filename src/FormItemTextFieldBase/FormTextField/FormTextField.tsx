@@ -26,6 +26,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       focused: initFocused,
       labelShrink: initLabelShrink,
       fullWidth: initFullWidth,
+      submitWhenReturnKey: initSubmitWhenReturnKey,
       //----------------------------------------------------------------------------------------------------------------
       name,
       required,
@@ -96,11 +97,13 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       labelShrink: formLabelShrink,
       fullWidth: formFullWidth,
       disabled: formDisabled,
+      submitWhenReturnKey: formSubmitWhenReturnKey,
       formColWithHelperText,
       onAddValueItem,
       onRemoveValueItem,
       onValueChange,
       onValueChangeByUser,
+      onRequestSubmit,
       onRequestSearchSubmit,
     } = useFormState();
 
@@ -114,6 +117,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     const focused = ifUndefined(initFocused, formFocused);
     const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
     const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+    const submitWhenReturnKey = ifUndefined(initSubmitWhenReturnKey, formSubmitWhenReturnKey);
 
     /********************************************************************************************************************
      * State
@@ -396,11 +400,25 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
         ) {
           e.preventDefault();
           e.stopPropagation();
+          if (submitWhenReturnKey) {
+            onRequestSubmit(name, valueRef.current);
+          }
           onRequestSearchSubmit(name, valueRef.current);
         }
         if (onKeyDown) onKeyDown(e);
       },
-      [select, multiline, disableReturnKey, noFormValueItem, onKeyDown, onRequestSearchSubmit, name, valueRef]
+      [
+        select,
+        multiline,
+        disableReturnKey,
+        noFormValueItem,
+        onKeyDown,
+        submitWhenReturnKey,
+        onRequestSearchSubmit,
+        name,
+        valueRef,
+        onRequestSubmit,
+      ]
     );
 
     /********************************************************************************************************************

@@ -23,5 +23,6 @@ export type FormTextFieldProps<
     endAdornment?: ReactNode;
     noFormValueItem?: boolean;
     disableReturnKey?: boolean;
+    submitWhenReturnKey?: boolean;
     onValue?(value: V): V;
   };
