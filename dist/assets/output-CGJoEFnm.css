@@ -1,3 +1,7 @@
+.FormHidden {
+  display: none !important;
+}
+
 .FormTextField {
   min-width: 200px;
 }
@@ -11,29 +15,6 @@
 .FormTextField:hover .clear-icon-button-wrap.show,
 .FormTextField .MuiInputBase-root.Mui-focused .clear-icon-button-wrap.show {
   visibility: visible;
-}
-
-.FormHidden {
-  display: none !important;
-}
-
-.FormPassword .eye-icon-button-wrap {
-  visibility: hidden;
-}
-.FormPassword.variant-filled .eye-icon-button-wrap {
-  margin-top: 9px;
-  margin-bottom: -9px;
-}
-.FormPassword:hover .eye-icon-button-wrap.show,
-.FormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show {
-  visibility: visible;
-}
-
-.FormSearch input[type=search]::-webkit-search-decoration,
-.FormSearch input[type=search]::-webkit-search-cancel-button,
-.FormSearch input[type=search]::-webkit-search-results-button,
-.FormSearch input[type=search]::-webkit-search-results-decoration {
-  -webkit-appearance: none;
 }
 
 .FormSelect.is-selected-placeholder .MuiSelect-select {
@@ -59,6 +40,37 @@
   display: block;
   height: 4px;
   background-color: transparent;
+}
+
+.FormTextarea .MuiInputBase-root .MuiInputBase-input {
+  overflow-y: scroll;
+}
+.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar {
+  width: 8px;
+}
+.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1882352941);
+  background-clip: padding-box;
+  border-left: 4px transparent solid;
+}
+
+.FormPassword .eye-icon-button-wrap {
+  visibility: hidden;
+}
+.FormPassword.variant-filled .eye-icon-button-wrap {
+  margin-top: 9px;
+  margin-bottom: -9px;
+}
+.FormPassword:hover .eye-icon-button-wrap.show,
+.FormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show {
+  visibility: visible;
+}
+
+.FormSearch input[type=search]::-webkit-search-decoration,
+.FormSearch input[type=search]::-webkit-search-cancel-button,
+.FormSearch input[type=search]::-webkit-search-results-button,
+.FormSearch input[type=search]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
 }
 
 .FormToggleButtonGroup.loading .FormItemBase-Control-wrap .FormItemBase-Control {
@@ -231,16 +243,11 @@
   height: 26px;
 }
 
-.FormTextarea .MuiInputBase-root .MuiInputBase-input {
-  overflow-y: scroll;
+.FormImageFile .preview-img {
+  max-width: 100%;
 }
-.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar {
-  width: 8px;
-}
-.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.1882352941);
-  background-clip: padding-box;
-  border-left: 4px transparent solid;
+.FormImageFile:not(.hide-file-name):not(.variant-standard) .preview-img {
+  padding-right: 14px;
 }
 
 .FormTextEditor.initializing textarea {
@@ -256,6 +263,17 @@
 
 .tox-notifications-container {
   display: none;
+}
+
+.FormItemBase .FormItemBase-InputLabel {
+  overflow: visible;
+  padding-left: 5px;
+}
+.FormItemBase .FormItemBase-InputLabel.MuiInputLabel-sizeSmall {
+  transform: translate(0, -1.5px) scale(0.7);
+}
+.FormItemBase.variant-standard .FormItemBase-Control-wrap {
+  margin-top: 16px;
 }
 
 .FormFile .control-wrap {
@@ -354,27 +372,6 @@
   height: 26px;
 }
 
-.FormItemBase .FormItemBase-InputLabel {
-  overflow: visible;
-  padding-left: 5px;
-}
-.FormItemBase .FormItemBase-InputLabel.MuiInputLabel-sizeSmall {
-  transform: translate(0, -1.5px) scale(0.7);
-}
-.FormItemBase.variant-standard .FormItemBase-Control-wrap {
-  margin-top: 16px;
-}
-
-.PrivateDatePicker .input-text-field.align-left .MuiInputBase-input {
-  text-align: left;
-}
-.PrivateDatePicker .input-text-field.align-center .MuiInputBase-input {
-  text-align: center;
-}
-.PrivateDatePicker .input-text-field.align-right .MuiInputBase-input {
-  text-align: right;
-}
-
 .FormDateRangePickerTooltipPickerContainer {
   display: inline-block;
   position: relative;
@@ -466,70 +463,14 @@
   text-align: right;
 }
 
-.PrivateStaticDatePicker.time {
-  height: 400px;
+.PrivateDatePicker .input-text-field.align-left .MuiInputBase-input {
+  text-align: left;
 }
-.PrivateStaticDatePicker .MuiPickersCalendarHeader-root {
-  display: none;
-}
-.PrivateStaticDatePicker .month-title-container {
-  display: flex;
-  align-items: center;
-  margin-left: 5px;
-}
-.PrivateStaticDatePicker .month-title-container .month-title-wrap {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button {
-  font-size: 15px;
-  padding-left: 8px;
-  padding-right: 0;
-  min-width: 0;
-}
-.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button:not(.active) {
-  color: unset;
-}
-.PrivateStaticDatePicker .action-buttons {
-  border-top: 1px solid #efefef;
-  padding: 10px;
-  text-align: right;
-}
-.PrivateStaticDatePicker .action-buttons button {
-  min-width: 0;
-  color: inherit;
-}
-.PrivateStaticDatePicker .action-buttons button:not(:first-of-type) {
-  margin-left: 5px;
-}
-.PrivateStaticDatePicker .action-buttons button.disabled {
-  color: rgba(0, 0, 0, 0.5);
-}
-.PrivateStaticDatePicker .time {
-  border-left: 2px solid #bfbfbf;
-}
-.PrivateStaticDatePicker .time .time-container {
-  height: 100%;
-}
-.PrivateStaticDatePicker .time .time-container .time-title {
+.PrivateDatePicker .input-text-field.align-center .MuiInputBase-input {
   text-align: center;
-  padding: 22px 0;
-  font-size: 15px;
 }
-.PrivateStaticDatePicker .time .time-container .time-select-wrap {
-  flex: 1;
-  border-top: 1px solid #efefef;
-}
-.PrivateStaticDatePicker.time .time .time-container .time-select-wrap > div > div:not(:first-of-type) {
-  border-left: 1px solid #efefef;
-}
-
-.FormImageFile .preview-img {
-  max-width: 100%;
-}
-.FormImageFile:not(.hide-file-name):not(.variant-standard) .preview-img {
-  padding-right: 14px;
+.PrivateDatePicker .input-text-field.align-right .MuiInputBase-input {
+  text-align: right;
 }
 
 .PrivateStaticDateTimePicker.time {
@@ -591,6 +532,65 @@
   border-left: 1px solid #efefef;
 }
 
+.PrivateStaticDatePicker.time {
+  height: 400px;
+}
+.PrivateStaticDatePicker .MuiPickersCalendarHeader-root {
+  display: none;
+}
+.PrivateStaticDatePicker .month-title-container {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+.PrivateStaticDatePicker .month-title-container .month-title-wrap {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button {
+  font-size: 15px;
+  padding-left: 8px;
+  padding-right: 0;
+  min-width: 0;
+}
+.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button:not(.active) {
+  color: unset;
+}
+.PrivateStaticDatePicker .action-buttons {
+  border-top: 1px solid #efefef;
+  padding: 10px;
+  text-align: right;
+}
+.PrivateStaticDatePicker .action-buttons button {
+  min-width: 0;
+  color: inherit;
+}
+.PrivateStaticDatePicker .action-buttons button:not(:first-of-type) {
+  margin-left: 5px;
+}
+.PrivateStaticDatePicker .action-buttons button.disabled {
+  color: rgba(0, 0, 0, 0.5);
+}
+.PrivateStaticDatePicker .time {
+  border-left: 2px solid #bfbfbf;
+}
+.PrivateStaticDatePicker .time .time-container {
+  height: 100%;
+}
+.PrivateStaticDatePicker .time .time-container .time-title {
+  text-align: center;
+  padding: 22px 0;
+  font-size: 15px;
+}
+.PrivateStaticDatePicker .time .time-container .time-select-wrap {
+  flex: 1;
+  border-top: 1px solid #efefef;
+}
+.PrivateStaticDatePicker.time .time .time-container .time-select-wrap > div > div:not(:first-of-type) {
+  border-left: 1px solid #efefef;
+}
+
 .PrivateInputDatePicker.align-left .MuiInputBase-input {
   text-align: left;
 }
@@ -601,7 +601,7 @@
   text-align: right;
 }
 
-.PrivateMonthSelect {
+.PrivateYearSelect {
   position: absolute;
   left: 0;
   right: 0;
@@ -609,8 +609,8 @@
   bottom: 0;
   background-color: white;
 }
-.PrivateMonthSelect button {
-  font-size: 15px;
+.PrivateYearSelect button {
+  font-size: 14px;
   font-weight: 400;
   border-radius: 18px;
 }
@@ -686,7 +686,7 @@
   background-color: transparent;
 }
 
-.PrivateYearSelect {
+.PrivateMonthSelect {
   position: absolute;
   left: 0;
   right: 0;
@@ -694,8 +694,8 @@
   bottom: 0;
   background-color: white;
 }
-.PrivateYearSelect button {
-  font-size: 14px;
+.PrivateMonthSelect button {
+  font-size: 15px;
   font-weight: 400;
   border-radius: 18px;
 }

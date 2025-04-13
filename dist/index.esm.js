@@ -10149,7 +10149,7 @@ FormSwitch.displayName = 'FormSwitch';var SearchGroupRow = function (_a) {
     var children = _a.children, props = __rest(_a, ["children"]);
     return (React.createElement(FormRow, __assign({}, props),
         React.createElement(FormCol, null,
-            React.createElement(Grid, { container: true, spacing: 1, alignItems: 'center' }, children))));
+            React.createElement(Grid, { container: true, spacing: 1, alignItems: 'center', flex: 1 }, children))));
 };var Search = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Ref
