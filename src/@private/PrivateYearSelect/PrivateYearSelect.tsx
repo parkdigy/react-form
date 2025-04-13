@@ -75,7 +75,7 @@ const PrivateYearSelect: React.FC<Props> = ({ selectYear, activeYear, availableD
               (!!availableDate[0] && y < availableDate[0].year) || (!!availableDate[1] && y > availableDate[1].year);
 
             return (
-              <Grid key={y} item xs={3}>
+              <Grid key={y} size={{ xs: 3 }}>
                 <PrivateToggleButton
                   data-id={y}
                   className={`private-year-select-value-${y}`}

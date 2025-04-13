@@ -6,8 +6,19 @@ module.exports = {
     commonjs: true,
   },
   parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 6,
+    sourceType: 'module',
+    babelOptions: {
+      presets: ['@babel/preset-react'],
+    },
+  },
   plugins: ['react', 'react-hooks'],
   settings: {
+    'import/resolver': 'webpack',
     react: {
       createClass: 'createReactClass',
       pragma: 'React',
@@ -22,6 +33,8 @@ module.exports = {
     'no-underscore-dangle': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unused-vars': ['warn'],
+    '@typescript-eslint/no-unused-expressions': 'off',
+    '@typescript-eslint/no-empty-object-type': 'off',
     'no-useless-constructor': ['warn'],
     'react/no-unused-state': ['warn'],
     'react/state-in-constructor': ['error', 'always'],

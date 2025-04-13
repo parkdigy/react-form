@@ -9,7 +9,7 @@ const LinkDialog: React.FC<Props> = ({ open, onConfirm, onCancel, onClose }) => 
    * Ref
    * ******************************************************************************************************************/
 
-  const inputRef = useRef<FormUrlCommands | null>();
+  const inputRef = useRef<FormUrlCommands>(null);
 
   /********************************************************************************************************************
    * State

@@ -1,30 +1,4 @@
-import React,{createContext,useContext,useRef,useCallback,useMemo,useLayoutEffect,useEffect,useState,useId}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,ifUndefined,nextTick,notEmpty,equal,telNoAutoDash,companyNoAutoDash,personalNoAutoDash}from'@pdg/util';import dayjs from'dayjs';import {useAutoUpdateLayoutRef,useAutoUpdateState,useAutoUpdateRefState,useFirstSkipEffect}from'@pdg/react-hook';import {PdgButton,PdgIcon,PdgIconText}from'@pdg/react-component';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBox,CheckBoxOutlineBlank,RadioButtonUnchecked,RadioButtonChecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';import'dayjs/locale/ko';function styleInject(css, ref) {
-  if ( ref === void 0 ) ref = {};
-  var insertAt = ref.insertAt;
-
-  if (!css || typeof document === 'undefined') { return; }
-
-  var head = document.head || document.getElementsByTagName('head')[0];
-  var style = document.createElement('style');
-  style.type = 'text/css';
-
-  if (insertAt === 'top') {
-    if (head.firstChild) {
-      head.insertBefore(style, head.firstChild);
-    } else {
-      head.appendChild(style);
-    }
-  } else {
-    head.appendChild(style);
-  }
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    style.appendChild(document.createTextNode(css));
-  }
-}var css_248z$m = ".simplebar-track.simplebar-vertical {\n  width: 8px !important;\n}\n.simplebar-track.simplebar-vertical .simplebar-scrollbar.simplebar-visible:before {\n  opacity: 0.3 !important;\n}";
-styleInject(css_248z$m);/******************************************************************************
+import React,{createContext,useContext,useRef,useCallback,useMemo,useLayoutEffect,useEffect,useState,useId}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,ifUndefined,nextTick,notEmpty,equal,telNoAutoDash,companyNoAutoDash,personalNoAutoDash}from'@pdg/util';import dayjs from'dayjs';import {useAutoUpdateLayoutRef,useAutoUpdateState,useAutoUpdateRefState,useFirstSkipEffect,useForceUpdate}from'@pdg/react-hook';import {PdgButton,PdgIcon,PdgIconText}from'@pdg/react-component';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBoxOutlineBlank,CheckBox,RadioButtonChecked,RadioButtonUnchecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';import'dayjs/locale/ko';/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -38,7 +12,7 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
-/* global Reflect, Promise, SuppressedError, Symbol */
+/* global Reflect, Promise, SuppressedError, Symbol, Iterator */
 
 
 var __assign = function() {
@@ -654,9 +628,9 @@ var appendFormValueData = function (data, itemCommands) {
      * ******************************************************************************************************************/
     return (React.createElement(PdgButton, __assign({ ref: ref, className: classNames(className, 'FormButton'), type: type, variant: initVariant ? initVariant : type === 'submit' ? 'contained' : 'outlined', size: size, color: color, fullWidth: fullWidth, onClick: onClick }, props)));
 });
-var FormButton$1 = React.memo(FormButton);var IconPdgIcon = styled(PdgIcon)(templateObject_1$i || (templateObject_1$i = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
+var FormButton$1 = React.memo(FormButton);var IconPdgIcon = styled(PdgIcon)(templateObject_1$j || (templateObject_1$j = __makeTemplateObject(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"], ["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
 var ChildrenSpan = styled('span')(templateObject_2$9 || (templateObject_2$9 = __makeTemplateObject(["\n  vertical-align: middle;\n"], ["\n  vertical-align: middle;\n"])));
-var templateObject_1$i, templateObject_2$9;var FormLabel = React.forwardRef(function (_a, ref) {
+var templateObject_1$j, templateObject_2$9;var FormLabel = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Use
      * ******************************************************************************************************************/
@@ -672,11 +646,11 @@ var templateObject_1$i, templateObject_2$9;var FormLabel = React.forwardRef(func
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(InputLabel, __assign({ ref: ref, shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size, error: error, style: newStyle }, props), icon ? (React.createElement(React.Fragment, null,
+    return (React.createElement(InputLabel, __assign({ ref: ref, shrink: true, className: 'FormItemBase-InputLabel', size: size, error: error, style: newStyle }, props), icon ? (React.createElement(React.Fragment, null,
         React.createElement(IconPdgIcon, null, icon),
         React.createElement(ChildrenSpan, null, children))) : (children)));
 });
-var FormLabel$1 = React.memo(FormLabel);var StyledLineBox = styled(Box)(templateObject_1$h || (templateObject_1$h = __makeTemplateObject(["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"], ["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"])));
+var FormLabel$1 = React.memo(FormLabel);var StyledLineBox = styled(Box)(templateObject_1$i || (templateObject_1$i = __makeTemplateObject(["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"], ["\n  border-bottom: thin solid #dfdfdf;\n  position: absolute;\n  left: 0;\n  top: 50%;\n  width: 100%;\n"])));
 var StyledErrorLineBox = styled(Box)(function (_a) {
     var theme = _a.theme;
     return ({
@@ -699,7 +673,7 @@ var StyledWarningLineBox = styled(Box)(function (_a) {
         opacity: 0.4,
     });
 });
-var templateObject_1$h;var DEFAULT_LINE_STYLE = { flex: 1, position: 'relative' };
+var templateObject_1$i;var DEFAULT_LINE_STYLE = { flex: 1, position: 'relative' };
 var FormDivider = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * FormState
@@ -744,7 +718,7 @@ var FormDivider = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(Grid, { ref: ref, item: true, xs: 12, style: style, className: classNames(className, 'FormDivider'), sx: sx },
+    return (React.createElement(Grid, { ref: ref, size: { xs: 12 }, style: style, className: classNames(className, 'FormDivider'), sx: sx },
         React.createElement(Box, { sx: {
                 display: 'flex',
                 py: 1,
@@ -762,8 +736,8 @@ var FormDivider = React.forwardRef(function (_a, ref) {
                 } }, label)),
             (line || collapse) && (React.createElement("div", { style: lineStyle }, error ? React.createElement(StyledErrorLineBox, null) : warning ? React.createElement(StyledWarningLineBox, null) : React.createElement(StyledLineBox, null))),
             collapse && (React.createElement(PdgIcon, { sx: { opacity: 0.6, ml: 1 }, color: error ? 'error' : warning ? 'warning' : undefined }, collapseIn ? 'KeyboardDoubleArrowUp' : 'KeyboardDoubleArrowDown')))));
-});var StyledWrapGrid$1 = styled(Grid)(templateObject_1$g || (templateObject_1$g = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
-var templateObject_1$g;var FormBlock = React.forwardRef(function (_a, ref) {
+});var StyledWrapGrid$1 = styled(Grid)(templateObject_1$h || (templateObject_1$h = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
+var templateObject_1$h;var FormBlock = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
@@ -819,16 +793,16 @@ var templateObject_1$g;var FormBlock = React.forwardRef(function (_a, ref) {
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(FormContext.Provider, { value: __assign(__assign({}, otherFormState), { variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth }) },
-        React.createElement(Grid, { item: true, ref: ref, xs: 12, className: classNames(className, 'FormBlock'), style: style, sx: sx },
+        React.createElement(Grid, { ref: ref, size: { xs: 12 }, className: classNames(className, 'FormBlock'), style: style, sx: sx },
             React.createElement(Grid, { container: true, spacing: spacing },
                 (icon || label || line || collapse) && (React.createElement(FormDivider, { className: 'FormBlock-header', collapse: collapse, collapseIn: collapseIn, size: size, icon: icon, color: color, label: label, line: line, error: error, warning: warning, lineVerticalMargin: lineVerticalMargin, hidden: hidden, onCollapseChange: collapse ? function (newCollapseIn) { return setCollapseIn(newCollapseIn); } : undefined })),
-                React.createElement(StyledWrapGrid$1, { item: true, xs: 12 },
+                React.createElement(StyledWrapGrid$1, { size: { xs: 12 } },
                     React.createElement(Container, __assign({}, containerProps),
                         React.createElement(Grid, { container: true, spacing: spacing },
-                            React.createElement(StyledWrapGrid$1, { item: true, xs: 12, className: 'FormBlock-body' },
+                            React.createElement(StyledWrapGrid$1, { size: { xs: 12 }, className: 'FormBlock-body' },
                                 React.createElement(Grid, { className: 'FormBlock-content', container: true, spacing: spacing }, children)))))))));
-});var StyledWrapGrid = styled(Grid)(templateObject_1$f || (templateObject_1$f = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
-var templateObject_1$f;var FormRow = React.forwardRef(function (_a, ref) {
+});var StyledWrapGrid = styled(Grid)(templateObject_1$g || (templateObject_1$g = __makeTemplateObject(["\n  width: 100%;\n"], ["\n  width: 100%;\n"])));
+var templateObject_1$g;var FormRow = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
@@ -896,16 +870,16 @@ var templateObject_1$f;var FormRow = React.forwardRef(function (_a, ref) {
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColAutoXs: formColAutoXs, onAddFormCol: handleAddFormCol, onRemoveFormCol: handleRemoveFormCol }) },
-        React.createElement(Grid, { item: true, ref: ref, xs: 12, className: classNames(className, 'FormRow'), style: style, sx: sx },
+        React.createElement(Grid, { ref: ref, size: { xs: 12 }, className: classNames(className, 'FormRow'), style: style, sx: sx },
             React.createElement(Grid, { container: true, spacing: spacing },
                 (icon || label || line) && (React.createElement(FormDivider, { className: classNames(className, 'FormRow-header'), size: size, icon: icon, color: color, label: label, line: line, error: error, warning: warning, lineVerticalMargin: lineVerticalMargin, hidden: hidden })),
-                React.createElement(StyledWrapGrid, { item: true, xs: 12, className: 'FormRow-body' },
+                React.createElement(StyledWrapGrid, { size: { xs: 12 }, className: 'FormRow-body' },
                     React.createElement(Grid, { className: 'FormRow-content', container: true, spacing: spacing, direction: 'row', style: { flexWrap: 'nowrap' } }, children),
                     helperText && (React.createElement(FormHelperText, { className: 'FormRow-helper-text', component: 'div', error: error }, helperText)))))));
-});var StyledFormLabelContainerDiv = styled('div')(templateObject_1$e || (templateObject_1$e = __makeTemplateObject(["\n  position: relative;\n  height: 20px;\n"], ["\n  position: relative;\n  height: 20px;\n"])));
+});var StyledFormLabelContainerDiv = styled('div')(templateObject_1$f || (templateObject_1$f = __makeTemplateObject(["\n  position: relative;\n  height: 20px;\n"], ["\n  position: relative;\n  height: 20px;\n"])));
 var StyledFormLabel = styled(FormLabel$1)(templateObject_2$8 || (templateObject_2$8 = __makeTemplateObject(["\n  position: absolute;\n  left: 5px;\n  top: 0;\n"], ["\n  position: absolute;\n  left: 5px;\n  top: 0;\n"])));
 var StyledContentContainerBox = styled(Box)(templateObject_3$4 || (templateObject_3$4 = __makeTemplateObject(["\n  display: flex;\n  flex-wrap: wrap;\n"], ["\n  display: flex;\n  flex-wrap: wrap;\n"])));
-var templateObject_1$e, templateObject_2$8, templateObject_3$4;var FormCol = React.forwardRef(function (_a, ref) {
+var templateObject_1$f, templateObject_2$8, templateObject_3$4;var FormCol = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
@@ -915,10 +889,6 @@ var templateObject_1$e, templateObject_2$8, templateObject_3$4;var FormCol = Rea
     //----------------------------------------------------------------------------------------------------------------
     xs = _a.xs, className = _a.className, children = _a.children, initStyle = _a.style, sx = _a.sx;
     var id = useId();
-    /********************************************************************************************************************
-     * Ref
-     * ******************************************************************************************************************/
-    var gridRef = useRef(null);
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
@@ -937,11 +907,8 @@ var templateObject_1$e, templateObject_2$8, templateObject_3$4;var FormCol = Rea
     /********************************************************************************************************************
      * ResizeDetector
      * ******************************************************************************************************************/
-    var formColWidth = useResizeDetector({
-        targetRef: gridRef,
-        handleWidth: true,
-        handleHeight: false,
-    }).width;
+    var _c = useResizeDetector({ handleHeight: false }), gridRef = _c.ref, resizedFormColWidth = _c.width;
+    var formColWidth = ifUndefined(resizedFormColWidth, 0);
     /********************************************************************************************************************
      * LayoutEffect
      * ******************************************************************************************************************/
@@ -972,40 +939,28 @@ var templateObject_1$e, templateObject_2$8, templateObject_3$4;var FormCol = Rea
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColGap: formColGap, formColXs: xs || formColAutoXs || 12, formColWidth: formColWidth, formColWithLabel: !!label, formColWithHelperText: !!helperText }) },
-        React.createElement(Grid, { ref: gridRef, item: true, xs: xs || formColAutoXs || 12, className: classNames(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text'), style: hidden ? __assign(__assign({}, initStyle), { display: 'none' }) : initStyle, sx: sx },
+        React.createElement(Grid, { ref: gridRef, size: { xs: xs || formColAutoXs || 12 }, className: classNames(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text'), style: hidden ? __assign(__assign({}, initStyle), { display: 'none' }) : initStyle, sx: sx },
             React.createElement(Grid, { container: true, direction: 'column' },
-                label && (React.createElement(Grid, { item: true, className: 'FormCol-header' },
+                label && (React.createElement(Grid, { className: 'FormCol-header' },
                     React.createElement(StyledFormLabelContainerDiv, null,
                         React.createElement(StyledFormLabel, { className: 'FormCol-FormLabel', size: size, icon: icon, focused: focused, color: color, error: error, warning: warning }, label)))),
-                React.createElement(Grid, { item: true, xs: 2, className: 'FormCol-content' },
+                React.createElement(Grid, { size: { xs: 2, sm: 12 }, className: 'FormCol-content' },
                     React.createElement(StyledContentContainerBox, { gap: formColGap }, children)),
-                helperText && (React.createElement(Grid, { item: true, className: 'FormCol-helper-text' },
+                helperText && (React.createElement(Grid, { className: 'FormCol-helper-text' },
                     React.createElement(FormHelperText, { component: 'div', error: error, style: { marginLeft: helperTextShift ? 14 : 5 } }, helperText)))))));
-});var StyledContainerDiv = styled('div')(templateObject_1$d || (templateObject_1$d = __makeTemplateObject(["\n  flex: 1;\n  position: relative;\n"], ["\n  flex: 1;\n  position: relative;\n"])));
+});var StyledContainerDiv = styled('div')(templateObject_1$e || (templateObject_1$e = __makeTemplateObject(["\n  flex: 1;\n  position: relative;\n"], ["\n  flex: 1;\n  position: relative;\n"])));
 var StyledContentDiv = styled('div')(templateObject_2$7 || (templateObject_2$7 = __makeTemplateObject(["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"], ["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"])));
-var templateObject_1$d, templateObject_2$7;var FormBody = function (_a) {
-    /********************************************************************************************************************
-     * Ref
-     * ******************************************************************************************************************/
-    var children = _a.children, hidden = _a.hidden;
-    var containerRef = useRef(null);
+var templateObject_1$e, templateObject_2$7;var FormBody = function (_a) {
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
+    var children = _a.children, hidden = _a.hidden;
     var _b = useFormState(), spacing = _b.spacing, fullHeight = _b.fullHeight;
-    var _c = useState(0), height = _c[0], setHeight = _c[1];
     /********************************************************************************************************************
      * ResizeDetector
      * ******************************************************************************************************************/
-    useResizeDetector({
-        targetRef: containerRef,
-        handleWidth: false,
-        handleHeight: true,
-        onResize: function () {
-            var _a, _b;
-            setHeight(((_b = (_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height) || 0);
-        },
-    });
+    var _c = useResizeDetector({ handleWidth: false }), containerRef = _c.ref, resizedHeight = _c.height;
+    var height = ifUndefined(resizedHeight, 0);
     /********************************************************************************************************************
      * Style
      * ******************************************************************************************************************/
@@ -1028,26 +983,24 @@ var templateObject_1$d, templateObject_2$7;var FormBody = function (_a) {
     var children = _a.children, noLine = _a.noLine, hidden = _a.hidden;
     var spacing = useFormState().spacing;
     var style = useMemo(function () { return (hidden ? { display: 'none' } : undefined); }, [hidden]);
-    return (React.createElement(Grid, { item: true, xs: 12, className: 'FormFooter', style: style },
+    return (React.createElement(Grid, { size: { xs: 12 }, className: 'FormFooter', style: style },
         React.createElement(Grid, { container: true, spacing: spacing, direction: 'column' },
-            !noLine && (React.createElement(Grid, { item: true, xs: 12, sx: { mt: spacing } },
+            !noLine && (React.createElement(Grid, { size: { xs: 12 }, sx: { mt: spacing } },
                 React.createElement(FormDivider, { line: true }))),
             children)));
-};var css_248z$l = ".FormTextField {\n  min-width: 200px;\n}\n.FormTextField .clear-icon-button-wrap {\n  visibility: hidden;\n}\n.FormTextField.variant-filled .clear-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormTextField:hover .clear-icon-button-wrap.show,\n.FormTextField .MuiInputBase-root.Mui-focused .clear-icon-button-wrap.show {\n  visibility: visible;\n}";
-styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) {
+};var FormTextField = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
-    var _b, _c;
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, initSubmitWhenReturnKey = _a.submitWhenReturnKey, 
     //----------------------------------------------------------------------------------------------------------------
-    name = _a.name, required = _a.required, initValue = _a.value, initData = _a.data, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, helperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initMuiInputProps = _a.InputProps, initMuiInputLabelProps = _a.InputLabelProps, initInputProps = _a.inputProps, initInputRef = _a.inputRef, select = _a.select, SelectProps = _a.SelectProps, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, initHidden = _a.hidden, disableReturnKey = _a.disableReturnKey, 
+    name = _a.name, required = _a.required, initValue = _a.value, initData = _a.data, icon = _a.icon, labelIcon = _a.labelIcon, initLabel = _a.label, initError = _a.error, helperText = _a.helperText, exceptValue = _a.exceptValue, readOnly = _a.readOnly, tabIndex = _a.tabIndex, initDisabled = _a.disabled, placeholder = _a.placeholder, maxLength = _a.maxLength, clear = _a.clear, width = _a.width, initSlotProps = _a.slotProps, initInputRef = _a.inputRef, select = _a.select, multiline = _a.multiline, validPattern = _a.validPattern, invalidPattern = _a.invalidPattern, startAdornment = _a.startAdornment, endAdornment = _a.endAdornment, noFormValueItem = _a.noFormValueItem, initHidden = _a.hidden, disableReturnKey = _a.disableReturnKey, 
     //----------------------------------------------------------------------------------------------------------------
     onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, onBlur = _a.onBlur, onKeyDown = _a.onKeyDown, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, 
     //----------------------------------------------------------------------------------------------------------------
-    props = __rest(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "submitWhenReturnKey", "name", "required", "value", "data", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "InputProps", "InputLabelProps", "inputProps", "inputRef", "select", "SelectProps", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "disableReturnKey", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
+    props = __rest(_a, ["variant", "size", "color", "focused", "labelShrink", "fullWidth", "submitWhenReturnKey", "name", "required", "value", "data", "icon", "labelIcon", "label", "error", "helperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "slotProps", "inputRef", "select", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "hidden", "disableReturnKey", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"]);
     var id = useId();
     /********************************************************************************************************************
      * Ref
@@ -1056,7 +1009,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
-    var _d = useFormState(), formVariant = _d.variant, formSize = _d.size, formColor = _d.color, formFocused = _d.focused, formLabelShrink = _d.labelShrink, formFullWidth = _d.fullWidth, formDisabled = _d.disabled, formSubmitWhenReturnKey = _d.submitWhenReturnKey, formColWithHelperText = _d.formColWithHelperText, onAddValueItem = _d.onAddValueItem, onRemoveValueItem = _d.onRemoveValueItem, onValueChange = _d.onValueChange, onValueChangeByUser = _d.onValueChangeByUser, onRequestSubmit = _d.onRequestSubmit, onRequestSearchSubmit = _d.onRequestSearchSubmit;
+    var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formDisabled = _b.disabled, formSubmitWhenReturnKey = _b.submitWhenReturnKey, formColWithHelperText = _b.formColWithHelperText, onAddValueItem = _b.onAddValueItem, onRemoveValueItem = _b.onRemoveValueItem, onValueChange = _b.onValueChange, onValueChangeByUser = _b.onValueChangeByUser, onRequestSubmit = _b.onRequestSubmit, onRequestSearchSubmit = _b.onRequestSearchSubmit;
     /********************************************************************************************************************
      * Memo - FormState
      * ******************************************************************************************************************/
@@ -1070,11 +1023,11 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var _e = useAutoUpdateState(initError), error = _e[0], setError = _e[1];
-    var _f = useState(), errorHelperText = _f[0], setErrorHelperText = _f[1];
-    var _g = useAutoUpdateRefState(initData), dataRef = _g[0], setData = _g[2];
-    var _h = useAutoUpdateRefState(useMemo(function () { return (initDisabled == null ? formDisabled : initDisabled); }, [initDisabled, formDisabled])), disabledRef = _h[0], disabled = _h[1], setDisabled = _h[2];
-    var _j = useAutoUpdateRefState(initHidden), hiddenRef = _j[0], hidden = _j[1], setHidden = _j[2];
+    var _c = useAutoUpdateState(initError), error = _c[0], setError = _c[1];
+    var _d = useState(), errorHelperText = _d[0], setErrorHelperText = _d[1];
+    var _e = useAutoUpdateRefState(initData), dataRef = _e[0], setData = _e[2];
+    var _f = useAutoUpdateRefState(useMemo(function () { return (initDisabled == null ? formDisabled : initDisabled); }, [initDisabled, formDisabled])), disabledRef = _f[0], disabled = _f[1], setDisabled = _f[2];
+    var _g = useAutoUpdateRefState(initHidden), hiddenRef = _g[0], hidden = _g[1], setHidden = _g[2];
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
      * ******************************************************************************************************************/
@@ -1118,7 +1071,7 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     var getFinalValue = useCallback(function (newValue) {
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
-    var _k = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _k[0], value = _k[1], setValue = _k[2];
+    var _h = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _h[0], value = _h[1], setValue = _h[2];
     useFirstSkipEffect(function () {
         if (error)
             validate(value);
@@ -1144,52 +1097,6 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
             (_b = inputRef.current) === null || _b === void 0 ? void 0 : _b.focus();
         }
     }, [initInputRef, inputRef]);
-    /********************************************************************************************************************
-     * Memo - muiInputProps
-     * ******************************************************************************************************************/
-    var muiInputProps = useMemo(function () {
-        var muiInputProps = __assign({}, initMuiInputProps);
-        if (startAdornment || icon || muiInputProps.startAdornment) {
-            muiInputProps.startAdornment = (React.createElement(React.Fragment, null,
-                icon && (React.createElement(InputAdornment, { position: 'start' },
-                    React.createElement(PdgIcon, { size: 'small' }, icon))),
-                startAdornment && React.createElement(InputAdornment, { position: 'start' }, startAdornment),
-                muiInputProps.startAdornment));
-        }
-        if (endAdornment || muiInputProps.endAdornment || (clear && !readOnly && !disabled)) {
-            muiInputProps.endAdornment = (React.createElement(React.Fragment, null,
-                clear && !readOnly && !disabled && (React.createElement(InputAdornment, { className: classNames('clear-icon-button-wrap', showClear && 'show'), position: 'end' },
-                    React.createElement(IconButton, { className: 'clear-icon-button', size: 'small', tabIndex: -1, onClick: function () {
-                            var finalValue = setValue('');
-                            focus();
-                            if (!noFormValueItem) {
-                                nextTick(function () {
-                                    onValueChangeByUser(name, finalValue);
-                                    onRequestSearchSubmit(name, finalValue);
-                                });
-                            }
-                        } },
-                        React.createElement(PdgIcon, { size: 'inherit' }, "ClearRounded")))),
-                muiInputProps.endAdornment,
-                endAdornment && React.createElement(InputAdornment, { position: 'end' }, endAdornment)));
-        }
-        return muiInputProps;
-    }, [
-        clear,
-        disabled,
-        endAdornment,
-        focus,
-        icon,
-        initMuiInputProps,
-        name,
-        noFormValueItem,
-        onRequestSearchSubmit,
-        onValueChangeByUser,
-        readOnly,
-        setValue,
-        showClear,
-        startAdornment,
-    ]);
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
@@ -1318,30 +1225,99 @@ styleInject(css_248z$l);var FormTextField = React.forwardRef(function (_a, ref) 
     if (hidden) {
         style.display = 'none';
     }
-    // muiInputLabelProps
-    var muiInputLabelProps = labelShrink || placeholder
-        ? __assign(__assign({}, initMuiInputLabelProps), { shrink: true }) : initMuiInputLabelProps;
-    // inputProps
-    var inputProps = initInputProps;
-    if ((!((_b = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _b === void 0 ? void 0 : _b.includes('FormTag-Input')) && readOnly != null) || maxLength != null) {
-        inputProps = __assign(__assign({}, initInputProps), { readOnly: readOnly, maxLength: maxLength });
-        if (readOnly) {
-            inputProps.tabIndex = -1;
-            inputProps.className = classNames(inputProps.className, 'Mui-disabled');
+    // // inputProps
+    // let inputProps: FormTextProps['inputProps'] = initInputProps;
+    // if ((!initInputProps?.className?.includes('FormTag-Input') && readOnly != null) || maxLength != null) {
+    //   inputProps = {
+    //     ...initInputProps,
+    //     readOnly: readOnly,
+    //     maxLength: maxLength,
+    //   };
+    //
+    //   if (readOnly) {
+    //     inputProps.tabIndex = -1;
+    //     inputProps.className = classNames(inputProps.className, 'Mui-disabled');
+    //   } else {
+    //     inputProps.tabIndex = tabIndex;
+    //   }
+    // }
+    /********************************************************************************************************************
+     * Memo - slotProps
+     * ******************************************************************************************************************/
+    var inputSlotProps = useMemo(function () {
+        var newProps = __assign({}, initSlotProps === null || initSlotProps === void 0 ? void 0 : initSlotProps.input);
+        if (startAdornment || icon || newProps.startAdornment) {
+            newProps.startAdornment = (React.createElement(React.Fragment, null,
+                icon && (React.createElement(InputAdornment, { position: 'start' },
+                    React.createElement(PdgIcon, { size: 'small' }, icon))),
+                startAdornment && React.createElement(InputAdornment, { position: 'start' }, startAdornment),
+                newProps.startAdornment));
         }
-        else {
-            inputProps.tabIndex = tabIndex;
+        if (endAdornment || newProps.endAdornment || (clear && !readOnly && !disabled)) {
+            newProps.endAdornment = (React.createElement(React.Fragment, null,
+                clear && !readOnly && !disabled && (React.createElement(InputAdornment, { className: classNames('clear-icon-button-wrap', showClear && 'show'), position: 'end' },
+                    React.createElement(IconButton, { className: 'clear-icon-button', size: 'small', tabIndex: -1, onClick: function () {
+                            var finalValue = setValue('');
+                            focus();
+                            if (!noFormValueItem) {
+                                nextTick(function () {
+                                    onValueChangeByUser(name, finalValue);
+                                    onRequestSearchSubmit(name, finalValue);
+                                });
+                            }
+                        } },
+                        React.createElement(PdgIcon, { size: 'inherit' }, "ClearRounded")))),
+                newProps.endAdornment,
+                endAdornment && React.createElement(InputAdornment, { position: 'end' }, endAdornment)));
         }
-    }
+        return newProps;
+    }, [
+        clear,
+        disabled,
+        endAdornment,
+        focus,
+        icon,
+        initSlotProps === null || initSlotProps === void 0 ? void 0 : initSlotProps.input,
+        name,
+        noFormValueItem,
+        onRequestSearchSubmit,
+        onValueChangeByUser,
+        readOnly,
+        setValue,
+        showClear,
+        startAdornment,
+    ]);
+    var slotProps = useMemo(function () {
+        var _a;
+        var newSlotProps = __assign(__assign({}, initSlotProps), { formHelperText: { component: 'div' } });
+        // input
+        newSlotProps.input = __assign(__assign({}, initSlotProps === null || initSlotProps === void 0 ? void 0 : initSlotProps.input), inputSlotProps);
+        // inputLabel
+        newSlotProps.inputLabel =
+            labelShrink || placeholder
+                ? __assign(__assign({}, initSlotProps === null || initSlotProps === void 0 ? void 0 : initSlotProps.inputLabel), { shrink: true }) : initSlotProps === null || initSlotProps === void 0 ? void 0 : initSlotProps.inputLabel;
+        // htmlInput
+        var initHtmlInputProps = initSlotProps === null || initSlotProps === void 0 ? void 0 : initSlotProps.htmlInput;
+        if ((!((_a = initHtmlInputProps === null || initHtmlInputProps === void 0 ? void 0 : initHtmlInputProps.className) === null || _a === void 0 ? void 0 : _a.includes('FormTag-Input')) && readOnly != null) || maxLength != null) {
+            newSlotProps.htmlInput = __assign(__assign({}, initHtmlInputProps), { readOnly: readOnly, maxLength: maxLength });
+            if (readOnly) {
+                newSlotProps.htmlInput.tabIndex = -1;
+                newSlotProps.htmlInput.className = classNames(newSlotProps.htmlInput.className, 'Mui-disabled');
+            }
+            else {
+                newSlotProps.htmlInput.tabIndex = tabIndex;
+            }
+        }
+        return newSlotProps;
+    }, [initSlotProps, inputSlotProps, labelShrink, maxLength, placeholder, readOnly, tabIndex]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(TextField, __assign({}, props, { variant: variant, size: size, color: color, focused: focused || undefined, name: name, label: labelIcon ? (React.createElement(React.Fragment, null,
             React.createElement(PdgIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
-            React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel), placeholder: placeholder, className: classNames(className, 'FormValueItem', 'FormTextField', "variant-".concat(variant)), inputRef: initInputRef ? initInputRef : inputRef, value: value, required: required, fullWidth: !width && fullWidth, error: error, helperText: formColWithHelperText ? undefined : error ? errorHelperText : helperText, FormHelperTextProps: { component: 'div' }, disabled: disabled, InputProps: muiInputProps, InputLabelProps: muiInputLabelProps, inputProps: ((_c = initInputProps === null || initInputProps === void 0 ? void 0 : initInputProps.className) === null || _c === void 0 ? void 0 : _c.includes('FormTag-Input')) ? initInputProps : inputProps, style: style, select: select, SelectProps: SelectProps, multiline: multiline, onChange: handleChange, onBlur: handleBlur, onKeyDown: handleKeyDown })));
+            React.createElement(Box, { component: 'span', style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel), placeholder: placeholder, className: classNames(className, 'FormValueItem', 'FormTextField', "variant-".concat(variant)), inputRef: initInputRef ? initInputRef : inputRef, value: value, required: required, fullWidth: !width && fullWidth, error: error, helperText: formColWithHelperText ? undefined : error ? errorHelperText : helperText, slotProps: slotProps, disabled: disabled, style: style, select: select, multiline: multiline, onChange: handleChange, onBlur: handleBlur, onKeyDown: handleKeyDown })));
 });
-FormTextField.displayName = 'FormTextField';var css_248z$k = ".FormHidden {\n  display: none !important;\n}";
-styleInject(css_248z$k);var FormHidden = React.forwardRef(function (_a, ref) {
+FormTextField.displayName = 'FormTextField';var FormHidden = React.forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest(_a, ["className"]);
     return (React.createElement(FormTextField, __assign({ ref: ref, className: classNames(className, 'FormHidden'), type: 'hidden', variant: 'standard' }, props)));
 });
@@ -1349,12 +1325,69 @@ FormHidden.displayName = 'FormHidden';var FormText = React.forwardRef(function (
     var className = _a.className, _b = _a.clear, clear = _b === void 0 ? true : _b, _c = _a.value, value = _c === void 0 ? '' : _c, props = __rest(_a, ["className", "clear", "value"]);
     return (React.createElement(FormTextField, __assign({ ref: ref, className: classNames(className, 'FormText'), clear: clear, value: value, disableReturnKey: true }, props)));
 });
-FormText.displayName = 'FormText';var css_248z$j = ".FormTag.FormTextField {\n  min-width: 200px;\n}";
-styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
+FormText.displayName = 'FormText';var FormTagText = React.forwardRef(function (_a, ref) {
+    /********************************************************************************************************************
+     * Use
+     * ******************************************************************************************************************/
+    var onKeyDown = _a.onKeyDown, onBlur = _a.onBlur, onAppendTag = _a.onAppendTag, props = __rest(_a, ["onKeyDown", "onBlur", "onAppendTag"]);
+    var forceUpdate = useForceUpdate();
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
+    var valueRef = useRef('');
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+    var appendTag = useCallback(function () {
+        onAppendTag(valueRef.current);
+        valueRef.current = ' ';
+        forceUpdate();
+        nextTick(function () {
+            valueRef.current = '';
+            forceUpdate();
+        });
+    }, [forceUpdate, onAppendTag]);
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
+    var handleKeyDown = useCallback(function (e) {
+        if ([' ', ',', 'Enter'].includes(e.key)) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (notEmpty(valueRef.current)) {
+                appendTag();
+            }
+        }
+        else {
+            if (onKeyDown)
+                onKeyDown(e);
+        }
+    }, [appendTag, onKeyDown]);
+    var handleChange = useCallback(function (value) {
+        valueRef.current = value.replace(/ /g, '').replace(/,/g, '');
+    }, []);
+    var handleBlur = useCallback(function (e) {
+        if (notEmpty(valueRef.current)) {
+            appendTag();
+        }
+        if (onBlur)
+            onBlur(e);
+    }, [onBlur, appendTag]);
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
+    return (React.createElement(StyledFormText, __assign({ ref: ref }, props, { value: valueRef.current, onChange: handleChange, onKeyDown: handleKeyDown, onBlur: handleBlur })));
+});
+/********************************************************************************************************************
+ * Styled Components
+ * ******************************************************************************************************************/
+var StyledFormText = styled(FormText)(templateObject_1$d || (templateObject_1$d = __makeTemplateObject(["\n  .FormTag-Input {\n    flex: 1;\n    min-width: 50px;\n    padding-left: 5px;\n  }\n  &.variant-outlined {\n    .MuiInputBase-root {\n      .FormTag-Input {\n        padding-top: 7px;\n        padding-bottom: 8px;\n      }\n\n      &.MuiInputBase-sizeSmall {\n        .FormTag-Input {\n          padding-top: 0;\n          padding-bottom: 0;\n        }\n      }\n    }\n  }\n"], ["\n  .FormTag-Input {\n    flex: 1;\n    min-width: 50px;\n    padding-left: 5px;\n  }\n  &.variant-outlined {\n    .MuiInputBase-root {\n      .FormTag-Input {\n        padding-top: 7px;\n        padding-bottom: 8px;\n      }\n\n      &.MuiInputBase-sizeSmall {\n        .FormTag-Input {\n          padding-top: 0;\n          padding-bottom: 0;\n        }\n      }\n    }\n  }\n"])));
+var templateObject_1$d;var _emptyValue = [];
+var FormTag = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
-    var className = _a.className, name = _a.name, _b = _a.value, initValue = _b === void 0 ? [] : _b, exceptValue = _a.exceptValue, _c = _a.clear, clear = _c === void 0 ? true : _c, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, initDisabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, _d = _a.formValueSeparator, formValueSeparator = _d === void 0 ? ',' : _d, formValueSort = _a.formValueSort, limitTags = _a.limitTags, getLimitTagsText = _a.getLimitTagsText, onAppendTag = _a.onAppendTag, onRemoveTag = _a.onRemoveTag, onValidate = _a.onValidate, onKeyDown = _a.onKeyDown, onChange = _a.onChange, onValue = _a.onValue, onBlur = _a.onBlur, props = __rest(_a, ["className", "name", "value", "exceptValue", "clear", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "limitTags", "getLimitTagsText", "onAppendTag", "onRemoveTag", "onValidate", "onKeyDown", "onChange", "onValue", "onBlur"]);
+    var className = _a.className, name = _a.name, _b = _a.value, initValue = _b === void 0 ? _emptyValue : _b, exceptValue = _a.exceptValue, _c = _a.clear, clear = _c === void 0 ? true : _c, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, initDisabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, _d = _a.formValueSeparator, formValueSeparator = _d === void 0 ? ',' : _d, formValueSort = _a.formValueSort, limitTags = _a.limitTags, getLimitTagsText = _a.getLimitTagsText, slotProps = _a.slotProps, onAppendTag = _a.onAppendTag, onRemoveTag = _a.onRemoveTag, onValidate = _a.onValidate, onChange = _a.onChange, onValue = _a.onValue, props = __rest(_a, ["className", "name", "value", "exceptValue", "clear", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "limitTags", "getLimitTagsText", "slotProps", "onAppendTag", "onRemoveTag", "onValidate", "onChange", "onValue"]);
     var _e = useFormState(), formFullWidth = _e.fullWidth, formDisabled = _e.disabled, onAddValueItem = _e.onAddValueItem, onValueChange = _e.onValueChange, onValueChangeByUser = _e.onValueChangeByUser, onRequestSearchSubmit = _e.onRequestSearchSubmit, otherFormState = __rest(_e, ["fullWidth", "disabled", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
     /********************************************************************************************************************
      * FormState - Variables
@@ -1363,9 +1396,8 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var _f = useState(''), inputValue = _f[0], setInputValue = _f[1];
-    var _g = useAutoUpdateState(initError), error = _g[0], setError = _g[1];
-    var _h = useState(), errorHelperText = _h[0], setErrorHelperText = _h[1];
+    var _f = useAutoUpdateState(initError), error = _f[0], setError = _f[1];
+    var _g = useState(), errorHelperText = _g[0], setErrorHelperText = _g[1];
     var disabled = useAutoUpdateState(initDisabled == null ? formDisabled : initDisabled)[0];
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -1404,7 +1436,7 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
         }
         return onValue ? onValue(finalValue) : finalValue;
     }, [onValue]);
-    var _j = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _j[0], value = _j[1], setValue = _j[2];
+    var _h = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _h[0], value = _h[1], setValue = _h[2];
     var valueSet = useMemo(function () { return new Set(value); }, [value]);
     useFirstSkipEffect(function () {
         if (error)
@@ -1443,16 +1475,12 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
      * Function - appendTag, removeTag
      * ******************************************************************************************************************/
     var appendTag = useCallback(function (tag) {
-        if (valueSet.has(tag)) {
-            setInputValue('');
-        }
-        else {
+        if (!valueSet.has(tag)) {
             if (onAppendTag && !onAppendTag(tag))
                 return;
             valueSet.add(tag);
             var finalValue_1 = setValue(valueSet);
             nextTick(function () {
-                setInputValue('');
                 onValueChangeByUser(name, finalValue_1);
                 onRequestSearchSubmit(name, finalValue_1);
             });
@@ -1487,60 +1515,20 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
             }
         }
     }, [ref, getCommands]);
-    var handleInputKeyDown = useCallback(function (e) {
-        if ([' ', ',', 'Enter'].includes(e.key)) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (notEmpty(inputValue)) {
-                appendTag(inputValue);
-            }
-        }
-        else {
-            if (onKeyDown)
-                onKeyDown(e);
-        }
-    }, [inputValue, appendTag, onKeyDown]);
-    var handleInputChange = useCallback(function (value) {
-        setInputValue(value.replace(/ /g, '').replace(/,/g, ''));
-        setInputValue(value);
-    }, []);
-    var handleBlur = useCallback(function (e) {
-        if (notEmpty(inputValue)) {
-            appendTag(inputValue);
-        }
-        if (onBlur)
-            onBlur(e);
-    }, [appendTag, inputValue, onBlur]);
-    var handleRenderTags = useCallback(function (tags) {
+    var handleRenderValue = useCallback(function (tags) {
         return tags.map(function (tag) { return (React.createElement(Chip, { className: 'MuiAutocomplete-tag', key: tag, label: tag, size: 'small', disabled: readOnly || disabled, onDelete: readOnly || disabled ? undefined : function () { return removeTag(tag); } })); });
     }, [disabled, readOnly, removeTag]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     var handleRenderInput = useCallback(function (params) {
-        var _a;
-        var renderProps = __assign({ clear: clear }, props);
-        renderProps.InputLabelProps = __assign(__assign({}, renderProps.InputLabelProps), { htmlFor: params.InputLabelProps.htmlFor, id: params.InputLabelProps.id });
-        renderProps.InputProps = __assign(__assign({}, renderProps.InputProps), { className: classNames((_a = renderProps.InputProps) === null || _a === void 0 ? void 0 : _a.className, params.InputProps.className), ref: params.InputProps.ref });
-        if (notEmpty(params.InputProps.startAdornment)) {
-            renderProps.InputProps.startAdornment = (React.createElement(React.Fragment, null,
-                renderProps.InputProps.startAdornment,
-                params.InputProps.startAdornment));
-        }
-        renderProps.inputProps = __assign(__assign({}, renderProps.inputProps), params.inputProps);
-        renderProps.inputProps.className = classNames(renderProps.inputProps.className, 'FormTag-Input');
-        renderProps.inputProps.readOnly = readOnly;
-        if (readOnly) {
-            renderProps.inputProps.tabIndex = -1;
-        }
-        renderProps.inputProps.maxLength = maxLength;
-        if (readOnly) {
-            renderProps.inputProps.className = classNames(renderProps.inputProps.className, 'Mui-disabled');
-        }
-        delete renderProps.inputProps.onChange;
-        delete renderProps.inputProps.value;
-        return (React.createElement(FormText, __assign({}, renderProps, { ref: handleRef, name: name, className: classNames(className, 'FormValueItem', 'FormTag'), error: error, disabled: disabled, fullWidth: fullWidth, required: required, value: inputValue, exceptValue: exceptValue, helperText: error ? errorHelperText : helperText, onKeyDown: handleInputKeyDown, onChange: handleInputChange, onBlur: handleBlur })));
+        var htmlInputProps = __assign(__assign({}, params.inputProps), { className: classNames('FormTag-Input', readOnly && 'Mui-disabled'), readOnly: readOnly, tabIndex: readOnly ? -1 : undefined, maxLength: maxLength });
+        delete htmlInputProps.onChange;
+        delete htmlInputProps.value;
+        var renderProps = __assign({ name: name, clear: clear, className: classNames(className, 'FormValueItem', 'FormTag'), error: error, disabled: disabled, fullWidth: fullWidth, required: required, exceptValue: exceptValue, slotProps: __assign(__assign({}, slotProps), { inputLabel: __assign(__assign({}, slotProps === null || slotProps === void 0 ? void 0 : slotProps.inputLabel), { htmlFor: params.InputLabelProps.htmlFor, id: params.InputLabelProps.id }), input: __assign(__assign({}, slotProps === null || slotProps === void 0 ? void 0 : slotProps.input), { className: params.InputProps.className, ref: params.InputProps.ref, startAdornment: params.InputProps.startAdornment }), htmlInput: __assign(__assign({}, slotProps === null || slotProps === void 0 ? void 0 : slotProps.htmlInput), htmlInputProps) }), helperText: error ? errorHelperText : helperText, onAppendTag: appendTag }, props);
+        return React.createElement(FormTagText, __assign({ ref: handleRef }, renderProps));
     }, [
+        appendTag,
         className,
         clear,
         disabled,
@@ -1548,20 +1536,17 @@ styleInject(css_248z$j);var FormTag = React.forwardRef(function (_a, ref) {
         errorHelperText,
         exceptValue,
         fullWidth,
-        handleBlur,
-        handleInputChange,
-        handleInputKeyDown,
         handleRef,
         helperText,
-        inputValue,
         maxLength,
         name,
         props,
         readOnly,
         required,
+        slotProps,
     ]);
     return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, onValueChange: function () { }, onValueChangeByUser: function () { }, onRequestSearchSubmit: function () { } }) },
-        React.createElement(Autocomplete, { options: [], multiple: true, freeSolo: true, value: value, readOnly: readOnly, disableClearable: true, limitTags: limitTags, getLimitTagsText: getLimitTagsText, disabled: disabled, renderTags: handleRenderTags, inputValue: inputValue, style: { display: fullWidth ? 'block' : 'inline-block', width: fullWidth ? '100%' : undefined }, renderInput: handleRenderInput })));
+        React.createElement(Autocomplete, { options: [], multiple: true, freeSolo: true, value: value, readOnly: readOnly, disableClearable: true, limitTags: limitTags, getLimitTagsText: getLimitTagsText, disabled: disabled, renderValue: handleRenderValue, style: { display: fullWidth ? 'block' : 'inline-block', width: fullWidth ? '100%' : undefined }, renderInput: handleRenderInput })));
 });
 FormTag.displayName = 'FormTag';var FormEmail = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
@@ -1577,34 +1562,27 @@ FormTag.displayName = 'FormTag';var FormEmail = React.forwardRef(function (_a, r
      * ******************************************************************************************************************/
     return (React.createElement(FormText, __assign({ ref: ref, className: classNames(className, 'FormEmail'), type: 'email', validPattern: validPattern, onValue: handleValue }, props)));
 });
-FormEmail.displayName = 'FormEmail';var css_248z$i = ".FormPassword .eye-icon-button-wrap {\n  visibility: hidden;\n}\n.FormPassword.variant-filled .eye-icon-button-wrap {\n  margin-top: 9px;\n  margin-bottom: -9px;\n}\n.FormPassword:hover .eye-icon-button-wrap.show,\n.FormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show {\n  visibility: visible;\n}";
-styleInject(css_248z$i);var StyledEyeInputAdornment = styled(InputAdornment)(templateObject_1$c || (templateObject_1$c = __makeTemplateObject(["\n  visibility: hidden;\n"], ["\n  visibility: hidden;\n"])));
+FormEmail.displayName = 'FormEmail';var StyledEyeInputAdornment = styled(InputAdornment)(templateObject_1$c || (templateObject_1$c = __makeTemplateObject(["\n  visibility: hidden;\n"], ["\n  visibility: hidden;\n"])));
 var FormPassword = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var className = _a.className, initMuiInputProps = _a.InputProps, _b = _a.clear, clear = _b === void 0 ? false : _b, _c = _a.eye, eye = _c === void 0 ? true : _c, onChange = _a.onChange, props = __rest(_a, ["className", "InputProps", "clear", "eye", "onChange"]);
+    var className = _a.className, initSlotProps = _a.slotProps, _b = _a.clear, clear = _b === void 0 ? false : _b, _c = _a.eye, eye = _c === void 0 ? true : _c, onChange = _a.onChange, props = __rest(_a, ["className", "slotProps", "clear", "eye", "onChange"]);
     var _d = useState('password'), type = _d[0], setType = _d[1];
     var _e = useState(notEmpty(props.value)), showEye = _e[0], setShowEye = _e[1];
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var muiInputProps = useMemo(function () {
-        if (eye) {
-            var newProps = __assign({}, initMuiInputProps);
-            newProps.endAdornment = (React.createElement(React.Fragment, null,
-                React.createElement(StyledEyeInputAdornment, { position: 'end', className: classNames('eye-icon-button-wrap', showEye && 'show') },
-                    React.createElement(IconButton, { size: 'small', tabIndex: -1, onClick: function () {
-                            setType(type === 'password' ? 'text' : 'password');
-                        } },
-                        React.createElement(Icon, { fontSize: 'inherit' }, type === 'password' ? 'visibility' : 'visibility_off'))),
-                newProps.endAdornment));
-            return newProps;
-        }
-        else {
-            return initMuiInputProps;
-        }
-    }, [eye, initMuiInputProps, showEye, type]);
+    var slotProps = useMemo(function () {
+        var _a;
+        return __assign(__assign({}, initSlotProps), { input: __assign(__assign({}, initSlotProps === null || initSlotProps === void 0 ? void 0 : initSlotProps.input), { endAdornment: (React.createElement(React.Fragment, null,
+                    eye && (React.createElement(StyledEyeInputAdornment, { position: 'end', className: classNames('eye-icon-button-wrap', showEye && 'show') },
+                        React.createElement(IconButton, { size: 'small', tabIndex: -1, onClick: function () {
+                                setType(type === 'password' ? 'text' : 'password');
+                            } },
+                            React.createElement(Icon, { fontSize: 'inherit' }, type === 'password' ? 'visibility' : 'visibility_off')))), (_a = initSlotProps === null || initSlotProps === void 0 ? void 0 : initSlotProps.input) === null || _a === void 0 ? void 0 :
+                    _a.endAdornment)) }) });
+    }, [eye, initSlotProps, showEye, type]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -1615,7 +1593,7 @@ var FormPassword = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormText, __assign({ ref: ref, className: classNames(className, 'FormPassword'), onChange: handleChange, type: type, InputProps: muiInputProps, clear: clear }, props)));
+    return (React.createElement(FormText, __assign({ ref: ref, className: classNames(className, 'FormPassword'), onChange: handleChange, type: type, slotProps: slotProps, clear: clear }, props)));
 });
 FormPassword.displayName = 'FormPassword';
 var templateObject_1$c;var FormTel = React.forwardRef(function (_a, ref) {
@@ -1644,20 +1622,28 @@ FormMobile.displayName = 'FormMobile';var NumberFormatCustom = React.forwardRef(
         } })));
 });var FormNumber = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
-     * State
+     * Use
      * ******************************************************************************************************************/
-    var className = _a.className, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, labelShrink = _a.labelShrink, _b = _a.clear, clear = _b === void 0 ? true : _b, initMuiInputProps = _a.InputProps, initInputProps = _a.inputProps, initValue = _a.value, onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest(_a, ["className", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "labelShrink", "clear", "InputProps", "inputProps", "value", "onChange", "onValue", "onValidate"]);
-    var _c = useState(function () { return (empty(initValue) ? '' : "".concat(initValue)); }), strValue = _c[0], setStrValue = _c[1];
+    var className = _a.className, allowNegative = _a.allowNegative, thousandSeparator = _a.thousandSeparator, allowDecimal = _a.allowDecimal, decimalScale = _a.decimalScale, prefix = _a.prefix, suffix = _a.suffix, readOnly = _a.readOnly, tabIndex = _a.tabIndex, labelShrink = _a.labelShrink, _b = _a.clear, clear = _b === void 0 ? true : _b, initSlotProps = _a.slotProps, initValue = _a.value, onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest(_a, ["className", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "labelShrink", "clear", "slotProps", "value", "onChange", "onValue", "onValidate"]);
+    var forceUpdate = useForceUpdate(1);
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
+    var strValueRef = React.useRef(undefined);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
     useEffect(function () {
-        setStrValue(empty(initValue) ? '' : "".concat(initValue));
+        strValueRef.current = empty(initValue) ? '' : "".concat(initValue);
+        forceUpdate();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [initValue]);
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
-    var muiInputProps = useMemo(function () {
+    var slotProps = useMemo(function () {
+        var _a;
+        var newSlotProps = __assign({}, initSlotProps);
         var inputProps = {
             className: readOnly ? 'Mui-disabled' : undefined,
             allowNegative: !!allowNegative,
@@ -1675,27 +1661,54 @@ FormMobile.displayName = 'FormMobile';var NumberFormatCustom = React.forwardRef(
         else {
             inputProps.decimalScale = 0;
         }
-        return __assign(__assign({}, initMuiInputProps), { inputComponent: NumberFormatCustom, inputProps: __assign(__assign({}, initInputProps), inputProps) });
+        newSlotProps.input = __assign(__assign({}, newSlotProps.input), { inputComponent: NumberFormatCustom, inputProps: __assign(__assign({}, (_a = newSlotProps.input) === null || _a === void 0 ? void 0 : _a.inputProps), inputProps) });
+        return newSlotProps;
     }, [
-        readOnly,
+        allowDecimal,
         allowNegative,
-        thousandSeparator,
+        decimalScale,
+        initSlotProps,
         prefix,
+        readOnly,
         suffix,
         tabIndex,
-        allowDecimal,
-        initMuiInputProps,
-        initInputProps,
-        decimalScale,
+        thousandSeparator,
     ]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
     var handleChange = useCallback(function (value) {
-        var newValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
-        onChange && onChange(newValue);
-        setStrValue(value);
-    }, [onChange]);
+        if (Number(value) > Number.MAX_SAFE_INTEGER) {
+            var newValue = Number.MAX_SAFE_INTEGER;
+            var newStrValue = "".concat(newValue);
+            if (strValueRef.current === newStrValue) {
+                strValueRef.current = "".concat(newValue, " ");
+            }
+            else {
+                strValueRef.current = "".concat(newValue);
+            }
+            onChange && onChange(newValue);
+            forceUpdate();
+        }
+        else if (Number(value) < Number.MIN_SAFE_INTEGER) {
+            var newValue = Number.MIN_SAFE_INTEGER;
+            var newStrValue = "".concat(newValue);
+            if (strValueRef.current === newStrValue) {
+                strValueRef.current = "".concat(newValue, " ");
+            }
+            else {
+                strValueRef.current = "".concat(newValue);
+            }
+            onChange && onChange(newValue);
+            forceUpdate();
+        }
+        else {
+            var newValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
+            onChange && onChange(newValue);
+            strValueRef.current = value;
+            forceUpdate();
+        }
+    }, [forceUpdate, onChange]);
     var handleValue = useCallback(function (value) {
         var finalValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
         if (onValue) {
@@ -1715,15 +1728,13 @@ FormMobile.displayName = 'FormMobile';var NumberFormatCustom = React.forwardRef(
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(FormTextField, __assign({ ref: ref, className: classNames(className, 'FormNumber'), disableReturnKey: true, labelShrink: strValue === '' || strValue === undefined ? labelShrink : true, InputProps: muiInputProps, readOnly: readOnly, clear: clear, value: strValue, onChange: handleChange, onValue: handleValue, onValidate: handleValidate }, props)));
+    return (React.createElement(FormTextField, __assign({ ref: ref, className: classNames(className, 'FormNumber'), disableReturnKey: true, labelShrink: strValueRef.current === '' || strValueRef.current === undefined ? labelShrink : true, slotProps: slotProps, readOnly: readOnly, clear: clear, value: strValueRef.current, onChange: handleChange, onValue: handleValue, onValidate: handleValidate }, props)));
 });
-FormNumber.displayName = 'FormNumber';var css_248z$h = ".FormSearch input[type=search]::-webkit-search-decoration,\n.FormSearch input[type=search]::-webkit-search-cancel-button,\n.FormSearch input[type=search]::-webkit-search-results-button,\n.FormSearch input[type=search]::-webkit-search-results-decoration {\n  -webkit-appearance: none;\n}";
-styleInject(css_248z$h);var FormSearch = React.forwardRef(function (_a, ref) {
+FormNumber.displayName = 'FormNumber';var FormSearch = React.forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest(_a, ["className"]);
     return React.createElement(FormText, __assign({ className: classNames(className, 'FormSearch'), ref: ref, type: 'search' }, props));
 });
-FormSearch.displayName = 'FormSearch';var css_248z$g = ".FormTextarea .MuiInputBase-root .MuiInputBase-input {\n  overflow-y: scroll;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar {\n  width: 8px;\n}\n.FormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n}";
-styleInject(css_248z$g);var FormTextarea = React.forwardRef(function (_a, ref) {
+FormSearch.displayName = 'FormSearch';var FormTextarea = React.forwardRef(function (_a, ref) {
     var className = _a.className, _b = _a.clear, clear = _b === void 0 ? false : _b, _c = _a.rows, rows = _c === void 0 ? 3 : _c, _d = _a.value, value = _d === void 0 ? '' : _d, props = __rest(_a, ["className", "clear", "rows", "value"]);
     return (React.createElement(FormTextField, __assign({ ref: ref, className: classNames(className, 'FormTextarea'), clear: clear, rows: rows, value: value }, props, { multiline: true })));
 });
@@ -2044,12 +2055,17 @@ function checkDateAvailable(date, availableDate, type, time) {
 }
 function AutoTypeForwardRef(render) {
     return React.forwardRef(render);
-}var css_248z$f = ".FormSelect.is-selected-placeholder .MuiSelect-select {\n  opacity: 0.38;\n}\n.FormSelect .MuiInputBase-root.MuiInputBase-adornedEnd {\n  padding-right: 25px;\n}\n.FormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty) {\n  margin-top: -3px;\n  margin-bottom: -3px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar {\n  width: 12px;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, 0.1882352941);\n  background-clip: padding-box;\n  border-left: 4px transparent solid;\n  border-right: 4px transparent solid;\n}\n.FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:start:decrement, .FormSelect-Menu-Popover > .MuiPaper-root::-webkit-scrollbar-button:end:increment {\n  display: block;\n  height: 4px;\n  background-color: transparent;\n}";
-styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
+}var FormSelect = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * type
      * ******************************************************************************************************************/
-    var className = _a.className, name = _a.name, initItems = _a.items, initFullWidth = _a.fullWidth, onLoadItems = _a.onLoadItems, readOnly = _a.readOnly, multiple = _a.multiple, checkbox = _a.checkbox, placeholder = _a.placeholder, initStartAdornment = _a.startAdornment, initValue = _a.value, initInputLabelProps = _a.InputLabelProps, initSelectProps = _a.SelectProps, _b = _a.formValueSeparator, formValueSeparator = _b === void 0 ? ',' : _b, formValueSort = _a.formValueSort, width = _a.width, _c = _a.minWidth, minWidth = _c === void 0 ? 120 : _c, initLoading = _a.loading, onChange = _a.onChange, onValue = _a.onValue, props = __rest(_a, ["className", "name", "items", "fullWidth", "onLoadItems", "readOnly", "multiple", "checkbox", "placeholder", "startAdornment", "value", "InputLabelProps", "SelectProps", "formValueSeparator", "formValueSort", "width", "minWidth", "loading", "onChange", "onValue"]);
+    var className = _a.className, name = _a.name, initItems = _a.items, initFullWidth = _a.fullWidth, onLoadItems = _a.onLoadItems, readOnly = _a.readOnly, multiple = _a.multiple, checkbox = _a.checkbox, placeholder = _a.placeholder, initStartAdornment = _a.startAdornment, initValue = _a.value, initSlotProps = _a.slotProps, 
+    // InputLabelProps: initInputLabelProps,
+    // SelectProps: initSelectProps,
+    _b = _a.formValueSeparator, 
+    // InputLabelProps: initInputLabelProps,
+    // SelectProps: initSelectProps,
+    formValueSeparator = _b === void 0 ? ',' : _b, formValueSort = _a.formValueSort, width = _a.width, _c = _a.minWidth, minWidth = _c === void 0 ? 120 : _c, initLoading = _a.loading, onChange = _a.onChange, onValue = _a.onValue, props = __rest(_a, ["className", "name", "items", "fullWidth", "onLoadItems", "readOnly", "multiple", "checkbox", "placeholder", "startAdornment", "value", "slotProps", "formValueSeparator", "formValueSort", "width", "minWidth", "loading", "onChange", "onValue"]);
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
@@ -2114,17 +2130,6 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
             return {};
         }
     }, [items]);
-    /********************************************************************************************************************
-     * inputLabelProps
-     * ******************************************************************************************************************/
-    var inputLabelProps = useMemo(function () {
-        if (hasEmptyValue || (!hasEmptyValue && placeholder)) {
-            return __assign(__assign({}, initInputLabelProps), { shrink: true });
-        }
-        else {
-            return initInputLabelProps;
-        }
-    }, [hasEmptyValue, initInputLabelProps, placeholder]);
     /********************************************************************************************************************
      * Function - getFinalValue
      * ******************************************************************************************************************/
@@ -2205,34 +2210,9 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     /********************************************************************************************************************
-     * Memo
+     * Variable
      * ******************************************************************************************************************/
     var isSelectedPlaceholder = notEmpty(items) && empty(value) && !!placeholder && !hasEmptyValue;
-    var selectProps = useMemo(function () {
-        var _a;
-        var finalSelectProps = __assign(__assign({}, initSelectProps), { displayEmpty: true, multiple: !!multiple, value: value });
-        if (multiple) {
-            finalSelectProps.renderValue = function (selected) {
-                if (isSelectedPlaceholder) {
-                    return placeholder;
-                }
-                else {
-                    return (React.createElement(Box, { className: 'selected-list', sx: { display: 'flex', flexWrap: 'wrap', gap: 0.5 } }, Array.isArray(selected) &&
-                        selected.map(function (selectedValue) {
-                            if (isSelectedPlaceholder) {
-                                return React.createElement(Chip, { key: selectedValue || '$$$EmptyValuePlaceholder$$$', label: 'hahaha', size: 'small' });
-                            }
-                            else {
-                                return React.createElement(Chip, { key: selectedValue, label: itemValueLabels["".concat(selectedValue)], size: 'small' });
-                            }
-                        })));
-                }
-            };
-        }
-        finalSelectProps.style = __assign(__assign({}, finalSelectProps.style), { minWidth: width || minWidth });
-        finalSelectProps.MenuProps = __assign(__assign({}, finalSelectProps.MenuProps), { className: classNames((_a = finalSelectProps.MenuProps) === null || _a === void 0 ? void 0 : _a.className, 'FormSelect-Menu-Popover') });
-        return finalSelectProps;
-    }, [initSelectProps, isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, value, width]);
     /********************************************************************************************************************
      * Function - getExtraCommands
      * ******************************************************************************************************************/
@@ -2290,6 +2270,35 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
+    var selectProps = useMemo(function () {
+        var _a;
+        var finalSelectProps = {
+            displayEmpty: true,
+            multiple: !!multiple,
+            value: value,
+        };
+        if (multiple) {
+            finalSelectProps.renderValue = function (selected) {
+                if (isSelectedPlaceholder) {
+                    return placeholder;
+                }
+                else {
+                    return (React.createElement(Box, { className: 'selected-list', sx: { display: 'flex', flexWrap: 'wrap', gap: 0.5 } }, Array.isArray(selected) &&
+                        selected.map(function (selectedValue) {
+                            if (isSelectedPlaceholder) {
+                                return React.createElement(Chip, { key: selectedValue || '$$$EmptyValuePlaceholder$$$', label: 'hahaha', size: 'small' });
+                            }
+                            else {
+                                return React.createElement(Chip, { key: selectedValue, label: itemValueLabels["".concat(selectedValue)], size: 'small' });
+                            }
+                        })));
+                }
+            };
+        }
+        finalSelectProps.style = __assign(__assign({}, finalSelectProps.style), { minWidth: width || minWidth });
+        finalSelectProps.MenuProps = __assign(__assign({}, finalSelectProps.MenuProps), { className: classNames((_a = finalSelectProps.MenuProps) === null || _a === void 0 ? void 0 : _a.className, 'FormSelect-Menu-Popover') });
+        return finalSelectProps;
+    }, [isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, value, width]);
     var finalValue = useMemo(function () {
         var newFinalValue;
         if (notEmpty(items)) {
@@ -2318,8 +2327,18 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
         }
         return newFinalValue;
     }, [emptyValue, items, multiple, selectProps, value]);
+    var slotProps = useMemo(function () {
+        var inputLabelAdditionalProps = {};
+        if (hasEmptyValue || (!hasEmptyValue && placeholder)) {
+            inputLabelAdditionalProps.shrink = true;
+        }
+        return {
+            inputLabel: __assign(__assign({}, initSlotProps === null || initSlotProps === void 0 ? void 0 : initSlotProps.inputLabel), inputLabelAdditionalProps),
+            select: __assign(__assign({}, initSlotProps === null || initSlotProps === void 0 ? void 0 : initSlotProps.select), selectProps),
+        };
+    }, [hasEmptyValue, initSlotProps === null || initSlotProps === void 0 ? void 0 : initSlotProps.inputLabel, initSlotProps === null || initSlotProps === void 0 ? void 0 : initSlotProps.select, placeholder, selectProps]);
     return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, onValueChange: function () { } }) },
-        React.createElement(FormTextField, __assign({ select: true, ref: handleRef, name: name, className: classNames(className, 'FormSelect', isSelectedPlaceholder && 'is-selected-placeholder'), fullWidth: fullWidth }, props, { startAdornment: startAdornment, value: finalValue, clear: false, readOnly: readOnly || empty(items), InputLabelProps: inputLabelProps, SelectProps: selectProps, onChange: handleChange, onValue: handleValue }),
+        React.createElement(FormTextField, __assign({ select: true, ref: handleRef, name: name, className: classNames(className, 'FormSelect', isSelectedPlaceholder && 'is-selected-placeholder'), fullWidth: fullWidth }, props, { startAdornment: startAdornment, value: finalValue, clear: false, readOnly: readOnly || empty(items), slotProps: slotProps, onChange: handleChange, onValue: handleValue }),
             isSelectedPlaceholder && (React.createElement(MenuItem, { key: '$$$EmptyValuePlaceholder$$$', value: '', disabled: true, sx: { display: 'none' } }, placeholder)),
             items && notEmpty(items) ? (items.map(function (_a) {
                 var itemLabel = _a.label, itemValue = _a.value, disabled = _a.disabled;
@@ -2390,20 +2409,15 @@ FormCompanyNo.displayName = 'FormCompanyNo';var FormPersonalNo = React.forwardRe
      * ******************************************************************************************************************/
     return (React.createElement(FormText, __assign({ ref: ref, className: classNames(className, 'FormPersonalNo'), maxLength: 14, validPattern: validPattern, onValue: handleValue, onValidate: handleValidate }, props)));
 });
-FormPersonalNo.displayName = 'FormPersonalNo';var css_248z$e = ".FormItemBase .FormItemBase-InputLabel {\n  overflow: visible;\n  padding-left: 5px;\n}\n.FormItemBase .FormItemBase-InputLabel.MuiInputLabel-sizeSmall {\n  transform: translate(0, -1.5px) scale(0.7);\n}\n.FormItemBase.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 16px;\n}";
-styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
+FormPersonalNo.displayName = 'FormPersonalNo';var FormItemBase = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
-     * Ref
+     * FormState
      * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
     control = _a.control, controlHeight = _a.controlHeight, controlSingleHeight = _a.controlSingleHeight, controlVerticalCenter = _a.controlVerticalCenter, controlContainerStyle = _a.controlContainerStyle, required = _a.required, labelIcon = _a.labelIcon, label = _a.label, focused = _a.focused, helperText = _a.helperText, helperTextProps = _a.helperTextProps, error = _a.error, hideLabel = _a.hideLabel, hidden = _a.hidden, autoSize = _a.autoSize, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, style = _a.style, sx = _a.sx;
-    var inputRef = useRef(null);
-    /********************************************************************************************************************
-     * FormState
-     * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formFullWidth = _b.fullWidth, formColWithLabel = _b.formColWithLabel, formColWithHelperText = _b.formColWithHelperText;
     /********************************************************************************************************************
      * Memo - FormState
@@ -2415,16 +2429,8 @@ styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * State - inputHeight
      * ******************************************************************************************************************/
-    var _c = useState(0), inputHeight = _c[0], setInputHeight = _c[1];
-    useResizeDetector({
-        targetRef: inputRef,
-        handleWidth: false,
-        handleHeight: true,
-        onResize: function () {
-            var _a, _b;
-            setInputHeight(((_b = (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height) || 0);
-        },
-    });
+    var _c = useResizeDetector({ handleWidth: false }), inputRef = _c.ref, resizedInputHeight = _c.height;
+    var inputHeight = ifUndefined(resizedInputHeight, 0);
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -2495,7 +2501,7 @@ styleInject(css_248z$e);var FormItemBase = React.forwardRef(function (_a, ref) {
      * ******************************************************************************************************************/
     return (React.createElement("div", { style: wrapStyle },
         React.createElement(FormControl, { ref: ref, variant: 'standard', className: classNames(className, 'FormItemBase', !!label && 'with-label', "variant-".concat(variant), controlVerticalCenter && 'control-vertical-center', !!error && 'error'), style: style, color: color, error: error, focused: focused, sx: sx },
-            !formColWithLabel && label && (React.createElement(InputLabel, { shrink: true, className: 'FormItemBase-InputLabel', size: size === 'medium' ? 'normal' : size, required: required }, labelIcon ? (React.createElement(React.Fragment, null,
+            !formColWithLabel && label && (React.createElement(InputLabel, { shrink: true, className: 'FormItemBase-InputLabel', size: size, required: required }, labelIcon ? (React.createElement(React.Fragment, null,
                 React.createElement(PdgIcon, { style: { verticalAlign: 'middle', marginRight: 3, marginTop: -4, marginBottom: -2 } }, labelIcon),
                 React.createElement("span", { style: { verticalAlign: 'middle' } }, label))) : (label))),
             React.createElement("div", { className: 'FormItemBase-Control-wrap', style: __assign({ display: 'grid', marginTop: hideLabel ? 0 : undefined }, controlContainerStyle) }, autoSize ? (React.createElement(React.Fragment, null,
@@ -2548,15 +2554,10 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
      * ******************************************************************************************************************/
     var inputRef = useRef(null);
     var actionRef = useRef(null);
-    var labelRef = useRef(null);
     /********************************************************************************************************************
      * ResizeDetector
      * ******************************************************************************************************************/
-    var _f = useResizeDetector({
-        targetRef: labelRef,
-        handleWidth: true,
-        handleHeight: true,
-    }), width = _f.width, height = _f.height;
+    var _f = useResizeDetector(), labelRef = _f.ref, width = _f.width, height = _f.height;
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -3039,8 +3040,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
                             }, value: value, disabled: disabled || readOnly || itemDisabled }));
                     })))))) }));
 }));
-FormRadioGroup.displayName = 'FormRadioGroup';var css_248z$d = ".FormToggleButtonGroup .ToggleButton {\n  display: inline-flex;\n  padding: 0 10px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  align-items: center;\n}\n.FormToggleButtonGroup .ToggleButton .__label__ {\n  height: 0;\n  line-height: 0 !important;\n  overflow: visible !important;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton, .FormToggleButtonGroup.type-radio .ToggleButton {\n  padding-left: 3px;\n  padding-right: 5px;\n  border: 0 !important;\n  margin-left: 0 !important;\n  justify-content: flex-start;\n  display: flex;\n  background-color: transparent !important;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton:not(:last-child), .FormToggleButtonGroup.type-radio .ToggleButton:not(:last-child) {\n  margin-right: 5px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__,\n.FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-unchecked__ {\n  margin-right: 3px;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__ {\n  display: none;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-checked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-checked__ {\n  display: block;\n}\n.FormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-unchecked__, .FormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-unchecked__ {\n  display: none;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 15px;\n  margin-bottom: -15px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .FormItemBase-Control-wrap {\n  margin-top: 15px;\n  margin-bottom: -15px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.FormToggleButtonGroup:not(.with-label).variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 13px;\n  margin-bottom: -13px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 13px;\n  margin-bottom: -13px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0px;\n  margin-bottom: 0px;\n}\n.FormToggleButtonGroup:not(.with-label).size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.FormToggleButtonGroup.with-label.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.FormToggleButtonGroup.with-label.size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-outlined .FormItemBase-Control-wrap .ToggleButton {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-filled .FormItemBase-Control-wrap .ToggleButton {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .FormItemBase-Control-wrap {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.Form .FormCol.with-label .FormToggleButtonGroup.size-small.variant-standard .FormItemBase-Control-wrap .ToggleButton {\n  height: 26px;\n}";
-styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
+FormRadioGroup.displayName = 'FormRadioGroup';var FormToggleButtonGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * type
      * ******************************************************************************************************************/
@@ -3056,13 +3056,6 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
     var id = useId();
     var labelId = useId();
-    /********************************************************************************************************************
-     * Ref
-     * ******************************************************************************************************************/
-    var refForResizeWidthDetect = useRef(null);
-    var refForButtonResizeHeightDetect = useRef(null);
-    var refForButtonsResizeHeightDetect = useRef(null);
-    var refForLoadingResizeHeightDetect = useRef(null);
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
@@ -3085,55 +3078,25 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
     /********************************************************************************************************************
      * State - width (ResizeDetector)
      * ******************************************************************************************************************/
-    var _f = useState(), width = _f[0], setWidth = _f[1];
-    useResizeDetector({
-        targetRef: refForResizeWidthDetect,
-        handleWidth: true,
-        onResize: function () {
-            var _a, _b;
-            setWidth((_b = (_a = refForResizeWidthDetect.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.width);
-        },
-    });
+    var _f = useResizeDetector({ handleHeight: false }), refForResizeWidthDetect = _f.ref, width = _f.width;
     /********************************************************************************************************************
      * State - height (ResizeDetector)
      * ******************************************************************************************************************/
-    var _g = useState(), height = _g[0], setHeight = _g[1];
-    var _h = useState(), realHeight = _h[0], setRealHeight = _h[1];
-    useResizeDetector({
-        targetRef: refForButtonResizeHeightDetect,
-        handleHeight: true,
-        onResize: function () {
-            var _a, _b;
-            setHeight((_b = (_a = refForButtonResizeHeightDetect.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height);
-        },
-    });
-    useResizeDetector({
-        targetRef: refForButtonsResizeHeightDetect,
-        handleHeight: true,
-        onResize: function () {
-            var _a, _b;
-            setRealHeight((_b = (_a = refForButtonsResizeHeightDetect.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height);
-        },
-    });
-    useResizeDetector({
-        targetRef: refForLoadingResizeHeightDetect,
-        handleHeight: true,
-        onResize: function () {
-            var _a, _b;
-            setHeight((_b = (_a = refForLoadingResizeHeightDetect.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.height);
-        },
-    });
+    var _g = useResizeDetector({ handleWidth: false }), refForButtonResizeHeightDetect = _g.ref, buttonHeight = _g.height;
+    var _h = useResizeDetector({ handleWidth: false }), refForButtonsResizeHeightDetect = _h.ref, realHeight = _h.height;
+    var _j = useResizeDetector({ handleWidth: false }), refForLoadingResizeHeightDetect = _j.ref, loadingHeight = _j.height;
+    var height = ifUndefined(buttonHeight, loadingHeight);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var _j = useState(false), isOnGetItemLoading = _j[0], setIsOnGetItemLoading = _j[1];
-    var _k = useAutoUpdateState(initError), error = _k[0], setError = _k[1];
-    var _l = useState(), errorHelperText = _l[0], setErrorHelperText = _l[1];
-    var _m = useAutoUpdateRefState(initData), dataRef = _m[0], setData = _m[2];
-    var _o = useAutoUpdateRefState(useMemo(function () { return (initDisabled == null ? formDisabled : initDisabled); }, [initDisabled, formDisabled])), disabledRef = _o[0], disabled = _o[1], setDisabled = _o[2];
-    var _p = useAutoUpdateRefState(initHidden), hiddenRef = _p[0], hidden = _p[1], setHidden = _p[2];
-    var _q = useAutoUpdateRefState(initLoading), loadingRef = _q[0], loading = _q[1], setLoading = _q[2];
-    var _r = useAutoUpdateRefState(initItems), itemsRef = _r[0], items = _r[1], setItems = _r[2];
+    var _k = useState(false), isOnGetItemLoading = _k[0], setIsOnGetItemLoading = _k[1];
+    var _l = useAutoUpdateState(initError), error = _l[0], setError = _l[1];
+    var _m = useState(), errorHelperText = _m[0], setErrorHelperText = _m[1];
+    var _o = useAutoUpdateRefState(initData), dataRef = _o[0], setData = _o[2];
+    var _p = useAutoUpdateRefState(useMemo(function () { return (initDisabled == null ? formDisabled : initDisabled); }, [initDisabled, formDisabled])), disabledRef = _p[0], disabled = _p[1], setDisabled = _p[2];
+    var _q = useAutoUpdateRefState(initHidden), hiddenRef = _q[0], hidden = _q[1], setHidden = _q[2];
+    var _r = useAutoUpdateRefState(initLoading), loadingRef = _r[0], loading = _r[1], setLoading = _r[2];
+    var _s = useAutoUpdateRefState(initItems), itemsRef = _s[0], items = _s[1], setItems = _s[2];
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -3248,7 +3211,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         finalValue = onValue ? onValue(finalValue) : finalValue;
         return equal(value, finalValue) ? value : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
-    var _s = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _s[0], value = _s[1], setValue = _s[2];
+    var _t = useAutoUpdateRefState(initValue, getFinalValue), valueRef = _t[0], value = _t[1], setValue = _t[2];
     useFirstSkipEffect(function () {
         if (error)
             validate(value);
@@ -3450,7 +3413,11 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         return (items &&
             items.map(function (_a, idx) {
                 var value = _a.value, label = _a.label, itemDisabled = _a.disabled, itemColor = _a.color;
-                return (React.createElement(ToggleButton, { ref: idx === 0 ? refForButtonResizeHeightDetect : undefined, key: idx, size: size, className: 'ToggleButton', value: value, color: itemColor || color, disabled: disabled || readOnly || itemDisabled, style: buttonStyle, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } },
+                return (React.createElement(ToggleButton, { ref: function (ref) {
+                        if (idx === 0) {
+                            refForButtonResizeHeightDetect.current = ref;
+                        }
+                    }, key: idx, size: size, className: 'ToggleButton', value: value, color: itemColor || color, disabled: disabled || readOnly || itemDisabled, style: buttonStyle, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } },
                     type === 'checkbox' ? (React.createElement(React.Fragment, null,
                         React.createElement(Icon, { className: '__checkbox-unchecked__' }, "check_box_outline_blank"),
                         React.createElement(Icon, { className: '__checkbox-checked__' }, "check_box"))) : (type === 'radio' && (React.createElement(React.Fragment, null,
@@ -3468,6 +3435,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         itemWidth,
         items,
         readOnly,
+        refForButtonResizeHeightDetect,
         setFocused,
         size,
         theme.palette.error.main,
@@ -3475,7 +3443,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
     ]);
     var controlHeight = height || 0;
     var isMultiline = controlHeight <= ifUndefined(realHeight, 0);
-    return (React.createElement(FormItemBase, __assign({}, formControlBaseProps, { className: classNames(className, 'FormValueItem', 'FormToggleButtonGroup', "variant-".concat(variant), "size-".concat(size), !!label && 'with-label', !!fullWidth && 'full-width', "type-".concat(type)), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, required: required, fullWidth: fullWidth, error: error, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: realHeight ? realHeight + (isMultiline ? 13 : 0) : controlHeight, controlVerticalCenter: isMultiline ? false : isOnGetItemLoading || loading, control: isOnGetItemLoading || loading ? (React.createElement("div", { style: { opacity: 0.54 }, ref: refForLoadingResizeHeightDetect },
+    return (React.createElement(FormItemBase, __assign({}, formControlBaseProps, { className: classNames(className, 'FormValueItem', 'FormToggleButtonGroup', "variant-".concat(variant), "size-".concat(size), !!label && 'with-label', !!fullWidth && 'full-width', "type-".concat(type), (isOnGetItemLoading || loading) && 'loading'), variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, required: required, fullWidth: fullWidth, error: error, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: style, sx: sx, hidden: hidden, autoSize: true, controlHeight: realHeight ? realHeight + (isMultiline ? 13 : 0) : controlHeight, controlVerticalCenter: isMultiline ? false : isOnGetItemLoading || loading, control: isOnGetItemLoading || loading ? (React.createElement("div", { style: { opacity: 0.54 }, ref: refForLoadingResizeHeightDetect },
             React.createElement(CircularProgress, { size: 16, color: 'inherit' }))) : (React.createElement(React.Fragment, null,
             !fullWidth && !isOnGetItemLoading && !loading && items && (React.createElement("div", { ref: refForResizeWidthDetect, style: {
                     display: 'grid',
@@ -3522,8 +3490,7 @@ FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';var FormRating = Rea
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
-    var ratingRef = useRef(null);
-    var inputRef = useRef();
+    var inputRef = useRef(undefined);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -3535,11 +3502,7 @@ FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';var FormRating = Rea
     /********************************************************************************************************************
      * State - width, height
      * ******************************************************************************************************************/
-    var _l = useResizeDetector({
-        targetRef: ratingRef,
-        handleWidth: true,
-        handleHeight: true,
-    }), width = _l.width, height = _l.height;
+    var _l = useResizeDetector(), ratingRef = _l.ref, width = _l.width, height = _l.height;
     /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
@@ -3683,8 +3646,7 @@ FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';var FormRating = Rea
      * ******************************************************************************************************************/
     return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormRating'), labelIcon: labelIcon, label: label, error: error, fullWidth: false, required: required, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: __assign({ width: width || 100 }, initStyle), sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 21 : 26), controlVerticalCenter: true, control: React.createElement(Rating, { ref: ratingRef, size: size === 'medium' ? 'large' : 'medium', name: name, precision: precision, highlightSelectedOnly: highlightSelectedOnly, value: value, disabled: disabled || readOnly, max: max, icon: React.createElement(PdgIcon, { color: color, size: 'inherit' }, icon ? icon : 'Star'), emptyIcon: React.createElement(PdgIcon, { size: 'inherit' }, emptyIcon ? emptyIcon : 'StarBorder'), onChange: handleChange, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } }) }));
 });
-FormRating.displayName = 'FormRating';var css_248z$c = ".FormTextEditor.initializing textarea {\n  display: none;\n}\n.FormTextEditor.error .tox-tinymce {\n  border-color: #d32f2f;\n}\n\n.tox-menu.tox-collection.tox-collection--list .tox-collection__group .tox-menu-nav__js.tox-collection__item {\n  padding-right: 20px !important;\n}\n\n.tox-notifications-container {\n  display: none;\n}";
-styleInject(css_248z$c);var getFinalValue$8 = function (value) {
+FormRating.displayName = 'FormRating';var getFinalValue$8 = function (value) {
     return value || '';
 };var FormTextEditor = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
@@ -3719,7 +3681,7 @@ styleInject(css_248z$c);var getFinalValue$8 = function (value) {
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
-    var editorRef = useRef();
+    var editorRef = useRef(null);
     var keyDownTime = useRef(0);
     /********************************************************************************************************************
      * State
@@ -3741,8 +3703,8 @@ styleInject(css_248z$c);var getFinalValue$8 = function (value) {
      * Function - validate
      * ******************************************************************************************************************/
     var validate = useCallback(function (value) {
-        var _a;
-        if (required && empty((_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.getContent())) {
+        var _a, _b;
+        if (required && empty((_b = (_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.editor()) === null || _b === void 0 ? void 0 : _b.getContent())) {
             setErrorErrorHelperText(true, '필수 입력 항목입니다.');
             return false;
         }
@@ -3771,8 +3733,8 @@ styleInject(css_248z$c);var getFinalValue$8 = function (value) {
      * Function - focus
      * ******************************************************************************************************************/
     var focus = useCallback(function () {
-        var _a;
-        (_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+        var _a, _b;
+        (_b = (_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.editor()) === null || _b === void 0 ? void 0 : _b.focus();
     }, [editorRef]);
     /********************************************************************************************************************
      * Commands
@@ -3874,7 +3836,7 @@ styleInject(css_248z$c);var getFinalValue$8 = function (value) {
             React.createElement(Editor, { apiKey: apiKey, value: value, disabled: readOnly || disabled, init: {
                     height: height,
                     menubar: menubar,
-                    readonly: true,
+                    disabled: true,
                     language: 'ko_KR',
                     contextmenu: false,
                     content_style: 'body {font-size: 0.875rem; font-weight: 400; line-height: 1.5; color: hsl(0,0%,20%);} p {padding:0; margin:0}',
@@ -4385,14 +4347,24 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
             else if (reason === 'reset') {
                 setInputValue(undefined);
             }
-        }, renderTags: function (value, getTagProps) {
-            return value.map(function (option, index) { return (React.createElement(Chip, __assign({ size: 'small', label: onRenderTag ? onRenderTag(option) : option.label }, getTagProps({ index: index })))); });
-        }, renderInput: function (params) { return (React.createElement(FormTextField, __assign({}, params, { ref: textFieldRef, name: name, variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, labelShrink: labelShrink, required: required, focused: focused, error: error, readOnly: readOnly, helperText: error ? errorHelperText : helperText, placeholder: placeholder, noFormValueItem: true, InputProps: __assign(__assign({}, params.InputProps), { endAdornment: (React.createElement(React.Fragment, null,
-                    loading || isOnGetItemLoading ? React.createElement(CircularProgress, { color: 'inherit', size: 20 }) : null,
-                    params.InputProps.endAdornment)) }), inputProps: readOnly || disabled ? __assign(__assign({}, params.inputProps), { tabIndex: -1 }) : params.inputProps }))); } }));
+        }, renderValue: function (value, getItemProps) {
+            if (Array.isArray(value)) {
+                return value.map(function (option, index) { return (React.createElement(Chip, __assign({ size: 'small', label: onRenderTag ? onRenderTag(option) : option.label }, getItemProps({ index: index })))); });
+            }
+            else {
+                return (React.createElement(Chip, __assign({ size: 'small', label: onRenderTag ? onRenderTag(value) : value.label }, getItemProps({ index: 0 }))));
+            }
+        }, renderInput: function (params) {
+            var slotProps = {
+                input: __assign(__assign({}, params.InputProps), { endAdornment: (React.createElement(React.Fragment, null,
+                        loading || isOnGetItemLoading ? React.createElement(CircularProgress, { color: 'inherit', size: 20 }) : null,
+                        params.InputProps.endAdornment)) }),
+                htmlInput: __assign(__assign({}, params.inputProps), { tabIndex: readOnly || disabled ? -1 : undefined }),
+            };
+            return (React.createElement(FormTextField, __assign({}, params, { ref: textFieldRef, name: name, variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, labelShrink: labelShrink, required: required, focused: focused, error: error, readOnly: readOnly, helperText: error ? errorHelperText : helperText, slotProps: slotProps, placeholder: placeholder, noFormValueItem: true })));
+        } }));
 }));
-FormAutocomplete.displayName = 'FormAutocomplete';var css_248z$b = ".PrivateYearSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateYearSelect button {\n  font-size: 14px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
-styleInject(css_248z$b);var PrivateToggleButton = React.forwardRef(function (_a, ref) {
+FormAutocomplete.displayName = 'FormAutocomplete';var PrivateToggleButton = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Use
      * ******************************************************************************************************************/
@@ -4477,11 +4449,10 @@ var PrivateYearSelect = function (_a) {
                 var isActive = y === activeYear;
                 var isSelected = y === selectYear;
                 var disabled = (!!availableDate[0] && y < availableDate[0].year) || (!!availableDate[1] && y > availableDate[1].year);
-                return (React.createElement(Grid, { key: y, item: true, xs: 3 },
+                return (React.createElement(Grid, { key: y, size: { xs: 3 } },
                     React.createElement(PrivateToggleButton, { "data-id": y, className: "private-year-select-value-".concat(y), fullWidth: true, selected: isSelected, activated: isActive, outlined: isToday, disabled: disabled, onClick: handleClick }, y)));
             })))));
-};var css_248z$a = ".PrivateMonthSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  background-color: white;\n}\n.PrivateMonthSelect button {\n  font-size: 15px;\n  font-weight: 400;\n  border-radius: 18px;\n}";
-styleInject(css_248z$a);var MONTHS$1 = new Array(12).fill(0);
+};var MONTHS$1 = new Array(12).fill(0);
 for (var i$5 = 0; i$5 < 12; i$5 += 1) {
     MONTHS$1[i$5] = i$5;
 }
@@ -4495,13 +4466,12 @@ var PrivateMonthSelect = function (_a) {
             var isSelected = selectYear === year && m === selectMonth;
             var ym = year * 100 + (m + 1);
             var disabled = (!!availableDate[0] && ym < availableDate[0].month) || (!!availableDate[1] && ym > availableDate[1].month);
-            return (React.createElement(Grid, { key: m, item: true, xs: 4 },
+            return (React.createElement(Grid, { key: m, size: { xs: 4 } },
                 React.createElement(PrivateToggleButton, { fullWidth: true, selected: isSelected, activated: isActive, outlined: isToday, disabled: disabled, onClick: function () { return onSelect(m); } },
                     m + 1,
                     "\uC6D4")));
         }))));
-};var css_248z$9 = ".PrivateTimeSelect {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n}\n.PrivateTimeSelect button {\n  border-radius: 0;\n}";
-styleInject(css_248z$9);var DEFAULT_MINUTES$3 = new Array(60).fill(0);
+};var DEFAULT_MINUTES$3 = new Array(60).fill(0);
 for (var i$4 = 0; i$4 < DEFAULT_MINUTES$3.length; i$4 += 1) {
     DEFAULT_MINUTES$3[i$4] = i$4;
 }
@@ -4512,7 +4482,7 @@ var PrivateTimeSelect = React.forwardRef(function (_a, ref) {
     var list = _a.list, listInterval = _a.listInterval, unit = _a.unit, value = _a.value, _b = _a.cols, cols = _b === void 0 ? 1 : _b, disableList = _a.disableList, initOnSelect = _a.onSelect;
     var containerRef = useRef(null);
     var simpleBarRef = useRef(null);
-    var scrollTimerRef = useRef();
+    var scrollTimerRef = useRef(undefined);
     var onSelectRef = useAutoUpdateLayoutRef(initOnSelect);
     /********************************************************************************************************************
      * Function - scrollToValue
@@ -4616,7 +4586,7 @@ var PrivateTimeSelect = React.forwardRef(function (_a, ref) {
                 .map(function (v) {
                 var isSelected = v === value;
                 var disabled = !!disableList && disableList.includes(v);
-                return (React.createElement(Grid, { item: true, key: v, xs: 12 / (cols || 1) },
+                return (React.createElement(Grid, { key: v, size: { xs: 12 / (cols || 1) } },
                     React.createElement(PrivateToggleButton, { "data-id": v, className: "private-time-select-value-".concat(v), fullWidth: true, disabled: disabled, selected: isSelected, onClick: handleClick },
                         v,
                         unit)));
@@ -4678,30 +4648,29 @@ var PrivateTimeSection = function (_a) {
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(Grid, { item: true, className: 'time' },
+    return (React.createElement(Grid, { className: 'time' },
         React.createElement(Grid, { container: true, direction: 'column', className: 'time-container' },
-            React.createElement(Grid, { item: true, className: 'time-title' },
+            React.createElement(Grid, { className: 'time-title' },
                 time === 'hour' && (value ? value.format('HH시') : '00시'),
                 time === 'minute' && (value ? value.format('HH시 mm분') : '00시 00분'),
                 time === 'second' && (value ? value.format('HH시 mm분 ss초') : '00시 00분 00초')),
-            React.createElement(Grid, { item: true, className: 'time-select-wrap' },
+            React.createElement(Grid, { className: 'time-select-wrap' },
                 React.createElement(Grid, { container: true, style: { height: '100%' } },
-                    React.createElement(Grid, { item: true, style: { position: 'relative', width: width } },
+                    React.createElement(Grid, { style: { position: 'relative', width: width } },
                         React.createElement(PrivateTimeSelect, { ref: hourSelectRef, value: value && value.hour(), unit: '\uC2DC', list: hours, disableList: disableHours, cols: cols, onSelect: function (newValue) {
                                 onChange('hour', value ? value.set('hour', newValue) : dayjs().startOf('date').set('hour', newValue));
                             } })),
-                    (time === 'minute' || time === 'second') && (React.createElement(Grid, { item: true, style: { position: 'relative', width: width } },
+                    (time === 'minute' || time === 'second') && (React.createElement(Grid, { style: { position: 'relative', width: width } },
                         React.createElement(PrivateTimeSelect, { ref: minuteSelectRef, value: value && value.minute(), unit: '\uBD84', list: minutes, disableList: disableMinutes, cols: cols, listInterval: minuteInterval, onSelect: function (newValue) {
                                 onChange('minute', value ? value.set('minute', newValue) : dayjs().startOf('date').set('minute', newValue));
                             } }))),
-                    time === 'second' && (React.createElement(Grid, { item: true, style: { position: 'relative', width: width } },
+                    time === 'second' && (React.createElement(Grid, { style: { position: 'relative', width: width } },
                         React.createElement(PrivateTimeSelect, { ref: secondSelectRef, value: value && value.second(), unit: '\uCD08', list: seconds, disableList: disableSeconds, cols: cols, listInterval: secondInterval, onSelect: function (newValue) {
                                 onChange('second', value ? value.set('second', newValue) : dayjs().startOf('date').set('second', newValue));
                             } }))))),
-            onClose && (React.createElement(Grid, { item: true, className: 'action-buttons' },
+            onClose && (React.createElement(Grid, { className: 'action-buttons' },
                 React.createElement(Button, { variant: 'text', onClick: onClose }, "\uB2EB\uAE30"))))));
-};var css_248z$8 = ".PrivateStaticDatePicker.time {\n  height: 400px;\n}\n.PrivateStaticDatePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDatePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDatePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDatePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDatePicker .action-buttons button:not(:first-of-type) {\n  margin-left: 5px;\n}\n.PrivateStaticDatePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDatePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDatePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDatePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDatePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDatePicker.time .time .time-container .time-select-wrap > div > div:not(:first-of-type) {\n  border-left: 1px solid #efefef;\n}";
-styleInject(css_248z$8);var DEFAULT_HOURS$1 = new Array(24).fill(0);
+};var DEFAULT_HOURS$1 = new Array(24).fill(0);
 for (var i$2 = 0; i$2 < DEFAULT_HOURS$1.length; i$2 += 1) {
     DEFAULT_HOURS$1[i$2] = i$2;
 }
@@ -4717,7 +4686,7 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
-    var value = _a.value, initAvailableDate = _a.availableDate, defaultCalendarMonth = _a.defaultCalendarMonth, type = _a.type, time = _a.time, _b = _a.hours, hours = _b === void 0 ? DEFAULT_HOURS$1 : _b, _c = _a.minutes, minutes = _c === void 0 ? DEFAULT_MINUTES$1 : _c, _d = _a.seconds, seconds = _d === void 0 ? DEFAULT_SECONDS$1 : _d, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest(_a, ["value", "availableDate", "defaultCalendarMonth", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
+    var value = _a.value, initAvailableDate = _a.availableDate, type = _a.type, time = _a.time, _b = _a.hours, hours = _b === void 0 ? DEFAULT_HOURS$1 : _b, _c = _a.minutes, minutes = _c === void 0 ? DEFAULT_MINUTES$1 : _c, _d = _a.seconds, seconds = _d === void 0 ? DEFAULT_SECONDS$1 : _d, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest(_a, ["value", "availableDate", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
     var hourSelectRef = useRef(null);
     var minuteSelectRef = useRef(null);
     var secondSelectRef = useRef(null);
@@ -4727,8 +4696,6 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
     var _e = useState(function () {
         if (value)
             return value;
-        else if (defaultCalendarMonth)
-            return defaultCalendarMonth;
         else
             return dayjs();
     }), month = _e[0], setMonth = _e[1];
@@ -4752,8 +4719,8 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Arrow
      * ******************************************************************************************************************/
-    var leftArrowOnClickRef = useRef();
-    var rightArrowOnClickRef = useRef();
+    var leftArrowOnClickRef = useRef(undefined);
+    var rightArrowOnClickRef = useRef(undefined);
     var LeftArrowButton = useMemo(function () {
         return function (props) {
             leftArrowOnClickRef.current = props.onClick;
@@ -4844,11 +4811,11 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(Grid, { container: true, className: classNames('PrivateStaticDatePicker', type) },
-        type !== 'time' && (React.createElement(Grid, { item: true },
+        type !== 'time' && (React.createElement(Grid, null,
             React.createElement(Grid, { container: true, direction: 'column' },
-                React.createElement(Grid, { item: true, sx: { p: 2, width: '100%' } },
+                React.createElement(Grid, { sx: { p: 2, width: '100%' } },
                     React.createElement(Grid, { container: true, className: 'month-change-arrow-wrap' },
-                        React.createElement(Grid, { item: true, flex: 1, className: 'month-title-container' },
+                        React.createElement(Grid, { flex: 1, className: 'month-title-container' },
                             React.createElement("div", { className: 'month-title-wrap' },
                                 React.createElement("div", { className: 'month-title' },
                                     React.createElement(Button, { variant: 'text', className: yearSelectOpen ? 'active' : undefined, onClick: function () {
@@ -4874,12 +4841,12 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
                                         } },
                                         month.format('M월'),
                                         React.createElement(Icon, null, monthSelectOpen ? 'arrow_drop_up' : 'arrow_drop_down'))))),
-                        !yearSelectOpen && !monthSelectOpen && (React.createElement(Grid, { item: true, style: { textAlign: 'right' } },
+                        !yearSelectOpen && !monthSelectOpen && (React.createElement(Grid, { style: { textAlign: 'right' } },
                             React.createElement(IconButton, { onClick: previousMonth, sx: { mr: 1 } },
                                 React.createElement(Icon, null, "keyboard_arrow_left")),
                             React.createElement(IconButton, { onClick: nextMonth },
                                 React.createElement(Icon, null, "keyboard_arrow_right")))))),
-                React.createElement(Grid, { item: true, style: { position: 'relative' } },
+                React.createElement(Grid, { style: { position: 'relative' } },
                     React.createElement(StaticDatePicker, __assign({}, props, { value: activeMonthValue, referenceDate: month, slots: {
                             previousIconButton: LeftArrowButton,
                             nextIconButton: RightArrowButton,
@@ -4898,7 +4865,7 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
                         } })),
                     yearSelectOpen && (React.createElement(PrivateYearSelect, { selectYear: value == null ? null : value.year(), activeYear: month.year(), availableDate: availableDate, onSelect: handleYearSelect })),
                     monthSelectOpen && (React.createElement(PrivateMonthSelect, { year: month.year(), selectYear: value == null ? null : value.year(), selectMonth: value == null ? null : value.month(), activeMonth: month.month(), availableDate: availableDate, onSelect: handleMonthSelect }))),
-                React.createElement(Grid, { item: true, className: 'action-buttons' },
+                React.createElement(Grid, { className: 'action-buttons' },
                     getActionButton(dayjs()
                         .startOf('d')
                         .subtract(1, 'month')
@@ -4942,8 +4909,7 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
             boxShadow: theme.shadows[8],
         },
         _b);
-});var css_248z$7 = ".PrivateDatePicker .input-text-field.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.PrivateDatePicker .input-text-field.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.PrivateDatePicker .input-text-field.align-right .MuiInputBase-input {\n  text-align: right;\n}";
-styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, ref) {
+});var PrivateDatePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
@@ -4957,9 +4923,9 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
      * Ref
      * ******************************************************************************************************************/
     var privateStaticDatePickerRef = useRef(null);
-    var textFieldInputRef = useRef();
-    var closeTimeoutRef = useRef();
-    var mouseDownTimeRef = useRef();
+    var textFieldInputRef = useRef(undefined);
+    var closeTimeoutRef = useRef(undefined);
+    var mouseDownTimeRef = useRef(undefined);
     var datePickerErrorRef = useRef(null);
     var openValueRef = useRef(null);
     var onValidateRef = useAutoUpdateLayoutRef(initOnValidate);
@@ -5337,9 +5303,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
                     React.createElement("div", { style: { display: fullWidth ? 'block' : 'inline-block' } },
                         React.createElement(DesktopDatePicker, __assign({ value: inputValue, label: labelIcon ? React.createElement(PdgIconText, { icon: labelIcon }, initLabel) : initLabel, open: false, format: format ? format : getDateTimeFormat(type, time), disabled: disabled, readOnly: readOnly, minDate: minDate, maxDate: maxDate, disablePast: disablePast, disableFuture: disableFuture, onClose: function () { return setOpen(false); }, onError: function (reason) { return (datePickerErrorRef.current = reason); }, onChange: function (newValue) { return handleChange('date', newValue); }, slotProps: slotProps, showDaysOutsideCurrentMonth: showDaysOutsideCurrentMonth }, otherProps)))),
                 !formColWithHelperText && (helperText || (error && errorHelperText)) && (React.createElement(FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error ? errorHelperText : helperText))))));
-});var css_248z$6 = ".PrivateDateTimePicker .input-text-field.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.PrivateDateTimePicker .input-text-field.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.PrivateDateTimePicker .input-text-field.align-right .MuiInputBase-input {\n  text-align: right;\n}";
-styleInject(css_248z$6);var css_248z$5 = ".PrivateStaticDateTimePicker.time {\n  height: 400px;\n}\n.PrivateStaticDateTimePicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.PrivateStaticDateTimePicker .month-title-container {\n  display: flex;\n  align-items: center;\n  margin-left: 5px;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button:not(.active) {\n  color: unset;\n}\n.PrivateStaticDateTimePicker .action-buttons {\n  border-top: 1px solid #efefef;\n  padding: 10px;\n  text-align: right;\n}\n.PrivateStaticDateTimePicker .action-buttons button {\n  min-width: 0;\n  color: inherit;\n}\n.PrivateStaticDateTimePicker .action-buttons button:not(:first-of-type) {\n  margin-left: 5px;\n}\n.PrivateStaticDateTimePicker .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}\n.PrivateStaticDateTimePicker .time {\n  border-left: 2px solid #bfbfbf;\n}\n.PrivateStaticDateTimePicker .time .time-container {\n  height: 100%;\n}\n.PrivateStaticDateTimePicker .time .time-container .time-title {\n  text-align: center;\n  padding: 22px 0;\n  font-size: 15px;\n}\n.PrivateStaticDateTimePicker .time .time-container .time-select-wrap {\n  flex: 1;\n  border-top: 1px solid #efefef;\n}\n.PrivateStaticDateTimePicker.time .time .time-container .time-select-wrap > div > div:not(:first-of-type) {\n  border-left: 1px solid #efefef;\n}";
-styleInject(css_248z$5);var DEFAULT_HOURS = new Array(24).fill(0);
+});var DEFAULT_HOURS = new Array(24).fill(0);
 for (var i$1 = 0; i$1 < DEFAULT_HOURS.length; i$1 += 1) {
     DEFAULT_HOURS[i$1] = i$1;
 }
@@ -5355,7 +5319,7 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
-    var value = _a.value, initAvailableDate = _a.availableDate, defaultCalendarMonth = _a.defaultCalendarMonth, type = _a.type, time = _a.time, _b = _a.hours, hours = _b === void 0 ? DEFAULT_HOURS : _b, _c = _a.minutes, minutes = _c === void 0 ? DEFAULT_MINUTES : _c, _d = _a.seconds, seconds = _d === void 0 ? DEFAULT_SECONDS : _d, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest(_a, ["value", "availableDate", "defaultCalendarMonth", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
+    var value = _a.value, initAvailableDate = _a.availableDate, type = _a.type, time = _a.time, _b = _a.hours, hours = _b === void 0 ? DEFAULT_HOURS : _b, _c = _a.minutes, minutes = _c === void 0 ? DEFAULT_MINUTES : _c, _d = _a.seconds, seconds = _d === void 0 ? DEFAULT_SECONDS : _d, minuteInterval = _a.minuteInterval, secondInterval = _a.secondInterval, minDate = _a.minDate, maxDate = _a.maxDate, disablePast = _a.disablePast, disableFuture = _a.disableFuture, onChange = _a.onChange, onMonthChange = _a.onMonthChange, onClose = _a.onClose, props = __rest(_a, ["value", "availableDate", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"]);
     var hourSelectRef = useRef(null);
     var minuteSelectRef = useRef(null);
     var secondSelectRef = useRef(null);
@@ -5365,8 +5329,6 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
     var _e = useState(function () {
         if (value)
             return value;
-        else if (defaultCalendarMonth)
-            return defaultCalendarMonth;
         else
             return dayjs();
     }), month = _e[0], setMonth = _e[1];
@@ -5388,8 +5350,8 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
         }
     }, [yearSelectOpen]);
     //--------------------------------------------------------------------------------------------------------------------
-    var leftArrowOnClickRef = useRef();
-    var rightArrowOnClickRef = useRef();
+    var leftArrowOnClickRef = useRef(undefined);
+    var rightArrowOnClickRef = useRef(undefined);
     var LeftArrowButton = useState(function () {
         var ArrowButton = function (props) {
             leftArrowOnClickRef.current = props.onClick;
@@ -5493,11 +5455,11 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(Grid, { container: true, className: classNames('PrivateStaticDateTimePicker', type) },
-        type !== 'time' && (React.createElement(Grid, { item: true },
+        type !== 'time' && (React.createElement(Grid, null,
             React.createElement(Grid, { container: true, direction: 'column' },
-                React.createElement(Grid, { item: true, sx: { p: 2, width: '100%' } },
+                React.createElement(Grid, { sx: { p: 2, width: '100%' } },
                     React.createElement(Grid, { container: true, className: 'month-change-arrow-wrap' },
-                        React.createElement(Grid, { item: true, flex: 1, className: 'month-title-container' },
+                        React.createElement(Grid, { flex: 1, className: 'month-title-container' },
                             React.createElement("div", { className: 'month-title-wrap' },
                                 React.createElement("div", { className: 'month-title' },
                                     React.createElement(Button, { variant: 'text', className: yearSelectOpen ? 'active' : undefined, onClick: function () {
@@ -5523,12 +5485,12 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
                                         } },
                                         month.format('M월'),
                                         React.createElement(Icon, null, monthSelectOpen ? 'arrow_drop_up' : 'arrow_drop_down'))))),
-                        !yearSelectOpen && !monthSelectOpen && (React.createElement(Grid, { item: true, style: { textAlign: 'right' } },
+                        !yearSelectOpen && !monthSelectOpen && (React.createElement(Grid, { style: { textAlign: 'right' } },
                             React.createElement(IconButton, { onClick: previousMonth, sx: { mr: 1 } },
                                 React.createElement(Icon, null, "keyboard_arrow_left")),
                             React.createElement(IconButton, { onClick: nextMonth },
                                 React.createElement(Icon, null, "keyboard_arrow_right")))))),
-                React.createElement(Grid, { item: true, style: { position: 'relative' } },
+                React.createElement(Grid, { style: { position: 'relative' } },
                     React.createElement(StaticDateTimePicker, __assign({}, props, { value: activeMonthValue, referenceDate: month, slots: {
                             previousIconButton: LeftArrowButton,
                             nextIconButton: RightArrowButton,
@@ -5547,7 +5509,7 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
                         } })),
                     yearSelectOpen && (React.createElement(PrivateYearSelect, { selectYear: value == null ? null : value.year(), activeYear: month.year(), availableDate: availableDate, onSelect: handleYearSelect })),
                     monthSelectOpen && (React.createElement(PrivateMonthSelect, { year: month.year(), selectYear: value == null ? null : value.year(), selectMonth: value == null ? null : value.month(), activeMonth: month.month(), availableDate: availableDate, onSelect: handleMonthSelect }))),
-                React.createElement(Grid, { item: true, className: 'action-buttons' },
+                React.createElement(Grid, { className: 'action-buttons' },
                     getActionButton(dayjs()
                         .startOf('d')
                         .subtract(1, 'month')
@@ -5588,9 +5550,9 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
      * Ref
      * ******************************************************************************************************************/
     var privateStaticDateTimePickerRef = useRef(null);
-    var textFieldInputRef = useRef();
-    var closeTimeoutRef = useRef();
-    var mouseDownTimeRef = useRef();
+    var textFieldInputRef = useRef(undefined);
+    var closeTimeoutRef = useRef(undefined);
+    var mouseDownTimeRef = useRef(undefined);
     var datePickerErrorRef = useRef(null);
     var openValueRef = useRef(null);
     var onValidateRef = useAutoUpdateLayoutRef(initOnValidate);
@@ -6006,8 +5968,7 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
         React.createElement(DialogContent, null, content),
         React.createElement(DialogActions, null,
             React.createElement(Button, { variant: 'text', onClick: handleClose, autoFocus: true }, "\uD655\uC778"))));
-};var css_248z$4 = ".PrivateInputDatePicker.align-left .MuiInputBase-input {\n  text-align: left;\n}\n.PrivateInputDatePicker.align-center .MuiInputBase-input {\n  text-align: center;\n}\n.PrivateInputDatePicker.align-right .MuiInputBase-input {\n  text-align: right;\n}";
-styleInject(css_248z$4);var PrivateInputDatePicker = React.forwardRef(function (_a, ref) {
+};var PrivateInputDatePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
@@ -6100,7 +6061,7 @@ styleInject(css_248z$4);var PrivateInputDatePicker = React.forwardRef(function (
 var StyledButton$2 = styled(Button)(templateObject_2$6 || (templateObject_2$6 = __makeTemplateObject(["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"], ["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: #1976d2;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"])));
 var templateObject_1$b, templateObject_2$6;var PrivateYearRangePickerYear = React.forwardRef(function (_a, ref) {
     var year = _a.year, disabled = _a.disabled, isDefault = _a.isDefault, selected = _a.selected, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, selectedTemp = _a.selectedTemp, onClick = _a.onClick, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
-    return (React.createElement(StyledContainer$6, { className: 'PrivateYearRangePickerYear', ref: ref, item: true, xs: 4 },
+    return (React.createElement(StyledContainer$6, { className: 'PrivateYearRangePickerYear', ref: ref, size: { xs: 4 } },
         React.createElement(StyledButton$2, { className: classNames(isDefault && 'default', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', disabled && 'disabled'), disabled: disabled, onClick: onClick, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave }, year)));
 });var StyledContainer$5 = styled(Grid)(templateObject_1$a || (templateObject_1$a = __makeTemplateObject(["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"], ["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"])));
 var templateObject_1$a;var _lastCloseTime$1 = 0;
@@ -6112,7 +6073,7 @@ var PrivateYearRangePickerYearList = function (_a) {
     var yearsContainerRef = useRef(null);
     var startButtonRef = useRef(null);
     var endButtonRef = useRef(null);
-    var mouseOverTimer = useRef();
+    var mouseOverTimer = useRef(undefined);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -6373,7 +6334,7 @@ var PrivateYearRangePicker = function (_a) {
 var StyledButton$1 = styled(Button)(templateObject_2$4 || (templateObject_2$4 = __makeTemplateObject(["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n\n    &.range:not(.active) {\n      background-color: rgba(25, 118, 210, 0.8);\n    }\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"], ["\n  font-size: 12px;\n  background-color: transparent;\n  color: unset;\n  outline: 0;\n  font-weight: 400;\n  line-height: 1.75;\n  border-radius: 18px;\n  cursor: pointer;\n  width: 100%;\n  border: 1px solid transparent;\n\n  &:focus {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n  &.default {\n    background-color: #efefef;\n  }\n  &.selected,\n  &.selected-temp {\n    background-color: rgba(66, 165, 245, 0.6);\n  }\n  &.selected-start,\n  &.selected-end {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n\n    &.range:not(.active) {\n      background-color: rgba(25, 118, 210, 0.8);\n    }\n  }\n  &.active {\n    color: #fff;\n    background-color: rgba(25, 118, 210, 1);\n    box-shadow: inset 1px 1px 1px 1px #05569f;\n  }\n  &.disabled {\n    opacity: 0.8;\n    border: 1px solid transparent;\n  }\n  &:hover:not(.disabled):not(.selected-start):not(.selected-end) {\n    color: inherit;\n    border: 1px solid transparent;\n    background-color: rgba(66, 165, 245, 0.3);\n  }\n"])));
 var templateObject_1$8, templateObject_2$4;var PrivateYearPickerYear = React.forwardRef(function (_a, ref) {
     var year = _a.year, disabled = _a.disabled, active = _a.active, range = _a.range, isDefault = _a.isDefault, selected = _a.selected, selectedStart = _a.selectedStart, selectedEnd = _a.selectedEnd, selectedTemp = _a.selectedTemp, onClick = _a.onClick, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
-    return (React.createElement(StyledContainer$4, { className: 'PrivateYearPickerYear', ref: ref, item: true, xs: 4 },
+    return (React.createElement(StyledContainer$4, { className: 'PrivateYearPickerYear', ref: ref, size: { xs: 4 } },
         React.createElement(StyledButton$1, { className: classNames(range && 'range', isDefault && 'default', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', active && 'active', disabled && 'disabled'), disabled: disabled, onClick: onClick, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave }, year)));
 });var StyledContainer$3 = styled(Grid)(templateObject_1$7 || (templateObject_1$7 = __makeTemplateObject(["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"], ["\n  width: 240px;\n  height: inherit;\n  max-height: 240px;\n  overflow-y: auto;\n  padding: 4px;\n"])));
 var templateObject_1$7;var _lastCloseTime = 0;
@@ -6386,7 +6347,7 @@ var PrivateYearPickerYearList = function (_a) {
     var defaultButtonRef = useRef(null);
     var startButtonRef = useRef(null);
     var endButtonRef = useRef(null);
-    var mouseOverTimer = useRef();
+    var mouseOverTimer = useRef(undefined);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -6651,7 +6612,7 @@ var templateObject_1$5, templateObject_2$2;var PrivateMonthPickerMonth = React.f
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(StyledContainer$2, { className: 'PrivateMonthPickerMonth', ref: ref, item: true, xs: 4 },
+    return (React.createElement(StyledContainer$2, { className: 'PrivateMonthPickerMonth', ref: ref, size: { xs: 4 } },
         React.createElement(StyledButton, { className: classNames(range && 'range', isDefault && 'default', active && 'active', selected && 'selected', selectedStart && 'selected-start', selectedEnd && 'selected-end', selectedTemp && 'selected-temp', disabled && 'disabled'), disabled: disabled, onClick: handleClick, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave },
             month,
             "\uC6D4")));
@@ -7021,10 +6982,10 @@ var PrivateMonthRangePicker = function (_a) {
      * ******************************************************************************************************************/
     return (React.createElement("div", null,
         React.createElement(Grid, { container: true, className: 'PrivateMonthRangePicker' },
-            React.createElement(Grid, { item: true },
+            React.createElement(Grid, null,
                 React.createElement(PrivateMonthPicker, { value: value[0], selectToValue: value[1], minValue: minValue, maxValue: maxValue, disablePast: disablePast, disableFuture: disableFuture, onChange: handleStartMonthChange })),
             React.createElement(StyledDiv, null, "~"),
-            React.createElement(Grid, { item: true },
+            React.createElement(Grid, null,
                 React.createElement(PrivateMonthPicker, { value: value[1], selectFromValue: value[0], minValue: minValue, maxValue: maxValue, disablePast: disablePast, disableFuture: disableFuture, onChange: handleEndMonthChange }))),
         actionButtons));
 };
@@ -7089,8 +7050,7 @@ FormDateTimePicker.displayName = 'FormDateTimePicker';var FormTimePicker = React
     return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { onAddValueItem: handleAddValueItem }) },
         React.createElement(PrivateDateTimePicker, __assign({ className: classNames(className, 'FormTimePicker') }, props, { ref: ref, type: 'time' }))));
 });
-FormTimePicker.displayName = 'FormTimePicker';var css_248z$3 = ".FormDateRangePickerTooltipPicker .MuiPickersCalendarHeader-root {\n  display: none;\n}\n.FormDateRangePickerTooltipPicker .MuiDayPicker-header > span {\n  margin: 0;\n}\n.FormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content {\n  min-width: 292px;\n}\n.FormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root > div {\n  width: 292px;\n}\n.FormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root > div .MuiCalendarPicker-root {\n  width: 292px;\n}\n.FormDateRangePickerTooltipPicker .selected-bg {\n  display: none;\n  position: absolute;\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel {\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background-color: rgba(66, 165, 245, 0.6);\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel.ui-start, .FormDateRangePickerTooltipPicker .selected-bg.sel.s-start {\n  border-top-left-radius: 50%;\n  border-bottom-left-radius: 50%;\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel.ui-end, .FormDateRangePickerTooltipPicker .selected-bg.sel.s-end {\n  border-top-right-radius: 50%;\n  border-bottom-right-radius: 50%;\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel ~ .MuiPickersDay-root {\n  border: 0;\n}\n.FormDateRangePickerTooltipPicker .selected-bg.sel ~ .MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected) {\n  background-color: transparent;\n}\n.FormDateRangePickerTooltipPicker .focused-bg {\n  display: none;\n  position: absolute;\n}\n.FormDateRangePickerTooltipPicker .focused-bg.focused {\n  display: block;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  border: 2px solid #efefef;\n  border-left: 0;\n  border-right: 0;\n}\n.FormDateRangePickerTooltipPicker .focused-bg.focused.ui-start, .FormDateRangePickerTooltipPicker .focused-bg.focused.f-start {\n  border-left: 2px solid #efefef;\n  border-top-left-radius: 50%;\n  border-bottom-left-radius: 50%;\n}\n.FormDateRangePickerTooltipPicker .focused-bg.focused.ui-end, .FormDateRangePickerTooltipPicker .focused-bg.focused.f-end {\n  border-right: 2px solid #efefef;\n  border-top-right-radius: 50%;\n  border-bottom-right-radius: 50%;\n}\n.FormDateRangePickerTooltipPicker .focused-bg.focused ~ .MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected) {\n  background-color: transparent;\n}";
-styleInject(css_248z$3);var FormDateRangePickerTooltipPicker = React.forwardRef(function (_a, ref) {
+FormTimePicker.displayName = 'FormTimePicker';var FormDateRangePickerTooltipPicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -7107,8 +7067,8 @@ styleInject(css_248z$3);var FormDateRangePickerTooltipPicker = React.forwardRef(
         setActiveMonthValue(null);
     }, [selectType]);
     //--------------------------------------------------------------------------------------------------------------------
-    var leftArrowOnClickRef = useRef();
-    var rightArrowOnClickRef = useRef();
+    var leftArrowOnClickRef = useRef(undefined);
+    var rightArrowOnClickRef = useRef(undefined);
     var LeftArrowButton = useState(function () {
         var ArrowButton = function (props) {
             leftArrowOnClickRef.current = props.onClick;
@@ -7281,8 +7241,7 @@ styleInject(css_248z$3);var FormDateRangePickerTooltipPicker = React.forwardRef(
                 onMonthChange(month);
             setActiveMonthValue(null);
         } }));
-});var css_248z$2 = ".FormDateRangePickerTooltipPickerContainer {\n  display: inline-block;\n  position: relative;\n}\n.FormDateRangePickerTooltipPickerContainer .month-change-arrow-wrap {\n  position: absolute;\n  top: 15px;\n  left: 0;\n  right: 0;\n}\n.FormDateRangePickerTooltipPickerContainer .month-change-arrow-wrap > div:first-of-type {\n  padding-left: 20px;\n}\n.FormDateRangePickerTooltipPickerContainer .month-change-arrow-wrap > div:last-child {\n  padding-right: 20px;\n  text-align: right;\n}\n.FormDateRangePickerTooltipPickerContainer .month-title {\n  text-align: center;\n  padding-top: 13px;\n  padding-bottom: 10px;\n}\n.FormDateRangePickerTooltipPickerContainer .month-title button {\n  font-size: 15px;\n  padding-left: 8px;\n  padding-right: 0;\n  min-width: 0;\n}\n.FormDateRangePickerTooltipPickerContainer .month-title button:not(.active) {\n  color: unset;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap {\n  position: relative;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select,\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  border-top: 1px solid #efefef;\n  padding-top: 15px;\n  background-color: white;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button.today:not(.selected),\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button.today:not(.selected) {\n  border: 1px solid rgba(0, 0, 0, 0.1);\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button.active:not(.selected),\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button.active:not(.selected) {\n  background-color: #f5f5f5;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button.active:not(.selected):hover,\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button.active:not(.selected):hover {\n  background-color: rgb(229, 229, 229);\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select {\n  overflow-y: scroll;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button {\n  font-size: 14px;\n  font-weight: 400;\n  border-radius: 18px;\n}\n.FormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button {\n  font-size: 15px;\n  font-weight: 400;\n  border-radius: 18px;\n}\n.FormDateRangePickerTooltipPickerContainer .action-buttons button {\n  min-width: 0;\n  color: unset;\n}\n.FormDateRangePickerTooltipPickerContainer .action-buttons button:not(:first-of-type) {\n  margin-left: 5px;\n}\n.FormDateRangePickerTooltipPickerContainer .action-buttons button.disabled {\n  color: rgba(0, 0, 0, 0.5);\n}";
-styleInject(css_248z$2);var YEARS = new Array(200).fill(0);
+});var YEARS = new Array(200).fill(0);
 for (var i = 0; i < 200; i += 1) {
     YEARS[i] = 1900 + i;
 }
@@ -7497,26 +7456,26 @@ var FormDateRangePickerTooltipPickerContainer = React.forwardRef(function (_a, r
     }, [onGetActionButtons, getActionButton]);
     return (React.createElement("div", { className: 'FormDateRangePickerTooltipPickerContainer' },
         React.createElement(Grid, { container: true, direction: 'column' },
-            !yearSelectOpen && !monthSelectOpen && (React.createElement(Grid, { item: true },
+            !yearSelectOpen && !monthSelectOpen && (React.createElement(Grid, null,
                 React.createElement(Grid, { container: true, className: 'month-change-arrow-wrap' },
-                    React.createElement(Grid, { item: true, xs: 6 },
+                    React.createElement(Grid, { size: { xs: 6 } },
                         React.createElement(IconButton, { onClick: previousMonth },
                             React.createElement(Icon, null, "keyboard_arrow_left"))),
-                    React.createElement(Grid, { item: true, xs: 6 },
+                    React.createElement(Grid, { size: { xs: 6 } },
                         React.createElement(IconButton, { onClick: nextMonth },
                             React.createElement(Icon, null, "keyboard_arrow_right")))))),
-            React.createElement(Grid, { item: true, onMouseLeave: function () { return setFocusedDate(undefined); } },
+            React.createElement(Grid, { onMouseLeave: function () { return setFocusedDate(undefined); } },
                 React.createElement("div", { style: { display: 'flex' } },
                     React.createElement("div", { style: { flex: 1 } }, getMonthTitle(0)),
                     React.createElement("div", { style: { flex: 1, borderLeft: '1px solid #efefef' } }, getMonthTitle(1)),
                     Number(calendarCount) >= 3 && (React.createElement("div", { style: { flex: 1, borderLeft: '1px solid #efefef' } }, getMonthTitle(2)))),
                 React.createElement("div", { className: 'date-picker-wrap' },
                     React.createElement(Grid, { container: true, flexWrap: 'nowrap' },
-                        React.createElement(Grid, { item: true },
+                        React.createElement(Grid, null,
                             React.createElement(FormDateRangePickerTooltipPicker, __assign({}, customDatePickerProps, { ref: datePicker1Ref, focusedDate: focusedDate, month: months[0], onMouseEnterPickersDay: setFocusedDate, onMonthChange: handleFirstDatePickerMonthChange }))),
-                        React.createElement(Grid, { item: true, style: { borderLeft: '1px solid #efefef' } },
+                        React.createElement(Grid, { style: { borderLeft: '1px solid #efefef' } },
                             React.createElement(FormDateRangePickerTooltipPicker, __assign({}, customDatePickerProps, { ref: datePicker2Ref, focusedDate: focusedDate, month: months[1], onMouseEnterPickersDay: setFocusedDate }))),
-                        Number(calendarCount) >= 3 && (React.createElement(Grid, { item: true, style: { borderLeft: '1px solid #efefef' } },
+                        Number(calendarCount) >= 3 && (React.createElement(Grid, { style: { borderLeft: '1px solid #efefef' } },
                             React.createElement(FormDateRangePickerTooltipPicker, __assign({}, customDatePickerProps, { ref: datePicker3Ref, focusedDate: focusedDate, month: months[2], onMouseEnterPickersDay: setFocusedDate }))))),
                     yearSelectOpen && (React.createElement("div", { ref: yearSelectRef, className: 'year-select' },
                         React.createElement(Grid, { container: true, style: { padding: '5px 10px' }, spacing: 1 }, YEARS.map(function (y) {
@@ -7526,7 +7485,7 @@ var FormDateRangePickerTooltipPickerContainer = React.forwardRef(function (_a, r
                             var isActive = y === months[yearMonthSelectIndex].year();
                             var isSelected = y === ((_a = value[yearMonthSelectIndex]) === null || _a === void 0 ? void 0 : _a.year());
                             var disabled = !isDateAvailable(dayjs(y.toString(), 'YYYY'), availableDate, 'year');
-                            return (React.createElement(Grid, { key: y, item: true, xs: 2 },
+                            return (React.createElement(Grid, { key: y, size: { xs: 2 } },
                                 React.createElement(Button, { variant: 'text', fullWidth: true, disabled: disabled, className: classNames(isSelected && 'selected', isActive && 'active', isToday && 'today'), ref: isActive ? activeYearBtnRef : undefined, sx: {
                                         backgroundColor: isSelected ? theme.palette.primary.main : undefined,
                                         color: isSelected ? 'white' : 'unset',
@@ -7547,7 +7506,7 @@ var FormDateRangePickerTooltipPickerContainer = React.forwardRef(function (_a, r
                                 m === ((_b = value[yearMonthSelectIndex]) === null || _b === void 0 ? void 0 : _b.month());
                             var ym = months[yearMonthSelectIndex].year() * 100 + (m + 1);
                             var disabled = !isDateAvailable(dayjs(ym.toString(), 'YYYYMM'), availableDate, 'month');
-                            return (React.createElement(Grid, { key: m, item: true, xs: 4 },
+                            return (React.createElement(Grid, { key: m, size: { xs: 4 } },
                                 React.createElement(Button, { variant: 'text', fullWidth: true, disabled: disabled, className: classNames(isSelected && 'selected', isActive && 'active', isToday && 'today'), ref: isActive ? activeYearBtnRef : undefined, sx: {
                                         backgroundColor: isSelected ? theme.palette.primary.main : undefined,
                                         color: isSelected ? 'white' : 'unset',
@@ -7560,7 +7519,7 @@ var FormDateRangePickerTooltipPickerContainer = React.forwardRef(function (_a, r
                                     m + 1,
                                     "\uC6D4")));
                         })))))),
-            React.createElement(Grid, { className: 'action-buttons', item: true, style: { borderTop: '1px solid #efefef', padding: 10, textAlign: 'right' } }, actionButtons))));
+            React.createElement(Grid, { className: 'action-buttons', style: { borderTop: '1px solid #efefef', padding: 10, textAlign: 'right' } }, actionButtons))));
 });var DEFAULT_VALUE$2 = [null, null];
 var getFinalValue$6 = function (value) {
     return value || DEFAULT_VALUE$2;
@@ -7592,13 +7551,13 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
      * Ref
      * ******************************************************************************************************************/
     var containerRef = useRef(null);
-    var startDateTextFieldRef = useRef();
-    var endDateTextFieldRef = useRef();
-    var closeTimeoutRef = useRef();
-    var mouseDownTimeRef = useRef();
+    var startDateTextFieldRef = useRef(undefined);
+    var endDateTextFieldRef = useRef(undefined);
+    var closeTimeoutRef = useRef(undefined);
+    var mouseDownTimeRef = useRef(undefined);
     var startInputDatePickerErrorRef = useRef(null);
     var endInputDatePickerErrorRef = useRef(null);
-    var openValueRef = useRef();
+    var openValueRef = useRef(undefined);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -8087,10 +8046,10 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                     }, title: React.createElement("div", { style: { display: 'flex' } },
                         React.createElement(FormDateRangePickerTooltipPickerContainer, { ref: containerRef, calendarCount: calendarCount, selectType: selectType, value: value, months: months, disablePast: disablePast, disableFuture: disableFuture, minDate: minDate, maxDate: maxDate, onGetActionButtons: onGetActionButtons, onChange: handleChange, onValueChange: handleValueChange, onMonthsChange: setMonths })) },
                     React.createElement(Grid, { container: true, alignItems: 'center' },
-                        React.createElement(Grid, { item: true, flex: 1 },
+                        React.createElement(Grid, { flex: 1 },
                             React.createElement(PrivateInputDatePicker, __assign({}, inputDatePickerProps, { style: inputStyle, value: value[0], label: fromLabel, labelIcon: fromLabelIcon, error: error || fromError, focused: focused || (open && selectType === 'start'), required: required || requiredStart, readOnly: readOnly || readOnlyStart, readOnlyInput: readOnlyInput, icon: startIcon || icon, startAdornment: startStartAdornment || startAdornment, endAdornment: startEndAdornment || endAdornment, inputRef: startDateTextFieldRef, onChange: function (newValue) { return handleInputDatePickerChange('start', newValue); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); } }))),
-                        React.createElement(Grid, { item: true, sx: { px: 1 } }, "~"),
-                        React.createElement(Grid, { item: true, flex: 1 },
+                        React.createElement(Grid, { sx: { px: 1 } }, "~"),
+                        React.createElement(Grid, { flex: 1 },
                             React.createElement(PrivateInputDatePicker, __assign({}, inputDatePickerProps, { style: inputStyle, value: value[1], label: toLabel, labelIcon: toLabelIcon, error: error || toError, focused: focused || (open && selectType === 'end'), required: required || requiredEnd, readOnly: readOnly || readOnlyEnd, readOnlyInput: readOnlyInput, icon: endIcon || icon, startAdornment: endStartAdornment || startAdornment, endAdornment: endEndAdornment || endAdornment, inputRef: endDateTextFieldRef, onChange: function (newValue) { return handleInputDatePickerChange('end', newValue); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); } }))))),
                 !formColWithHelperText &&
                     (helperText ||
@@ -8103,7 +8062,7 @@ FormDateRangePicker.displayName = 'FormDateRangePicker';var LinkDialog = functio
      * Ref
      * ******************************************************************************************************************/
     var open = _a.open, onConfirm = _a.onConfirm, onCancel = _a.onCancel, onClose = _a.onClose;
-    var inputRef = useRef();
+    var inputRef = useRef(null);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -8156,8 +8115,7 @@ FormDateRangePicker.displayName = 'FormDateRangePicker';var LinkDialog = functio
         React.createElement(DialogActions, null,
             React.createElement(Button, { variant: 'text', onClick: handleCancel }, "\uCDE8\uC18C"),
             React.createElement(Button, { variant: 'text', onClick: handleSubmit }, "\uD655\uC778"))));
-};var css_248z$1 = ".FormFile .control-wrap {\n  display: inline-flex;\n}\n.FormFile .control-wrap .file-name-wrap .file-name {\n  min-width: 350px;\n}\n.FormFile .control-wrap .file-name-wrap .file-name .MuiInputBase-root {\n  padding-right: 7px;\n}\n.FormFile .control-wrap .input-file {\n  display: none;\n}\n.FormFile .control-wrap .input-file-wrap {\n  display: flex;\n}\n.FormFile .control-wrap .input-file-wrap .input-file-btn:not(.hidden-label) .PdgIcon {\n  margin-left: -3px;\n}\n.FormFile.full-width .control-wrap {\n  display: flex;\n}\n.FormFile.full-width .control-wrap .file-name-wrap {\n  flex: 1;\n}\n.FormFile.variant-standard .file-name-wrap .file-name .MuiInputBase-root {\n  padding-right: 0;\n}\n.FormFile:not(.hide-file-name).variant-outlined .form-file-btn label, .FormFile:not(.hide-file-name).variant-filled .form-file-btn label {\n  padding-top: 10px;\n  padding-bottom: 10px;\n}\n.FormFile:not(.hide-file-name).variant-standard .form-file-btn label {\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n.FormFile:not(.hide-file-name).size-small .form-file-btn label {\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n\n.FormFile.hide-file-name:not(.with-label).variant-outlined .form-file-btn {\n  height: 52px;\n}\n.FormFile.hide-file-name:not(.with-label).variant-filled .form-file-btn {\n  height: 52px;\n}\n.FormFile.hide-file-name:not(.with-label).variant-standard .form-file-btn {\n  height: 28px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-filled .form-file-btn {\n  height: 44px;\n}\n.FormFile.hide-file-name:not(.with-label).size-small.variant-standard .form-file-btn {\n  height: 26px;\n}\n.FormFile.hide-file-name.with-label.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name.with-label.variant-filled .form-file-btn {\n  height: 37px;\n}\n.FormFile.hide-file-name.with-label.variant-standard .form-file-btn {\n  height: 28px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-outlined .form-file-btn {\n  height: 24px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-filled .form-file-btn {\n  height: 31px;\n}\n.FormFile.hide-file-name.with-label.size-small.variant-standard .form-file-btn {\n  height: 26px;\n}\n\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-outlined .form-file-btn {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-filled .form-file-btn {\n  height: 37px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.variant-standard .form-file-btn {\n  height: 28px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-outlined .form-file-btn {\n  height: 24px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-filled .form-file-btn {\n  height: 31px;\n}\n.Form .FormCol.with-label .FormFile.hide-file-name.size-small.variant-standard .form-file-btn {\n  height: 26px;\n}";
-styleInject(css_248z$1);var StyledPdgButton = styled(PdgButton)(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  min-width: 0;\n\n  &.input-file-btn {\n    padding: 0 !important;\n    position: relative;\n\n    .PdgFlexRowBox {\n      height: 100%;\n      .PdgText {\n        height: 100%;\n\n        label {\n          cursor: pointer;\n          display: flex;\n          flex: 1;\n          width: 100%;\n          height: 100%;\n          justify-content: center;\n          align-items: center;\n          padding: 0 10px;\n\n          .PdgIcon {\n            margin-right: 0.2em;\n          }\n        }\n      }\n    }\n  }\n\n  &.hidden-label.input-file-btn .PdgFlexRowBox .PdgText label .PdgIcon {\n    margin-left: 0;\n    margin-right: 0;\n  }\n\n  &.MuiButton-outlined {\n    &:first-of-type:not(:last-of-type) {\n      border-right: 0;\n      border-top-right-radius: 0;\n      border-bottom-right-radius: 0;\n    }\n    &:last-of-type:not(:first-of-type) {\n      border-top-left-radius: 0;\n      border-bottom-left-radius: 0;\n    }\n    &:not(:first-of-type):not(:last-of-type) {\n      border-right: 0;\n      border-radius: 0;\n    }\n  }\n"], ["\n  min-width: 0;\n\n  &.input-file-btn {\n    padding: 0 !important;\n    position: relative;\n\n    .PdgFlexRowBox {\n      height: 100%;\n      .PdgText {\n        height: 100%;\n\n        label {\n          cursor: pointer;\n          display: flex;\n          flex: 1;\n          width: 100%;\n          height: 100%;\n          justify-content: center;\n          align-items: center;\n          padding: 0 10px;\n\n          .PdgIcon {\n            margin-right: 0.2em;\n          }\n        }\n      }\n    }\n  }\n\n  &.hidden-label.input-file-btn .PdgFlexRowBox .PdgText label .PdgIcon {\n    margin-left: 0;\n    margin-right: 0;\n  }\n\n  &.MuiButton-outlined {\n    &:first-of-type:not(:last-of-type) {\n      border-right: 0;\n      border-top-right-radius: 0;\n      border-bottom-right-radius: 0;\n    }\n    &:last-of-type:not(:first-of-type) {\n      border-top-left-radius: 0;\n      border-bottom-left-radius: 0;\n    }\n    &:not(:first-of-type):not(:last-of-type) {\n      border-right: 0;\n      border-radius: 0;\n    }\n  }\n"])));
+};var StyledPdgButton = styled(PdgButton)(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  min-width: 0;\n\n  &.input-file-btn {\n    padding: 0 !important;\n    position: relative;\n\n    .PdgFlexRowBox {\n      height: 100%;\n      .PdgText {\n        height: 100%;\n\n        label {\n          cursor: pointer;\n          display: flex;\n          flex: 1;\n          width: 100%;\n          height: 100%;\n          justify-content: center;\n          align-items: center;\n          padding: 0 10px;\n\n          .PdgIcon {\n            margin-right: 0.2em;\n          }\n        }\n      }\n    }\n  }\n\n  &.hidden-label.input-file-btn .PdgFlexRowBox .PdgText label .PdgIcon {\n    margin-left: 0;\n    margin-right: 0;\n  }\n\n  &.MuiButton-outlined {\n    &:first-of-type:not(:last-of-type) {\n      border-right: 0;\n      border-top-right-radius: 0;\n      border-bottom-right-radius: 0;\n    }\n    &:last-of-type:not(:first-of-type) {\n      border-top-left-radius: 0;\n      border-bottom-left-radius: 0;\n    }\n    &:not(:first-of-type):not(:last-of-type) {\n      border-right: 0;\n      border-radius: 0;\n    }\n  }\n"], ["\n  min-width: 0;\n\n  &.input-file-btn {\n    padding: 0 !important;\n    position: relative;\n\n    .PdgFlexRowBox {\n      height: 100%;\n      .PdgText {\n        height: 100%;\n\n        label {\n          cursor: pointer;\n          display: flex;\n          flex: 1;\n          width: 100%;\n          height: 100%;\n          justify-content: center;\n          align-items: center;\n          padding: 0 10px;\n\n          .PdgIcon {\n            margin-right: 0.2em;\n          }\n        }\n      }\n    }\n  }\n\n  &.hidden-label.input-file-btn .PdgFlexRowBox .PdgText label .PdgIcon {\n    margin-left: 0;\n    margin-right: 0;\n  }\n\n  &.MuiButton-outlined {\n    &:first-of-type:not(:last-of-type) {\n      border-right: 0;\n      border-top-right-radius: 0;\n      border-bottom-right-radius: 0;\n    }\n    &:last-of-type:not(:first-of-type) {\n      border-top-left-radius: 0;\n      border-bottom-left-radius: 0;\n    }\n    &:not(:first-of-type):not(:last-of-type) {\n      border-right: 0;\n      border-radius: 0;\n    }\n  }\n"])));
 var templateObject_1$1;var getFinalValue$5 = function (value) { return value || ''; };var FILE_VALUE = '';
 var FormFile = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
@@ -8187,7 +8145,6 @@ var FormFile = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
-    var innerRef = useRef(null);
     var textFieldRef = useRef(null);
     var fileUploadBtnRef = useRef(null);
     var linkBtnRef = useRef(null);
@@ -8204,11 +8161,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * State - width, height
      * ******************************************************************************************************************/
-    var height = useResizeDetector({
-        targetRef: innerRef,
-        handleWidth: false,
-        handleHeight: true,
-    }).height;
+    var _l = useResizeDetector({ handleWidth: false }), innerRef = _l.ref, height = _l.height;
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
      * ******************************************************************************************************************/
@@ -8244,7 +8197,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _l = useAutoUpdateRefState(initValue, getFinalValue$5), valueRef = _l[0], value = _l[1], setValue = _l[2];
+    var _m = useAutoUpdateRefState(initValue, getFinalValue$5), valueRef = _m[0], value = _m[1], setValue = _m[2];
     useFirstSkipEffect(function () {
         if (error)
             validate(value);
@@ -8426,17 +8379,21 @@ var FormFile = React.forwardRef(function (_a, ref) {
             !hideUrl && (React.createElement("div", { className: 'file-name-wrap' },
                 React.createElement(TextField, { ref: innerRef, inputRef: textFieldRef, className: 'file-name', variant: variant, label: labelIcon ? (React.createElement(React.Fragment, null,
                         React.createElement(PdgIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
-                        React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel), size: size, required: required, value: value || '', focused: focused, disabled: disabled, fullWidth: true, error: error, InputLabelProps: labelShrink ? { shrink: labelShrink } : undefined, inputProps: { readOnly: true }, InputProps: {
-                        endAdornment: (React.createElement(InputAdornment, { position: 'end' },
-                            React.createElement("div", { className: 'input-file-wrap' },
-                                !hideUpload && (React.createElement(React.Fragment, null,
-                                    React.createElement(StyledPdgButton, { variant: 'text', tabIndex: uploadTabIndex == null ? -1 : uploadTabIndex, className: classNames('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label'), color: error ? 'error' : color, size: size, disabled: readOnly || disabled, ref: fileUploadBtnRef },
-                                        React.createElement("label", { htmlFor: id },
-                                            React.createElement(PdgIcon, { size: size }, "upload"),
-                                            !hideUploadLabel && (uploadLabel || '파일 업로드'))),
-                                    React.createElement("input", { type: 'file', accept: accept, id: id, value: FILE_VALUE, className: 'input-file', onChange: handleFileChange }))),
-                                !hideLink && (React.createElement(StyledPdgButton, { variant: 'text', tabIndex: linkTabIndex == null ? -1 : linkTabIndex, className: classNames('link-btn  form-file-btn', !!hideLinkLabel && 'hidden-label'), color: error ? 'error' : color, startIcon: 'link', size: size, disabled: readOnly || disabled, ref: linkBtnRef, onClick: handleLinkClick }, !hideLinkLabel && (linkLabel || '링크'))),
-                                !hideRemove && notEmpty(value) && (React.createElement(StyledPdgButton, { variant: 'text', tabIndex: removeTabIndex == null ? -1 : removeTabIndex, className: classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, startIcon: 'close', size: size, disabled: readOnly || disabled, onClick: handleRemoveClick }, !hideRemoveLabel && (removeLabel || '삭제')))))),
+                        React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel), size: size, required: required, value: value || '', focused: focused, disabled: disabled, fullWidth: true, error: error, slotProps: {
+                        inputLabel: labelShrink ? { shrink: labelShrink } : undefined,
+                        htmlInput: { readOnly: true },
+                        input: {
+                            endAdornment: (React.createElement(InputAdornment, { position: 'end' },
+                                React.createElement("div", { className: 'input-file-wrap' },
+                                    !hideUpload && (React.createElement(React.Fragment, null,
+                                        React.createElement(StyledPdgButton, { variant: 'text', tabIndex: uploadTabIndex == null ? -1 : uploadTabIndex, className: classNames('input-file-btn form-file-btn', !!hideUploadLabel && 'hidden-label'), color: error ? 'error' : color, size: size, disabled: readOnly || disabled, ref: fileUploadBtnRef },
+                                            React.createElement("label", { htmlFor: id },
+                                                React.createElement(PdgIcon, { size: size }, "upload"),
+                                                !hideUploadLabel && (uploadLabel || '파일 업로드'))),
+                                        React.createElement("input", { type: 'file', accept: accept, id: id, value: FILE_VALUE, className: 'input-file', onChange: handleFileChange }))),
+                                    !hideLink && (React.createElement(StyledPdgButton, { variant: 'text', tabIndex: linkTabIndex == null ? -1 : linkTabIndex, className: classNames('link-btn  form-file-btn', !!hideLinkLabel && 'hidden-label'), color: error ? 'error' : color, startIcon: 'link', size: size, disabled: readOnly || disabled, ref: linkBtnRef, onClick: handleLinkClick }, !hideLinkLabel && (linkLabel || '링크'))),
+                                    !hideRemove && notEmpty(value) && (React.createElement(StyledPdgButton, { variant: 'text', tabIndex: removeTabIndex == null ? -1 : removeTabIndex, className: classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label'), color: error ? 'error' : color, startIcon: 'close', size: size, disabled: readOnly || disabled, onClick: handleRemoveClick }, !hideRemoveLabel && (removeLabel || '삭제')))))),
+                        },
                     }, placeholder: '\uD30C\uC77C\uC744 \uC120\uD0DD\uD558\uC138\uC694' }))),
             !!hideUrl && (React.createElement("div", { className: 'input-file-wrap' },
                 !hideUpload && (React.createElement(React.Fragment, null,
@@ -8450,8 +8407,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
             React.createElement(PrivateAlertDialog, __assign({}, alertDialogProps, { onClose: function () { return setAlertDialogProps({ open: false }); } })),
             React.createElement(LinkDialog, { open: isOpenLinkDialog, onConfirm: handleLinkDialogConfirm, onClose: function () { return setIsOpenLinkDialog(false); } })) }));
 });
-FormFile.displayName = 'FormFile';var css_248z = ".FormImageFile .preview-img {\n  max-width: 100%;\n}\n.FormImageFile:not(.hide-file-name):not(.variant-standard) .preview-img {\n  padding-right: 14px;\n}";
-styleInject(css_248z);var getFinalValue$4 = function (value) { return value || ''; };var FormImageFile = React.forwardRef(function (_a, ref) {
+FormFile.displayName = 'FormFile';var getFinalValue$4 = function (value) { return value || ''; };var FormImageFile = React.forwardRef(function (_a, ref) {
     var className = _a.className, imageSize = _a.imageSize, preview = _a.preview, previewMaxHeight = _a.previewMaxHeight, _b = _a.accept, accept = _b === void 0 ? '.jpg,.jpeg,.png' : _b, initValue = _a.value, onChange = _a.onChange, onFile = _a.onFile, onLink = _a.onLink, props = __rest(_a, ["className", "imageSize", "preview", "previewMaxHeight", "accept", "value", "onChange", "onFile", "onLink"]);
     var _c = useState({
         open: false,
@@ -8632,11 +8588,11 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
      * Ref
      * ******************************************************************************************************************/
     var ratingRef = useRef(null);
-    var inputRef = useRef();
-    var closeTimeoutRef = useRef();
-    var mouseDownTimeRef = useRef();
+    var inputRef = useRef(undefined);
+    var closeTimeoutRef = useRef(undefined);
+    var mouseDownTimeRef = useRef(undefined);
     var inputDatePickerErrorRef = useRef(null);
-    var openValueRef = useRef();
+    var openValueRef = useRef(undefined);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -8978,11 +8934,11 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
-    var startInputRef = useRef();
-    var endInputRef = useRef();
+    var startInputRef = useRef(undefined);
+    var endInputRef = useRef(undefined);
     var startInputDatePickerErrorRef = useRef(null);
     var endInputDatePickerErrorRef = useRef(null);
-    var openValueRef = useRef();
+    var openValueRef = useRef(undefined);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -9366,10 +9322,10 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                     }, title: React.createElement("div", { style: { display: 'flex' } },
                         React.createElement(PrivateMonthRangePicker, { minValue: minValue, maxValue: maxValue, disablePast: disablePast, disableFuture: disableFuture, value: value, onChange: handleContainerChange })) },
                     React.createElement(Grid, { container: true, alignItems: 'center' },
-                        React.createElement(Grid, { item: true, flex: 1 },
+                        React.createElement(Grid, { flex: 1 },
                             React.createElement(PrivateInputDatePicker, __assign({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate[0], label: fromLabel, labelIcon: fromLabelIcon, error: error || fromError, focused: focused || open, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: startInputRef, onChange: function (v) { return handleInputDatePickerChange('start', v); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))),
-                        React.createElement(Grid, { item: true, sx: { px: 1 } }, "~"),
-                        React.createElement(Grid, { item: true, flex: 1 },
+                        React.createElement(Grid, { sx: { px: 1 } }, "~"),
+                        React.createElement(Grid, { flex: 1 },
                             React.createElement(PrivateInputDatePicker, __assign({}, inputDatePickerProps, { style: inputStyle, sx: sx, value: valueDate[1], label: toLabel, labelIcon: toLabelIcon, error: error || toError, focused: focused || open, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: endInputRef, onChange: function (v) { return handleInputDatePickerChange('end', v); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))))),
                 !formColWithHelperText &&
                     (helperText ||
@@ -9413,11 +9369,11 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
      * Ref
      * ******************************************************************************************************************/
     var ratingRef = useRef(null);
-    var inputRef = useRef();
-    var closeTimeoutRef = useRef();
-    var mouseDownTimeRef = useRef();
+    var inputRef = useRef(undefined);
+    var closeTimeoutRef = useRef(undefined);
+    var mouseDownTimeRef = useRef(undefined);
     var inputDatePickerErrorRef = useRef(null);
-    var openValueRef = useRef();
+    var openValueRef = useRef(undefined);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -9692,11 +9648,11 @@ var getFinalValue = function (value) {
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
-    var startInputRef = useRef();
-    var endInputRef = useRef();
+    var startInputRef = useRef(undefined);
+    var endInputRef = useRef(undefined);
     var startInputDatePickerErrorRef = useRef(null);
     var endInputDatePickerErrorRef = useRef(null);
-    var openValueRef = useRef();
+    var openValueRef = useRef(undefined);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -10007,10 +9963,10 @@ var getFinalValue = function (value) {
                     }, title: React.createElement("div", { style: { display: 'flex' } },
                         React.createElement(PrivateYearRangePicker, { selectType: selectType, minYear: minYear, maxYear: maxYear, disablePast: disablePast, disableFuture: disableFuture, value: value, onChange: handleContainerChange })) },
                     React.createElement(Grid, { container: true, alignItems: 'center' },
-                        React.createElement(Grid, { item: true, flex: 1 },
+                        React.createElement(Grid, { flex: 1 },
                             React.createElement(PrivateInputDatePicker, __assign({}, privateInputDatePickerProps, { inputRef: startInputRef, value: valueDate[0], label: fromLabel, labelIcon: fromLabelIcon, error: error || fromError, focused: focused || (open && selectType === 'start'), onChange: function (v) { return handleInputDatePickerChange('start', v); }, onFocus: function () { return handleInputDatePickerFocus('start'); }, onError: function (reason) { return (startInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))),
-                        React.createElement(Grid, { item: true, sx: { px: 1 } }, "~"),
-                        React.createElement(Grid, { item: true, flex: 1 },
+                        React.createElement(Grid, { sx: { px: 1 } }, "~"),
+                        React.createElement(Grid, { flex: 1 },
                             React.createElement(PrivateInputDatePicker, __assign({}, privateInputDatePickerProps, { inputRef: endInputRef, value: valueDate[1], label: toLabel, labelIcon: toLabelIcon, error: error || toError, focused: focused || (open && selectType === 'end'), onChange: function (v) { return handleInputDatePickerChange('end', v); }, onFocus: function () { return handleInputDatePickerFocus('end'); }, onError: function (reason) { return (endInputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear }))))),
                 !formColWithHelperText &&
                     (helperText ||
@@ -10049,7 +10005,7 @@ FormYearRangePicker.displayName = 'FormYearRangePicker';var FormSwitch = React.f
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
-    var inputRef = useRef();
+    var inputRef = useRef(undefined);
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -10203,7 +10159,7 @@ FormSwitch.displayName = 'FormSwitch';var SearchGroupRow = function (_a) {
     _b = _a.color, 
     //----------------------------------------------------------------------------------------------------------------
     color = _b === void 0 ? 'primary' : _b, spacing = _a.spacing, focused = _a.focused, labelShrink = _a.labelShrink, autoSubmit = _a.autoSubmit, otherProps = __rest(_a, ["children", "className", "style", "sx", "color", "spacing", "focused", "labelShrink", "autoSubmit"]);
-    var formRef = useRef();
+    var formRef = useRef(undefined);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -10296,7 +10252,7 @@ var templateObject_1;var isReactFragment = function (child) {
     try {
         return child.type.toString() === React.Fragment.toString();
     }
-    catch (e) {
+    catch (_a) {
         return false;
     }
 };
@@ -10310,27 +10266,27 @@ var removeReactFragment = function (el) {
                         return removeReactFragment(child);
                     }
                     else {
-                        return React.createElement(Grid, { item: true }, child);
+                        return React.createElement(Grid, null, child);
                     }
                 });
             }
             else {
-                return (React.createElement(StyledItem, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
+                return React.createElement(StyledItem, { style: { display: el.type === FormHidden ? 'none' : undefined } }, el);
             }
         }
         else {
-            return (React.createElement(StyledItem, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
+            return React.createElement(StyledItem, { style: { display: el.type === FormHidden ? 'none' : undefined } }, el);
         }
     }
     else {
-        return (React.createElement(StyledItem, { item: true, style: { display: el.type === FormHidden ? 'none' : undefined } }, el));
+        return React.createElement(StyledItem, { style: { display: el.type === FormHidden ? 'none' : undefined } }, el);
     }
 };
 var SearchGroup = function (_a) {
     var children = _a.children, className = _a.className, style = _a.style, sx = _a.sx, 
     //--------------------------------------------------------------------------------------------------------------------
     max = _a.max, align = _a.align, hidden = _a.hidden, _b = _a.spacing, spacing = _b === void 0 ? 1 : _b;
-    return (React.createElement(Grid, { item: true, className: classNames(className, 'SearchGroup'), style: { flex: max ? 1 : undefined, display: hidden ? 'none' : undefined } },
+    return (React.createElement(Grid, { className: classNames(className, 'SearchGroup'), style: { flex: max ? 1 : undefined, display: hidden ? 'none' : undefined } },
         React.createElement(Grid, { container: true, wrap: 'wrap', spacing: spacing, justifyContent: align === undefined || align === 'left' ? 'start' : align === 'center' ? 'center' : 'end', alignItems: 'start', style: style, sx: sx }, React.Children.map(children, function (child) {
             if (React.isValidElement(child)) {
                 return removeReactFragment(child);
@@ -10350,7 +10306,7 @@ var SearchButton$1 = React.memo(SearchButton);var SearchMenuButton = function (_
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
-    var children = _a.children, className = _a.className, initSx = _a.sx, menuList = _a.menuList, placement = _a.placement, props = __rest(_a, ["children", "className", "sx", "menuList", "placement"]);
+    var children = _a.children, className = _a.className, initSx = _a.sx, menuList = _a.menuList; _a.placement; var props = __rest(_a, ["children", "className", "sx", "menuList", "placement"]);
     var buttonId = useId();
     var menuId = useId();
     /********************************************************************************************************************
@@ -10373,56 +10329,10 @@ var SearchButton$1 = React.memo(SearchButton);var SearchMenuButton = function (_
      * Memo
      * ******************************************************************************************************************/
     var open = !!anchorEl;
-    var anchorOrigin = placement || 'bottom' === 'bottom'
-        ? { vertical: 'bottom', horizontal: 'center' }
-        : placement === 'bottom-left'
-            ? { vertical: 'bottom', horizontal: 'left' }
-            : placement === 'bottom-right'
-                ? { vertical: 'bottom', horizontal: 'right' }
-                : placement === 'top'
-                    ? { vertical: 'top', horizontal: 'center' }
-                    : placement === 'top-left'
-                        ? { vertical: 'top', horizontal: 'left' }
-                        : placement === 'top-right'
-                            ? { vertical: 'top', horizontal: 'right' }
-                            : placement === 'left'
-                                ? { vertical: 'center', horizontal: 'left' }
-                                : placement === 'left-top'
-                                    ? { vertical: 'top', horizontal: 'left' }
-                                    : placement === 'left-bottom'
-                                        ? { vertical: 'bottom', horizontal: 'left' }
-                                        : placement === 'right'
-                                            ? { vertical: 'center', horizontal: 'right' }
-                                            : placement === 'right-top'
-                                                ? { vertical: 'top', horizontal: 'right' }
-                                                : placement === 'right-bottom'
-                                                    ? { vertical: 'bottom', horizontal: 'right' }
-                                                    : { vertical: 'bottom', horizontal: 'center' };
-    var transformOrigin = placement || 'bottom' === 'bottom'
-        ? { vertical: 'top', horizontal: 'center' }
-        : placement === 'bottom-left'
-            ? { vertical: 'top', horizontal: 'left' }
-            : placement === 'bottom-right'
-                ? { vertical: 'top', horizontal: 'right' }
-                : placement === 'top'
-                    ? { vertical: 'bottom', horizontal: 'center' }
-                    : placement === 'top-left'
-                        ? { vertical: 'bottom', horizontal: 'left' }
-                        : placement === 'top-right'
-                            ? { vertical: 'bottom', horizontal: 'right' }
-                            : placement === 'left'
-                                ? { vertical: 'center', horizontal: 'right' }
-                                : placement === 'left-top'
-                                    ? { vertical: 'top', horizontal: 'right' }
-                                    : placement === 'left-bottom'
-                                        ? { vertical: 'bottom', horizontal: 'right' }
-                                        : placement === 'right'
-                                            ? { vertical: 'center', horizontal: 'left' }
-                                            : placement === 'right-top'
-                                                ? { vertical: 'top', horizontal: 'left' }
-                                                : placement === 'right-bottom'
-                                                    ? { vertical: 'bottom', horizontal: 'left' }
-                                                    : { vertical: 'top', horizontal: 'center' };
+    var anchorOrigin = { vertical: 'bottom', horizontal: 'center' }
+        ;
+    var transformOrigin = { vertical: 'top', horizontal: 'center' }
+        ;
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/

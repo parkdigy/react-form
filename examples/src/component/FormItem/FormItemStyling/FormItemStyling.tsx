@@ -44,7 +44,7 @@ import {
 } from '../../../../../src';
 import { OutlinedPaper } from '@ccomp';
 import { BasicBlock, IconAdornmentBlock, NumberBlock, TextareaBlock, WidthBlock, ColorBlock, RatingBlock } from './sub';
-import { lv } from '@pdg/util';
+import { contains, lv } from '@pdg/util';
 
 const _components: React.ForwardRefExoticComponent<any>[] = [
   FormText,
@@ -283,7 +283,7 @@ const FormItemStyling = () => {
           onSubmit={handleSubmit}
         >
           <FormBody>
-            {![FormCheckbox, FormRadioGroup, FormToggleButtonGroup, FormRating].includes(Component) && (
+            {!contains([FormCheckbox, FormRadioGroup, FormToggleButtonGroup, FormRating], Component) && (
               <>
                 <BasicBlock component={Component} componentProps={componentProps} />
                 <IconAdornmentBlock component={Component} componentProps={componentProps} />

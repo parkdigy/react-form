@@ -8,43 +8,31 @@ import { StyledItem } from './SearchGroup.style.private';
 const isReactFragment = (child: ReactElement) => {
   try {
     return child.type.toString() === React.Fragment.toString();
-  } catch (e) {
+  } catch {
     return false;
   }
 };
 
 const removeReactFragment = (el: ReactElement): any => {
   if (isReactFragment(el)) {
-    const children: ReactElement | ReactElement[] = el.props.children;
+    const children: ReactElement | ReactElement[] = (el.props as any).children;
     if (children) {
       if (Array.isArray(children)) {
         return children.map((child) => {
           if (React.isValidElement(child)) {
             return removeReactFragment(child);
           } else {
-            return <Grid item>{child}</Grid>;
+            return <Grid>{child}</Grid>;
           }
         });
       } else {
-        return (
-          <StyledItem item style={{ display: el.type === FormHidden ? 'none' : undefined }}>
-            {el}
-          </StyledItem>
-        );
+        return <StyledItem style={{ display: el.type === FormHidden ? 'none' : undefined }}>{el}</StyledItem>;
       }
     } else {
-      return (
-        <StyledItem item style={{ display: el.type === FormHidden ? 'none' : undefined }}>
-          {el}
-        </StyledItem>
-      );
+      return <StyledItem style={{ display: el.type === FormHidden ? 'none' : undefined }}>{el}</StyledItem>;
     }
   } else {
-    return (
-      <StyledItem item style={{ display: el.type === FormHidden ? 'none' : undefined }}>
-        {el}
-      </StyledItem>
-    );
+    return <StyledItem style={{ display: el.type === FormHidden ? 'none' : undefined }}>{el}</StyledItem>;
   }
 };
 
@@ -61,7 +49,6 @@ const SearchGroup: React.FC<SearchGroupProps> = ({
 }) => {
   return (
     <Grid
-      item
       className={classNames(className, 'SearchGroup')}
       style={{ flex: max ? 1 : undefined, display: hidden ? 'none' : undefined }}
     >

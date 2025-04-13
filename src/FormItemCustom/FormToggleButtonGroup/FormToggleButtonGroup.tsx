@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
@@ -72,15 +72,6 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
     const labelId = useId();
 
     /********************************************************************************************************************
-     * Ref
-     * ******************************************************************************************************************/
-
-    const refForResizeWidthDetect = useRef<HTMLDivElement>(null);
-    const refForButtonResizeHeightDetect = useRef<HTMLButtonElement>(null);
-    const refForButtonsResizeHeightDetect = useRef<HTMLDivElement>(null);
-    const refForLoadingResizeHeightDetect = useRef<HTMLDivElement>(null);
-
-    /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
 
@@ -124,44 +115,17 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
      * State - width (ResizeDetector)
      * ******************************************************************************************************************/
 
-    const [width, setWidth] = useState<number>();
-
-    useResizeDetector({
-      targetRef: refForResizeWidthDetect,
-      handleWidth: true,
-      onResize() {
-        setWidth(refForResizeWidthDetect.current?.getBoundingClientRect()?.width);
-      },
-    });
+    const { ref: refForResizeWidthDetect, width } = useResizeDetector({ handleHeight: false });
 
     /********************************************************************************************************************
      * State - height (ResizeDetector)
      * ******************************************************************************************************************/
 
-    const [height, setHeight] = useState<number>();
-    const [realHeight, setRealHeight] = useState<number>();
+    const { ref: refForButtonResizeHeightDetect, height: buttonHeight } = useResizeDetector({ handleWidth: false });
+    const { ref: refForButtonsResizeHeightDetect, height: realHeight } = useResizeDetector({ handleWidth: false });
+    const { ref: refForLoadingResizeHeightDetect, height: loadingHeight } = useResizeDetector({ handleWidth: false });
 
-    useResizeDetector({
-      targetRef: refForButtonResizeHeightDetect,
-      handleHeight: true,
-      onResize() {
-        setHeight(refForButtonResizeHeightDetect.current?.getBoundingClientRect()?.height);
-      },
-    });
-    useResizeDetector({
-      targetRef: refForButtonsResizeHeightDetect,
-      handleHeight: true,
-      onResize() {
-        setRealHeight(refForButtonsResizeHeightDetect.current?.getBoundingClientRect()?.height);
-      },
-    });
-    useResizeDetector({
-      targetRef: refForLoadingResizeHeightDetect,
-      handleHeight: true,
-      onResize() {
-        setHeight(refForLoadingResizeHeightDetect.current?.getBoundingClientRect()?.height);
-      },
-    });
+    const height = ifUndefined(buttonHeight, loadingHeight);
 
     /********************************************************************************************************************
      * State
@@ -525,7 +489,11 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
         items.map(({ value, label, disabled: itemDisabled, color: itemColor }, idx) => {
           return (
             <ToggleButton
-              ref={idx === 0 ? refForButtonResizeHeightDetect : undefined}
+              ref={(ref) => {
+                if (idx === 0) {
+                  refForButtonResizeHeightDetect.current = ref;
+                }
+              }}
               key={idx}
               size={size}
               className='ToggleButton'
@@ -565,6 +533,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       itemWidth,
       items,
       readOnly,
+      refForButtonResizeHeightDetect,
       setFocused,
       size,
       theme.palette.error.main,
@@ -585,7 +554,8 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           `size-${size}`,
           !!label && 'with-label',
           !!fullWidth && 'full-width',
-          `type-${type}`
+          `type-${type}`,
+          (isOnGetItemLoading || loading) && 'loading'
         )}
         variant={variant}
         size={size}

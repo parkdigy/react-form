@@ -22,7 +22,7 @@ const PrivateYearRangePickerYearList: React.FC<Props> = ({
   const yearsContainerRef = useRef<HTMLDivElement>(null);
   const startButtonRef = useRef<HTMLDivElement | null>(null);
   const endButtonRef = useRef<HTMLDivElement | null>(null);
-  const mouseOverTimer = useRef<NodeJS.Timeout>();
+  const mouseOverTimer = useRef<NodeJS.Timeout>(undefined);
 
   /********************************************************************************************************************
    * State

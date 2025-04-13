@@ -80,7 +80,7 @@ const FormSwitch = React.forwardRef<FormSwitchCommands, Props>(
      * Ref
      * ******************************************************************************************************************/
 
-    const inputRef = useRef<HTMLInputElement>();
+    const inputRef = useRef<HTMLInputElement>(undefined);
 
     /********************************************************************************************************************
      * State

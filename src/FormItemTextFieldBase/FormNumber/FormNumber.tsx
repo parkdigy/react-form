@@ -1,11 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { NumericFormatProps } from 'react-number-format';
 import NumberFormatCustom from './NumberFormatCustom.private';
 import { FormNumberProps as Props, FormNumberCommands } from './FormNumber.types';
-import { InputBaseComponentProps } from '@mui/material/InputBase/InputBase';
 import FormTextField from '../FormTextField';
 import { empty } from '@pdg/util';
+import { InputBaseProps } from '@mui/material/InputBase';
+import { useForceUpdate } from '@pdg/react-hook';
 
 const FormNumber = React.forwardRef<FormNumberCommands, Props>(
   (
@@ -21,8 +22,7 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
       tabIndex,
       labelShrink,
       clear = true,
-      InputProps: initMuiInputProps,
-      inputProps: initInputProps,
+      slotProps: initSlotProps,
       value: initValue,
       onChange,
       onValue,
@@ -32,24 +32,36 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
     ref
   ) => {
     /********************************************************************************************************************
-     * State
+     * Use
      * ******************************************************************************************************************/
 
-    const [strValue, setStrValue] = useState<string | undefined>(() => (empty(initValue) ? '' : `${initValue}`));
+    const forceUpdate = useForceUpdate(1);
+
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
+
+    const strValueRef = React.useRef<string | undefined>(undefined);
 
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
 
     useEffect(() => {
-      setStrValue(empty(initValue) ? '' : `${initValue}`);
+      strValueRef.current = empty(initValue) ? '' : `${initValue}`;
+      forceUpdate();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [initValue]);
 
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
 
-    const muiInputProps = useMemo(() => {
+    const slotProps = useMemo(() => {
+      const newSlotProps: Props['slotProps'] = {
+        ...initSlotProps,
+      };
+
       const inputProps: NumericFormatProps = {
         className: readOnly ? 'Mui-disabled' : undefined,
         allowNegative: !!allowNegative,
@@ -67,22 +79,22 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
         inputProps.decimalScale = 0;
       }
 
-      return {
-        ...initMuiInputProps,
-        inputComponent: NumberFormatCustom as React.ElementType<InputBaseComponentProps>,
-        inputProps: { ...initInputProps, ...inputProps } as any,
+      newSlotProps.input = {
+        ...newSlotProps.input,
+        inputComponent: NumberFormatCustom as any,
+        inputProps: { ...(newSlotProps.input as InputBaseProps)?.inputProps, ...inputProps } as any,
       };
+      return newSlotProps;
     }, [
-      readOnly,
+      allowDecimal,
       allowNegative,
-      thousandSeparator,
+      decimalScale,
+      initSlotProps,
       prefix,
+      readOnly,
       suffix,
       tabIndex,
-      allowDecimal,
-      initMuiInputProps,
-      initInputProps,
-      decimalScale,
+      thousandSeparator,
     ]);
 
     /********************************************************************************************************************
@@ -91,12 +103,34 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
 
     const handleChange = useCallback(
       (value: string | undefined) => {
-        const newValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
-        onChange && onChange(newValue);
-
-        setStrValue(value);
+        if (Number(value) > Number.MAX_SAFE_INTEGER) {
+          const newValue = Number.MAX_SAFE_INTEGER;
+          const newStrValue = `${newValue}`;
+          if (strValueRef.current === newStrValue) {
+            strValueRef.current = `${newValue} `;
+          } else {
+            strValueRef.current = `${newValue}`;
+          }
+          onChange && onChange(newValue);
+          forceUpdate();
+        } else if (Number(value) < Number.MIN_SAFE_INTEGER) {
+          const newValue = Number.MIN_SAFE_INTEGER;
+          const newStrValue = `${newValue}`;
+          if (strValueRef.current === newStrValue) {
+            strValueRef.current = `${newValue} `;
+          } else {
+            strValueRef.current = `${newValue}`;
+          }
+          onChange && onChange(newValue);
+          forceUpdate();
+        } else {
+          const newValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
+          onChange && onChange(newValue);
+          strValueRef.current = value;
+          forceUpdate();
+        }
       },
-      [onChange]
+      [forceUpdate, onChange]
     );
 
     const handleValue = useCallback(
@@ -131,11 +165,11 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
         ref={ref}
         className={classNames(className, 'FormNumber')}
         disableReturnKey
-        labelShrink={strValue === '' || strValue === undefined ? labelShrink : true}
-        InputProps={muiInputProps}
+        labelShrink={strValueRef.current === '' || strValueRef.current === undefined ? labelShrink : true}
+        slotProps={slotProps}
         readOnly={readOnly}
         clear={clear}
-        value={strValue}
+        value={strValueRef.current}
         onChange={handleChange}
         onValue={handleValue}
         onValidate={handleValidate}

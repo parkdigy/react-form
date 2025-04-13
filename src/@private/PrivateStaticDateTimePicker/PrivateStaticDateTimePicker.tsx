@@ -35,7 +35,6 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
     {
       value,
       availableDate: initAvailableDate,
-      defaultCalendarMonth,
       type,
       time,
       hours = DEFAULT_HOURS,
@@ -68,7 +67,6 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
 
     const [month, setMonth] = useState<Dayjs>(() => {
       if (value) return value;
-      else if (defaultCalendarMonth) return defaultCalendarMonth;
       else return dayjs();
     });
     const [activeMonthValue, setActiveMonthValue] = useState<Dayjs | null>(null);
@@ -97,8 +95,8 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
 
     //--------------------------------------------------------------------------------------------------------------------
 
-    const leftArrowOnClickRef = useRef<IconButtonProps['onClick']>();
-    const rightArrowOnClickRef = useRef<IconButtonProps['onClick']>();
+    const leftArrowOnClickRef = useRef<IconButtonProps['onClick']>(undefined);
+    const rightArrowOnClickRef = useRef<IconButtonProps['onClick']>(undefined);
 
     const [LeftArrowButton] = useState(() => {
       const ArrowButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
@@ -235,11 +233,11 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
     return (
       <Grid container className={classNames('PrivateStaticDateTimePicker', type)}>
         {type !== 'time' && (
-          <Grid item>
+          <Grid>
             <Grid container direction='column'>
-              <Grid item sx={{ p: 2, width: '100%' }}>
+              <Grid sx={{ p: 2, width: '100%' }}>
                 <Grid container className='month-change-arrow-wrap'>
-                  <Grid item flex={1} className='month-title-container'>
+                  <Grid flex={1} className='month-title-container'>
                     <div className='month-title-wrap'>
                       <div className='month-title'>
                         <Button
@@ -278,7 +276,7 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
                     </div>
                   </Grid>
                   {!yearSelectOpen && !monthSelectOpen && (
-                    <Grid item style={{ textAlign: 'right' }}>
+                    <Grid style={{ textAlign: 'right' }}>
                       <IconButton onClick={previousMonth} sx={{ mr: 1 }}>
                         <Icon>keyboard_arrow_left</Icon>
                       </IconButton>
@@ -289,7 +287,7 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
                   )}
                 </Grid>
               </Grid>
-              <Grid item style={{ position: 'relative' }}>
+              <Grid style={{ position: 'relative' }}>
                 <StaticDateTimePicker
                   {...props}
                   value={activeMonthValue}
@@ -338,7 +336,7 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
                   />
                 )}
               </Grid>
-              <Grid item className='action-buttons'>
+              <Grid className='action-buttons'>
                 {getActionButton(
                   dayjs()
                     .startOf('d')

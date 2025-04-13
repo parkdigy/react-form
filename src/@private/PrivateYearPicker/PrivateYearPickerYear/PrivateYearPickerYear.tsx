@@ -22,7 +22,7 @@ const PrivateYearPickerYear = React.forwardRef<HTMLDivElement, Props>(
     ref
   ) => {
     return (
-      <StyledContainer className='PrivateYearPickerYear' ref={ref} item xs={4}>
+      <StyledContainer className='PrivateYearPickerYear' ref={ref} size={{ xs: 4 }}>
         <StyledButton
           className={classNames(
             range && 'range',

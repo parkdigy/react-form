@@ -129,13 +129,13 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
      * ******************************************************************************************************************/
 
     const containerRef = useRef<FormDateRangePickerTooltipPickerContainerCommands>(null);
-    const startDateTextFieldRef = useRef<HTMLInputElement>();
-    const endDateTextFieldRef = useRef<HTMLInputElement>();
-    const closeTimeoutRef = useRef<NodeJS.Timeout>();
-    const mouseDownTimeRef = useRef<number>();
+    const startDateTextFieldRef = useRef<HTMLInputElement>(undefined);
+    const endDateTextFieldRef = useRef<HTMLInputElement>(undefined);
+    const closeTimeoutRef = useRef<NodeJS.Timeout>(undefined);
+    const mouseDownTimeRef = useRef<number>(undefined);
     const startInputDatePickerErrorRef = useRef<DateValidationError>(null);
     const endInputDatePickerErrorRef = useRef<DateValidationError>(null);
-    const openValueRef = useRef<FormDateRangePickerValue>();
+    const openValueRef = useRef<FormDateRangePickerValue>(undefined);
 
     /********************************************************************************************************************
      * State
@@ -703,7 +703,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
               }
             >
               <Grid container alignItems='center'>
-                <Grid item flex={1}>
+                <Grid flex={1}>
                   <PrivateInputDatePicker
                     {...inputDatePickerProps}
                     style={inputStyle}
@@ -724,10 +724,8 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
                     onError={(reason) => (startInputDatePickerErrorRef.current = reason)}
                   />
                 </Grid>
-                <Grid item sx={{ px: 1 }}>
-                  ~
-                </Grid>
-                <Grid item flex={1}>
+                <Grid sx={{ px: 1 }}>~</Grid>
+                <Grid flex={1}>
                   <PrivateInputDatePicker
                     {...inputDatePickerProps}
                     style={inputStyle}

@@ -66,7 +66,7 @@ const Search = () => {
 
   return (
     <Grid container direction='column' spacing={2}>
-      <Grid item>
+      <Grid>
         <_Search ref={searchRef} autoSubmit onSubmit={handleSubmit}>
           {leftSearchGroup}
 

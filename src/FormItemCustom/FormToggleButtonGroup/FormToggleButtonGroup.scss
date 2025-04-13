@@ -14,6 +14,13 @@ $standard-medium-label-height: 28px;
 $standard-small-label-height: 26px;
 
 .FormToggleButtonGroup {
+  &.loading {
+    .FormItemBase-Control-wrap {
+      .FormItemBase-Control {
+        align-items: center !important;
+      }
+    }
+  }
   .ToggleButton {
     display: inline-flex;
     padding: 0 10px;

@@ -109,11 +109,11 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
      * ******************************************************************************************************************/
 
     const ratingRef = useRef<HTMLSpanElement>(null);
-    const inputRef = useRef<HTMLInputElement>();
-    const closeTimeoutRef = useRef<NodeJS.Timeout>();
-    const mouseDownTimeRef = useRef<number>();
+    const inputRef = useRef<HTMLInputElement>(undefined);
+    const closeTimeoutRef = useRef<NodeJS.Timeout>(undefined);
+    const mouseDownTimeRef = useRef<number>(undefined);
     const inputDatePickerErrorRef = useRef<DateValidationError>(null);
-    const openValueRef = useRef<FormYearPickerValue>();
+    const openValueRef = useRef<FormYearPickerValue>(undefined);
 
     /********************************************************************************************************************
      * State

@@ -1,4 +1,4 @@
-import React, { CSSProperties, useMemo, useRef, useState } from 'react';
+import React, { CSSProperties, useMemo } from 'react';
 import classNames from 'classnames';
 import { FormControl, FormHelperText, Input, InputLabel, OutlinedInput, FilledInput } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
@@ -39,12 +39,6 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
     ref
   ) => {
     /********************************************************************************************************************
-     * Ref
-     * ******************************************************************************************************************/
-
-    const inputRef = useRef<HTMLInputElement>(null);
-
-    /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
 
@@ -70,16 +64,8 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
      * State - inputHeight
      * ******************************************************************************************************************/
 
-    const [inputHeight, setInputHeight] = useState(0);
-
-    useResizeDetector({
-      targetRef: inputRef,
-      handleWidth: false,
-      handleHeight: true,
-      onResize() {
-        setInputHeight(inputRef.current?.getBoundingClientRect()?.height || 0);
-      },
-    });
+    const { ref: inputRef, height: resizedInputHeight } = useResizeDetector({ handleWidth: false });
+    const inputHeight = ifUndefined(resizedInputHeight, 0);
 
     /********************************************************************************************************************
      * Memo
@@ -173,12 +159,7 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
           sx={sx}
         >
           {!formColWithLabel && label && (
-            <InputLabel
-              shrink
-              className='FormItemBase-InputLabel'
-              size={size === 'medium' ? 'normal' : size}
-              required={required}
-            >
+            <InputLabel shrink className='FormItemBase-InputLabel' size={size} required={required}>
               {labelIcon ? (
                 <>
                   <PdgIcon style={{ verticalAlign: 'middle', marginRight: 3, marginTop: -4, marginBottom: -2 }}>

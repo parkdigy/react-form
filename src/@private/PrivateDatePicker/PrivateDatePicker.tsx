@@ -1,7 +1,12 @@
 import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider, DesktopDatePicker, DateValidationError } from '@mui/x-date-pickers';
+import {
+  LocalizationProvider,
+  DesktopDatePicker,
+  DateValidationError,
+  DesktopDatePickerProps,
+} from '@mui/x-date-pickers';
 import { useAutoUpdateLayoutRef, useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
 import { PdgIcon, PdgIconText } from '@pdg/react-component';
@@ -29,7 +34,6 @@ import {
 import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
 import { InputBaseProps } from '@mui/material/InputBase';
 import './PrivateDatePicker.scss';
-import { DesktopDatePickerSlotsComponentsProps } from '@mui/x-date-pickers/DesktopDatePicker/DesktopDatePicker.types';
 import { Dayjs } from 'dayjs';
 import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
 
@@ -96,9 +100,9 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
      * ******************************************************************************************************************/
 
     const privateStaticDatePickerRef = useRef<PrivateStaticDatePickerCommands>(null);
-    const textFieldInputRef = useRef<HTMLInputElement>();
-    const closeTimeoutRef = useRef<NodeJS.Timeout>();
-    const mouseDownTimeRef = useRef<number>();
+    const textFieldInputRef = useRef<HTMLInputElement>(undefined);
+    const closeTimeoutRef = useRef<NodeJS.Timeout>(undefined);
+    const mouseDownTimeRef = useRef<number>(undefined);
     const datePickerErrorRef = useRef<DateValidationError>(null);
     const openValueRef = useRef<PrivateDatePickerValue>(null);
     const onValidateRef = useAutoUpdateLayoutRef(initOnValidate);
@@ -460,7 +464,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
      * Memo
      * ******************************************************************************************************************/
 
-    const slotProps = useMemo<DesktopDatePickerSlotsComponentsProps<Dayjs>>(() => {
+    const slotProps = useMemo<DesktopDatePickerProps<Dayjs>['slotProps']>(() => {
       const textFieldInputLabelProps: Partial<InputLabelProps> = {};
       if (labelShrink) {
         textFieldInputLabelProps.shrink = labelShrink;

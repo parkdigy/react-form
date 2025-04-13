@@ -1,7 +1,7 @@
 import React, { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Editor } from '@tinymce/tinymce-react';
-import { Editor as TinyMCEEditor } from 'tinymce';
+// import { Editor as TinyMCEEditor } from 'tinymce';
 import { Skeleton } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, ifUndefined, nextTick } from '@pdg/util';
@@ -95,7 +95,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
      * Ref
      * ******************************************************************************************************************/
 
-    const editorRef = useRef<TinyMCEEditor | null>();
+    const editorRef = useRef<Editor | null>(null);
     const keyDownTime = useRef(0);
 
     /********************************************************************************************************************
@@ -130,7 +130,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
 
     const validate = useCallback(
       function (value: FormTextEditorValue) {
-        if (required && empty(editorRef.current?.getContent())) {
+        if (required && empty(editorRef.current?.editor()?.getContent())) {
           setErrorErrorHelperText(true, '필수 입력 항목입니다.');
           return false;
         }
@@ -168,7 +168,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
 
     const focus = useCallback(
       function () {
-        editorRef.current?.focus();
+        editorRef.current?.editor()?.focus();
       },
       [editorRef]
     );
@@ -312,7 +312,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
               init={{
                 height,
                 menubar,
-                readonly: true,
+                disabled: true,
                 language: 'ko_KR',
                 contextmenu: false,
                 content_style:

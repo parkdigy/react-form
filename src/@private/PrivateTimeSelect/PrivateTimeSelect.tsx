@@ -19,7 +19,7 @@ const PrivateTimeSelect = React.forwardRef<PrivateTimeSelectCommands, Props>(
 
     const containerRef = useRef<HTMLDivElement>(null);
     const simpleBarRef = useRef<HTMLDivElement>(null);
-    const scrollTimerRef = useRef<NodeJS.Timeout>();
+    const scrollTimerRef = useRef<NodeJS.Timeout>(undefined);
     const onSelectRef = useAutoUpdateLayoutRef(initOnSelect);
 
     /********************************************************************************************************************
@@ -144,7 +144,7 @@ const PrivateTimeSelect = React.forwardRef<PrivateTimeSelectCommands, Props>(
                 const disabled = !!disableList && disableList.includes(v);
 
                 return (
-                  <Grid item key={v} xs={12 / (cols || 1)}>
+                  <Grid key={v} size={{ xs: 12 / (cols || 1) }}>
                     <PrivateToggleButton
                       data-id={v}
                       className={`private-time-select-value-${v}`}

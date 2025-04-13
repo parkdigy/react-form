@@ -110,7 +110,7 @@ const FormBlock = React.forwardRef<HTMLDivElement, Props>(
       <FormContext.Provider
         value={{ ...otherFormState, variant, size, color, spacing, focused, labelShrink, fullWidth }}
       >
-        <Grid item ref={ref} xs={12} className={classNames(className, 'FormBlock')} style={style} sx={sx}>
+        <Grid ref={ref} size={{ xs: 12 }} className={classNames(className, 'FormBlock')} style={style} sx={sx}>
           <Grid container spacing={spacing}>
             {(icon || label || line || collapse) && (
               <FormDivider
@@ -129,10 +129,10 @@ const FormBlock = React.forwardRef<HTMLDivElement, Props>(
                 onCollapseChange={collapse ? (newCollapseIn) => setCollapseIn(newCollapseIn) : undefined}
               />
             )}
-            <StyledWrapGrid item xs={12}>
+            <StyledWrapGrid size={{ xs: 12 }}>
               <Container {...containerProps}>
                 <Grid container spacing={spacing}>
-                  <StyledWrapGrid item xs={12} className='FormBlock-body'>
+                  <StyledWrapGrid size={{ xs: 12 }} className='FormBlock-body'>
                     <Grid className='FormBlock-content' container spacing={spacing}>
                       {children}
                     </Grid>

@@ -143,7 +143,7 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
           onRemoveFormCol: handleRemoveFormCol,
         }}
       >
-        <Grid item ref={ref} xs={12} className={classNames(className, 'FormRow')} style={style} sx={sx}>
+        <Grid ref={ref} size={{ xs: 12 }} className={classNames(className, 'FormRow')} style={style} sx={sx}>
           <Grid container spacing={spacing}>
             {(icon || label || line) && (
               <FormDivider
@@ -159,7 +159,7 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
                 hidden={hidden}
               />
             )}
-            <StyledWrapGrid item xs={12} className='FormRow-body'>
+            <StyledWrapGrid size={{ xs: 12 }} className='FormRow-body'>
               <Grid
                 className='FormRow-content'
                 container

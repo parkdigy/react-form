@@ -32,7 +32,7 @@ const PrivateMonthSelect: React.FC<Props> = ({
             (!!availableDate[0] && ym < availableDate[0].month) || (!!availableDate[1] && ym > availableDate[1].month);
 
           return (
-            <Grid key={m} item xs={4}>
+            <Grid key={m} size={{ xs: 4 }}>
               <PrivateToggleButton
                 fullWidth
                 selected={isSelected}

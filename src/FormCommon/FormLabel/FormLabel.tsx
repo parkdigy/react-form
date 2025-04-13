@@ -33,7 +33,7 @@ const FormLabel = React.forwardRef<HTMLLabelElement, Props>(
         ref={ref}
         shrink={true}
         className='FormItemBase-InputLabel'
-        size={size === 'medium' ? 'normal' : size}
+        size={size}
         error={error}
         style={newStyle}
         {...props}

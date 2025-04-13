@@ -34,7 +34,7 @@ const PrivateMonthPickerMonth = React.forwardRef<HTMLDivElement, Props>(
      * ******************************************************************************************************************/
 
     return (
-      <StyledContainer className='PrivateMonthPickerMonth' ref={ref} item xs={4}>
+      <StyledContainer className='PrivateMonthPickerMonth' ref={ref} size={{ xs: 4 }}>
         <StyledButton
           className={classNames(
             range && 'range',

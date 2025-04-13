@@ -5,7 +5,7 @@ import {
   LocalizationProvider,
   DateTimeValidationError,
   DesktopDateTimePicker,
-  DesktopDateTimePickerSlotsComponentsProps,
+  DesktopDateTimePickerProps,
 } from '@mui/x-date-pickers';
 import { useAutoUpdateLayoutRef, useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
@@ -98,9 +98,9 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
      * ******************************************************************************************************************/
 
     const privateStaticDateTimePickerRef = useRef<PrivateStaticDateTimePickerCommands>(null);
-    const textFieldInputRef = useRef<HTMLInputElement>();
-    const closeTimeoutRef = useRef<NodeJS.Timeout>();
-    const mouseDownTimeRef = useRef<number>();
+    const textFieldInputRef = useRef<HTMLInputElement>(undefined);
+    const closeTimeoutRef = useRef<NodeJS.Timeout>(undefined);
+    const mouseDownTimeRef = useRef<number>(undefined);
     const datePickerErrorRef = useRef<DateTimeValidationError>(null);
     const openValueRef = useRef<PrivateDateTimePickerValue>(null);
     const onValidateRef = useAutoUpdateLayoutRef(initOnValidate);
@@ -464,7 +464,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
      * Memo
      * ******************************************************************************************************************/
 
-    const slotProps = useMemo<DesktopDateTimePickerSlotsComponentsProps<Dayjs>>(() => {
+    const slotProps = useMemo<DesktopDateTimePickerProps<Dayjs>['slotProps']>(() => {
       const textFieldInputLabelProps: Partial<InputLabelProps> = {};
       if (labelShrink) {
         textFieldInputLabelProps.shrink = labelShrink;

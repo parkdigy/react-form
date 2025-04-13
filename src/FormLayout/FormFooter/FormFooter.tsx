@@ -10,10 +10,10 @@ const FormFooter: React.FC<Props> = ({ children, noLine, hidden }) => {
   const style = useMemo(() => (hidden ? { display: 'none' } : undefined), [hidden]);
 
   return (
-    <Grid item xs={12} className='FormFooter' style={style}>
+    <Grid size={{ xs: 12 }} className='FormFooter' style={style}>
       <Grid container spacing={spacing} direction='column'>
         {!noLine && (
-          <Grid item xs={12} sx={{ mt: spacing }}>
+          <Grid size={{ xs: 12 }} sx={{ mt: spacing }}>
             <FormDivider line />
           </Grid>
         )}

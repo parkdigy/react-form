@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useId, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useId } from 'react';
 import classNames from 'classnames';
 import { FormHelperText, Grid } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
@@ -43,12 +43,6 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
     const id = useId();
 
     /********************************************************************************************************************
-     * Ref
-     * ******************************************************************************************************************/
-
-    const gridRef = useRef<HTMLDivElement>(null);
-
-    /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
 
@@ -84,11 +78,8 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
      * ResizeDetector
      * ******************************************************************************************************************/
 
-    const { width: formColWidth } = useResizeDetector({
-      targetRef: gridRef,
-      handleWidth: true,
-      handleHeight: false,
-    });
+    const { ref: gridRef, width: resizedFormColWidth } = useResizeDetector({ handleHeight: false });
+    const formColWidth = ifUndefined(resizedFormColWidth, 0);
 
     /********************************************************************************************************************
      * LayoutEffect
@@ -141,15 +132,14 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
       >
         <Grid
           ref={gridRef}
-          item
-          xs={xs || formColAutoXs || 12}
+          size={{ xs: xs || formColAutoXs || 12 }}
           className={classNames(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text')}
           style={hidden ? { ...initStyle, display: 'none' } : initStyle}
           sx={sx}
         >
           <Grid container direction='column'>
             {label && (
-              <Grid item className='FormCol-header'>
+              <Grid className='FormCol-header'>
                 <StyledFormLabelContainerDiv>
                   <StyledFormLabel
                     className='FormCol-FormLabel'
@@ -165,11 +155,11 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
                 </StyledFormLabelContainerDiv>
               </Grid>
             )}
-            <Grid item xs={2} className='FormCol-content'>
+            <Grid size={{ xs: 2, sm: 12 }} className='FormCol-content'>
               <StyledContentContainerBox gap={formColGap}>{children}</StyledContentContainerBox>
             </Grid>
             {helperText && (
-              <Grid item className='FormCol-helper-text'>
+              <Grid className='FormCol-helper-text'>
                 <FormHelperText component='div' error={error} style={{ marginLeft: helperTextShift ? 14 : 5 }}>
                   {helperText}
                 </FormHelperText>

@@ -3,7 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import eslint from '@rollup/plugin-eslint';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
-import postcss from 'rollup-plugin-postcss';
+import scss from 'rollup-plugin-scss';
 import del from 'rollup-plugin-delete';
 import fs from 'fs';
 import path from 'path';
@@ -36,7 +36,7 @@ const getConfig = () => ({
     }),
     del({ targets: 'dist/*' }),
     peerDepsExternal(),
-    postcss(),
+    scss(),
     resolve(),
     commonjs({
       include: /node_modules/,

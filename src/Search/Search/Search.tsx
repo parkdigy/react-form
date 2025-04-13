@@ -28,7 +28,7 @@ const Search = React.forwardRef<SearchCommands, Props>(
      * Ref
      * ******************************************************************************************************************/
 
-    const formRef = useRef<FormCommands>();
+    const formRef = useRef<FormCommands>(undefined);
 
     /********************************************************************************************************************
      * Effect

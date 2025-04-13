@@ -339,14 +339,14 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
       <div className='FormDateRangePickerTooltipPickerContainer'>
         <Grid container direction='column'>
           {!yearSelectOpen && !monthSelectOpen && (
-            <Grid item>
+            <Grid>
               <Grid container className='month-change-arrow-wrap'>
-                <Grid item xs={6}>
+                <Grid size={{ xs: 6 }}>
                   <IconButton onClick={previousMonth}>
                     <Icon>keyboard_arrow_left</Icon>
                   </IconButton>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={{ xs: 6 }}>
                   <IconButton onClick={nextMonth}>
                     <Icon>keyboard_arrow_right</Icon>
                   </IconButton>
@@ -354,7 +354,7 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
               </Grid>
             </Grid>
           )}
-          <Grid item onMouseLeave={() => setFocusedDate(undefined)}>
+          <Grid onMouseLeave={() => setFocusedDate(undefined)}>
             <div style={{ display: 'flex' }}>
               <div style={{ flex: 1 }}>{getMonthTitle(0)}</div>
               <div style={{ flex: 1, borderLeft: '1px solid #efefef' }}>{getMonthTitle(1)}</div>
@@ -364,7 +364,7 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
             </div>
             <div className='date-picker-wrap'>
               <Grid container flexWrap='nowrap'>
-                <Grid item>
+                <Grid>
                   <FormDateRangePickerTooltipPicker
                     {...customDatePickerProps}
                     ref={datePicker1Ref}
@@ -374,7 +374,7 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
                     onMonthChange={handleFirstDatePickerMonthChange}
                   />
                 </Grid>
-                <Grid item style={{ borderLeft: '1px solid #efefef' }}>
+                <Grid style={{ borderLeft: '1px solid #efefef' }}>
                   <FormDateRangePickerTooltipPicker
                     {...customDatePickerProps}
                     ref={datePicker2Ref}
@@ -384,7 +384,7 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
                   />
                 </Grid>
                 {Number(calendarCount) >= 3 && (
-                  <Grid item style={{ borderLeft: '1px solid #efefef' }}>
+                  <Grid style={{ borderLeft: '1px solid #efefef' }}>
                     <FormDateRangePickerTooltipPicker
                       {...customDatePickerProps}
                       ref={datePicker3Ref}
@@ -406,7 +406,7 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
                       const disabled = !isDateAvailable(dayjs(y.toString(), 'YYYY'), availableDate, 'year');
 
                       return (
-                        <Grid key={y} item xs={2}>
+                        <Grid key={y} size={{ xs: 2 }}>
                           <Button
                             variant='text'
                             fullWidth
@@ -446,7 +446,7 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
                       const disabled = !isDateAvailable(dayjs(ym.toString(), 'YYYYMM'), availableDate, 'month');
 
                       return (
-                        <Grid key={m} item xs={4}>
+                        <Grid key={m} size={{ xs: 4 }}>
                           <Button
                             variant='text'
                             fullWidth
@@ -474,11 +474,7 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
               )}
             </div>
           </Grid>
-          <Grid
-            className='action-buttons'
-            item
-            style={{ borderTop: '1px solid #efefef', padding: 10, textAlign: 'right' }}
-          >
+          <Grid className='action-buttons' style={{ borderTop: '1px solid #efefef', padding: 10, textAlign: 'right' }}>
             {actionButtons}
           </Grid>
         </Grid>

@@ -90,16 +90,16 @@ export const PrivateTimeSection = ({
    * ******************************************************************************************************************/
 
   return (
-    <Grid item className='time'>
+    <Grid className='time'>
       <Grid container direction='column' className='time-container'>
-        <Grid item className='time-title'>
+        <Grid className='time-title'>
           {time === 'hour' && (value ? value.format('HH시') : '00시')}
           {time === 'minute' && (value ? value.format('HH시 mm분') : '00시 00분')}
           {time === 'second' && (value ? value.format('HH시 mm분 ss초') : '00시 00분 00초')}
         </Grid>
-        <Grid item className='time-select-wrap'>
+        <Grid className='time-select-wrap'>
           <Grid container style={{ height: '100%' }}>
-            <Grid item style={{ position: 'relative', width }}>
+            <Grid style={{ position: 'relative', width }}>
               <PrivateTimeSelect
                 ref={hourSelectRef}
                 value={value && value.hour()}
@@ -113,7 +113,7 @@ export const PrivateTimeSection = ({
               />
             </Grid>
             {(time === 'minute' || time === 'second') && (
-              <Grid item style={{ position: 'relative', width }}>
+              <Grid style={{ position: 'relative', width }}>
                 <PrivateTimeSelect
                   ref={minuteSelectRef}
                   value={value && value.minute()}
@@ -132,7 +132,7 @@ export const PrivateTimeSection = ({
               </Grid>
             )}
             {time === 'second' && (
-              <Grid item style={{ position: 'relative', width }}>
+              <Grid style={{ position: 'relative', width }}>
                 <PrivateTimeSelect
                   ref={secondSelectRef}
                   value={value && value.second()}
@@ -153,7 +153,7 @@ export const PrivateTimeSection = ({
           </Grid>
         </Grid>
         {onClose && (
-          <Grid item className='action-buttons'>
+          <Grid className='action-buttons'>
             <Button variant='text' onClick={onClose}>
               닫기
             </Button>

@@ -5,13 +5,14 @@ import FormText, { FormTextProps } from '../FormText';
 import { notEmpty } from '@pdg/util';
 import { FormPasswordProps as Props, FormPasswordValue, FormPasswordCommands } from './FormPassword.types';
 import './FormPassword.scss';
+import { InputBaseProps } from '@mui/material/InputBase/InputBase';
 
 const StyledEyeInputAdornment = styled(InputAdornment)`
   visibility: hidden;
 `;
 
 const FormPassword = React.forwardRef<FormPasswordCommands, Props>(
-  ({ className, InputProps: initMuiInputProps, clear = false, eye = true, onChange, ...props }, ref) => {
+  ({ className, slotProps: initSlotProps, clear = false, eye = true, onChange, ...props }, ref) => {
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
@@ -23,30 +24,35 @@ const FormPassword = React.forwardRef<FormPasswordCommands, Props>(
      * Memo
      * ******************************************************************************************************************/
 
-    const muiInputProps = useMemo(() => {
-      if (eye) {
-        const newProps: Props['InputProps'] = { ...initMuiInputProps };
-        newProps.endAdornment = (
-          <>
-            <StyledEyeInputAdornment position='end' className={classNames('eye-icon-button-wrap', showEye && 'show')}>
-              <IconButton
-                size='small'
-                tabIndex={-1}
-                onClick={() => {
-                  setType(type === 'password' ? 'text' : 'password');
-                }}
-              >
-                <Icon fontSize='inherit'>{type === 'password' ? 'visibility' : 'visibility_off'}</Icon>
-              </IconButton>
-            </StyledEyeInputAdornment>
-            {newProps.endAdornment}
-          </>
-        );
-        return newProps;
-      } else {
-        return initMuiInputProps;
-      }
-    }, [eye, initMuiInputProps, showEye, type]);
+    const slotProps = useMemo(() => {
+      return {
+        ...initSlotProps,
+        input: {
+          ...initSlotProps?.input,
+          endAdornment: (
+            <>
+              {eye && (
+                <StyledEyeInputAdornment
+                  position='end'
+                  className={classNames('eye-icon-button-wrap', showEye && 'show')}
+                >
+                  <IconButton
+                    size='small'
+                    tabIndex={-1}
+                    onClick={() => {
+                      setType(type === 'password' ? 'text' : 'password');
+                    }}
+                  >
+                    <Icon fontSize='inherit'>{type === 'password' ? 'visibility' : 'visibility_off'}</Icon>
+                  </IconButton>
+                </StyledEyeInputAdornment>
+              )}
+              {(initSlotProps?.input as InputBaseProps)?.endAdornment}
+            </>
+          ),
+        },
+      };
+    }, [eye, initSlotProps, showEye, type]);
 
     /********************************************************************************************************************
      * Event Handler
@@ -70,7 +76,7 @@ const FormPassword = React.forwardRef<FormPasswordCommands, Props>(
         className={classNames(className, 'FormPassword')}
         onChange={handleChange}
         type={type}
-        InputProps={muiInputProps}
+        slotProps={slotProps}
         clear={clear}
         {...props}
       />

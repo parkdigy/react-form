@@ -125,11 +125,11 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
      * Ref
      * ******************************************************************************************************************/
 
-    const startInputRef = useRef<HTMLInputElement>();
-    const endInputRef = useRef<HTMLInputElement>();
+    const startInputRef = useRef<HTMLInputElement>(undefined);
+    const endInputRef = useRef<HTMLInputElement>(undefined);
     const startInputDatePickerErrorRef = useRef<DateValidationError>(null);
     const endInputDatePickerErrorRef = useRef<DateValidationError>(null);
-    const openValueRef = useRef<FormMonthRangePickerValue>();
+    const openValueRef = useRef<FormMonthRangePickerValue>(undefined);
 
     /********************************************************************************************************************
      * State
@@ -587,7 +587,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
               }
             >
               <Grid container alignItems='center'>
-                <Grid item flex={1}>
+                <Grid flex={1}>
                   <PrivateInputDatePicker
                     {...inputDatePickerProps}
                     style={inputStyle}
@@ -610,10 +610,8 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
                     shouldDisableYear={handleInputDatePickerShouldDisableYear}
                   />
                 </Grid>
-                <Grid item sx={{ px: 1 }}>
-                  ~
-                </Grid>
-                <Grid item flex={1}>
+                <Grid sx={{ px: 1 }}>~</Grid>
+                <Grid flex={1}>
                   <PrivateInputDatePicker
                     {...inputDatePickerProps}
                     style={inputStyle}

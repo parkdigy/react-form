@@ -104,7 +104,6 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
      * Ref
      * ******************************************************************************************************************/
 
-    const innerRef = useRef<HTMLInputElement>(null);
     const textFieldRef = useRef<HTMLInputElement>(null);
     const fileUploadBtnRef = useRef<HTMLButtonElement>(null);
     const linkBtnRef = useRef<HTMLButtonElement>(null);
@@ -133,11 +132,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
      * State - width, height
      * ******************************************************************************************************************/
 
-    const { height } = useResizeDetector({
-      targetRef: innerRef,
-      handleWidth: false,
-      handleHeight: true,
-    });
+    const { ref: innerRef, height } = useResizeDetector({ handleWidth: false });
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -437,73 +432,75 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                   disabled={disabled}
                   fullWidth
                   error={error}
-                  InputLabelProps={labelShrink ? { shrink: labelShrink } : undefined}
-                  inputProps={{ readOnly: true }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position='end'>
-                        <div className='input-file-wrap'>
-                          {!hideUpload && (
-                            <>
+                  slotProps={{
+                    inputLabel: labelShrink ? { shrink: labelShrink } : undefined,
+                    htmlInput: { readOnly: true },
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position='end'>
+                          <div className='input-file-wrap'>
+                            {!hideUpload && (
+                              <>
+                                <StyledPdgButton
+                                  variant='text'
+                                  tabIndex={uploadTabIndex == null ? -1 : uploadTabIndex}
+                                  className={classNames(
+                                    'input-file-btn form-file-btn',
+                                    !!hideUploadLabel && 'hidden-label'
+                                  )}
+                                  color={error ? 'error' : color}
+                                  size={size}
+                                  disabled={readOnly || disabled}
+                                  ref={fileUploadBtnRef}
+                                >
+                                  <label htmlFor={id}>
+                                    <PdgIcon size={size}>upload</PdgIcon>
+                                    {!hideUploadLabel && (uploadLabel || '파일 업로드')}
+                                  </label>
+                                </StyledPdgButton>
+                                <input
+                                  type='file'
+                                  accept={accept}
+                                  id={id}
+                                  value={FILE_VALUE}
+                                  className='input-file'
+                                  onChange={handleFileChange}
+                                />
+                              </>
+                            )}
+                            {!hideLink && (
                               <StyledPdgButton
                                 variant='text'
-                                tabIndex={uploadTabIndex == null ? -1 : uploadTabIndex}
-                                className={classNames(
-                                  'input-file-btn form-file-btn',
-                                  !!hideUploadLabel && 'hidden-label'
-                                )}
+                                tabIndex={linkTabIndex == null ? -1 : linkTabIndex}
+                                className={classNames('link-btn  form-file-btn', !!hideLinkLabel && 'hidden-label')}
                                 color={error ? 'error' : color}
+                                startIcon='link'
                                 size={size}
                                 disabled={readOnly || disabled}
-                                ref={fileUploadBtnRef}
+                                ref={linkBtnRef}
+                                onClick={handleLinkClick}
                               >
-                                <label htmlFor={id}>
-                                  <PdgIcon size={size}>upload</PdgIcon>
-                                  {!hideUploadLabel && (uploadLabel || '파일 업로드')}
-                                </label>
+                                {!hideLinkLabel && (linkLabel || '링크')}
                               </StyledPdgButton>
-                              <input
-                                type='file'
-                                accept={accept}
-                                id={id}
-                                value={FILE_VALUE}
-                                className='input-file'
-                                onChange={handleFileChange}
-                              />
-                            </>
-                          )}
-                          {!hideLink && (
-                            <StyledPdgButton
-                              variant='text'
-                              tabIndex={linkTabIndex == null ? -1 : linkTabIndex}
-                              className={classNames('link-btn  form-file-btn', !!hideLinkLabel && 'hidden-label')}
-                              color={error ? 'error' : color}
-                              startIcon='link'
-                              size={size}
-                              disabled={readOnly || disabled}
-                              ref={linkBtnRef}
-                              onClick={handleLinkClick}
-                            >
-                              {!hideLinkLabel && (linkLabel || '링크')}
-                            </StyledPdgButton>
-                          )}
-                          {!hideRemove && notEmpty(value) && (
-                            <StyledPdgButton
-                              variant='text'
-                              tabIndex={removeTabIndex == null ? -1 : removeTabIndex}
-                              className={classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label')}
-                              color={error ? 'error' : color}
-                              startIcon='close'
-                              size={size}
-                              disabled={readOnly || disabled}
-                              onClick={handleRemoveClick}
-                            >
-                              {!hideRemoveLabel && (removeLabel || '삭제')}
-                            </StyledPdgButton>
-                          )}
-                        </div>
-                      </InputAdornment>
-                    ),
+                            )}
+                            {!hideRemove && notEmpty(value) && (
+                              <StyledPdgButton
+                                variant='text'
+                                tabIndex={removeTabIndex == null ? -1 : removeTabIndex}
+                                className={classNames('remove-btn form-file-btn', !!hideRemoveLabel && 'hidden-label')}
+                                color={error ? 'error' : color}
+                                startIcon='close'
+                                size={size}
+                                disabled={readOnly || disabled}
+                                onClick={handleRemoveClick}
+                              >
+                                {!hideRemoveLabel && (removeLabel || '삭제')}
+                              </StyledPdgButton>
+                            )}
+                          </div>
+                        </InputAdornment>
+                      ),
+                    },
                   }}
                   placeholder='파일을 선택하세요'
                 />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
-import { Box, Checkbox, Chip, CircularProgress, MenuItem } from '@mui/material';
+import { Box, Checkbox, Chip, CircularProgress, MenuItem, SelectProps } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util.private';
 import { empty, notEmpty, equal, ifUndefined } from '@pdg/util';
@@ -12,7 +12,7 @@ import {
 } from './FormSelect.types';
 import { useFormState } from '../../FormContext';
 import FormContextProvider from '../../FormContextProvider';
-import FormTextField, { FormTextFieldProps } from '../FormTextField';
+import FormTextField from '../FormTextField';
 import './FormSelect.scss';
 
 interface ItemValueLabelMap {
@@ -33,8 +33,9 @@ const FormSelect = ToForwardRefExoticComponent(
       placeholder,
       startAdornment: initStartAdornment,
       value: initValue,
-      InputLabelProps: initInputLabelProps,
-      SelectProps: initSelectProps,
+      slotProps: initSlotProps,
+      // InputLabelProps: initInputLabelProps,
+      // SelectProps: initSelectProps,
       formValueSeparator = ',',
       formValueSort,
       width,
@@ -135,18 +136,6 @@ const FormSelect = ToForwardRefExoticComponent(
     }, [items]);
 
     /********************************************************************************************************************
-     * inputLabelProps
-     * ******************************************************************************************************************/
-
-    const inputLabelProps = useMemo(() => {
-      if (hasEmptyValue || (!hasEmptyValue && placeholder)) {
-        return { ...initInputLabelProps, shrink: true };
-      } else {
-        return initInputLabelProps;
-      }
-    }, [hasEmptyValue, initInputLabelProps, placeholder]);
-
-    /********************************************************************************************************************
      * Function - getFinalValue
      * ******************************************************************************************************************/
 
@@ -235,46 +224,10 @@ const FormSelect = ToForwardRefExoticComponent(
     }, []);
 
     /********************************************************************************************************************
-     * Memo
+     * Variable
      * ******************************************************************************************************************/
 
     const isSelectedPlaceholder = notEmpty(items) && empty(value) && !!placeholder && !hasEmptyValue;
-
-    const selectProps = useMemo(() => {
-      const finalSelectProps: FormTextFieldProps['SelectProps'] = {
-        ...initSelectProps,
-        displayEmpty: true,
-        multiple: !!multiple,
-        value,
-      };
-      if (multiple) {
-        finalSelectProps.renderValue = (selected) => {
-          if (isSelectedPlaceholder) {
-            return placeholder;
-          } else {
-            return (
-              <Box className='selected-list' sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {Array.isArray(selected) &&
-                  selected.map((selectedValue) => {
-                    if (isSelectedPlaceholder) {
-                      return <Chip key={selectedValue || '$$$EmptyValuePlaceholder$$$'} label='hahaha' size='small' />;
-                    } else {
-                      return <Chip key={selectedValue} label={itemValueLabels[`${selectedValue}`]} size='small' />;
-                    }
-                  })}
-              </Box>
-            );
-          }
-        };
-      }
-      finalSelectProps.style = { ...finalSelectProps.style, minWidth: width || minWidth };
-      finalSelectProps.MenuProps = {
-        ...finalSelectProps.MenuProps,
-        className: classNames(finalSelectProps.MenuProps?.className, 'FormSelect-Menu-Popover'),
-      };
-
-      return finalSelectProps;
-    }, [initSelectProps, isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, value, width]);
 
     /********************************************************************************************************************
      * Function - getExtraCommands
@@ -361,6 +314,41 @@ const FormSelect = ToForwardRefExoticComponent(
      * Render
      * ******************************************************************************************************************/
 
+    const selectProps = useMemo(() => {
+      const finalSelectProps: SelectProps = {
+        displayEmpty: true,
+        multiple: !!multiple,
+        value,
+      };
+      if (multiple) {
+        finalSelectProps.renderValue = (selected) => {
+          if (isSelectedPlaceholder) {
+            return placeholder;
+          } else {
+            return (
+              <Box className='selected-list' sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {Array.isArray(selected) &&
+                  selected.map((selectedValue) => {
+                    if (isSelectedPlaceholder) {
+                      return <Chip key={selectedValue || '$$$EmptyValuePlaceholder$$$'} label='hahaha' size='small' />;
+                    } else {
+                      return <Chip key={selectedValue} label={itemValueLabels[`${selectedValue}`]} size='small' />;
+                    }
+                  })}
+              </Box>
+            );
+          }
+        };
+      }
+      finalSelectProps.style = { ...finalSelectProps.style, minWidth: width || minWidth };
+      finalSelectProps.MenuProps = {
+        ...finalSelectProps.MenuProps,
+        className: classNames(finalSelectProps.MenuProps?.className, 'FormSelect-Menu-Popover'),
+      };
+
+      return finalSelectProps;
+    }, [isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, value, width]);
+
     const finalValue = useMemo(() => {
       let newFinalValue;
       if (notEmpty(items)) {
@@ -391,6 +379,24 @@ const FormSelect = ToForwardRefExoticComponent(
       return newFinalValue;
     }, [emptyValue, items, multiple, selectProps, value]);
 
+    const slotProps = useMemo(() => {
+      const inputLabelAdditionalProps: { shrink?: boolean } = {};
+      if (hasEmptyValue || (!hasEmptyValue && placeholder)) {
+        inputLabelAdditionalProps.shrink = true;
+      }
+
+      return {
+        inputLabel: {
+          ...initSlotProps?.inputLabel,
+          ...inputLabelAdditionalProps,
+        },
+        select: {
+          ...initSlotProps?.select,
+          ...selectProps,
+        },
+      } as FormSelectProps<T>['slotProps'];
+    }, [hasEmptyValue, initSlotProps?.inputLabel, initSlotProps?.select, placeholder, selectProps]);
+
     return (
       <FormContextProvider
         value={{
@@ -411,8 +417,7 @@ const FormSelect = ToForwardRefExoticComponent(
           value={finalValue}
           clear={false}
           readOnly={readOnly || empty(items)}
-          InputLabelProps={inputLabelProps}
-          SelectProps={selectProps}
+          slotProps={slotProps}
           onChange={handleChange}
           onValue={handleValue}
         >

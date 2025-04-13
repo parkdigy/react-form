@@ -10,9 +10,9 @@ export interface PrivateTimeSectionProps {
   width: number;
   cols: 1 | 2 | 3;
   availableDate: FormAvailableDate;
-  hourSelectRef: React.RefObject<PrivateTimeSelectCommands>;
-  minuteSelectRef: React.RefObject<PrivateTimeSelectCommands>;
-  secondSelectRef: React.RefObject<PrivateTimeSelectCommands>;
+  hourSelectRef: React.RefObject<PrivateTimeSelectCommands | null>;
+  minuteSelectRef: React.RefObject<PrivateTimeSelectCommands | null>;
+  secondSelectRef: React.RefObject<PrivateTimeSelectCommands | null>;
   hours?: number[];
   minutes?: number[];
   seconds?: number[];

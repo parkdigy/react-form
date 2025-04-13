@@ -77,7 +77,7 @@ const FormDivider = React.forwardRef<HTMLDivElement, Props>(
      * ******************************************************************************************************************/
 
     return (
-      <Grid ref={ref} item xs={12} style={style} className={classNames(className, 'FormDivider')} sx={sx}>
+      <Grid ref={ref} size={{ xs: 12 }} style={style} className={classNames(className, 'FormDivider')} sx={sx}>
         <Box
           sx={{
             display: 'flex',

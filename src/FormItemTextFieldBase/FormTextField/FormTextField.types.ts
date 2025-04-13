@@ -11,7 +11,20 @@ export type FormTextFieldProps<
   T = FormTextFieldValue,
   AllowUndefinedValue extends boolean = true,
   V = AllowUndefinedValue extends true ? T | undefined : T,
-> = Omit<TextFieldProps, 'ref' | 'name' | 'value' | 'onChange'> &
+> = Omit<
+  TextFieldProps,
+  | 'ref'
+  | 'name'
+  | 'value'
+  | 'onChange'
+  | 'InputProps'
+  | 'InputLabelProps'
+  | 'inputProps'
+  | 'SelectProps'
+  | 'FormHelperTextProps'
+  | 'aria-dropeffect'
+  | 'aria-grabbed'
+> &
   Omit<FormValueItemProps<T, AllowUndefinedValue>, 'label' | 'fullWidth' | 'disabled' | 'error'> & {
     icon?: string;
     clear?: boolean;

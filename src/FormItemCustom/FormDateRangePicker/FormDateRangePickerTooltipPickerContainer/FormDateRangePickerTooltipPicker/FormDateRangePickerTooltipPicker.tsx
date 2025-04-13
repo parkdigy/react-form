@@ -57,8 +57,8 @@ const FormDateRangePickerTooltipPicker = React.forwardRef<FormDateRangePickerToo
 
     //--------------------------------------------------------------------------------------------------------------------
 
-    const leftArrowOnClickRef = useRef<IconButtonProps['onClick']>();
-    const rightArrowOnClickRef = useRef<IconButtonProps['onClick']>();
+    const leftArrowOnClickRef = useRef<IconButtonProps['onClick']>(undefined);
+    const rightArrowOnClickRef = useRef<IconButtonProps['onClick']>(undefined);
 
     const [LeftArrowButton] = useState(() => {
       const ArrowButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {

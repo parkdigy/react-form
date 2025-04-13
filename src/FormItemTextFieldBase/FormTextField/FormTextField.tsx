@@ -1,13 +1,15 @@
 import React, { useId, useRef, useState, useCallback, ReactNode, useLayoutEffect, useMemo } from 'react';
 import classNames from 'classnames';
-import { IconButton, InputAdornment, InputProps, TextField } from '@mui/material';
+import { Box, IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
 import { FormTextFieldProps, FormTextFieldCommands, FormTextFieldValue } from './FormTextField.types';
 import { useFormState } from '../../FormContext';
 import { PdgIcon } from '@pdg/react-component';
 import './FormTextField.scss';
-import { FormTextProps } from '../FormText';
+import { InputProps as StandardInputProps } from '@mui/material/Input/Input';
+
+type inputSlotProps = StandardInputProps;
 
 interface WithForwardRefType<T = FormTextFieldValue, AllowUndefinedValue extends boolean = true>
   extends React.FC<FormTextFieldProps<T, AllowUndefinedValue>> {
@@ -45,12 +47,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       maxLength,
       clear,
       width,
-      InputProps: initMuiInputProps,
-      InputLabelProps: initMuiInputLabelProps,
-      inputProps: initInputProps,
+      slotProps: initSlotProps,
       inputRef: initInputRef,
       select,
-      SelectProps,
       multiline,
       validPattern,
       invalidPattern,
@@ -225,73 +224,6 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     );
 
     /********************************************************************************************************************
-     * Memo - muiInputProps
-     * ******************************************************************************************************************/
-
-    const muiInputProps = useMemo(() => {
-      const muiInputProps: InputProps = { ...initMuiInputProps };
-      if (startAdornment || icon || muiInputProps.startAdornment) {
-        muiInputProps.startAdornment = (
-          <>
-            {icon && (
-              <InputAdornment position='start'>
-                <PdgIcon size='small'>{icon}</PdgIcon>
-              </InputAdornment>
-            )}
-            {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
-            {muiInputProps.startAdornment}
-          </>
-        );
-      }
-      if (endAdornment || muiInputProps.endAdornment || (clear && !readOnly && !disabled)) {
-        muiInputProps.endAdornment = (
-          <>
-            {clear && !readOnly && !disabled && (
-              <InputAdornment className={classNames('clear-icon-button-wrap', showClear && 'show')} position='end'>
-                <IconButton
-                  className={'clear-icon-button'}
-                  size='small'
-                  tabIndex={-1}
-                  onClick={() => {
-                    const finalValue = setValue('');
-                    focus();
-                    if (!noFormValueItem) {
-                      nextTick(() => {
-                        onValueChangeByUser(name, finalValue);
-                        onRequestSearchSubmit(name, finalValue);
-                      });
-                    }
-                  }}
-                >
-                  <PdgIcon size='inherit'>ClearRounded</PdgIcon>
-                </IconButton>
-              </InputAdornment>
-            )}
-            {muiInputProps.endAdornment}
-            {endAdornment && <InputAdornment position='end'>{endAdornment}</InputAdornment>}
-          </>
-        );
-      }
-
-      return muiInputProps;
-    }, [
-      clear,
-      disabled,
-      endAdornment,
-      focus,
-      icon,
-      initMuiInputProps,
-      name,
-      noFormValueItem,
-      onRequestSearchSubmit,
-      onValueChangeByUser,
-      readOnly,
-      setValue,
-      showClear,
-      startAdornment,
-    ]);
-
-    /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
 
@@ -434,31 +366,130 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       style.display = 'none';
     }
 
-    // muiInputLabelProps
-    const muiInputLabelProps =
-      labelShrink || placeholder
-        ? {
-            ...initMuiInputLabelProps,
-            shrink: true,
-          }
-        : initMuiInputLabelProps;
+    // // inputProps
+    // let inputProps: FormTextProps['inputProps'] = initInputProps;
+    // if ((!initInputProps?.className?.includes('FormTag-Input') && readOnly != null) || maxLength != null) {
+    //   inputProps = {
+    //     ...initInputProps,
+    //     readOnly: readOnly,
+    //     maxLength: maxLength,
+    //   };
+    //
+    //   if (readOnly) {
+    //     inputProps.tabIndex = -1;
+    //     inputProps.className = classNames(inputProps.className, 'Mui-disabled');
+    //   } else {
+    //     inputProps.tabIndex = tabIndex;
+    //   }
+    // }
 
-    // inputProps
-    let inputProps: FormTextProps['inputProps'] = initInputProps;
-    if ((!initInputProps?.className?.includes('FormTag-Input') && readOnly != null) || maxLength != null) {
-      inputProps = {
-        ...initInputProps,
-        readOnly: readOnly,
-        maxLength: maxLength,
+    /********************************************************************************************************************
+     * Memo - slotProps
+     * ******************************************************************************************************************/
+
+    const inputSlotProps: inputSlotProps = useMemo(() => {
+      const newProps: inputSlotProps = { ...initSlotProps?.input };
+
+      if (startAdornment || icon || newProps.startAdornment) {
+        newProps.startAdornment = (
+          <>
+            {icon && (
+              <InputAdornment position='start'>
+                <PdgIcon size='small'>{icon}</PdgIcon>
+              </InputAdornment>
+            )}
+            {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
+            {newProps.startAdornment}
+          </>
+        );
+      }
+      if (endAdornment || newProps.endAdornment || (clear && !readOnly && !disabled)) {
+        newProps.endAdornment = (
+          <>
+            {clear && !readOnly && !disabled && (
+              <InputAdornment className={classNames('clear-icon-button-wrap', showClear && 'show')} position='end'>
+                <IconButton
+                  className={'clear-icon-button'}
+                  size='small'
+                  tabIndex={-1}
+                  onClick={() => {
+                    const finalValue = setValue('');
+                    focus();
+                    if (!noFormValueItem) {
+                      nextTick(() => {
+                        onValueChangeByUser(name, finalValue);
+                        onRequestSearchSubmit(name, finalValue);
+                      });
+                    }
+                  }}
+                >
+                  <PdgIcon size='inherit'>ClearRounded</PdgIcon>
+                </IconButton>
+              </InputAdornment>
+            )}
+            {newProps.endAdornment}
+            {endAdornment && <InputAdornment position='end'>{endAdornment}</InputAdornment>}
+          </>
+        );
+      }
+
+      return newProps;
+    }, [
+      clear,
+      disabled,
+      endAdornment,
+      focus,
+      icon,
+      initSlotProps?.input,
+      name,
+      noFormValueItem,
+      onRequestSearchSubmit,
+      onValueChangeByUser,
+      readOnly,
+      setValue,
+      showClear,
+      startAdornment,
+    ]);
+
+    const slotProps = useMemo(() => {
+      const newSlotProps: TextFieldProps['slotProps'] = {
+        ...initSlotProps,
+        formHelperText: { component: 'div' },
       };
 
-      if (readOnly) {
-        inputProps.tabIndex = -1;
-        inputProps.className = classNames(inputProps.className, 'Mui-disabled');
-      } else {
-        inputProps.tabIndex = tabIndex;
+      // input
+      newSlotProps.input = { ...initSlotProps?.input, ...inputSlotProps };
+
+      // inputLabel
+      newSlotProps.inputLabel =
+        labelShrink || placeholder
+          ? {
+              ...initSlotProps?.inputLabel,
+              shrink: true,
+            }
+          : initSlotProps?.inputLabel;
+
+      // htmlInput
+      const initHtmlInputProps: React.InputHTMLAttributes<HTMLInputElement> | undefined =
+        initSlotProps?.htmlInput as React.InputHTMLAttributes<HTMLInputElement>;
+
+      if ((!initHtmlInputProps?.className?.includes('FormTag-Input') && readOnly != null) || maxLength != null) {
+        newSlotProps.htmlInput = {
+          ...initHtmlInputProps,
+          readOnly: readOnly,
+          maxLength: maxLength,
+        };
+
+        if (readOnly) {
+          newSlotProps.htmlInput.tabIndex = -1;
+          newSlotProps.htmlInput.className = classNames(newSlotProps.htmlInput.className, 'Mui-disabled');
+        } else {
+          newSlotProps.htmlInput.tabIndex = tabIndex;
+        }
       }
-    }
+
+      return newSlotProps;
+    }, [initSlotProps, inputSlotProps, labelShrink, maxLength, placeholder, readOnly, tabIndex]);
 
     /********************************************************************************************************************
      * Render
@@ -476,7 +507,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
           labelIcon ? (
             <>
               <PdgIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PdgIcon>
-              <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
+              <Box component='span' style={{ verticalAlign: 'middle' }}>
+                {initLabel}
+              </Box>
             </>
           ) : (
             initLabel
@@ -490,14 +523,10 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
         fullWidth={!width && fullWidth}
         error={error}
         helperText={formColWithHelperText ? undefined : error ? errorHelperText : helperText}
-        FormHelperTextProps={{ component: 'div' } as any}
+        slotProps={slotProps}
         disabled={disabled}
-        InputProps={muiInputProps}
-        InputLabelProps={muiInputLabelProps}
-        inputProps={initInputProps?.className?.includes('FormTag-Input') ? initInputProps : inputProps}
         style={style}
         select={select}
-        SelectProps={SelectProps}
         multiline={multiline}
         onChange={handleChange}
         onBlur={handleBlur}

@@ -2,9 +2,8 @@ import React, { useId, useMemo } from 'react';
 import classNames from 'classnames';
 import { PrivateInputDatePickerProps as Props } from './PrivateInputDatePicker.types';
 import { InputProps, InputAdornment, InputBaseComponentProps } from '@mui/material';
-import { DesktopDatePicker } from '@mui/x-date-pickers';
+import { DesktopDatePicker, DesktopDatePickerProps } from '@mui/x-date-pickers';
 import { Dayjs } from 'dayjs';
-import { DesktopDatePickerSlotsComponentsProps } from '@mui/x-date-pickers/DesktopDatePicker/DesktopDatePicker.types';
 import './PrivateInputDatePicker.scss';
 import { PdgIcon } from '@pdg/react-component';
 import { useAutoUpdateLayoutRef } from '@pdg/react-hook';
@@ -59,7 +58,7 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
      * Memo
      * ******************************************************************************************************************/
 
-    const slotProps = useMemo<DesktopDatePickerSlotsComponentsProps<Dayjs>>(() => {
+    const slotProps = useMemo<DesktopDatePickerProps<Dayjs>['slotProps']>(() => {
       const inputLabelProps = labelShrink ? { shrink: true } : undefined;
 
       const muiInputProps: InputProps = {

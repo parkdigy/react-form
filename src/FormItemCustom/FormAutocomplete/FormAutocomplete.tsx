@@ -15,7 +15,6 @@ import {
   FormAutocompleteCommands,
   FormAutocompleteItem,
   FormAutocompleteComponentValue,
-  FormAutocompleteItems,
   FormAutocompleteSingleValue,
 } from './FormAutocomplete.types';
 import { useFormState } from '../../FormContext';
@@ -650,30 +649,28 @@ const FormAutocomplete = ToForwardRefExoticComponent(
             setInputValue(undefined);
           }
         }}
-        renderTags={(value: FormAutocompleteItems<T>, getTagProps) =>
-          value.map((option, index) => (
-            <Chip size='small' label={onRenderTag ? onRenderTag(option) : option.label} {...getTagProps({ index })} />
-          ))
-        }
-        renderInput={(params) => (
-          <FormTextField
-            {...params}
-            ref={textFieldRef}
-            name={name}
-            variant={variant}
-            size={size}
-            color={color}
-            labelIcon={labelIcon}
-            label={label}
-            labelShrink={labelShrink}
-            required={required}
-            focused={focused}
-            error={error}
-            readOnly={readOnly}
-            helperText={error ? errorHelperText : helperText}
-            placeholder={placeholder}
-            noFormValueItem
-            InputProps={{
+        renderValue={(value, getItemProps) => {
+          if (Array.isArray(value)) {
+            return value.map((option, index) => (
+              <Chip
+                size='small'
+                label={onRenderTag ? onRenderTag(option) : option.label}
+                {...getItemProps({ index })}
+              />
+            ));
+          } else {
+            return (
+              <Chip
+                size='small'
+                label={onRenderTag ? onRenderTag(value) : value.label}
+                {...getItemProps({ index: 0 })}
+              />
+            );
+          }
+        }}
+        renderInput={(params) => {
+          const slotProps = {
+            input: {
               ...params.InputProps,
               endAdornment: (
                 <>
@@ -681,10 +678,34 @@ const FormAutocomplete = ToForwardRefExoticComponent(
                   {params.InputProps.endAdornment}
                 </>
               ),
-            }}
-            inputProps={readOnly || disabled ? { ...params.inputProps, tabIndex: -1 } : params.inputProps}
-          />
-        )}
+            },
+            htmlInput: {
+              ...params.inputProps,
+              tabIndex: readOnly || disabled ? -1 : undefined,
+            },
+          };
+          return (
+            <FormTextField
+              {...params}
+              ref={textFieldRef}
+              name={name}
+              variant={variant}
+              size={size}
+              color={color}
+              labelIcon={labelIcon}
+              label={label}
+              labelShrink={labelShrink}
+              required={required}
+              focused={focused}
+              error={error}
+              readOnly={readOnly}
+              helperText={error ? errorHelperText : helperText}
+              slotProps={slotProps}
+              placeholder={placeholder}
+              noFormValueItem
+            />
+          );
+        }}
       />
     );
   })

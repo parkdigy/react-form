@@ -86,8 +86,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
      * Ref
      * ******************************************************************************************************************/
 
-    const ratingRef = useRef<HTMLSpanElement>(null);
-    const inputRef = useRef<HTMLInputElement>();
+    const inputRef = useRef<HTMLInputElement>(undefined);
 
     /********************************************************************************************************************
      * State
@@ -106,11 +105,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
      * State - width, height
      * ******************************************************************************************************************/
 
-    const { width, height } = useResizeDetector({
-      targetRef: ratingRef,
-      handleWidth: true,
-      handleHeight: true,
-    });
+    const { ref: ratingRef, width, height } = useResizeDetector();
 
     /********************************************************************************************************************
      * Function

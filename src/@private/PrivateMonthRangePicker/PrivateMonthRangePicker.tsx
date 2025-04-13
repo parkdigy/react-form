@@ -200,7 +200,7 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
   return (
     <div>
       <Grid container className='PrivateMonthRangePicker'>
-        <Grid item>
+        <Grid>
           <PrivateMonthPicker
             value={value[0]}
             selectToValue={value[1]}
@@ -212,7 +212,7 @@ const PrivateMonthRangePicker: React.FC<Props> = ({
           />
         </Grid>
         <StyledDiv>~</StyledDiv>
-        <Grid item>
+        <Grid>
           <PrivateMonthPicker
             value={value[1]}
             selectFromValue={value[0]}

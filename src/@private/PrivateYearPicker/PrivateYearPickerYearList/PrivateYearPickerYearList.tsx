@@ -23,7 +23,7 @@ const PrivateYearPickerYearList: React.FC<Props> = ({
   const defaultButtonRef = useRef<HTMLDivElement | null>(null);
   const startButtonRef = useRef<HTMLDivElement | null>(null);
   const endButtonRef = useRef<HTMLDivElement | null>(null);
-  const mouseOverTimer = useRef<NodeJS.Timeout>();
+  const mouseOverTimer = useRef<NodeJS.Timeout>(undefined);
 
   /********************************************************************************************************************
    * State

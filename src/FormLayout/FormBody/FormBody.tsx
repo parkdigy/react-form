@@ -1,36 +1,24 @@
-import React, { CSSProperties, useMemo, useRef, useState } from 'react';
+import React, { CSSProperties, useMemo } from 'react';
 import { FormBodyProps as Props } from './FormBody.types';
 import { useResizeDetector } from 'react-resize-detector';
 import { useFormState } from '../../FormContext';
 import { Grid } from '@mui/material';
 import { StyledContainerDiv, StyledContentDiv } from './FormBody.style.private';
+import { ifUndefined } from '@pdg/util';
 
 const FormBody: React.FC<Props> = ({ children, hidden }) => {
-  /********************************************************************************************************************
-   * Ref
-   * ******************************************************************************************************************/
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
   const { spacing, fullHeight } = useFormState();
-  const [height, setHeight] = useState(0);
 
   /********************************************************************************************************************
    * ResizeDetector
    * ******************************************************************************************************************/
 
-  useResizeDetector({
-    targetRef: containerRef,
-    handleWidth: false,
-    handleHeight: true,
-    onResize() {
-      setHeight(containerRef.current?.getBoundingClientRect()?.height || 0);
-    },
-  });
+  const { ref: containerRef, height: resizedHeight } = useResizeDetector({ handleWidth: false });
+  const height = ifUndefined(resizedHeight, 0);
 
   /********************************************************************************************************************
    * Style
