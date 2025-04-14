@@ -1,7 +1,7 @@
 {
   "name": "@pdg/react-form",
   "title": "React Form",
-  "version": "1.0.134",
+  "version": "1.0.135",
   "description": "React Form",
   "type": "module",
   "types": "dist/index.d.ts",
@@ -45,8 +45,8 @@
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
     "@mui/x-date-pickers": "^7.28.3",
-    "@pdg/react-component": "^1.0.30",
-    "@pdg/react-hook": "^1.0.26",
+    "@pdg/react-component": "^1.0.32",
+    "@pdg/react-hook": "^1.0.27",
     "@pdg/util": "^1.0.23",
     "@tinymce/tinymce-react": "^6.1.0",
     "@types/react": ">=17.0.0",
@@ -75,7 +75,7 @@
     "rollup": "^4.39.0",
     "rollup-plugin-delete": "^2.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-scss": "^4.0.1",
+    "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-typescript2": "^0.36.0",
     "sass": "^1.86.3",
     "typescript": "^5.8.3"

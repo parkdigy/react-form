@@ -31,6 +31,7 @@ import {
   FormFooter,
   FormCompanyNo,
   FormPersonalNo,
+  FormHidden,
 } from '../../../../../src';
 import { ToggleButtonGroup, Checkbox, RadioGroup, Rating, FileUpload, Switch } from './sub';
 import { lv } from '@pdg/util';
@@ -77,7 +78,7 @@ const FormBase = () => {
    * Render
    * ******************************************************************************************************************/
 
-  ll(submitWhenReturnKey)
+  ll(submitWhenReturnKey);
   return (
     <Box flex={1} style={{ display: 'flex', flexDirection: 'column' }}>
       <OutlinedPaper>
@@ -234,6 +235,7 @@ const FormBase = () => {
           <FormBlock icon='TextFields' label='FormBlock 1' hidden={isFormBlock1Hidden} collapse collapseIn>
             <FormRow>
               <FormCol>
+                <FormHidden name='asdf' />
                 <FormText name='FormText' label='FormText' ref={formTextRef} helperText='FormText' />
               </FormCol>
               <FormCol>

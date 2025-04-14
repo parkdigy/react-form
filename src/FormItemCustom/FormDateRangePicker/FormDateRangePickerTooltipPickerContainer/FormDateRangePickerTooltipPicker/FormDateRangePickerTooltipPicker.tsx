@@ -239,7 +239,7 @@ const FormDateRangePickerTooltipPicker = React.forwardRef<FormDateRangePickerToo
     //--------------------------------------------------------------------------------------------------------------------
 
     const handleRenderDay = useCallback(
-      (props: PickersDayProps<Dayjs>) => {
+      (props: Omit<PickersDayProps<Dayjs>, 'ref'>) => {
         const startDate = value[0];
         const endDate = value[1];
 
