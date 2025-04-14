@@ -1658,15 +1658,7 @@ FormMobile.displayName = 'FormMobile';var NumberFormatCustom = React.forwardRef(
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
-    var strValueRef = React.useRef(undefined);
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-    React.useEffect(function () {
-        strValueRef.current = util.empty(initValue) ? '' : "".concat(initValue);
-        forceUpdate();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [initValue]);
+    var strValueRef = reactHook.useAutoUpdateRef(initValue !== undefined ? "".concat(initValue) : '');
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -1737,7 +1729,7 @@ FormMobile.displayName = 'FormMobile';var NumberFormatCustom = React.forwardRef(
             strValueRef.current = value;
             forceUpdate();
         }
-    }, [forceUpdate, onChange]);
+    }, [forceUpdate, onChange, strValueRef]);
     var handleValue = React.useCallback(function (value) {
         var finalValue = util.empty(value) || value === '-' || value === '.' ? undefined : Number(value);
         if (onValue) {

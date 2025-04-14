@@ -1,4 +1,4 @@
-import React,{createContext,useContext,useRef,useCallback,useMemo,useLayoutEffect,useEffect,useState,useId}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,ifUndefined,nextTick,notEmpty,equal,telNoAutoDash,companyNoAutoDash,personalNoAutoDash}from'@pdg/util';import dayjs from'dayjs';import {useAutoUpdateLayoutRef,useAutoUpdateState,useAutoUpdateRefState,useFirstSkipEffect,useForceUpdate}from'@pdg/react-hook';import {PdgButton,PdgIcon,PdgIconText}from'@pdg/react-component';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBoxOutlineBlank,CheckBox,RadioButtonChecked,RadioButtonUnchecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';import'dayjs/locale/ko';function styleInject(css, ref) {
+import React,{createContext,useContext,useRef,useCallback,useMemo,useLayoutEffect,useEffect,useState,useId}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,ifUndefined,nextTick,notEmpty,equal,telNoAutoDash,companyNoAutoDash,personalNoAutoDash}from'@pdg/util';import dayjs from'dayjs';import {useAutoUpdateLayoutRef,useAutoUpdateState,useAutoUpdateRefState,useFirstSkipEffect,useForceUpdate,useAutoUpdateRef}from'@pdg/react-hook';import {PdgButton,PdgIcon,PdgIconText}from'@pdg/react-component';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBoxOutlineBlank,CheckBox,RadioButtonChecked,RadioButtonUnchecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {AdapterDayjs}from'@mui/x-date-pickers/AdapterDayjs';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';import'dayjs/locale/ko';function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
 
@@ -1658,15 +1658,7 @@ FormMobile.displayName = 'FormMobile';var NumberFormatCustom = React.forwardRef(
     /********************************************************************************************************************
      * Ref
      * ******************************************************************************************************************/
-    var strValueRef = React.useRef(undefined);
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-    useEffect(function () {
-        strValueRef.current = empty(initValue) ? '' : "".concat(initValue);
-        forceUpdate();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [initValue]);
+    var strValueRef = useAutoUpdateRef(initValue !== undefined ? "".concat(initValue) : '');
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -1737,7 +1729,7 @@ FormMobile.displayName = 'FormMobile';var NumberFormatCustom = React.forwardRef(
             strValueRef.current = value;
             forceUpdate();
         }
-    }, [forceUpdate, onChange]);
+    }, [forceUpdate, onChange, strValueRef]);
     var handleValue = useCallback(function (value) {
         var finalValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
         if (onValue) {

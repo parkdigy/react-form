@@ -19,7 +19,7 @@
     "@mui/x-date-pickers": "^7.28.3",
     "@pdg/react-admin-layout": "^1.0.40",
     "@pdg/react-component": "^1.0.33",
-    "@pdg/react-hook": "^1.0.27",
+    "@pdg/react-hook": "^1.0.28",
     "@pdg/util": "^1.0.23",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.16",
     "@soda/friendly-errors-webpack-plugin": "^1.8.1",

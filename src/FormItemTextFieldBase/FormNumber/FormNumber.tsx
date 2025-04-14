@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { NumericFormatProps } from 'react-number-format';
 import NumberFormatCustom from './NumberFormatCustom.private';
@@ -6,7 +6,7 @@ import { FormNumberProps as Props, FormNumberCommands } from './FormNumber.types
 import FormTextField from '../FormTextField';
 import { empty } from '@pdg/util';
 import { InputBaseProps } from '@mui/material/InputBase';
-import { useForceUpdate } from '@pdg/react-hook';
+import { useAutoUpdateRef, useForceUpdate } from '@pdg/react-hook';
 
 const FormNumber = React.forwardRef<FormNumberCommands, Props>(
   (
@@ -41,17 +41,7 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
      * Ref
      * ******************************************************************************************************************/
 
-    const strValueRef = React.useRef<string | undefined>(undefined);
-
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-
-    useEffect(() => {
-      strValueRef.current = empty(initValue) ? '' : `${initValue}`;
-      forceUpdate();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [initValue]);
+    const strValueRef = useAutoUpdateRef<string | undefined>(initValue !== undefined ? `${initValue}` : '');
 
     /********************************************************************************************************************
      * Memo
@@ -130,7 +120,7 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
           forceUpdate();
         }
       },
-      [forceUpdate, onChange]
+      [forceUpdate, onChange, strValueRef]
     );
 
     const handleValue = useCallback(
