@@ -137,9 +137,9 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
           style={hidden ? { ...initStyle, display: 'none' } : initStyle}
           sx={sx}
         >
-          <Grid container direction='column'>
+          <div>
             {label && (
-              <Grid className='FormCol-header'>
+              <div className='FormCol-header'>
                 <StyledFormLabelContainerDiv>
                   <StyledFormLabel
                     className='FormCol-FormLabel'
@@ -153,19 +153,19 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
                     {label}
                   </StyledFormLabel>
                 </StyledFormLabelContainerDiv>
-              </Grid>
+              </div>
             )}
-            <Grid size={{ xs: 2, sm: 12 }} className='FormCol-content'>
+            <div className='FormCol-content'>
               <StyledContentContainerBox gap={formColGap}>{children}</StyledContentContainerBox>
-            </Grid>
+            </div>
             {helperText && (
-              <Grid className='FormCol-helper-text'>
+              <div className='FormCol-helper-text'>
                 <FormHelperText component='div' error={error} style={{ marginLeft: helperTextShift ? 14 : 5 }}>
                   {helperText}
                 </FormHelperText>
-              </Grid>
+              </div>
             )}
-          </Grid>
+          </div>
         </Grid>
       </FormContextProvider>
     );

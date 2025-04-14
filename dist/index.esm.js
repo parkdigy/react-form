@@ -966,13 +966,13 @@ var templateObject_1$f, templateObject_2$8, templateObject_3$4;var FormCol = Rea
      * ******************************************************************************************************************/
     return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColGap: formColGap, formColXs: xs || formColAutoXs || 12, formColWidth: formColWidth, formColWithLabel: !!label, formColWithHelperText: !!helperText }) },
         React.createElement(Grid, { ref: gridRef, size: { xs: xs || formColAutoXs || 12 }, className: classNames(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text'), style: hidden ? __assign(__assign({}, initStyle), { display: 'none' }) : initStyle, sx: sx },
-            React.createElement(Grid, { container: true, direction: 'column' },
-                label && (React.createElement(Grid, { className: 'FormCol-header' },
+            React.createElement("div", null,
+                label && (React.createElement("div", { className: 'FormCol-header' },
                     React.createElement(StyledFormLabelContainerDiv, null,
                         React.createElement(StyledFormLabel, { className: 'FormCol-FormLabel', size: size, icon: icon, focused: focused, color: color, error: error, warning: warning }, label)))),
-                React.createElement(Grid, { size: { xs: 2, sm: 12 }, className: 'FormCol-content' },
+                React.createElement("div", { className: 'FormCol-content' },
                     React.createElement(StyledContentContainerBox, { gap: formColGap }, children)),
-                helperText && (React.createElement(Grid, { className: 'FormCol-helper-text' },
+                helperText && (React.createElement("div", { className: 'FormCol-helper-text' },
                     React.createElement(FormHelperText, { component: 'div', error: error, style: { marginLeft: helperTextShift ? 14 : 5 } }, helperText)))))));
 });var StyledContainerDiv = styled('div')(templateObject_1$e || (templateObject_1$e = __makeTemplateObject(["\n  flex: 1;\n  position: relative;\n"], ["\n  flex: 1;\n  position: relative;\n"])));
 var StyledContentDiv = styled('div')(templateObject_2$7 || (templateObject_2$7 = __makeTemplateObject(["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"], ["\n  ::-webkit-scrollbar {\n    width: 8px;\n  }\n\n  ::-webkit-scrollbar-thumb {\n    background-color: #e4e4e4;\n    border-radius: 100px;\n  }\n\n  ::-webkit-scrollbar-thumb:hover {\n    background-color: #cfcfcf;\n    border-radius: 100px;\n  }\n"])));
