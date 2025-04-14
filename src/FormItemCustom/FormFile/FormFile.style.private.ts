@@ -10,28 +10,24 @@ export const StyledPdgButton = styled(PdgButton)`
 
     .PdgFlexRowBox {
       height: 100%;
-      .PdgText {
+      label {
+        cursor: pointer;
+        display: flex;
+        flex: 1;
+        width: 100%;
         height: 100%;
+        justify-content: center;
+        align-items: center;
+        padding: 0 10px;
 
-        label {
-          cursor: pointer;
-          display: flex;
-          flex: 1;
-          width: 100%;
-          height: 100%;
-          justify-content: center;
-          align-items: center;
-          padding: 0 10px;
-
-          .PdgIcon {
-            margin-right: 0.2em;
-          }
+        .PdgIcon {
+          margin-right: 0.2em;
         }
       }
     }
   }
 
-  &.hidden-label.input-file-btn .PdgFlexRowBox .PdgText label .PdgIcon {
+  &.hidden-label.input-file-btn .PdgFlexRowBox label .PdgIcon {
     margin-left: 0;
     margin-right: 0;
   }
