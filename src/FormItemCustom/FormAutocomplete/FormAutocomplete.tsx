@@ -622,26 +622,6 @@ const FormAutocomplete = ToForwardRefExoticComponent(
      * Render
      * ******************************************************************************************************************/
 
-    // const realComponentValue = useMemo(() => {
-    //   let newRealValue = componentValue;
-    //   if (items && value != null) {
-    //     if (Array.isArray(newRealValue)) {
-    //       const stringRealValues = newRealValue.map((v) => v.toString());
-    //       if (multiple) {
-    //         const foundItems = items.filter((v) => stringRealValues.includes(v.value.toString()));
-    //         newRealValue = foundItems.map((v) => v.value) as any;
-    //       }
-    //     } else if (newRealValue != null) {
-    //       const stringRealValue = newRealValue.toString();
-    //       const foundItem = items.find((v) => v.value.toString() === stringRealValue);
-    //       if (foundItem) {
-    //         newRealValue = foundItem.value as any;
-    //       }
-    //     }
-    //   }
-    //   return newRealValue;
-    // }, [componentValue, items, multiple, value]);
-
     return (
       <Autocomplete
         options={items || []}
@@ -681,6 +661,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
             return value.map((option, index) => (
               <Chip
                 size='small'
+                style={variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined}
                 label={onRenderTag ? onRenderTag(option) : option.label}
                 {...getItemProps({ index })}
               />
@@ -689,6 +670,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
             return (
               <Chip
                 size='small'
+                style={variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined}
                 label={onRenderTag ? onRenderTag(value) : value.label}
                 {...getItemProps({ index: 0 })}
               />
@@ -699,6 +681,11 @@ const FormAutocomplete = ToForwardRefExoticComponent(
           const slotProps = {
             input: {
               ...params.InputProps,
+              style: {
+                paddingTop: variant === 'outlined' && size === 'small' ? 7 : undefined,
+                paddingBottom: variant === 'outlined' && size === 'small' ? 5 : undefined,
+                marginTop: variant === 'outlined' && size === 'small' ? -1 : undefined,
+              },
               endAdornment: (
                 <>
                   {loading || isOnGetItemLoading ? <CircularProgress color='inherit' size={20} /> : null}
@@ -708,6 +695,10 @@ const FormAutocomplete = ToForwardRefExoticComponent(
             },
             htmlInput: {
               ...params.inputProps,
+              style: {
+                ...params.inputProps?.style,
+                ...(variant === 'outlined' && size === 'small' ? { marginTop: 1 } : undefined),
+              },
               tabIndex: readOnly || disabled ? -1 : undefined,
             },
           };

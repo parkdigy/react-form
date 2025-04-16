@@ -284,7 +284,14 @@ const FormBase = () => {
                   name='FormAutocomplete'
                   label='FormAutocomplete'
                   multiple
-                  items={[lv('Item', 1), lv('Item', 2, { disabled: true }), lv('Item 3', 3)]}
+                  items={[
+                    lv('Item', 1),
+                    lv('Item', 2, { disabled: true }),
+                    lv('Item 3', 3),
+                    lv('Item 4', 4),
+                    lv('Item 5', 5),
+                    lv('Item 6', 6),
+                  ]}
                 />
               </FormCol>
               <FormCol>

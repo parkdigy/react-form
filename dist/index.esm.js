@@ -1412,7 +1412,7 @@ FormText.displayName = 'FormText';var FormTagText = React.forwardRef(function (_
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(StyledFormText, __assign({ ref: ref }, props, { value: valueRef.current, onChange: handleChange, onKeyDown: handleKeyDown, onBlur: handleBlur })));
+    return (React.createElement(StyledFormText, __assign({ ref: ref }, props, { clear: false, value: valueRef.current, onChange: handleChange, onKeyDown: handleKeyDown, onBlur: handleBlur })));
 });
 /********************************************************************************************************************
  * Styled Components
@@ -1423,11 +1423,15 @@ var FormTag = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
-    var className = _a.className, name = _a.name, _b = _a.value, initValue = _b === void 0 ? _emptyValue : _b, exceptValue = _a.exceptValue, _c = _a.clear, clear = _c === void 0 ? true : _c, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, initDisabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, _d = _a.formValueSeparator, formValueSeparator = _d === void 0 ? ',' : _d, formValueSort = _a.formValueSort, limitTags = _a.limitTags, getLimitTagsText = _a.getLimitTagsText, slotProps = _a.slotProps, onAppendTag = _a.onAppendTag, onRemoveTag = _a.onRemoveTag, onValidate = _a.onValidate, onChange = _a.onChange, onValue = _a.onValue, props = __rest(_a, ["className", "name", "value", "exceptValue", "clear", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "limitTags", "getLimitTagsText", "slotProps", "onAppendTag", "onRemoveTag", "onValidate", "onChange", "onValue"]);
-    var _e = useFormState(), formFullWidth = _e.fullWidth, formDisabled = _e.disabled, onAddValueItem = _e.onAddValueItem, onValueChange = _e.onValueChange, onValueChangeByUser = _e.onValueChangeByUser, onRequestSearchSubmit = _e.onRequestSearchSubmit, otherFormState = __rest(_e, ["fullWidth", "disabled", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
+    var initVariant = _a.variant, initSize = _a.size, 
+    //----------------------------------------------------------------------------------------------------------------
+    className = _a.className, name = _a.name, _b = _a.value, initValue = _b === void 0 ? _emptyValue : _b, exceptValue = _a.exceptValue, _c = _a.clear, clear = _c === void 0 ? true : _c, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, initDisabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, _d = _a.formValueSeparator, formValueSeparator = _d === void 0 ? ',' : _d, formValueSort = _a.formValueSort, limitTags = _a.limitTags, getLimitTagsText = _a.getLimitTagsText, slotProps = _a.slotProps, onAppendTag = _a.onAppendTag, onRemoveTag = _a.onRemoveTag, onValidate = _a.onValidate, onChange = _a.onChange, onValue = _a.onValue, props = __rest(_a, ["variant", "size", "className", "name", "value", "exceptValue", "clear", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "limitTags", "getLimitTagsText", "slotProps", "onAppendTag", "onRemoveTag", "onValidate", "onChange", "onValue"]);
+    var _e = useFormState(), formVariant = _e.variant, formSize = _e.size, formFullWidth = _e.fullWidth, formDisabled = _e.disabled, onAddValueItem = _e.onAddValueItem, onValueChange = _e.onValueChange, onValueChangeByUser = _e.onValueChangeByUser, onRequestSearchSubmit = _e.onRequestSearchSubmit, otherFormState = __rest(_e, ["variant", "size", "fullWidth", "disabled", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
     /********************************************************************************************************************
      * FormState - Variables
      * ******************************************************************************************************************/
+    var variant = ifUndefined(initVariant, formVariant);
+    var size = ifUndefined(initSize, formSize);
     var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     /********************************************************************************************************************
      * State
@@ -1554,16 +1558,19 @@ var FormTag = React.forwardRef(function (_a, ref) {
         }
     }, [ref, getCommands]);
     var handleRenderValue = useCallback(function (tags) {
-        return tags.map(function (tag) { return (React.createElement(Chip, { className: 'MuiAutocomplete-tag', key: tag, label: tag, size: 'small', disabled: readOnly || disabled, onDelete: readOnly || disabled ? undefined : function () { return removeTag(tag); } })); });
-    }, [disabled, readOnly, removeTag]);
+        return tags.map(function (tag) { return (React.createElement(Chip, { className: 'MuiAutocomplete-tag', key: tag, label: tag, size: 'small', style: variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined, disabled: readOnly || disabled, onDelete: readOnly || disabled ? undefined : function () { return removeTag(tag); } })); });
+    }, [disabled, readOnly, removeTag, size, variant]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     var handleRenderInput = useCallback(function (params) {
+        var _a, _b;
         var htmlInputProps = __assign(__assign({}, params.inputProps), { className: classNames('FormTag-Input', readOnly && 'Mui-disabled'), readOnly: readOnly, tabIndex: readOnly ? -1 : undefined, maxLength: maxLength });
         delete htmlInputProps.onChange;
         delete htmlInputProps.value;
-        var renderProps = __assign({ name: name, clear: clear, className: classNames(className, 'FormValueItem', 'FormTag'), error: error, disabled: disabled, fullWidth: fullWidth, required: required, exceptValue: exceptValue, slotProps: __assign(__assign({}, slotProps), { inputLabel: __assign(__assign({}, slotProps === null || slotProps === void 0 ? void 0 : slotProps.inputLabel), { htmlFor: params.InputLabelProps.htmlFor, id: params.InputLabelProps.id }), input: __assign(__assign({}, slotProps === null || slotProps === void 0 ? void 0 : slotProps.input), { className: params.InputProps.className, ref: params.InputProps.ref, startAdornment: params.InputProps.startAdornment }), htmlInput: __assign(__assign({}, slotProps === null || slotProps === void 0 ? void 0 : slotProps.htmlInput), htmlInputProps) }), helperText: error ? errorHelperText : helperText, onAppendTag: appendTag }, props);
+        var renderProps = __assign({ name: name, clear: clear, className: classNames(className, 'FormValueItem', 'FormTag'), error: error, disabled: disabled, fullWidth: fullWidth, required: required, exceptValue: exceptValue, slotProps: __assign(__assign({}, slotProps), { inputLabel: __assign(__assign({}, slotProps === null || slotProps === void 0 ? void 0 : slotProps.inputLabel), { htmlFor: params.InputLabelProps.htmlFor, id: params.InputLabelProps.id }), input: __assign(__assign({}, slotProps === null || slotProps === void 0 ? void 0 : slotProps.input), { style: __assign(__assign({}, (_a = slotProps === null || slotProps === void 0 ? void 0 : slotProps.input) === null || _a === void 0 ? void 0 : _a.style), (variant === 'outlined' && size === 'small'
+                        ? { paddingTop: 7, paddingBottom: 6, marginTop: -2 }
+                        : undefined)), className: params.InputProps.className, ref: params.InputProps.ref, startAdornment: params.InputProps.startAdornment }), htmlInput: __assign(__assign(__assign({}, slotProps === null || slotProps === void 0 ? void 0 : slotProps.htmlInput), htmlInputProps), { style: __assign(__assign(__assign({}, (_b = slotProps === null || slotProps === void 0 ? void 0 : slotProps.htmlInput) === null || _b === void 0 ? void 0 : _b.style), htmlInputProps.style), (variant === 'outlined' && size === 'small' ? { marginTop: 4, paddingBottom: 2 } : undefined)) }) }), helperText: error ? errorHelperText : helperText, onAppendTag: appendTag }, props);
         return React.createElement(FormTagText, __assign({ ref: handleRef }, renderProps));
     }, [
         appendTag,
@@ -1581,9 +1588,11 @@ var FormTag = React.forwardRef(function (_a, ref) {
         props,
         readOnly,
         required,
+        size,
         slotProps,
+        variant,
     ]);
-    return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, onValueChange: function () { }, onValueChangeByUser: function () { }, onRequestSearchSubmit: function () { } }) },
+    return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { variant: formVariant, size: formSize, fullWidth: formFullWidth, onAddValueItem: handleAddValueItem, onValueChange: function () { }, onValueChangeByUser: function () { }, onRequestSearchSubmit: function () { } }) },
         React.createElement(Autocomplete, { options: [], multiple: true, freeSolo: true, value: value, readOnly: readOnly, disableClearable: true, limitTags: limitTags, getLimitTagsText: getLimitTagsText, disabled: disabled, renderValue: handleRenderValue, style: { display: fullWidth ? 'block' : 'inline-block', width: fullWidth ? '100%' : undefined }, renderInput: handleRenderInput })));
 });
 FormTag.displayName = 'FormTag';var FormEmail = React.forwardRef(function (_a, ref) {
@@ -4483,25 +4492,6 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    // const realComponentValue = useMemo(() => {
-    //   let newRealValue = componentValue;
-    //   if (items && value != null) {
-    //     if (Array.isArray(newRealValue)) {
-    //       const stringRealValues = newRealValue.map((v) => v.toString());
-    //       if (multiple) {
-    //         const foundItems = items.filter((v) => stringRealValues.includes(v.value.toString()));
-    //         newRealValue = foundItems.map((v) => v.value) as any;
-    //       }
-    //     } else if (newRealValue != null) {
-    //       const stringRealValue = newRealValue.toString();
-    //       const foundItem = items.find((v) => v.value.toString() === stringRealValue);
-    //       if (foundItem) {
-    //         newRealValue = foundItem.value as any;
-    //       }
-    //     }
-    //   }
-    //   return newRealValue;
-    // }, [componentValue, items, multiple, value]);
     return (React.createElement(Autocomplete, { options: items || [], className: classNames(className, 'FormValueItem', 'FormAutocomplete'), sx: sx, multiple: multiple, fullWidth: !width && fullWidth, openOnFocus: openOnFocus, disableClearable: disableClearable, disablePortal: disablePortal, noOptionsText: noOptionsText, value: componentValue, style: style, isOptionEqualToValue: function (option, value) { return option.value === value.value; }, getOptionDisabled: handleGetOptionDisabled, disabled: disabled, readOnly: readOnly, loading: loading || isOnGetItemLoading, loadingText: loadingText, limitTags: limitTags, getLimitTagsText: getLimitTagsText, onChange: function (e, value, reason, details) { return handleChange(value, reason, details); }, renderOption: function (props, option) { return (React.createElement("li", __assign({}, props, { key: "".concat(option.value) }), onRenderItem ? onRenderItem(option) : option.label)); }, onInputChange: function (event, newInputValue, reason) {
             if (reason === 'input') {
                 setInputValue(newInputValue);
@@ -4511,17 +4501,22 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
             }
         }, renderValue: function (value, getItemProps) {
             if (Array.isArray(value)) {
-                return value.map(function (option, index) { return (React.createElement(Chip, __assign({ size: 'small', label: onRenderTag ? onRenderTag(option) : option.label }, getItemProps({ index: index })))); });
+                return value.map(function (option, index) { return (React.createElement(Chip, __assign({ size: 'small', style: variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined, label: onRenderTag ? onRenderTag(option) : option.label }, getItemProps({ index: index })))); });
             }
             else {
-                return (React.createElement(Chip, __assign({ size: 'small', label: onRenderTag ? onRenderTag(value) : value.label }, getItemProps({ index: 0 }))));
+                return (React.createElement(Chip, __assign({ size: 'small', style: variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined, label: onRenderTag ? onRenderTag(value) : value.label }, getItemProps({ index: 0 }))));
             }
         }, renderInput: function (params) {
+            var _a;
             var slotProps = {
-                input: __assign(__assign({}, params.InputProps), { endAdornment: (React.createElement(React.Fragment, null,
+                input: __assign(__assign({}, params.InputProps), { style: {
+                        paddingTop: variant === 'outlined' && size === 'small' ? 7 : undefined,
+                        paddingBottom: variant === 'outlined' && size === 'small' ? 5 : undefined,
+                        marginTop: variant === 'outlined' && size === 'small' ? -1 : undefined,
+                    }, endAdornment: (React.createElement(React.Fragment, null,
                         loading || isOnGetItemLoading ? React.createElement(CircularProgress, { color: 'inherit', size: 20 }) : null,
                         params.InputProps.endAdornment)) }),
-                htmlInput: __assign(__assign({}, params.inputProps), { tabIndex: readOnly || disabled ? -1 : undefined }),
+                htmlInput: __assign(__assign({}, params.inputProps), { style: __assign(__assign({}, (_a = params.inputProps) === null || _a === void 0 ? void 0 : _a.style), (variant === 'outlined' && size === 'small' ? { marginTop: 1 } : undefined)), tabIndex: readOnly || disabled ? -1 : undefined }),
             };
             return (React.createElement(FormTextField, __assign({}, params, { ref: textFieldRef, name: name, variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, labelShrink: labelShrink, required: required, focused: focused, error: error, readOnly: readOnly, helperText: error ? errorHelperText : helperText, slotProps: slotProps, placeholder: placeholder, noFormValueItem: true })));
         } }));

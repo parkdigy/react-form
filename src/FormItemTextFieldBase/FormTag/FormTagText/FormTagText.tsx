@@ -75,6 +75,7 @@ export const FormTagText = React.forwardRef<FormTextCommands, Props>(
       <StyledFormText
         ref={ref}
         {...props}
+        clear={false}
         value={valueRef.current}
         onChange={handleChange}
         onKeyDown={handleKeyDown}

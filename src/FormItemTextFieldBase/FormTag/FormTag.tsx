@@ -15,6 +15,9 @@ const _emptyValue: string[] = [];
 const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
   (
     {
+      variant: initVariant,
+      size: initSize,
+      //----------------------------------------------------------------------------------------------------------------
       className,
       name,
       value: initValue = _emptyValue,
@@ -46,6 +49,8 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
      * ******************************************************************************************************************/
 
     const {
+      variant: formVariant,
+      size: formSize,
       fullWidth: formFullWidth,
       disabled: formDisabled,
       onAddValueItem,
@@ -59,6 +64,8 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
      * FormState - Variables
      * ******************************************************************************************************************/
 
+    const variant = ifUndefined(initVariant, formVariant);
+    const size = ifUndefined(initSize, formSize);
     const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
     /********************************************************************************************************************
@@ -263,12 +270,13 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
             key={tag}
             label={tag}
             size='small'
+            style={variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined}
             disabled={readOnly || disabled}
             onDelete={readOnly || disabled ? undefined : () => removeTag(tag)}
           />
         ));
       },
-      [disabled, readOnly, removeTag]
+      [disabled, readOnly, removeTag, size, variant]
     );
 
     /********************************************************************************************************************
@@ -306,6 +314,12 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
             },
             input: {
               ...slotProps?.input,
+              style: {
+                ...(slotProps?.input as any)?.style,
+                ...(variant === 'outlined' && size === 'small'
+                  ? { paddingTop: 7, paddingBottom: 6, marginTop: -2 }
+                  : undefined),
+              },
               className: params.InputProps.className,
               ref: params.InputProps.ref,
               startAdornment: params.InputProps.startAdornment,
@@ -313,6 +327,11 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
             htmlInput: {
               ...slotProps?.htmlInput,
               ...htmlInputProps,
+              style: {
+                ...(slotProps?.htmlInput as any)?.style,
+                ...htmlInputProps.style,
+                ...(variant === 'outlined' && size === 'small' ? { marginTop: 4, paddingBottom: 2 } : undefined),
+              },
             },
           },
           helperText: error ? errorHelperText : helperText,
@@ -338,7 +357,9 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
         props,
         readOnly,
         required,
+        size,
         slotProps,
+        variant,
       ]
     );
 
@@ -346,6 +367,8 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       <FormContextProvider
         value={{
           ...otherFormState,
+          variant: formVariant,
+          size: formSize,
           fullWidth: formFullWidth,
           onAddValueItem: handleAddValueItem,
           onValueChange: () => {},
