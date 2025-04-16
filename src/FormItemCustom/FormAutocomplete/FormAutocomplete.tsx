@@ -327,7 +327,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
               ) as ComponentValue;
             }
           } else {
-            if (!Array.isArray(valueItem) && finalValue === valueItem.value) {
+            if (!Array.isArray(valueItem) && finalValue.toString() === valueItem.value.toString()) {
               newComponentValue = valueItem;
             }
           }
@@ -621,6 +621,26 @@ const FormAutocomplete = ToForwardRefExoticComponent(
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
+
+    // const realComponentValue = useMemo(() => {
+    //   let newRealValue = componentValue;
+    //   if (items && value != null) {
+    //     if (Array.isArray(newRealValue)) {
+    //       const stringRealValues = newRealValue.map((v) => v.toString());
+    //       if (multiple) {
+    //         const foundItems = items.filter((v) => stringRealValues.includes(v.value.toString()));
+    //         newRealValue = foundItems.map((v) => v.value) as any;
+    //       }
+    //     } else if (newRealValue != null) {
+    //       const stringRealValue = newRealValue.toString();
+    //       const foundItem = items.find((v) => v.value.toString() === stringRealValue);
+    //       if (foundItem) {
+    //         newRealValue = foundItem.value as any;
+    //       }
+    //     }
+    //   }
+    //   return newRealValue;
+    // }, [componentValue, items, multiple, value]);
 
     return (
       <Autocomplete

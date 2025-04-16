@@ -418,7 +418,9 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
             {!hideUrl && (
               <div className='file-name-wrap'>
                 <TextField
-                  ref={innerRef}
+                  ref={(ref) => {
+                    innerRef.current = ref;
+                  }}
                   inputRef={textFieldRef}
                   className='file-name'
                   variant={variant}

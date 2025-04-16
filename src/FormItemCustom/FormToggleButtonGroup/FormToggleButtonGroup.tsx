@@ -547,6 +547,113 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       type,
     ]);
 
+    const realValue = useMemo(() => {
+      let newRealValue: T | T[] | null = value == null ? null : value;
+      if (items && value != null) {
+        if (Array.isArray(newRealValue)) {
+          const stringRealValues = newRealValue.map((v) => v.toString());
+          if (multiple) {
+            const foundItems = items.filter((v) => stringRealValues.includes(v.value.toString()));
+            newRealValue = foundItems.map((v) => v.value);
+          }
+        } else if (newRealValue != null) {
+          const stringRealValue = newRealValue.toString();
+          const foundItem = items.find((v) => v.value.toString() === stringRealValue);
+          if (foundItem) {
+            newRealValue = foundItem.value;
+          }
+        }
+      }
+      return newRealValue;
+    }, [items, multiple, value]);
+
+    const control = useMemo(() => {
+      return isOnGetItemLoading || loading ? (
+        <div
+          style={{ opacity: 0.54 }}
+          ref={(ref) => {
+            refForLoadingResizeHeightDetect.current = ref;
+          }}
+        >
+          <CircularProgress size={16} color='inherit' />
+        </div>
+      ) : (
+        <>
+          {!fullWidth && !isOnGetItemLoading && !loading && items && (
+            <div
+              ref={(ref) => {
+                refForResizeWidthDetect.current = ref;
+              }}
+              style={{
+                display: 'grid',
+                position: 'absolute',
+                whiteSpace: 'nowrap',
+                visibility: 'hidden',
+              }}
+            >
+              <ToggleButtonGroup className='ToggleButtonGroup' exclusive={!multiple}>
+                {buttons}
+              </ToggleButtonGroup>
+            </div>
+          )}
+          <ToggleButtonGroup
+            ref={(ref) => {
+              refForButtonsResizeHeightDetect.current = ref;
+            }}
+            className='ToggleButtonGroup'
+            exclusive={!multiple}
+            fullWidth={fullWidth}
+            value={realValue}
+            onChange={handleChange}
+            style={{
+              width:
+                !fullWidth && formColWidth && typeof width === 'number' && width > formColWidth
+                  ? formColWidth
+                  : undefined,
+              flexWrap: type === 'checkbox' || type === 'radio' ? 'wrap' : 'nowrap',
+            }}
+            aria-labelledby={notEmpty(label) ? labelId : undefined}
+          >
+            {isOnGetItemLoading || loading || !items || empty(items) ? (
+              <ToggleButton
+                ref={(ref) => {
+                  refForButtonResizeHeightDetect.current = ref;
+                }}
+                size={size}
+                className='ToggleButton'
+                disabled={disabled || readOnly}
+                value=''
+                style={{ visibility: 'hidden' }}
+              />
+            ) : (
+              buttons
+            )}
+          </ToggleButtonGroup>
+        </>
+      );
+    }, [
+      buttons,
+      disabled,
+      formColWidth,
+      fullWidth,
+      handleChange,
+      isOnGetItemLoading,
+      items,
+      label,
+      labelId,
+      loading,
+      multiple,
+      readOnly,
+      realValue,
+      refForButtonResizeHeightDetect,
+      refForButtonsResizeHeightDetect,
+      refForLoadingResizeHeightDetect,
+      refForResizeWidthDetect,
+      size,
+      type,
+      width,
+    ]);
+
     const controlHeight = height || 0;
     const isMultiline = controlHeight <= ifUndefined(realHeight, 0);
 
@@ -580,60 +687,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
         autoSize
         controlHeight={realHeight ? realHeight + (isMultiline ? 13 : 0) : controlHeight}
         controlVerticalCenter={isMultiline ? false : isOnGetItemLoading || loading}
-        control={
-          isOnGetItemLoading || loading ? (
-            <div style={{ opacity: 0.54 }} ref={refForLoadingResizeHeightDetect}>
-              <CircularProgress size={16} color='inherit' />
-            </div>
-          ) : (
-            <>
-              {!fullWidth && !isOnGetItemLoading && !loading && items && (
-                <div
-                  ref={refForResizeWidthDetect}
-                  style={{
-                    display: 'grid',
-                    position: 'absolute',
-                    whiteSpace: 'nowrap',
-                    visibility: 'hidden',
-                  }}
-                >
-                  <ToggleButtonGroup className='ToggleButtonGroup' exclusive={!multiple}>
-                    {buttons}
-                  </ToggleButtonGroup>
-                </div>
-              )}
-              <ToggleButtonGroup
-                ref={refForButtonsResizeHeightDetect}
-                className='ToggleButtonGroup'
-                exclusive={!multiple}
-                fullWidth={fullWidth}
-                value={value == null ? null : value}
-                onChange={handleChange}
-                style={{
-                  width:
-                    !fullWidth && formColWidth && typeof width === 'number' && width > formColWidth
-                      ? formColWidth
-                      : undefined,
-                  flexWrap: type === 'checkbox' || type === 'radio' ? 'wrap' : 'nowrap',
-                }}
-                aria-labelledby={notEmpty(label) ? labelId : undefined}
-              >
-                {isOnGetItemLoading || loading || !items || empty(items) ? (
-                  <ToggleButton
-                    ref={refForButtonResizeHeightDetect}
-                    size={size}
-                    className='ToggleButton'
-                    disabled={disabled || readOnly}
-                    value=''
-                    style={{ visibility: 'hidden' }}
-                  />
-                ) : (
-                  buttons
-                )}
-              </ToggleButtonGroup>
-            </>
-          )
-        }
+        control={control}
       />
     );
   })

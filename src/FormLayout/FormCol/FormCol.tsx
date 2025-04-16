@@ -131,7 +131,9 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
         }}
       >
         <Grid
-          ref={gridRef}
+          ref={(ref) => {
+            gridRef.current = ref;
+          }}
           size={{ xs: xs || formColAutoXs || 12 }}
           className={classNames(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text')}
           style={hidden ? { ...initStyle, display: 'none' } : initStyle}

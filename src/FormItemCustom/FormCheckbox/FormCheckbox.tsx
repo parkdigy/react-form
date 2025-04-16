@@ -306,7 +306,9 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         controlVerticalCenter
         control={
           <FormControlLabel
-            ref={labelRef}
+            ref={(ref) => {
+              labelRef.current = ref;
+            }}
             control={
               <Checkbox
                 name={name}

@@ -152,7 +152,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
 
     const [radioGroupNoWrapRect, setRadioGroupNoWrapRect] = useState<DOMRect>();
 
-    const { ref: resizeWidthDetectorRef } = useResizeDetector<HTMLDivElement>({
+    const { ref: resizeWidthDetectorRef } = useResizeDetector({
       handleWidth: true,
       handleHeight: false,
       onResize() {
@@ -164,8 +164,8 @@ const FormRadioGroup = ToForwardRefExoticComponent(
      * State - height (ResizeDetector)
      * ******************************************************************************************************************/
 
-    const { height, ref: resizeHeightDetectorRef } = useResizeDetector<HTMLDivElement>();
-    const { height: realHeight, ref: resizeRealHeightDetectorRef } = useResizeDetector<HTMLDivElement>();
+    const { height, ref: resizeHeightDetectorRef } = useResizeDetector();
+    const { height: realHeight, ref: resizeRealHeightDetectorRef } = useResizeDetector();
 
     /********************************************************************************************************************
      * Function - setErrorErrorHelperText
@@ -425,6 +425,144 @@ const FormRadioGroup = ToForwardRefExoticComponent(
      * Render
      * ******************************************************************************************************************/
 
+    const control = useMemo(() => {
+      return (
+        <>
+          {!fullWidth && !isOnGetItemLoading && !loading && items && (
+            <div
+              ref={(ref) => {
+                resizeWidthDetectorRef.current = ref;
+              }}
+              style={{
+                display: 'grid',
+                position: 'absolute',
+                whiteSpace: 'nowrap',
+                visibility: 'hidden',
+              }}
+            >
+              <RadioGroup
+                {...props}
+                style={{ display: 'inline-flex', flexWrap: 'nowrap' }}
+                name={name}
+                row={inline}
+                value={value === undefined ? null : value}
+                onChange={handleChange}
+              >
+                {items.map(({ value, label, disabled: itemDisabled }, idx) => (
+                  <FormControlLabel
+                    ref={
+                      idx === 0
+                        ? (ref) => {
+                            resizeHeightDetectorRef.current = ref as HTMLElement;
+                          }
+                        : null
+                    }
+                    key={idx}
+                    control={
+                      <Radio
+                        icon={<RadioButtonUnchecked color={error ? 'error' : undefined} />}
+                        checkedIcon={<RadioButtonChecked color={error ? 'error' : undefined} />}
+                        color={color}
+                        size={size}
+                      />
+                    }
+                    label={label}
+                    style={{
+                      color: error ? theme.palette.error.main : '',
+                      marginTop: -5,
+                      marginBottom: -5,
+                      whiteSpace: 'nowrap',
+                    }}
+                    value={value}
+                    disabled={disabled || readOnly || itemDisabled}
+                  />
+                ))}
+              </RadioGroup>
+            </div>
+          )}
+          <div>
+            <RadioGroup
+              {...props}
+              ref={(ref) => {
+                resizeRealHeightDetectorRef.current = ref as HTMLElement;
+              }}
+              style={{
+                display: 'inline-flex',
+                visibility: width == null ? 'hidden' : undefined,
+                position: width == null ? 'absolute' : undefined,
+                flexWrap: nowrap ? 'nowrap' : undefined,
+              }}
+              name={name}
+              row={inline}
+              value={value === undefined ? null : value}
+              onChange={handleChange}
+            >
+              {isOnGetItemLoading || loading ? (
+                <div style={{ position: 'relative' }}>
+                  <FormControlLabel
+                    label=''
+                    control={<Radio color={color} size={size} />}
+                    style={{ visibility: 'hidden' }}
+                  />
+                  <div style={{ position: 'absolute', left: 0, top: 11, opacity: 0.54 }}>
+                    <CircularProgress size={size === 'small' ? 12 : 16} color='inherit' />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {items &&
+                    items.map(({ value, label, disabled: itemDisabled }, idx) => (
+                      <FormControlLabel
+                        key={idx}
+                        control={
+                          <Radio
+                            icon={<RadioButtonUnchecked color={error ? 'error' : undefined} />}
+                            checkedIcon={<RadioButtonChecked color={error ? 'error' : undefined} />}
+                            color={color}
+                            size={size}
+                            slotProps={idx === 0 ? { input: { ref: firstInputRef } } : undefined}
+                          />
+                        }
+                        label={label}
+                        style={{
+                          color: error ? theme.palette.error.main : '',
+                          whiteSpace: 'nowrap',
+                          marginTop: -5,
+                          marginBottom: -5,
+                        }}
+                        value={value}
+                        disabled={disabled || readOnly || itemDisabled}
+                      />
+                    ))}
+                </>
+              )}
+            </RadioGroup>
+          </div>
+        </>
+      );
+    }, [
+      color,
+      disabled,
+      error,
+      fullWidth,
+      handleChange,
+      inline,
+      isOnGetItemLoading,
+      items,
+      loading,
+      name,
+      nowrap,
+      props,
+      readOnly,
+      resizeHeightDetectorRef,
+      resizeRealHeightDetectorRef,
+      resizeWidthDetectorRef,
+      size,
+      theme.palette.error.main,
+      value,
+      width,
+    ]);
+
     const singleHeight = height || (size === 'small' ? 35 : 39);
     const isMultiline = singleHeight <= ifUndefined(realHeight, 0);
 
@@ -452,110 +590,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
           paddingTop: isMultiline && size === 'medium' ? 4 : undefined,
         }}
         controlVerticalCenter={!isMultiline}
-        control={
-          <>
-            {!fullWidth && !isOnGetItemLoading && !loading && items && (
-              <div
-                ref={resizeWidthDetectorRef}
-                style={{
-                  display: 'grid',
-                  position: 'absolute',
-                  whiteSpace: 'nowrap',
-                  visibility: 'hidden',
-                }}
-              >
-                <RadioGroup
-                  {...props}
-                  style={{ display: 'inline-flex', flexWrap: 'nowrap' }}
-                  name={name}
-                  row={inline}
-                  value={value === undefined ? null : value}
-                  onChange={handleChange}
-                >
-                  {items.map(({ value, label, disabled: itemDisabled }, idx) => (
-                    <FormControlLabel
-                      ref={idx === 0 ? resizeHeightDetectorRef : null}
-                      key={idx}
-                      control={
-                        <Radio
-                          icon={<RadioButtonUnchecked color={error ? 'error' : undefined} />}
-                          checkedIcon={<RadioButtonChecked color={error ? 'error' : undefined} />}
-                          color={color}
-                          size={size}
-                        />
-                      }
-                      label={label}
-                      style={{
-                        color: error ? theme.palette.error.main : '',
-                        marginTop: -5,
-                        marginBottom: -5,
-                        whiteSpace: 'nowrap',
-                      }}
-                      value={value}
-                      disabled={disabled || readOnly || itemDisabled}
-                    />
-                  ))}
-                </RadioGroup>
-              </div>
-            )}
-            <div>
-              <RadioGroup
-                {...props}
-                ref={resizeRealHeightDetectorRef}
-                style={{
-                  display: 'inline-flex',
-                  visibility: width == null ? 'hidden' : undefined,
-                  position: width == null ? 'absolute' : undefined,
-                  flexWrap: nowrap ? 'nowrap' : undefined,
-                }}
-                name={name}
-                row={inline}
-                value={value === undefined ? null : value}
-                onChange={handleChange}
-              >
-                {isOnGetItemLoading || loading ? (
-                  <div style={{ position: 'relative' }}>
-                    <FormControlLabel
-                      label=''
-                      control={<Radio color={color} size={size} />}
-                      style={{ visibility: 'hidden' }}
-                    />
-                    <div style={{ position: 'absolute', left: 0, top: 11, opacity: 0.54 }}>
-                      <CircularProgress size={size === 'small' ? 12 : 16} color='inherit' />
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    {items &&
-                      items.map(({ value, label, disabled: itemDisabled }, idx) => (
-                        <FormControlLabel
-                          key={idx}
-                          control={
-                            <Radio
-                              icon={<RadioButtonUnchecked color={error ? 'error' : undefined} />}
-                              checkedIcon={<RadioButtonChecked color={error ? 'error' : undefined} />}
-                              color={color}
-                              size={size}
-                              inputRef={idx === 0 ? firstInputRef : null}
-                            />
-                          }
-                          label={label}
-                          style={{
-                            color: error ? theme.palette.error.main : '',
-                            whiteSpace: 'nowrap',
-                            marginTop: -5,
-                            marginBottom: -5,
-                          }}
-                          value={value}
-                          disabled={disabled || readOnly || itemDisabled}
-                        />
-                      ))}
-                  </>
-                )}
-              </RadioGroup>
-            </div>
-          </>
-        }
+        control={control}
       />
     );
   })

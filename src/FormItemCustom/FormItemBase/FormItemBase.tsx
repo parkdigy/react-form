@@ -180,7 +180,9 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
               <>
                 {variant === 'standard' && (
                   <Input
-                    ref={inputRef}
+                    ref={(ref) => {
+                      inputRef.current = ref;
+                    }}
                     size={size}
                     fullWidth={false}
                     disabled
@@ -189,7 +191,9 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
                 )}
                 {variant === 'outlined' && (
                   <OutlinedInput
-                    ref={inputRef}
+                    ref={(ref) => {
+                      inputRef.current = ref;
+                    }}
                     size={size}
                     fullWidth={false}
                     disabled
@@ -198,7 +202,9 @@ const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
                 )}
                 {variant === 'filled' && (
                   <FilledInput
-                    ref={inputRef}
+                    ref={(ref) => {
+                      inputRef.current = ref;
+                    }}
                     size={size}
                     fullWidth={false}
                     disabled

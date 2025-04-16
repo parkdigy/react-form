@@ -41,7 +41,17 @@ const FormBody: React.FC<Props> = ({ children, hidden }) => {
   );
 
   return (
-    <StyledContainerDiv ref={fullHeight ? containerRef : undefined} className='FormBody' style={style}>
+    <StyledContainerDiv
+      ref={
+        fullHeight
+          ? (ref) => {
+              containerRef.current = ref;
+            }
+          : undefined
+      }
+      className='FormBody'
+      style={style}
+    >
       <StyledContentDiv style={contentStyle}>
         <Grid container spacing={spacing} direction='column'>
           {children}

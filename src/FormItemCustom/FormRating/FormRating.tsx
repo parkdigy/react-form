@@ -304,7 +304,9 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
         controlVerticalCenter
         control={
           <Rating
-            ref={ratingRef}
+            ref={(ref) => {
+              ratingRef.current = ref;
+            }}
             size={size === 'medium' ? 'large' : 'medium'}
             name={name}
             precision={precision}
