@@ -78,7 +78,6 @@ const FormBase = () => {
    * Render
    * ******************************************************************************************************************/
 
-  ll(submitWhenReturnKey);
   return (
     <Box flex={1} style={{ display: 'flex', flexDirection: 'column' }}>
       <OutlinedPaper>

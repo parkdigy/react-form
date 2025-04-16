@@ -217,16 +217,23 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
      * State - value
      * ******************************************************************************************************************/
 
-    const [valueRef, value, setValue] = useAutoUpdateRefState<FormMonthRangePickerValue, Props['value']>(
+    const [valueRef, value, _setValue] = useAutoUpdateRefState<FormMonthRangePickerValue, Props['value']>(
       initValue,
       getFinalValue
     );
 
-    useFirstSkipEffect(() => {
-      if (error || fromError || toError) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
+    const updateValue = useCallback(
+      (newValue: Props['value']) => {
+        const finalValue = _setValue(newValue);
+
+        if (error || fromError || toError) validate(finalValue);
+        if (onChange) onChange(finalValue);
+        onValueChange(name, finalValue);
+
+        return finalValue;
+      },
+      [_setValue, error, fromError, name, onChange, onValueChange, toError, validate]
+    );
 
     /********************************************************************************************************************
      * Memo
@@ -306,18 +313,18 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
         getType: () => 'FormMonthRangePicker',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
-        reset: () => setValue(initValue),
+        reset: () => updateValue(initValue),
         getValue: () => valueRef.current,
-        setValue,
+        setValue: updateValue,
         getData: () => dataRef.current,
         setData,
         getFromValue: () => valueRef.current[0],
-        setFromValue: (value) => setValue([value, valueRef.current[1]]),
+        setFromValue: (value) => updateValue([value, valueRef.current[1]]),
         getToValue: () => valueRef.current[1],
-        setToValue: (value) => setValue([valueRef.current[0], value]),
+        setToValue: (value) => updateValue([valueRef.current[0], value]),
         getFromYear: () => (valueRef.current[0] ? valueRef.current[0].year : null),
         setFromYear: (year: number | null) => {
-          setValue([
+          updateValue([
             year === null
               ? null
               : valueRef.current[0]
@@ -328,7 +335,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
         },
         getFromMonth: () => (valueRef.current[0] ? valueRef.current[0].month : null),
         setFromMonth: (month: number | null) => {
-          setValue([
+          updateValue([
             month === null
               ? null
               : valueRef.current[0]
@@ -339,7 +346,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
         },
         getToYear: () => (valueRef.current[1] ? valueRef.current[1].year : null),
         setToYear: (year: number | null) => {
-          setValue([
+          updateValue([
             valueRef.current[0],
             year === null
               ? null
@@ -350,7 +357,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
         },
         getToMonth: () => (valueRef.current[1] ? valueRef.current[1].month : null),
         setToMonth: (month: number | null) => {
-          setValue([
+          updateValue([
             valueRef.current[0],
             month === null
               ? null
@@ -428,7 +435,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       setDisabled,
       setErrorErrorHelperText,
       setHidden,
-      setValue,
+      updateValue,
       validate,
       valueRef,
     ]);
@@ -439,7 +446,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
 
     const handleContainerChange = useCallback(
       (newValue: FormMonthRangePickerValue, selectType: PrivateMonthRangePickerSelectType, isMonthSelect: boolean) => {
-        setValue(newValue);
+        updateValue(newValue);
         if (selectType === 'start' && isMonthSelect) {
           nextTick(() => {
             endInputRef.current?.focus();
@@ -452,7 +459,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
           onValueChangeByUser(name, newValue);
         });
       },
-      [name, onValueChangeByUser, setValue]
+      [name, onValueChangeByUser, updateValue]
     );
 
     const handleInputDatePickerChange = useCallback(
@@ -476,7 +483,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
             nextTick(() => {
               onValueChangeByUser(name, newValue);
             });
-            setValue(newValue);
+            updateValue(newValue);
           } else {
             const newValue: FormMonthRangePickerValue = [valueRef.current[0], date ? dateToValue(date) : null];
             if (
@@ -494,11 +501,11 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
             nextTick(() => {
               onValueChangeByUser(name, newValue);
             });
-            setValue(newValue);
+            updateValue(newValue);
           }
         }
       },
-      [valueRef, dateInfo, fromError, setValue, validate, onValueChangeByUser, name, toError]
+      [valueRef, dateInfo, fromError, updateValue, validate, onValueChangeByUser, name, toError]
     );
 
     const handleInputDatePickerFocus = useCallback(

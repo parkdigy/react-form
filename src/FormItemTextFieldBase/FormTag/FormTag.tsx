@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
 import { Autocomplete, AutocompleteRenderInputParams, Chip, InputLabelProps } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
 import { FormTagProps, FormTagExtraCommands, FormTagCommands, FormTagValue } from './FormTag.types';
 import { FormTextCommands } from '../FormText';
 import { empty, nextTick, equal, ifUndefined } from '@pdg/util';
@@ -132,17 +132,24 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       [onValue]
     );
 
-    const [valueRef, value, setValue] = useAutoUpdateRefState<FormTagValue, GetFinalValueParam>(
+    const [valueRef, value, _setValue] = useAutoUpdateRefState<FormTagValue, GetFinalValueParam>(
       initValue,
       getFinalValue
     );
     const valueSet = useMemo(() => new Set(value), [value]);
 
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
+    const updateValue = useCallback(
+      (newValue: GetFinalValueParam) => {
+        const finalValue = _setValue(newValue);
+
+        if (error) validate(finalValue);
+        if (onChange) onChange(finalValue);
+        onValueChange(name, finalValue);
+
+        return finalValue;
+      },
+      [_setValue, error, name, onChange, onValueChange, validate]
+    );
 
     /********************************************************************************************************************
      * Effect
@@ -176,14 +183,14 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
         return {
           ...baseCommands,
           getReset: () => getFinalValue(initValue),
-          reset: () => setValue(initValue),
+          reset: () => updateValue(initValue),
           getValue: () => valueRef.current,
-          setValue: (newValue: FormTagValue) => setValue(newValue),
+          setValue: (newValue: FormTagValue) => updateValue(newValue),
           validate: () => validate(valueRef.current),
           ...getExtraCommands(),
         };
       },
-      [getExtraCommands, getFinalValue, initValue, setValue, valueRef, validate]
+      [getExtraCommands, getFinalValue, initValue, updateValue, valueRef, validate]
     );
 
     /********************************************************************************************************************
@@ -196,14 +203,14 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           if (onAppendTag && !onAppendTag(tag)) return;
 
           valueSet.add(tag);
-          const finalValue = setValue(valueSet);
+          const finalValue = updateValue(valueSet);
           nextTick(() => {
             onValueChangeByUser(name, finalValue);
             onRequestSearchSubmit(name, finalValue);
           });
         }
       },
-      [valueSet, onAppendTag, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
+      [valueSet, onAppendTag, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     const removeTag = useCallback(
@@ -212,14 +219,14 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
           if (onRemoveTag && !onRemoveTag(tag)) return;
 
           valueSet.delete(tag);
-          const finalValue = setValue(valueSet);
+          const finalValue = updateValue(valueSet);
           nextTick(() => {
             onValueChangeByUser(name, finalValue);
             onRequestSearchSubmit(name, finalValue);
           });
         }
       },
-      [valueSet, onRemoveTag, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
+      [valueSet, onRemoveTag, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     /********************************************************************************************************************

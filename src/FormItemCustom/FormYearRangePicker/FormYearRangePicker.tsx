@@ -204,13 +204,20 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
      * State - value
      * ******************************************************************************************************************/
 
-    const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
-    useFirstSkipEffect(() => {
-      if (error || fromError || toError) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
+    const updateValue = useCallback(
+      (newValue: Props['value']) => {
+        const finalValue = _setValue(newValue);
+
+        if (error || fromError || toError) validate(finalValue);
+        if (onChange) onChange(finalValue);
+        onValueChange(name, finalValue);
+
+        return finalValue;
+      },
+      [_setValue, error, fromError, name, onChange, onValueChange, toError, validate]
+    );
 
     /********************************************************************************************************************
      * Memo
@@ -263,15 +270,15 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
         getType: () => 'FormYearRangePicker',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
-        reset: () => setValue(initValue),
+        reset: () => updateValue(initValue),
         getValue: () => valueRef.current,
-        setValue,
+        setValue: updateValue,
         getData: () => dataRef.current,
         setData,
         getFromValue: () => valueRef.current[0],
-        setFromValue: (value) => setValue([value, valueRef.current[1]]),
+        setFromValue: (value) => updateValue([value, valueRef.current[1]]),
         getToValue: () => valueRef.current[1],
-        setToValue: (value) => setValue([valueRef.current[0], value]),
+        setToValue: (value) => updateValue([valueRef.current[0], value]),
         isExceptValue: () => !!exceptValue,
         isDisabled: () => !!disabledRef.current,
         setDisabled,
@@ -331,7 +338,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       setDisabled,
       setErrorErrorHelperText,
       setHidden,
-      setValue,
+      updateValue,
       validate,
       valueRef,
     ]);
@@ -342,7 +349,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
 
     const handleContainerChange = useCallback(
       (newValue: FormYearRangePickerValue, selectType: PrivateYearRangePickerSelectType) => {
-        setValue(newValue);
+        updateValue(newValue);
         if (selectType === 'start') {
           nextTick(() => {
             setSelectType('end');
@@ -356,7 +363,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
           onValueChangeByUser(name, newValue);
         });
       },
-      [setValue, name, onValueChangeByUser]
+      [updateValue, name, onValueChangeByUser]
     );
 
     const handleInputDatePickerChange = useCallback(
@@ -377,7 +384,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
               onValueChangeByUser(name, newValue);
             });
 
-            setValue(newValue);
+            updateValue(newValue);
           } else {
             const newValue: FormYearRangePickerValue = [valueRef.current[0], date ? dateToValue(date) : null];
             if (newValue[1] !== null && newValue[1] >= minYear && newValue[1] <= maxYear) {
@@ -392,11 +399,11 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
               onValueChangeByUser(name, newValue);
             });
 
-            setValue(newValue);
+            updateValue(newValue);
           }
         }
       },
-      [valueRef, minYear, maxYear, fromError, setValue, validate, onValueChangeByUser, name, toError]
+      [valueRef, minYear, maxYear, fromError, updateValue, validate, onValueChangeByUser, name, toError]
     );
 
     const handleInputDatePickerFocus = useCallback(

@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from '@mui/material';
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
 import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util.private';
 import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
 import {
@@ -215,13 +215,20 @@ const FormRadioGroup = ToForwardRefExoticComponent(
       [onValue]
     );
 
-    const [valueRef, value, setValue] = useAutoUpdateRefState<Value, any>(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState<Value, any>(initValue, getFinalValue);
 
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
+    const updateValue = useCallback(
+      (newValue: Props['value'], skipCallback = false) => {
+        const finalValue = _setValue(newValue, skipCallback);
+
+        if (error) validate(finalValue);
+        if (onChange) onChange(finalValue);
+        onValueChange(name, finalValue);
+
+        return finalValue;
+      },
+      [_setValue, error, name, onChange, onValueChange, validate]
+    );
 
     /********************************************************************************************************************
      * Effect
@@ -306,9 +313,9 @@ const FormRadioGroup = ToForwardRefExoticComponent(
         getType: () => 'FormRadioGroup',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
-        reset: () => setValue(initValue),
+        reset: () => updateValue(initValue),
         getValue: () => valueRef.current,
-        setValue,
+        setValue: updateValue,
         getData: () => dataRef.current,
         setData,
         isExceptValue: () => !!exceptValue,
@@ -369,7 +376,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
       setHidden,
       setItems,
       setLoading,
-      setValue,
+      updateValue,
       validate,
       valueRef,
     ]);
@@ -403,7 +410,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
           }
           finalValue = getFinalValue(finalValue);
           if (value !== finalValue) {
-            setValue(finalValue, true);
+            updateValue(finalValue, true);
             nextTick(() => {
               onValueChangeByUser(name, finalValue);
               onRequestSearchSubmit(name, finalValue);
@@ -411,7 +418,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
           }
         }
       },
-      [readOnly, items, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit]
+      [readOnly, items, getFinalValue, value, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     /********************************************************************************************************************

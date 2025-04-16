@@ -1,7 +1,7 @@
 import React, { ChangeEvent, ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { InputAdornment, TextField, Typography } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
 import { getFileSizeText } from '../../@util.private';
 import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
 import { FormFileProps as Props, FormFileCommands, FormFileValue } from './FormFile.types';
@@ -183,13 +183,20 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
      * State - value
      * ******************************************************************************************************************/
 
-    const [valueRef, value, setValue] = useAutoUpdateRefState<FormFileValue, Props['value']>(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState<FormFileValue, Props['value']>(initValue, getFinalValue);
 
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
+    const updateValue = useCallback(
+      (newValue: Props['value']) => {
+        const finalValue = _setValue(newValue);
+
+        if (error) validate(finalValue);
+        if (onChange) onChange(finalValue);
+        onValueChange(name, finalValue);
+
+        return finalValue;
+      },
+      [_setValue, error, name, onChange, onValueChange, validate]
+    );
 
     /********************************************************************************************************************
      * Function - focus
@@ -216,9 +223,9 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
         getType: () => 'FormFile',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
-        reset: () => setValue(initValue),
+        reset: () => updateValue(initValue),
         getValue: () => valueRef.current,
-        setValue,
+        setValue: updateValue,
         getData: () => dataRef.current,
         setData,
         isExceptValue: () => !!exceptValue,
@@ -270,7 +277,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       setDisabled,
       setErrorErrorHelperText,
       setHidden,
-      setValue,
+      updateValue,
       validate,
       valueRef,
     ]);
@@ -326,7 +333,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
           const file = (target.files as FileList)[0];
           fileSizeCheck(file).then(() => {
             onFile(file).then((url) => {
-              setValue(url);
+              updateValue(url);
               nextTick(() => {
                 if (onValueChangeByUser) onValueChangeByUser(name, url);
               });
@@ -334,7 +341,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
           });
         }
       },
-      [fileSizeCheck, name, onFile, onValueChangeByUser, setValue]
+      [fileSizeCheck, name, onFile, onValueChangeByUser, updateValue]
     );
 
     const handleLinkClick = useCallback(() => {
@@ -342,29 +349,29 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
     }, []);
 
     const handleRemoveClick = useCallback(() => {
-      setValue('');
+      updateValue('');
       nextTick(() => {
         if (onValueChangeByUser) onValueChangeByUser(name, '');
       });
-    }, [name, onValueChangeByUser, setValue]);
+    }, [name, onValueChangeByUser, updateValue]);
 
     const handleLinkDialogConfirm = useCallback(
       (url: string) => {
         if (onLink) {
           onLink(url).then((finalUrl) => {
-            setValue(finalUrl);
+            updateValue(finalUrl);
             nextTick(() => {
               if (onValueChangeByUser) onValueChangeByUser(name, finalUrl);
             });
           });
         } else {
-          setValue(url);
+          updateValue(url);
           nextTick(() => {
             if (onValueChangeByUser) onValueChangeByUser(name, url);
           });
         }
       },
-      [name, onLink, onValueChangeByUser, setValue]
+      [name, onLink, onValueChangeByUser, updateValue]
     );
 
     /********************************************************************************************************************

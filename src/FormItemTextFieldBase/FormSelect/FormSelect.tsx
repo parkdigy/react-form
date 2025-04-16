@@ -190,22 +190,25 @@ const FormSelect = ToForwardRefExoticComponent(
     );
 
     /********************************************************************************************************************
-     * State - value
+     * value
      * ******************************************************************************************************************/
 
-    const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
-    /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
+    const updateValue = useCallback(
+      (newValue: Props['value']) => {
+        const finalValue = _setValue(newValue);
+
+        if (onChange) onChange(finalValue);
+        onValueChange(name, finalValue);
+
+        return finalValue;
+      },
+      [_setValue, name, onChange, onValueChange]
+    );
 
     useFirstSkipEffect(() => {
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
-
-    useFirstSkipEffect(() => {
-      setValue(valueRef.current);
+      updateValue(valueRef.current);
     }, [multiple]);
 
     /********************************************************************************************************************
@@ -236,11 +239,11 @@ const FormSelect = ToForwardRefExoticComponent(
     const getBaseCommands = useCallback((): Partial<Commands> => {
       return {
         getReset: () => getFinalValue(initValue),
-        reset: () => setValue(initValue),
+        reset: () => updateValue(initValue),
         getValue: () => valueRef.current,
-        setValue: (value: Props['value']) => setValue(value),
+        setValue: (value: Props['value']) => updateValue(value),
       };
-    }, [getFinalValue, initValue, setValue, valueRef]);
+    }, [getFinalValue, initValue, updateValue, valueRef]);
 
     const getExtraCommands = useCallback((): FormSelectExtraCommands<any> => {
       let lastItems = items;
@@ -300,7 +303,7 @@ const FormSelect = ToForwardRefExoticComponent(
     );
 
     const handleChange = (newValue: any) => {
-      setValue(newValue);
+      updateValue(newValue);
     };
 
     const handleValue = useCallback(

@@ -299,16 +299,23 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
      * value
      * ******************************************************************************************************************/
 
-    const [valueRef, value, setValue] = useAutoUpdateRefState<FormDateRangePickerValue, Props['value']>(
+    const [valueRef, value, _setValue] = useAutoUpdateRefState<FormDateRangePickerValue, Props['value']>(
       initValue,
       getFinalValue
     );
 
-    useFirstSkipEffect(() => {
-      if (error || fromError || toError) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
+    const updateValue = useCallback(
+      (newValue: Props['value']) => {
+        const finalValue = _setValue(newValue);
+
+        if (error || fromError || toError) validate(finalValue);
+        if (onChange) onChange(finalValue);
+        onValueChange(name, finalValue);
+
+        return finalValue;
+      },
+      [_setValue, error, fromError, name, onChange, onValueChange, toError, validate]
+    );
 
     /********************************************************************************************************************
      * Effect
@@ -355,12 +362,12 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
     const handleChange = useCallback(
       (newValue: FormDateRangePickerTooltipPickerValue) => {
-        setValue(newValue);
+        updateValue(newValue);
         setOpen(false);
         setFromErrorErrorHelperText(false, undefined);
         setToErrorErrorHelperText(false, undefined);
       },
-      [setFromErrorErrorHelperText, setToErrorErrorHelperText, setValue]
+      [setFromErrorErrorHelperText, setToErrorErrorHelperText, updateValue]
     );
 
     const handleValueChange = useCallback(
@@ -426,14 +433,14 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
             break;
         }
 
-        setValue(finalValue);
+        updateValue(finalValue);
 
         nextTick(() => {
           onValueChangeByUser(name, finalValue);
         });
       },
       [
-        setValue,
+        updateValue,
         value,
         setFromErrorErrorHelperText,
         activeMonth,
@@ -548,15 +555,15 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
           getType: () => 'FormDateRangePicker',
           getName: () => name,
           getReset: () => getFinalValue(initValue),
-          reset: () => setValue(initValue),
+          reset: () => updateValue(initValue),
           getValue: () => valueRef.current,
-          setValue,
+          setValue: updateValue,
           getData: () => dataRef.current,
           setData,
           getFromValue: () => valueRef.current[0],
-          setFromValue: (value) => setValue([value, valueRef.current[1]]),
+          setFromValue: (value) => updateValue([value, valueRef.current[1]]),
           getToValue: () => valueRef.current[1],
-          setToValue: (value) => setValue([valueRef.current[0], value]),
+          setToValue: (value) => updateValue([valueRef.current[0], value]),
           isExceptValue: () => !!exceptValue,
           isDisabled: () => !!disabledRef.current,
           setDisabled,
@@ -620,7 +627,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       setDisabled,
       setErrorErrorHelperText,
       setHidden,
-      setValue,
+      updateValue,
       validate,
       valueRef,
     ]);

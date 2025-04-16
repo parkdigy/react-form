@@ -1,7 +1,7 @@
 import React, { useId, useRef, useState, useCallback, ReactNode, useLayoutEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { Box, IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
 import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
 import { FormTextFieldProps, FormTextFieldCommands, FormTextFieldValue } from './FormTextField.types';
 import { useFormState } from '../../FormContext';
@@ -182,7 +182,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
     );
 
     /********************************************************************************************************************
-     * State - value
+     * value
      * ******************************************************************************************************************/
 
     const getFinalValue = useCallback(
@@ -192,15 +192,22 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       [onValue]
     );
 
-    const [valueRef, value, setValue] = useAutoUpdateRefState<FormTextFieldProps['value']>(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState<FormTextFieldProps['value']>(initValue, getFinalValue);
 
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      if (!noFormValueItem) {
-        onValueChange(name, value);
-      }
-    }, [value]);
+    const updateValue = useCallback(
+      (newValue: FormTextFieldProps['value']) => {
+        const finalValue = _setValue(newValue);
+
+        if (error) validate(finalValue);
+        if (onChange) onChange(finalValue);
+        if (!noFormValueItem) {
+          onValueChange(name, finalValue);
+        }
+
+        return finalValue;
+      },
+      [_setValue, error, name, noFormValueItem, onChange, onValueChange, validate]
+    );
 
     /********************************************************************************************************************
      * Variables
@@ -233,9 +240,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
           getType: () => 'default',
           getName: () => name,
           getReset: () => getFinalValue(initValue),
-          reset: () => setValue(initValue),
+          reset: () => updateValue(initValue),
           getValue: () => valueRef.current,
-          setValue,
+          setValue: updateValue,
           getData: () => dataRef.current,
           setData,
           isExceptValue: () => !!exceptValue,
@@ -290,7 +297,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       setDisabled,
       setErrorErrorHelperText,
       setHidden,
-      setValue,
+      updateValue,
       validate,
       valueRef,
     ]);
@@ -301,7 +308,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
 
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const finalValue = setValue(e.target.value);
+        const finalValue = updateValue(e.target.value);
         if (!noFormValueItem) {
           nextTick(() => {
             onValueChangeByUser(name, finalValue);
@@ -311,7 +318,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
           });
         }
       },
-      [setValue, noFormValueItem, onValueChangeByUser, name, select, onRequestSearchSubmit]
+      [updateValue, noFormValueItem, onValueChangeByUser, name, select, onRequestSearchSubmit]
     );
 
     const handleBlur = useCallback(
@@ -413,7 +420,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
                   size='small'
                   tabIndex={-1}
                   onClick={() => {
-                    const finalValue = setValue('');
+                    const finalValue = updateValue('');
                     focus();
                     if (!noFormValueItem) {
                       nextTick(() => {
@@ -446,9 +453,9 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       onRequestSearchSubmit,
       onValueChangeByUser,
       readOnly,
-      setValue,
       showClear,
       startAdornment,
+      updateValue,
     ]);
 
     const slotProps = useMemo(() => {

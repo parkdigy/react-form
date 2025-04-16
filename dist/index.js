@@ -1093,21 +1093,23 @@ styleInject(css_248z$k);var FormTextField = React.forwardRef(function (_a, ref) 
         return true;
     }, [required, validPattern, invalidPattern, onValidate, setErrorErrorHelperText]);
     /********************************************************************************************************************
-     * State - value
+     * value
      * ******************************************************************************************************************/
     var getFinalValue = React.useCallback(function (newValue) {
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
-    var _h = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _h[0], value = _h[1], setValue = _h[2];
-    reactHook.useFirstSkipEffect(function () {
+    var _h = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _h[0], value = _h[1], _setValue = _h[2];
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (error)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
+            onChange(finalValue);
         if (!noFormValueItem) {
-            onValueChange(name, value);
+            onValueChange(name, finalValue);
         }
-    }, [value]);
+        return finalValue;
+    }, [_setValue, error, name, noFormValueItem, onChange, onValueChange, validate]);
     /********************************************************************************************************************
      * Variables
      * ******************************************************************************************************************/
@@ -1133,9 +1135,9 @@ styleInject(css_248z$k);var FormTextField = React.forwardRef(function (_a, ref) 
                 getType: function () { return 'default'; },
                 getName: function () { return name; },
                 getReset: function () { return getFinalValue(initValue); },
-                reset: function () { return setValue(initValue); },
+                reset: function () { return updateValue(initValue); },
                 getValue: function () { return valueRef.current; },
-                setValue: setValue,
+                setValue: updateValue,
                 getData: function () { return dataRef.current; },
                 setData: setData,
                 isExceptValue: function () { return !!exceptValue; },
@@ -1191,7 +1193,7 @@ styleInject(css_248z$k);var FormTextField = React.forwardRef(function (_a, ref) 
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
-        setValue,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -1199,7 +1201,7 @@ styleInject(css_248z$k);var FormTextField = React.forwardRef(function (_a, ref) 
      * Event Handler
      * ******************************************************************************************************************/
     var handleChange = React.useCallback(function (e) {
-        var finalValue = setValue(e.target.value);
+        var finalValue = updateValue(e.target.value);
         if (!noFormValueItem) {
             util.nextTick(function () {
                 onValueChangeByUser(name, finalValue);
@@ -1208,7 +1210,7 @@ styleInject(css_248z$k);var FormTextField = React.forwardRef(function (_a, ref) 
                 }
             });
         }
-    }, [setValue, noFormValueItem, onValueChangeByUser, name, select, onRequestSearchSubmit]);
+    }, [updateValue, noFormValueItem, onValueChangeByUser, name, select, onRequestSearchSubmit]);
     var handleBlur = React.useCallback(function (e) {
         if (error)
             validate(valueRef.current);
@@ -1284,7 +1286,7 @@ styleInject(css_248z$k);var FormTextField = React.forwardRef(function (_a, ref) 
             newProps.endAdornment = (React.createElement(React.Fragment, null,
                 clear && !readOnly && !disabled && (React.createElement(material.InputAdornment, { className: classNames('clear-icon-button-wrap', showClear && 'show'), position: 'end' },
                     React.createElement(material.IconButton, { className: 'clear-icon-button', size: 'small', tabIndex: -1, onClick: function () {
-                            var finalValue = setValue('');
+                            var finalValue = updateValue('');
                             focus();
                             if (!noFormValueItem) {
                                 util.nextTick(function () {
@@ -1310,9 +1312,9 @@ styleInject(css_248z$k);var FormTextField = React.forwardRef(function (_a, ref) 
         onRequestSearchSubmit,
         onValueChangeByUser,
         readOnly,
-        setValue,
         showClear,
         startAdornment,
+        updateValue,
     ]);
     var slotProps = React.useMemo(function () {
         var _a;
@@ -1464,15 +1466,17 @@ var FormTag = React.forwardRef(function (_a, ref) {
         }
         return onValue ? onValue(finalValue) : finalValue;
     }, [onValue]);
-    var _h = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _h[0], value = _h[1], setValue = _h[2];
+    var _h = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _h[0], value = _h[1], _setValue = _h[2];
     var valueSet = React.useMemo(function () { return new Set(value); }, [value]);
-    reactHook.useFirstSkipEffect(function () {
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (error)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, error, name, onChange, onValueChange, validate]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -1497,8 +1501,8 @@ var FormTag = React.forwardRef(function (_a, ref) {
      * Function - getCommands
      * ******************************************************************************************************************/
     var getCommands = React.useCallback(function (baseCommands) {
-        return __assign(__assign(__assign({}, baseCommands), { getReset: function () { return getFinalValue(initValue); }, reset: function () { return setValue(initValue); }, getValue: function () { return valueRef.current; }, setValue: function (newValue) { return setValue(newValue); }, validate: function () { return validate(valueRef.current); } }), getExtraCommands());
-    }, [getExtraCommands, getFinalValue, initValue, setValue, valueRef, validate]);
+        return __assign(__assign(__assign({}, baseCommands), { getReset: function () { return getFinalValue(initValue); }, reset: function () { return updateValue(initValue); }, getValue: function () { return valueRef.current; }, setValue: function (newValue) { return updateValue(newValue); }, validate: function () { return validate(valueRef.current); } }), getExtraCommands());
+    }, [getExtraCommands, getFinalValue, initValue, updateValue, valueRef, validate]);
     /********************************************************************************************************************
      * Function - appendTag, removeTag
      * ******************************************************************************************************************/
@@ -1507,25 +1511,25 @@ var FormTag = React.forwardRef(function (_a, ref) {
             if (onAppendTag && !onAppendTag(tag))
                 return;
             valueSet.add(tag);
-            var finalValue_1 = setValue(valueSet);
+            var finalValue_1 = updateValue(valueSet);
             util.nextTick(function () {
                 onValueChangeByUser(name, finalValue_1);
                 onRequestSearchSubmit(name, finalValue_1);
             });
         }
-    }, [valueSet, onAppendTag, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [valueSet, onAppendTag, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     var removeTag = React.useCallback(function (tag) {
         if (valueSet.has(tag)) {
             if (onRemoveTag && !onRemoveTag(tag))
                 return;
             valueSet.delete(tag);
-            var finalValue_2 = setValue(valueSet);
+            var finalValue_2 = updateValue(valueSet);
             util.nextTick(function () {
                 onValueChangeByUser(name, finalValue_2);
                 onRequestSearchSubmit(name, finalValue_2);
             });
         }
-    }, [valueSet, onRemoveTag, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [valueSet, onRemoveTag, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -2206,19 +2210,18 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
         return util.equal(newValue, finalValue) ? newValue : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     /********************************************************************************************************************
-     * State - value
+     * value
      * ******************************************************************************************************************/
-    var _k = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _k[0], value = _k[1], setValue = _k[2];
-    /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
-    reactHook.useFirstSkipEffect(function () {
+    var _k = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _k[0], value = _k[1], _setValue = _k[2];
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, name, onChange, onValueChange]);
     reactHook.useFirstSkipEffect(function () {
-        setValue(valueRef.current);
+        updateValue(valueRef.current);
     }, [multiple]);
     /********************************************************************************************************************
      * Effect
@@ -2243,11 +2246,11 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
     var getBaseCommands = React.useCallback(function () {
         return {
             getReset: function () { return getFinalValue(initValue); },
-            reset: function () { return setValue(initValue); },
+            reset: function () { return updateValue(initValue); },
             getValue: function () { return valueRef.current; },
-            setValue: function (value) { return setValue(value); },
+            setValue: function (value) { return updateValue(value); },
         };
-    }, [getFinalValue, initValue, setValue, valueRef]);
+    }, [getFinalValue, initValue, updateValue, valueRef]);
     var getExtraCommands = React.useCallback(function () {
         var lastItems = items;
         var lastLoading = loading;
@@ -2286,7 +2289,7 @@ styleInject(css_248z$f);var FormSelect = ToForwardRefExoticComponent(AutoTypeFor
         onAddValueItem(id, __assign(__assign(__assign({}, commands), getBaseCommands()), getExtraCommands()));
     }, [onAddValueItem, getBaseCommands, getExtraCommands]);
     var handleChange = function (newValue) {
-        setValue(newValue);
+        updateValue(newValue);
     };
     var handleValue = React.useCallback(function (value) {
         return getFinalValue(value);
@@ -2837,14 +2840,17 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
     var getFinalValue = React.useCallback(function (value) {
         return onValue ? onValue(value) : value;
     }, [onValue]);
-    var _t = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _t[0], value = _t[1], setValue = _t[2];
-    reactHook.useFirstSkipEffect(function () {
+    var _t = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _t[0], value = _t[1], _setValue = _t[2];
+    var updateValue = React.useCallback(function (newValue, skipCallback) {
+        if (skipCallback === void 0) { skipCallback = false; }
+        var finalValue = _setValue(newValue, skipCallback);
         if (error)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, error, name, onChange, onValueChange, validate]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -2918,9 +2924,9 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
             getType: function () { return 'FormRadioGroup'; },
             getName: function () { return name; },
             getReset: function () { return getFinalValue(initValue); },
-            reset: function () { return setValue(initValue); },
+            reset: function () { return updateValue(initValue); },
             getValue: function () { return valueRef.current; },
-            setValue: setValue,
+            setValue: updateValue,
             getData: function () { return dataRef.current; },
             setData: setData,
             isExceptValue: function () { return !!exceptValue; },
@@ -2980,7 +2986,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
         setHidden,
         setItems,
         setLoading,
-        setValue,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -3014,14 +3020,14 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
             }
             finalValue_1 = getFinalValue(finalValue_1);
             if (value !== finalValue_1) {
-                setValue(finalValue_1, true);
+                updateValue(finalValue_1, true);
                 util.nextTick(function () {
                     onValueChangeByUser(name, finalValue_1);
                     onRequestSearchSubmit(name, finalValue_1);
                 });
             }
         }
-    }, [readOnly, items, getFinalValue, value, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [readOnly, items, getFinalValue, value, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
@@ -3237,16 +3243,19 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         finalValue = onValue ? onValue(finalValue) : finalValue;
         return util.equal(value, finalValue) ? value : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
-    var _t = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _t[0], value = _t[1], setValue = _t[2];
-    reactHook.useFirstSkipEffect(function () {
+    var _t = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _t[0], value = _t[1], _setValue = _t[2];
+    var updateValue = React.useCallback(function (newValue, skipCallback) {
+        if (skipCallback === void 0) { skipCallback = false; }
+        var finalValue = _setValue(newValue, skipCallback);
         if (error)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, error, name, onChange, onValueChange, validate]);
     reactHook.useFirstSkipEffect(function () {
-        setValue(valueRef.current);
+        updateValue(valueRef.current);
     }, [multiple]);
     /********************************************************************************************************************
      * Effect
@@ -3276,7 +3285,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                     }
                 }
                 if (setFirstItem) {
-                    setValue((multiple ? [items[0].value] : items[0].value));
+                    updateValue((multiple ? [items[0].value] : items[0].value));
                 }
             }
         }
@@ -3298,9 +3307,9 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
                 getType: function () { return 'FormToggleButtonGroup'; },
                 getName: function () { return name; },
                 getReset: function () { return getFinalValue(initValue); },
-                reset: function () { return setValue(initValue); },
+                reset: function () { return updateValue(initValue); },
                 getValue: function () { return valueRef.current; },
-                setValue: setValue,
+                setValue: updateValue,
                 getData: function () { return dataRef.current; },
                 setData: setData,
                 isExceptValue: function () { return !!exceptValue; },
@@ -3369,7 +3378,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         setHidden,
         setItems,
         setLoading,
-        setValue,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -3398,7 +3407,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
             }
             finalValue_1 = getFinalValue(finalValue_1);
             if (!util.equal(valueRef.current, finalValue_1)) {
-                setValue(finalValue_1, true);
+                updateValue(finalValue_1, true);
                 util.nextTick(function () {
                     onValueChangeByUser(name, finalValue_1);
                     onRequestSearchSubmit(name, finalValue_1);
@@ -3411,7 +3420,7 @@ styleInject(css_248z$d);var FormToggleButtonGroup = ToForwardRefExoticComponent(
         getFinalValue,
         valueRef,
         multiple,
-        setValue,
+        updateValue,
         onValueChangeByUser,
         name,
         onRequestSearchSubmit,
@@ -3558,14 +3567,16 @@ FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';var FormRating = Rea
         var finalValue = value || 0;
         return onValue ? onValue(finalValue) : finalValue;
     }, [onValue]);
-    var _m = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _m[0], value = _m[1], setValue = _m[2];
-    reactHook.useFirstSkipEffect(function () {
+    var _m = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _m[0], value = _m[1], _setValue = _m[2];
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (error)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, error, name, onChange, onValueChange, validate]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -3594,9 +3605,9 @@ FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';var FormRating = Rea
             getType: function () { return 'FormRating'; },
             getName: function () { return name; },
             getReset: function () { return getFinalValue(initValue); },
-            reset: function () { return setValue(initValue); },
+            reset: function () { return updateValue(initValue); },
             getValue: function () { return valueRef.current; },
-            setValue: setValue,
+            setValue: updateValue,
             getData: function () { return dataRef.current; },
             setData: setData,
             isExceptValue: function () { return !!exceptValue; },
@@ -3648,7 +3659,7 @@ FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';var FormRating = Rea
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
-        setValue,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -3660,13 +3671,13 @@ FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';var FormRating = Rea
             e.preventDefault();
         }
         else {
-            var finalValue_1 = setValue(value);
+            var finalValue_1 = updateValue(value);
             util.nextTick(function () {
                 onValueChangeByUser(name, finalValue_1);
                 onRequestSearchSubmit(name, finalValue_1);
             });
         }
-    }, [readOnly, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [readOnly, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
@@ -3748,14 +3759,16 @@ styleInject(css_248z$c);var getFinalValue$8 = function (value) {
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _o = reactHook.useAutoUpdateRefState(initValue, getFinalValue$8), valueRef = _o[0], value = _o[1], setValue = _o[2];
-    reactHook.useFirstSkipEffect(function () {
+    var _o = reactHook.useAutoUpdateRefState(initValue, getFinalValue$8), valueRef = _o[0], value = _o[1], _setValue = _o[2];
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (error)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, error, name, onChange, onValueChange, validate]);
     /********************************************************************************************************************
      * Function - focus
      * ******************************************************************************************************************/
@@ -3771,9 +3784,9 @@ styleInject(css_248z$c);var getFinalValue$8 = function (value) {
             getType: function () { return 'FormTextEditor'; },
             getName: function () { return name; },
             getReset: function () { return getFinalValue$8(initValue); },
-            reset: function () { return setValue(initValue); },
+            reset: function () { return updateValue(initValue); },
             getValue: function () { return valueRef.current; },
-            setValue: setValue,
+            setValue: updateValue,
             getData: function () { return dataRef.current; },
             setData: setData,
             isExceptValue: function () { return !!exceptValue; },
@@ -3824,7 +3837,7 @@ styleInject(css_248z$c);var getFinalValue$8 = function (value) {
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
-        setValue,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -3832,14 +3845,14 @@ styleInject(css_248z$c);var getFinalValue$8 = function (value) {
      * Event Handler
      * ******************************************************************************************************************/
     var handleEditorChange = React.useCallback(function (value) {
-        setValue(value);
+        updateValue(value);
         if (new Date().getTime() - keyDownTime.current < 300) {
             util.nextTick(function () {
                 if (onValueChangeByUser)
                     onValueChangeByUser(name, value);
             });
         }
-    }, [name, onValueChangeByUser, setValue]);
+    }, [name, onValueChangeByUser, updateValue]);
     var handleKeyDown = React.useCallback(function () {
         keyDownTime.current = new Date().getTime();
     }, []);
@@ -4042,17 +4055,20 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
         }
         return onValue ? onValue(finalValue) : finalValue;
     }, [multiple, formValueSeparator, itemsValues, onValue]);
-    var _p = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _p[0], value = _p[1], setValue = _p[2];
+    var _p = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _p[0], value = _p[1], _setValue = _p[2];
     var _q = React.useState(null), valueItem = _q[0], setValueItem = _q[1];
-    reactHook.useFirstSkipEffect(function () {
+    var updateValue = React.useCallback(function (newValue, skipCallback) {
+        if (skipCallback === void 0) { skipCallback = false; }
+        var finalValue = _setValue(newValue, skipCallback);
         if (error)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, error, name, onChange, onValueChange, validate]);
     reactHook.useFirstSkipEffect(function () {
-        setValue(getFinalValue(valueRef.current));
+        updateValue(getFinalValue(valueRef.current));
     }, [multiple]);
     /********************************************************************************************************************
      * Memo
@@ -4225,9 +4241,9 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
             getType: function () { return 'FormAutocomplete'; },
             getName: function () { return name; },
             getReset: function () { return getFinalValue(initValue); },
-            reset: function () { return setValue(initValue); },
+            reset: function () { return updateValue(initValue); },
             getValue: function () { return valueRef.current; },
-            setValue: function (newValue) { return setValue(newValue); },
+            setValue: function (newValue) { return updateValue(newValue); },
             getData: function () { return dataRef.current; },
             setData: function (data) { return setData(data); },
             isExceptValue: function () { return !!exceptValue; },
@@ -4269,7 +4285,7 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
         setHidden,
         setItems,
         setLoading,
-        setValue,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -4317,7 +4333,7 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
             }
             var finalValue = getFinalValue(newValue);
             if (!util.equal(valueRef.current, finalValue)) {
-                setValue(finalValue, true);
+                updateValue(finalValue, true);
                 setValueItem(componentValue);
                 util.nextTick(function () {
                     onValueChangeByUser(name, finalValue);
@@ -4345,7 +4361,7 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
         else {
             go();
         }
-    }, [multiple, getFinalValue, valueRef, setValue, onValueChangeByUser, name, onRequestSearchSubmit, onAddItem]);
+    }, [multiple, getFinalValue, valueRef, updateValue, onValueChangeByUser, name, onRequestSearchSubmit, onAddItem]);
     var handleGetOptionDisabled = React.useCallback(function (option) {
         if (getOptionDisabled) {
             return option.disabled || getOptionDisabled(option);
@@ -5031,15 +5047,32 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
     /********************************************************************************************************************
      * value
      * ******************************************************************************************************************/
-    var _o = reactHook.useAutoUpdateRefState(initValue), valueRef = _o[0], value = _o[1], setValue = _o[2];
+    var _o = reactHook.useAutoUpdateRefState(initValue), valueRef = _o[0], value = _o[1], _setValue = _o[2];
     var _p = reactHook.useAutoUpdateState(value), inputValue = _p[0], setInputValue = _p[1];
-    reactHook.useFirstSkipEffect(function () {
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (error)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        if (type !== 'time' && time && finalValue && (availableDate[0] || availableDate[1])) {
+            var availableDateVal = getAvailableDateVal(availableDate, type, time);
+            var valueVal = getDateValForAvailableDate(finalValue, type, time);
+            var timeError_1 = null;
+            if (availableDateVal[0] && valueVal < availableDateVal[0]) {
+                timeError_1 = 'minDate';
+            }
+            if (timeError_1 == null && availableDateVal[1] && valueVal > availableDateVal[1]) {
+                timeError_1 = 'maxDate';
+            }
+            setTimeError(timeError_1);
+        }
+        else {
+            setTimeError(null);
+        }
+        return finalValue;
+    }, [_setValue, availableDate, error, name, onChange, onValueChange, time, type, validate]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -5066,24 +5099,6 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
             }
         }
     }, [open]);
-    React.useEffect(function () {
-        if (type !== 'time' && time && value && (availableDate[0] || availableDate[1])) {
-            var availableDateVal = getAvailableDateVal(availableDate, type, time);
-            var valueVal = getDateValForAvailableDate(value, type, time);
-            var timeError_1 = null;
-            if (availableDateVal[0] && valueVal < availableDateVal[0]) {
-                timeError_1 = 'minDate';
-            }
-            if (timeError_1 == null && availableDateVal[1] && valueVal > availableDateVal[1]) {
-                timeError_1 = 'maxDate';
-            }
-            setTimeError(timeError_1);
-        }
-        else {
-            setTimeError(null);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value]);
     /********************************************************************************************************************
      * Function - focus
      * ******************************************************************************************************************/
@@ -5100,9 +5115,9 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
                 getType: function () { return 'default'; },
                 getName: function () { return name; },
                 getReset: function () { return initValue; },
-                reset: function () { return setValue(initValue); },
+                reset: function () { return updateValue(initValue); },
                 getValue: function () { return valueRef.current; },
-                setValue: setValue,
+                setValue: updateValue,
                 getData: function () { return dataRef.current; },
                 setData: setData,
                 isExceptValue: function () { return !!exceptValue; },
@@ -5160,9 +5175,9 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
-        setValue,
         time,
         type,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -5170,16 +5185,16 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
      * Event Handler
      * ******************************************************************************************************************/
     var handleChange = React.useCallback(function (unit, newValue, keyboardInputValue) {
-        var updateValue = true;
+        var isUpdateValue = true;
         if (util.notEmpty(keyboardInputValue)) {
             if (newValue) {
                 if (!newValue.isValid()) {
-                    updateValue = false;
+                    isUpdateValue = false;
                 }
             }
         }
         var finalValue = newValue;
-        if (updateValue) {
+        if (isUpdateValue) {
             if (type !== 'time' && finalValue != null && keyboardInputValue == null) {
                 var checkResult = checkDateAvailable(finalValue, availableDate, type, time);
                 if (checkResult !== 'available') {
@@ -5205,7 +5220,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
                 if (time === unit)
                     setOpen(false);
             }
-            setValue(finalValue);
+            updateValue(finalValue);
             util.nextTick(function () {
                 onValueChangeByUser(name, finalValue);
                 if (runOnRequestSearchSubmit_1) {
@@ -5214,7 +5229,7 @@ styleInject(css_248z$7);var PrivateDatePicker = React.forwardRef(function (_a, r
             });
         }
         setInputValue(finalValue);
-    }, [setInputValue, type, time, setValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [setInputValue, type, time, updateValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]);
     var handleContainerFocus = React.useCallback(function () {
         if (closeTimeoutRef.current) {
             clearTimeout(closeTimeoutRef.current);
@@ -5662,15 +5677,32 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _o = reactHook.useAutoUpdateRefState(initValue, getFinalValue$7), valueRef = _o[0], value = _o[1], setValue = _o[2];
+    var _o = reactHook.useAutoUpdateRefState(initValue, getFinalValue$7), valueRef = _o[0], value = _o[1], _setValue = _o[2];
     var _p = reactHook.useAutoUpdateState(value), inputValue = _p[0], setInputValue = _p[1];
-    reactHook.useFirstSkipEffect(function () {
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (error)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        if (type !== 'time' && time && finalValue && (availableDate[0] || availableDate[1])) {
+            var availableDateVal = getAvailableDateVal(availableDate, type, time);
+            var valueVal = getDateValForAvailableDate(finalValue, type, time);
+            var timeError_1 = null;
+            if (availableDateVal[0] && valueVal < availableDateVal[0]) {
+                timeError_1 = 'minDate';
+            }
+            if (timeError_1 == null && availableDateVal[1] && valueVal > availableDateVal[1]) {
+                timeError_1 = 'maxDate';
+            }
+            setTimeError(timeError_1);
+        }
+        else {
+            setTimeError(null);
+        }
+        return finalValue;
+    }, [_setValue, availableDate, error, name, onChange, onValueChange, time, type, validate]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -5697,24 +5729,6 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
             }
         }
     }, [open]);
-    React.useEffect(function () {
-        if (type !== 'time' && time && value && (availableDate[0] || availableDate[1])) {
-            var availableDateVal = getAvailableDateVal(availableDate, type, time);
-            var valueVal = getDateValForAvailableDate(value, type, time);
-            var timeError_1 = null;
-            if (availableDateVal[0] && valueVal < availableDateVal[0]) {
-                timeError_1 = 'minDate';
-            }
-            if (timeError_1 == null && availableDateVal[1] && valueVal > availableDateVal[1]) {
-                timeError_1 = 'maxDate';
-            }
-            setTimeError(timeError_1);
-        }
-        else {
-            setTimeError(null);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value]);
     /********************************************************************************************************************
      * Function - focus
      * ******************************************************************************************************************/
@@ -5731,9 +5745,9 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
                 getType: function () { return 'default'; },
                 getName: function () { return name; },
                 getReset: function () { return getFinalValue$7(initValue); },
-                reset: function () { return setValue(initValue); },
+                reset: function () { return updateValue(initValue); },
                 getValue: function () { return valueRef.current; },
-                setValue: setValue,
+                setValue: updateValue,
                 getData: function () { return dataRef.current; },
                 setData: setData,
                 isExceptValue: function () { return !!exceptValue; },
@@ -5791,9 +5805,9 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
-        setValue,
         time,
         type,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -5802,16 +5816,16 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
      * ******************************************************************************************************************/
     var handleChange = React.useCallback(function (unit, newValue, keyboardInputValue) {
         var _a, _b, _c;
-        var updateValue = true;
+        var isUpdateValue = true;
         if (util.notEmpty(keyboardInputValue)) {
             if (newValue) {
                 if (!newValue.isValid()) {
-                    updateValue = false;
+                    isUpdateValue = false;
                 }
             }
         }
         var finalValue = newValue;
-        if (updateValue) {
+        if (isUpdateValue) {
             if (type !== 'time' && finalValue != null && keyboardInputValue == null) {
                 var checkResult = checkDateAvailable(finalValue, availableDate, type, time);
                 if (checkResult !== 'available') {
@@ -5837,7 +5851,7 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
                 if (time === unit)
                     setOpen(false);
             }
-            setValue(finalValue);
+            updateValue(finalValue);
             util.nextTick(function () {
                 onValueChangeByUser(name, finalValue);
                 if (runOnRequestSearchSubmit_1) {
@@ -5862,7 +5876,7 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
             }
         }
         setInputValue(finalValue);
-    }, [setInputValue, type, time, setValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [setInputValue, type, time, updateValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]);
     var handleContainerFocus = React.useCallback(function () {
         if (closeTimeoutRef.current) {
             clearTimeout(closeTimeoutRef.current);
@@ -7732,14 +7746,16 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * value
      * ******************************************************************************************************************/
-    var _w = reactHook.useAutoUpdateRefState(initValue, getFinalValue$6), valueRef = _w[0], value = _w[1], setValue = _w[2];
-    reactHook.useFirstSkipEffect(function () {
+    var _w = reactHook.useAutoUpdateRefState(initValue, getFinalValue$6), valueRef = _w[0], value = _w[1], _setValue = _w[2];
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (error || fromError || toError)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, error, fromError, name, onChange, onValueChange, toError, validate]);
     /********************************************************************************************************************
      * Effect
      * ******************************************************************************************************************/
@@ -7782,11 +7798,11 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
      * Event Handler
      * ******************************************************************************************************************/
     var handleChange = React.useCallback(function (newValue) {
-        setValue(newValue);
+        updateValue(newValue);
         setOpen(false);
         setFromErrorErrorHelperText(false, undefined);
         setToErrorErrorHelperText(false, undefined);
-    }, [setFromErrorErrorHelperText, setToErrorErrorHelperText, setValue]);
+    }, [setFromErrorErrorHelperText, setToErrorErrorHelperText, updateValue]);
     var handleValueChange = React.useCallback(function (selectType, newValue, fromInput) {
         var _a;
         var finalValue;
@@ -7851,12 +7867,12 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                 }
                 break;
         }
-        setValue(finalValue);
+        updateValue(finalValue);
         util.nextTick(function () {
             onValueChangeByUser(name, finalValue);
         });
     }, [
-        setValue,
+        updateValue,
         value,
         setFromErrorErrorHelperText,
         activeMonth,
@@ -7960,15 +7976,15 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                 getType: function () { return 'FormDateRangePicker'; },
                 getName: function () { return name; },
                 getReset: function () { return getFinalValue$6(initValue); },
-                reset: function () { return setValue(initValue); },
+                reset: function () { return updateValue(initValue); },
                 getValue: function () { return valueRef.current; },
-                setValue: setValue,
+                setValue: updateValue,
                 getData: function () { return dataRef.current; },
                 setData: setData,
                 getFromValue: function () { return valueRef.current[0]; },
-                setFromValue: function (value) { return setValue([value, valueRef.current[1]]); },
+                setFromValue: function (value) { return updateValue([value, valueRef.current[1]]); },
                 getToValue: function () { return valueRef.current[1]; },
-                setToValue: function (value) { return setValue([valueRef.current[0], value]); },
+                setToValue: function (value) { return updateValue([valueRef.current[0], value]); },
                 isExceptValue: function () { return !!exceptValue; },
                 isDisabled: function () { return !!disabledRef.current; },
                 setDisabled: setDisabled,
@@ -8033,7 +8049,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
-        setValue,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -8235,14 +8251,16 @@ var FormFile = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _m = reactHook.useAutoUpdateRefState(initValue, getFinalValue$5), valueRef = _m[0], value = _m[1], setValue = _m[2];
-    reactHook.useFirstSkipEffect(function () {
+    var _m = reactHook.useAutoUpdateRefState(initValue, getFinalValue$5), valueRef = _m[0], value = _m[1], _setValue = _m[2];
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (error)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, error, name, onChange, onValueChange, validate]);
     /********************************************************************************************************************
      * Function - focus
      * ******************************************************************************************************************/
@@ -8268,9 +8286,9 @@ var FormFile = React.forwardRef(function (_a, ref) {
             getType: function () { return 'FormFile'; },
             getName: function () { return name; },
             getReset: function () { return getFinalValue$5(initValue); },
-            reset: function () { return setValue(initValue); },
+            reset: function () { return updateValue(initValue); },
             getValue: function () { return valueRef.current; },
-            setValue: setValue,
+            setValue: updateValue,
             getData: function () { return dataRef.current; },
             setData: setData,
             isExceptValue: function () { return !!exceptValue; },
@@ -8321,7 +8339,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
-        setValue,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -8371,7 +8389,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
             var file_1 = target.files[0];
             fileSizeCheck(file_1).then(function () {
                 onFile(file_1).then(function (url) {
-                    setValue(url);
+                    updateValue(url);
                     util.nextTick(function () {
                         if (onValueChangeByUser)
                             onValueChangeByUser(name, url);
@@ -8379,21 +8397,21 @@ var FormFile = React.forwardRef(function (_a, ref) {
                 });
             });
         }
-    }, [fileSizeCheck, name, onFile, onValueChangeByUser, setValue]);
+    }, [fileSizeCheck, name, onFile, onValueChangeByUser, updateValue]);
     var handleLinkClick = React.useCallback(function () {
         setIsOpenLinkDialog(true);
     }, []);
     var handleRemoveClick = React.useCallback(function () {
-        setValue('');
+        updateValue('');
         util.nextTick(function () {
             if (onValueChangeByUser)
                 onValueChangeByUser(name, '');
         });
-    }, [name, onValueChangeByUser, setValue]);
+    }, [name, onValueChangeByUser, updateValue]);
     var handleLinkDialogConfirm = React.useCallback(function (url) {
         if (onLink) {
             onLink(url).then(function (finalUrl) {
-                setValue(finalUrl);
+                updateValue(finalUrl);
                 util.nextTick(function () {
                     if (onValueChangeByUser)
                         onValueChangeByUser(name, finalUrl);
@@ -8401,13 +8419,13 @@ var FormFile = React.forwardRef(function (_a, ref) {
             });
         }
         else {
-            setValue(url);
+            updateValue(url);
             util.nextTick(function () {
                 if (onValueChangeByUser)
                     onValueChangeByUser(name, url);
             });
         }
-    }, [name, onLink, onValueChangeByUser, setValue]);
+    }, [name, onLink, onValueChangeByUser, updateValue]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
@@ -8460,11 +8478,13 @@ styleInject(css_248z);var getFinalValue$4 = function (value) { return value || '
     /********************************************************************************************************************
      * value
      * ******************************************************************************************************************/
-    var _d = reactHook.useAutoUpdateState(initValue, getFinalValue$4), value = _d[0], setValue = _d[1];
-    reactHook.useFirstSkipEffect(function () {
+    var _d = reactHook.useAutoUpdateState(initValue, getFinalValue$4), value = _d[0], _setValue = _d[1];
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (onChange)
-            onChange(value);
-    }, [value]);
+            onChange(finalValue);
+        return finalValue;
+    }, [_setValue, onChange]);
     /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
@@ -8533,8 +8553,8 @@ styleInject(css_248z);var getFinalValue$4 = function (value) { return value || '
      * Event Handler
      * ******************************************************************************************************************/
     var handleChange = React.useCallback(function (value) {
-        setValue(value);
-    }, [setValue]);
+        updateValue(value);
+    }, [updateValue]);
     var handleFile = React.useCallback(function (file) {
         return new Promise(function (resolve, reject) {
             imageSizeCheck(file)
@@ -8670,14 +8690,16 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * value
      * ******************************************************************************************************************/
-    var _p = reactHook.useAutoUpdateRefState(initValue, getFinalValue$3), valueRef = _p[0], value = _p[1], setValue = _p[2];
-    reactHook.useFirstSkipEffect(function () {
+    var _p = reactHook.useAutoUpdateRefState(initValue, getFinalValue$3), valueRef = _p[0], value = _p[1], _setValue = _p[2];
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (error)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, error, name, onChange, onValueChange, validate]);
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -8760,14 +8782,14 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
             getType: function () { return 'FormMonthPicker'; },
             getName: function () { return name; },
             getReset: function () { return getFinalValue$3(initValue); },
-            reset: function () { return setValue(initValue); },
+            reset: function () { return updateValue(initValue); },
             getValue: function () { return valueRef.current; },
-            setValue: setValue,
+            setValue: updateValue,
             getData: function () { return dataRef.current; },
             setData: setData,
             getYear: function () { return (valueRef.current ? valueRef.current.year : null); },
             setYear: function (year) {
-                setValue(year === null
+                updateValue(year === null
                     ? null
                     : valueRef.current
                         ? { year: year, month: valueRef.current.month }
@@ -8775,7 +8797,7 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
             },
             getMonth: function () { return (valueRef.current ? valueRef.current.month : null); },
             setMonth: function (month) {
-                setValue(month === null
+                updateValue(month === null
                     ? null
                     : valueRef.current
                         ? { year: valueRef.current.year, month: month }
@@ -8839,7 +8861,7 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
-        setValue,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -8872,13 +8894,13 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
         }
     }, []);
     var handleContainerChange = React.useCallback(function (newValue, isMonthSelect) {
-        setValue(newValue);
+        updateValue(newValue);
         if (isMonthSelect)
             setOpen(false);
         util.nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
-    }, [name, onValueChangeByUser, setValue]);
+    }, [name, onValueChangeByUser, updateValue]);
     var handleInputDatePickerFocus = React.useCallback(function () {
         if (readOnly || disabled)
             return;
@@ -8925,7 +8947,7 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
                         React.createElement(PrivateMonthPicker, { minValue: minValue, maxValue: maxValue, disablePast: disablePast, disableFuture: disableFuture, value: value, onChange: handleContainerChange })) },
                     React.createElement("div", null,
                         React.createElement(PrivateInputDatePicker, __assign({}, inputDatePickerProps, { style: inputWidth != null
-                                ? __assign({ width: inputWidth }, initStyle) : __assign({ width: fullWidth ? undefined : 150 }, initStyle), sx: sx, value: valueDate, label: label, labelIcon: labelIcon, error: error, focused: focused, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: inputRef, onChange: function (v) { return setValue(v ? dateToValue$3(v) : v); }, onFocus: handleInputDatePickerFocus, onError: function (reason) { return (inputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear })))),
+                                ? __assign({ width: inputWidth }, initStyle) : __assign({ width: fullWidth ? undefined : 150 }, initStyle), sx: sx, value: valueDate, label: label, labelIcon: labelIcon, error: error, focused: focused, required: required, readOnly: readOnly, readOnlyInput: readOnlyInput, icon: icon, startAdornment: startAdornment, endAdornment: endAdornment, inputRef: inputRef, onChange: function (v) { return updateValue(v ? dateToValue$3(v) : v); }, onFocus: handleInputDatePickerFocus, onError: function (reason) { return (inputDatePickerErrorRef.current = reason); }, shouldDisableYear: handleInputDatePickerShouldDisableYear })))),
                 !formColWithHelperText && (!!helperText || (error && !!errorHelperText)) && (React.createElement(material.FormHelperText, { error: error, style: { marginLeft: variant === 'standard' ? 0 : 14 } }, error ? errorHelperText : helperText))))));
 });
 FormMonthPicker.displayName = 'FormMonthPicker';var DEFAULT_VALUE$1 = [null, null];
@@ -9045,14 +9067,16 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _v = reactHook.useAutoUpdateRefState(initValue, getFinalValue$2), valueRef = _v[0], value = _v[1], setValue = _v[2];
-    reactHook.useFirstSkipEffect(function () {
+    var _v = reactHook.useAutoUpdateRefState(initValue, getFinalValue$2), valueRef = _v[0], value = _v[1], _setValue = _v[2];
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (error || fromError || toError)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, error, fromError, name, onChange, onValueChange, toError, validate]);
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -9124,18 +9148,18 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
             getType: function () { return 'FormMonthRangePicker'; },
             getName: function () { return name; },
             getReset: function () { return getFinalValue$2(initValue); },
-            reset: function () { return setValue(initValue); },
+            reset: function () { return updateValue(initValue); },
             getValue: function () { return valueRef.current; },
-            setValue: setValue,
+            setValue: updateValue,
             getData: function () { return dataRef.current; },
             setData: setData,
             getFromValue: function () { return valueRef.current[0]; },
-            setFromValue: function (value) { return setValue([value, valueRef.current[1]]); },
+            setFromValue: function (value) { return updateValue([value, valueRef.current[1]]); },
             getToValue: function () { return valueRef.current[1]; },
-            setToValue: function (value) { return setValue([valueRef.current[0], value]); },
+            setToValue: function (value) { return updateValue([valueRef.current[0], value]); },
             getFromYear: function () { return (valueRef.current[0] ? valueRef.current[0].year : null); },
             setFromYear: function (year) {
-                setValue([
+                updateValue([
                     year === null
                         ? null
                         : valueRef.current[0]
@@ -9146,7 +9170,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
             },
             getFromMonth: function () { return (valueRef.current[0] ? valueRef.current[0].month : null); },
             setFromMonth: function (month) {
-                setValue([
+                updateValue([
                     month === null
                         ? null
                         : valueRef.current[0]
@@ -9157,7 +9181,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
             },
             getToYear: function () { return (valueRef.current[1] ? valueRef.current[1].year : null); },
             setToYear: function (year) {
-                setValue([
+                updateValue([
                     valueRef.current[0],
                     year === null
                         ? null
@@ -9168,7 +9192,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
             },
             getToMonth: function () { return (valueRef.current[1] ? valueRef.current[1].month : null); },
             setToMonth: function (month) {
-                setValue([
+                updateValue([
                     valueRef.current[0],
                     month === null
                         ? null
@@ -9245,7 +9269,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
-        setValue,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -9253,7 +9277,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
      * Event Handler
      * ******************************************************************************************************************/
     var handleContainerChange = React.useCallback(function (newValue, selectType, isMonthSelect) {
-        setValue(newValue);
+        updateValue(newValue);
         if (selectType === 'start' && isMonthSelect) {
             util.nextTick(function () {
                 var _a;
@@ -9266,7 +9290,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         util.nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
-    }, [name, onValueChangeByUser, setValue]);
+    }, [name, onValueChangeByUser, updateValue]);
     var handleInputDatePickerChange = React.useCallback(function (selectType, date) {
         if (date == null || date.isValid()) {
             if (selectType === 'start') {
@@ -9284,7 +9308,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                 util.nextTick(function () {
                     onValueChangeByUser(name, newValue_1);
                 });
-                setValue(newValue_1);
+                updateValue(newValue_1);
             }
             else {
                 var newValue_2 = [valueRef.current[0], date ? dateToValue$2(date) : null];
@@ -9301,10 +9325,10 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                 util.nextTick(function () {
                     onValueChangeByUser(name, newValue_2);
                 });
-                setValue(newValue_2);
+                updateValue(newValue_2);
             }
         }
-    }, [valueRef, dateInfo, fromError, setValue, validate, onValueChangeByUser, name, toError]);
+    }, [valueRef, dateInfo, fromError, updateValue, validate, onValueChangeByUser, name, toError]);
     var handleInputDatePickerFocus = React.useCallback(function (selectType) {
         var _a;
         if (readOnly || disabled)
@@ -9451,14 +9475,16 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * value
      * ******************************************************************************************************************/
-    var _m = reactHook.useAutoUpdateRefState(initValue, getFinalValue$1), valueRef = _m[0], value = _m[1], setValue = _m[2];
-    reactHook.useFirstSkipEffect(function () {
+    var _m = reactHook.useAutoUpdateRefState(initValue, getFinalValue$1), valueRef = _m[0], value = _m[1], _setValue = _m[2];
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (error)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, error, name, onChange, onValueChange, validate]);
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -9515,9 +9541,9 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
             getType: function () { return 'FormYearPicker'; },
             getName: function () { return name; },
             getReset: function () { return getFinalValue$1(initValue); },
-            reset: function () { return setValue(initValue); },
+            reset: function () { return updateValue(initValue); },
             getValue: function () { return valueRef.current; },
-            setValue: setValue,
+            setValue: updateValue,
             getData: function () { return dataRef.current; },
             setData: setData,
             isExceptValue: function () { return !!exceptValue; },
@@ -9568,7 +9594,7 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
-        setValue,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -9601,20 +9627,20 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
         }
     }, []);
     var handleContainerChange = React.useCallback(function (newValue, isClick) {
-        setValue(newValue);
+        updateValue(newValue);
         if (isClick)
             setOpen(false);
         util.nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
-    }, [name, onValueChangeByUser, setValue]);
+    }, [name, onValueChangeByUser, updateValue]);
     var handleInputDatePickerChange = React.useCallback(function (v) {
         var newValue = v ? dateToValue$1(v) : v;
-        setValue(newValue);
+        updateValue(newValue);
         util.nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
-    }, [name, onValueChangeByUser, setValue]);
+    }, [name, onValueChangeByUser, updateValue]);
     var handleInputDatePickerFocus = React.useCallback(function () {
         if (readOnly || disabled)
             return;
@@ -9760,14 +9786,16 @@ var getFinalValue = function (value) {
     /********************************************************************************************************************
      * State - value
      * ******************************************************************************************************************/
-    var _u = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _u[0], value = _u[1], setValue = _u[2];
-    reactHook.useFirstSkipEffect(function () {
+    var _u = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _u[0], value = _u[1], _setValue = _u[2];
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (error || fromError || toError)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, error, fromError, name, onChange, onValueChange, toError, validate]);
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -9814,15 +9842,15 @@ var getFinalValue = function (value) {
             getType: function () { return 'FormYearRangePicker'; },
             getName: function () { return name; },
             getReset: function () { return getFinalValue(initValue); },
-            reset: function () { return setValue(initValue); },
+            reset: function () { return updateValue(initValue); },
             getValue: function () { return valueRef.current; },
-            setValue: setValue,
+            setValue: updateValue,
             getData: function () { return dataRef.current; },
             setData: setData,
             getFromValue: function () { return valueRef.current[0]; },
-            setFromValue: function (value) { return setValue([value, valueRef.current[1]]); },
+            setFromValue: function (value) { return updateValue([value, valueRef.current[1]]); },
             getToValue: function () { return valueRef.current[1]; },
-            setToValue: function (value) { return setValue([valueRef.current[0], value]); },
+            setToValue: function (value) { return updateValue([valueRef.current[0], value]); },
             isExceptValue: function () { return !!exceptValue; },
             isDisabled: function () { return !!disabledRef.current; },
             setDisabled: setDisabled,
@@ -9881,7 +9909,7 @@ var getFinalValue = function (value) {
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
-        setValue,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -9889,7 +9917,7 @@ var getFinalValue = function (value) {
      * Event Handler
      * ******************************************************************************************************************/
     var handleContainerChange = React.useCallback(function (newValue, selectType) {
-        setValue(newValue);
+        updateValue(newValue);
         if (selectType === 'start') {
             util.nextTick(function () {
                 var _a;
@@ -9903,7 +9931,7 @@ var getFinalValue = function (value) {
         util.nextTick(function () {
             onValueChangeByUser(name, newValue);
         });
-    }, [setValue, name, onValueChangeByUser]);
+    }, [updateValue, name, onValueChangeByUser]);
     var handleInputDatePickerChange = React.useCallback(function (selectType, date) {
         if (date == null || date.isValid()) {
             if (selectType === 'start') {
@@ -9919,7 +9947,7 @@ var getFinalValue = function (value) {
                 util.nextTick(function () {
                     onValueChangeByUser(name, newValue_1);
                 });
-                setValue(newValue_1);
+                updateValue(newValue_1);
             }
             else {
                 var newValue_2 = [valueRef.current[0], date ? dateToValue(date) : null];
@@ -9934,10 +9962,10 @@ var getFinalValue = function (value) {
                 util.nextTick(function () {
                     onValueChangeByUser(name, newValue_2);
                 });
-                setValue(newValue_2);
+                updateValue(newValue_2);
             }
         }
-    }, [valueRef, minYear, maxYear, fromError, setValue, validate, onValueChangeByUser, name, toError]);
+    }, [valueRef, minYear, maxYear, fromError, updateValue, validate, onValueChangeByUser, name, toError]);
     var handleInputDatePickerFocus = React.useCallback(function (selectType) {
         var _a;
         if (readOnly || disabled)
@@ -10078,14 +10106,16 @@ FormYearRangePicker.displayName = 'FormYearRangePicker';var FormSwitch = React.f
         var finalValue = value || false;
         return onValue ? onValue(finalValue) : finalValue;
     }, [onValue]);
-    var _j = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _j[0], value = _j[1], setValue = _j[2];
-    reactHook.useFirstSkipEffect(function () {
+    var _j = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _j[0], value = _j[1], _setValue = _j[2];
+    var updateValue = React.useCallback(function (newValue) {
+        var finalValue = _setValue(newValue);
         if (error)
-            validate(value);
+            validate(finalValue);
         if (onChange)
-            onChange(value);
-        onValueChange(name, value);
-    }, [value]);
+            onChange(finalValue);
+        onValueChange(name, finalValue);
+        return finalValue;
+    }, [_setValue, error, name, onChange, onValueChange, validate]);
     /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
@@ -10105,9 +10135,9 @@ FormYearRangePicker.displayName = 'FormYearRangePicker';var FormSwitch = React.f
             getType: function () { return 'FormSwitch'; },
             getName: function () { return name; },
             getReset: function () { return getFinalValue(initValue); },
-            reset: function () { return setValue(initValue); },
+            reset: function () { return updateValue(initValue); },
             getValue: function () { return valueRef.current; },
-            setValue: setValue,
+            setValue: updateValue,
             getData: function () { return dataRef.current; },
             setData: setData,
             isExceptValue: function () { return !!exceptValue; },
@@ -10159,7 +10189,7 @@ FormYearRangePicker.displayName = 'FormYearRangePicker';var FormSwitch = React.f
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
-        setValue,
+        updateValue,
         validate,
         valueRef,
     ]);
@@ -10171,13 +10201,13 @@ FormYearRangePicker.displayName = 'FormYearRangePicker';var FormSwitch = React.f
             e.preventDefault();
         }
         else {
-            var finalValue_1 = setValue(checked);
+            var finalValue_1 = updateValue(checked);
             util.nextTick(function () {
                 onValueChangeByUser(name, finalValue_1);
                 onRequestSearchSubmit(name, finalValue_1);
             });
         }
-    }, [readOnly, setValue, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [readOnly, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/

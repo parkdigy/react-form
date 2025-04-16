@@ -177,13 +177,20 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
      * value
      * ******************************************************************************************************************/
 
-    const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
+    const updateValue = useCallback(
+      (newValue: Props['value']) => {
+        const finalValue = _setValue(newValue);
+
+        if (error) validate(finalValue);
+        if (onChange) onChange(finalValue);
+        onValueChange(name, finalValue);
+
+        return finalValue;
+      },
+      [_setValue, error, name, onChange, onValueChange, validate]
+    );
 
     /********************************************************************************************************************
      * Memo
@@ -274,14 +281,14 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
         getType: () => 'FormMonthPicker',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
-        reset: () => setValue(initValue),
+        reset: () => updateValue(initValue),
         getValue: () => valueRef.current,
-        setValue,
+        setValue: updateValue,
         getData: () => dataRef.current,
         setData,
         getYear: () => (valueRef.current ? valueRef.current.year : null),
         setYear: (year: number | null) => {
-          setValue(
+          updateValue(
             year === null
               ? null
               : valueRef.current
@@ -291,7 +298,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
         },
         getMonth: () => (valueRef.current ? valueRef.current.month : null),
         setMonth: (month: number | null) => {
-          setValue(
+          updateValue(
             month === null
               ? null
               : valueRef.current
@@ -358,7 +365,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
       setDisabled,
       setErrorErrorHelperText,
       setHidden,
-      setValue,
+      updateValue,
       validate,
       valueRef,
     ]);
@@ -398,14 +405,14 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
 
     const handleContainerChange = useCallback(
       (newValue: FormMonthPickerBaseValue, isMonthSelect: boolean) => {
-        setValue(newValue);
+        updateValue(newValue);
         if (isMonthSelect) setOpen(false);
 
         nextTick(() => {
           onValueChangeByUser(name, newValue);
         });
       },
-      [name, onValueChangeByUser, setValue]
+      [name, onValueChangeByUser, updateValue]
     );
 
     const handleInputDatePickerFocus = useCallback(() => {
@@ -503,7 +510,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
                   startAdornment={startAdornment}
                   endAdornment={endAdornment}
                   inputRef={inputRef}
-                  onChange={(v) => setValue(v ? dateToValue(v) : v)}
+                  onChange={(v) => updateValue(v ? dateToValue(v) : v)}
                   onFocus={handleInputDatePickerFocus}
                   onError={(reason) => (inputDatePickerErrorRef.current = reason)}
                   shouldDisableYear={handleInputDatePickerShouldDisableYear}

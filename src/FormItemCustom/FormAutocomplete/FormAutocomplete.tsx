@@ -263,17 +263,24 @@ const FormAutocomplete = ToForwardRefExoticComponent(
       [multiple, formValueSeparator, itemsValues, onValue]
     );
 
-    const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
     const [valueItem, setValueItem] = useState<ComponentValue>(null);
 
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
+    const updateValue = useCallback(
+      (newValue: Props['value'], skipCallback = false) => {
+        const finalValue = _setValue(newValue, skipCallback);
+
+        if (error) validate(finalValue);
+        if (onChange) onChange(finalValue);
+        onValueChange(name, finalValue);
+
+        return finalValue;
+      },
+      [_setValue, error, name, onChange, onValueChange, validate]
+    );
 
     useFirstSkipEffect(() => {
-      setValue(getFinalValue(valueRef.current));
+      updateValue(getFinalValue(valueRef.current));
     }, [multiple]);
 
     /********************************************************************************************************************
@@ -456,9 +463,9 @@ const FormAutocomplete = ToForwardRefExoticComponent(
           getType: () => 'FormAutocomplete',
           getName: () => name,
           getReset: () => getFinalValue(initValue),
-          reset: () => setValue(initValue),
+          reset: () => updateValue(initValue),
           getValue: () => valueRef.current,
-          setValue: (newValue) => setValue(newValue),
+          setValue: (newValue) => updateValue(newValue),
           getData: () => dataRef.current,
           setData: (data) => setData(data),
           isExceptValue: () => !!exceptValue,
@@ -499,7 +506,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
         setHidden,
         setItems,
         setLoading,
-        setValue,
+        updateValue,
         validate,
         valueRef,
       ]
@@ -556,7 +563,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
 
           const finalValue = getFinalValue(newValue);
           if (!equal(valueRef.current, finalValue)) {
-            setValue(finalValue, true);
+            updateValue(finalValue, true);
             setValueItem(componentValue);
             nextTick(() => {
               onValueChangeByUser(name, finalValue);
@@ -582,7 +589,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
           go();
         }
       },
-      [multiple, getFinalValue, valueRef, setValue, onValueChangeByUser, name, onRequestSearchSubmit, onAddItem]
+      [multiple, getFinalValue, valueRef, updateValue, onValueChangeByUser, name, onRequestSearchSubmit, onAddItem]
     );
 
     const handleGetOptionDisabled = useCallback(

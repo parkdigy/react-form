@@ -172,13 +172,20 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
      * value
      * ******************************************************************************************************************/
 
-    const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
+    const updateValue = useCallback(
+      (newValue: Props['value']) => {
+        const finalValue = _setValue(newValue);
+
+        if (error) validate(finalValue);
+        if (onChange) onChange(finalValue);
+        onValueChange(name, finalValue);
+
+        return finalValue;
+      },
+      [_setValue, error, name, onChange, onValueChange, validate]
+    );
 
     /********************************************************************************************************************
      * Memo
@@ -241,9 +248,9 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
         getType: () => 'FormYearPicker',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
-        reset: () => setValue(initValue),
+        reset: () => updateValue(initValue),
         getValue: () => valueRef.current,
-        setValue,
+        setValue: updateValue,
         getData: () => dataRef.current,
         setData,
         isExceptValue: () => !!exceptValue,
@@ -295,7 +302,7 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
       setDisabled,
       setErrorErrorHelperText,
       setHidden,
-      setValue,
+      updateValue,
       validate,
       valueRef,
     ]);
@@ -335,25 +342,25 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
 
     const handleContainerChange = useCallback(
       (newValue: FormYearPickerBaseValue, isClick: boolean) => {
-        setValue(newValue);
+        updateValue(newValue);
         if (isClick) setOpen(false);
 
         nextTick(() => {
           onValueChangeByUser(name, newValue);
         });
       },
-      [name, onValueChangeByUser, setValue]
+      [name, onValueChangeByUser, updateValue]
     );
 
     const handleInputDatePickerChange = useCallback(
       (v: PrivateDatePickerValue) => {
         const newValue = v ? dateToValue(v) : v;
-        setValue(newValue);
+        updateValue(newValue);
         nextTick(() => {
           onValueChangeByUser(name, newValue);
         });
       },
-      [name, onValueChangeByUser, setValue]
+      [name, onValueChangeByUser, updateValue]
     );
 
     const handleInputDatePickerFocus = useCallback(() => {

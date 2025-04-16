@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
@@ -220,14 +220,38 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
      * State - value
      * ******************************************************************************************************************/
 
-    const [valueRef, value, setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
     const [inputValue, setInputValue] = useAutoUpdateState<PrivateDateTimePickerValue>(value);
 
-    useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
+    const updateValue = useCallback(
+      (newValue: PrivateDateTimePickerValue) => {
+        const finalValue = _setValue(newValue);
+
+        if (error) validate(finalValue);
+        if (onChange) onChange(finalValue);
+        onValueChange(name, finalValue);
+
+        if (type !== 'time' && time && finalValue && (availableDate[0] || availableDate[1])) {
+          const availableDateVal = getAvailableDateVal(availableDate, type, time);
+          const valueVal = getDateValForAvailableDate(finalValue, type, time);
+          let timeError: DateTimeValidationError = null;
+
+          if (availableDateVal[0] && valueVal < availableDateVal[0]) {
+            timeError = 'minDate';
+          }
+          if (timeError == null && availableDateVal[1] && valueVal > availableDateVal[1]) {
+            timeError = 'maxDate';
+          }
+
+          setTimeError(timeError);
+        } else {
+          setTimeError(null);
+        }
+
+        return finalValue;
+      },
+      [_setValue, availableDate, error, name, onChange, onValueChange, time, type, validate]
+    );
 
     /********************************************************************************************************************
      * Effect
@@ -256,26 +280,6 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
       }
     }, [open]);
 
-    useEffect(() => {
-      if (type !== 'time' && time && value && (availableDate[0] || availableDate[1])) {
-        const availableDateVal = getAvailableDateVal(availableDate, type, time);
-        const valueVal = getDateValForAvailableDate(value, type, time);
-        let timeError: DateTimeValidationError = null;
-
-        if (availableDateVal[0] && valueVal < availableDateVal[0]) {
-          timeError = 'minDate';
-        }
-        if (timeError == null && availableDateVal[1] && valueVal > availableDateVal[1]) {
-          timeError = 'maxDate';
-        }
-
-        setTimeError(timeError);
-      } else {
-        setTimeError(null);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value]);
-
     /********************************************************************************************************************
      * Function - focus
      * ******************************************************************************************************************/
@@ -294,9 +298,9 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
           getType: () => 'default',
           getName: () => name,
           getReset: () => getFinalValue(initValue),
-          reset: () => setValue(initValue),
+          reset: () => updateValue(initValue),
           getValue: () => valueRef.current,
-          setValue,
+          setValue: updateValue,
           getData: () => dataRef.current,
           setData,
           isExceptValue: () => !!exceptValue,
@@ -352,9 +356,9 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
       setDisabled,
       setErrorErrorHelperText,
       setHidden,
-      setValue,
       time,
       type,
+      updateValue,
       validate,
       valueRef,
     ]);
@@ -365,18 +369,18 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
 
     const handleChange = useCallback(
       (unit: PrivateStaticDateTimePickerUnit, newValue: PrivateDateTimePickerValue, keyboardInputValue?: string) => {
-        let updateValue = true;
+        let isUpdateValue = true;
         if (notEmpty(keyboardInputValue)) {
           if (newValue) {
             if (!newValue.isValid()) {
-              updateValue = false;
+              isUpdateValue = false;
             }
           }
         }
 
         let finalValue = newValue;
 
-        if (updateValue) {
+        if (isUpdateValue) {
           if (type !== 'time' && finalValue != null && keyboardInputValue == null) {
             const checkResult = checkDateAvailable(finalValue, availableDate, type, time);
             if (checkResult !== 'available') {
@@ -399,7 +403,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
           } else if (time) {
             if (time === unit) setOpen(false);
           }
-          setValue(finalValue);
+          updateValue(finalValue);
 
           nextTick(() => {
             onValueChangeByUser(name, finalValue);
@@ -428,7 +432,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
 
         setInputValue(finalValue);
       },
-      [setInputValue, type, time, setValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]
+      [setInputValue, type, time, updateValue, availableDate, open, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     const handleContainerFocus = useCallback(() => {

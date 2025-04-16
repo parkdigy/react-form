@@ -272,16 +272,23 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       [multiple, formValueSeparator, itemsValues, onValue]
     );
 
-    const [valueRef, value, setValue] = useAutoUpdateRefState<Props['value'], any>(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState<Props['value'], any>(initValue, getFinalValue);
+
+    const updateValue = useCallback(
+      (newValue: Props['value'], skipCallback = false) => {
+        const finalValue = _setValue(newValue, skipCallback);
+
+        if (error) validate(finalValue);
+        if (onChange) onChange(finalValue);
+        onValueChange(name, finalValue);
+
+        return finalValue;
+      },
+      [_setValue, error, name, onChange, onValueChange, validate]
+    );
 
     useFirstSkipEffect(() => {
-      if (error) validate(value);
-      if (onChange) onChange(value);
-      onValueChange(name, value);
-    }, [value]);
-
-    useFirstSkipEffect(() => {
-      setValue(valueRef.current);
+      updateValue(valueRef.current);
     }, [multiple]);
 
     /********************************************************************************************************************
@@ -315,7 +322,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           }
 
           if (setFirstItem) {
-            setValue((multiple ? [items[0].value] : items[0].value) as Props['value']);
+            updateValue((multiple ? [items[0].value] : items[0].value) as Props['value']);
           }
         }
       }
@@ -340,9 +347,9 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           getType: () => 'FormToggleButtonGroup',
           getName: () => name,
           getReset: () => getFinalValue(initValue),
-          reset: () => setValue(initValue),
+          reset: () => updateValue(initValue),
           getValue: () => valueRef.current,
-          setValue,
+          setValue: updateValue,
           getData: () => dataRef.current,
           setData,
           isExceptValue: () => !!exceptValue,
@@ -410,7 +417,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
       setHidden,
       setItems,
       setLoading,
-      setValue,
+      updateValue,
       validate,
       valueRef,
     ]);
@@ -440,7 +447,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           }
           finalValue = getFinalValue(finalValue);
           if (!equal(valueRef.current, finalValue)) {
-            setValue(finalValue, true);
+            updateValue(finalValue, true);
             nextTick(() => {
               onValueChangeByUser(name, finalValue);
               onRequestSearchSubmit(name, finalValue);
@@ -454,7 +461,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
         getFinalValue,
         valueRef,
         multiple,
-        setValue,
+        updateValue,
         onValueChangeByUser,
         name,
         onRequestSearchSubmit,
