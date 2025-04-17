@@ -9,6 +9,7 @@ export interface FormRowProps
     PartialPick<FormContextValue, 'variant' | 'size' | 'color' | 'spacing' | 'focused' | 'labelShrink' | 'fullWidth'>,
     PartialPick<FormDividerProps, 'icon' | 'label' | 'line' | 'lineVerticalMargin' | 'hidden' | 'warning'>,
     PartialPick<FormHelperTextProps, 'error'> {
+  fullHeight?: boolean;
   helperText?: ReactNode;
 }
 

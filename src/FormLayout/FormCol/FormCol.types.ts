@@ -13,4 +13,5 @@ export interface FormColProps
   helperText?: ReactNode;
   helperTextShift?: boolean;
   gap?: number;
+  fullHeight?: boolean;
 }

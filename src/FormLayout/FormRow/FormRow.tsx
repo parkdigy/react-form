@@ -23,6 +23,7 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
       label,
       line,
       lineVerticalMargin,
+      fullHeight,
       //----------------------------------------------------------------------------------------------------------------
       hidden,
       error,
@@ -79,8 +80,11 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
       if (hidden) {
         style.display = 'none';
       }
+      if (fullHeight) {
+        style.height = '100%';
+      }
       return style;
-    }, [hidden, initStyle]);
+    }, [fullHeight, hidden, initStyle]);
 
     /********************************************************************************************************************
      * Function - makeFormColXs
@@ -144,7 +148,7 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
         }}
       >
         <Grid ref={ref} size={{ xs: 12 }} className={classNames(className, 'FormRow')} style={style} sx={sx}>
-          <Grid container spacing={spacing}>
+          <Grid container spacing={spacing} style={fullHeight ? { height: '100%' } : undefined}>
             {(icon || label || line) && (
               <FormDivider
                 className={classNames(className, 'FormRow-header')}
@@ -159,13 +163,17 @@ const FormRow = React.forwardRef<HTMLDivElement, Props>(
                 hidden={hidden}
               />
             )}
-            <StyledWrapGrid size={{ xs: 12 }} className='FormRow-body'>
+            <StyledWrapGrid
+              size={{ xs: 12 }}
+              className='FormRow-body'
+              style={fullHeight ? { height: '100%' } : undefined}
+            >
               <Grid
                 className='FormRow-content'
                 container
                 spacing={spacing}
                 direction='row'
-                style={{ flexWrap: 'nowrap' }}
+                style={{ flexWrap: 'nowrap', height: fullHeight ? '100%' : undefined }}
               >
                 {children}
               </Grid>

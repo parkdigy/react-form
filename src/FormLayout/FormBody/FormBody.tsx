@@ -6,7 +6,7 @@ import { Grid } from '@mui/material';
 import { StyledContainerDiv, StyledContentDiv } from './FormBody.style.private';
 import { ifUndefined } from '@pdg/util';
 
-const FormBody: React.FC<Props> = ({ children, hidden }) => {
+const FormBody: React.FC<Props> = ({ children, hidden, style: initStyle }) => {
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
@@ -24,7 +24,13 @@ const FormBody: React.FC<Props> = ({ children, hidden }) => {
    * Style
    * ******************************************************************************************************************/
 
-  const style = useMemo(() => (hidden ? { display: 'none' } : undefined), [hidden]);
+  const style = useMemo(() => {
+    const newStyle: CSSProperties = { ...initStyle };
+    if (hidden) {
+      newStyle.display = 'none';
+    }
+    return newStyle;
+  }, [hidden, initStyle]);
 
   const contentStyle: CSSProperties | undefined = useMemo(
     () =>
@@ -53,7 +59,7 @@ const FormBody: React.FC<Props> = ({ children, hidden }) => {
       style={style}
     >
       <StyledContentDiv style={contentStyle}>
-        <Grid container spacing={spacing} direction='column'>
+        <Grid container spacing={spacing} direction='column' style={fullHeight ? { height: '100%' } : undefined}>
           {children}
         </Grid>
       </StyledContentDiv>

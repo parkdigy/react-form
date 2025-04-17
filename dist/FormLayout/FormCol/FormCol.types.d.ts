@@ -9,4 +9,5 @@ export interface FormColProps extends CommonSxProps, PartialPick<FormContextValu
     helperText?: ReactNode;
     helperTextShift?: boolean;
     gap?: number;
+    fullHeight?: boolean;
 }

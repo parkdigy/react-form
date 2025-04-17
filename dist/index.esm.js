@@ -834,7 +834,7 @@ var templateObject_1$g;var FormRow = React.forwardRef(function (_a, ref) {
      * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
     //----------------------------------------------------------------------------------------------------------------
-    icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, 
+    icon = _a.icon, label = _a.label, line = _a.line, lineVerticalMargin = _a.lineVerticalMargin, fullHeight = _a.fullHeight, 
     //----------------------------------------------------------------------------------------------------------------
     hidden = _a.hidden, error = _a.error, warning = _a.warning, helperText = _a.helperText, 
     //----------------------------------------------------------------------------------------------------------------
@@ -863,8 +863,11 @@ var templateObject_1$g;var FormRow = React.forwardRef(function (_a, ref) {
         if (hidden) {
             style.display = 'none';
         }
+        if (fullHeight) {
+            style.height = '100%';
+        }
         return style;
-    }, [hidden, initStyle]);
+    }, [fullHeight, hidden, initStyle]);
     /********************************************************************************************************************
      * Function - makeFormColXs
      * ******************************************************************************************************************/
@@ -897,10 +900,10 @@ var templateObject_1$g;var FormRow = React.forwardRef(function (_a, ref) {
      * ******************************************************************************************************************/
     return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColAutoXs: formColAutoXs, onAddFormCol: handleAddFormCol, onRemoveFormCol: handleRemoveFormCol }) },
         React.createElement(Grid, { ref: ref, size: { xs: 12 }, className: classNames(className, 'FormRow'), style: style, sx: sx },
-            React.createElement(Grid, { container: true, spacing: spacing },
+            React.createElement(Grid, { container: true, spacing: spacing, style: fullHeight ? { height: '100%' } : undefined },
                 (icon || label || line) && (React.createElement(FormDivider, { className: classNames(className, 'FormRow-header'), size: size, icon: icon, color: color, label: label, line: line, error: error, warning: warning, lineVerticalMargin: lineVerticalMargin, hidden: hidden })),
-                React.createElement(StyledWrapGrid, { size: { xs: 12 }, className: 'FormRow-body' },
-                    React.createElement(Grid, { className: 'FormRow-content', container: true, spacing: spacing, direction: 'row', style: { flexWrap: 'nowrap' } }, children),
+                React.createElement(StyledWrapGrid, { size: { xs: 12 }, className: 'FormRow-body', style: fullHeight ? { height: '100%' } : undefined },
+                    React.createElement(Grid, { className: 'FormRow-content', container: true, spacing: spacing, direction: 'row', style: { flexWrap: 'nowrap', height: fullHeight ? '100%' : undefined } }, children),
                     helperText && (React.createElement(FormHelperText, { className: 'FormRow-helper-text', component: 'div', error: error }, helperText)))))));
 });var StyledFormLabelContainerDiv = styled('div')(templateObject_1$f || (templateObject_1$f = __makeTemplateObject(["\n  position: relative;\n  height: 20px;\n"], ["\n  position: relative;\n  height: 20px;\n"])));
 var StyledFormLabel = styled(FormLabel$1)(templateObject_2$8 || (templateObject_2$8 = __makeTemplateObject(["\n  position: absolute;\n  left: 5px;\n  top: 0;\n"], ["\n  position: absolute;\n  left: 5px;\n  top: 0;\n"])));
@@ -909,7 +912,7 @@ var templateObject_1$f, templateObject_2$8, templateObject_3$4;var FormCol = Rea
     /********************************************************************************************************************
      * ID
      * ******************************************************************************************************************/
-    var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, 
+    var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initSpacing = _a.spacing, initFocused = _a.focused, initLabelShrink = _a.labelShrink, initFullWidth = _a.fullWidth, fullHeight = _a.fullHeight, 
     //----------------------------------------------------------------------------------------------------------------
     initGap = _a.gap, icon = _a.icon, label = _a.label, hidden = _a.hidden, error = _a.error, warning = _a.warning, helperText = _a.helperText, helperTextShift = _a.helperTextShift, 
     //----------------------------------------------------------------------------------------------------------------
@@ -920,7 +923,7 @@ var templateObject_1$f, templateObject_2$8, templateObject_3$4;var FormCol = Rea
      * ******************************************************************************************************************/
     var _b = useFormState(), formVariant = _b.variant, formSize = _b.size, formColor = _b.color, formSpacing = _b.spacing, formFormColGap = _b.formColGap, formFocused = _b.focused, formLabelShrink = _b.labelShrink, formFullWidth = _b.fullWidth, formColAutoXs = _b.formColAutoXs, onAddFormCol = _b.onAddFormCol, onRemoveFormCol = _b.onRemoveFormCol, otherFormState = __rest(_b, ["variant", "size", "color", "spacing", "formColGap", "focused", "labelShrink", "fullWidth", "formColAutoXs", "onAddFormCol", "onRemoveFormCol"]);
     /********************************************************************************************************************
-     * Memo - FormState
+     * Variable - FormState
      * ******************************************************************************************************************/
     var variant = ifUndefined(initVariant, formVariant);
     var size = ifUndefined(initSize, formSize);
@@ -930,6 +933,19 @@ var templateObject_1$f, templateObject_2$8, templateObject_3$4;var FormCol = Rea
     var labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
     var fullWidth = ifUndefined(initFullWidth, formFullWidth);
     var formColGap = ifUndefined(initGap, formFormColGap);
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+    var style = useMemo(function () {
+        var newStyle = __assign({}, initStyle);
+        if (hidden) {
+            newStyle.display = 'none';
+        }
+        if (fullHeight) {
+            newStyle.height = '100%';
+        }
+        return newStyle;
+    }, [fullHeight, hidden, initStyle]);
     /********************************************************************************************************************
      * ResizeDetector
      * ******************************************************************************************************************/
@@ -967,7 +983,7 @@ var templateObject_1$f, templateObject_2$8, templateObject_3$4;var FormCol = Rea
     return (React.createElement(FormContextProvider, { value: __assign(__assign({}, otherFormState), { variant: variant, size: size, color: color, spacing: spacing, focused: focused, labelShrink: labelShrink, fullWidth: fullWidth, formColGap: formColGap, formColXs: xs || formColAutoXs || 12, formColWidth: formColWidth, formColWithLabel: !!label, formColWithHelperText: !!helperText }) },
         React.createElement(Grid, { ref: function (ref) {
                 gridRef.current = ref;
-            }, size: { xs: xs || formColAutoXs || 12 }, className: classNames(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text'), style: hidden ? __assign(__assign({}, initStyle), { display: 'none' }) : initStyle, sx: sx },
+            }, size: { xs: xs || formColAutoXs || 12 }, className: classNames(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text'), style: style, sx: sx },
             React.createElement("div", null,
                 label && (React.createElement("div", { className: 'FormCol-header' },
                     React.createElement(StyledFormLabelContainerDiv, null,
@@ -982,7 +998,7 @@ var templateObject_1$e, templateObject_2$7;var FormBody = function (_a) {
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var children = _a.children, hidden = _a.hidden;
+    var children = _a.children, hidden = _a.hidden, initStyle = _a.style;
     var _b = useFormState(), spacing = _b.spacing, fullHeight = _b.fullHeight;
     /********************************************************************************************************************
      * ResizeDetector
@@ -992,7 +1008,13 @@ var templateObject_1$e, templateObject_2$7;var FormBody = function (_a) {
     /********************************************************************************************************************
      * Style
      * ******************************************************************************************************************/
-    var style = useMemo(function () { return (hidden ? { display: 'none' } : undefined); }, [hidden]);
+    var style = useMemo(function () {
+        var newStyle = __assign({}, initStyle);
+        if (hidden) {
+            newStyle.display = 'none';
+        }
+        return newStyle;
+    }, [hidden, initStyle]);
     var contentStyle = useMemo(function () {
         return fullHeight
             ? {
@@ -1010,7 +1032,7 @@ var templateObject_1$e, templateObject_2$7;var FormBody = function (_a) {
             }
             : undefined, className: 'FormBody', style: style },
         React.createElement(StyledContentDiv, { style: contentStyle },
-            React.createElement(Grid, { container: true, spacing: spacing, direction: 'column' }, children))));
+            React.createElement(Grid, { container: true, spacing: spacing, direction: 'column', style: fullHeight ? { height: '100%' } : undefined }, children))));
 };var FormFooter = function (_a) {
     var children = _a.children, noLine = _a.noLine, hidden = _a.hidden;
     var spacing = useFormState().spacing;

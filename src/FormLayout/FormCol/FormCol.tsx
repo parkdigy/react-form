@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useId } from 'react';
+import React, { useEffect, useLayoutEffect, useId, useMemo } from 'react';
 import classNames from 'classnames';
 import { FormHelperText, Grid } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
@@ -18,6 +18,7 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
       focused: initFocused,
       labelShrink: initLabelShrink,
       fullWidth: initFullWidth,
+      fullHeight,
       //----------------------------------------------------------------------------------------------------------------
       gap: initGap,
       icon,
@@ -62,7 +63,7 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
     } = useFormState();
 
     /********************************************************************************************************************
-     * Memo - FormState
+     * Variable - FormState
      * ******************************************************************************************************************/
 
     const variant = ifUndefined(initVariant, formVariant);
@@ -73,6 +74,21 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
     const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
     const fullWidth = ifUndefined(initFullWidth, formFullWidth);
     const formColGap = ifUndefined(initGap, formFormColGap);
+
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+
+    const style = useMemo(() => {
+      const newStyle = { ...initStyle };
+      if (hidden) {
+        newStyle.display = 'none';
+      }
+      if (fullHeight) {
+        newStyle.height = '100%';
+      }
+      return newStyle;
+    }, [fullHeight, hidden, initStyle]);
 
     /********************************************************************************************************************
      * ResizeDetector
@@ -136,7 +152,7 @@ const FormCol = React.forwardRef<HTMLDivElement, Props>(
           }}
           size={{ xs: xs || formColAutoXs || 12 }}
           className={classNames(className, 'FormCol', !!label && 'with-label', !!helperText && 'with-helper-text')}
-          style={hidden ? { ...initStyle, display: 'none' } : initStyle}
+          style={style}
           sx={sx}
         >
           <div>
