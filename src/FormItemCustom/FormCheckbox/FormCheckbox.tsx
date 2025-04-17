@@ -164,13 +164,13 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       (newChecked: boolean, notFireOnChange = false) => {
         const finalChecked = _setChecked(newChecked);
 
-        if (error) validate(checked);
-        if (!notFireOnChange && onChange) onChange(checked);
-        onValueChange(name, checked);
+        if (error) validate(finalChecked);
+        if (!notFireOnChange && onChange) onChange(finalChecked);
+        onValueChange(name, finalChecked);
 
         return finalChecked;
       },
-      [_setChecked, checked, error, name, onChange, onValueChange, validate]
+      [_setChecked, error, name, onChange, onValueChange, validate]
     );
 
     /********************************************************************************************************************

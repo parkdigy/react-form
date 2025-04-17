@@ -2668,12 +2668,12 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
         if (notFireOnChange === void 0) { notFireOnChange = false; }
         var finalChecked = _setChecked(newChecked);
         if (error)
-            validate(checked);
+            validate(finalChecked);
         if (!notFireOnChange && onChange)
-            onChange(checked);
-        onValueChange(name, checked);
+            onChange(finalChecked);
+        onValueChange(name, finalChecked);
         return finalChecked;
-    }, [_setChecked, checked, error, name, onChange, onValueChange, validate]);
+    }, [_setChecked, error, name, onChange, onValueChange, validate]);
     /********************************************************************************************************************
      * Function - focus
      * ******************************************************************************************************************/
