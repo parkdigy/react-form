@@ -2663,14 +2663,17 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
     /********************************************************************************************************************
      * State - checked
      * ******************************************************************************************************************/
-    var _p = useAutoUpdateRefState(initChecked, useCallback(function (newChecked) { return !!newChecked; }, [])), checkedRef = _p[0], checked = _p[1], setChecked = _p[2];
-    useFirstSkipEffect(function () {
+    var _p = useAutoUpdateRefState(initChecked, useCallback(function (newChecked) { return !!newChecked; }, [])), checkedRef = _p[0], checked = _p[1], _setChecked = _p[2];
+    var updateChecked = useCallback(function (newChecked, notFireOnChange) {
+        if (notFireOnChange === void 0) { notFireOnChange = false; }
+        var finalChecked = _setChecked(newChecked);
         if (error)
             validate(checked);
-        if (onChange)
+        if (!notFireOnChange && onChange)
             onChange(checked);
         onValueChange(name, checked);
-    }, [checked]);
+        return finalChecked;
+    }, [_setChecked, checked, error, name, onChange, onValueChange, validate]);
     /********************************************************************************************************************
      * Function - focus
      * ******************************************************************************************************************/
@@ -2697,7 +2700,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
             getType: function () { return 'FormCheckbox'; },
             getName: function () { return name; },
             getReset: function () { return initChecked; },
-            reset: function () { return setChecked(initChecked); },
+            reset: function () { return updateChecked(initChecked); },
             getValue: function () { return valueRef.current; },
             setValue: setValue,
             getData: function () { return dataRef.current; },
@@ -2705,7 +2708,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
             getUncheckedValue: function () { return uncheckedValueRef.current; },
             setUncheckedValue: setUncheckedValue,
             getChecked: function () { return checkedRef.current; },
-            setChecked: setChecked,
+            setChecked: updateChecked,
             isExceptValue: function () { return !!exceptValue; },
             isDisabled: function () { return !!disabledRef.current; },
             setDisabled: setDisabled,
@@ -2751,7 +2754,6 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
         onAddValueItem,
         onRemoveValueItem,
         ref,
-        setChecked,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -2759,6 +2761,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
         setUncheckedValue,
         setValue,
         uncheckedValueRef,
+        updateChecked,
         validate,
         valueRef,
     ]);
@@ -2770,19 +2773,19 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
             e.preventDefault();
         }
         else {
-            setChecked(checked);
+            updateChecked(checked);
             nextTick(function () {
                 onValueChangeByUser(name, checked);
                 onRequestSearchSubmit(name, checked);
             });
         }
-    }, [readOnly, setChecked, onValueChangeByUser, name, onRequestSearchSubmit]);
+    }, [readOnly, updateChecked, onValueChangeByUser, name, onRequestSearchSubmit]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(FormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'FormValueItem', 'FormCheckbox'), labelIcon: labelIcon, label: label, error: error, fullWidth: fullWidth, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 2 } }, style: __assign({ width: fullWidth ? '100%' : width || 100, paddingLeft: 3 }, initStyle), sx: sx, hidden: hidden, autoSize: true, controlHeight: height || (size === 'small' ? 35 : 39), controlVerticalCenter: true, control: React.createElement(FormControlLabel, { ref: function (ref) {
                 labelRef.current = ref;
-            }, control: React.createElement(Checkbox, __assign({ name: name, color: color, size: size, inputRef: initInputRef ? initInputRef : inputRef, action: initAction ? initAction : actionRef, checked: checked, checkedIcon: React.createElement(CheckBox, { color: error ? 'error' : undefined }), icon: React.createElement(CheckBoxOutlineBlank, { color: error ? 'error' : undefined }), onChange: handleChange, disabled: disabled || readOnly }, props)), label: React.createElement(Typography, { color: error ? 'error' : readOnly || disabled ? theme.palette.text.disabled : undefined, whiteSpace: 'nowrap' }, text) }) }));
+            }, control: React.createElement(Checkbox, __assign({ name: name, color: color, size: size, slotProps: { input: { ref: initInputRef ? initInputRef : inputRef } }, action: initAction ? initAction : actionRef, checked: checked, checkedIcon: React.createElement(CheckBox, { color: error ? 'error' : undefined }), icon: React.createElement(CheckBoxOutlineBlank, { color: error ? 'error' : undefined }), onChange: handleChange, disabled: disabled || readOnly }, props)), label: React.createElement(Typography, { color: error ? 'error' : readOnly || disabled ? theme.palette.text.disabled : undefined, whiteSpace: 'nowrap' }, text) }) }));
 });
 FormCheckbox.displayName = 'FormCheckbox';var PADDING_LEFT = 3;
 var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {

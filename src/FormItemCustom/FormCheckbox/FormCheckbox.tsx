@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { FormControlLabel, Checkbox, Typography, ButtonBaseActions, useTheme } from '@mui/material';
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
 import { FormCheckboxProps as Props, FormCheckboxCommands, FormCheckboxValue } from './FormCheckbox.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
@@ -155,16 +155,23 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
      * State - checked
      * ******************************************************************************************************************/
 
-    const [checkedRef, checked, setChecked] = useAutoUpdateRefState<boolean, Props['checked']>(
+    const [checkedRef, checked, _setChecked] = useAutoUpdateRefState<boolean, Props['checked']>(
       initChecked,
       useCallback((newChecked) => !!newChecked, [])
     );
 
-    useFirstSkipEffect(() => {
-      if (error) validate(checked);
-      if (onChange) onChange(checked);
-      onValueChange(name, checked);
-    }, [checked]);
+    const updateChecked = useCallback(
+      (newChecked: boolean, notFireOnChange = false) => {
+        const finalChecked = _setChecked(newChecked);
+
+        if (error) validate(checked);
+        if (!notFireOnChange && onChange) onChange(checked);
+        onValueChange(name, checked);
+
+        return finalChecked;
+      },
+      [_setChecked, checked, error, name, onChange, onValueChange, validate]
+    );
 
     /********************************************************************************************************************
      * Function - focus
@@ -195,7 +202,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         getType: () => 'FormCheckbox',
         getName: () => name,
         getReset: () => initChecked,
-        reset: () => setChecked(initChecked),
+        reset: () => updateChecked(initChecked),
         getValue: () => valueRef.current,
         setValue,
         getData: () => dataRef.current,
@@ -203,7 +210,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         getUncheckedValue: () => uncheckedValueRef.current,
         setUncheckedValue,
         getChecked: () => checkedRef.current,
-        setChecked,
+        setChecked: updateChecked,
         isExceptValue: () => !!exceptValue,
         isDisabled: () => !!disabledRef.current,
         setDisabled,
@@ -250,7 +257,6 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       onAddValueItem,
       onRemoveValueItem,
       ref,
-      setChecked,
       setData,
       setDisabled,
       setErrorErrorHelperText,
@@ -258,6 +264,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
       setUncheckedValue,
       setValue,
       uncheckedValueRef,
+      updateChecked,
       validate,
       valueRef,
     ]);
@@ -271,14 +278,14 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
         if (readOnly) {
           e.preventDefault();
         } else {
-          setChecked(checked);
+          updateChecked(checked);
           nextTick(() => {
             onValueChangeByUser(name, checked);
             onRequestSearchSubmit(name, checked);
           });
         }
       },
-      [readOnly, setChecked, onValueChangeByUser, name, onRequestSearchSubmit]
+      [readOnly, updateChecked, onValueChangeByUser, name, onRequestSearchSubmit]
     );
 
     /********************************************************************************************************************
@@ -314,7 +321,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
                 name={name}
                 color={color}
                 size={size}
-                inputRef={initInputRef ? initInputRef : inputRef}
+                slotProps={{ input: { ref: initInputRef ? initInputRef : inputRef } }}
                 action={initAction ? initAction : actionRef}
                 checked={checked}
                 checkedIcon={<CheckBox color={error ? 'error' : undefined} />}

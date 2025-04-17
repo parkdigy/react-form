@@ -19,5 +19,5 @@ export interface FormCheckboxProps
   text?: ReactNode;
   inputRef?: RefObject<HTMLInputElement>;
   action?: RefObject<ButtonBaseActions>;
-  onChange?(checked: boolean): void;
+  onChange?(checked: boolean, notFireOnChange?: boolean): void;
 }
