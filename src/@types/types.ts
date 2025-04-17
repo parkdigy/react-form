@@ -85,7 +85,7 @@ export interface FormItemsValueItemCommands<T> {
 
 export interface FormCheckValueItemCommands<T> {
   getChecked(): boolean;
-  setChecked(checked: boolean): void;
+  setChecked(checked: boolean, notFireOnChange?: boolean): void;
   getUncheckedValue(): T;
   setUncheckedValue(uncheckedValue: T): void;
 }

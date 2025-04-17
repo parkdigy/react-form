@@ -11,5 +11,5 @@ export interface FormCheckboxProps extends CommonSxProps, Omit<CheckboxProps, 's
     text?: ReactNode;
     inputRef?: RefObject<HTMLInputElement>;
     action?: RefObject<ButtonBaseActions>;
-    onChange?(checked: boolean, notFireOnChange?: boolean): void;
+    onChange?(checked: boolean): void;
 }
