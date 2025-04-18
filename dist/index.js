@@ -998,7 +998,7 @@ var templateObject_1$e, templateObject_2$7;var FormBody = function (_a) {
     /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
-    var children = _a.children, hidden = _a.hidden, initStyle = _a.style;
+    var children = _a.children, hidden = _a.hidden, initFullHeight = _a.fullHeight, initStyle = _a.style;
     var _b = useFormState(), spacing = _b.spacing, fullHeight = _b.fullHeight;
     /********************************************************************************************************************
      * ResizeDetector
@@ -1032,7 +1032,7 @@ var templateObject_1$e, templateObject_2$7;var FormBody = function (_a) {
             }
             : undefined, className: 'FormBody', style: style },
         React.createElement(StyledContentDiv, { style: contentStyle },
-            React.createElement(material.Grid, { container: true, spacing: spacing, direction: 'column', style: fullHeight ? { height: '100%' } : undefined }, children))));
+            React.createElement(material.Grid, { container: true, spacing: spacing, direction: 'column', style: initFullHeight ? { height: '100%' } : undefined }, children))));
 };var FormFooter = function (_a) {
     var children = _a.children, noLine = _a.noLine, hidden = _a.hidden;
     var spacing = useFormState().spacing;
