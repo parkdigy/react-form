@@ -129,7 +129,7 @@ const FormNumber = React.forwardRef<FormNumberCommands, Props>(
         if (onValue) {
           finalValue = onValue(finalValue);
         }
-        return finalValue !== undefined ? finalValue.toString() : undefined;
+        return finalValue !== undefined ? finalValue.toString() : '';
       },
       [onValue]
     );

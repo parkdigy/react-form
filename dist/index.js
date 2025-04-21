@@ -1776,7 +1776,7 @@ FormMobile.displayName = 'FormMobile';var NumberFormatCustom = React.forwardRef(
         if (onValue) {
             finalValue = onValue(finalValue);
         }
-        return finalValue !== undefined ? finalValue.toString() : undefined;
+        return finalValue !== undefined ? finalValue.toString() : '';
     }, [onValue]);
     var handleValidate = React.useCallback(function (value) {
         if (onValidate) {
