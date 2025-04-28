@@ -10814,5 +10814,5 @@ var SearchButton$1 = React.memo(SearchButton);var SearchMenuButton = function (_
                     ref.current = r;
                 }
             }
-        } }, props, { onSubmit: handleSubmit })));
+        } }, props, { autoSubmit: true, onSubmit: handleSubmit })));
 });export{Form,FormAutocomplete,FormBlock,FormBody,FormButton$1 as FormButton,FormCheckbox,FormCol,FormCompanyNo,FormContext,FormContextDefaultValue,FormContextProvider,FormDatePicker,FormDateRangePicker,FormDateTimePicker,FormDivider,FormEmail,FormFile,FormFooter,FormHidden,FormImageFile,FormLabel$1 as FormLabel,FormMobile,FormMonthPicker,FormMonthRangePicker,FormNumber,FormPassword,FormPersonalNo,FormRadioGroup,FormRating,FormRow,FormSearch,FormSelect,FormSwitch,FormTag,FormTel,FormText,FormTextEditor,FormTextField,FormTextarea,FormTimePicker,FormToggleButtonGroup,FormUrl,FormYearPicker,FormYearRangePicker,HashSearch,Search,SearchButton$1 as SearchButton,SearchGroup,SearchGroupRow,SearchMenuButton,useFormState};

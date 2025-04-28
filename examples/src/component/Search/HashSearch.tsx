@@ -91,7 +91,7 @@ const HashSearch = () => {
   return (
     <Grid container direction='column' spacing={2}>
       <Grid>
-        <_HashSearch ref={searchRef} autoSubmit onSubmit={handleSubmit} onRequestHashChange={handleRequestHashChange}>
+        <_HashSearch ref={searchRef} onSubmit={handleSubmit} onRequestHashChange={handleRequestHashChange}>
           {leftSearchGroup}
 
           <SearchGroup align='right'>

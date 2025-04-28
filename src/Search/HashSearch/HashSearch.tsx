@@ -296,6 +296,7 @@ export const HashSearch = React.forwardRef<SearchCommands, Props>(
           }
         }}
         {...props}
+        autoSubmit
         onSubmit={handleSubmit}
       />
     );
