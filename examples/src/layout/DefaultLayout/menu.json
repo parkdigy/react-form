@@ -111,5 +111,12 @@
     "depth": 1,
     "uri": "/search",
     "icon": "Search"
+  },
+  {
+    "id": "hash_search",
+    "name": "HashSearch",
+    "depth": 1,
+    "uri": "/hash_search",
+    "icon": "Search"
   }
 ]

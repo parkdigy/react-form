@@ -3,3 +3,4 @@ export * from './SearchGroup';
 export * from './SearchButton';
 export * from './SearchMenuButton';
 export * from './SearchGroupRow';
+export * from './HashSearch';

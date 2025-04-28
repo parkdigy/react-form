@@ -19,6 +19,7 @@ import {
   FormItemFile,
   FormItemDate,
   Search,
+  HashSearch,
 } from '@comp';
 
 const RootRoutes = () => {
@@ -52,6 +53,7 @@ const RootRoutes = () => {
           }
         />
         <Route path='/search' element={<Search />} />
+        <Route path='/hash_search' element={<HashSearch />} />
         <Route path='*' element={<Navigate to={rootPath} />} />
       </>
     ),

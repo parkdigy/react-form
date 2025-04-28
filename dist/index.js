@@ -10549,4 +10549,270 @@ var SearchButton$1 = React.memo(SearchButton);var SearchMenuButton = function (_
     return (React.createElement(React.Fragment, null,
         React.createElement(FormButton$1, __assign({ className: classNames(className, 'SearchMenuButton'), size: 'medium', sx: __assign({ minWidth: 0, px: "".concat(!children ? 9 : 13, "px !important") }, initSx), fullWidth: false }, props, { id: buttonId, "aria-controls": open ? menuId : undefined, "aria-haspopup": 'true', "aria-expanded": open ? 'true' : undefined, endIcon: endIcon, endIconProps: { style: { marginRight: -5 } }, onClick: handleClick }), children),
         React.createElement(material.Menu, { id: menuId, "aria-labelledby": buttonId, anchorEl: anchorEl, open: open, onClose: handleClose, onClick: handleClose, anchorOrigin: anchorOrigin, transformOrigin: transformOrigin }, menuList)));
-};exports.Form=Form;exports.FormAutocomplete=FormAutocomplete;exports.FormBlock=FormBlock;exports.FormBody=FormBody;exports.FormButton=FormButton$1;exports.FormCheckbox=FormCheckbox;exports.FormCol=FormCol;exports.FormCompanyNo=FormCompanyNo;exports.FormContext=FormContext;exports.FormContextDefaultValue=FormContextDefaultValue;exports.FormContextProvider=FormContextProvider;exports.FormDatePicker=FormDatePicker;exports.FormDateRangePicker=FormDateRangePicker;exports.FormDateTimePicker=FormDateTimePicker;exports.FormDivider=FormDivider;exports.FormEmail=FormEmail;exports.FormFile=FormFile;exports.FormFooter=FormFooter;exports.FormHidden=FormHidden;exports.FormImageFile=FormImageFile;exports.FormLabel=FormLabel$1;exports.FormMobile=FormMobile;exports.FormMonthPicker=FormMonthPicker;exports.FormMonthRangePicker=FormMonthRangePicker;exports.FormNumber=FormNumber;exports.FormPassword=FormPassword;exports.FormPersonalNo=FormPersonalNo;exports.FormRadioGroup=FormRadioGroup;exports.FormRating=FormRating;exports.FormRow=FormRow;exports.FormSearch=FormSearch;exports.FormSelect=FormSelect;exports.FormSwitch=FormSwitch;exports.FormTag=FormTag;exports.FormTel=FormTel;exports.FormText=FormText;exports.FormTextEditor=FormTextEditor;exports.FormTextField=FormTextField;exports.FormTextarea=FormTextarea;exports.FormTimePicker=FormTimePicker;exports.FormToggleButtonGroup=FormToggleButtonGroup;exports.FormUrl=FormUrl;exports.FormYearPicker=FormYearPicker;exports.FormYearRangePicker=FormYearRangePicker;exports.Search=Search;exports.SearchButton=SearchButton$1;exports.SearchGroup=SearchGroup;exports.SearchGroupRow=SearchGroupRow;exports.SearchMenuButton=SearchMenuButton;exports.useFormState=useFormState;
+};var HashSearch = React.forwardRef(function (_a, ref) {
+    /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
+    var onSubmit = _a.onSubmit, onRequestHashChange = _a.onRequestHashChange, props = __rest(_a, ["onSubmit", "onRequestHashChange"]);
+    var searchRef = React.useRef(null);
+    var initPathRef = React.useRef(window.location.pathname);
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
+    var _b = React.useState(true), isFirstSearchSubmit = _b[0], setIsFirstSearchSubmit = _b[1];
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+    var deHash = React.useCallback(function () {
+        var values = {};
+        var hash = window.location.hash.substring(1);
+        hash.replace(/([^=&]+)=([^&]*)/g, function (substring, key, value) {
+            values[decodeURIComponent(key)] = decodeURIComponent(value);
+            return substring;
+        });
+        return values;
+    }, []);
+    var hashToSearchValue = React.useCallback(function () {
+        var commands = searchRef.current;
+        if (commands) {
+            commands.resetAll();
+            var hashValues_1 = deHash();
+            Object.keys(hashValues_1).forEach(function (name) {
+                var _a, _b;
+                var value = hashValues_1[name];
+                var itemCommands = commands.getItem(name);
+                if (itemCommands) {
+                    switch (itemCommands.getType()) {
+                        case 'FormCheckbox':
+                            if (util.notEmpty(value)) {
+                                var checkCommands = itemCommands;
+                                if (value.toString() === ((_a = itemCommands.getValue()) === null || _a === void 0 ? void 0 : _a.toString())) {
+                                    checkCommands.setChecked(true);
+                                }
+                                else if (value.toString() === ((_b = checkCommands.getUncheckedValue()) === null || _b === void 0 ? void 0 : _b.toString())) {
+                                    checkCommands.setChecked(false);
+                                }
+                            }
+                            break;
+                        case 'FormDatePicker':
+                        case 'FormDateTimePicker':
+                        case 'FormTimePicker':
+                            {
+                                if (util.notEmpty(value)) {
+                                    var dateCommands = itemCommands;
+                                    var format = dateCommands.getFormValueFormat();
+                                    var itemValue = dayjs(value, format);
+                                    itemCommands.setValue(itemValue.isValid() ? itemValue : null);
+                                }
+                                else {
+                                    itemCommands.setValue(null);
+                                }
+                            }
+                            break;
+                        case 'FormDateRangePicker':
+                            {
+                                var dateRangePickerCommands = itemCommands;
+                                var fromName = dateRangePickerCommands.getFormValueFromName();
+                                var toName = dateRangePickerCommands.getFormValueToName();
+                                var format = dateRangePickerCommands.getFormValueFormat();
+                                if (name === fromName) {
+                                    if (util.notEmpty(value)) {
+                                        var startValue = dayjs(value, format);
+                                        dateRangePickerCommands.setFromValue(startValue.isValid() ? startValue : null);
+                                    }
+                                    else {
+                                        dateRangePickerCommands.setFromValue(null);
+                                    }
+                                }
+                                else if (name === toName) {
+                                    if (util.notEmpty(value)) {
+                                        var endValue = dayjs(value, format);
+                                        dateRangePickerCommands.setToValue(endValue.isValid() ? endValue : null);
+                                    }
+                                    else {
+                                        dateRangePickerCommands.setToValue(null);
+                                    }
+                                }
+                            }
+                            break;
+                        case 'FormYearRangePicker':
+                            {
+                                var dateRangePickerCommands = itemCommands;
+                                var fromName = dateRangePickerCommands.getFormValueFromName();
+                                var toName = dateRangePickerCommands.getFormValueToName();
+                                if (name === fromName) {
+                                    dateRangePickerCommands.setFromValue(util.notEmpty(value) ? Number(value) : null);
+                                }
+                                else if (name === toName) {
+                                    dateRangePickerCommands.setToValue(util.notEmpty(value) ? Number(value) : null);
+                                }
+                            }
+                            break;
+                        case 'FormMonthPicker':
+                            {
+                                var monthCommands = itemCommands;
+                                var yearName = monthCommands.getFormValueYearName();
+                                var monthName = monthCommands.getFormValueMonthName();
+                                if (name === yearName) {
+                                    monthCommands.setYear(util.notEmpty(value) ? Number(value) : null);
+                                }
+                                else if (name === monthName) {
+                                    monthCommands.setMonth(util.notEmpty(value) ? Number(value) : null);
+                                }
+                            }
+                            break;
+                        case 'FormMonthRangePicker':
+                            {
+                                var monthRangeCommands = itemCommands;
+                                var fromYearName = monthRangeCommands.getFormValueFromYearName();
+                                var fromMonthName = monthRangeCommands.getFormValueFromMonthName();
+                                var toYearName = monthRangeCommands.getFormValueToYearName();
+                                var toMonthName = monthRangeCommands.getFormValueToMonthName();
+                                if (name === fromYearName) {
+                                    monthRangeCommands.setFromYear(util.notEmpty(value) ? Number(value) : null);
+                                }
+                                else if (name === fromMonthName) {
+                                    monthRangeCommands.setFromMonth(util.notEmpty(value) ? Number(value) : null);
+                                }
+                                else if (name === toYearName) {
+                                    monthRangeCommands.setToYear(util.notEmpty(value) ? Number(value) : null);
+                                }
+                                else if (name === toMonthName) {
+                                    monthRangeCommands.setToMonth(util.notEmpty(value) ? Number(value) : null);
+                                }
+                            }
+                            break;
+                        default:
+                            commands.setValue(name, value);
+                            break;
+                    }
+                }
+            });
+            return commands.getAllFormValue();
+        }
+    }, [deHash]);
+    /********************************************************************************************************************
+     * hash
+     * ******************************************************************************************************************/
+    React.useEffect(function () {
+        if (window.location.pathname === initPathRef.current) {
+            var data = hashToSearchValue();
+            if (data)
+                onSubmit === null || onSubmit === void 0 ? void 0 : onSubmit(data);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [window.location.hash]);
+    var hashChange = React.useCallback(function (params) {
+        if (onRequestHashChange) {
+            var hashes_1 = [];
+            Object.keys(params).forEach(function (name) {
+                var value = params[name];
+                if (searchRef.current) {
+                    var itemCommands = searchRef.current.getItem(name);
+                    if (itemCommands) {
+                        var resetValue = null;
+                        switch (itemCommands.getType()) {
+                            case 'FormDateRangePicker':
+                            case 'FormYearRangePicker':
+                                {
+                                    var commands = itemCommands;
+                                    var itemName = itemCommands.getName();
+                                    var fromName = commands.getFormValueFromName();
+                                    var fromSuffix = commands.getFormValueFromNameSuffix();
+                                    var toName = commands.getFormValueToName();
+                                    var toSuffix = commands.getFormValueToNameSuffix();
+                                    if (name === fromName) {
+                                        resetValue = searchRef.current.getFormReset(itemName, fromSuffix);
+                                    }
+                                    else if (name === toName) {
+                                        resetValue = searchRef.current.getFormReset(itemName, toSuffix);
+                                    }
+                                }
+                                break;
+                            case 'FormMonthPicker':
+                                {
+                                    var commands = itemCommands;
+                                    var itemName = commands.getName();
+                                    var yearName = commands.getFormValueYearName();
+                                    var yearSuffix = commands.getFormValueYearNameSuffix();
+                                    var monthName = commands.getFormValueMonthName();
+                                    var monthSuffix = commands.getFormValueMonthNameSuffix();
+                                    if (name === yearName) {
+                                        resetValue = searchRef.current.getFormReset(itemName, yearSuffix);
+                                    }
+                                    else if (name === monthName) {
+                                        resetValue = searchRef.current.getFormReset(itemName, monthSuffix);
+                                    }
+                                }
+                                break;
+                            case 'FormMonthRangePicker':
+                                {
+                                    var commands = itemCommands;
+                                    var itemName = commands.getName();
+                                    var fromYearName = commands.getFormValueFromYearName();
+                                    var fromYearSuffix = commands.getFormValueFromYearNameSuffix();
+                                    var fromMonthName = commands.getFormValueFromMonthName();
+                                    var fromMonthSuffix = commands.getFormValueFromMonthNameSuffix();
+                                    var toYearName = commands.getFormValueToYearName();
+                                    var toYearSuffix = commands.getFormValueToYearNameSuffix();
+                                    var toMonthName = commands.getFormValueToMonthName();
+                                    var toMonthSuffix = commands.getFormValueToMonthNameSuffix();
+                                    if (name === fromYearName) {
+                                        resetValue = searchRef.current.getFormReset(itemName, fromYearSuffix);
+                                    }
+                                    else if (name === fromMonthName) {
+                                        resetValue = searchRef.current.getFormReset(itemName, fromMonthSuffix);
+                                    }
+                                    else if (name === toYearName) {
+                                        resetValue = searchRef.current.getFormReset(itemName, toYearSuffix);
+                                    }
+                                    else if (name === toMonthName) {
+                                        resetValue = searchRef.current.getFormReset(itemName, toMonthSuffix);
+                                    }
+                                }
+                                break;
+                            default:
+                                resetValue = searchRef.current.getFormReset(name);
+                                break;
+                        }
+                        if (resetValue != null && !util.equal(resetValue, value) && typeof value !== 'object') {
+                            hashes_1.push("".concat(name, "=").concat(encodeURIComponent(value)));
+                        }
+                    }
+                }
+            });
+            var finalHash = hashes_1.join('&');
+            if (window.location.hash.substring(1) === finalHash) {
+                onSubmit === null || onSubmit === void 0 ? void 0 : onSubmit(params);
+            }
+            else {
+                onRequestHashChange(hashes_1.join('&'));
+            }
+        }
+    }, [onRequestHashChange, onSubmit]);
+    /********************************************************************************************************************
+     * Event Handler
+     * ******************************************************************************************************************/
+    var handleSubmit = React.useCallback(function (data) {
+        if (isFirstSearchSubmit) {
+            setIsFirstSearchSubmit(false);
+        }
+        else {
+            hashChange(data);
+        }
+    }, [hashChange, isFirstSearchSubmit]);
+    /********************************************************************************************************************
+     * Render
+     * ******************************************************************************************************************/
+    return (React.createElement(Search, __assign({ ref: function (r) {
+            searchRef.current = r;
+            if (ref) {
+                if (typeof ref === 'function') {
+                    ref(r);
+                }
+                else {
+                    ref.current = r;
+                }
+            }
+        } }, props, { onSubmit: handleSubmit })));
+});exports.Form=Form;exports.FormAutocomplete=FormAutocomplete;exports.FormBlock=FormBlock;exports.FormBody=FormBody;exports.FormButton=FormButton$1;exports.FormCheckbox=FormCheckbox;exports.FormCol=FormCol;exports.FormCompanyNo=FormCompanyNo;exports.FormContext=FormContext;exports.FormContextDefaultValue=FormContextDefaultValue;exports.FormContextProvider=FormContextProvider;exports.FormDatePicker=FormDatePicker;exports.FormDateRangePicker=FormDateRangePicker;exports.FormDateTimePicker=FormDateTimePicker;exports.FormDivider=FormDivider;exports.FormEmail=FormEmail;exports.FormFile=FormFile;exports.FormFooter=FormFooter;exports.FormHidden=FormHidden;exports.FormImageFile=FormImageFile;exports.FormLabel=FormLabel$1;exports.FormMobile=FormMobile;exports.FormMonthPicker=FormMonthPicker;exports.FormMonthRangePicker=FormMonthRangePicker;exports.FormNumber=FormNumber;exports.FormPassword=FormPassword;exports.FormPersonalNo=FormPersonalNo;exports.FormRadioGroup=FormRadioGroup;exports.FormRating=FormRating;exports.FormRow=FormRow;exports.FormSearch=FormSearch;exports.FormSelect=FormSelect;exports.FormSwitch=FormSwitch;exports.FormTag=FormTag;exports.FormTel=FormTel;exports.FormText=FormText;exports.FormTextEditor=FormTextEditor;exports.FormTextField=FormTextField;exports.FormTextarea=FormTextarea;exports.FormTimePicker=FormTimePicker;exports.FormToggleButtonGroup=FormToggleButtonGroup;exports.FormUrl=FormUrl;exports.FormYearPicker=FormYearPicker;exports.FormYearRangePicker=FormYearRangePicker;exports.HashSearch=HashSearch;exports.Search=Search;exports.SearchButton=SearchButton$1;exports.SearchGroup=SearchGroup;exports.SearchGroupRow=SearchGroupRow;exports.SearchMenuButton=SearchMenuButton;exports.useFormState=useFormState;
