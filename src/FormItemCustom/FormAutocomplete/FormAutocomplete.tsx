@@ -1,4 +1,14 @@
-import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect, useRef, useMemo } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useId,
+  ReactNode,
+  useLayoutEffect,
+  useRef,
+  useMemo,
+  FocusEvent,
+} from 'react';
 import classNames from 'classnames';
 import {
   Autocomplete,
@@ -67,6 +77,8 @@ const FormAutocomplete = ToForwardRefExoticComponent(
       onChange,
       onValue,
       onValidate,
+      onFocus,
+      onBlur,
       //----------------------------------------------------------------------------------------------------------------
       className,
       style: initStyle,
@@ -700,8 +712,17 @@ const FormAutocomplete = ToForwardRefExoticComponent(
                 ...(variant === 'outlined' && size === 'small' ? { marginTop: 1 } : undefined),
               },
               tabIndex: readOnly || disabled ? -1 : undefined,
+              onFocus: (e: FocusEvent<HTMLInputElement>) => {
+                onFocus?.(e);
+                params?.inputProps.onFocus?.(e);
+              },
+              onBlur: (e: FocusEvent<HTMLInputElement>) => {
+                onBlur?.(e);
+                params?.inputProps.onBlur?.(e);
+              },
             },
           };
+
           return (
             <FormTextField
               {...params}

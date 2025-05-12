@@ -34,7 +34,7 @@ export interface FormAutocompleteProps<
   Multiple extends boolean | undefined = undefined,
 > extends CommonSxProps,
     Omit<FormValueItemProps<FormAutocompleteValue<T, Multiple>>, 'value'>,
-    Pick<FormTextFieldProps<T>, 'required' | 'focused' | 'labelShrink'> {
+    Pick<FormTextFieldProps<T>, 'required' | 'focused' | 'labelShrink' | 'onFocus' | 'onBlur'> {
   value?: FormAutocompleteValue<T, Multiple>;
   items?: FormAutocompleteItems<T>;
   multiple?: Multiple;

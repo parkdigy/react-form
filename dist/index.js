@@ -4050,7 +4050,7 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
     //----------------------------------------------------------------------------------------------------------------
     name = _a.name, labelIcon = _a.labelIcon, label = _a.label, initLoading = _a.loading, initItems = _a.items, initValue = _a.value, initData = _a.data, initError = _a.error, helperText = _a.helperText, initDisabled = _a.disabled, readOnly = _a.readOnly, required = _a.required, exceptValue = _a.exceptValue, width = _a.width, placeholder = _a.placeholder, multiple = _a.multiple, _b = _a.formValueSeparator, formValueSeparator = _b === void 0 ? ',' : _b, formValueSort = _a.formValueSort, disablePortal = _a.disablePortal, _c = _a.noOptionsText, noOptionsText = _c === void 0 ? '항목이 없습니다' : _c, loadingText = _a.loadingText, limitTags = _a.limitTags, getLimitTagsText = _a.getLimitTagsText, openOnFocus = _a.openOnFocus, disableClearable = _a.disableClearable, async = _a.async, initHidden = _a.hidden, onLoadItems = _a.onLoadItems, onAsyncLoadValueItem = _a.onAsyncLoadValueItem, onRenderItem = _a.onRenderItem, onRenderTag = _a.onRenderTag, onAddItem = _a.onAddItem, getOptionDisabled = _a.getOptionDisabled, 
     //----------------------------------------------------------------------------------------------------------------
-    onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, 
+    onChange = _a.onChange, onValue = _a.onValue, onValidate = _a.onValidate, onFocus = _a.onFocus, onBlur = _a.onBlur, 
     //----------------------------------------------------------------------------------------------------------------
     className = _a.className, initStyle = _a.style, sx = _a.sx;
     /********************************************************************************************************************
@@ -4541,7 +4541,15 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
                     }, endAdornment: (React.createElement(React.Fragment, null,
                         loading || isOnGetItemLoading ? React.createElement(material.CircularProgress, { color: 'inherit', size: 20 }) : null,
                         params.InputProps.endAdornment)) }),
-                htmlInput: __assign(__assign({}, params.inputProps), { style: __assign(__assign({}, (_a = params.inputProps) === null || _a === void 0 ? void 0 : _a.style), (variant === 'outlined' && size === 'small' ? { marginTop: 1 } : undefined)), tabIndex: readOnly || disabled ? -1 : undefined }),
+                htmlInput: __assign(__assign({}, params.inputProps), { style: __assign(__assign({}, (_a = params.inputProps) === null || _a === void 0 ? void 0 : _a.style), (variant === 'outlined' && size === 'small' ? { marginTop: 1 } : undefined)), tabIndex: readOnly || disabled ? -1 : undefined, onFocus: function (e) {
+                        var _a, _b;
+                        onFocus === null || onFocus === void 0 ? void 0 : onFocus(e);
+                        (_b = params === null || params === void 0 ? void 0 : (_a = params.inputProps).onFocus) === null || _b === void 0 ? void 0 : _b.call(_a, e);
+                    }, onBlur: function (e) {
+                        var _a, _b;
+                        onBlur === null || onBlur === void 0 ? void 0 : onBlur(e);
+                        (_b = params === null || params === void 0 ? void 0 : (_a = params.inputProps).onBlur) === null || _b === void 0 ? void 0 : _b.call(_a, e);
+                    } }),
             };
             return (React.createElement(FormTextField, __assign({}, params, { ref: textFieldRef, name: name, variant: variant, size: size, color: color, labelIcon: labelIcon, label: label, labelShrink: labelShrink, required: required, focused: focused, error: error, readOnly: readOnly, helperText: error ? errorHelperText : helperText, slotProps: slotProps, placeholder: placeholder, noFormValueItem: true })));
         } }));

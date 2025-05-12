@@ -12,7 +12,7 @@ export interface FormAutocompleteItem<T extends FormAutocompleteSingleValue> {
 export type FormAutocompleteItems<T extends FormAutocompleteSingleValue> = FormAutocompleteItem<T>[];
 export type FormAutocompleteValue<T extends FormAutocompleteSingleValue, Multiple extends boolean | undefined> = ([Multiple] extends [true] ? T[] : T) | undefined;
 export type FormAutocompleteComponentValue<T extends FormAutocompleteSingleValue, Multiple extends boolean | undefined> = ([Multiple] extends [true] ? FormAutocompleteItem<T>[] : FormAutocompleteItem<T>) | null;
-export interface FormAutocompleteProps<T extends FormAutocompleteSingleValue, Multiple extends boolean | undefined = undefined> extends CommonSxProps, Omit<FormValueItemProps<FormAutocompleteValue<T, Multiple>>, 'value'>, Pick<FormTextFieldProps<T>, 'required' | 'focused' | 'labelShrink'> {
+export interface FormAutocompleteProps<T extends FormAutocompleteSingleValue, Multiple extends boolean | undefined = undefined> extends CommonSxProps, Omit<FormValueItemProps<FormAutocompleteValue<T, Multiple>>, 'value'>, Pick<FormTextFieldProps<T>, 'required' | 'focused' | 'labelShrink' | 'onFocus' | 'onBlur'> {
     value?: FormAutocompleteValue<T, Multiple>;
     items?: FormAutocompleteItems<T>;
     multiple?: Multiple;
