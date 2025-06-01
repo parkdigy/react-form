@@ -16,7 +16,7 @@ import {
   FormValueMap,
   FormBody,
   FormFooter,
-  FormCompanyNo,
+  FormBusinessNo,
   FormPersonalNo,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
@@ -30,7 +30,7 @@ const _components: React.ForwardRefExoticComponent<any>[] = [
   FormMobile,
   FormUrl,
   FormSearch,
-  FormCompanyNo,
+  FormBusinessNo,
   FormPersonalNo,
 ];
 
@@ -78,7 +78,7 @@ const FormItemText = () => {
       case FormSearch.displayName:
         setValue('검색어');
         break;
-      case FormCompanyNo.displayName:
+      case FormBusinessNo.displayName:
         setValue('1234567890');
         break;
       case FormPersonalNo.displayName:

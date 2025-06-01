@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import FormText from '../FormText';
 import classNames from 'classnames';
-import { FormCompanyNoProps as Props, FormCompanyNoCommands, FormCompanyNoValue } from './FormCompanyNo.types';
-import { companyNoAutoDash } from '@pdg/util';
+import { FormBusinessNoProps as Props, FormBusinessNoCommands, FormBusinessNoValue } from './FormBusinessNo.types';
+import { businessNoAutoDash } from '@pdg/util';
 
-const FormCompanyNo = React.forwardRef<FormCompanyNoCommands, Props>(
+const FormBusinessNo = React.forwardRef<FormBusinessNoCommands, Props>(
   (
     {
       className,
@@ -19,8 +19,8 @@ const FormCompanyNo = React.forwardRef<FormCompanyNoCommands, Props>(
      * ******************************************************************************************************************/
 
     const handleValue = useCallback(
-      (value: FormCompanyNoValue) => {
-        const newValue = companyNoAutoDash(value.replace(/[^0-9]/gi, ''));
+      (value: FormBusinessNoValue) => {
+        const newValue = businessNoAutoDash(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
       },
       [onValue]
@@ -33,7 +33,7 @@ const FormCompanyNo = React.forwardRef<FormCompanyNoCommands, Props>(
     return (
       <FormText
         ref={ref}
-        className={classNames(className, 'FormCompanyNo')}
+        className={classNames(className, 'FormBusinessNo')}
         maxLength={12}
         validPattern={validPattern}
         onValue={handleValue}
@@ -43,6 +43,6 @@ const FormCompanyNo = React.forwardRef<FormCompanyNoCommands, Props>(
   }
 );
 
-FormCompanyNo.displayName = 'FormCompanyNo';
+FormBusinessNo.displayName = 'FormBusinessNo';
 
-export default FormCompanyNo;
+export default FormBusinessNo;

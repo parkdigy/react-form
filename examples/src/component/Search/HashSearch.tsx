@@ -18,7 +18,7 @@ import {
 import { FormHelperText, Grid, MenuItem, MenuList } from '@mui/material';
 import dayjs from 'dayjs';
 import { lv } from '@pdg/util';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 const HashSearch = () => {
   /********************************************************************************************************************

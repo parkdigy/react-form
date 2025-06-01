@@ -7,7 +7,7 @@ https://parkdigy.github.io/react-form/
 
 ## 설치
 ```shell
-npm install -D @pdg/react-form @mui/material @mui/icons-material @emotion/react @emotion/styled @mui/x-date-pickers @pdg/react-component @pdg/react-dialog @pdg/react-hook @pdg/util @tinymce/tinymce-react classnames dayjs react-number-format react-resize-detector simplebar-react
+npm install -D @pdg/react-form
 ```
 
 ### simplebar-react css 추가

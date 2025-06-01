@@ -53,6 +53,7 @@ const FormItemTextEditor = () => {
           <FormRow>
             <FormCol>
               <FormTextEditor
+                apiKey='[your-api-key]'
                 required
                 name='FormTextEditor'
                 label='FormTextEditor'

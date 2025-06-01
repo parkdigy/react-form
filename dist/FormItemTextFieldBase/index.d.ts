@@ -11,5 +11,5 @@ export * from './FormSearch';
 export * from './FormTextarea';
 export * from './FormUrl';
 export * from './FormSelect';
-export * from './FormCompanyNo';
+export * from './FormBusinessNo';
 export * from './FormPersonalNo';

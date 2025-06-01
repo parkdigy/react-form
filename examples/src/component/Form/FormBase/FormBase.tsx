@@ -29,7 +29,7 @@ import {
   FormDateRangePicker,
   FormBody,
   FormFooter,
-  FormCompanyNo,
+  FormBusinessNo,
   FormPersonalNo,
   FormHidden,
 } from '../../../../../src';
@@ -263,7 +263,7 @@ const FormBase = () => {
             </FormRow>
             <FormRow>
               <FormCol xs={3}>
-                <FormCompanyNo name='FormCompanyNo' label='FormCompanyNo' />
+                <FormBusinessNo name='FormBusinessNo' label='FormBusinessNo' />
               </FormCol>
               <FormCol xs={3}>
                 <FormPersonalNo name='FormPersonalNo' label='FormPersonalNo' />
