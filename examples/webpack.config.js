@@ -1,6 +1,7 @@
 /* eslint-disable */
 const path = require('path');
 const webpack = require('webpack');
+const env = require('dotenv').config({ path: path.resolve(__dirname, './../.env') }).parsed;
 const ESLintPlugin = require('eslint-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -8,8 +9,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const { SourceMapDevToolPlugin } = require('webpack');
 /* eslint-enable */
 
 /********************************************************************************************************************
@@ -56,7 +55,7 @@ const alias = {
  * Options
  * ******************************************************************************************************************/
 
-const options = {
+module.exports = {
   mode,
   devtool,
   target: 'web',
@@ -69,7 +68,7 @@ const options = {
   },
   output: {
     path: outputPath,
-    publicPath: isProduction ? '/react-form/examples/dist/' : '/',
+    publicPath: isProduction ? '/react-admin-layout/examples/dist/' : '/',
     filename: '[name].[chunkhash].js',
     chunkFilename: 'chunks/[name].[chunkhash].js',
   },
@@ -128,6 +127,7 @@ const options = {
     new ForkTsCheckerWebpackPlugin(),
     new ESLintPlugin({
       extensions: ['js', 'jsx', 'ts', 'tsx'],
+      failOnError: isProduction,
       exclude: [
         path.resolve(__dirname, 'node_modules'),
         path.resolve(__dirname, 'dist'),
@@ -150,20 +150,14 @@ const options = {
           new CopyPlugin({
             patterns: [{ from: './public/robots.txt', to: outputPath }],
           }),
-          new BundleAnalyzerPlugin({
-            openAnalyzer: false,
-            analyzerMode: 'static',
-            reportFilename: '../build/report.html',
-          }),
         ]
       : [
-          new SourceMapDevToolPlugin({
+          new webpack.SourceMapDevToolPlugin({
             filename: '[file].map',
           }),
           new FriendlyErrorsWebpackPlugin({
             clearConsole: true,
           }),
-          new webpack.HotModuleReplacementPlugin(),
           new ReactRefreshWebpackPlugin({ overlay: false }),
         ]),
   ],
@@ -171,7 +165,7 @@ const options = {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        include: [path.resolve(__dirname, 'src'), path.resolve(__dirname, '../src')],
+        // include: [path.resolve(__dirname, 'src'), path.resolve(__dirname, '../src')],
         exclude: /node_modules/,
         use: [
           {
@@ -214,5 +208,3 @@ const options = {
     ],
   },
 };
-
-module.exports = options;

@@ -10,10 +10,10 @@ import { useFormState } from '../../FormContext';
 import LinkDialog from './LinkDialog.private';
 import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
 import { PdgIcon } from '@pdg/react-component';
-import './FormFile.scss';
 import { StyledPdgButton } from './FormFile.style.private';
 import { useResizeDetector } from 'react-resize-detector';
 import { getFinalValue } from './FormFile.function.private';
+import './FormFile.scss';
 
 const FILE_VALUE = '';
 
