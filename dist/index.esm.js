@@ -1,4 +1,4 @@
-import React,{createContext,useContext,useRef,useCallback,useMemo,useLayoutEffect,useEffect,useState,useId}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,ifUndefined,nextTick,notEmpty,equal,telNoAutoDash,businessNoAutoDash,personalNoAutoDash}from'@pdg/util';import dayjs from'dayjs';import {useAutoUpdateLayoutRef,useAutoUpdateState,useAutoUpdateRefState,useForceUpdate,useAutoUpdateRef,useFirstSkipEffect}from'@pdg/react-hook';import {PdgButton,PdgIcon,PdgIconText}from'@pdg/react-component';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBoxOutlineBlank,CheckBox,RadioButtonChecked,RadioButtonUnchecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';function insertStyle(css) {
+import React,{createContext,useContext,useRef,useCallback,useMemo,useLayoutEffect,useEffect,useState,useId}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import dayjs from'dayjs';import {useAutoUpdateLayoutRef,useAutoUpdateState,useAutoUpdateRefState,useForceUpdate,useAutoUpdateRef,useFirstSkipEffect}from'@pdg/react-hook';import {PdgButton,PdgIcon,PdgIconText}from'@pdg/react-component';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBoxOutlineBlank,CheckBox,RadioButtonChecked,RadioButtonUnchecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';function insertStyle(css) {
     if (!css || typeof window === 'undefined')
         return;
     const style = document.createElement('style');
@@ -63,7 +63,179 @@ function __makeTemplateObject(cooked, raw) {
 typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};var FormContextDefaultValue = {
+};function businessNoAutoDash(businessNo, allowCharacters) {
+    if (allowCharacters === void 0) { allowCharacters = '*'; }
+    var str = businessNo.replace(new RegExp("[^0-9".concat(allowCharacters, "]"), 'g'), '');
+    var values = [str.slice(0, 3)];
+    if (str.length > 3)
+        values.push(str.slice(3, 5));
+    if (str.length > 5)
+        values.push(str.slice(5));
+    return values.join('-');
+}/********************************************************************************************************************
+ * 값이 비어있는지 확인하는 함수
+ * - Array 값이 비어있거나, Object 값이 비어있거나, 문자열이 비어있거나, null 또는 undefined 인 경우 true 반환
+ * @param v 확인할 값
+ * @returns 값이 비어있는지 여부
+ * ******************************************************************************************************************/
+function empty(v) {
+    var result = false;
+    if (v == null) {
+        result = true;
+    }
+    else if (typeof v === 'string') {
+        result = v === '';
+    }
+    else if (typeof v === 'object') {
+        if (Array.isArray(v)) {
+            result = v.length === 0;
+        }
+        else if (!(v instanceof Date)) {
+            result = Object.entries(v).length === 0;
+        }
+    }
+    return result;
+}/********************************************************************************************************************
+ * 값이 비어있지 않은지 확인합니다.
+ * - Array 값이 비어있지 않거나, Object 값이 비어있지 않거나, 문자열이 비어있지 않거나, null 또는 undefined 가 아닌 경우 true 반환
+ * @param v 확인할 값
+ * @returns 값이 비어있는지 여부
+ * ******************************************************************************************************************/
+function notEmpty(v) {
+    return !empty(v);
+}/********************************************************************************************************************
+ * 두 값이 동일한지 확인하는 함수
+ * @param v1 비교할 첫 번째 값
+ * @param v2 비교할 두 번째 값
+ * @returns 두 값이 동일한지 여부
+ * ******************************************************************************************************************/
+function equal(v1, v2) {
+    if (v1 === v2)
+        return true;
+    if (typeof v1 !== typeof v2)
+        return false;
+    if (v1 == null || v2 == null)
+        return false;
+    if (typeof v1 === 'object' && typeof v2 === 'object') {
+        return JSON.stringify(v1) === JSON.stringify(v2);
+    }
+    else {
+        return v1 === v2;
+    }
+}/********************************************************************************************************************
+ * 배열에 특정 값이 포함되어 있는지 여부를 반환하는 함수
+ * @param list 확인할 배열 또는 문자열
+ * @param value 확인할 값
+ * @returns 포함 여부
+ * ******************************************************************************************************************/
+function ifUndefined(v, v2) {
+    return v === undefined ? v2 : v;
+}/********************************************************************************************************************
+ * 값이 undefined 이 아닌 경우 대체 값을 반환하는 함수
+ * @param v 확인할 값
+ * @param v2 대체 값
+ * @returns 최종 값
+ * ******************************************************************************************************************/
+
+typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+};/********************************************************************************************************************
+ * {label, value, ...other} 객체 생성하여 반환하는 함수
+ * @param label - label
+ * @param value - value
+ * @param other - 기타 속성
+ * @returns 생성된 객체
+ * ******************************************************************************************************************/
+function nextTick(callback, delay) {
+    return setTimeout(callback, delay === undefined ? 1 : delay);
+}/********************************************************************************************************************
+ * UUID 생성하는 함수
+ * @param removeDash 하이픈 제거 여부
+ * @returns UUID
+ * ******************************************************************************************************************/
+function telNoAutoDash(v, allowCharacters) {
+    if (allowCharacters === void 0) { allowCharacters = '*'; }
+    if (v === undefined)
+        return undefined;
+    if (v === null)
+        return null;
+    var str = v.replace(new RegExp("[^0-9".concat(allowCharacters, "]"), 'g'), '');
+    var isLastDash = v.substring(v.length - 1, v.length) === '-';
+    if (str.substring(0, 1) !== '0' && !['15', '16', '18'].includes(str.substring(0, 2))) {
+        return str;
+    }
+    var tmp = '';
+    var preLen;
+    switch (str.substring(0, 2)) {
+        case '02':
+            preLen = 2;
+            break;
+        case '15':
+        case '16':
+        case '18':
+            preLen = 4;
+            break;
+        default:
+            preLen = 3;
+    }
+    if (['15', '16', '18'].includes(str.substring(0, 2))) {
+        if (str.length <= preLen) {
+            tmp = str;
+        }
+        else if (str.length <= preLen + 4) {
+            tmp += str.substring(0, preLen);
+            tmp += '-';
+            tmp += str.substring(preLen);
+        }
+        else {
+            tmp = str;
+        }
+    }
+    else if (str.length <= preLen) {
+        tmp = str;
+    }
+    else if (str.length <= preLen + 3) {
+        tmp += str.substring(0, preLen);
+        tmp += '-';
+        tmp += str.substring(preLen);
+    }
+    else if (str.length <= preLen + 7) {
+        tmp += str.substring(0, preLen);
+        tmp += '-';
+        tmp += str.substring(preLen, preLen + 3);
+        tmp += '-';
+        tmp += str.substring(preLen + 3);
+    }
+    else if (str.length <= preLen + 8) {
+        tmp += str.substring(0, preLen);
+        tmp += '-';
+        tmp += str.substring(preLen, preLen + 4);
+        tmp += '-';
+        tmp += str.substring(preLen + 4);
+    }
+    else {
+        tmp = str;
+    }
+    if (isLastDash) {
+        if (str.length === preLen) {
+            tmp += '-';
+        }
+    }
+    return tmp;
+}/********************************************************************************************************************
+ * 전화번호 마스킹
+ * ******************************************************************************************************************/
+function personalNoAutoDash(personalNo, allowCharacters) {
+    if (allowCharacters === void 0) { allowCharacters = '*'; }
+    var str = personalNo.replace(new RegExp("[^0-9".concat(allowCharacters, "]"), 'g'), '');
+    var values = [str.slice(0, 6)];
+    if (str.length > 6)
+        values.push(str.slice(6));
+    return values.join('-');
+}/********************************************************************************************************************
+ * 주민등록번호 마스킹
+ * ******************************************************************************************************************/var FormContextDefaultValue = {
     id: 'init',
     variant: 'outlined',
     size: 'medium',
