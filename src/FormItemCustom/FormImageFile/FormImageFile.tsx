@@ -191,7 +191,7 @@ const FormImageFile = React.forwardRef<FormImageFileCommands, Props>(
           value={value}
           preview={
             preview && value ? (
-              <a href={value} target='_blank'>
+              <a href={value} target='_blank' tabIndex={-1}>
                 <Tooltip
                   title={
                     <div style={{ paddingTop: 3, paddingBottom: 3 }}>

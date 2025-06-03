@@ -445,7 +445,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                   error={error}
                   slotProps={{
                     inputLabel: labelShrink ? { shrink: labelShrink } : undefined,
-                    htmlInput: { readOnly: true },
+                    htmlInput: { readOnly: true, tabIndex: tabIndex },
                     input: {
                       endAdornment: (
                         <InputAdornment position='end'>

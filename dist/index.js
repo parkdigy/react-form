@@ -9348,7 +9348,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
                         React.createElement(reactComponent.PdgIcon, { style: { verticalAlign: 'middle', marginRight: 4 } }, labelIcon),
                         React.createElement("span", { style: { verticalAlign: 'middle' } }, initLabel))) : (initLabel), size: size, required: required, value: value || '', focused: focused, disabled: disabled, fullWidth: true, tabIndex: tabIndex, error: error, slotProps: {
                         inputLabel: labelShrink ? { shrink: labelShrink } : undefined,
-                        htmlInput: { readOnly: true },
+                        htmlInput: { readOnly: true, tabIndex: tabIndex },
                         input: {
                             endAdornment: (React.createElement(material.InputAdornment, { position: 'end' },
                                 React.createElement("div", { className: 'input-file-wrap' },
@@ -9507,7 +9507,7 @@ FormFile.displayName = 'FormFile';insertStyle(".FormImageFile .preview-img{max-w
      * Render
      * ******************************************************************************************************************/
     return (React.createElement(React.Fragment, null,
-        React.createElement(FormFile, __assign({ ref: ref, className: classNames(className, 'FormImageFile'), accept: accept, value: value, preview: preview && value ? (React.createElement("a", { href: value, target: '_blank' },
+        React.createElement(FormFile, __assign({ ref: ref, className: classNames(className, 'FormImageFile'), accept: accept, value: value, preview: preview && value ? (React.createElement("a", { href: value, target: '_blank', tabIndex: -1 },
                 React.createElement(material.Tooltip, { title: React.createElement("div", { style: { paddingTop: 3, paddingBottom: 3 } },
                         React.createElement("img", { src: value, style: { maxWidth: '100%', verticalAlign: 'middle' }, alt: '' })) },
                     React.createElement("img", { className: 'preview-img', src: value, style: { maxHeight: previewMaxHeight || undefined }, alt: '' })))) : undefined, onChange: handleChange, onFile: handleFile, onLink: handleLink }, props)),
