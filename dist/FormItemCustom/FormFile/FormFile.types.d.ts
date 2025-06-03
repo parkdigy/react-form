@@ -5,6 +5,7 @@ export interface FormFileProps extends CommonSxProps, FormValueItemProps<FormFil
     required?: boolean;
     accept?: string;
     hideUrl?: boolean;
+    tabIndex?: number;
     uploadLabel?: string;
     uploadTabIndex?: number;
     hideUpload?: boolean;

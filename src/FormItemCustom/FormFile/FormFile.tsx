@@ -29,6 +29,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
       //----------------------------------------------------------------------------------------------------------------
       accept,
       hideUrl,
+      tabIndex,
       uploadLabel,
       uploadTabIndex,
       hideUpload,
@@ -440,6 +441,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
                   focused={focused}
                   disabled={disabled}
                   fullWidth
+                  tabIndex={tabIndex}
                   error={error}
                   slotProps={{
                     inputLabel: labelShrink ? { shrink: labelShrink } : undefined,
