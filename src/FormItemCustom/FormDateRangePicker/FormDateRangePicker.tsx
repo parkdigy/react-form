@@ -56,7 +56,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
       readOnly,
       readOnlyStart,
       readOnlyEnd,
-      readOnlyInput,
+      enableKeyboardInput,
       disabled: initDisabled,
       inputWidth,
       exceptValue,
@@ -721,7 +721,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
                     focused={focused || (open && selectType === 'start')}
                     required={required || requiredStart}
                     readOnly={readOnly || readOnlyStart}
-                    readOnlyInput={readOnlyInput}
+                    enableKeyboardInput={enableKeyboardInput}
                     icon={startIcon || icon}
                     startAdornment={startStartAdornment || startAdornment}
                     endAdornment={startEndAdornment || endAdornment}
@@ -743,7 +743,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
                     focused={focused || (open && selectType === 'end')}
                     required={required || requiredEnd}
                     readOnly={readOnly || readOnlyEnd}
-                    readOnlyInput={readOnlyInput}
+                    enableKeyboardInput={enableKeyboardInput}
                     icon={endIcon || icon}
                     startAdornment={endStartAdornment || startAdornment}
                     endAdornment={endEndAdornment || endAdornment}

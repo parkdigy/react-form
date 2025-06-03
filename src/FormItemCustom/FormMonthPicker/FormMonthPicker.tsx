@@ -60,7 +60,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
       minValue = DEFAULT_MIN_VALUE,
       maxValue = DEFAULT_MAX_VALUE,
       inputWidth,
-      readOnlyInput,
+      enableKeyboardInput,
       startAdornment,
       endAdornment,
       formValueYearNameSuffix = '_year',
@@ -505,7 +505,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
                   focused={focused}
                   required={required}
                   readOnly={readOnly}
-                  readOnlyInput={readOnlyInput}
+                  enableKeyboardInput={enableKeyboardInput}
                   icon={icon}
                   startAdornment={startAdornment}
                   endAdornment={endAdornment}

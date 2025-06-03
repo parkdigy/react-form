@@ -34,7 +34,7 @@ export interface FormMonthRangePickerProps
   minValue?: FormMonthRangePickerBaseValue;
   maxValue?: FormMonthRangePickerBaseValue;
   inputWidth?: number | string;
-  readOnlyInput?: boolean;
+  enableKeyboardInput?: boolean;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
   formValueFromYearNameSuffix?: string;

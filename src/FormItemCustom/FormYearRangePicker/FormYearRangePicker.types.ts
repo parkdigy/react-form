@@ -33,7 +33,7 @@ export interface FormYearRangePickerProps
   minYear?: FormYearRangePickerBaseValue;
   maxYear?: FormYearRangePickerBaseValue;
   inputWidth?: number | string;
-  readOnlyInput?: boolean;
+  enableKeyboardInput?: boolean;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
   formValueFromNameSuffix?: string;

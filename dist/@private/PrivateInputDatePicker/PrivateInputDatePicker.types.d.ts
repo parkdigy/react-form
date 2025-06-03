@@ -19,7 +19,7 @@ export interface PrivateInputDatePickerProps extends CommonSxProps, Pick<Desktop
     minDate?: Dayjs;
     maxDate?: Dayjs;
     align?: 'left' | 'center' | 'right';
-    readOnlyInput?: boolean;
+    enableKeyboardInput?: boolean;
     onChange(newValue: PrivateInputDatePickerValue): void;
     onFocus: TextFieldProps['onFocus'];
     onBlur?: TextFieldProps['onBlur'];

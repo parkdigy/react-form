@@ -17,7 +17,7 @@ export interface FormDateRangePickerProps extends CommonSxProps, Omit<FormValueI
     requiredEnd?: boolean;
     readOnlyStart?: boolean;
     readOnlyEnd?: boolean;
-    readOnlyInput?: boolean;
+    enableKeyboardInput?: boolean;
     labelShrink?: boolean;
     calendarCount?: FormDateRangePickerCalendarCount;
     format?: string;

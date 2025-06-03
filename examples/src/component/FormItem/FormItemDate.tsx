@@ -35,7 +35,7 @@ const FormItemDate = () => {
       <FormBody>
         <FormRow label='date/time' line>
           <FormCol>
-            <FormDatePicker name='FormDatePicker' label='FormDatePicker' />
+            <FormDatePicker name='FormDatePicker' label='FormDatePicker' readOnly />
           </FormCol>
           <FormCol>
             <FormDateTimePicker name='FormDateTimePicker' label='FormDateTimePicker' time='minute' />

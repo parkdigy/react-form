@@ -51,9 +51,9 @@ const Search = () => {
           lv('Item 5', 5),
         ]}
       />
-      <FormDatePicker name='FormDatePicker' readOnlyInput disablePast />
+      <FormDatePicker name='FormDatePicker' disablePast />
       <FormDateTimePicker name='FormDateTimePicker' time='minute' disablePast maxDate={dayjs().add(1, 'day')} />
-      <FormDateRangePicker name='search_date' readOnlyInput minDate={dayjs().subtract(20, 'day')} />
+      <FormDateRangePicker name='search_date' minDate={dayjs().subtract(20, 'day')} />
       <FormToggleButtonGroup
         name='FormToggleButtonGroup'
         label='옵션'

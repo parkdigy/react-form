@@ -69,7 +69,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       minValue = DEFAULT_MIN_VALUE,
       maxValue = DEFAULT_MAX_VALUE,
       inputWidth,
-      readOnlyInput,
+      enableKeyboardInput,
       startAdornment,
       endAdornment,
       formValueFromYearNameSuffix = '_from_year',
@@ -606,7 +606,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
                     focused={focused || open}
                     required={required}
                     readOnly={readOnly}
-                    readOnlyInput={readOnlyInput}
+                    enableKeyboardInput={enableKeyboardInput}
                     icon={icon}
                     startAdornment={startAdornment}
                     endAdornment={endAdornment}
@@ -630,7 +630,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
                     focused={focused || open}
                     required={required}
                     readOnly={readOnly}
-                    readOnlyInput={readOnlyInput}
+                    enableKeyboardInput={enableKeyboardInput}
                     icon={icon}
                     startAdornment={startAdornment}
                     endAdornment={endAdornment}

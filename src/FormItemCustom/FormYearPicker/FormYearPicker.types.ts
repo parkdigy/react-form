@@ -17,7 +17,7 @@ export interface FormYearPickerProps extends CommonSxProps, FormValueItemProps<F
   minYear?: FormYearPickerBaseValue;
   maxYear?: FormYearPickerBaseValue;
   inputWidth?: number | string;
-  readOnlyInput?: boolean;
+  enableKeyboardInput?: boolean;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
 }

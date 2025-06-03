@@ -34,7 +34,7 @@ export interface FormDateRangePickerProps
   requiredEnd?: boolean;
   readOnlyStart?: boolean;
   readOnlyEnd?: boolean;
-  readOnlyInput?: boolean;
+  enableKeyboardInput?: boolean;
   labelShrink?: boolean;
   calendarCount?: FormDateRangePickerCalendarCount;
   format?: string;

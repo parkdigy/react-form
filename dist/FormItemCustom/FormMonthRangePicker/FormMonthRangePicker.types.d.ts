@@ -18,7 +18,7 @@ export interface FormMonthRangePickerProps extends CommonSxProps, Omit<FormValue
     minValue?: FormMonthRangePickerBaseValue;
     maxValue?: FormMonthRangePickerBaseValue;
     inputWidth?: number | string;
-    readOnlyInput?: boolean;
+    enableKeyboardInput?: boolean;
     startAdornment?: ReactNode;
     endAdornment?: ReactNode;
     formValueFromYearNameSuffix?: string;

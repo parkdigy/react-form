@@ -19,7 +19,7 @@ export interface PrivateDatePickerProps extends CommonSxProps, Partial<Omit<Desk
     startAdornment?: ReactNode;
     endAdornment?: ReactNode;
     align?: 'left' | 'center' | 'right';
-    readOnlyInput?: boolean;
+    enableKeyboardInput?: boolean;
     hidden?: boolean;
 }
 export interface PrivateDatePickerCommands extends FormValueItemBaseCommands<PrivateDatePickerValue, false>, FormDateValueItemCommands {

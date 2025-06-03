@@ -34,7 +34,7 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
       startAdornment,
       endAdornment,
       align = 'center',
-      readOnlyInput,
+      enableKeyboardInput,
       onFocus: initOnFocus,
       onBlur: initOnBlur,
       ...props
@@ -157,7 +157,7 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
         value={value}
         format={format}
         disabled={disabled}
-        readOnly={readOnly || readOnlyInput}
+        readOnly={readOnly || !enableKeyboardInput}
         slotProps={slotProps}
       />
     );

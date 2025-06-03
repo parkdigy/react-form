@@ -57,7 +57,7 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
       minYear = 2020,
       maxYear = 2050,
       inputWidth,
-      readOnlyInput,
+      enableKeyboardInput,
       startAdornment,
       endAdornment,
       //----------------------------------------------------------------------------------------------------------------
@@ -448,7 +448,7 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
                   error={error}
                   required={required}
                   readOnly={readOnly}
-                  readOnlyInput={readOnlyInput}
+                  enableKeyboardInput={enableKeyboardInput}
                   icon={icon}
                   startAdornment={startAdornment}
                   endAdornment={endAdornment}

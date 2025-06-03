@@ -51,7 +51,7 @@ export interface PrivateDateTimePickerProps
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
   align?: 'left' | 'center' | 'right';
-  readOnlyInput?: boolean;
+  enableKeyboardInput?: boolean;
   hidden?: boolean;
 }
 

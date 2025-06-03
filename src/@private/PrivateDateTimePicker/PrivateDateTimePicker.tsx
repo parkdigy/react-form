@@ -74,7 +74,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
       seconds,
       minuteInterval,
       secondInterval,
-      readOnlyInput,
+      enableKeyboardInput,
       hidden: initHidden,
       showDaysOutsideCurrentMonth = true,
       onChange,
@@ -474,13 +474,12 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
         textFieldInputLabelProps.shrink = labelShrink;
       }
 
-      const readOnly = readOnlyInput;
+      const readOnly = !enableKeyboardInput;
       const inputProps: InputBaseProps['inputProps'] = {
         readOnly,
       };
       if (readOnly) {
         inputProps.tabIndex = -1;
-        inputProps.className = classNames(inputProps.className, 'Mui-disabled');
       }
 
       const muiInputProps: InputProps = { endAdornment: undefined };
@@ -539,7 +538,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
       fullWidth,
       icon,
       labelShrink,
-      readOnlyInput,
+      enableKeyboardInput,
       required,
       size,
       startAdornment,

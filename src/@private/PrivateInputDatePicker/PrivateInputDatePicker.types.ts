@@ -29,7 +29,7 @@ export interface PrivateInputDatePickerProps
   minDate?: Dayjs;
   maxDate?: Dayjs;
   align?: 'left' | 'center' | 'right';
-  readOnlyInput?: boolean;
+  enableKeyboardInput?: boolean;
   onChange(newValue: PrivateInputDatePickerValue): void;
   onFocus: TextFieldProps['onFocus'];
   onBlur?: TextFieldProps['onBlur'];
