@@ -4,7 +4,7 @@ import { Autocomplete, AutocompleteRenderInputParams, Chip, InputLabelProps } fr
 import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
 import { FormTagProps, FormTagExtraCommands, FormTagCommands, FormTagValue } from './FormTag.types';
 import { FormTextCommands } from '../FormText';
-import { empty, nextTick, equal, ifUndefined } from '@pdg/util';
+import { empty, nextTick, equal, ifUndefined, notEmpty } from '@pdg/util';
 import { useFormState } from '../../FormContext';
 import FormContextProvider from '../../FormContextProvider';
 import { FormTextFieldProps } from '../FormTextField';
@@ -37,6 +37,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       slotProps,
       onAppendTag,
       onRemoveTag,
+      onTagClick,
       onValidate,
       onChange,
       onValue,
@@ -206,10 +207,11 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
 
     const appendTag = useCallback(
       (tag: string) => {
-        if (!valueSet.has(tag)) {
-          if (onAppendTag && !onAppendTag(tag)) return;
+        const finalTag = tag.trim();
+        if (notEmpty(finalTag) && !valueSet.has(finalTag)) {
+          if (onAppendTag && !onAppendTag(finalTag)) return;
 
-          valueSet.add(tag);
+          valueSet.add(finalTag);
           const finalValue = updateValue(valueSet);
           nextTick(() => {
             onValueChangeByUser(name, finalValue);
@@ -273,10 +275,11 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
             style={variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined}
             disabled={readOnly || disabled}
             onDelete={readOnly || disabled ? undefined : () => removeTag(tag)}
+            onClick={() => onTagClick?.(tag)}
           />
         ));
       },
-      [disabled, readOnly, removeTag, size, variant]
+      [disabled, onTagClick, readOnly, removeTag, size, variant]
     );
 
     /********************************************************************************************************************

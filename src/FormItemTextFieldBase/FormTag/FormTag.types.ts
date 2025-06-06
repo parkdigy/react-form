@@ -15,4 +15,5 @@ export type FormTagProps = Omit<FormTextFieldProps<FormTagValue, false>, 'type'>
   getLimitTagsText?: (more: number) => ReactNode;
   onAppendTag?: (tag: string) => boolean;
   onRemoveTag?: (tag: string) => boolean;
+  onTagClick?: (tag: string) => void;
 };

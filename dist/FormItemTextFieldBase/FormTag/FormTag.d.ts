@@ -8,5 +8,6 @@ declare const FormTag: React.ForwardRefExoticComponent<Omit<FormTextFieldProps<F
     getLimitTagsText?: (more: number) => ReactNode;
     onAppendTag?: (tag: string) => boolean;
     onRemoveTag?: (tag: string) => boolean;
+    onTagClick?: (tag: string) => void;
 } & React.RefAttributes<FormTagCommands>>;
 export default FormTag;

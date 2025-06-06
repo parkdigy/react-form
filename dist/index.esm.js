@@ -1599,7 +1599,7 @@ var FormTag = React.forwardRef(function (_a, ref) {
      * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, 
     //----------------------------------------------------------------------------------------------------------------
-    className = _a.className, name = _a.name, _b = _a.value, initValue = _b === void 0 ? _emptyValue : _b, exceptValue = _a.exceptValue, _c = _a.clear, clear = _c === void 0 ? true : _c, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, initDisabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, _d = _a.formValueSeparator, formValueSeparator = _d === void 0 ? ',' : _d, formValueSort = _a.formValueSort, limitTags = _a.limitTags, getLimitTagsText = _a.getLimitTagsText, slotProps = _a.slotProps, onAppendTag = _a.onAppendTag, onRemoveTag = _a.onRemoveTag, onValidate = _a.onValidate, onChange = _a.onChange, onValue = _a.onValue, props = __rest(_a, ["variant", "size", "className", "name", "value", "exceptValue", "clear", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "limitTags", "getLimitTagsText", "slotProps", "onAppendTag", "onRemoveTag", "onValidate", "onChange", "onValue"]);
+    className = _a.className, name = _a.name, _b = _a.value, initValue = _b === void 0 ? _emptyValue : _b, exceptValue = _a.exceptValue, _c = _a.clear, clear = _c === void 0 ? true : _c, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, initDisabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, _d = _a.formValueSeparator, formValueSeparator = _d === void 0 ? ',' : _d, formValueSort = _a.formValueSort, limitTags = _a.limitTags, getLimitTagsText = _a.getLimitTagsText, slotProps = _a.slotProps, onAppendTag = _a.onAppendTag, onRemoveTag = _a.onRemoveTag, onTagClick = _a.onTagClick, onValidate = _a.onValidate, onChange = _a.onChange, onValue = _a.onValue, props = __rest(_a, ["variant", "size", "className", "name", "value", "exceptValue", "clear", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "limitTags", "getLimitTagsText", "slotProps", "onAppendTag", "onRemoveTag", "onTagClick", "onValidate", "onChange", "onValue"]);
     var _e = useFormState(), formVariant = _e.variant, formSize = _e.size, formFullWidth = _e.fullWidth, formDisabled = _e.disabled, onAddValueItem = _e.onAddValueItem, onValueChange = _e.onValueChange, onValueChangeByUser = _e.onValueChangeByUser, onRequestSearchSubmit = _e.onRequestSearchSubmit, otherFormState = __rest(_e, ["variant", "size", "fullWidth", "disabled", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
     /********************************************************************************************************************
      * FormState - Variables
@@ -1691,10 +1691,11 @@ var FormTag = React.forwardRef(function (_a, ref) {
      * Function - appendTag, removeTag
      * ******************************************************************************************************************/
     var appendTag = useCallback(function (tag) {
-        if (!valueSet.has(tag)) {
-            if (onAppendTag && !onAppendTag(tag))
+        var finalTag = tag.trim();
+        if (notEmpty(finalTag) && !valueSet.has(finalTag)) {
+            if (onAppendTag && !onAppendTag(finalTag))
                 return;
-            valueSet.add(tag);
+            valueSet.add(finalTag);
             var finalValue_1 = updateValue(valueSet);
             nextTick(function () {
                 onValueChangeByUser(name, finalValue_1);
@@ -1732,8 +1733,8 @@ var FormTag = React.forwardRef(function (_a, ref) {
         }
     }, [ref, getCommands]);
     var handleRenderValue = useCallback(function (tags) {
-        return tags.map(function (tag) { return (React.createElement(Chip, { className: 'MuiAutocomplete-tag', key: tag, label: tag, size: 'small', style: variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined, disabled: readOnly || disabled, onDelete: readOnly || disabled ? undefined : function () { return removeTag(tag); } })); });
-    }, [disabled, readOnly, removeTag, size, variant]);
+        return tags.map(function (tag) { return (React.createElement(Chip, { className: 'MuiAutocomplete-tag', key: tag, label: tag, size: 'small', style: variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined, disabled: readOnly || disabled, onDelete: readOnly || disabled ? undefined : function () { return removeTag(tag); }, onClick: function () { return onTagClick === null || onTagClick === void 0 ? void 0 : onTagClick(tag); } })); });
+    }, [disabled, onTagClick, readOnly, removeTag, size, variant]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
