@@ -5,6 +5,7 @@ declare const FormTag: React.ForwardRefExoticComponent<Omit<FormTextFieldProps<F
     formValueSeparator?: string;
     formValueSort?: boolean;
     limitTags?: number;
+    allowSpace?: boolean;
     getLimitTagsText?: (more: number) => ReactNode;
     onAppendTag?: (tag: string) => boolean;
     onRemoveTag?: (tag: string) => boolean;

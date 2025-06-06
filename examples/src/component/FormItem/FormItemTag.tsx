@@ -21,6 +21,7 @@ const FormItemTag = () => {
   const [value] = useState(['Tag2', 'Tag1', 'Tag3', 'Tag4', 'Tag5']);
   const [formValueSort, setFormValueSort] = useState(false);
   const [limitTags, setLimitTags] = useState<number>();
+  const [allowSpace, setAllowSpace] = useState(false);
 
   /********************************************************************************************************************
    * Event Handler
@@ -69,6 +70,14 @@ const FormItemTag = () => {
                   value={limitTags}
                   onChange={setLimitTags}
                 />
+                <FormCheckbox
+                  name='allowSpace'
+                  text='allowSpace'
+                  checked={allowSpace}
+                  onChange={setAllowSpace}
+                  fullWidth={false}
+                  helperText='공백 허용'
+                />
               </FormCol>
             </FormRow>
           </FormBody>
@@ -85,6 +94,7 @@ const FormItemTag = () => {
                 label='FormTag'
                 required
                 helperText='required=true'
+                allowSpace={allowSpace}
                 value={value}
               />
             </FormCol>
@@ -96,6 +106,7 @@ const FormItemTag = () => {
                 value={value}
                 readOnly
                 helperText='readOnly=true'
+                allowSpace={allowSpace}
               />
             </FormCol>
             <FormCol>
@@ -106,6 +117,7 @@ const FormItemTag = () => {
                 value={value}
                 disabled
                 helperText='disabled=true'
+                allowSpace={allowSpace}
               />
             </FormCol>
           </FormRow>

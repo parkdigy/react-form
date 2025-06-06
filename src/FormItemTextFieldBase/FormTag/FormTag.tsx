@@ -34,6 +34,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
       formValueSort,
       limitTags,
       getLimitTagsText,
+      allowSpace,
       slotProps,
       onAppendTag,
       onRemoveTag,
@@ -338,6 +339,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
             },
           },
           helperText: error ? errorHelperText : helperText,
+          allowSpace,
           onAppendTag: appendTag,
           ...props,
         };
@@ -345,6 +347,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
         return <FormTagText ref={handleRef} {...renderProps} />;
       },
       [
+        allowSpace,
         appendTag,
         className,
         clear,

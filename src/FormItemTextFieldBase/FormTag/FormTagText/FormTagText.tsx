@@ -6,7 +6,7 @@ import { useForceUpdate } from '@pdg/react-hook';
 import { styled } from '@mui/material';
 
 export const FormTagText = React.forwardRef<FormTextCommands, Props>(
-  ({ onKeyDown, onBlur, onAppendTag, ...props }, ref) => {
+  ({ allowSpace, onKeyDown, onBlur, onAppendTag, ...props }, ref) => {
     /********************************************************************************************************************
      * Use
      * ******************************************************************************************************************/
@@ -39,7 +39,8 @@ export const FormTagText = React.forwardRef<FormTextCommands, Props>(
 
     const handleKeyDown = useCallback(
       (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if ([' ', ',', 'Enter'].includes(e.key)) {
+        const appendKeys = allowSpace ? [',', 'Enter'] : [' ', ',', 'Enter'];
+        if (appendKeys.includes(e.key)) {
           e.preventDefault();
           e.stopPropagation();
 
@@ -50,12 +51,15 @@ export const FormTagText = React.forwardRef<FormTextCommands, Props>(
           if (onKeyDown) onKeyDown(e);
         }
       },
-      [appendTag, onKeyDown]
+      [allowSpace, appendTag, onKeyDown]
     );
 
-    const handleChange = useCallback((value: string) => {
-      valueRef.current = value.replace(/ /g, '').replace(/,/g, '');
-    }, []);
+    const handleChange = useCallback(
+      (value: string) => {
+        valueRef.current = allowSpace ? value.replace(/,/g, '') : value.replace(/ /g, '').replace(/,/g, '');
+      },
+      [allowSpace]
+    );
 
     const handleBlur = useCallback(
       (e: React.FocusEvent<HTMLInputElement>) => {

@@ -1539,7 +1539,7 @@ FormText.displayName = 'FormText';var FormTagText = React.forwardRef(function (_
     /********************************************************************************************************************
      * Use
      * ******************************************************************************************************************/
-    var onKeyDown = _a.onKeyDown, onBlur = _a.onBlur, onAppendTag = _a.onAppendTag, props = __rest(_a, ["onKeyDown", "onBlur", "onAppendTag"]);
+    var allowSpace = _a.allowSpace, onKeyDown = _a.onKeyDown, onBlur = _a.onBlur, onAppendTag = _a.onAppendTag, props = __rest(_a, ["allowSpace", "onKeyDown", "onBlur", "onAppendTag"]);
     var forceUpdate = reactHook.useForceUpdate();
     /********************************************************************************************************************
      * Ref
@@ -1561,7 +1561,8 @@ FormText.displayName = 'FormText';var FormTagText = React.forwardRef(function (_
      * Event Handler
      * ******************************************************************************************************************/
     var handleKeyDown = React.useCallback(function (e) {
-        if ([' ', ',', 'Enter'].includes(e.key)) {
+        var appendKeys = allowSpace ? [',', 'Enter'] : [' ', ',', 'Enter'];
+        if (appendKeys.includes(e.key)) {
             e.preventDefault();
             e.stopPropagation();
             if (notEmpty(valueRef.current)) {
@@ -1572,10 +1573,10 @@ FormText.displayName = 'FormText';var FormTagText = React.forwardRef(function (_
             if (onKeyDown)
                 onKeyDown(e);
         }
-    }, [appendTag, onKeyDown]);
+    }, [allowSpace, appendTag, onKeyDown]);
     var handleChange = React.useCallback(function (value) {
-        valueRef.current = value.replace(/ /g, '').replace(/,/g, '');
-    }, []);
+        valueRef.current = allowSpace ? value.replace(/,/g, '') : value.replace(/ /g, '').replace(/,/g, '');
+    }, [allowSpace]);
     var handleBlur = React.useCallback(function (e) {
         if (notEmpty(valueRef.current)) {
             appendTag();
@@ -1599,7 +1600,7 @@ var FormTag = React.forwardRef(function (_a, ref) {
      * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, 
     //----------------------------------------------------------------------------------------------------------------
-    className = _a.className, name = _a.name, _b = _a.value, initValue = _b === void 0 ? _emptyValue : _b, exceptValue = _a.exceptValue, _c = _a.clear, clear = _c === void 0 ? true : _c, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, initDisabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, _d = _a.formValueSeparator, formValueSeparator = _d === void 0 ? ',' : _d, formValueSort = _a.formValueSort, limitTags = _a.limitTags, getLimitTagsText = _a.getLimitTagsText, slotProps = _a.slotProps, onAppendTag = _a.onAppendTag, onRemoveTag = _a.onRemoveTag, onTagClick = _a.onTagClick, onValidate = _a.onValidate, onChange = _a.onChange, onValue = _a.onValue, props = __rest(_a, ["variant", "size", "className", "name", "value", "exceptValue", "clear", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "limitTags", "getLimitTagsText", "slotProps", "onAppendTag", "onRemoveTag", "onTagClick", "onValidate", "onChange", "onValue"]);
+    className = _a.className, name = _a.name, _b = _a.value, initValue = _b === void 0 ? _emptyValue : _b, exceptValue = _a.exceptValue, _c = _a.clear, clear = _c === void 0 ? true : _c, required = _a.required, readOnly = _a.readOnly, maxLength = _a.maxLength, initDisabled = _a.disabled, initFullWidth = _a.fullWidth, initError = _a.error, helperText = _a.helperText, _d = _a.formValueSeparator, formValueSeparator = _d === void 0 ? ',' : _d, formValueSort = _a.formValueSort, limitTags = _a.limitTags, getLimitTagsText = _a.getLimitTagsText, allowSpace = _a.allowSpace, slotProps = _a.slotProps, onAppendTag = _a.onAppendTag, onRemoveTag = _a.onRemoveTag, onTagClick = _a.onTagClick, onValidate = _a.onValidate, onChange = _a.onChange, onValue = _a.onValue, props = __rest(_a, ["variant", "size", "className", "name", "value", "exceptValue", "clear", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "limitTags", "getLimitTagsText", "allowSpace", "slotProps", "onAppendTag", "onRemoveTag", "onTagClick", "onValidate", "onChange", "onValue"]);
     var _e = useFormState(), formVariant = _e.variant, formSize = _e.size, formFullWidth = _e.fullWidth, formDisabled = _e.disabled, onAddValueItem = _e.onAddValueItem, onValueChange = _e.onValueChange, onValueChangeByUser = _e.onValueChangeByUser, onRequestSearchSubmit = _e.onRequestSearchSubmit, otherFormState = __rest(_e, ["variant", "size", "fullWidth", "disabled", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"]);
     /********************************************************************************************************************
      * FormState - Variables
@@ -1745,9 +1746,10 @@ var FormTag = React.forwardRef(function (_a, ref) {
         delete htmlInputProps.value;
         var renderProps = __assign({ name: name, clear: clear, className: classNames(className, 'FormValueItem', 'FormTag'), error: error, disabled: disabled, fullWidth: fullWidth, required: required, exceptValue: exceptValue, slotProps: __assign(__assign({}, slotProps), { inputLabel: __assign(__assign({}, slotProps === null || slotProps === void 0 ? void 0 : slotProps.inputLabel), { htmlFor: params.InputLabelProps.htmlFor, id: params.InputLabelProps.id }), input: __assign(__assign({}, slotProps === null || slotProps === void 0 ? void 0 : slotProps.input), { style: __assign(__assign({}, (_a = slotProps === null || slotProps === void 0 ? void 0 : slotProps.input) === null || _a === void 0 ? void 0 : _a.style), (variant === 'outlined' && size === 'small'
                         ? { paddingTop: 7, paddingBottom: 6, marginTop: -2 }
-                        : undefined)), className: params.InputProps.className, ref: params.InputProps.ref, startAdornment: params.InputProps.startAdornment }), htmlInput: __assign(__assign(__assign({}, slotProps === null || slotProps === void 0 ? void 0 : slotProps.htmlInput), htmlInputProps), { style: __assign(__assign(__assign({}, (_b = slotProps === null || slotProps === void 0 ? void 0 : slotProps.htmlInput) === null || _b === void 0 ? void 0 : _b.style), htmlInputProps.style), (variant === 'outlined' && size === 'small' ? { marginTop: 4, paddingBottom: 2 } : undefined)) }) }), helperText: error ? errorHelperText : helperText, onAppendTag: appendTag }, props);
+                        : undefined)), className: params.InputProps.className, ref: params.InputProps.ref, startAdornment: params.InputProps.startAdornment }), htmlInput: __assign(__assign(__assign({}, slotProps === null || slotProps === void 0 ? void 0 : slotProps.htmlInput), htmlInputProps), { style: __assign(__assign(__assign({}, (_b = slotProps === null || slotProps === void 0 ? void 0 : slotProps.htmlInput) === null || _b === void 0 ? void 0 : _b.style), htmlInputProps.style), (variant === 'outlined' && size === 'small' ? { marginTop: 4, paddingBottom: 2 } : undefined)) }) }), helperText: error ? errorHelperText : helperText, allowSpace: allowSpace, onAppendTag: appendTag }, props);
         return React.createElement(FormTagText, __assign({ ref: handleRef }, renderProps));
     }, [
+        allowSpace,
         appendTag,
         className,
         clear,
