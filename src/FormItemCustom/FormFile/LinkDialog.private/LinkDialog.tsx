@@ -78,6 +78,7 @@ const LinkDialog: React.FC<Props> = ({ open, onConfirm, onCancel, onClose }) => 
             label='링크 URL'
             value={value}
             required
+            fullWidth
             style={{ marginTop: 15 }}
             onChange={setValue}
           />

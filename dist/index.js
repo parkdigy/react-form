@@ -9077,7 +9077,7 @@ FormDateRangePicker.displayName = 'FormDateRangePicker';var LinkDialog = functio
                             ref.focus();
                         }
                         inputRef.current = ref;
-                    }, name: 'form-file-link-url', label: '\uB9C1\uD06C URL', value: value, required: true, style: { marginTop: 15 }, onChange: setValue }))),
+                    }, name: 'form-file-link-url', label: '\uB9C1\uD06C URL', value: value, required: true, fullWidth: true, style: { marginTop: 15 }, onChange: setValue }))),
         React.createElement(material.DialogActions, null,
             React.createElement(material.Button, { variant: 'text', onClick: handleCancel }, "\uCDE8\uC18C"),
             React.createElement(material.Button, { variant: 'text', onClick: handleSubmit }, "\uD655\uC778"))));
