@@ -303,6 +303,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
         const renderProps: FormTagTextProps = {
           name,
           clear,
+          size,
           className: classNames(className, 'FormValueItem', 'FormTag'),
           error,
           disabled,
