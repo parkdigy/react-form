@@ -32,7 +32,7 @@ import { InputBaseProps } from '@mui/material/InputBase';
 import './PrivateDateTimePicker.scss';
 import { Dayjs } from 'dayjs';
 import PrivateStaticDateTimePicker from '../PrivateStaticDateTimePicker';
-import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
+import { empty, ifUndefined, notEmpty } from '@pdg/compare';
 import { getFinalValue } from './PrivateDateTimePicker.function.private';
 
 const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Props>(
@@ -405,7 +405,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
           }
           updateValue(finalValue);
 
-          nextTick(() => {
+          setTimeout(() => {
             onValueChangeByUser(name, finalValue);
             if (runOnRequestSearchSubmit) {
               onRequestSearchSubmit(name, finalValue);

@@ -4,7 +4,7 @@ import { useResizeDetector } from 'react-resize-detector';
 import { useFormState } from '../../FormContext';
 import { Grid } from '@mui/material';
 import { StyledContainerDiv, StyledContentDiv } from './FormBody.style.private';
-import { ifUndefined } from '@pdg/util';
+import { ifUndefined } from '@pdg/compare';
 
 const FormBody: React.FC<Props> = ({ children, hidden, fullHeight: initFullHeight, style: initStyle }) => {
   /********************************************************************************************************************

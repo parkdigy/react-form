@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Editor } from '@tinymce/tinymce-react';
 import { Skeleton } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
-import { empty, ifUndefined, nextTick } from '@pdg/util';
+import { empty, ifUndefined } from '@pdg/compare';
 import { FormTextEditorProps as Props, FormTextEditorCommands, FormTextEditorValue } from './FormTextEditor.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
@@ -256,7 +256,7 @@ const FormTextEditor = React.forwardRef<FormTextEditorCommands, Props>(
       (value: string) => {
         updateValue(value);
         if (new Date().getTime() - keyDownTime.current < 300) {
-          nextTick(() => {
+          setTimeout(() => {
             if (onValueChangeByUser) onValueChangeByUser(name, value);
           });
         }

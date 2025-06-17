@@ -1,7 +1,7 @@
 import React, { useRef, useLayoutEffect, FormEvent, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { Box } from '@mui/material';
-import { ifUndefined, nextTick, notEmpty } from '@pdg/util';
+import { ifUndefined, notEmpty } from '@pdg/compare';
 import { FormProps as Props, FormCommands, FormInvalidItems } from './Form.types';
 import FormContextProvider from '../FormContextProvider';
 import { FormContextValue, useFormState } from '../FormContext';
@@ -140,7 +140,7 @@ const Form = React.forwardRef<FormCommands, Props>(
         onSubmitRef.current && onSubmitRef.current(data);
       } else {
         onInvalidRef.current && onInvalidRef.current(invalidItems);
-        nextTick(() => {
+        setTimeout(() => {
           valueItems.current[firstInvalidItemId]?.focusValidate();
         });
       }

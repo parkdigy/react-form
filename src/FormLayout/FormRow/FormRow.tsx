@@ -5,7 +5,7 @@ import { FormRowProps as Props, FormColsInRowMap } from './FormRow.types';
 import { useFormState } from '../../FormContext';
 import FormDivider from '../FormDivider';
 import { StyledWrapGrid } from './FormRow.style.private';
-import { ifUndefined } from '@pdg/util';
+import { ifUndefined } from '@pdg/compare';
 import FormContextProvider from '../../FormContextProvider';
 
 const FormRow = React.forwardRef<HTMLDivElement, Props>(

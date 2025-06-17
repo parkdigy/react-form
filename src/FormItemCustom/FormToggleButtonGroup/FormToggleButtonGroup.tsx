@@ -4,7 +4,7 @@ import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util.private';
-import { empty, nextTick, notEmpty, equal, ifUndefined } from '@pdg/util';
+import { empty, notEmpty, equal, ifUndefined } from '@pdg/compare';
 import { PartialPick } from '../../@types';
 import {
   FormToggleButtonGroupProps,
@@ -448,7 +448,7 @@ const FormToggleButtonGroup = ToForwardRefExoticComponent(
           finalValue = getFinalValue(finalValue);
           if (!equal(valueRef.current, finalValue)) {
             updateValue(finalValue, true);
-            nextTick(() => {
+            setTimeout(() => {
               onValueChangeByUser(name, finalValue);
               onRequestSearchSubmit(name, finalValue);
             });

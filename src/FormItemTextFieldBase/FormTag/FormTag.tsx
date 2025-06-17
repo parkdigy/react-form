@@ -4,7 +4,7 @@ import { Autocomplete, AutocompleteRenderInputParams, Chip, InputLabelProps } fr
 import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
 import { FormTagProps, FormTagExtraCommands, FormTagCommands, FormTagValue } from './FormTag.types';
 import { FormTextCommands } from '../FormText';
-import { empty, nextTick, equal, ifUndefined, notEmpty } from '@pdg/util';
+import { empty, equal, ifUndefined, notEmpty } from '@pdg/compare';
 import { useFormState } from '../../FormContext';
 import FormContextProvider from '../../FormContextProvider';
 import { FormTextFieldProps } from '../FormTextField';
@@ -214,7 +214,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
 
           valueSet.add(finalTag);
           const finalValue = updateValue(valueSet);
-          nextTick(() => {
+          setTimeout(() => {
             onValueChangeByUser(name, finalValue);
             onRequestSearchSubmit(name, finalValue);
           });
@@ -230,7 +230,7 @@ const FormTag = React.forwardRef<FormTagCommands, FormTagProps>(
 
           valueSet.delete(tag);
           const finalValue = updateValue(valueSet);
-          nextTick(() => {
+          setTimeout(() => {
             onValueChangeByUser(name, finalValue);
             onRequestSearchSubmit(name, finalValue);
           });

@@ -13,7 +13,7 @@ import {
   FormSelectItems,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
-import { lv } from '@pdg/util';
+import { lv } from '@pdg/data';
 
 const FormItemSelect = () => {
   /********************************************************************************************************************

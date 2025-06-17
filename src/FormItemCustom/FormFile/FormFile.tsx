@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { InputAdornment, TextField, Typography } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
 import { getFileSizeText } from '../../@util.private';
-import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
+import { empty, ifUndefined, notEmpty } from '@pdg/compare';
 import { FormFileProps as Props, FormFileCommands, FormFileValue } from './FormFile.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
@@ -335,7 +335,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
           fileSizeCheck(file).then(() => {
             onFile(file).then((url) => {
               updateValue(url);
-              nextTick(() => {
+              setTimeout(() => {
                 if (onValueChangeByUser) onValueChangeByUser(name, url);
               });
             });
@@ -351,7 +351,7 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
 
     const handleRemoveClick = useCallback(() => {
       updateValue('');
-      nextTick(() => {
+      setTimeout(() => {
         if (onValueChangeByUser) onValueChangeByUser(name, '');
       });
     }, [name, onValueChangeByUser, updateValue]);
@@ -361,13 +361,13 @@ const FormFile = React.forwardRef<FormFileCommands, Props>(
         if (onLink) {
           onLink(url).then((finalUrl) => {
             updateValue(finalUrl);
-            nextTick(() => {
+            setTimeout(() => {
               if (onValueChangeByUser) onValueChangeByUser(name, finalUrl);
             });
           });
         } else {
           updateValue(url);
-          nextTick(() => {
+          setTimeout(() => {
             if (onValueChangeByUser) onValueChangeByUser(name, url);
           });
         }

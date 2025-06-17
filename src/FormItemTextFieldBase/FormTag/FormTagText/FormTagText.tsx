@@ -1,7 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import { FormTagTextProps as Props } from './FormTagText.types';
 import FormText, { FormTextCommands } from '../../FormText';
-import { nextTick, notEmpty } from '@pdg/util';
+import { notEmpty } from '@pdg/compare';
 import { useForceUpdate } from '@pdg/react-hook';
 import { styled } from '@mui/material';
 
@@ -27,7 +27,7 @@ export const FormTagText = React.forwardRef<FormTextCommands, Props>(
       onAppendTag(valueRef.current);
       valueRef.current = ' ';
       forceUpdate();
-      nextTick(() => {
+      setTimeout(() => {
         valueRef.current = '';
         forceUpdate();
       });

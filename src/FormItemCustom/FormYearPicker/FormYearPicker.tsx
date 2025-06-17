@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
-import { empty, ifUndefined, nextTick } from '@pdg/util';
+import { empty, ifUndefined } from '@pdg/compare';
 import {
   FormYearPickerProps as Props,
   FormYearPickerCommands,
@@ -345,7 +345,7 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
         updateValue(newValue);
         if (isClick) setOpen(false);
 
-        nextTick(() => {
+        setTimeout(() => {
           onValueChangeByUser(name, newValue);
         });
       },
@@ -356,7 +356,7 @@ const FormYearPicker = React.forwardRef<FormYearPickerCommands, Props>(
       (v: PrivateDatePickerValue) => {
         const newValue = v ? dateToValue(v) : v;
         updateValue(newValue);
-        nextTick(() => {
+        setTimeout(() => {
           onValueChangeByUser(name, newValue);
         });
       },

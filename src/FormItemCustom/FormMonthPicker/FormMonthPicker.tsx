@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
-import { empty, ifUndefined, nextTick } from '@pdg/util';
+import { empty, ifUndefined } from '@pdg/compare';
 import {
   FormMonthPickerProps as Props,
   FormMonthPickerCommands,
@@ -408,7 +408,7 @@ const FormMonthPicker = React.forwardRef<FormMonthPickerCommands, Props>(
         updateValue(newValue);
         if (isMonthSelect) setOpen(false);
 
-        nextTick(() => {
+        setTimeout(() => {
           onValueChangeByUser(name, newValue);
         });
       },

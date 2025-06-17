@@ -6,7 +6,7 @@ import { FormColProps as Props } from './FormCol.types';
 import { useFormState } from '../../FormContext';
 import FormContextProvider from '../../FormContextProvider';
 import { StyledContentContainerBox, StyledFormLabel, StyledFormLabelContainerDiv } from './FormCol.style.private';
-import { ifUndefined } from '@pdg/util';
+import { ifUndefined } from '@pdg/compare';
 
 const FormCol = React.forwardRef<HTMLDivElement, Props>(
   (

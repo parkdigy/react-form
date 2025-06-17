@@ -7,7 +7,7 @@ import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
 import { FormCheckboxProps as Props, FormCheckboxCommands, FormCheckboxValue } from './FormCheckbox.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
-import { ifUndefined, nextTick } from '@pdg/util';
+import { ifUndefined } from '@pdg/compare';
 
 const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
   (
@@ -279,7 +279,7 @@ const FormCheckbox = React.forwardRef<FormCheckboxCommands, Props>(
           e.preventDefault();
         } else {
           updateChecked(checked);
-          nextTick(() => {
+          setTimeout(() => {
             onValueChangeByUser(name, checked);
             onRequestSearchSubmit(name, checked);
           });

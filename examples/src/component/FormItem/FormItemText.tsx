@@ -20,7 +20,7 @@ import {
   FormPersonalNo,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
-import { lv } from '@pdg/util';
+import { lv } from '@pdg/data';
 
 const _components: React.ForwardRefExoticComponent<any>[] = [
   FormText,

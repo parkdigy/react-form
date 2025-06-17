@@ -5,7 +5,6 @@ declare global {
   function ll(message?: any, ...optionalParams: any[]): void;
   function getName(prefix: string, resetSeq?: boolean): string;
 
-  // eslint-disable-next-line no-var
   var env: 'development' | 'production';
 }
 

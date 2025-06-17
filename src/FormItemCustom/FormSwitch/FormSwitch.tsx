@@ -2,7 +2,7 @@ import React, { useCallback, useId, useLayoutEffect, useMemo, useRef, useState }
 import classNames from 'classnames';
 import { FormControlLabel, Switch } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
-import { ifUndefined, nextTick } from '@pdg/util';
+import { ifUndefined } from '@pdg/compare';
 import { FormSwitchProps as Props, FormSwitchCommands } from './FormSwitch.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
@@ -241,7 +241,7 @@ const FormSwitch = React.forwardRef<FormSwitchCommands, Props>(
           e.preventDefault();
         } else {
           const finalValue = updateValue(checked);
-          nextTick(() => {
+          setTimeout(() => {
             onValueChangeByUser(name, finalValue);
             onRequestSearchSubmit(name, finalValue);
           });

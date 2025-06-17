@@ -1,4 +1,4 @@
-import { lv } from '@pdg/util';
+import { lv } from '@pdg/data';
 import React from 'react';
 import { FormCol, FormRadioGroup, FormRadioGroupItem, FormRow } from '../../../../../../src';
 

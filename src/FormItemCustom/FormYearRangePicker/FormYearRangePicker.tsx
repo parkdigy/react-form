@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
-import { ifUndefined, nextTick } from '@pdg/util';
+import { ifUndefined } from '@pdg/compare';
 import {
   FormYearRangePickerProps as Props,
   FormYearRangePickerCommands,
@@ -351,7 +351,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
       (newValue: FormYearRangePickerValue, selectType: PrivateYearRangePickerSelectType) => {
         updateValue(newValue);
         if (selectType === 'start') {
-          nextTick(() => {
+          setTimeout(() => {
             setSelectType('end');
             endInputRef.current?.focus();
           });
@@ -359,7 +359,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
           setOpen(false);
         }
 
-        nextTick(() => {
+        setTimeout(() => {
           onValueChangeByUser(name, newValue);
         });
       },
@@ -380,7 +380,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
             if (fromError) {
               validate(newValue);
             }
-            nextTick(() => {
+            setTimeout(() => {
               onValueChangeByUser(name, newValue);
             });
 
@@ -395,7 +395,7 @@ const FormYearRangePicker = React.forwardRef<FormYearRangePickerCommands, Props>
             if (toError) {
               validate(newValue);
             }
-            nextTick(() => {
+            setTimeout(() => {
               onValueChangeByUser(name, newValue);
             });
 

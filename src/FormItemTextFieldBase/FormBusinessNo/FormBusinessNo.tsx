@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import FormText from '../FormText';
 import classNames from 'classnames';
 import { FormBusinessNoProps as Props, FormBusinessNoCommands, FormBusinessNoValue } from './FormBusinessNo.types';
-import { businessNoAutoDash } from '@pdg/util';
+import { formatBusinessNo } from '@pdg/formatting';
 
 const FormBusinessNo = React.forwardRef<FormBusinessNoCommands, Props>(
   (
@@ -20,7 +20,7 @@ const FormBusinessNo = React.forwardRef<FormBusinessNoCommands, Props>(
 
     const handleValue = useCallback(
       (value: FormBusinessNoValue) => {
-        const newValue = businessNoAutoDash(value.replace(/[^0-9]/gi, ''));
+        const newValue = formatBusinessNo(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
       },
       [onValue]

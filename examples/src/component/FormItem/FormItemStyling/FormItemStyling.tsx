@@ -44,7 +44,8 @@ import {
 } from '../../../../../src';
 import { OutlinedPaper } from '@ccomp';
 import { BasicBlock, IconAdornmentBlock, NumberBlock, TextareaBlock, WidthBlock, ColorBlock, RatingBlock } from './sub';
-import { contains, lv } from '@pdg/util';
+import { contains } from '@pdg/compare';
+import { lv } from '@pdg/data';
 
 const _components: React.ForwardRefExoticComponent<any>[] = [
   FormText,
@@ -105,7 +106,7 @@ const FormItemStyling = () => {
 
   const [componentName, setComponentName] = useState(FormText.displayName);
   const [componentProps, setComponentProps] = useState<any>();
-  const [Component, setComponent] = useState<React.ForwardRefExoticComponent<any>>();
+  const [Component, setComponent] = useState<any>();
   const [variant, setVariant] = useState<FormProps['variant']>('outlined');
   const [size, setSize] = useState<FormProps['size']>('medium');
   const [color, setColor] = useState<FormProps['color']>('primary');
@@ -222,12 +223,12 @@ const FormItemStyling = () => {
                     value={color}
                     onChange={(value) => setColor(value)}
                     items={[
-                      lv('primary (Default)', 'primary', { color: 'primary' }),
-                      lv('secondary', 'secondary', { color: 'secondary' }),
-                      lv('error', 'error', { color: 'error' }),
-                      lv('info', 'info', { color: 'info' }),
-                      lv('success', 'success', { color: 'success' }),
-                      lv('warning', 'warning', { color: 'warning' }),
+                      lv('primary (Default)', 'primary', { color: 'primary' as const }),
+                      lv('secondary', 'secondary', { color: 'secondary' as const }),
+                      lv('error', 'error', { color: 'error' as const }),
+                      lv('info', 'info', { color: 'info' as const }),
+                      lv('success', 'success', { color: 'success' as const }),
+                      lv('warning', 'warning', { color: 'warning' as const }),
                     ]}
                     notAllowEmptyValue
                     fullWidth={false}

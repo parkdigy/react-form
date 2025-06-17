@@ -34,7 +34,7 @@ import {
   FormHidden,
 } from '../../../../../src';
 import { ToggleButtonGroup, Checkbox, RadioGroup, Rating, FileUpload, Switch } from './sub';
-import { lv } from '@pdg/util';
+import { lv } from '@pdg/data';
 import { Box } from '@mui/material';
 
 const FormBase = () => {
@@ -113,12 +113,12 @@ const FormBase = () => {
                   value={color}
                   onChange={(value) => setColor(value)}
                   items={[
-                    lv('primary (Default)', 'primary', { color: 'primary' }),
-                    lv('secondary', 'secondary', { color: 'secondary' }),
-                    lv('error', 'error', { color: 'error' }),
-                    lv('info', 'info', { color: 'info' }),
-                    lv('success', 'success', { color: 'success' }),
-                    lv('warning', 'warning', { color: 'warning' }),
+                    lv('primary (Default)', 'primary', { color: 'primary' as const }),
+                    lv('secondary', 'secondary', { color: 'secondary' as const }),
+                    lv('error', 'error', { color: 'error' as const }),
+                    lv('info', 'info', { color: 'info' as const }),
+                    lv('success', 'success', { color: 'success' as const }),
+                    lv('warning', 'warning', { color: 'warning' as const }),
                   ]}
                   notAllowEmptyValue
                   fullWidth={false}

@@ -15,7 +15,7 @@ import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from 
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
 import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
 import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util.private';
-import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
+import { empty, ifUndefined, notEmpty } from '@pdg/compare';
 import {
   FormRadioGroupProps,
   FormRadioGroupCommands,
@@ -411,7 +411,7 @@ const FormRadioGroup = ToForwardRefExoticComponent(
           finalValue = getFinalValue(finalValue);
           if (value !== finalValue) {
             updateValue(finalValue, true);
-            nextTick(() => {
+            setTimeout(() => {
               onValueChangeByUser(name, finalValue);
               onRequestSearchSubmit(name, finalValue);
             });

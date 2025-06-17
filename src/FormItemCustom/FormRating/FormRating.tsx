@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { Rating } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
-import { empty, ifUndefined, nextTick } from '@pdg/util';
+import { empty, ifUndefined } from '@pdg/compare';
 import { FormRatingProps as Props, FormRatingCommands, FormRatingValue } from './FormRating.types';
 import FormItemBase from '../FormItemBase';
 import { useFormState } from '../../FormContext';
@@ -269,7 +269,7 @@ const FormRating = React.forwardRef<FormRatingCommands, Props>(
           e.preventDefault();
         } else {
           const finalValue = updateValue(value);
-          nextTick(() => {
+          setTimeout(() => {
             onValueChangeByUser(name, finalValue);
             onRequestSearchSubmit(name, finalValue);
           });

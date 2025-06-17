@@ -6,7 +6,7 @@ import { FormItemBaseProps as Props } from './FormItemBase.types';
 import { useFormState } from '../../FormContext';
 import './FormItemBase.scss';
 import { PdgIcon } from '@pdg/react-component';
-import { ifUndefined } from '@pdg/util';
+import { ifUndefined } from '@pdg/compare';
 
 const FormItemBase = React.forwardRef<HTMLDivElement, Props>(
   (

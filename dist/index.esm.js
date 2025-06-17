@@ -1,4 +1,4 @@
-import React,{createContext,useContext,useRef,useCallback,useMemo,useLayoutEffect,useEffect,useState,useId}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import dayjs from'dayjs';import {useAutoUpdateLayoutRef,useAutoUpdateState,useAutoUpdateRefState,useForceUpdate,useAutoUpdateRef,useFirstSkipEffect}from'@pdg/react-hook';import {PdgButton,PdgIcon,PdgIconText}from'@pdg/react-component';import {useResizeDetector}from'react-resize-detector';import {NumericFormat}from'react-number-format';import {CheckBoxOutlineBlank,CheckBox,RadioButtonChecked,RadioButtonUnchecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';function insertStyle(css) {
+import React,{createContext,useContext,useRef,useCallback,useMemo,useLayoutEffect,useEffect,useState,useId}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,ifUndefined,notEmpty,equal}from'@pdg/compare';import dayjs from'dayjs';import {useAutoUpdateLayoutRef,useAutoUpdateState,useAutoUpdateRefState,useForceUpdate,useAutoUpdateRef,useFirstSkipEffect}from'@pdg/react-hook';import {PdgButton,PdgIcon,PdgIconText}from'@pdg/react-component';import {useResizeDetector}from'react-resize-detector';import {formatTelNo,formatBusinessNo,formatPersonalNo}from'@pdg/formatting';import {NumericFormat}from'react-number-format';import {CheckBoxOutlineBlank,CheckBox,RadioButtonChecked,RadioButtonUnchecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';function insertStyle(css) {
     if (!css || typeof window === 'undefined')
         return;
     const style = document.createElement('style');
@@ -63,179 +63,7 @@ function __makeTemplateObject(cooked, raw) {
 typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};function businessNoAutoDash(businessNo, allowCharacters) {
-    if (allowCharacters === void 0) { allowCharacters = '*'; }
-    var str = businessNo.replace(new RegExp("[^0-9".concat(allowCharacters, "]"), 'g'), '');
-    var values = [str.slice(0, 3)];
-    if (str.length > 3)
-        values.push(str.slice(3, 5));
-    if (str.length > 5)
-        values.push(str.slice(5));
-    return values.join('-');
-}/********************************************************************************************************************
- * 값이 비어있는지 확인하는 함수
- * - Array 값이 비어있거나, Object 값이 비어있거나, 문자열이 비어있거나, null 또는 undefined 인 경우 true 반환
- * @param v 확인할 값
- * @returns 값이 비어있는지 여부
- * ******************************************************************************************************************/
-function empty(v) {
-    var result = false;
-    if (v == null) {
-        result = true;
-    }
-    else if (typeof v === 'string') {
-        result = v === '';
-    }
-    else if (typeof v === 'object') {
-        if (Array.isArray(v)) {
-            result = v.length === 0;
-        }
-        else if (!(v instanceof Date)) {
-            result = Object.entries(v).length === 0;
-        }
-    }
-    return result;
-}/********************************************************************************************************************
- * 값이 비어있지 않은지 확인합니다.
- * - Array 값이 비어있지 않거나, Object 값이 비어있지 않거나, 문자열이 비어있지 않거나, null 또는 undefined 가 아닌 경우 true 반환
- * @param v 확인할 값
- * @returns 값이 비어있는지 여부
- * ******************************************************************************************************************/
-function notEmpty(v) {
-    return !empty(v);
-}/********************************************************************************************************************
- * 두 값이 동일한지 확인하는 함수
- * @param v1 비교할 첫 번째 값
- * @param v2 비교할 두 번째 값
- * @returns 두 값이 동일한지 여부
- * ******************************************************************************************************************/
-function equal(v1, v2) {
-    if (v1 === v2)
-        return true;
-    if (typeof v1 !== typeof v2)
-        return false;
-    if (v1 == null || v2 == null)
-        return false;
-    if (typeof v1 === 'object' && typeof v2 === 'object') {
-        return JSON.stringify(v1) === JSON.stringify(v2);
-    }
-    else {
-        return v1 === v2;
-    }
-}/********************************************************************************************************************
- * 배열에 특정 값이 포함되어 있는지 여부를 반환하는 함수
- * @param list 확인할 배열 또는 문자열
- * @param value 확인할 값
- * @returns 포함 여부
- * ******************************************************************************************************************/
-function ifUndefined(v, v2) {
-    return v === undefined ? v2 : v;
-}/********************************************************************************************************************
- * 값이 undefined 이 아닌 경우 대체 값을 반환하는 함수
- * @param v 확인할 값
- * @param v2 대체 값
- * @returns 최종 값
- * ******************************************************************************************************************/
-
-typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
-    var e = new Error(message);
-    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};/********************************************************************************************************************
- * {label, value, ...other} 객체 생성하여 반환하는 함수
- * @param label - label
- * @param value - value
- * @param other - 기타 속성
- * @returns 생성된 객체
- * ******************************************************************************************************************/
-function nextTick(callback, delay) {
-    return setTimeout(callback, delay === undefined ? 1 : delay);
-}/********************************************************************************************************************
- * UUID 생성하는 함수
- * @param removeDash 하이픈 제거 여부
- * @returns UUID
- * ******************************************************************************************************************/
-function telNoAutoDash(v, allowCharacters) {
-    if (allowCharacters === void 0) { allowCharacters = '*'; }
-    if (v === undefined)
-        return undefined;
-    if (v === null)
-        return null;
-    var str = v.replace(new RegExp("[^0-9".concat(allowCharacters, "]"), 'g'), '');
-    var isLastDash = v.substring(v.length - 1, v.length) === '-';
-    if (str.substring(0, 1) !== '0' && !['15', '16', '18'].includes(str.substring(0, 2))) {
-        return str;
-    }
-    var tmp = '';
-    var preLen;
-    switch (str.substring(0, 2)) {
-        case '02':
-            preLen = 2;
-            break;
-        case '15':
-        case '16':
-        case '18':
-            preLen = 4;
-            break;
-        default:
-            preLen = 3;
-    }
-    if (['15', '16', '18'].includes(str.substring(0, 2))) {
-        if (str.length <= preLen) {
-            tmp = str;
-        }
-        else if (str.length <= preLen + 4) {
-            tmp += str.substring(0, preLen);
-            tmp += '-';
-            tmp += str.substring(preLen);
-        }
-        else {
-            tmp = str;
-        }
-    }
-    else if (str.length <= preLen) {
-        tmp = str;
-    }
-    else if (str.length <= preLen + 3) {
-        tmp += str.substring(0, preLen);
-        tmp += '-';
-        tmp += str.substring(preLen);
-    }
-    else if (str.length <= preLen + 7) {
-        tmp += str.substring(0, preLen);
-        tmp += '-';
-        tmp += str.substring(preLen, preLen + 3);
-        tmp += '-';
-        tmp += str.substring(preLen + 3);
-    }
-    else if (str.length <= preLen + 8) {
-        tmp += str.substring(0, preLen);
-        tmp += '-';
-        tmp += str.substring(preLen, preLen + 4);
-        tmp += '-';
-        tmp += str.substring(preLen + 4);
-    }
-    else {
-        tmp = str;
-    }
-    if (isLastDash) {
-        if (str.length === preLen) {
-            tmp += '-';
-        }
-    }
-    return tmp;
-}/********************************************************************************************************************
- * 전화번호 마스킹
- * ******************************************************************************************************************/
-function personalNoAutoDash(personalNo, allowCharacters) {
-    if (allowCharacters === void 0) { allowCharacters = '*'; }
-    var str = personalNo.replace(new RegExp("[^0-9".concat(allowCharacters, "]"), 'g'), '');
-    var values = [str.slice(0, 6)];
-    if (str.length > 6)
-        values.push(str.slice(6));
-    return values.join('-');
-}/********************************************************************************************************************
- * 주민등록번호 마스킹
- * ******************************************************************************************************************/var FormContextDefaultValue = {
+};var FormContextDefaultValue = {
     id: 'init',
     variant: 'outlined',
     size: 'medium',
@@ -447,7 +275,7 @@ var appendFormValueData = function (data, itemCommands) {
         }
         else {
             onInvalidRef.current && onInvalidRef.current(invalidItems);
-            nextTick(function () {
+            setTimeout(function () {
                 var _a;
                 (_a = valueItems.current[firstInvalidItemId]) === null || _a === void 0 ? void 0 : _a.focusValidate();
             });
@@ -1384,7 +1212,7 @@ var templateObject_1$e, templateObject_2$7;var FormBody = function (_a) {
     var handleChange = useCallback(function (e) {
         var finalValue = updateValue(e.target.value);
         if (!noFormValueItem) {
-            nextTick(function () {
+            setTimeout(function () {
                 onValueChangeByUser(name, finalValue);
                 if (select) {
                     onRequestSearchSubmit(name, finalValue);
@@ -1470,7 +1298,7 @@ var templateObject_1$e, templateObject_2$7;var FormBody = function (_a) {
                             var finalValue = updateValue('');
                             focus();
                             if (!noFormValueItem) {
-                                nextTick(function () {
+                                setTimeout(function () {
                                     onValueChangeByUser(name, finalValue);
                                     onRequestSearchSubmit(name, finalValue);
                                 });
@@ -1552,7 +1380,7 @@ FormText.displayName = 'FormText';var FormTagText = React.forwardRef(function (_
         onAppendTag(valueRef.current);
         valueRef.current = ' ';
         forceUpdate();
-        nextTick(function () {
+        setTimeout(function () {
             valueRef.current = '';
             forceUpdate();
         });
@@ -1698,7 +1526,7 @@ var FormTag = React.forwardRef(function (_a, ref) {
                 return;
             valueSet.add(finalTag);
             var finalValue_1 = updateValue(valueSet);
-            nextTick(function () {
+            setTimeout(function () {
                 onValueChangeByUser(name, finalValue_1);
                 onRequestSearchSubmit(name, finalValue_1);
             });
@@ -1710,7 +1538,7 @@ var FormTag = React.forwardRef(function (_a, ref) {
                 return;
             valueSet.delete(tag);
             var finalValue_2 = updateValue(valueSet);
-            nextTick(function () {
+            setTimeout(function () {
                 onValueChangeByUser(name, finalValue_2);
                 onRequestSearchSubmit(name, finalValue_2);
             });
@@ -1826,7 +1654,7 @@ var templateObject_1$c;var FormTel = React.forwardRef(function (_a, ref) {
      * ******************************************************************************************************************/
     var className = _a.className, onValue = _a.onValue, _b = _a.validPattern, validPattern = _b === void 0 ? /(^([0-9]{2,3})([0-9]{3,4})([0-9]{4})$)|(^([0-9]{2,3})-([0-9]{3,4})-([0-9]{4})$)|(^([0-9]{4})-([0-9]{4})$)|(^\+(?:[-]?[0-9]){8,}$)/ : _b, props = __rest(_a, ["className", "onValue", "validPattern"]);
     var handleValue = useCallback(function (value) {
-        var newValue = telNoAutoDash(value.replace(/[^0-9]/gi, ''));
+        var newValue = formatTelNo(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     /********************************************************************************************************************
@@ -2568,7 +2396,7 @@ FormSelect.displayName = 'FormSelect';var FormBusinessNo = React.forwardRef(func
      * ******************************************************************************************************************/
     var className = _a.className, _b = _a.validPattern, validPattern = _b === void 0 ? /(([0-9]{3})([0-9]{2})([0-9]{5}))|(([0-9]{3})-([0-9]{2})-([0-9]{5}))/ : _b, onValue = _a.onValue, props = __rest(_a, ["className", "validPattern", "onValue"]);
     var handleValue = useCallback(function (value) {
-        var newValue = businessNoAutoDash(value.replace(/[^0-9]/gi, ''));
+        var newValue = formatBusinessNo(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     /********************************************************************************************************************
@@ -2582,7 +2410,7 @@ FormBusinessNo.displayName = 'FormBusinessNo';var FormPersonalNo = React.forward
      * ******************************************************************************************************************/
     var className = _a.className, skipPersonalNumberValidateCheck = _a.skipPersonalNumberValidateCheck, _b = _a.validPattern, validPattern = _b === void 0 ? /(([0-9]{6})([0-9]{7}))|(([0-9]{6})-([0-9]{7}))/ : _b, onValue = _a.onValue, onValidate = _a.onValidate, props = __rest(_a, ["className", "skipPersonalNumberValidateCheck", "validPattern", "onValue", "onValidate"]);
     var handleValue = useCallback(function (value) {
-        var newValue = personalNoAutoDash(value.replace(/[^0-9]/gi, ''));
+        var newValue = formatPersonalNo(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
     }, [onValue]);
     var handleValidate = useCallback(function (value) {
@@ -2924,7 +2752,7 @@ FormItemBase.displayName = 'FormItemBase';var FormCheckbox = React.forwardRef(fu
         }
         else {
             updateChecked(checked);
-            nextTick(function () {
+            setTimeout(function () {
                 onValueChangeByUser(name, checked);
                 onRequestSearchSubmit(name, checked);
             });
@@ -3219,7 +3047,7 @@ var FormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a
             finalValue_1 = getFinalValue(finalValue_1);
             if (value !== finalValue_1) {
                 updateValue(finalValue_1, true);
-                nextTick(function () {
+                setTimeout(function () {
                     onValueChangeByUser(name, finalValue_1);
                     onRequestSearchSubmit(name, finalValue_1);
                 });
@@ -3637,7 +3465,7 @@ FormRadioGroup.displayName = 'FormRadioGroup';insertStyle(".FormToggleButtonGrou
             finalValue_1 = getFinalValue(finalValue_1);
             if (!equal(valueRef.current, finalValue_1)) {
                 updateValue(finalValue_1, true);
-                nextTick(function () {
+                setTimeout(function () {
                     onValueChangeByUser(name, finalValue_1);
                     onRequestSearchSubmit(name, finalValue_1);
                 });
@@ -3953,7 +3781,7 @@ FormToggleButtonGroup.displayName = 'FormToggleButtonGroup';var FormRating = Rea
         }
         else {
             var finalValue_1 = updateValue(value);
-            nextTick(function () {
+            setTimeout(function () {
                 onValueChangeByUser(name, finalValue_1);
                 onRequestSearchSubmit(name, finalValue_1);
             });
@@ -4129,7 +3957,7 @@ FormRating.displayName = 'FormRating';var getFinalValue$8 = function (value) {
     var handleEditorChange = useCallback(function (value) {
         updateValue(value);
         if (new Date().getTime() - keyDownTime.current < 300) {
-            nextTick(function () {
+            setTimeout(function () {
                 if (onValueChangeByUser)
                     onValueChangeByUser(name, value);
             });
@@ -4616,7 +4444,7 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
             if (!equal(valueRef.current, finalValue)) {
                 updateValue(finalValue, true);
                 setValueItem(componentValue);
-                nextTick(function () {
+                setTimeout(function () {
                     onValueChangeByUser(name, finalValue);
                     onRequestSearchSubmit(name, finalValue);
                 });
@@ -4671,14 +4499,16 @@ FormTextEditor.displayName = 'FormTextEditor';var FormAutocomplete = ToForwardRe
             else if (reason === 'reset') {
                 setInputValue(undefined);
             }
-        }, renderValue: function (value, getItemProps) {
-            if (Array.isArray(value)) {
-                return value.map(function (option, index) { return (React.createElement(Chip, __assign({ size: 'small', style: variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined, label: onRenderTag ? onRenderTag(option) : option.label }, getItemProps({ index: index })))); });
+        }, renderValue: multiple
+            ? function (value, getItemProps) {
+                if (Array.isArray(value)) {
+                    return value.map(function (option, index) { return (React.createElement(Chip, __assign({ size: 'small', style: variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined, label: onRenderTag ? onRenderTag(option) : option.label }, getItemProps({ index: index })))); });
+                }
+                else {
+                    return (React.createElement(Chip, __assign({ size: 'small', style: variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined, label: onRenderTag ? onRenderTag(value) : value.label }, getItemProps({ index: 0 }))));
+                }
             }
-            else {
-                return (React.createElement(Chip, __assign({ size: 'small', style: variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined, label: onRenderTag ? onRenderTag(value) : value.label }, getItemProps({ index: 0 }))));
-            }
-        }, renderInput: function (params) {
+            : undefined, renderInput: function (params) {
             var _a;
             var slotProps = {
                 input: __assign(__assign({}, params.InputProps), { style: {
@@ -6141,7 +5971,7 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
                     setOpen(false);
             }
             updateValue(finalValue);
-            nextTick(function () {
+            setTimeout(function () {
                 onValueChangeByUser(name, finalValue);
                 if (runOnRequestSearchSubmit_1) {
                     onRequestSearchSubmit(name, finalValue);
@@ -6769,7 +6599,7 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
                     setOpen(false);
             }
             updateValue(finalValue);
-            nextTick(function () {
+            setTimeout(function () {
                 onValueChangeByUser(name, finalValue);
                 if (runOnRequestSearchSubmit_1) {
                     onRequestSearchSubmit(name, finalValue);
@@ -8238,7 +8068,7 @@ var FormDateRangePickerTooltipPickerContainer = React.forwardRef(function (_a, r
      * ******************************************************************************************************************/
     useEffect(function () {
         if (yearSelectOpen) {
-            nextTick(function () {
+            setTimeout(function () {
                 var _a, _b, _c;
                 var wrapRect = (_a = yearSelectRef.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect();
                 var activeRect = (_b = activeYearBtnRef.current) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect();
@@ -8284,7 +8114,7 @@ var FormDateRangePickerTooltipPickerContainer = React.forwardRef(function (_a, r
         if (yearSelectOpen) {
             setYearSelectOpen(false);
             if (index !== yearMonthSelectIndex) {
-                nextTick(function () {
+                setTimeout(function () {
                     setYearMonthSelectIndex(index);
                     setYearSelectOpen(true);
                     setMonthSelectOpen(false);
@@ -8724,7 +8554,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                 if ((_a = value[1]) === null || _a === void 0 ? void 0 : _a.isBefore(newValue)) {
                     finalValue = [newValue, null];
                     if (!fromInput) {
-                        nextTick(function () {
+                        setTimeout(function () {
                             var _a;
                             (_a = endDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.focus();
                         });
@@ -8737,7 +8567,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                             setOpen(false);
                         }
                         else {
-                            nextTick(function () {
+                            setTimeout(function () {
                                 var _a;
                                 (_a = endDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.focus();
                             });
@@ -8765,13 +8595,13 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                     if (value[0]) {
                         setOpen(false);
                         if (fromInput && !open) {
-                            nextTick(function () {
+                            setTimeout(function () {
                                 onRequestSearchSubmit(name, finalValue);
                             });
                         }
                     }
                     else {
-                        nextTick(function () {
+                        setTimeout(function () {
                             var _a;
                             (_a = startDateTextFieldRef.current) === null || _a === void 0 ? void 0 : _a.focus();
                         });
@@ -8781,7 +8611,7 @@ var FormDateRangePicker = React.forwardRef(function (_a, ref) {
                 break;
         }
         updateValue(finalValue);
-        nextTick(function () {
+        setTimeout(function () {
             onValueChangeByUser(name, finalValue);
         });
     }, [
@@ -9302,7 +9132,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
             fileSizeCheck(file_1).then(function () {
                 onFile(file_1).then(function (url) {
                     updateValue(url);
-                    nextTick(function () {
+                    setTimeout(function () {
                         if (onValueChangeByUser)
                             onValueChangeByUser(name, url);
                     });
@@ -9315,7 +9145,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
     }, []);
     var handleRemoveClick = useCallback(function () {
         updateValue('');
-        nextTick(function () {
+        setTimeout(function () {
             if (onValueChangeByUser)
                 onValueChangeByUser(name, '');
         });
@@ -9324,7 +9154,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
         if (onLink) {
             onLink(url).then(function (finalUrl) {
                 updateValue(finalUrl);
-                nextTick(function () {
+                setTimeout(function () {
                     if (onValueChangeByUser)
                         onValueChangeByUser(name, finalUrl);
                 });
@@ -9332,7 +9162,7 @@ var FormFile = React.forwardRef(function (_a, ref) {
         }
         else {
             updateValue(url);
-            nextTick(function () {
+            setTimeout(function () {
                 if (onValueChangeByUser)
                     onValueChangeByUser(name, url);
             });
@@ -9821,7 +9651,7 @@ var FormMonthPicker = React.forwardRef(function (_a, ref) {
         updateValue(newValue);
         if (isMonthSelect)
             setOpen(false);
-        nextTick(function () {
+        setTimeout(function () {
             onValueChangeByUser(name, newValue);
         });
     }, [name, onValueChangeByUser, updateValue]);
@@ -10203,7 +10033,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
     var handleContainerChange = useCallback(function (newValue, selectType, isMonthSelect) {
         updateValue(newValue);
         if (selectType === 'start' && isMonthSelect) {
-            nextTick(function () {
+            setTimeout(function () {
                 var _a;
                 (_a = endInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
             });
@@ -10211,7 +10041,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
         else if (selectType === 'end' && isMonthSelect) {
             setOpen(false);
         }
-        nextTick(function () {
+        setTimeout(function () {
             onValueChangeByUser(name, newValue);
         });
     }, [name, onValueChangeByUser, updateValue]);
@@ -10229,7 +10059,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                 if (fromError) {
                     validate(newValue_1);
                 }
-                nextTick(function () {
+                setTimeout(function () {
                     onValueChangeByUser(name, newValue_1);
                 });
                 updateValue(newValue_1);
@@ -10246,7 +10076,7 @@ var FormMonthRangePicker = React.forwardRef(function (_a, ref) {
                 if (toError) {
                     validate(newValue_2);
                 }
-                nextTick(function () {
+                setTimeout(function () {
                     onValueChangeByUser(name, newValue_2);
                 });
                 updateValue(newValue_2);
@@ -10554,14 +10384,14 @@ var FormYearPicker = React.forwardRef(function (_a, ref) {
         updateValue(newValue);
         if (isClick)
             setOpen(false);
-        nextTick(function () {
+        setTimeout(function () {
             onValueChangeByUser(name, newValue);
         });
     }, [name, onValueChangeByUser, updateValue]);
     var handleInputDatePickerChange = useCallback(function (v) {
         var newValue = v ? dateToValue$1(v) : v;
         updateValue(newValue);
-        nextTick(function () {
+        setTimeout(function () {
             onValueChangeByUser(name, newValue);
         });
     }, [name, onValueChangeByUser, updateValue]);
@@ -10843,7 +10673,7 @@ var getFinalValue = function (value) {
     var handleContainerChange = useCallback(function (newValue, selectType) {
         updateValue(newValue);
         if (selectType === 'start') {
-            nextTick(function () {
+            setTimeout(function () {
                 var _a;
                 setSelectType('end');
                 (_a = endInputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
@@ -10852,7 +10682,7 @@ var getFinalValue = function (value) {
         else if (selectType === 'end') {
             setOpen(false);
         }
-        nextTick(function () {
+        setTimeout(function () {
             onValueChangeByUser(name, newValue);
         });
     }, [updateValue, name, onValueChangeByUser]);
@@ -10868,7 +10698,7 @@ var getFinalValue = function (value) {
                 if (fromError) {
                     validate(newValue_1);
                 }
-                nextTick(function () {
+                setTimeout(function () {
                     onValueChangeByUser(name, newValue_1);
                 });
                 updateValue(newValue_1);
@@ -10883,7 +10713,7 @@ var getFinalValue = function (value) {
                 if (toError) {
                     validate(newValue_2);
                 }
-                nextTick(function () {
+                setTimeout(function () {
                     onValueChangeByUser(name, newValue_2);
                 });
                 updateValue(newValue_2);
@@ -11126,7 +10956,7 @@ FormYearRangePicker.displayName = 'FormYearRangePicker';var FormSwitch = React.f
         }
         else {
             var finalValue_1 = updateValue(checked);
-            nextTick(function () {
+            setTimeout(function () {
                 onValueChangeByUser(name, finalValue_1);
                 onRequestSearchSubmit(name, finalValue_1);
             });

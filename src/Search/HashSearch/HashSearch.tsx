@@ -14,7 +14,8 @@ import {
   FormMonthRangePickerCommands,
   FormYearRangePickerCommands,
 } from '../../FormItemCustom';
-import { Dict, equal, notEmpty } from '@pdg/util';
+import { Dict } from '@pdg/types';
+import { equal, notEmpty } from '@pdg/compare';
 import dayjs from 'dayjs';
 
 export const HashSearch = React.forwardRef<SearchCommands, Props>(

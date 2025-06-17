@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
-import { ifUndefined, nextTick } from '@pdg/util';
+import { ifUndefined } from '@pdg/compare';
 import {
   FormMonthRangePickerProps as Props,
   FormMonthRangePickerCommands,
@@ -448,14 +448,14 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
       (newValue: FormMonthRangePickerValue, selectType: PrivateMonthRangePickerSelectType, isMonthSelect: boolean) => {
         updateValue(newValue);
         if (selectType === 'start' && isMonthSelect) {
-          nextTick(() => {
+          setTimeout(() => {
             endInputRef.current?.focus();
           });
         } else if (selectType === 'end' && isMonthSelect) {
           setOpen(false);
         }
 
-        nextTick(() => {
+        setTimeout(() => {
           onValueChangeByUser(name, newValue);
         });
       },
@@ -480,7 +480,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
             if (fromError) {
               validate(newValue);
             }
-            nextTick(() => {
+            setTimeout(() => {
               onValueChangeByUser(name, newValue);
             });
             updateValue(newValue);
@@ -498,7 +498,7 @@ const FormMonthRangePicker = React.forwardRef<FormMonthRangePickerCommands, Prop
             if (toError) {
               validate(newValue);
             }
-            nextTick(() => {
+            setTimeout(() => {
               onValueChangeByUser(name, newValue);
             });
             updateValue(newValue);

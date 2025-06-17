@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 import FormText from '../FormText';
 import classNames from 'classnames';
-import { notEmpty, personalNoAutoDash } from '@pdg/util';
+import { notEmpty } from '@pdg/compare';
+import { formatPersonalNo } from '@pdg/formatting';
 import { FormPersonalNoProps as Props, FormPersonalNoCommands, FormPersonalNoValue } from './FormPersonalNo.types';
 
 const FormPersonalNo = React.forwardRef<FormPersonalNoCommands, Props>(
@@ -22,7 +23,7 @@ const FormPersonalNo = React.forwardRef<FormPersonalNoCommands, Props>(
 
     const handleValue = useCallback(
       (value: FormPersonalNoValue) => {
-        const newValue = personalNoAutoDash(value.replace(/[^0-9]/gi, ''));
+        const newValue = formatPersonalNo(value.replace(/[^0-9]/gi, ''));
         return onValue ? onValue(newValue) : newValue;
       },
       [onValue]

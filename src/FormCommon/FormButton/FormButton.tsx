@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { FormButtonProps as Props } from './FormButton.types';
 import { useFormState } from '../../FormContext';
 import { PdgButton } from '@pdg/react-component';
-import { ifUndefined } from '@pdg/util';
+import { ifUndefined } from '@pdg/compare';
 
 const FormButton = React.forwardRef<HTMLButtonElement, Props>(
   (

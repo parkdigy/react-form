@@ -2,7 +2,7 @@ import React, { useId, useRef, useState, useCallback, ReactNode, useLayoutEffect
 import classNames from 'classnames';
 import { Box, IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
-import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
+import { empty, ifUndefined, notEmpty } from '@pdg/compare';
 import { FormTextFieldProps, FormTextFieldCommands, FormTextFieldValue } from './FormTextField.types';
 import { useFormState } from '../../FormContext';
 import { PdgIcon } from '@pdg/react-component';
@@ -310,7 +310,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
       (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const finalValue = updateValue(e.target.value);
         if (!noFormValueItem) {
-          nextTick(() => {
+          setTimeout(() => {
             onValueChangeByUser(name, finalValue);
             if (select) {
               onRequestSearchSubmit(name, finalValue);
@@ -423,7 +423,7 @@ const FormTextField: WithForwardRefType = React.forwardRef<FormTextFieldCommands
                     const finalValue = updateValue('');
                     focus();
                     if (!noFormValueItem) {
-                      nextTick(() => {
+                      setTimeout(() => {
                         onValueChangeByUser(name, finalValue);
                         onRequestSearchSubmit(name, finalValue);
                       });

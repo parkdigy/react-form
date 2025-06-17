@@ -12,7 +12,7 @@ import {
   FormFooter,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
-import { notEmpty } from '@pdg/util';
+import { notEmpty } from '@pdg/compare';
 
 const VALUE = 1234567890;
 

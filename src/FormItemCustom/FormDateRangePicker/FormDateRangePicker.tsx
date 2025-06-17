@@ -23,7 +23,7 @@ import {
 import dayjs, { Dayjs } from 'dayjs';
 import { useFormState } from '../../FormContext';
 import { getDateValidationErrorText } from '../../@util.private';
-import { ifUndefined, nextTick, notEmpty } from '@pdg/util';
+import { ifUndefined, notEmpty } from '@pdg/compare';
 import { DateValidationError } from '@mui/x-date-pickers';
 import { getFinalValue } from './FormDateRangePicker.function.private';
 
@@ -382,7 +382,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
             if (value[1]?.isBefore(newValue)) {
               finalValue = [newValue, null];
               if (!fromInput) {
-                nextTick(() => {
+                setTimeout(() => {
                   endDateTextFieldRef.current?.focus();
                 });
               }
@@ -392,7 +392,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
                 if (value[0] == null && newValue != null && value[1] != null) {
                   setOpen(false);
                 } else {
-                  nextTick(() => {
+                  setTimeout(() => {
                     endDateTextFieldRef.current?.focus();
                   });
                 }
@@ -419,12 +419,12 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
                 setOpen(false);
 
                 if (fromInput && !open) {
-                  nextTick(() => {
+                  setTimeout(() => {
                     onRequestSearchSubmit(name, finalValue);
                   });
                 }
               } else {
-                nextTick(() => {
+                setTimeout(() => {
                   startDateTextFieldRef.current?.focus();
                 });
               }
@@ -435,7 +435,7 @@ const FormDateRangePicker = React.forwardRef<FormDateRangePickerCommands, Props>
 
         updateValue(finalValue);
 
-        nextTick(() => {
+        setTimeout(() => {
           onValueChangeByUser(name, finalValue);
         });
       },

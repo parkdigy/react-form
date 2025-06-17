@@ -14,7 +14,7 @@ import {
   FormToggleButtonGroupItems,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
-import { lv } from '@pdg/util';
+import { lv } from '@pdg/data';
 
 const DEFAULT_ITEMS: FormToggleButtonGroupItem<number>[] = [
   lv('Item 1', 1),

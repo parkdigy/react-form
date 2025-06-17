@@ -19,7 +19,6 @@ import {
   isDateAvailable,
   makeAvailableDate,
 } from '../../../@util.private';
-import { nextTick } from '@pdg/util';
 
 const YEARS = new Array(200).fill(0);
 for (let i = 0; i < 200; i += 1) {
@@ -88,7 +87,7 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
 
     useEffect(() => {
       if (yearSelectOpen) {
-        nextTick(() => {
+        setTimeout(() => {
           const wrapRect = yearSelectRef.current?.getBoundingClientRect();
           const activeRect = activeYearBtnRef.current?.getBoundingClientRect();
           if (wrapRect && activeRect) {
@@ -141,7 +140,7 @@ const FormDateRangePickerTooltipPickerContainer = React.forwardRef<
         if (yearSelectOpen) {
           setYearSelectOpen(false);
           if (index !== yearMonthSelectIndex) {
-            nextTick(() => {
+            setTimeout(() => {
               setYearMonthSelectIndex(index);
               setYearSelectOpen(true);
               setMonthSelectOpen(false);

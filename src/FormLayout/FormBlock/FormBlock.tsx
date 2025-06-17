@@ -6,7 +6,7 @@ import { FormContext, useFormState } from '../../FormContext';
 import FormDivider from '../FormDivider';
 import { useAutoUpdateState } from '@pdg/react-hook';
 import { StyledWrapGrid } from './FormBlock.style.private';
-import { ifUndefined } from '@pdg/util';
+import { ifUndefined } from '@pdg/compare';
 
 const FormBlock = React.forwardRef<HTMLDivElement, Props>(
   (

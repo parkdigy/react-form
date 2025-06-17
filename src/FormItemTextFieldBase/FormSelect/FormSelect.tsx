@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Box, Checkbox, Chip, CircularProgress, MenuItem, SelectProps } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util.private';
-import { empty, notEmpty, equal, ifUndefined } from '@pdg/util';
+import { empty, notEmpty, equal, ifUndefined } from '@pdg/compare';
 import {
   FormSelectProps,
   FormSelectExtraCommands,
@@ -148,7 +148,7 @@ const FormSelect = ToForwardRefExoticComponent(
               finalValue = [];
             } else {
               if (typeof finalValue === 'string') {
-                finalValue = Array.from(new Set(finalValue.split(formValueSeparator)));
+                finalValue = Array.from(new Set((finalValue as string).split(formValueSeparator)));
               } else {
                 finalValue = [finalValue];
               }

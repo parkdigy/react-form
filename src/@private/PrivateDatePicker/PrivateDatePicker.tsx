@@ -35,7 +35,7 @@ import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
 import { InputBaseProps } from '@mui/material/InputBase';
 import './PrivateDatePicker.scss';
 import { Dayjs } from 'dayjs';
-import { empty, ifUndefined, nextTick, notEmpty } from '@pdg/util';
+import { empty, ifUndefined, notEmpty } from '@pdg/compare';
 
 const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
   (
@@ -405,7 +405,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
           }
           updateValue(finalValue);
 
-          nextTick(() => {
+          setTimeout(() => {
             onValueChangeByUser(name, finalValue);
             if (runOnRequestSearchSubmit) {
               onRequestSearchSubmit(name, finalValue);

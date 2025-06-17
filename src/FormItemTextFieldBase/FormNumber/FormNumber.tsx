@@ -4,7 +4,7 @@ import { NumericFormatProps } from 'react-number-format';
 import NumberFormatCustom from './NumberFormatCustom.private';
 import { FormNumberProps as Props, FormNumberCommands } from './FormNumber.types';
 import FormTextField from '../FormTextField';
-import { empty } from '@pdg/util';
+import { empty } from '@pdg/compare';
 import { InputBaseProps } from '@mui/material/InputBase';
 import { useAutoUpdateRef, useForceUpdate } from '@pdg/react-hook';
 

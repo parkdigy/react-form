@@ -19,7 +19,8 @@ import {
 } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util.private';
-import { empty, nextTick, notEmpty, equal, Dict, ifUndefined } from '@pdg/util';
+import { Dict } from '@pdg/types';
+import { empty, notEmpty, equal, ifUndefined } from '@pdg/compare';
 import {
   FormAutocompleteProps,
   FormAutocompleteCommands,
@@ -577,7 +578,7 @@ const FormAutocomplete = ToForwardRefExoticComponent(
           if (!equal(valueRef.current, finalValue)) {
             updateValue(finalValue, true);
             setValueItem(componentValue);
-            nextTick(() => {
+            setTimeout(() => {
               onValueChangeByUser(name, finalValue);
               onRequestSearchSubmit(name, finalValue);
             });
@@ -668,27 +669,31 @@ const FormAutocomplete = ToForwardRefExoticComponent(
             setInputValue(undefined);
           }
         }}
-        renderValue={(value, getItemProps) => {
-          if (Array.isArray(value)) {
-            return value.map((option, index) => (
-              <Chip
-                size='small'
-                style={variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined}
-                label={onRenderTag ? onRenderTag(option) : option.label}
-                {...getItemProps({ index })}
-              />
-            ));
-          } else {
-            return (
-              <Chip
-                size='small'
-                style={variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined}
-                label={onRenderTag ? onRenderTag(value) : value.label}
-                {...getItemProps({ index: 0 })}
-              />
-            );
-          }
-        }}
+        renderValue={
+          multiple
+            ? (value, getItemProps) => {
+                if (Array.isArray(value)) {
+                  return value.map((option, index) => (
+                    <Chip
+                      size='small'
+                      style={variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined}
+                      label={onRenderTag ? onRenderTag(option) : option.label}
+                      {...getItemProps({ index })}
+                    />
+                  ));
+                } else {
+                  return (
+                    <Chip
+                      size='small'
+                      style={variant === 'outlined' && size === 'small' ? { marginTop: 2, marginBottom: 0 } : undefined}
+                      label={onRenderTag ? onRenderTag(value) : value.label}
+                      {...getItemProps({ index: 0 })}
+                    />
+                  );
+                }
+              }
+            : undefined
+        }
         renderInput={(params) => {
           const slotProps = {
             input: {
