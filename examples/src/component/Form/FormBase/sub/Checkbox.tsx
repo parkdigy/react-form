@@ -1,26 +1,26 @@
 import React from 'react';
-import { FormCheckbox, FormCol, FormRow } from '../../../../../../src';
+import { PFormCheckbox, PFormCol, PFormRow } from '../../../../../../src';
 
 const Checkbox = () => {
   return (
-    <FormRow>
-      <FormCol>
-        <FormCheckbox
-          name={getName('FormCheckbox', true)}
-          text='FormCheckbox'
-          label='FormCheckbox'
+    <PFormRow>
+      <PFormCol>
+        <PFormCheckbox
+          name={getName('PFormCheckbox', true)}
+          text='PFormCheckbox'
+          label='PFormCheckbox'
           helperText='AAAAAA'
         />
-      </FormCol>
-      <FormCol fullWidth={false}>
-        <FormCheckbox name={getName('FormCheckbox')} text='FormCheckbox' label='FormCheckbox' helperText='AAAAAA' />
-        <FormCheckbox name={getName('FormCheckbox')} text='FormCheckbox' label='FormCheckbox' helperText='AAAAAA' />
-      </FormCol>
-      <FormCol fullWidth={false} label='FormCheckbox' helperText='AAAAAA'>
-        <FormCheckbox name={getName('FormCheckbox')} text='FormCheckbox' />
-        <FormCheckbox name={getName('FormCheckbox')} text='FormCheckbox' />
-      </FormCol>
-    </FormRow>
+      </PFormCol>
+      <PFormCol fullWidth={false}>
+        <PFormCheckbox name={getName('PFormCheckbox')} text='PFormCheckbox' label='PFormCheckbox' helperText='AAAAAA' />
+        <PFormCheckbox name={getName('PFormCheckbox')} text='PFormCheckbox' label='PFormCheckbox' helperText='AAAAAA' />
+      </PFormCol>
+      <PFormCol fullWidth={false} label='PFormCheckbox' helperText='AAAAAA'>
+        <PFormCheckbox name={getName('PFormCheckbox')} text='PFormCheckbox' />
+        <PFormCheckbox name={getName('PFormCheckbox')} text='PFormCheckbox' />
+      </PFormCol>
+    </PFormRow>
   );
 };
 

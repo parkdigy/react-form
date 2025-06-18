@@ -4,7 +4,7 @@ import {
   PrivateMonthRangePickerValue,
   PrivateMonthRangePickerSelectType,
 } from './PrivateMonthRangePicker.types';
-import { FormMonthPickerBaseValue } from '../../FormItemCustom';
+import { PFormMonthPickerBaseValue } from '../../PFormItemCustom';
 import { Grid } from '@mui/material';
 import PrivateMonthPicker, { PrivateMonthPickerBaseValue } from '../PrivateMonthPicker';
 import dayjs, { Dayjs } from 'dayjs';
@@ -235,6 +235,6 @@ export default PrivateMonthRangePicker;
  * Function
  * ******************************************************************************************************************/
 
-const valueToYm = (v: FormMonthPickerBaseValue) => v.year * 100 + v.month;
+const valueToYm = (v: PFormMonthPickerBaseValue) => v.year * 100 + v.month;
 
 const dateToValue = (v: Dayjs) => ({ year: v.year(), month: v.month() + 1 });

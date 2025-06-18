@@ -1,25 +1,25 @@
 import React from 'react';
-import { FormBlock, FormCol, FormRow } from '../../../../../../src';
+import { PFormBlock, PFormCol, PFormRow } from '../../../../../../src';
 
 const WidthBlock: React.FC<{
   component: React.ForwardRefExoticComponent<any>;
   componentProps?: any;
 }> = ({ component: Component, componentProps }) => {
   return (
-    <FormBlock label='Width' line>
-      <FormRow>
-        <FormCol>
+    <PFormBlock label='Width' line>
+      <PFormRow>
+        <PFormCol>
           <Component {...componentProps} name={getName('WidthBlock')} fullWidth helperText='fullWidth=true (Default)' />
-        </FormCol>
-        <FormCol fullWidth={false} helperText='FormCol - fullWidth=false'>
+        </PFormCol>
+        <PFormCol fullWidth={false} helperText='FormCol - fullWidth=false'>
           <Component {...componentProps} name={getName('WidthBlock')} />
           <Component {...componentProps} name={getName('WidthBlock')} />
-        </FormCol>
-        <FormCol>
+        </PFormCol>
+        <PFormCol>
           <Component {...componentProps} name={getName('WidthBlock')} width={250} helperText='width=250' />
-        </FormCol>
-      </FormRow>
-    </FormBlock>
+        </PFormCol>
+      </PFormRow>
+    </PFormBlock>
   );
 };
 

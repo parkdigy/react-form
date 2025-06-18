@@ -1,15 +1,15 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import {
-  Form,
-  FormButton,
-  FormRow,
-  FormCol,
-  FormNumber,
-  FormCheckbox,
-  FormNumberProps,
-  FormValueMap,
-  FormBody,
-  FormFooter,
+  PForm,
+  PFormButton,
+  PFormRow,
+  PFormCol,
+  PFormNumber,
+  PFormCheckbox,
+  PFormNumberProps,
+  PFormValueMap,
+  PFormBody,
+  PFormFooter,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
 import { notEmpty } from '@pdg/compare';
@@ -30,7 +30,7 @@ const FormItemNumber = () => {
    * Event Handler
    * ******************************************************************************************************************/
 
-  const handleSubmit = useCallback((data: FormValueMap) => {
+  const handleSubmit = useCallback((data: PFormValueMap) => {
     ll(data);
   }, []);
 
@@ -39,7 +39,7 @@ const FormItemNumber = () => {
    * ******************************************************************************************************************/
 
   const numberProps = useMemo(() => {
-    const newNumberProps: Partial<FormNumberProps> = {
+    const newNumberProps: Partial<PFormNumberProps> = {
       thousandSeparator,
       allowNegative,
       allowDecimal,
@@ -57,32 +57,32 @@ const FormItemNumber = () => {
   return (
     <>
       <OutlinedPaper>
-        <Form size='small' style={{ marginTop: 10 }}>
-          <FormBody>
-            <FormRow>
-              <FormCol fullWidth={false}>
-                <FormCheckbox
+        <PForm size='small' style={{ marginTop: 10 }}>
+          <PFormBody>
+            <PFormRow>
+              <PFormCol fullWidth={false}>
+                <PFormCheckbox
                   name='thousandSeparator'
                   text='thousandSeparator'
                   helperText='천단위 콤마(,) 표시'
                   checked={thousandSeparator}
                   onChange={(checked) => setThousandSeparator(checked)}
                 />
-                <FormCheckbox
+                <PFormCheckbox
                   name='allowNegative'
                   text='allowNegative'
                   helperText='음수 허용'
                   checked={allowNegative}
                   onChange={(checked) => setAllowNegative(checked)}
                 />
-                <FormCheckbox
+                <PFormCheckbox
                   name='allowDecimal'
                   text='allowDecimal'
                   helperText='소수점 허용'
                   checked={allowDecimal}
                   onChange={(checked) => setAllowDecimal(checked)}
                 />
-                <FormNumber
+                <PFormNumber
                   name='decimalScale'
                   label='decimalScale'
                   width={100}
@@ -92,57 +92,57 @@ const FormItemNumber = () => {
                   value={decimalScale}
                   onChange={setDecimalScale}
                 />
-              </FormCol>
-            </FormRow>
-          </FormBody>
-        </Form>
+              </PFormCol>
+            </PFormRow>
+          </PFormBody>
+        </PForm>
       </OutlinedPaper>
       <br />
-      <Form onSubmit={handleSubmit} fullHeight>
-        <FormBody>
-          <FormRow>
-            <FormCol>
-              <FormNumber
+      <PForm onSubmit={handleSubmit} fullHeight>
+        <PFormBody>
+          <PFormRow>
+            <PFormCol>
+              <PFormNumber
                 {...numberProps}
                 name='required'
-                label={FormNumber.displayName}
+                label={PFormNumber.displayName}
                 required
                 helperText='required=true'
               />
-            </FormCol>
-            <FormCol>
-              <FormNumber
+            </PFormCol>
+            <PFormCol>
+              <PFormNumber
                 {...numberProps}
                 name='readOnly'
-                label={FormNumber.displayName}
+                label={PFormNumber.displayName}
                 value={VALUE}
                 readOnly
                 helperText='readOnly=true'
               />
-            </FormCol>
-            <FormCol>
-              <FormNumber
+            </PFormCol>
+            <PFormCol>
+              <PFormNumber
                 {...numberProps}
                 name='disabled'
-                label={FormNumber.displayName}
+                label={PFormNumber.displayName}
                 value={VALUE}
                 disabled
                 helperText='disabled=true'
               />
-            </FormCol>
-          </FormRow>
-        </FormBody>
-        <FormFooter>
-          <FormRow>
-            <FormCol>
-              <FormButton>취소</FormButton>
-            </FormCol>
-            <FormCol>
-              <FormButton type='submit'>확인</FormButton>
-            </FormCol>
-          </FormRow>
-        </FormFooter>
-      </Form>
+            </PFormCol>
+          </PFormRow>
+        </PFormBody>
+        <PFormFooter>
+          <PFormRow>
+            <PFormCol>
+              <PFormButton>취소</PFormButton>
+            </PFormCol>
+            <PFormCol>
+              <PFormButton type='submit'>확인</PFormButton>
+            </PFormCol>
+          </PFormRow>
+        </PFormFooter>
+      </PForm>
     </>
   );
 };

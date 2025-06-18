@@ -12,7 +12,7 @@ import {
   StyledYearMonth,
   StyledYearMonthError,
 } from './PrivateYearPicker.style.private';
-import { PdgIcon } from '@pdg/react-component';
+import { PIcon } from '@pdg/react-component';
 
 const DEFAULT_MIN_YEAR = 2020;
 const DEFAULT_MAX_YEAR = 2050;
@@ -128,7 +128,7 @@ const PrivateYearPicker: React.FC<Props> = ({
       {!hideHeader && (
         <StyledTitleContainer>
           <StyledIconButton disabled={displayInfo.year <= yearInfo.available.min} onClick={handlePrevClick}>
-            <PdgIcon>KeyboardArrowLeft</PdgIcon>
+            <PIcon>KeyboardArrowLeft</PIcon>
           </StyledIconButton>
           {displayInfo.error ? (
             <StyledYearMonthError>{displayInfo.year}년</StyledYearMonthError>
@@ -136,7 +136,7 @@ const PrivateYearPicker: React.FC<Props> = ({
             <StyledYearMonth>{displayInfo.year}년</StyledYearMonth>
           )}
           <StyledIconButton disabled={displayInfo.year >= yearInfo.available.max} onClick={handleNextClick}>
-            <PdgIcon>KeyboardArrowRight</PdgIcon>
+            <PIcon>KeyboardArrowRight</PIcon>
           </StyledIconButton>
         </StyledTitleContainer>
       )}

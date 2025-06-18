@@ -1,15 +1,15 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import {
-  Form,
-  FormButton,
-  FormRow,
-  FormCol,
-  FormTag,
-  FormCheckbox,
-  FormValueMap,
-  FormBody,
-  FormFooter,
-  FormNumber,
+  PForm,
+  PFormButton,
+  PFormRow,
+  PFormCol,
+  PFormTag,
+  PFormCheckbox,
+  PFormValueMap,
+  PFormBody,
+  PFormFooter,
+  PFormNumber,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
 
@@ -27,7 +27,7 @@ const FormItemTag = () => {
    * Event Handler
    * ******************************************************************************************************************/
 
-  const handleSubmit = useCallback((data: FormValueMap) => {
+  const handleSubmit = useCallback((data: PFormValueMap) => {
     ll(data);
   }, []);
 
@@ -51,18 +51,18 @@ const FormItemTag = () => {
   return (
     <>
       <OutlinedPaper>
-        <Form size='small' fullWidth={false}>
-          <FormBody>
-            <FormRow>
-              <FormCol>
-                <FormCheckbox
+        <PForm size='small' fullWidth={false}>
+          <PFormBody>
+            <PFormRow>
+              <PFormCol>
+                <PFormCheckbox
                   name='formValueSort'
                   text='formValueSort'
                   helperText='Form 값 정렬'
                   checked={formValueSort}
                   onChange={setFormValueSort}
                 />
-                <FormNumber
+                <PFormNumber
                   name='limitTags'
                   label='limitTags'
                   helperText='값 표시 개수 지정'
@@ -70,7 +70,7 @@ const FormItemTag = () => {
                   value={limitTags}
                   onChange={setLimitTags}
                 />
-                <FormCheckbox
+                <PFormCheckbox
                   name='allowSpace'
                   text='allowSpace'
                   checked={allowSpace}
@@ -78,61 +78,61 @@ const FormItemTag = () => {
                   fullWidth={false}
                   helperText='공백 허용'
                 />
-              </FormCol>
-            </FormRow>
-          </FormBody>
-        </Form>
+              </PFormCol>
+            </PFormRow>
+          </PFormBody>
+        </PForm>
       </OutlinedPaper>
       <br />
-      <Form fullHeight onSubmit={handleSubmit}>
-        <FormBody>
-          <FormRow>
-            <FormCol>
-              <FormTag
+      <PForm fullHeight onSubmit={handleSubmit}>
+        <PFormBody>
+          <PFormRow>
+            <PFormCol>
+              <PFormTag
                 {...additionalProps}
                 name='required'
-                label='FormTag'
+                label='PFormTag'
                 required
                 helperText='required=true'
                 allowSpace={allowSpace}
                 value={value}
               />
-            </FormCol>
-            <FormCol>
-              <FormTag
+            </PFormCol>
+            <PFormCol>
+              <PFormTag
                 {...additionalProps}
                 name='readOnly'
-                label='FormTag'
+                label='PFormTag'
                 value={value}
                 readOnly
                 helperText='readOnly=true'
                 allowSpace={allowSpace}
               />
-            </FormCol>
-            <FormCol>
-              <FormTag
+            </PFormCol>
+            <PFormCol>
+              <PFormTag
                 {...additionalProps}
                 name='disabled'
-                label='FormTag'
+                label='PFormTag'
                 value={value}
                 disabled
                 helperText='disabled=true'
                 allowSpace={allowSpace}
               />
-            </FormCol>
-          </FormRow>
-        </FormBody>
-        <FormFooter>
-          <FormRow>
-            <FormCol>
-              <FormButton>취소</FormButton>
-            </FormCol>
-            <FormCol>
-              <FormButton type='submit'>확인</FormButton>
-            </FormCol>
-          </FormRow>
-        </FormFooter>
-      </Form>
+            </PFormCol>
+          </PFormRow>
+        </PFormBody>
+        <PFormFooter>
+          <PFormRow>
+            <PFormCol>
+              <PFormButton>취소</PFormButton>
+            </PFormCol>
+            <PFormCol>
+              <PFormButton type='submit'>확인</PFormButton>
+            </PFormCol>
+          </PFormRow>
+        </PFormFooter>
+      </PForm>
     </>
   );
 };

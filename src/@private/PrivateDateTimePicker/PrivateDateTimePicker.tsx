@@ -9,13 +9,13 @@ import {
 } from '@mui/x-date-pickers';
 import { useAutoUpdateLayoutRef, useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
-import { PdgIcon, PdgIconText } from '@pdg/react-component';
+import { PIcon, PIconText } from '@pdg/react-component';
 import {
   PrivateDateTimePickerProps as Props,
   PrivateDateTimePickerCommands,
   PrivateDateTimePickerValue,
 } from './PrivateDateTimePicker.types';
-import { useFormState } from '../../FormContext';
+import { useFormState } from '../../PFormContext';
 import {
   checkDateAvailable,
   getAvailableDate,
@@ -488,7 +488,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
           <>
             {icon && (
               <InputAdornment position='start'>
-                <PdgIcon size='small'>{icon}</PdgIcon>
+                <PIcon size='small'>{icon}</PIcon>
               </InputAdornment>
             )}
             {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
@@ -604,7 +604,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
               <div style={{ display: fullWidth ? 'block' : 'inline-block' }}>
                 <DesktopDateTimePicker
                   value={inputValue}
-                  label={labelIcon ? <PdgIconText icon={labelIcon}>{initLabel}</PdgIconText> : initLabel}
+                  label={labelIcon ? <PIconText icon={labelIcon}>{initLabel}</PIconText> : initLabel}
                   open={false}
                   format={format}
                   disabled={disabled}

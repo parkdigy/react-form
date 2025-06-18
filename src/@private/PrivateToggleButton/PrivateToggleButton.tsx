@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { PrivateToggleButtonProps as Props } from './PrivateToggleButton.types';
 import { Button, useTheme, darken } from '@mui/material';
-import { CommonSxProps } from '../../@types';
+import { PCommonSxProps } from '../../@types';
 
 const PrivateToggleButton = React.forwardRef<HTMLButtonElement, Props>(
   ({ children, className, selected, activated, outlined, ...props }, ref) => {
@@ -17,7 +17,7 @@ const PrivateToggleButton = React.forwardRef<HTMLButtonElement, Props>(
      * ******************************************************************************************************************/
 
     const sx = useMemo(() => {
-      const newSx: CommonSxProps['sx'] = {
+      const newSx: PCommonSxProps['sx'] = {
         color: 'inherit',
         ':hover': {
           backgroundColor: darken('#fff', 0.1),

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormBlock, FormCol, FormRow } from '../../../../../../src';
+import { PFormBlock, PFormCol, PFormRow } from '../../../../../../src';
 
 const ColorBlock: React.FC<{
   component: React.ForwardRefExoticComponent<any>;
@@ -7,9 +7,9 @@ const ColorBlock: React.FC<{
   focused?: boolean;
 }> = ({ component: Component, componentProps, focused }) => {
   return (
-    <FormBlock label={focused ? 'Focused Color' : 'Color'} line>
-      <FormRow>
-        <FormCol>
+    <PFormBlock label={focused ? 'Focused Color' : 'Color'} line>
+      <PFormRow>
+        <PFormCol>
           <Component
             {...componentProps}
             name={`ColorBlock${focused ? '_focused' : ''}_primary`}
@@ -17,8 +17,8 @@ const ColorBlock: React.FC<{
             color='primary'
             helperText={`${focused ? 'focused=true / ' : ''}color=primary`}
           />
-        </FormCol>
-        <FormCol>
+        </PFormCol>
+        <PFormCol>
           <Component
             {...componentProps}
             name={`ColorBlock${focused ? '_focused' : ''}_secondary`}
@@ -26,8 +26,8 @@ const ColorBlock: React.FC<{
             color='secondary'
             helperText={`${focused ? 'focused=true / ' : ''}color=secondary`}
           />
-        </FormCol>
-        <FormCol>
+        </PFormCol>
+        <PFormCol>
           <Component
             {...componentProps}
             name={`ColorBlock${focused ? '_focused' : ''}_info`}
@@ -35,8 +35,8 @@ const ColorBlock: React.FC<{
             color='info'
             helperText={`${focused ? 'focused=true / ' : ''}color=info`}
           />
-        </FormCol>
-        <FormCol>
+        </PFormCol>
+        <PFormCol>
           <Component
             {...componentProps}
             name={`ColorBlock${focused ? '_focused' : ''}_success`}
@@ -44,8 +44,8 @@ const ColorBlock: React.FC<{
             color='success'
             helperText={`${focused ? 'focused=true / ' : ''}color=success`}
           />
-        </FormCol>
-        <FormCol>
+        </PFormCol>
+        <PFormCol>
           <Component
             {...componentProps}
             name={`ColorBlock${focused ? '_focused' : ''}_warning`}
@@ -53,8 +53,8 @@ const ColorBlock: React.FC<{
             color='warning'
             helperText={`${focused ? 'focused=true / ' : ''}color=warning`}
           />
-        </FormCol>
-        <FormCol>
+        </PFormCol>
+        <PFormCol>
           <Component
             {...componentProps}
             name={`ColorBlock${focused ? '_focused' : ''}_error`}
@@ -62,9 +62,9 @@ const ColorBlock: React.FC<{
             color='error'
             helperText={`${focused ? 'focused=true / ' : ''}color=error`}
           />
-        </FormCol>
-      </FormRow>
-    </FormBlock>
+        </PFormCol>
+      </PFormRow>
+    </PFormBlock>
   );
 };
 

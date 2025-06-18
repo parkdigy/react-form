@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import {
-  Form,
-  FormRow,
-  FormCol,
-  FormTextEditor,
-  FormButton,
-  FormCheckbox,
-  FormBody,
-  FormFooter,
+  PForm,
+  PFormRow,
+  PFormCol,
+  PFormTextEditor,
+  PFormButton,
+  PFormCheckbox,
+  PFormBody,
+  PFormFooter,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
 
@@ -26,51 +26,51 @@ const FormItemTextEditor = () => {
   return (
     <>
       <OutlinedPaper>
-        <Form size='small' style={{ marginTop: 10 }}>
-          <FormBody>
-            <FormRow>
-              <FormCol fullWidth={false}>
-                <FormCheckbox
+        <PForm size='small' style={{ marginTop: 10 }}>
+          <PFormBody>
+            <PFormRow>
+              <PFormCol fullWidth={false}>
+                <PFormCheckbox
                   name='readOnly'
                   text='readOnly'
                   checked={readOnly}
                   onChange={(checked) => setReadOnly(checked)}
                 />
-                <FormCheckbox
+                <PFormCheckbox
                   name='disabled'
                   text='disabled'
                   checked={disabled}
                   onChange={(checked) => setDisabled(checked)}
                 />
-              </FormCol>
-            </FormRow>
-          </FormBody>
-        </Form>
+              </PFormCol>
+            </PFormRow>
+          </PFormBody>
+        </PForm>
       </OutlinedPaper>
       <br />
-      <Form onSubmit={(data) => ll(data)}>
-        <FormBody>
-          <FormRow>
-            <FormCol>
-              <FormTextEditor
+      <PForm onSubmit={(data) => ll(data)}>
+        <PFormBody>
+          <PFormRow>
+            <PFormCol>
+              <PFormTextEditor
                 apiKey='[your-api-key]'
                 required
-                name='FormTextEditor'
-                label='FormTextEditor'
+                name='PFormTextEditor'
+                label='PFormTextEditor'
                 readOnly={readOnly}
                 disabled={disabled}
               />
-            </FormCol>
-          </FormRow>
-        </FormBody>
-        <FormFooter>
-          <FormRow>
-            <FormCol>
-              <FormButton type='submit'>확인</FormButton>
-            </FormCol>
-          </FormRow>
-        </FormFooter>
-      </Form>
+            </PFormCol>
+          </PFormRow>
+        </PFormBody>
+        <PFormFooter>
+          <PFormRow>
+            <PFormCol>
+              <PFormButton type='submit'>확인</PFormButton>
+            </PFormCol>
+          </PFormRow>
+        </PFormFooter>
+      </PForm>
     </>
   );
 };

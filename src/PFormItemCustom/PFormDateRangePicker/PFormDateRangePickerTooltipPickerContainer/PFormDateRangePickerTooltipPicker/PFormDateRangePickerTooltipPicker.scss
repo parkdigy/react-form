@@ -1,0 +1,92 @@
+.PFormDateRangePickerTooltipPicker {
+  .MuiPickersCalendarHeader-root {
+    display: none;
+  }
+  .MuiDayPicker-header {
+    > span {
+      margin: 0;
+    }
+  }
+
+  .MuiPickerStaticWrapper-content {
+    min-width: 292px;
+    .MuiCalendarOrClockPicker-root {
+      > div {
+        width: 292px;
+        .MuiCalendarPicker-root {
+          width: 292px;
+        }
+      }
+    }
+  }
+
+  .selected-bg {
+    display: none;
+    position: absolute;
+
+    &.sel {
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(66, 165, 245, 0.6);
+
+      &.ui-start,
+      &.s-start {
+        border-top-left-radius: 50%;
+        border-bottom-left-radius: 50%;
+      }
+      &.ui-end,
+      &.s-end {
+        border-top-right-radius: 50%;
+        border-bottom-right-radius: 50%;
+      }
+
+      ~ .MuiPickersDay-root {
+        border: 0;
+
+        &:not(:hover):not(:active):not(.Mui-selected) {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+
+  .focused-bg {
+    display: none;
+    position: absolute;
+
+    &.focused {
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border: 2px solid #efefef;
+      border-left: 0;
+      border-right: 0;
+
+      &.ui-start,
+      &.f-start {
+        border-left: 2px solid #efefef;
+        border-top-left-radius: 50%;
+        border-bottom-left-radius: 50%;
+      }
+      &.ui-end,
+      &.f-end {
+        border-right: 2px solid #efefef;
+        border-top-right-radius: 50%;
+        border-bottom-right-radius: 50%;
+      }
+
+      ~ .MuiPickersDay-root {
+        &:not(:hover):not(:active):not(.Mui-selected) {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}

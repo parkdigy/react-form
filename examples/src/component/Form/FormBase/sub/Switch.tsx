@@ -1,21 +1,21 @@
 import React from 'react';
-import { FormSwitch, FormCol, FormRow } from '../../../../../../src';
+import { PFormSwitch, PFormCol, PFormRow } from '../../../../../../src';
 
 const Switch = () => {
   return (
-    <FormRow>
-      <FormCol>
-        <FormSwitch name={getName('FormSwitch', true)} label='FormSwitch' />
-      </FormCol>
-      <FormCol>
-        <FormSwitch name={getName('FormSwitch')} label='FormSwitch' />
-        <FormSwitch name={getName('FormSwitch')} label='FormSwitch' />
-      </FormCol>
-      <FormCol label='FormSwitch'>
-        <FormSwitch name={getName('FormSwitch')} />
-        <FormSwitch name={getName('FormSwitch')} />
-      </FormCol>
-    </FormRow>
+    <PFormRow>
+      <PFormCol>
+        <PFormSwitch name={getName('PFormSwitch', true)} label='PFormSwitch' />
+      </PFormCol>
+      <PFormCol>
+        <PFormSwitch name={getName('PFormSwitch')} label='PFormSwitch' />
+        <PFormSwitch name={getName('PFormSwitch')} label='PFormSwitch' />
+      </PFormCol>
+      <PFormCol label='PFormSwitch'>
+        <PFormSwitch name={getName('PFormSwitch')} />
+        <PFormSwitch name={getName('PFormSwitch')} />
+      </PFormCol>
+    </PFormRow>
   );
 };
 

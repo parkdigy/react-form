@@ -15,7 +15,7 @@ import {
   StyledYearMonthError,
   TitleContainer,
 } from './PrivateMonthPicker.style.private';
-import { PdgIcon } from '@pdg/react-component';
+import { PIcon } from '@pdg/react-component';
 import { dateToValue, valueToDate, valueToYm } from './PrivateMonthPicker.function.private';
 
 const DEFAULT_MIN_VALUE = {
@@ -163,7 +163,7 @@ const PrivateMonthPicker: React.FC<Props> = ({
     <StyledContainer className='PrivateMonthPicker'>
       <TitleContainer>
         <StyledIconButton disabled={prevBtnDisabled} onClick={handlePrevClick}>
-          <PdgIcon>KeyboardArrowLeft</PdgIcon>
+          <PIcon>KeyboardArrowLeft</PIcon>
         </StyledIconButton>
         {displayInfo.error ? (
           <StyledYearMonthError>
@@ -175,7 +175,7 @@ const PrivateMonthPicker: React.FC<Props> = ({
           </StyledYearMonth>
         )}
         <StyledIconButton disabled={nextBtnDisabled} onClick={handleNextClick}>
-          <PdgIcon>KeyboardArrowRight</PdgIcon>
+          <PIcon>KeyboardArrowRight</PIcon>
         </StyledIconButton>
       </TitleContainer>
       <div>

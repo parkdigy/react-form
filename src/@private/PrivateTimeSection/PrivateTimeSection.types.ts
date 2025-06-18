@@ -1,15 +1,15 @@
 import React from 'react';
 import { PrivateTimeSelectCommands } from '../PrivateTimeSelect';
 import { Dayjs } from 'dayjs';
-import { FormTimeType } from '../../@types';
+import { PFormTimeType } from '../../@types';
 import { PrivateStaticDateTimePickerUnit } from '../PrivateStaticDateTimePicker';
-import { FormAvailableDate } from '../@types';
+import { PFormAvailableDate } from '../@types';
 
 export interface PrivateTimeSectionProps {
-  time: FormTimeType;
+  time: PFormTimeType;
   width: number;
   cols: 1 | 2 | 3;
-  availableDate: FormAvailableDate;
+  availableDate: PFormAvailableDate;
   hourSelectRef: React.RefObject<PrivateTimeSelectCommands | null>;
   minuteSelectRef: React.RefObject<PrivateTimeSelectCommands | null>;
   secondSelectRef: React.RefObject<PrivateTimeSelectCommands | null>;

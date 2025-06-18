@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { PrivateMonthPickerMonthListProps as Props } from './PrivateMonthPickerMonthList.types';
 import PrivateMonthPickerMonth from '../PrivateMonthPickerMonth';
-import { FormMonthPickerBaseValue } from '../../../FormItemCustom';
+import { PFormMonthPickerBaseValue } from '../../../PFormItemCustom';
 import dayjs, { Dayjs } from 'dayjs';
 import { StyledContainer } from './PrivateMonthPickerMonthList.style.private';
 
@@ -139,6 +139,6 @@ export default PrivateMonthPickerMonthList;
  * Function
  * ******************************************************************************************************************/
 
-const valueToYm = (v: FormMonthPickerBaseValue) => v.year * 100 + v.month;
+const valueToYm = (v: PFormMonthPickerBaseValue) => v.year * 100 + v.month;
 
 const dateToValue = (v: Dayjs) => ({ year: v.year(), month: v.month() + 1 });

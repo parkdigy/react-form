@@ -1,41 +1,41 @@
 import React from 'react';
-import { FormBlock, FormCol, FormNumber, FormNumberProps, FormRow } from '../../../../../../src';
+import { PFormBlock, PFormCol, PFormNumber, PFormNumberProps, PFormRow } from '../../../../../../src';
 
 const NumberBlock: React.FC<{
-  componentProps?: FormNumberProps;
+  componentProps?: PFormNumberProps;
 }> = ({ componentProps }) => {
   return (
-    <FormBlock label='Number' line>
-      <FormRow>
-        <FormCol>
-          <FormNumber
+    <PFormBlock label='Number' line>
+      <PFormRow>
+        <PFormCol>
+          <PFormNumber
             {...componentProps}
             name='FormNumber_thousandSeparator'
             thousandSeparator
             value={1234567890}
             helperText='thousandSeparator=true'
           />
-        </FormCol>
-        <FormCol>
-          <FormNumber
+        </PFormCol>
+        <PFormCol>
+          <PFormNumber
             {...componentProps}
             name='FormNumber_allowNegative'
             allowNegative
             value={-123}
             helperText='allowNegative=true'
           />
-        </FormCol>
-        <FormCol>
-          <FormNumber
+        </PFormCol>
+        <PFormCol>
+          <PFormNumber
             {...componentProps}
             name='FormNumber_allowDecimal'
             allowDecimal
             value={123.456}
             helperText='allowDecimal=true'
           />
-        </FormCol>
-      </FormRow>
-    </FormBlock>
+        </PFormCol>
+      </PFormRow>
+    </PFormBlock>
   );
 };
 

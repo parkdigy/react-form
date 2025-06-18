@@ -1,0 +1,38 @@
+.PFormSelect {
+  &.is-selected-placeholder {
+    .MuiSelect-select {
+      opacity: 0.38;
+    }
+  }
+  .MuiInputBase-root.MuiInputBase-adornedEnd {
+    padding-right: 25px;
+  }
+  .MuiSelect-select.MuiSelect-multiple {
+    .selected-list:not(:empty) {
+      margin-top: -3px;
+      margin-bottom: -3px;
+    }
+    &:not(:empty) {
+    }
+  }
+}
+
+.PFormSelect-Menu-Popover {
+  > .MuiPaper-root {
+    &::-webkit-scrollbar {
+      width: 12px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #00000030;
+      background-clip: padding-box;
+      border-left: 4px transparent solid;
+      border-right: 4px transparent solid;
+    }
+    &::-webkit-scrollbar-button:start:decrement,
+    &::-webkit-scrollbar-button:end:increment {
+      display: block;
+      height: 4px;
+      background-color: transparent;
+    }
+  }
+}

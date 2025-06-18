@@ -1,13 +1,13 @@
 import React from 'react';
-import { FormCol, FormFile, FormImageFile, FormRow } from '../../../../../../src';
+import { PFormCol, PFormFile, PFormImageFile, PFormRow } from '../../../../../../src';
 
 const FileUpload = () => {
   return (
-    <FormRow>
-      <FormCol>
-        <FormFile
-          name='FormFile'
-          label='FormFile'
+    <PFormRow>
+      <PFormCol>
+        <PFormFile
+          name='PFormFile'
+          label='PFormFile'
           helperText={'AAAAAA'}
           onFile={(file: File) => {
             return new Promise<string>((resolve) => {
@@ -15,11 +15,11 @@ const FileUpload = () => {
             });
           }}
         />
-      </FormCol>
-      <FormCol>
-        <FormImageFile
-          name='FormImageFile'
-          label='FormImageFile'
+      </PFormCol>
+      <PFormCol>
+        <PFormImageFile
+          name='PFormImageFile'
+          label='PFormImageFile'
           preview
           previewMaxHeight={100}
           helperText={'AAAAAA'}
@@ -31,8 +31,8 @@ const FileUpload = () => {
             });
           }}
         />
-      </FormCol>
-    </FormRow>
+      </PFormCol>
+    </PFormRow>
   );
 };
 

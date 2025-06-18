@@ -1,6 +1,6 @@
 import { DateTimeValidationError, DateValidationError } from '@mui/x-date-pickers';
-import { FormDateType, FormTimeType } from '../@types';
-import { FormAvailableDate, FormAvailableDateItem, FormAvailableDateType } from '../@private/@types';
+import { PFormDateType, PFormTimeType } from '../@types';
+import { PFormAvailableDate, PFormAvailableDateItem, PFormAvailableDateType } from '../@private/@types';
 import dayjs, { Dayjs } from 'dayjs';
 
 export function getDateValidationErrorText(error: DateValidationError | DateTimeValidationError) {
@@ -35,7 +35,7 @@ const DEFAULT_TIME_MINUTE_FORM_VALUE_FORMAT = 'HH:mm:00';
 const DEFAULT_TIME_SECOND_FORMAT = 'HH:mm:ss';
 const DEFAULT_TIME_SECOND_FORM_VALUE_FORMAT = 'HH:mm:ss';
 
-export function getDateTimeFormat(type: FormDateType, time?: FormTimeType): string {
+export function getDateTimeFormat(type: PFormDateType, time?: PFormTimeType): string {
   switch (type) {
     case 'date':
       return DEFAULT_DATE_FORMAT;
@@ -70,7 +70,7 @@ export function getDateTimeFormat(type: FormDateType, time?: FormTimeType): stri
   }
 }
 
-export function getDateTimeFormValueFormat(type: FormDateType, time?: FormTimeType): string {
+export function getDateTimeFormValueFormat(type: PFormDateType, time?: PFormTimeType): string {
   switch (type) {
     case 'date':
       return DEFAULT_DATE_FORM_VALUE_FORMAT;
@@ -113,17 +113,17 @@ export function getDateTimeFormValueFormat(type: FormDateType, time?: FormTimeTy
  * getAvailableDateValFormat
  * ******************************************************************************************************************/
 
-export function getAvailableDateValFormat(type: FormAvailableDateType): string;
-export function getAvailableDateValFormat(type: FormDateType, time?: FormTimeType): string;
-export function getAvailableDateValFormat(type: FormAvailableDateType | FormDateType, time?: FormTimeType): string {
-  let availableDateType: FormAvailableDateType;
+export function getAvailableDateValFormat(type: PFormAvailableDateType): string;
+export function getAvailableDateValFormat(type: PFormDateType, time?: PFormTimeType): string;
+export function getAvailableDateValFormat(type: PFormAvailableDateType | PFormDateType, time?: PFormTimeType): string {
+  let availableDateType: PFormAvailableDateType;
 
   if (time) {
-    availableDateType = getAvailableDateType(type as FormDateType, time);
+    availableDateType = getAvailableDateType(type as PFormDateType, time);
   } else if (['date', 'date_time', 'time'].includes(type)) {
-    availableDateType = getAvailableDateType(type as FormDateType, time);
+    availableDateType = getAvailableDateType(type as PFormDateType, time);
   } else {
-    availableDateType = type as FormAvailableDateType;
+    availableDateType = type as PFormAvailableDateType;
   }
 
   switch (availableDateType) {
@@ -146,7 +146,7 @@ export function getAvailableDateValFormat(type: FormAvailableDateType | FormDate
  * getDateValFormat
  * ******************************************************************************************************************/
 
-export function getDateValFormat(type: FormDateType, time?: FormTimeType): string {
+export function getDateValFormat(type: PFormDateType, time?: PFormTimeType): string {
   switch (type) {
     case 'date':
       return 'YYYYMMDD';
@@ -185,7 +185,7 @@ export function getDateValFormat(type: FormDateType, time?: FormTimeType): strin
  * getAvailableDateType
  * ******************************************************************************************************************/
 
-export function getAvailableDateType(type: FormDateType, time?: FormTimeType): FormAvailableDateType {
+export function getAvailableDateType(type: PFormDateType, time?: PFormTimeType): PFormAvailableDateType {
   switch (type) {
     case 'date':
       return 'day';
@@ -217,7 +217,7 @@ export function makeAvailableDate(
   maxDate: Dayjs | undefined,
   disablePast: boolean,
   disableFuture: boolean
-): FormAvailableDate {
+): PFormAvailableDate {
   const now = dayjs();
 
   let min: Dayjs | null = null;
@@ -248,7 +248,7 @@ export function makeAvailableDate(
     }
   }
 
-  const minItem: FormAvailableDateItem | null = min
+  const minItem: PFormAvailableDateItem | null = min
     ? {
         date: min,
         year: Number(min.format(getAvailableDateValFormat('year'))),
@@ -259,7 +259,7 @@ export function makeAvailableDate(
         second: Number(min.format(getAvailableDateValFormat('second'))),
       }
     : null;
-  const maxItem: FormAvailableDateItem | null = max
+  const maxItem: PFormAvailableDateItem | null = max
     ? {
         date: max,
         year: Number(max.format(getAvailableDateValFormat('year'))),
@@ -279,27 +279,27 @@ export function makeAvailableDate(
  * ******************************************************************************************************************/
 
 export function getAvailableDate(
-  availableDate: FormAvailableDate,
-  type: FormAvailableDateType
+  availableDate: PFormAvailableDate,
+  type: PFormAvailableDateType
 ): [Dayjs | null, Dayjs | null];
 export function getAvailableDate(
-  availableDate: FormAvailableDate,
-  type: FormDateType,
-  time?: FormTimeType
+  availableDate: PFormAvailableDate,
+  type: PFormDateType,
+  time?: PFormTimeType
 ): [Dayjs | null, Dayjs | null];
 export function getAvailableDate(
-  availableDate: FormAvailableDate,
-  type: FormAvailableDateType | FormDateType,
-  time?: FormTimeType
+  availableDate: PFormAvailableDate,
+  type: PFormAvailableDateType | PFormDateType,
+  time?: PFormTimeType
 ): [Dayjs | null, Dayjs | null] {
-  let availableDateType: FormAvailableDateType;
+  let availableDateType: PFormAvailableDateType;
 
   if (time) {
-    availableDateType = getAvailableDateType(type as FormDateType, time);
+    availableDateType = getAvailableDateType(type as PFormDateType, time);
   } else if (['date', 'date_time', 'time'].includes(type)) {
-    availableDateType = getAvailableDateType(type as FormDateType, time);
+    availableDateType = getAvailableDateType(type as PFormDateType, time);
   } else {
-    availableDateType = type as FormAvailableDateType;
+    availableDateType = type as PFormAvailableDateType;
   }
 
   const availableDateVal = getAvailableDateVal(availableDate, availableDateType);
@@ -316,27 +316,27 @@ export function getAvailableDate(
  * ******************************************************************************************************************/
 
 export function getAvailableDateVal(
-  availableDate: FormAvailableDate,
-  type: FormAvailableDateType
+  availableDate: PFormAvailableDate,
+  type: PFormAvailableDateType
 ): [number | null, number | null];
 export function getAvailableDateVal(
-  availableDate: FormAvailableDate,
-  type: FormDateType,
-  time?: FormTimeType
+  availableDate: PFormAvailableDate,
+  type: PFormDateType,
+  time?: PFormTimeType
 ): [number | null, number | null];
 export function getAvailableDateVal(
-  availableDate: FormAvailableDate,
-  type: FormAvailableDateType | FormDateType,
-  time?: FormTimeType
+  availableDate: PFormAvailableDate,
+  type: PFormAvailableDateType | PFormDateType,
+  time?: PFormTimeType
 ): [number | null, number | null] {
-  let availableDateType: FormAvailableDateType;
+  let availableDateType: PFormAvailableDateType;
 
   if (time) {
-    availableDateType = getAvailableDateType(type as FormDateType, time);
+    availableDateType = getAvailableDateType(type as PFormDateType, time);
   } else if (['date', 'date_time', 'time'].includes(type)) {
-    availableDateType = getAvailableDateType(type as FormDateType, time);
+    availableDateType = getAvailableDateType(type as PFormDateType, time);
   } else {
-    availableDateType = type as FormAvailableDateType;
+    availableDateType = type as PFormAvailableDateType;
   }
 
   return [
@@ -348,7 +348,7 @@ export function getAvailableDateVal(
 /********************************************************************************************************************
  * getDateVal
  * ******************************************************************************************************************/
-export function getDateValForAvailableDate(date: Dayjs, type: FormDateType, time?: FormTimeType): number {
+export function getDateValForAvailableDate(date: Dayjs, type: PFormDateType, time?: PFormTimeType): number {
   const format = getAvailableDateValFormat(type, time);
   return Number(date.format(format));
 }
@@ -357,27 +357,27 @@ export function getDateValForAvailableDate(date: Dayjs, type: FormDateType, time
  * isDateAvailable
  * ******************************************************************************************************************/
 
-export function isDateAvailable(date: Dayjs, availableDate: FormAvailableDate, type: FormAvailableDateType): boolean;
+export function isDateAvailable(date: Dayjs, availableDate: PFormAvailableDate, type: PFormAvailableDateType): boolean;
 export function isDateAvailable(
   date: Dayjs,
-  availableDate: FormAvailableDate,
-  type: FormDateType,
-  time?: FormTimeType
+  availableDate: PFormAvailableDate,
+  type: PFormDateType,
+  time?: PFormTimeType
 ): boolean;
 export function isDateAvailable(
   date: Dayjs,
-  availableDate: FormAvailableDate,
-  type: FormAvailableDateType | FormDateType,
-  time?: FormTimeType
+  availableDate: PFormAvailableDate,
+  type: PFormAvailableDateType | PFormDateType,
+  time?: PFormTimeType
 ): boolean {
-  let availableDateType: FormAvailableDateType;
+  let availableDateType: PFormAvailableDateType;
 
   if (time) {
-    availableDateType = getAvailableDateType(type as FormDateType, time);
+    availableDateType = getAvailableDateType(type as PFormDateType, time);
   } else if (['date', 'date_time', 'time'].includes(type)) {
-    availableDateType = getAvailableDateType(type as FormDateType, time);
+    availableDateType = getAvailableDateType(type as PFormDateType, time);
   } else {
-    availableDateType = type as FormAvailableDateType;
+    availableDateType = type as PFormAvailableDateType;
   }
 
   const dateVal = Number(date.format(getAvailableDateValFormat(availableDateType)));
@@ -396,29 +396,29 @@ export type checkDateAvailableResult = 'available' | 'min' | 'max';
 
 export function checkDateAvailable(
   date: Dayjs,
-  availableDate: FormAvailableDate,
-  type: FormAvailableDateType
+  availableDate: PFormAvailableDate,
+  type: PFormAvailableDateType
 ): checkDateAvailableResult;
 export function checkDateAvailable(
   date: Dayjs,
-  availableDate: FormAvailableDate,
-  type: FormDateType,
-  time?: FormTimeType
+  availableDate: PFormAvailableDate,
+  type: PFormDateType,
+  time?: PFormTimeType
 ): checkDateAvailableResult;
 export function checkDateAvailable(
   date: Dayjs,
-  availableDate: FormAvailableDate,
-  type: FormAvailableDateType | FormDateType,
-  time?: FormTimeType
+  availableDate: PFormAvailableDate,
+  type: PFormAvailableDateType | PFormDateType,
+  time?: PFormTimeType
 ): checkDateAvailableResult {
-  let availableDateType: FormAvailableDateType;
+  let availableDateType: PFormAvailableDateType;
 
   if (time) {
-    availableDateType = getAvailableDateType(type as FormDateType, time);
+    availableDateType = getAvailableDateType(type as PFormDateType, time);
   } else if (['date', 'date_time', 'time'].includes(type)) {
-    availableDateType = getAvailableDateType(type as FormDateType, time);
+    availableDateType = getAvailableDateType(type as PFormDateType, time);
   } else {
-    availableDateType = type as FormAvailableDateType;
+    availableDateType = type as PFormAvailableDateType;
   }
 
   const dateVal = Number(date.format(getAvailableDateValFormat(availableDateType)));

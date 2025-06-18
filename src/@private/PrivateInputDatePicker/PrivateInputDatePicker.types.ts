@@ -2,18 +2,18 @@ import React, { ReactNode } from 'react';
 import { Dayjs } from 'dayjs';
 import { TextFieldProps } from '@mui/material';
 import { DateValidationError } from '@mui/x-date-pickers';
-import { CommonSxProps, FormValueItemProps } from '../../@types';
+import { PCommonSxProps, PFormValueItemProps } from '../../@types';
 import { DesktopDatePickerProps } from '@mui/x-date-pickers';
 export type PrivateInputDatePickerValue = Dayjs | null;
 
 export interface PrivateInputDatePickerProps
-  extends CommonSxProps,
+  extends PCommonSxProps,
     Pick<
       DesktopDatePickerProps<Dayjs>,
       'name' | 'disablePast' | 'disableFuture' | 'shouldDisableYear' | 'shouldDisableMonth' | 'shouldDisableDate'
     >,
     Pick<
-      FormValueItemProps<PrivateInputDatePickerValue>,
+      PFormValueItemProps<PrivateInputDatePickerValue>,
       'variant' | 'size' | 'color' | 'focused' | 'fullWidth' | 'readOnly' | 'label' | 'labelIcon' | 'error'
     > {
   className?: string;

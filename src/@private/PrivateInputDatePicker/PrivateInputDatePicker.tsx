@@ -5,7 +5,7 @@ import { InputProps, InputAdornment, InputBaseComponentProps } from '@mui/materi
 import { DesktopDatePicker, DesktopDatePickerProps } from '@mui/x-date-pickers';
 import { Dayjs } from 'dayjs';
 import './PrivateInputDatePicker.scss';
-import { PdgIcon } from '@pdg/react-component';
+import { PIcon } from '@pdg/react-component';
 import { useAutoUpdateLayoutRef } from '@pdg/react-hook';
 
 const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
@@ -69,7 +69,7 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
           <>
             {icon && (
               <InputAdornment position='start'>
-                <PdgIcon size='small'>{icon}</PdgIcon>
+                <PIcon size='small'>{icon}</PIcon>
               </InputAdornment>
             )}
             {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
@@ -100,7 +100,7 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
           name: id,
           label: labelIcon ? (
             <>
-              <PdgIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PdgIcon>
+              <PIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PIcon>
               <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
             </>
           ) : (

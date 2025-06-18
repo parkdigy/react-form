@@ -1,0 +1,23 @@
+.PFormTextEditor {
+  &.initializing {
+    textarea {
+      display: none;
+    }
+  }
+  &.error {
+    .tox-tinymce {
+      border-color: #d32f2f;
+    }
+  }
+}
+
+.tox-menu.tox-collection.tox-collection--list {
+  .tox-collection__group {
+    .tox-menu-nav__js.tox-collection__item {
+      padding-right: 20px !important;
+    }
+  }
+}
+.tox-notifications-container {
+  display: none;
+}

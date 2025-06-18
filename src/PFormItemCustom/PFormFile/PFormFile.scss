@@ -1,0 +1,163 @@
+.PFormFile {
+  .control-wrap {
+    display: inline-flex;
+
+    .file-name-wrap {
+      .file-name {
+        min-width: 350px;
+        .MuiInputBase-root {
+          padding-right: 7px;
+        }
+      }
+    }
+
+    .input-file {
+      display: none;
+    }
+
+    .input-file-wrap {
+      display: flex;
+
+      .input-file-btn:not(.hidden-label) {
+        .PIcon {
+          margin-left: -3px;
+        }
+      }
+    }
+  }
+
+  &.full-width {
+    .control-wrap {
+      display: flex;
+
+      .file-name-wrap {
+        flex: 1;
+      }
+    }
+  }
+
+  &.variant-standard {
+    .file-name-wrap {
+      .file-name {
+        .MuiInputBase-root {
+          padding-right: 0;
+        }
+      }
+    }
+  }
+
+  // Label 있음
+  &:not(.hide-file-name) {
+    &.variant-outlined .form-file-btn label,
+    &.variant-filled .form-file-btn label {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    &.variant-standard .form-file-btn label {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    &.size-small {
+      .form-file-btn label {
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+    }
+  }
+}
+
+$outlined-medium-no-label-height: 52px;
+$outlined-small-no-label-height: 37px;
+$outlined-medium-label-height: 37px;
+$outlined-small-label-height: 24px;
+
+$filled-medium-no-label-height: 52px;
+$filled-small-no-label-height: 44px;
+$filled-medium-label-height: 37px;
+$filled-small-label-height: 31px;
+
+$standard-medium-no-label-height: 28px;
+$standard-small-no-label-height: 26px;
+$standard-medium-label-height: 28px;
+$standard-small-label-height: 26px;
+
+.PFormFile {
+  // Label 없음
+  &.hide-file-name:not(.with-label) {
+    &.variant-outlined .form-file-btn {
+      height: $outlined-medium-no-label-height;
+    }
+    &.variant-filled .form-file-btn {
+      height: $filled-medium-no-label-height;
+    }
+    &.variant-standard .form-file-btn {
+      height: $standard-medium-no-label-height;
+    }
+
+    &.size-small {
+      &.variant-outlined .form-file-btn {
+        height: $outlined-small-no-label-height;
+      }
+      &.variant-filled .form-file-btn {
+        height: $filled-small-no-label-height;
+      }
+      &.variant-standard .form-file-btn {
+        height: $standard-small-no-label-height;
+      }
+    }
+  }
+
+  // Label 있음
+  &.hide-file-name.with-label {
+    &.variant-outlined .form-file-btn {
+      height: $outlined-medium-label-height;
+    }
+    &.variant-filled .form-file-btn {
+      height: $filled-medium-label-height;
+    }
+    &.variant-standard .form-file-btn {
+      height: $standard-medium-label-height;
+    }
+
+    &.size-small {
+      &.variant-outlined .form-file-btn {
+        height: $outlined-small-label-height;
+      }
+      &.variant-filled .form-file-btn {
+        height: $filled-small-label-height;
+      }
+      &.variant-standard .form-file-btn {
+        height: $standard-small-label-height;
+      }
+    }
+  }
+}
+
+.PForm {
+  .PFormCol.with-label {
+    .PFormFile.hide-file-name {
+      &.variant-outlined .form-file-btn {
+        height: $outlined-medium-label-height;
+      }
+      &.variant-filled .form-file-btn {
+        height: $filled-medium-label-height;
+      }
+      &.variant-standard .form-file-btn {
+        height: $standard-medium-label-height;
+      }
+
+      &.size-small {
+        &.variant-outlined .form-file-btn {
+          height: $outlined-small-label-height;
+        }
+        &.variant-filled .form-file-btn {
+          height: $filled-small-label-height;
+        }
+        &.variant-standard .form-file-btn {
+          height: $standard-small-label-height;
+        }
+      }
+    }
+  }
+}

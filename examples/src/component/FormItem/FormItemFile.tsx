@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import {
-  Form,
-  FormRow,
-  FormCol,
-  FormFile,
-  FormImageFile,
-  FormButton,
-  FormCheckbox,
-  FormBody,
-  FormFooter,
+  PForm,
+  PFormRow,
+  PFormCol,
+  PFormFile,
+  PFormImageFile,
+  PFormButton,
+  PFormCheckbox,
+  PFormBody,
+  PFormFooter,
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
 
@@ -36,93 +36,93 @@ const FormItemFile = () => {
   return (
     <>
       <OutlinedPaper>
-        <Form size='small' style={{ marginTop: 10 }}>
-          <FormBody>
-            <FormRow label='공통'>
-              <FormCol fullWidth={false}>
-                <FormCheckbox
+        <PForm size='small' style={{ marginTop: 10 }}>
+          <PFormBody>
+            <PFormRow label='공통'>
+              <PFormCol fullWidth={false}>
+                <PFormCheckbox
                   name='hideUrl'
                   text='hideUrl'
                   checked={hideUrl}
                   onChange={(checked) => setHideUrl(checked)}
                 />
-                <FormCheckbox
+                <PFormCheckbox
                   name='hideUpload'
                   text='hideUpload'
                   checked={hideUpload}
                   onChange={(checked) => setHideUpload(checked)}
                 />
-                <FormCheckbox
+                <PFormCheckbox
                   name='hideUploadLabel'
                   text='hideUploadLabel'
                   checked={hideUploadLabel}
                   onChange={(checked) => setHideUploadLabel(checked)}
                 />
-                <FormCheckbox
+                <PFormCheckbox
                   name='hideLink'
                   text='hideLink'
                   checked={hideLink}
                   onChange={(checked) => setHideLink(checked)}
                 />
-                <FormCheckbox
+                <PFormCheckbox
                   name='hideLinkLabel'
                   text='hideLinkLabel'
                   checked={hideLinkLabel}
                   onChange={(checked) => setHideLinkLabel(checked)}
                 />
-                <FormCheckbox
+                <PFormCheckbox
                   name='hideRemove'
                   text='hideRemove'
                   checked={hideRemove}
                   onChange={(checked) => setHideRemove(checked)}
                 />
-                <FormCheckbox
+                <PFormCheckbox
                   name='hideRemoveLabel'
                   text='hideRemoveLabel'
                   checked={hideRemoveLabel}
                   onChange={(checked) => setHideRemoveLabel(checked)}
                 />
-                <FormCheckbox
+                <PFormCheckbox
                   name='readOnly'
                   text='readOnly'
                   checked={readOnly}
                   onChange={(checked) => setReadOnly(checked)}
                 />
-                <FormCheckbox
+                <PFormCheckbox
                   name='disabled'
                   text='disabled'
                   checked={disabled}
                   onChange={(checked) => setDisabled(checked)}
                 />
-              </FormCol>
-            </FormRow>
-            <FormRow label='FormImageFile'>
-              <FormCol fullWidth={false}>
-                <FormCheckbox
+              </PFormCol>
+            </PFormRow>
+            <PFormRow label='PFormImageFile'>
+              <PFormCol fullWidth={false}>
+                <PFormCheckbox
                   name='preview'
                   text='preview'
                   checked={preview}
                   onChange={(checked) => setPreview(checked)}
                 />
-                <FormCheckbox
+                <PFormCheckbox
                   name='previewMaxHeight'
                   text='previewMaxHeight (100)'
                   checked={previewMaxHeight}
                   onChange={(checked) => setPreviewMaxHeight(checked)}
                 />
-              </FormCol>
-            </FormRow>
-          </FormBody>
-        </Form>
+              </PFormCol>
+            </PFormRow>
+          </PFormBody>
+        </PForm>
       </OutlinedPaper>
       <br />
-      <Form fullHeight onSubmit={(data) => ll(data)}>
-        <FormBody>
-          <FormRow>
-            <FormCol>
-              <FormFile
-                name='FormFile'
-                label='FormFile'
+      <PForm fullHeight onSubmit={(data) => ll(data)}>
+        <PFormBody>
+          <PFormRow>
+            <PFormCol>
+              <PFormFile
+                name='PFormFile'
+                label='PFormFile'
                 readOnly={readOnly}
                 hideUrl={hideUrl}
                 hideUpload={hideUpload}
@@ -138,13 +138,13 @@ const FormItemFile = () => {
                   });
                 }}
               />
-            </FormCol>
-          </FormRow>
-          <FormRow>
-            <FormCol>
-              <FormImageFile
-                name='FormImageFile'
-                label='FormImageFile'
+            </PFormCol>
+          </PFormRow>
+          <PFormRow>
+            <PFormCol>
+              <PFormImageFile
+                name='PFormImageFile'
+                label='PFormImageFile'
                 readOnly={readOnly}
                 hideUrl={hideUrl}
                 hideUpload={hideUpload}
@@ -166,17 +166,17 @@ const FormItemFile = () => {
                   });
                 }}
               />
-            </FormCol>
-          </FormRow>
-        </FormBody>
-        <FormFooter>
-          <FormRow>
-            <FormCol>
-              <FormButton type='submit'>확인</FormButton>
-            </FormCol>
-          </FormRow>
-        </FormFooter>
-      </Form>
+            </PFormCol>
+          </PFormRow>
+        </PFormBody>
+        <PFormFooter>
+          <PFormRow>
+            <PFormCol>
+              <PFormButton type='submit'>확인</PFormButton>
+            </PFormCol>
+          </PFormRow>
+        </PFormFooter>
+      </PForm>
     </>
   );
 };

@@ -1,8 +1,8 @@
 import React from 'react';
-import { FormCol, FormRow, FormToggleButtonGroup, FormToggleButtonGroupItems } from '../../../../../../src';
+import { PFormCol, PFormRow, PFormToggleButtonGroup, PFormToggleButtonGroupItems } from '../../../../../../src';
 import { lv } from '@pdg/data';
 
-const DEFAULT_ITEMS: FormToggleButtonGroupItems<number> = [
+const DEFAULT_ITEMS: PFormToggleButtonGroupItems<number> = [
   lv('Btn1', 1),
   lv('Btn2', 2),
   lv('Btn3', 3),
@@ -15,37 +15,37 @@ const DEFAULT_ITEMS: FormToggleButtonGroupItems<number> = [
 
 const ToggleButtonGroup = () => {
   return (
-    <FormRow>
-      <FormCol>
-        <FormToggleButtonGroup
-          name={getName('FormToggleButtonGroup', true)}
-          label='FormToggleButtonGroup'
+    <PFormRow>
+      <PFormCol>
+        <PFormToggleButtonGroup
+          name={getName('PFormToggleButtonGroup', true)}
+          label='PFormToggleButtonGroup'
           labelIcon='Workspaces'
           items={DEFAULT_ITEMS}
           type='checkbox'
           multiple
           helperText='AAAAAA'
         />
-      </FormCol>
-      <FormCol fullWidth={false}>
-        <FormToggleButtonGroup
-          name={getName('FormToggleButtonGroup')}
-          label='FormToggleButtonGroup'
+      </PFormCol>
+      <PFormCol fullWidth={false}>
+        <PFormToggleButtonGroup
+          name={getName('PFormToggleButtonGroup')}
+          label='PFormToggleButtonGroup'
           items={DEFAULT_ITEMS}
           helperText='AAAAAA'
         />
-        <FormToggleButtonGroup
-          name={getName('FormToggleButtonGroup')}
-          label='FormToggleButtonGroup'
+        <PFormToggleButtonGroup
+          name={getName('PFormToggleButtonGroup')}
+          label='PFormToggleButtonGroup'
           items={DEFAULT_ITEMS}
           helperText='AAAAAA'
         />
-      </FormCol>
-      <FormCol fullWidth={false} label='FormToggleButtonGroup' helperText='AAAAAA'>
-        <FormToggleButtonGroup name={getName('FormToggleButtonGroup')} items={DEFAULT_ITEMS} />
-        <FormToggleButtonGroup name={getName('FormToggleButtonGroup')} items={DEFAULT_ITEMS} />
-      </FormCol>
-    </FormRow>
+      </PFormCol>
+      <PFormCol fullWidth={false} label='PFormToggleButtonGroup' helperText='AAAAAA'>
+        <PFormToggleButtonGroup name={getName('PFormToggleButtonGroup')} items={DEFAULT_ITEMS} />
+        <PFormToggleButtonGroup name={getName('PFormToggleButtonGroup')} items={DEFAULT_ITEMS} />
+      </PFormCol>
+    </PFormRow>
   );
 };
 

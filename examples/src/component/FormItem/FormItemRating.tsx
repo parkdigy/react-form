@@ -1,5 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Form, FormRating, FormRow, FormCol, FormButton, FormValueMap, FormBody, FormFooter } from '../../../../src';
+import {
+  PForm,
+  PFormRating,
+  PFormRow,
+  PFormCol,
+  PFormButton,
+  PFormValueMap,
+  PFormBody,
+  PFormFooter,
+} from '../../../../src';
 
 const FormItemRating = () => {
   /********************************************************************************************************************
@@ -22,7 +31,7 @@ const FormItemRating = () => {
    * Event Handler
    * ******************************************************************************************************************/
 
-  const handleSubmit = useCallback((data: FormValueMap) => {
+  const handleSubmit = useCallback((data: PFormValueMap) => {
     ll(data);
   }, []);
 
@@ -31,34 +40,34 @@ const FormItemRating = () => {
    * ******************************************************************************************************************/
 
   return (
-    <Form fullHeight onSubmit={handleSubmit}>
-      <FormBody>
-        <FormRow>
-          <FormCol>
-            <FormRating name='default' labelIcon='Check' label='FormRating' value={value} helperText='labelIcon' />
-          </FormCol>
-          <FormCol>
-            <FormRating name='required' label='FormRating' required helperText='required=true' />
-          </FormCol>
-          <FormCol>
-            <FormRating name='readOnly' label='FormRating' readOnly helperText='readOnly=true' />
-          </FormCol>
-          <FormCol>
-            <FormRating name='disabled' label='FormRating' disabled helperText='disabled=true' />
-          </FormCol>
-        </FormRow>
-      </FormBody>
-      <FormFooter>
-        <FormRow>
-          <FormCol>
-            <FormButton>취소</FormButton>
-          </FormCol>
-          <FormCol>
-            <FormButton type='submit'>확인</FormButton>
-          </FormCol>
-        </FormRow>
-      </FormFooter>
-    </Form>
+    <PForm fullHeight onSubmit={handleSubmit}>
+      <PFormBody>
+        <PFormRow>
+          <PFormCol>
+            <PFormRating name='default' labelIcon='Check' label='PFormRating' value={value} helperText='labelIcon' />
+          </PFormCol>
+          <PFormCol>
+            <PFormRating name='required' label='PFormRating' required helperText='required=true' />
+          </PFormCol>
+          <PFormCol>
+            <PFormRating name='readOnly' label='PFormRating' readOnly helperText='readOnly=true' />
+          </PFormCol>
+          <PFormCol>
+            <PFormRating name='disabled' label='PFormRating' disabled helperText='disabled=true' />
+          </PFormCol>
+        </PFormRow>
+      </PFormBody>
+      <PFormFooter>
+        <PFormRow>
+          <PFormCol>
+            <PFormButton>취소</PFormButton>
+          </PFormCol>
+          <PFormCol>
+            <PFormButton type='submit'>확인</PFormButton>
+          </PFormCol>
+        </PFormRow>
+      </PFormFooter>
+    </PForm>
   );
 };
 

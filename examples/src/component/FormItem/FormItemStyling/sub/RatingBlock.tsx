@@ -1,34 +1,34 @@
 import React from 'react';
-import { FormBlock, FormCol, FormRating, FormRow, FormRatingProps } from '../../../../../../src';
+import { PFormBlock, PFormCol, PFormRating, PFormRow, PFormRatingProps } from '../../../../../../src';
 
 const RatingBlock: React.FC<{
-  componentProps?: FormRatingProps;
+  componentProps?: PFormRatingProps;
 }> = ({ componentProps }) => {
   return (
-    <FormBlock label='Rating' line>
-      <FormRow>
-        <FormCol>
-          <FormRating {...componentProps} name='FormRating_max_10' max={10} helperText='max=10' />
-        </FormCol>
-        <FormCol>
-          <FormRating
+    <PFormBlock label='Rating' line>
+      <PFormRow>
+        <PFormCol>
+          <PFormRating {...componentProps} name='FormRating_max_10' max={10} helperText='max=10' />
+        </PFormCol>
+        <PFormCol>
+          <PFormRating
             {...componentProps}
             name='FormRating_icon'
             icon='Favorite'
             emptyIcon='FavoriteBorder'
             helperText='icon / emptyIcon'
           />
-        </FormCol>
-        <FormCol>
-          <FormRating
+        </PFormCol>
+        <PFormCol>
+          <PFormRating
             {...componentProps}
             name='FormRating_highlightSelectedOnly'
             highlightSelectedOnly
             helperText='highlightSelectedOnly=true'
           />
-        </FormCol>
-      </FormRow>
-    </FormBlock>
+        </PFormCol>
+      </PFormRow>
+    </PFormBlock>
   );
 };
 
