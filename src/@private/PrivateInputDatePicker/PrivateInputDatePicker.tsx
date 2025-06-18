@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { PrivateInputDatePickerProps as Props } from './PrivateInputDatePicker.types';
 import { InputProps, InputAdornment, InputBaseComponentProps } from '@mui/material';
 import { DesktopDatePicker, DesktopDatePickerProps } from '@mui/x-date-pickers';
-import { Dayjs } from 'dayjs';
 import './PrivateInputDatePicker.scss';
 import { PIcon } from '@pdg/react-component';
 import { useAutoUpdateLayoutRef } from '@pdg/react-hook';
@@ -58,7 +57,7 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
      * Memo
      * ******************************************************************************************************************/
 
-    const slotProps = useMemo<DesktopDatePickerProps<Dayjs>['slotProps']>(() => {
+    const slotProps = useMemo<DesktopDatePickerProps['slotProps']>(() => {
       const inputLabelProps = labelShrink ? { shrink: true } : undefined;
 
       const muiInputProps: InputProps = {
@@ -111,7 +110,7 @@ const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
           error,
           InputProps: muiInputProps,
           inputProps,
-          inputRef: (ref) => {
+          inputRef: (ref: HTMLInputElement) => {
             if (inputRef) {
               inputRef.current = ref;
             }

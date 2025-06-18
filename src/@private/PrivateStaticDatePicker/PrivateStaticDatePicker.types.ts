@@ -6,7 +6,7 @@ import { PFormDateType, PFormTimeType } from '../../@types';
 export type PrivateStaticDatePickerUnit = 'date' | 'action_date' | 'hour' | 'minute' | 'second';
 
 export interface PrivateStaticDatePickerProps
-  extends Omit<StaticDatePickerProps<Dayjs>, 'displayStaticWrapperAs' | 'renderInput' | 'onChange'> {
+  extends Omit<StaticDatePickerProps, 'displayStaticWrapperAs' | 'renderInput' | 'onChange'> {
   type: PFormDateType;
   time?: PFormTimeType;
   availableDate?: PFormAvailableDate;

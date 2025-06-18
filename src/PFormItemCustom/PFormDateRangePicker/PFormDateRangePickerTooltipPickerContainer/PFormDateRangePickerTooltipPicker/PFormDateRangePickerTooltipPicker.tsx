@@ -239,7 +239,7 @@ const PFormDateRangePickerTooltipPicker = React.forwardRef<PFormDateRangePickerT
     //--------------------------------------------------------------------------------------------------------------------
 
     const handleRenderDay = useCallback(
-      (props: Omit<PickersDayProps<Dayjs>, 'ref'>) => {
+      (props: Omit<PickersDayProps, 'ref'>) => {
         const startDate = value[0];
         const endDate = value[1];
 

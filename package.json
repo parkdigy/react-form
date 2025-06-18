@@ -53,7 +53,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.1.0",
     "@mui/material": "^7.1.0",
-    "@mui/x-date-pickers": "^7.29.4",
+    "@mui/x-date-pickers": "^8.5.2",
     "@pdg/compare": "^1.0.6",
     "@pdg/data": "^1.0.1",
     "@pdg/formatting": "^1.0.5",

@@ -153,7 +153,7 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
     );
 
     const handleRenderDay = useCallback(
-      (props: Omit<PickersDayProps<Dayjs>, 'ref'>) => {
+      (props: Omit<PickersDayProps, 'ref'>) => {
         return <PickersDay {...props} selected={props.day.isSame(value, 'date')} />;
       },
       [value]

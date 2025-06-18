@@ -34,7 +34,6 @@ import {
 import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
 import { InputBaseProps } from '@mui/material/InputBase';
 import './PrivateDatePicker.scss';
-import { Dayjs } from 'dayjs';
 import { empty, ifUndefined, notEmpty } from '@pdg/compare';
 
 const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
@@ -468,7 +467,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
      * Memo
      * ******************************************************************************************************************/
 
-    const slotProps = useMemo<DesktopDatePickerProps<Dayjs>['slotProps']>(() => {
+    const slotProps = useMemo<DesktopDatePickerProps['slotProps']>(() => {
       const textFieldInputLabelProps: Partial<InputLabelProps> = {};
       if (labelShrink) {
         textFieldInputLabelProps.shrink = labelShrink;
@@ -505,7 +504,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       return {
         textField: {
           className: classNames('input-text-field', `align-${align}`),
-          inputRef: (ref) => {
+          inputRef: (ref: HTMLInputElement) => {
             textFieldInputRef.current = ref;
           },
           variant,
@@ -568,15 +567,17 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
           >
             <PrivateStyledTooltip
               open={disabled || readOnly ? false : open}
-              PopperProps={{
-                modifiers: [
-                  {
-                    name: 'offset',
-                    options: {
-                      offset: [0, error && errorHelperText ? 8 : -14],
+              slotProps={{
+                popper: {
+                  modifiers: [
+                    {
+                      name: 'offset',
+                      options: {
+                        offset: [0, error && errorHelperText ? 8 : -14],
+                      },
                     },
-                  },
-                ],
+                  ],
+                },
               }}
               title={
                 <PrivateStaticDatePicker

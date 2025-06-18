@@ -30,7 +30,6 @@ import { PrivateStaticDateTimePickerCommands, PrivateStaticDateTimePickerUnit } 
 import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
 import { InputBaseProps } from '@mui/material/InputBase';
 import './PrivateDateTimePicker.scss';
-import { Dayjs } from 'dayjs';
 import PrivateStaticDateTimePicker from '../PrivateStaticDateTimePicker';
 import { empty, ifUndefined, notEmpty } from '@pdg/compare';
 import { getFinalValue } from './PrivateDateTimePicker.function.private';
@@ -468,7 +467,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
      * Memo
      * ******************************************************************************************************************/
 
-    const slotProps = useMemo<DesktopDateTimePickerProps<Dayjs>['slotProps']>(() => {
+    const slotProps = useMemo<DesktopDateTimePickerProps['slotProps']>(() => {
       const textFieldInputLabelProps: Partial<InputLabelProps> = {};
       if (labelShrink) {
         textFieldInputLabelProps.shrink = labelShrink;
@@ -505,7 +504,7 @@ const PrivateDateTimePicker = React.forwardRef<PrivateDateTimePickerCommands, Pr
       return {
         textField: {
           className: classNames('input-text-field', `align-${align}`),
-          inputRef: (ref) => {
+          inputRef: (ref: HTMLInputElement) => {
             textFieldInputRef.current = ref;
           },
           variant,

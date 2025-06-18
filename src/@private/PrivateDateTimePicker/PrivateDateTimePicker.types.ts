@@ -16,7 +16,7 @@ export interface PrivateDateTimePickerProps
   extends PCommonSxProps,
     Partial<
       Omit<
-        DesktopDateTimePickerProps<Dayjs>,
+        DesktopDateTimePickerProps,
         | 'children'
         | 'className'
         | 'name'

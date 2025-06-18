@@ -238,7 +238,6 @@ const PFormMonthPicker = React.forwardRef<PFormMonthPickerCommands, Props>(
       if (ratingRef.current) {
         inputRef.current = ratingRef.current.querySelector('input') || undefined;
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useFirstSkipEffect(() => {
