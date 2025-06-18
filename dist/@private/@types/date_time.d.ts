@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
-export type FormAvailableDateType = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
-export interface FormAvailableDateItem {
+export type PFormAvailableDateType = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
+export interface PFormAvailableDateItem {
     date: Dayjs;
     year: number;
     month: number;
@@ -9,4 +9,4 @@ export interface FormAvailableDateItem {
     minute: number;
     second: number;
 }
-export type FormAvailableDate = [FormAvailableDateItem | null, FormAvailableDateItem | null];
+export type PFormAvailableDate = [PFormAvailableDateItem | null, PFormAvailableDateItem | null];

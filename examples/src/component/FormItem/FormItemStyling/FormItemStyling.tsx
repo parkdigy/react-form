@@ -80,7 +80,7 @@ const _components: React.ForwardRefExoticComponent<any>[] = [
 ];
 
 const _componentsItems = _components.map((component) =>
-  lv(component.displayName?.substring(4), component.displayName || '')
+  lv(component.displayName?.substring(5), component.displayName || '')
 );
 
 function makeLabelValueItems<T>(count: number, leadText: string): T[] {

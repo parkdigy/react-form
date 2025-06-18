@@ -1,7 +1,7 @@
-import { FormAvailableDate } from '../@types';
+import { PFormAvailableDate } from '../@types';
 export interface PrivateYearSelectProps {
     selectYear: number | null;
     activeYear: number;
-    availableDate: FormAvailableDate;
+    availableDate: PFormAvailableDate;
     onSelect(year: number): void;
 }

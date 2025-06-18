@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 import { DesktopDateTimePickerProps } from '@mui/x-date-pickers';
-import { CommonSxProps, FormDateType, FormDateValueItemCommands, FormTimeType, FormValueItemBaseCommands, FormValueItemProps } from '../../@types';
+import { PCommonSxProps, PFormDateType, PFormDateValueItemCommands, PFormTimeType, PFormValueItemBaseCommands, PFormValueItemProps } from '../../@types';
 import { Dayjs } from 'dayjs';
 export type PrivateDateTimePickerValue = Dayjs | null;
-export interface PrivateDateTimePickerProps extends CommonSxProps, Partial<Omit<DesktopDateTimePickerProps<Dayjs>, 'children' | 'className' | 'name' | 'style' | 'sx' | 'value' | 'inputFormat' | 'views' | 'onChange' | 'openTo' | 'view' | 'viewRenderers' | 'components' | 'componentsProps' | 'slots' | 'slotProps'>>, FormValueItemProps<PrivateDateTimePickerValue, false> {
-    type: FormDateType;
-    time?: FormTimeType;
+export interface PrivateDateTimePickerProps extends PCommonSxProps, Partial<Omit<DesktopDateTimePickerProps<Dayjs>, 'children' | 'className' | 'name' | 'style' | 'sx' | 'value' | 'inputFormat' | 'views' | 'onChange' | 'openTo' | 'view' | 'viewRenderers' | 'components' | 'componentsProps' | 'slots' | 'slotProps'>>, PFormValueItemProps<PrivateDateTimePickerValue, false> {
+    type: PFormDateType;
+    time?: PFormTimeType;
     hours?: number[];
     minutes?: number[];
     seconds?: number[];
@@ -22,5 +22,5 @@ export interface PrivateDateTimePickerProps extends CommonSxProps, Partial<Omit<
     enableKeyboardInput?: boolean;
     hidden?: boolean;
 }
-export interface PrivateDateTimePickerCommands extends FormValueItemBaseCommands<PrivateDateTimePickerValue, false>, FormDateValueItemCommands {
+export interface PrivateDateTimePickerCommands extends PFormValueItemBaseCommands<PrivateDateTimePickerValue, false>, PFormDateValueItemCommands {
 }
