@@ -1,14 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useId,
-  ReactNode,
-  useLayoutEffect,
-  useRef,
-  useMemo,
-  FocusEvent,
-} from 'react';
+import React, { useEffect, useState, useCallback, useId, ReactNode, useRef, useMemo, FocusEvent } from 'react';
 import classNames from 'classnames';
 import {
   Autocomplete,
@@ -17,7 +7,7 @@ import {
   AutocompleteChangeDetails,
   CircularProgress,
 } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect, useForwardLayoutRef } from '@pdg/react-hook';
 import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util.private';
 import { Dict } from '@pdg/types';
 import { empty, notEmpty, equal, ifUndefined } from '@pdg/compare';
@@ -470,35 +460,34 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
      * Commands
      * ******************************************************************************************************************/
 
-    const commands = useMemo(
-      () =>
-        ({
-          getType: () => 'PFormAutocomplete',
-          getName: () => name,
-          getReset: () => getFinalValue(initValue),
-          reset: () => updateValue(initValue),
-          getValue: () => valueRef.current,
-          setValue: (newValue) => updateValue(newValue),
-          getData: () => dataRef.current,
-          setData: (data) => setData(data),
-          isExceptValue: () => !!exceptValue,
-          isDisabled: () => !!disabledRef.current,
-          setDisabled: (disabled) => setDisabled(disabled),
-          isHidden: () => !!hiddenRef.current,
-          setHidden: (hidden) => setHidden(hidden),
-          focus,
-          focusValidate: focus,
-          validate: () => validate(valueRef.current),
-          setError: (error: boolean, errorText: ReactNode | undefined) =>
-            setErrorErrorHelperText(error, error ? errorText : undefined),
-          getFormValueSeparator: () => formValueSeparator,
-          isFormValueSort: () => !!formValueSort,
-          getItems: () => itemsRef.current,
-          setItems: (items) => setItems(items),
-          isMultiple: () => !!multiple,
-          getLoading: () => !!loadingRef.current,
-          setLoading: (loading) => setLoading(loading),
-        }) as Commands,
+    const commands = useMemo<Commands>(
+      () => ({
+        getType: () => 'PFormAutocomplete',
+        getName: () => name,
+        getReset: () => getFinalValue(initValue),
+        reset: () => updateValue(initValue),
+        getValue: () => valueRef.current,
+        setValue: (newValue) => updateValue(newValue),
+        getData: () => dataRef.current,
+        setData: (data) => setData(data),
+        isExceptValue: () => !!exceptValue,
+        isDisabled: () => !!disabledRef.current,
+        setDisabled: (disabled) => setDisabled(disabled),
+        isHidden: () => !!hiddenRef.current,
+        setHidden: (hidden) => setHidden(hidden),
+        focus,
+        focusValidate: focus,
+        validate: () => validate(valueRef.current),
+        setError: (error: boolean, errorText: ReactNode | undefined) =>
+          setErrorErrorHelperText(error, error ? errorText : undefined),
+        getFormValueSeparator: () => formValueSeparator,
+        isFormValueSort: () => !!formValueSort,
+        getItems: () => itemsRef.current,
+        setItems: (items) => setItems(items),
+        isMultiple: () => !!multiple,
+        getLoading: () => !!loadingRef.current,
+        setLoading: (loading) => setLoading(loading),
+      }),
       [
         dataRef,
         disabledRef,
@@ -525,31 +514,12 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
       ]
     );
 
-    useLayoutEffect(() => {
-      if (ref || onAddValueItem) {
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(commands);
-          } else {
-            ref.current = commands;
-          }
-        }
-
-        if (onAddValueItem) onAddValueItem(id, commands);
-
-        return () => {
-          if (ref) {
-            if (typeof ref === 'function') {
-              ref(null);
-            } else {
-              ref.current = null;
-            }
-          }
-
-          if (onRemoveValueItem) onRemoveValueItem(id);
-        };
-      }
-    }, [commands, id, onAddValueItem, onRemoveValueItem, ref]);
+    useForwardLayoutRef(
+      ref,
+      commands,
+      useCallback((commands: Commands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+    );
 
     /********************************************************************************************************************
      * Event Handler

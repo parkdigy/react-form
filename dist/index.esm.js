@@ -1,4 +1,4 @@
-import React,{createContext,useContext,useRef,useCallback,useMemo,useLayoutEffect,useEffect,useState,useId}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,ifUndefined,notEmpty,equal}from'@pdg/compare';import dayjs from'dayjs';import {useAutoUpdateLayoutRef,useAutoUpdateState,useAutoUpdateRefState,useForceUpdate,useAutoUpdateRef,useFirstSkipEffect}from'@pdg/react-hook';import {PButton,PIcon,PIconText}from'@pdg/react-component';import {useResizeDetector}from'react-resize-detector';import {formatTelNo,formatBusinessNo,formatPersonalNo}from'@pdg/formatting';import {NumericFormat}from'react-number-format';import {CheckBoxOutlineBlank,CheckBox,RadioButtonChecked,RadioButtonUnchecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';function insertStyle(css) {
+import React,{createContext,useContext,useRef,useCallback,useMemo,useEffect,useState,useId,useLayoutEffect}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,ifUndefined,notEmpty,equal}from'@pdg/compare';import dayjs from'dayjs';import {useAutoUpdateLayoutRef,useForwardLayoutRef,useAutoUpdateState,useAutoUpdateRefState,useForceUpdate,useAutoUpdateRef,useFirstSkipEffect}from'@pdg/react-hook';import {PButton,PIcon,PIconText}from'@pdg/react-component';import {useResizeDetector}from'react-resize-detector';import {formatTelNo,formatBusinessNo,formatPersonalNo}from'@pdg/formatting';import {NumericFormat}from'react-number-format';import {CheckBoxOutlineBlank,CheckBox,RadioButtonChecked,RadioButtonUnchecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';function insertStyle(css) {
     if (!css || typeof window === 'undefined')
         return;
     const style = document.createElement('style');
@@ -492,24 +492,7 @@ var appendFormValueData = function (data, itemCommands) {
             },
         };
     }, [submit]);
-    useLayoutEffect(function () {
-        if (ref) {
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-            return function () {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            };
-        }
-    }, [commands, ref]);
+    useForwardLayoutRef(ref, commands);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -1132,66 +1115,35 @@ var templateObject_1$e, templateObject_2$7;var PFormBody = function (_a) {
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        if (ref || (!noFormValueItem && onAddValueItem)) {
-            var commands = {
-                getType: function () { return 'default'; },
-                getName: function () { return name; },
-                getReset: function () { return getFinalValue(initValue); },
-                reset: function () { return updateValue(initValue); },
-                getValue: function () { return valueRef.current; },
-                setValue: updateValue,
-                getData: function () { return dataRef.current; },
-                setData: setData,
-                isExceptValue: function () { return !!exceptValue; },
-                isDisabled: function () { return !!disabledRef.current; },
-                setDisabled: setDisabled,
-                isHidden: function () { return !!hiddenRef.current; },
-                setHidden: setHidden,
-                focus: focus,
-                focusValidate: focus,
-                validate: function () { return validate(valueRef.current); },
-                setError: function (error, errorText) {
-                    return setErrorErrorHelperText(error, error ? errorText : undefined);
-                },
-            };
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(commands);
-                }
-                else {
-                    ref.current = commands;
-                }
-            }
-            if (!noFormValueItem && onAddValueItem)
-                onAddValueItem(id, commands);
-            return function () {
-                if (ref) {
-                    if (typeof ref === 'function') {
-                        ref(null);
-                    }
-                    else {
-                        ref.current = null;
-                    }
-                }
-                if (!noFormValueItem && onRemoveValueItem)
-                    onRemoveValueItem(id);
-            };
-        }
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'default'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorText) {
+            return setErrorErrorHelperText(error, error ? errorText : undefined);
+        },
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
         focus,
         getFinalValue,
         hiddenRef,
-        id,
         initValue,
         name,
-        noFormValueItem,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -1200,6 +1152,9 @@ var templateObject_1$e, templateObject_2$7;var PFormBody = function (_a) {
         validate,
         valueRef,
     ]);
+    var handleCommandSet = useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]);
+    var handleCommandUnset = useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]);
+    useForwardLayoutRef(ref, commands, !noFormValueItem ? handleCommandSet : undefined, !noFormValueItem ? handleCommandUnset : undefined);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -2667,65 +2622,39 @@ PFormItemBase.displayName = 'PFormItemBase';var PFormCheckbox = React.forwardRef
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        var commands = {
-            getType: function () { return 'PFormCheckbox'; },
-            getName: function () { return name; },
-            getReset: function () { return initChecked; },
-            reset: function () { return updateChecked(initChecked); },
-            getValue: function () { return valueRef.current; },
-            setValue: setValue,
-            getData: function () { return dataRef.current; },
-            setData: setData,
-            getUncheckedValue: function () { return uncheckedValueRef.current; },
-            setUncheckedValue: setUncheckedValue,
-            getChecked: function () { return checkedRef.current; },
-            setChecked: updateChecked,
-            isExceptValue: function () { return !!exceptValue; },
-            isDisabled: function () { return !!disabledRef.current; },
-            setDisabled: setDisabled,
-            isHidden: function () { return !!hiddenRef.current; },
-            setHidden: setHidden,
-            focus: focus,
-            focusValidate: focus,
-            validate: function () { return validate(checkedRef.current); },
-            setError: function (error, errorHelperText) {
-                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
-            },
-        };
-        onAddValueItem(id, commands);
-        if (ref) {
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-        }
-        return function () {
-            onRemoveValueItem(id);
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            }
-        };
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'PFormCheckbox'; },
+        getName: function () { return name; },
+        getReset: function () { return initChecked; },
+        reset: function () { return updateChecked(initChecked); },
+        getValue: function () { return valueRef.current; },
+        setValue: setValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        getUncheckedValue: function () { return uncheckedValueRef.current; },
+        setUncheckedValue: setUncheckedValue,
+        getChecked: function () { return checkedRef.current; },
+        setChecked: updateChecked,
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(checkedRef.current); },
+        setError: function (error, errorHelperText) {
+            return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
+        },
+    }); }, [
         checkedRef,
         dataRef,
         disabledRef,
         exceptValue,
         focus,
         hiddenRef,
-        id,
         initChecked,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -2737,6 +2666,7 @@ PFormItemBase.displayName = 'PFormItemBase';var PFormCheckbox = React.forwardRef
         validate,
         valueRef,
     ]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -2875,6 +2805,16 @@ var PFormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_
      * Effect
      * ******************************************************************************************************************/
     useEffect(function () {
+        if (onLoadItems) {
+            setIsOnGetItemLoading(true);
+            onLoadItems().then(function (items) {
+                setItems(items);
+                setIsOnGetItemLoading(false);
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    useEffect(function () {
         if (!fullWidth || initWidth) {
             var findParentByClassName_1 = function (element, className) {
                 var parent = element.parentElement;
@@ -2939,67 +2879,41 @@ var PFormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        var commands = {
-            getType: function () { return 'PFormRadioGroup'; },
-            getName: function () { return name; },
-            getReset: function () { return getFinalValue(initValue); },
-            reset: function () { return updateValue(initValue); },
-            getValue: function () { return valueRef.current; },
-            setValue: updateValue,
-            getData: function () { return dataRef.current; },
-            setData: setData,
-            isExceptValue: function () { return !!exceptValue; },
-            isDisabled: function () { return !!disabledRef.current; },
-            setDisabled: setDisabled,
-            isHidden: function () { return !!hiddenRef.current; },
-            setHidden: setHidden,
-            focus: focus,
-            focusValidate: focus,
-            validate: function () { return validate(valueRef.current); },
-            setError: function (error, errorHelperText) {
-                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
-            },
-            getItems: function () { return itemsRef.current; },
-            setItems: setItems,
-            getLoading: function () { return !!loadingRef.current; },
-            setLoading: setLoading,
-        };
-        onAddValueItem(id, commands);
-        if (ref) {
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-        }
-        return function () {
-            onRemoveValueItem(id);
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            }
-        };
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'PFormRadioGroup'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorHelperText) {
+            return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
+        },
+        getItems: function () { return itemsRef.current; },
+        setItems: setItems,
+        getLoading: function () { return !!loadingRef.current; },
+        setLoading: setLoading,
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
         focus,
         getFinalValue,
         hiddenRef,
-        id,
         initValue,
         itemsRef,
         loadingRef,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -3010,16 +2924,7 @@ var PFormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_
         validate,
         valueRef,
     ]);
-    useEffect(function () {
-        if (onLoadItems) {
-            setIsOnGetItemLoading(true);
-            onLoadItems().then(function (items) {
-                setItems(items);
-                setIsOnGetItemLoading(false);
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -3352,60 +3257,34 @@ PFormRadioGroup.displayName = 'PFormRadioGroup';insertStyle(".PFormToggleButtonG
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        if (ref || onAddValueItem) {
-            var commands = {
-                getType: function () { return 'PFormToggleButtonGroup'; },
-                getName: function () { return name; },
-                getReset: function () { return getFinalValue(initValue); },
-                reset: function () { return updateValue(initValue); },
-                getValue: function () { return valueRef.current; },
-                setValue: updateValue,
-                getData: function () { return dataRef.current; },
-                setData: setData,
-                isExceptValue: function () { return !!exceptValue; },
-                isDisabled: function () { return !!disabledRef.current; },
-                setDisabled: setDisabled,
-                isHidden: function () { return !!hiddenRef.current; },
-                setHidden: setHidden,
-                focus: focus,
-                focusValidate: focus,
-                validate: function () { return validate(valueRef.current); },
-                setError: function (error, errorText) {
-                    return setErrorErrorHelperText(error, error ? errorText : undefined);
-                },
-                getFormValueSeparator: function () { return formValueSeparator; },
-                isFormValueSort: function () { return !!formValueSort; },
-                getItems: function () { return itemsRef.current; },
-                setItems: setItems,
-                isMultiple: function () { return !!multiple; },
-                getLoading: function () { return !!loadingRef.current; },
-                setLoading: setLoading,
-            };
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(commands);
-                }
-                else {
-                    ref.current = commands;
-                }
-            }
-            if (onAddValueItem)
-                onAddValueItem(id, commands);
-            return function () {
-                if (ref) {
-                    if (typeof ref === 'function') {
-                        ref(null);
-                    }
-                    else {
-                        ref.current = null;
-                    }
-                }
-                if (onRemoveValueItem)
-                    onRemoveValueItem(id);
-            };
-        }
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'PFormToggleButtonGroup'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorText) {
+            return setErrorErrorHelperText(error, error ? errorText : undefined);
+        },
+        getFormValueSeparator: function () { return formValueSeparator; },
+        isFormValueSort: function () { return !!formValueSort; },
+        getItems: function () { return itemsRef.current; },
+        setItems: setItems,
+        isMultiple: function () { return !!multiple; },
+        getLoading: function () { return !!loadingRef.current; },
+        setLoading: setLoading,
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
@@ -3414,15 +3293,11 @@ PFormRadioGroup.displayName = 'PFormRadioGroup';insertStyle(".PFormToggleButtonG
         formValueSort,
         getFinalValue,
         hiddenRef,
-        id,
         initValue,
         itemsRef,
         loadingRef,
         multiple,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -3433,6 +3308,7 @@ PFormRadioGroup.displayName = 'PFormRadioGroup';insertStyle(".PFormToggleButtonG
         validate,
         valueRef,
     ]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -3703,61 +3579,35 @@ PFormToggleButtonGroup.displayName = 'PFormToggleButtonGroup';var PFormRating = 
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        var commands = {
-            getType: function () { return 'PFormRating'; },
-            getName: function () { return name; },
-            getReset: function () { return getFinalValue(initValue); },
-            reset: function () { return updateValue(initValue); },
-            getValue: function () { return valueRef.current; },
-            setValue: updateValue,
-            getData: function () { return dataRef.current; },
-            setData: setData,
-            isExceptValue: function () { return !!exceptValue; },
-            isDisabled: function () { return !!disabledRef.current; },
-            setDisabled: setDisabled,
-            isHidden: function () { return !!hiddenRef.current; },
-            setHidden: setHidden,
-            focus: focus,
-            focusValidate: focus,
-            validate: function () { return validate(valueRef.current); },
-            setError: function (error, errorHelperText) {
-                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
-            },
-        };
-        onAddValueItem(id, commands);
-        if (ref) {
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-        }
-        return function () {
-            onRemoveValueItem(id);
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            }
-        };
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'PFormRating'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorHelperText) {
+            return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
+        },
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
         focus,
         getFinalValue,
         hiddenRef,
-        id,
         initValue,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -3766,6 +3616,7 @@ PFormToggleButtonGroup.displayName = 'PFormToggleButtonGroup';var PFormRating = 
         validate,
         valueRef,
     ]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -3883,60 +3734,34 @@ PFormRating.displayName = 'PFormRating';var getFinalValue$8 = function (value) {
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        var commands = {
-            getType: function () { return 'PFormTextEditor'; },
-            getName: function () { return name; },
-            getReset: function () { return getFinalValue$8(initValue); },
-            reset: function () { return updateValue(initValue); },
-            getValue: function () { return valueRef.current; },
-            setValue: updateValue,
-            getData: function () { return dataRef.current; },
-            setData: setData,
-            isExceptValue: function () { return !!exceptValue; },
-            isDisabled: function () { return !!disabledRef.current; },
-            setDisabled: setDisabled,
-            isHidden: function () { return !!hiddenRef.current; },
-            setHidden: setHidden,
-            focus: focus,
-            focusValidate: focus,
-            validate: function () { return validate(valueRef.current); },
-            setError: function (error, errorText) {
-                return setErrorErrorHelperText(error, error ? errorText : undefined);
-            },
-        };
-        onAddValueItem(id, commands);
-        if (ref) {
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-        }
-        return function () {
-            onRemoveValueItem(id);
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            }
-        };
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'PFormTextEditor'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue$8(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorText) {
+            return setErrorErrorHelperText(error, error ? errorText : undefined);
+        },
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
         focus,
         hiddenRef,
-        id,
         initValue,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -3945,6 +3770,7 @@ PFormRating.displayName = 'PFormRating';var getFinalValue$8 = function (value) {
         validate,
         valueRef,
     ]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -4339,36 +4165,34 @@ PFormTextEditor.displayName = 'PFormTextEditor';var PFormAutocomplete = ToForwar
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    var commands = useMemo(function () {
-        return ({
-            getType: function () { return 'PFormAutocomplete'; },
-            getName: function () { return name; },
-            getReset: function () { return getFinalValue(initValue); },
-            reset: function () { return updateValue(initValue); },
-            getValue: function () { return valueRef.current; },
-            setValue: function (newValue) { return updateValue(newValue); },
-            getData: function () { return dataRef.current; },
-            setData: function (data) { return setData(data); },
-            isExceptValue: function () { return !!exceptValue; },
-            isDisabled: function () { return !!disabledRef.current; },
-            setDisabled: function (disabled) { return setDisabled(disabled); },
-            isHidden: function () { return !!hiddenRef.current; },
-            setHidden: function (hidden) { return setHidden(hidden); },
-            focus: focus,
-            focusValidate: focus,
-            validate: function () { return validate(valueRef.current); },
-            setError: function (error, errorText) {
-                return setErrorErrorHelperText(error, error ? errorText : undefined);
-            },
-            getFormValueSeparator: function () { return formValueSeparator; },
-            isFormValueSort: function () { return !!formValueSort; },
-            getItems: function () { return itemsRef.current; },
-            setItems: function (items) { return setItems(items); },
-            isMultiple: function () { return !!multiple; },
-            getLoading: function () { return !!loadingRef.current; },
-            setLoading: function (loading) { return setLoading(loading); },
-        });
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'PFormAutocomplete'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: function (newValue) { return updateValue(newValue); },
+        getData: function () { return dataRef.current; },
+        setData: function (data) { return setData(data); },
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: function (disabled) { return setDisabled(disabled); },
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: function (hidden) { return setHidden(hidden); },
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorText) {
+            return setErrorErrorHelperText(error, error ? errorText : undefined);
+        },
+        getFormValueSeparator: function () { return formValueSeparator; },
+        isFormValueSort: function () { return !!formValueSort; },
+        getItems: function () { return itemsRef.current; },
+        setItems: function (items) { return setItems(items); },
+        isMultiple: function () { return !!multiple; },
+        getLoading: function () { return !!loadingRef.current; },
+        setLoading: function (loading) { return setLoading(loading); },
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
@@ -4392,32 +4216,7 @@ PFormTextEditor.displayName = 'PFormTextEditor';var PFormAutocomplete = ToForwar
         validate,
         valueRef,
     ]);
-    useLayoutEffect(function () {
-        if (ref || onAddValueItem) {
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(commands);
-                }
-                else {
-                    ref.current = commands;
-                }
-            }
-            if (onAddValueItem)
-                onAddValueItem(id, commands);
-            return function () {
-                if (ref) {
-                    if (typeof ref === 'function') {
-                        ref(null);
-                    }
-                    else {
-                        ref.current = null;
-                    }
-                }
-                if (onRemoveValueItem)
-                    onRemoveValueItem(id);
-            };
-        }
-    }, [commands, id, onAddValueItem, onRemoveValueItem, ref]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -5339,29 +5138,9 @@ var PrivateTimeSelect = React.forwardRef(function (_a, ref) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     /********************************************************************************************************************
-     * LayoutEffect
+     * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        if (ref) {
-            var commands = {
-                scrollToValue: scrollToValue,
-            };
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-            return function () {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            };
-        }
-    }, [ref, scrollToValue]);
+    useForwardLayoutRef(ref, useMemo(function () { return ({ scrollToValue: scrollToValue }); }, [scrollToValue]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -5558,25 +5337,7 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        if (ref) {
-            var commands = {};
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-            return function () {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            };
-        }
-    }, [ref]);
+    useForwardLayoutRef(ref, useMemo(function () { return ({}); }, []));
     /********************************************************************************************************************
      * Render - Function
      * ******************************************************************************************************************/
@@ -5853,68 +5614,36 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        if (ref || onAddValueItem) {
-            var commands = {
-                getType: function () { return 'default'; },
-                getName: function () { return name; },
-                getReset: function () { return initValue; },
-                reset: function () { return updateValue(initValue); },
-                getValue: function () { return valueRef.current; },
-                setValue: updateValue,
-                getData: function () { return dataRef.current; },
-                setData: setData,
-                isExceptValue: function () { return !!exceptValue; },
-                isDisabled: function () { return !!disabledRef.current; },
-                setDisabled: setDisabled,
-                isHidden: function () { return !!hiddenRef.current; },
-                setHidden: setHidden,
-                focus: focus,
-                focusValidate: focus,
-                validate: function () { return validate(valueRef.current); },
-                setError: function (error, errorText) {
-                    return setErrorErrorHelperText(error, error ? errorText : undefined);
-                },
-                getFormValueFormat: function () {
-                    return initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time);
-                },
-            };
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(commands);
-                }
-                else {
-                    ref.current = commands;
-                }
-            }
-            if (onAddValueItem)
-                onAddValueItem(id, commands);
-            return function () {
-                if (ref) {
-                    if (typeof ref === 'function') {
-                        ref(null);
-                    }
-                    else {
-                        ref.current = null;
-                    }
-                }
-                if (onRemoveValueItem)
-                    onRemoveValueItem(id);
-            };
-        }
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'default'; },
+        getName: function () { return name; },
+        getReset: function () { return initValue; },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorText) {
+            return setErrorErrorHelperText(error, error ? errorText : undefined);
+        },
+        getFormValueFormat: function () { return (initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time)); },
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
         focus,
         hiddenRef,
-        id,
         initFormValueFormat,
         initValue,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -5925,6 +5654,7 @@ var PrivateStaticDatePicker = React.forwardRef(function (_a, ref) {
         validate,
         valueRef,
     ]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -6198,27 +5928,9 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        if (ref) {
-            var commands = {
-                timeSelectScrollToDate: timeSelectScrollToDate,
-            };
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-            return function () {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            };
-        }
-    }, [ref, timeSelectScrollToDate]);
+    useForwardLayoutRef(ref, useMemo(function () { return ({
+        timeSelectScrollToDate: timeSelectScrollToDate,
+    }); }, [timeSelectScrollToDate]));
     /********************************************************************************************************************
      * Render - Function
      * ******************************************************************************************************************/
@@ -6480,68 +6192,36 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        if (ref || onAddValueItem) {
-            var commands = {
-                getType: function () { return 'default'; },
-                getName: function () { return name; },
-                getReset: function () { return getFinalValue$7(initValue); },
-                reset: function () { return updateValue(initValue); },
-                getValue: function () { return valueRef.current; },
-                setValue: updateValue,
-                getData: function () { return dataRef.current; },
-                setData: setData,
-                isExceptValue: function () { return !!exceptValue; },
-                isDisabled: function () { return !!disabledRef.current; },
-                setDisabled: setDisabled,
-                isHidden: function () { return !!hiddenRef.current; },
-                setHidden: setHidden,
-                focus: focus,
-                focusValidate: focus,
-                validate: function () { return validate(valueRef.current); },
-                setError: function (error, errorText) {
-                    return setErrorErrorHelperText(error, error ? errorText : undefined);
-                },
-                getFormValueFormat: function () {
-                    return initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time);
-                },
-            };
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(commands);
-                }
-                else {
-                    ref.current = commands;
-                }
-            }
-            if (onAddValueItem)
-                onAddValueItem(id, commands);
-            return function () {
-                if (ref) {
-                    if (typeof ref === 'function') {
-                        ref(null);
-                    }
-                    else {
-                        ref.current = null;
-                    }
-                }
-                if (onRemoveValueItem)
-                    onRemoveValueItem(id);
-            };
-        }
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'default'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue$7(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorText) {
+            return setErrorErrorHelperText(error, error ? errorText : undefined);
+        },
+        getFormValueFormat: function () { return (initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time)); },
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
         focus,
         hiddenRef,
-        id,
         initFormValueFormat,
         initValue,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -6552,6 +6232,7 @@ var PrivateStaticDateTimePicker = React.forwardRef(function (_a, ref) {
         validate,
         valueRef,
     ]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -7840,23 +7521,15 @@ PFormDateTimePicker.displayName = 'PFormDateTimePicker';var PFormTimePicker = Re
 });
 PFormTimePicker.displayName = 'PFormTimePicker';insertStyle(".PFormDateRangePickerTooltipPicker .MuiPickersCalendarHeader-root{display:none}.PFormDateRangePickerTooltipPicker .MuiDayPicker-header>span{margin:0}.PFormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content{min-width:292px}.PFormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root>div{width:292px}.PFormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root>div .MuiCalendarPicker-root{width:292px}.PFormDateRangePickerTooltipPicker .selected-bg{display:none;position:absolute}.PFormDateRangePickerTooltipPicker .selected-bg.sel{display:block;position:absolute;top:0;bottom:0;left:0;right:0;background-color:rgba(66,165,245,.6)}.PFormDateRangePickerTooltipPicker .selected-bg.sel.ui-start,.PFormDateRangePickerTooltipPicker .selected-bg.sel.s-start{border-top-left-radius:50%;border-bottom-left-radius:50%}.PFormDateRangePickerTooltipPicker .selected-bg.sel.ui-end,.PFormDateRangePickerTooltipPicker .selected-bg.sel.s-end{border-top-right-radius:50%;border-bottom-right-radius:50%}.PFormDateRangePickerTooltipPicker .selected-bg.sel~.MuiPickersDay-root{border:0}.PFormDateRangePickerTooltipPicker .selected-bg.sel~.MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected){background-color:rgba(0,0,0,0)}.PFormDateRangePickerTooltipPicker .focused-bg{display:none;position:absolute}.PFormDateRangePickerTooltipPicker .focused-bg.focused{display:block;position:absolute;top:0;bottom:0;left:0;right:0;border:2px solid #efefef;border-left:0;border-right:0}.PFormDateRangePickerTooltipPicker .focused-bg.focused.ui-start,.PFormDateRangePickerTooltipPicker .focused-bg.focused.f-start{border-left:2px solid #efefef;border-top-left-radius:50%;border-bottom-left-radius:50%}.PFormDateRangePickerTooltipPicker .focused-bg.focused.ui-end,.PFormDateRangePickerTooltipPicker .focused-bg.focused.f-end{border-right:2px solid #efefef;border-top-right-radius:50%;border-bottom-right-radius:50%}.PFormDateRangePickerTooltipPicker .focused-bg.focused~.MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected){background-color:rgba(0,0,0,0)}");var PFormDateRangePickerTooltipPicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
-     * State
+     * Ref
      * ******************************************************************************************************************/
     var selectType = _a.selectType, initValue = _a.value, focusedDate = _a.focusedDate, month = _a.month, disableFuture = _a.disableFuture, disablePast = _a.disablePast, minDate = _a.minDate, maxDate = _a.maxDate, onValueChange = _a.onValueChange, onMouseEnterPickersDay = _a.onMouseEnterPickersDay, onMonthChange = _a.onMonthChange;
-    var _b = useState(null), activeMonthValue = _b[0], setActiveMonthValue = _b[1];
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
-    var value = useMemo(function () { return (initValue ? initValue : [null, null]); }, [initValue]);
-    /********************************************************************************************************************
-     * Effect
-     * ******************************************************************************************************************/
-    useEffect(function () {
-        setActiveMonthValue(null);
-    }, [selectType]);
-    //--------------------------------------------------------------------------------------------------------------------
     var leftArrowOnClickRef = useRef(undefined);
     var rightArrowOnClickRef = useRef(undefined);
+    /********************************************************************************************************************
+     * State
+     * ******************************************************************************************************************/
+    var _b = useState(null), activeMonthValue = _b[0], setActiveMonthValue = _b[1];
     var LeftArrowButton = useState(function () {
         var ArrowButton = function (props) {
             leftArrowOnClickRef.current = props.onClick;
@@ -7871,11 +7544,25 @@ PFormTimePicker.displayName = 'PFormTimePicker';insertStyle(".PFormDateRangePick
         };
         return ArrowButton;
     })[0];
-    //--------------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
+    var value = useMemo(function () { return (initValue ? initValue : [null, null]); }, [initValue]);
+    /********************************************************************************************************************
+     * Effect
+     * ******************************************************************************************************************/
+    useEffect(function () {
+        setActiveMonthValue(null);
+    }, [selectType]);
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var getDateVal = useCallback(function (date) {
         return Number(date.format('YYYYMMDD'));
     }, []);
-    //--------------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
     var baseClassNames = useMemo(function () {
         var newValue = {};
         var lastDayOfMonth = month.endOf('month').date();
@@ -7963,7 +7650,9 @@ PFormTimePicker.displayName = 'PFormTimePicker';insertStyle(".PFormDateRangePick
         }
         return newValue;
     }, [value, getDateVal, focusedDate, month, selectType]);
-    //--------------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
     var previousMonth = useCallback(function () {
         if (leftArrowOnClickRef.current) {
             leftArrowOnClickRef.current({});
@@ -7977,30 +7666,6 @@ PFormTimePicker.displayName = 'PFormTimePicker';insertStyle(".PFormDateRangePick
     var activeMonth = useCallback(function (month) {
         setActiveMonthValue(month);
     }, []);
-    useLayoutEffect(function () {
-        if (ref) {
-            var commands = {
-                previousMonth: previousMonth,
-                nextMonth: nextMonth,
-                activeMonth: activeMonth,
-            };
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-            return function () {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            };
-        }
-    }, [ref, previousMonth, nextMonth, activeMonth]);
-    //--------------------------------------------------------------------------------------------------------------------
     var handleRenderDay = useCallback(function (props) {
         var startDate = value[0];
         var endDate = value[1];
@@ -8013,6 +7678,15 @@ PFormTimePicker.displayName = 'PFormTimePicker';insertStyle(".PFormDateRangePick
             React.createElement("div", { className: classNames('selected-bg', baseClassName, selectedClassName) }),
             React.createElement(PickersDay, __assign({}, props, { disableMargin: true, selected: props.day.isSame(startDate, 'date') || props.day.isSame(endDate, 'date'), onMouseEnter: value[0] || value[1] ? function () { return onMouseEnterPickersDay && onMouseEnterPickersDay(props.day); } : undefined }))));
     }, [value, getDateVal, baseClassNames, selectedClassNames, focusedClassNames, onMouseEnterPickersDay]);
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
+    var commands = useMemo(function () { return ({
+        previousMonth: previousMonth,
+        nextMonth: nextMonth,
+        activeMonth: activeMonth,
+    }); }, [activeMonth, nextMonth, previousMonth]);
+    useForwardLayoutRef(ref, commands);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
@@ -8148,29 +7822,7 @@ var PFormDateRangePickerTooltipPickerContainer = React.forwardRef(function (_a, 
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        if (ref) {
-            var commands = {
-                previousMonth: previousMonth,
-                nextMonth: nextMonth,
-                activeMonth: activeMonth,
-            };
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-            return function () {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            };
-        }
-    }, [ref, previousMonth, nextMonth, activeMonth]);
+    useForwardLayoutRef(ref, useMemo(function () { return ({ previousMonth: previousMonth, nextMonth: nextMonth, activeMonth: activeMonth }); }, [activeMonth, nextMonth, previousMonth]));
     /********************************************************************************************************************
      * Render Function
      * ******************************************************************************************************************/
@@ -8707,66 +8359,40 @@ var PFormDateRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        if (ref || onAddValueItem) {
-            var commands = {
-                getType: function () { return 'PFormDateRangePicker'; },
-                getName: function () { return name; },
-                getReset: function () { return getFinalValue$6(initValue); },
-                reset: function () { return updateValue(initValue); },
-                getValue: function () { return valueRef.current; },
-                setValue: updateValue,
-                getData: function () { return dataRef.current; },
-                setData: setData,
-                getFromValue: function () { return valueRef.current[0]; },
-                setFromValue: function (value) { return updateValue([value, valueRef.current[1]]); },
-                getToValue: function () { return valueRef.current[1]; },
-                setToValue: function (value) { return updateValue([valueRef.current[0], value]); },
-                isExceptValue: function () { return !!exceptValue; },
-                isDisabled: function () { return !!disabledRef.current; },
-                setDisabled: setDisabled,
-                isHidden: function () { return !!hiddenRef.current; },
-                setHidden: setHidden,
-                focus: focus,
-                focusValidate: focusValidate,
-                validate: function () { return validate(valueRef.current); },
-                setError: function (error, errorText) {
-                    return setErrorErrorHelperText(error, error ? errorText : undefined);
-                },
-                getFormValueFormat: function () { return formValueFormat; },
-                getFormValueFromNameSuffix: function () { return formValueFromNameSuffix; },
-                getFormValueToNameSuffix: function () { return formValueToNameSuffix; },
-                getFormValueFromName: function () {
-                    return "".concat(name).concat(formValueFromNameSuffix);
-                },
-                getFormValueToName: function () {
-                    return "".concat(name).concat(formValueToNameSuffix);
-                },
-            };
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(commands);
-                }
-                else {
-                    ref.current = commands;
-                }
-            }
-            if (onAddValueItem)
-                onAddValueItem(id, commands);
-            return function () {
-                if (ref) {
-                    if (typeof ref === 'function') {
-                        ref(null);
-                    }
-                    else {
-                        ref.current = null;
-                    }
-                }
-                if (onRemoveValueItem)
-                    onRemoveValueItem(id);
-            };
-        }
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'PFormDateRangePicker'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue$6(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        getFromValue: function () { return valueRef.current[0]; },
+        setFromValue: function (value) { return updateValue([value, valueRef.current[1]]); },
+        getToValue: function () { return valueRef.current[1]; },
+        setToValue: function (value) { return updateValue([valueRef.current[0], value]); },
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focusValidate,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorText) {
+            return setErrorErrorHelperText(error, error ? errorText : undefined);
+        },
+        getFormValueFormat: function () { return formValueFormat; },
+        getFormValueFromNameSuffix: function () { return formValueFromNameSuffix; },
+        getFormValueToNameSuffix: function () { return formValueToNameSuffix; },
+        getFormValueFromName: function () {
+            return "".concat(name).concat(formValueFromNameSuffix);
+        },
+        getFormValueToName: function () {
+            return "".concat(name).concat(formValueToNameSuffix);
+        },
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
@@ -8776,12 +8402,8 @@ var PFormDateRangePicker = React.forwardRef(function (_a, ref) {
         formValueFromNameSuffix,
         formValueToNameSuffix,
         hiddenRef,
-        id,
         initValue,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -8790,6 +8412,7 @@ var PFormDateRangePicker = React.forwardRef(function (_a, ref) {
         validate,
         valueRef,
     ]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Variable
      * ******************************************************************************************************************/
@@ -9017,60 +8640,34 @@ var PFormFile = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        var commands = {
-            getType: function () { return 'PFormFile'; },
-            getName: function () { return name; },
-            getReset: function () { return getFinalValue$5(initValue); },
-            reset: function () { return updateValue(initValue); },
-            getValue: function () { return valueRef.current; },
-            setValue: updateValue,
-            getData: function () { return dataRef.current; },
-            setData: setData,
-            isExceptValue: function () { return !!exceptValue; },
-            isDisabled: function () { return !!disabledRef.current; },
-            setDisabled: setDisabled,
-            isHidden: function () { return !!hiddenRef.current; },
-            setHidden: setHidden,
-            focus: focus,
-            focusValidate: focus,
-            validate: function () { return validate(valueRef.current); },
-            setError: function (error, errorHelperText) {
-                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
-            },
-        };
-        onAddValueItem(id, commands);
-        if (ref) {
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-        }
-        return function () {
-            onRemoveValueItem(id);
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            }
-        };
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'PFormFile'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue$5(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorHelperText) {
+            return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
+        },
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
         focus,
         hiddenRef,
-        id,
         initValue,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -9079,6 +8676,7 @@ var PFormFile = React.forwardRef(function (_a, ref) {
         validate,
         valueRef,
     ]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Function
      * ******************************************************************************************************************/
@@ -9525,73 +9123,51 @@ var PFormMonthPicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        var commands = {
-            getType: function () { return 'PFormMonthPicker'; },
-            getName: function () { return name; },
-            getReset: function () { return getFinalValue$3(initValue); },
-            reset: function () { return updateValue(initValue); },
-            getValue: function () { return valueRef.current; },
-            setValue: updateValue,
-            getData: function () { return dataRef.current; },
-            setData: setData,
-            getYear: function () { return (valueRef.current ? valueRef.current.year : null); },
-            setYear: function (year) {
-                updateValue(year === null
-                    ? null
-                    : valueRef.current
-                        ? { year: year, month: valueRef.current.month }
-                        : { year: year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 });
-            },
-            getMonth: function () { return (valueRef.current ? valueRef.current.month : null); },
-            setMonth: function (month) {
-                updateValue(month === null
-                    ? null
-                    : valueRef.current
-                        ? { year: valueRef.current.year, month: month }
-                        : { year: new Date().getFullYear(), month: month });
-            },
-            isExceptValue: function () { return !!exceptValue; },
-            isDisabled: function () { return !!disabledRef.current; },
-            setDisabled: setDisabled,
-            isHidden: function () { return !!hiddenRef.current; },
-            setHidden: setHidden,
-            focus: focus,
-            focusValidate: focus,
-            validate: function () { return validate(valueRef.current); },
-            setError: function (error, errorHelperText) {
-                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
-            },
-            getFormValueYearNameSuffix: function () { return formValueYearNameSuffix; },
-            getFormValueMonthNameSuffix: function () { return formValueMonthNameSuffix; },
-            getFormValueYearName: function () {
-                return "".concat(name).concat(formValueYearNameSuffix);
-            },
-            getFormValueMonthName: function () {
-                return "".concat(name).concat(formValueMonthNameSuffix);
-            },
-        };
-        onAddValueItem(id, commands);
-        if (ref) {
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-        }
-        return function () {
-            onRemoveValueItem(id);
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            }
-        };
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'PFormMonthPicker'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue$3(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        getYear: function () { return (valueRef.current ? valueRef.current.year : null); },
+        setYear: function (year) {
+            updateValue(year === null
+                ? null
+                : valueRef.current
+                    ? { year: year, month: valueRef.current.month }
+                    : { year: year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 });
+        },
+        getMonth: function () { return (valueRef.current ? valueRef.current.month : null); },
+        setMonth: function (month) {
+            updateValue(month === null
+                ? null
+                : valueRef.current
+                    ? { year: valueRef.current.year, month: month }
+                    : { year: new Date().getFullYear(), month: month });
+        },
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorHelperText) {
+            return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
+        },
+        getFormValueYearNameSuffix: function () { return formValueYearNameSuffix; },
+        getFormValueMonthNameSuffix: function () { return formValueMonthNameSuffix; },
+        getFormValueYearName: function () {
+            return "".concat(name).concat(formValueYearNameSuffix);
+        },
+        getFormValueMonthName: function () {
+            return "".concat(name).concat(formValueMonthNameSuffix);
+        },
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
@@ -9599,12 +9175,8 @@ var PFormMonthPicker = React.forwardRef(function (_a, ref) {
         formValueMonthNameSuffix,
         formValueYearNameSuffix,
         hiddenRef,
-        id,
         initValue,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -9613,6 +9185,7 @@ var PFormMonthPicker = React.forwardRef(function (_a, ref) {
         validate,
         valueRef,
     ]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -9891,113 +9464,91 @@ var PFormMonthRangePicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        var commands = {
-            getType: function () { return 'PFormMonthRangePicker'; },
-            getName: function () { return name; },
-            getReset: function () { return getFinalValue$2(initValue); },
-            reset: function () { return updateValue(initValue); },
-            getValue: function () { return valueRef.current; },
-            setValue: updateValue,
-            getData: function () { return dataRef.current; },
-            setData: setData,
-            getFromValue: function () { return valueRef.current[0]; },
-            setFromValue: function (value) { return updateValue([value, valueRef.current[1]]); },
-            getToValue: function () { return valueRef.current[1]; },
-            setToValue: function (value) { return updateValue([valueRef.current[0], value]); },
-            getFromYear: function () { return (valueRef.current[0] ? valueRef.current[0].year : null); },
-            setFromYear: function (year) {
-                updateValue([
-                    year === null
-                        ? null
-                        : valueRef.current[0]
-                            ? { year: year, month: valueRef.current[0].month }
-                            : { year: year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
-                    valueRef.current[1],
-                ]);
-            },
-            getFromMonth: function () { return (valueRef.current[0] ? valueRef.current[0].month : null); },
-            setFromMonth: function (month) {
-                updateValue([
-                    month === null
-                        ? null
-                        : valueRef.current[0]
-                            ? { year: valueRef.current[0].year, month: month }
-                            : { year: new Date().getFullYear(), month: month },
-                    valueRef.current[1],
-                ]);
-            },
-            getToYear: function () { return (valueRef.current[1] ? valueRef.current[1].year : null); },
-            setToYear: function (year) {
-                updateValue([
-                    valueRef.current[0],
-                    year === null
-                        ? null
-                        : valueRef.current[1]
-                            ? { year: year, month: valueRef.current[1].month }
-                            : { year: year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
-                ]);
-            },
-            getToMonth: function () { return (valueRef.current[1] ? valueRef.current[1].month : null); },
-            setToMonth: function (month) {
-                updateValue([
-                    valueRef.current[0],
-                    month === null
-                        ? null
-                        : valueRef.current[1]
-                            ? { year: valueRef.current[1].year, month: month }
-                            : { year: new Date().getFullYear(), month: month },
-                ]);
-            },
-            isExceptValue: function () { return !!exceptValue; },
-            isDisabled: function () { return !!disabledRef.current; },
-            setDisabled: setDisabled,
-            isHidden: function () { return !!hiddenRef.current; },
-            setHidden: setHidden,
-            focus: focus,
-            focusValidate: focus,
-            validate: function () { return validate(valueRef.current); },
-            setError: function (error, errorHelperText) {
-                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
-            },
-            getFormValueFromYearNameSuffix: function () { return formValueFromYearNameSuffix; },
-            getFormValueFromMonthNameSuffix: function () { return formValueFromMonthNameSuffix; },
-            getFormValueToYearNameSuffix: function () { return formValueToYearNameSuffix; },
-            getFormValueToMonthNameSuffix: function () { return formValueToMonthNameSuffix; },
-            getFormValueFromYearName: function () {
-                return "".concat(name).concat(formValueFromYearNameSuffix);
-            },
-            getFormValueFromMonthName: function () {
-                return "".concat(name).concat(formValueFromMonthNameSuffix);
-            },
-            getFormValueToYearName: function () {
-                return "".concat(name).concat(formValueToYearNameSuffix);
-            },
-            getFormValueToMonthName: function () {
-                return "".concat(name).concat(formValueToMonthNameSuffix);
-            },
-        };
-        onAddValueItem(id, commands);
-        if (ref) {
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-        }
-        return function () {
-            onRemoveValueItem(id);
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            }
-        };
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'PFormMonthRangePicker'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue$2(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        getFromValue: function () { return valueRef.current[0]; },
+        setFromValue: function (value) { return updateValue([value, valueRef.current[1]]); },
+        getToValue: function () { return valueRef.current[1]; },
+        setToValue: function (value) { return updateValue([valueRef.current[0], value]); },
+        getFromYear: function () { return (valueRef.current[0] ? valueRef.current[0].year : null); },
+        setFromYear: function (year) {
+            updateValue([
+                year === null
+                    ? null
+                    : valueRef.current[0]
+                        ? { year: year, month: valueRef.current[0].month }
+                        : { year: year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
+                valueRef.current[1],
+            ]);
+        },
+        getFromMonth: function () { return (valueRef.current[0] ? valueRef.current[0].month : null); },
+        setFromMonth: function (month) {
+            updateValue([
+                month === null
+                    ? null
+                    : valueRef.current[0]
+                        ? { year: valueRef.current[0].year, month: month }
+                        : { year: new Date().getFullYear(), month: month },
+                valueRef.current[1],
+            ]);
+        },
+        getToYear: function () { return (valueRef.current[1] ? valueRef.current[1].year : null); },
+        setToYear: function (year) {
+            updateValue([
+                valueRef.current[0],
+                year === null
+                    ? null
+                    : valueRef.current[1]
+                        ? { year: year, month: valueRef.current[1].month }
+                        : { year: year, month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1 },
+            ]);
+        },
+        getToMonth: function () { return (valueRef.current[1] ? valueRef.current[1].month : null); },
+        setToMonth: function (month) {
+            updateValue([
+                valueRef.current[0],
+                month === null
+                    ? null
+                    : valueRef.current[1]
+                        ? { year: valueRef.current[1].year, month: month }
+                        : { year: new Date().getFullYear(), month: month },
+            ]);
+        },
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorHelperText) {
+            return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
+        },
+        getFormValueFromYearNameSuffix: function () { return formValueFromYearNameSuffix; },
+        getFormValueFromMonthNameSuffix: function () { return formValueFromMonthNameSuffix; },
+        getFormValueToYearNameSuffix: function () { return formValueToYearNameSuffix; },
+        getFormValueToMonthNameSuffix: function () { return formValueToMonthNameSuffix; },
+        getFormValueFromYearName: function () {
+            return "".concat(name).concat(formValueFromYearNameSuffix);
+        },
+        getFormValueFromMonthName: function () {
+            return "".concat(name).concat(formValueFromMonthNameSuffix);
+        },
+        getFormValueToYearName: function () {
+            return "".concat(name).concat(formValueToYearNameSuffix);
+        },
+        getFormValueToMonthName: function () {
+            return "".concat(name).concat(formValueToMonthNameSuffix);
+        },
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
@@ -10007,12 +9558,8 @@ var PFormMonthRangePicker = React.forwardRef(function (_a, ref) {
         formValueToMonthNameSuffix,
         formValueToYearNameSuffix,
         hiddenRef,
-        id,
         initValue,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -10021,6 +9568,7 @@ var PFormMonthRangePicker = React.forwardRef(function (_a, ref) {
         validate,
         valueRef,
     ]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -10284,60 +9832,34 @@ var PFormYearPicker = React.forwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        var commands = {
-            getType: function () { return 'PFormYearPicker'; },
-            getName: function () { return name; },
-            getReset: function () { return getFinalValue$1(initValue); },
-            reset: function () { return updateValue(initValue); },
-            getValue: function () { return valueRef.current; },
-            setValue: updateValue,
-            getData: function () { return dataRef.current; },
-            setData: setData,
-            isExceptValue: function () { return !!exceptValue; },
-            isDisabled: function () { return !!disabledRef.current; },
-            setDisabled: setDisabled,
-            isHidden: function () { return !!hiddenRef.current; },
-            setHidden: setHidden,
-            focus: focus,
-            focusValidate: focus,
-            validate: function () { return validate(valueRef.current); },
-            setError: function (error, errorHelperText) {
-                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
-            },
-        };
-        onAddValueItem(id, commands);
-        if (ref) {
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-        }
-        return function () {
-            onRemoveValueItem(id);
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            }
-        };
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'PFormYearPicker'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue$1(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorHelperText) {
+            return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
+        },
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
         focus,
         hiddenRef,
-        id,
         initValue,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -10346,6 +9868,7 @@ var PFormYearPicker = React.forwardRef(function (_a, ref) {
         validate,
         valueRef,
     ]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -10585,61 +10108,39 @@ var getFinalValue = function (value) {
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        var commands = {
-            getType: function () { return 'PFormYearRangePicker'; },
-            getName: function () { return name; },
-            getReset: function () { return getFinalValue(initValue); },
-            reset: function () { return updateValue(initValue); },
-            getValue: function () { return valueRef.current; },
-            setValue: updateValue,
-            getData: function () { return dataRef.current; },
-            setData: setData,
-            getFromValue: function () { return valueRef.current[0]; },
-            setFromValue: function (value) { return updateValue([value, valueRef.current[1]]); },
-            getToValue: function () { return valueRef.current[1]; },
-            setToValue: function (value) { return updateValue([valueRef.current[0], value]); },
-            isExceptValue: function () { return !!exceptValue; },
-            isDisabled: function () { return !!disabledRef.current; },
-            setDisabled: setDisabled,
-            isHidden: function () { return !!hiddenRef.current; },
-            setHidden: setHidden,
-            focus: focus,
-            focusValidate: focus,
-            validate: function () { return validate(valueRef.current); },
-            setError: function (error, errorHelperText) {
-                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
-            },
-            getFormValueFromNameSuffix: function () { return formValueFromNameSuffix; },
-            getFormValueToNameSuffix: function () { return formValueToNameSuffix; },
-            getFormValueFromName: function () {
-                return "".concat(name).concat(formValueFromNameSuffix);
-            },
-            getFormValueToName: function () {
-                return "".concat(name).concat(formValueToNameSuffix);
-            },
-        };
-        onAddValueItem(id, commands);
-        if (ref) {
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-        }
-        return function () {
-            onRemoveValueItem(id);
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            }
-        };
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'PFormYearRangePicker'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        getFromValue: function () { return valueRef.current[0]; },
+        setFromValue: function (value) { return updateValue([value, valueRef.current[1]]); },
+        getToValue: function () { return valueRef.current[1]; },
+        setToValue: function (value) { return updateValue([valueRef.current[0], value]); },
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorHelperText) {
+            return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
+        },
+        getFormValueFromNameSuffix: function () { return formValueFromNameSuffix; },
+        getFormValueToNameSuffix: function () { return formValueToNameSuffix; },
+        getFormValueFromName: function () {
+            return "".concat(name).concat(formValueFromNameSuffix);
+        },
+        getFormValueToName: function () {
+            return "".concat(name).concat(formValueToNameSuffix);
+        },
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
@@ -10647,12 +10148,8 @@ var getFinalValue = function (value) {
         formValueFromNameSuffix,
         formValueToNameSuffix,
         hiddenRef,
-        id,
         initValue,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -10661,6 +10158,7 @@ var getFinalValue = function (value) {
         validate,
         valueRef,
     ]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -10878,61 +10376,35 @@ PFormYearRangePicker.displayName = 'PFormYearRangePicker';var PFormSwitch = Reac
     /********************************************************************************************************************
      * Commands
      * ******************************************************************************************************************/
-    useLayoutEffect(function () {
-        var commands = {
-            getType: function () { return 'PFormSwitch'; },
-            getName: function () { return name; },
-            getReset: function () { return getFinalValue(initValue); },
-            reset: function () { return updateValue(initValue); },
-            getValue: function () { return valueRef.current; },
-            setValue: updateValue,
-            getData: function () { return dataRef.current; },
-            setData: setData,
-            isExceptValue: function () { return !!exceptValue; },
-            isDisabled: function () { return !!disabledRef.current; },
-            setDisabled: setDisabled,
-            isHidden: function () { return !!hiddenRef.current; },
-            setHidden: setHidden,
-            focus: focus,
-            focusValidate: focus,
-            validate: function () { return validate(valueRef.current); },
-            setError: function (error, errorHelperText) {
-                return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
-            },
-        };
-        onAddValueItem(id, commands);
-        if (ref) {
-            if (typeof ref === 'function') {
-                ref(commands);
-            }
-            else {
-                ref.current = commands;
-            }
-        }
-        return function () {
-            onRemoveValueItem(id);
-            if (ref) {
-                if (typeof ref === 'function') {
-                    ref(null);
-                }
-                else {
-                    ref.current = null;
-                }
-            }
-        };
-    }, [
+    var commands = useMemo(function () { return ({
+        getType: function () { return 'PFormSwitch'; },
+        getName: function () { return name; },
+        getReset: function () { return getFinalValue(initValue); },
+        reset: function () { return updateValue(initValue); },
+        getValue: function () { return valueRef.current; },
+        setValue: updateValue,
+        getData: function () { return dataRef.current; },
+        setData: setData,
+        isExceptValue: function () { return !!exceptValue; },
+        isDisabled: function () { return !!disabledRef.current; },
+        setDisabled: setDisabled,
+        isHidden: function () { return !!hiddenRef.current; },
+        setHidden: setHidden,
+        focus: focus,
+        focusValidate: focus,
+        validate: function () { return validate(valueRef.current); },
+        setError: function (error, errorHelperText) {
+            return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
+        },
+    }); }, [
         dataRef,
         disabledRef,
         exceptValue,
         focus,
         getFinalValue,
         hiddenRef,
-        id,
         initValue,
         name,
-        onAddValueItem,
-        onRemoveValueItem,
-        ref,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -10941,6 +10413,7 @@ PFormYearRangePicker.displayName = 'PFormYearRangePicker';var PFormSwitch = Reac
         validate,
         valueRef,
     ]);
+    useForwardLayoutRef(ref, commands, useCallback(function (commands) { return onAddValueItem(id, commands); }, [id, onAddValueItem]), useCallback(function () { return onRemoveValueItem(id); }, [id, onRemoveValueItem]));
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/

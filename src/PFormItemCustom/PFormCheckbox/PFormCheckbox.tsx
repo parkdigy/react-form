@@ -1,9 +1,9 @@
-import React, { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { FormControlLabel, Checkbox, Typography, ButtonBaseActions, useTheme } from '@mui/material';
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material';
-import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useForwardLayoutRef } from '@pdg/react-hook';
 import { PFormCheckboxProps as Props, PFormCheckboxCommands, PFormCheckboxValue } from './PFormCheckbox.types';
 import PFormItemBase from '../PFormItemBase';
 import { useFormState } from '../../PFormContext';
@@ -197,8 +197,8 @@ const PFormCheckbox = React.forwardRef<PFormCheckboxCommands, Props>(
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      const commands: PFormCheckboxCommands = {
+    const commands = useMemo<PFormCheckboxCommands>(
+      () => ({
         getType: () => 'PFormCheckbox',
         getName: () => name,
         getReset: () => initChecked,
@@ -221,53 +221,35 @@ const PFormCheckbox = React.forwardRef<PFormCheckboxCommands, Props>(
         validate: () => validate(checkedRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
-      };
+      }),
+      [
+        checkedRef,
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        hiddenRef,
+        initChecked,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        setUncheckedValue,
+        setValue,
+        uncheckedValueRef,
+        updateChecked,
+        validate,
+        valueRef,
+      ]
+    );
 
-      onAddValueItem(id, commands);
-
-      if (ref) {
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-      }
-
-      return () => {
-        onRemoveValueItem(id);
-
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        }
-      };
-    }, [
-      checkedRef,
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      hiddenRef,
-      id,
-      initChecked,
-      name,
-      onAddValueItem,
-      onRemoveValueItem,
+    useForwardLayoutRef(
       ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      setUncheckedValue,
-      setValue,
-      uncheckedValueRef,
-      updateChecked,
-      validate,
-      valueRef,
-    ]);
+      commands,
+      useCallback((commands: PFormCheckboxCommands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+    );
 
     /********************************************************************************************************************
      * Event Handler

@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect, useForwardLayoutRef } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
 import { empty, ifUndefined } from '@pdg/compare';
 import {
@@ -243,8 +243,8 @@ const PFormYearPicker = React.forwardRef<PFormYearPickerCommands, Props>(
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      const commands: PFormYearPickerCommands = {
+    const commands = useMemo<PFormYearPickerCommands>(
+      () => ({
         getType: () => 'PFormYearPicker',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
@@ -263,49 +263,31 @@ const PFormYearPicker = React.forwardRef<PFormYearPickerCommands, Props>(
         validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
-      };
+      }),
+      [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        hiddenRef,
+        initValue,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        updateValue,
+        validate,
+        valueRef,
+      ]
+    );
 
-      onAddValueItem(id, commands);
-
-      if (ref) {
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-      }
-
-      return () => {
-        onRemoveValueItem(id);
-
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        }
-      };
-    }, [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      hiddenRef,
-      id,
-      initValue,
-      name,
-      onAddValueItem,
-      onRemoveValueItem,
+    useForwardLayoutRef(
       ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      updateValue,
-      validate,
-      valueRef,
-    ]);
+      commands,
+      useCallback((commands: PFormYearPickerCommands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+    );
 
     /********************************************************************************************************************
      * Event Handler

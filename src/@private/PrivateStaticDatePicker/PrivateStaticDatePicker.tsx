@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   PrivateStaticDatePickerProps as Props,
@@ -13,6 +13,7 @@ import { PrivateTimeSelectCommands } from '../PrivateTimeSelect';
 import { checkDateAvailable, getAvailableDate, isDateAvailable, makeAvailableDate } from '../../@util.private';
 import { PrivateTimeSection } from '../PrivateTimeSection';
 import './PrivateStaticDatePicker.scss';
+import { useForwardLayoutRef } from '@pdg/react-hook';
 
 const DEFAULT_HOURS: number[] = new Array(24).fill(0);
 for (let i = 0; i < DEFAULT_HOURS.length; i += 1) {
@@ -163,25 +164,10 @@ const PrivateStaticDatePicker = React.forwardRef<PrivateStaticDatePickerCommands
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      if (ref) {
-        const commands: PrivateStaticDatePickerCommands = {};
-
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-
-        return () => {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        };
-      }
-    }, [ref]);
+    useForwardLayoutRef(
+      ref,
+      useMemo<PrivateStaticDatePickerCommands>(() => ({}), [])
+    );
 
     /********************************************************************************************************************
      * Render - Function

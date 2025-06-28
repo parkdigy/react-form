@@ -1,7 +1,7 @@
 {
   "name": "@pdg/react-form",
   "title": "React Form",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "React Form",
   "type": "module",
   "types": "dist/index.d.ts",
@@ -58,7 +58,7 @@
     "@pdg/data": "^1.0.1",
     "@pdg/formatting": "^1.0.5",
     "@pdg/react-component": "^1.1.0",
-    "@pdg/react-hook": "^1.0.30",
+    "@pdg/react-hook": "^1.0.31",
     "@pdg/types": "^1.0.2",
     "@tinymce/miniature": "^6.0.0",
     "@tinymce/tinymce-react": "^6.2.0",

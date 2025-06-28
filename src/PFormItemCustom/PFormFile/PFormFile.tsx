@@ -1,7 +1,7 @@
-import React, { ChangeEvent, ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { ChangeEvent, ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { InputAdornment, TextField, Typography } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useForwardLayoutRef } from '@pdg/react-hook';
 import { getFileSizeText } from '../../@util.private';
 import { empty, ifUndefined, notEmpty } from '@pdg/compare';
 import { PFormFileProps as Props, PFormFileCommands, PFormFileValue } from './PFormFile.types';
@@ -222,8 +222,8 @@ const PFormFile = React.forwardRef<PFormFileCommands, Props>(
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      const commands: PFormFileCommands = {
+    const commands = useMemo<PFormFileCommands>(
+      () => ({
         getType: () => 'PFormFile',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
@@ -242,49 +242,31 @@ const PFormFile = React.forwardRef<PFormFileCommands, Props>(
         validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
-      };
+      }),
+      [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        hiddenRef,
+        initValue,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        updateValue,
+        validate,
+        valueRef,
+      ]
+    );
 
-      onAddValueItem(id, commands);
-
-      if (ref) {
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-      }
-
-      return () => {
-        onRemoveValueItem(id);
-
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        }
-      };
-    }, [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      hiddenRef,
-      id,
-      initValue,
-      name,
-      onAddValueItem,
-      onRemoveValueItem,
+    useForwardLayoutRef(
       ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      updateValue,
-      validate,
-      valueRef,
-    ]);
+      commands,
+      useCallback((commands: PFormFileCommands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+    );
 
     /********************************************************************************************************************
      * Function

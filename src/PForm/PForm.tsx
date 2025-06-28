@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, FormEvent, useCallback, useMemo } from 'react';
+import React, { useRef, FormEvent, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { Box } from '@mui/material';
 import { ifUndefined, notEmpty } from '@pdg/compare';
@@ -17,7 +17,7 @@ import {
   PFormYearMonthRangeValueItemNameCommands,
 } from '../@types';
 import { appendFormValueData, getItemFormValue } from './PForm.function.private';
-import { useAutoUpdateLayoutRef } from '@pdg/react-hook';
+import { useAutoUpdateLayoutRef, useForwardLayoutRef } from '@pdg/react-hook';
 
 const PForm = React.forwardRef<PFormCommands, Props>(
   (
@@ -150,7 +150,7 @@ const PForm = React.forwardRef<PFormCommands, Props>(
      * Commands
      * ******************************************************************************************************************/
 
-    const commands = useMemo(() => {
+    const commands = useMemo<PFormCommands>(() => {
       const findValueItem = function <T extends PFormValueItemBaseCommands<any, true> = PFormValueItemCommands<any>>(
         name: string
       ): T | undefined {
@@ -342,25 +342,10 @@ const PForm = React.forwardRef<PFormCommands, Props>(
           if (valueItem) valueItem.setError(error, helperText);
           else throw new Error(`'${name}' 이 존재하지 않습니다.`);
         },
-      } as PFormCommands;
+      };
     }, [submit]);
 
-    useLayoutEffect(() => {
-      if (ref) {
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-        return () => {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        };
-      }
-    }, [commands, ref]);
+    useForwardLayoutRef(ref, commands);
 
     /********************************************************************************************************************
      * Event Handler

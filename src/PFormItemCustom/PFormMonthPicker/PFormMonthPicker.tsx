@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect, useForwardLayoutRef } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
 import { empty, ifUndefined } from '@pdg/compare';
 import {
@@ -276,8 +276,8 @@ const PFormMonthPicker = React.forwardRef<PFormMonthPickerCommands, Props>(
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      const commands: PFormMonthPickerCommands = {
+    const commands = useMemo<PFormMonthPickerCommands>(
+      () => ({
         getType: () => 'PFormMonthPicker',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
@@ -324,51 +324,33 @@ const PFormMonthPicker = React.forwardRef<PFormMonthPickerCommands, Props>(
         getFormValueMonthName: () => {
           return `${name}${formValueMonthNameSuffix}`;
         },
-      };
+      }),
+      [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        formValueMonthNameSuffix,
+        formValueYearNameSuffix,
+        hiddenRef,
+        initValue,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        updateValue,
+        validate,
+        valueRef,
+      ]
+    );
 
-      onAddValueItem(id, commands);
-
-      if (ref) {
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-      }
-
-      return () => {
-        onRemoveValueItem(id);
-
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        }
-      };
-    }, [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      formValueMonthNameSuffix,
-      formValueYearNameSuffix,
-      hiddenRef,
-      id,
-      initValue,
-      name,
-      onAddValueItem,
-      onRemoveValueItem,
+    useForwardLayoutRef(
       ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      updateValue,
-      validate,
-      valueRef,
-    ]);
+      commands,
+      useCallback((commands: PFormMonthPickerCommands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+    );
 
     /********************************************************************************************************************
      * Event Handler

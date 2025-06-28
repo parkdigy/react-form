@@ -1,7 +1,7 @@
-import React, { ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect, useForwardLayoutRef } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
 import { ifUndefined } from '@pdg/compare';
 import {
@@ -308,8 +308,8 @@ const PFormMonthRangePicker = React.forwardRef<PFormMonthRangePickerCommands, Pr
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      const commands: PFormMonthRangePickerCommands = {
+    const commands = useMemo<PFormMonthRangePickerCommands>(
+      () => ({
         getType: () => 'PFormMonthRangePicker',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
@@ -392,53 +392,35 @@ const PFormMonthRangePicker = React.forwardRef<PFormMonthRangePickerCommands, Pr
         getFormValueToMonthName: () => {
           return `${name}${formValueToMonthNameSuffix}`;
         },
-      };
+      }),
+      [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        formValueFromMonthNameSuffix,
+        formValueFromYearNameSuffix,
+        formValueToMonthNameSuffix,
+        formValueToYearNameSuffix,
+        hiddenRef,
+        initValue,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        updateValue,
+        validate,
+        valueRef,
+      ]
+    );
 
-      onAddValueItem(id, commands);
-
-      if (ref) {
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-      }
-
-      return () => {
-        onRemoveValueItem(id);
-
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        }
-      };
-    }, [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      formValueFromMonthNameSuffix,
-      formValueFromYearNameSuffix,
-      formValueToMonthNameSuffix,
-      formValueToYearNameSuffix,
-      hiddenRef,
-      id,
-      initValue,
-      name,
-      onAddValueItem,
-      onRemoveValueItem,
+    useForwardLayoutRef(
       ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      updateValue,
-      validate,
-      valueRef,
-    ]);
+      commands,
+      useCallback((commands: PFormMonthRangePickerCommands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+    );
 
     /********************************************************************************************************************
      * Event Handler

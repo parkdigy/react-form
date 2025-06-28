@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { Rating } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useForwardLayoutRef } from '@pdg/react-hook';
 import { empty, ifUndefined } from '@pdg/compare';
 import { PFormRatingProps as Props, PFormRatingCommands, PFormRatingValue } from './PFormRating.types';
 import PFormItemBase from '../PFormItemBase';
@@ -194,8 +194,8 @@ const PFormRating = React.forwardRef<PFormRatingCommands, Props>(
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      const commands: PFormRatingCommands = {
+    const commands = useMemo<PFormRatingCommands>(
+      () => ({
         getType: () => 'PFormRating',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
@@ -214,50 +214,32 @@ const PFormRating = React.forwardRef<PFormRatingCommands, Props>(
         validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
-      };
+      }),
+      [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        getFinalValue,
+        hiddenRef,
+        initValue,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        updateValue,
+        validate,
+        valueRef,
+      ]
+    );
 
-      onAddValueItem(id, commands);
-
-      if (ref) {
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-      }
-
-      return () => {
-        onRemoveValueItem(id);
-
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        }
-      };
-    }, [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      getFinalValue,
-      hiddenRef,
-      id,
-      initValue,
-      name,
-      onAddValueItem,
-      onRemoveValueItem,
+    useForwardLayoutRef(
       ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      updateValue,
-      validate,
-      valueRef,
-    ]);
+      commands,
+      useCallback((commands: PFormRatingCommands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+    );
 
     /********************************************************************************************************************
      * Event Handler

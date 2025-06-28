@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useCallback, useId, ReactNode, useLayoutEffect, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useId, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect, useForwardLayoutRef } from '@pdg/react-hook';
 import { ToForwardRefExoticComponent, AutoTypeForwardRef } from '../../@util.private';
 import { empty, notEmpty, equal, ifUndefined } from '@pdg/compare';
 import { PartialPick } from '../../@types';
@@ -341,86 +341,66 @@ const PFormToggleButtonGroup = ToForwardRefExoticComponent(
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      if (ref || onAddValueItem) {
-        const commands: Commands = {
-          getType: () => 'PFormToggleButtonGroup',
-          getName: () => name,
-          getReset: () => getFinalValue(initValue),
-          reset: () => updateValue(initValue),
-          getValue: () => valueRef.current,
-          setValue: updateValue,
-          getData: () => dataRef.current,
-          setData,
-          isExceptValue: () => !!exceptValue,
-          isDisabled: () => !!disabledRef.current,
-          setDisabled,
-          isHidden: () => !!hiddenRef.current,
-          setHidden,
-          focus,
-          focusValidate: focus,
-          validate: () => validate(valueRef.current),
-          setError: (error: boolean, errorText: ReactNode | undefined) =>
-            setErrorErrorHelperText(error, error ? errorText : undefined),
-          getFormValueSeparator: () => formValueSeparator,
-          isFormValueSort: () => !!formValueSort,
-          getItems: () => itemsRef.current,
-          setItems,
-          isMultiple: () => !!multiple,
-          getLoading: () => !!loadingRef.current,
-          setLoading,
-        };
+    const commands = useMemo<Commands>(
+      () => ({
+        getType: () => 'PFormToggleButtonGroup',
+        getName: () => name,
+        getReset: () => getFinalValue(initValue),
+        reset: () => updateValue(initValue),
+        getValue: () => valueRef.current,
+        setValue: updateValue,
+        getData: () => dataRef.current,
+        setData,
+        isExceptValue: () => !!exceptValue,
+        isDisabled: () => !!disabledRef.current,
+        setDisabled,
+        isHidden: () => !!hiddenRef.current,
+        setHidden,
+        focus,
+        focusValidate: focus,
+        validate: () => validate(valueRef.current),
+        setError: (error: boolean, errorText: ReactNode | undefined) =>
+          setErrorErrorHelperText(error, error ? errorText : undefined),
+        getFormValueSeparator: () => formValueSeparator,
+        isFormValueSort: () => !!formValueSort,
+        getItems: () => itemsRef.current,
+        setItems,
+        isMultiple: () => !!multiple,
+        getLoading: () => !!loadingRef.current,
+        setLoading,
+      }),
+      [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        formValueSeparator,
+        formValueSort,
+        getFinalValue,
+        hiddenRef,
+        initValue,
+        itemsRef,
+        loadingRef,
+        multiple,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        setItems,
+        setLoading,
+        updateValue,
+        validate,
+        valueRef,
+      ]
+    );
 
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(commands);
-          } else {
-            ref.current = commands;
-          }
-        }
-
-        if (onAddValueItem) onAddValueItem(id, commands);
-
-        return () => {
-          if (ref) {
-            if (typeof ref === 'function') {
-              ref(null);
-            } else {
-              ref.current = null;
-            }
-          }
-
-          if (onRemoveValueItem) onRemoveValueItem(id);
-        };
-      }
-    }, [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      formValueSeparator,
-      formValueSort,
-      getFinalValue,
-      hiddenRef,
-      id,
-      initValue,
-      itemsRef,
-      loadingRef,
-      multiple,
-      name,
-      onAddValueItem,
-      onRemoveValueItem,
+    useForwardLayoutRef(
       ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      setItems,
-      setLoading,
-      updateValue,
-      validate,
-      valueRef,
-    ]);
+      commands,
+      useCallback((commands: Commands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+    );
 
     /********************************************************************************************************************
      * Event Handler

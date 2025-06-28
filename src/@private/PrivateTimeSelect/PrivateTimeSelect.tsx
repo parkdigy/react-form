@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { PrivateTimeSelectProps as Props, PrivateTimeSelectCommands } from './PrivateTimeSelect.types';
 import SimpleBar from 'simplebar-react';
 import PrivateToggleButton from '../PrivateToggleButton';
 import './PrivateTimeSelect.scss';
 import { Grid } from '@mui/material';
-import { useAutoUpdateLayoutRef } from '@pdg/react-hook';
+import { useAutoUpdateLayoutRef, useForwardLayoutRef } from '@pdg/react-hook';
 
 const DEFAULT_MINUTES = new Array(60).fill(0);
 for (let i = 0; i < DEFAULT_MINUTES.length; i += 1) {
@@ -93,30 +93,13 @@ const PrivateTimeSelect = React.forwardRef<PrivateTimeSelectCommands, Props>(
     }, []);
 
     /********************************************************************************************************************
-     * LayoutEffect
+     * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      if (ref) {
-        const commands: PrivateTimeSelectCommands = {
-          scrollToValue,
-        };
-
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-
-        return () => {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        };
-      }
-    }, [ref, scrollToValue]);
+    useForwardLayoutRef(
+      ref,
+      useMemo<PrivateTimeSelectCommands>(() => ({ scrollToValue }), [scrollToValue])
+    );
 
     /********************************************************************************************************************
      * Event Handler

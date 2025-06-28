@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   PFormDateRangePickerTooltipPickerContainerProps as Props,
@@ -19,6 +19,7 @@ import {
   makeAvailableDate,
 } from '../../../@util.private';
 import './PFormDateRangePickerTooltipPickerContainer.scss';
+import { useForwardLayoutRef } from '@pdg/react-hook';
 
 const YEARS = new Array(200).fill(0);
 for (let i = 0; i < 200; i += 1) {
@@ -194,29 +195,13 @@ const PFormDateRangePickerTooltipPickerContainer = React.forwardRef<
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      if (ref) {
-        const commands: PFormDateRangePickerTooltipPickerContainerCommands = {
-          previousMonth,
-          nextMonth,
-          activeMonth,
-        };
-
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-
-        return () => {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        };
-      }
-    }, [ref, previousMonth, nextMonth, activeMonth]);
+    useForwardLayoutRef(
+      ref,
+      useMemo<PFormDateRangePickerTooltipPickerContainerCommands>(
+        () => ({ previousMonth, nextMonth, activeMonth }),
+        [activeMonth, nextMonth, previousMonth]
+      )
+    );
 
     /********************************************************************************************************************
      * Render Function

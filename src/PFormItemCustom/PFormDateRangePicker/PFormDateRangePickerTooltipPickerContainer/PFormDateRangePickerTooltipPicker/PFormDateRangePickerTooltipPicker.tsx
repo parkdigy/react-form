@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   PFormDateRangePickerTooltipPickerProps as Props,
@@ -10,6 +10,7 @@ import { PickersDay, PickersDayProps, StaticDatePicker } from '@mui/x-date-picke
 import { IconButton, IconButtonProps } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import './PFormDateRangePickerTooltipPicker.scss';
+import { useForwardLayoutRef } from '@pdg/react-hook';
 
 interface ClassNameMap {
   [key: number]: string;
@@ -33,10 +34,32 @@ const PFormDateRangePickerTooltipPicker = React.forwardRef<PFormDateRangePickerT
     ref
   ) => {
     /********************************************************************************************************************
+     * Ref
+     * ******************************************************************************************************************/
+
+    const leftArrowOnClickRef = useRef<IconButtonProps['onClick']>(undefined);
+    const rightArrowOnClickRef = useRef<IconButtonProps['onClick']>(undefined);
+
+    /********************************************************************************************************************
      * State
      * ******************************************************************************************************************/
 
     const [activeMonthValue, setActiveMonthValue] = useState<PFormDateRangePickerTooltipPickerDateValue>(null);
+    const [LeftArrowButton] = useState(() => {
+      const ArrowButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
+        leftArrowOnClickRef.current = props.onClick;
+        return <IconButton {...props} />;
+      };
+      return ArrowButton;
+    });
+
+    const [RightArrowButton] = useState(() => {
+      const ArrowButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
+        rightArrowOnClickRef.current = props.onClick;
+        return <IconButton {...props} />;
+      };
+      return ArrowButton;
+    });
 
     /********************************************************************************************************************
      * Memo
@@ -55,34 +78,17 @@ const PFormDateRangePickerTooltipPicker = React.forwardRef<PFormDateRangePickerT
       setActiveMonthValue(null);
     }, [selectType]);
 
-    //--------------------------------------------------------------------------------------------------------------------
-
-    const leftArrowOnClickRef = useRef<IconButtonProps['onClick']>(undefined);
-    const rightArrowOnClickRef = useRef<IconButtonProps['onClick']>(undefined);
-
-    const [LeftArrowButton] = useState(() => {
-      const ArrowButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
-        leftArrowOnClickRef.current = props.onClick;
-        return <IconButton {...props} />;
-      };
-      return ArrowButton;
-    });
-
-    const [RightArrowButton] = useState(() => {
-      const ArrowButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
-        rightArrowOnClickRef.current = props.onClick;
-        return <IconButton {...props} />;
-      };
-      return ArrowButton;
-    });
-
-    //--------------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
 
     const getDateVal = useCallback((date: Dayjs): number => {
       return Number(date.format('YYYYMMDD'));
     }, []);
 
-    //--------------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Memo
+     * ******************************************************************************************************************/
 
     const baseClassNames = useMemo(() => {
       const newValue: ClassNameMap = {};
@@ -194,7 +200,9 @@ const PFormDateRangePickerTooltipPicker = React.forwardRef<PFormDateRangePickerT
       return newValue;
     }, [value, getDateVal, focusedDate, month, selectType]);
 
-    //--------------------------------------------------------------------------------------------------------------------
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
 
     const previousMonth = useCallback(() => {
       if (leftArrowOnClickRef.current) {
@@ -211,32 +219,6 @@ const PFormDateRangePickerTooltipPicker = React.forwardRef<PFormDateRangePickerT
     const activeMonth = useCallback((month: Dayjs) => {
       setActiveMonthValue(month);
     }, []);
-
-    useLayoutEffect(() => {
-      if (ref) {
-        const commands: PFormDateRangePickerTooltipPickerCommands = {
-          previousMonth,
-          nextMonth,
-          activeMonth,
-        };
-
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-
-        return () => {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        };
-      }
-    }, [ref, previousMonth, nextMonth, activeMonth]);
-
-    //--------------------------------------------------------------------------------------------------------------------
 
     const handleRenderDay = useCallback(
       (props: Omit<PickersDayProps<Dayjs>, 'ref'>) => {
@@ -266,6 +248,21 @@ const PFormDateRangePickerTooltipPicker = React.forwardRef<PFormDateRangePickerT
       },
       [value, getDateVal, baseClassNames, selectedClassNames, focusedClassNames, onMouseEnterPickersDay]
     );
+
+    /********************************************************************************************************************
+     * Commands
+     * ******************************************************************************************************************/
+
+    const commands = useMemo<PFormDateRangePickerTooltipPickerCommands>(
+      () => ({
+        previousMonth,
+        nextMonth,
+        activeMonth,
+      }),
+      [activeMonth, nextMonth, previousMonth]
+    );
+
+    useForwardLayoutRef(ref, commands);
 
     /********************************************************************************************************************
      * Render

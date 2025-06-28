@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   PFormDateRangePickerProps as Props,
@@ -6,7 +6,7 @@ import {
   PFormDateRangePickerDateValue,
   PFormDateRangePickerCommands,
 } from './PFormDateRangePicker.types';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect, useForwardLayoutRef } from '@pdg/react-hook';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
@@ -548,88 +548,68 @@ const PFormDateRangePicker = React.forwardRef<PFormDateRangePickerCommands, Prop
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      if (ref || onAddValueItem) {
-        const commands: PFormDateRangePickerCommands = {
-          getType: () => 'PFormDateRangePicker',
-          getName: () => name,
-          getReset: () => getFinalValue(initValue),
-          reset: () => updateValue(initValue),
-          getValue: () => valueRef.current,
-          setValue: updateValue,
-          getData: () => dataRef.current,
-          setData,
-          getFromValue: () => valueRef.current[0],
-          setFromValue: (value) => updateValue([value, valueRef.current[1]]),
-          getToValue: () => valueRef.current[1],
-          setToValue: (value) => updateValue([valueRef.current[0], value]),
-          isExceptValue: () => !!exceptValue,
-          isDisabled: () => !!disabledRef.current,
-          setDisabled,
-          isHidden: () => !!hiddenRef.current,
-          setHidden,
-          focus,
-          focusValidate,
-          validate: () => validate(valueRef.current),
-          setError: (error: boolean, errorText: ReactNode | undefined) =>
-            setErrorErrorHelperText(error, error ? errorText : undefined),
-          getFormValueFormat: () => formValueFormat,
-          getFormValueFromNameSuffix: () => formValueFromNameSuffix,
-          getFormValueToNameSuffix: () => formValueToNameSuffix,
-          getFormValueFromName: () => {
-            return `${name}${formValueFromNameSuffix}`;
-          },
-          getFormValueToName: () => {
-            return `${name}${formValueToNameSuffix}`;
-          },
-        };
+    const commands = useMemo<PFormDateRangePickerCommands>(
+      () => ({
+        getType: () => 'PFormDateRangePicker',
+        getName: () => name,
+        getReset: () => getFinalValue(initValue),
+        reset: () => updateValue(initValue),
+        getValue: () => valueRef.current,
+        setValue: updateValue,
+        getData: () => dataRef.current,
+        setData,
+        getFromValue: () => valueRef.current[0],
+        setFromValue: (value) => updateValue([value, valueRef.current[1]]),
+        getToValue: () => valueRef.current[1],
+        setToValue: (value) => updateValue([valueRef.current[0], value]),
+        isExceptValue: () => !!exceptValue,
+        isDisabled: () => !!disabledRef.current,
+        setDisabled,
+        isHidden: () => !!hiddenRef.current,
+        setHidden,
+        focus,
+        focusValidate,
+        validate: () => validate(valueRef.current),
+        setError: (error: boolean, errorText: ReactNode | undefined) =>
+          setErrorErrorHelperText(error, error ? errorText : undefined),
+        getFormValueFormat: () => formValueFormat,
+        getFormValueFromNameSuffix: () => formValueFromNameSuffix,
+        getFormValueToNameSuffix: () => formValueToNameSuffix,
+        getFormValueFromName: () => {
+          return `${name}${formValueFromNameSuffix}`;
+        },
+        getFormValueToName: () => {
+          return `${name}${formValueToNameSuffix}`;
+        },
+      }),
+      [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        focusValidate,
+        formValueFormat,
+        formValueFromNameSuffix,
+        formValueToNameSuffix,
+        hiddenRef,
+        initValue,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        updateValue,
+        validate,
+        valueRef,
+      ]
+    );
 
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(commands);
-          } else {
-            ref.current = commands;
-          }
-        }
-
-        if (onAddValueItem) onAddValueItem(id, commands);
-
-        return () => {
-          if (ref) {
-            if (typeof ref === 'function') {
-              ref(null);
-            } else {
-              ref.current = null;
-            }
-          }
-
-          if (onRemoveValueItem) onRemoveValueItem(id);
-        };
-      }
-    }, [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      focusValidate,
-      formValueFormat,
-      formValueFromNameSuffix,
-      formValueToNameSuffix,
-      hiddenRef,
-      id,
-      initValue,
-      name,
-      onAddValueItem,
-      onRemoveValueItem,
+    useForwardLayoutRef(
       ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      updateValue,
-      validate,
-      valueRef,
-    ]);
+      commands,
+      useCallback((commands: PFormDateRangePickerCommands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+    );
 
     /********************************************************************************************************************
      * Variable

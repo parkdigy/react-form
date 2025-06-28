@@ -1,7 +1,7 @@
-import React, { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { FormControlLabel, Switch } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useForwardLayoutRef } from '@pdg/react-hook';
 import { ifUndefined } from '@pdg/compare';
 import { PFormSwitchProps as Props, PFormSwitchCommands } from './PFormSwitch.types';
 import PFormItemBase from '../PFormItemBase';
@@ -166,8 +166,8 @@ const PFormSwitch = React.forwardRef<PFormSwitchCommands, Props>(
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      const commands: PFormSwitchCommands = {
+    const commands = useMemo<PFormSwitchCommands>(
+      () => ({
         getType: () => 'PFormSwitch',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
@@ -186,50 +186,32 @@ const PFormSwitch = React.forwardRef<PFormSwitchCommands, Props>(
         validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
-      };
+      }),
+      [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        getFinalValue,
+        hiddenRef,
+        initValue,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        updateValue,
+        validate,
+        valueRef,
+      ]
+    );
 
-      onAddValueItem(id, commands);
-
-      if (ref) {
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-      }
-
-      return () => {
-        onRemoveValueItem(id);
-
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        }
-      };
-    }, [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      getFinalValue,
-      hiddenRef,
-      id,
-      initValue,
-      name,
-      onAddValueItem,
-      onRemoveValueItem,
+    useForwardLayoutRef(
       ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      updateValue,
-      validate,
-      valueRef,
-    ]);
+      commands,
+      useCallback((commands: PFormSwitchCommands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+    );
 
     /********************************************************************************************************************
      * Event Handler

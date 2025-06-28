@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from '@mui/material';
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
-import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useForwardLayoutRef } from '@pdg/react-hook';
 import { AutoTypeForwardRef, ToForwardRefExoticComponent } from '../../@util.private';
 import { empty, ifUndefined, notEmpty } from '@pdg/compare';
 import {
@@ -24,6 +24,7 @@ import {
 } from './PFormRadioGroup.types';
 import { useFormState } from '../../PFormContext';
 import PFormItemBase from '../PFormItemBase';
+import { PFormSwitchCommands } from '../PFormSwitch';
 
 const PADDING_LEFT = 3;
 
@@ -235,6 +236,17 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     useEffect(() => {
+      if (onLoadItems) {
+        setIsOnGetItemLoading(true);
+        onLoadItems().then((items) => {
+          setItems(items);
+          setIsOnGetItemLoading(false);
+        });
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
       if (!fullWidth || initWidth) {
         const findParentByClassName = (element: HTMLElement, className: string): HTMLElement | undefined | null => {
           const parent = element.parentElement;
@@ -308,8 +320,8 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      const commands: Commands = {
+    const commands = useMemo<Commands>(
+      () => ({
         getType: () => 'PFormRadioGroup',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
@@ -332,65 +344,36 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
         setItems,
         getLoading: () => !!loadingRef.current,
         setLoading,
-      };
+      }),
+      [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        getFinalValue,
+        hiddenRef,
+        initValue,
+        itemsRef,
+        loadingRef,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        setItems,
+        setLoading,
+        updateValue,
+        validate,
+        valueRef,
+      ]
+    );
 
-      onAddValueItem(id, commands);
-
-      if (ref) {
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-      }
-
-      return () => {
-        onRemoveValueItem(id);
-
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        }
-      };
-    }, [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      getFinalValue,
-      hiddenRef,
-      id,
-      initValue,
-      itemsRef,
-      loadingRef,
-      name,
-      onAddValueItem,
-      onRemoveValueItem,
+    useForwardLayoutRef(
       ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      setItems,
-      setLoading,
-      updateValue,
-      validate,
-      valueRef,
-    ]);
-
-    useEffect(() => {
-      if (onLoadItems) {
-        setIsOnGetItemLoading(true);
-        onLoadItems().then((items) => {
-          setItems(items);
-          setIsOnGetItemLoading(false);
-        });
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+      commands,
+      useCallback((commands: Commands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+    );
 
     /********************************************************************************************************************
      * Event Handler

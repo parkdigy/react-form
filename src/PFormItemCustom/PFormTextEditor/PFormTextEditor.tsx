@@ -1,8 +1,8 @@
-import React, { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Editor } from '@tinymce/tinymce-react';
 import { Skeleton } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useForwardLayoutRef } from '@pdg/react-hook';
 import { empty, ifUndefined } from '@pdg/compare';
 import { PFormTextEditorProps as Props, PFormTextEditorCommands, PFormTextEditorValue } from './PFormTextEditor.types';
 import PFormItemBase from '../PFormItemBase';
@@ -184,8 +184,8 @@ const PFormTextEditor = React.forwardRef<PFormTextEditorCommands, Props>(
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      const commands: PFormTextEditorCommands = {
+    const commands = useMemo<PFormTextEditorCommands>(
+      () => ({
         getType: () => 'PFormTextEditor',
         getName: () => name,
         getReset: () => getFinalValue(initValue),
@@ -204,49 +204,31 @@ const PFormTextEditor = React.forwardRef<PFormTextEditorCommands, Props>(
         validate: () => validate(valueRef.current),
         setError: (error: Props['error'], errorText: Props['helperText']) =>
           setErrorErrorHelperText(error, error ? errorText : undefined),
-      };
+      }),
+      [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        hiddenRef,
+        initValue,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        updateValue,
+        validate,
+        valueRef,
+      ]
+    );
 
-      onAddValueItem(id, commands);
-
-      if (ref) {
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-      }
-
-      return () => {
-        onRemoveValueItem(id);
-
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        }
-      };
-    }, [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      hiddenRef,
-      id,
-      initValue,
-      name,
-      onAddValueItem,
-      onRemoveValueItem,
+    useForwardLayoutRef(
       ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      updateValue,
-      validate,
-      valueRef,
-    ]);
+      commands,
+      useCallback((commands: PFormTextEditorCommands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+    );
 
     /********************************************************************************************************************
      * Event Handler

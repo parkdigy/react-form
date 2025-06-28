@@ -1,13 +1,14 @@
 import React, { useId, useRef, useState, useCallback, ReactNode, useLayoutEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { Box, IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
+import { useAutoUpdateRefState, useAutoUpdateState, useForwardLayoutRef } from '@pdg/react-hook';
 import { empty, ifUndefined, notEmpty } from '@pdg/compare';
 import { PFormTextFieldProps, PFormTextFieldCommands, PFormTextFieldValue } from './PFormTextField.types';
 import { useFormState } from '../../PFormContext';
 import { PIcon } from '@pdg/react-component';
 import './PFormTextField.scss';
 import { InputProps as StandardInputProps } from '@mui/material/Input/Input';
+import { PFormSwitchCommands } from '../../PFormItemCustom';
 
 type inputSlotProps = StandardInputProps;
 
@@ -234,73 +235,59 @@ const PFormTextField: WithForwardRefType = React.forwardRef<PFormTextFieldComman
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      if (ref || (!noFormValueItem && onAddValueItem)) {
-        const commands: PFormTextFieldCommands = {
-          getType: () => 'default',
-          getName: () => name,
-          getReset: () => getFinalValue(initValue),
-          reset: () => updateValue(initValue),
-          getValue: () => valueRef.current,
-          setValue: updateValue,
-          getData: () => dataRef.current,
-          setData,
-          isExceptValue: () => !!exceptValue,
-          isDisabled: () => !!disabledRef.current,
-          setDisabled,
-          isHidden: () => !!hiddenRef.current,
-          setHidden,
-          focus,
-          focusValidate: focus,
-          validate: () => validate(valueRef.current),
-          setError: (error: boolean, errorText: ReactNode | undefined) =>
-            setErrorErrorHelperText(error, error ? errorText : undefined),
-        };
+    const commands = useMemo<PFormTextFieldCommands>(
+      () => ({
+        getType: () => 'default',
+        getName: () => name,
+        getReset: () => getFinalValue(initValue),
+        reset: () => updateValue(initValue),
+        getValue: () => valueRef.current,
+        setValue: updateValue,
+        getData: () => dataRef.current,
+        setData,
+        isExceptValue: () => !!exceptValue,
+        isDisabled: () => !!disabledRef.current,
+        setDisabled,
+        isHidden: () => !!hiddenRef.current,
+        setHidden,
+        focus,
+        focusValidate: focus,
+        validate: () => validate(valueRef.current),
+        setError: (error: boolean, errorText: ReactNode | undefined) =>
+          setErrorErrorHelperText(error, error ? errorText : undefined),
+      }),
+      [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        getFinalValue,
+        hiddenRef,
+        initValue,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        updateValue,
+        validate,
+        valueRef,
+      ]
+    );
 
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(commands);
-          } else {
-            ref.current = commands;
-          }
-        }
+    const handleCommandSet = useCallback(
+      (commands: PFormTextFieldCommands) => onAddValueItem(id, commands),
+      [id, onAddValueItem]
+    );
 
-        if (!noFormValueItem && onAddValueItem) onAddValueItem(id, commands);
+    const handleCommandUnset = useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem]);
 
-        return () => {
-          if (ref) {
-            if (typeof ref === 'function') {
-              ref(null);
-            } else {
-              ref.current = null;
-            }
-          }
-
-          if (!noFormValueItem && onRemoveValueItem) onRemoveValueItem(id);
-        };
-      }
-    }, [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      getFinalValue,
-      hiddenRef,
-      id,
-      initValue,
-      name,
-      noFormValueItem,
-      onAddValueItem,
-      onRemoveValueItem,
+    useForwardLayoutRef(
       ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      updateValue,
-      validate,
-      valueRef,
-    ]);
+      commands,
+      !noFormValueItem ? handleCommandSet : undefined,
+      !noFormValueItem ? handleCommandUnset : undefined
+    );
 
     /********************************************************************************************************************
      * Event Handler

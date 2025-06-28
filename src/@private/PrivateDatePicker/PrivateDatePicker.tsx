@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
@@ -7,7 +7,13 @@ import {
   DateValidationError,
   DesktopDatePickerProps,
 } from '@mui/x-date-pickers';
-import { useAutoUpdateLayoutRef, useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
+import {
+  useAutoUpdateLayoutRef,
+  useAutoUpdateRefState,
+  useAutoUpdateState,
+  useFirstSkipEffect,
+  useForwardLayoutRef,
+} from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
 import { PIcon, PIconText } from '@pdg/react-component';
 import {
@@ -292,76 +298,55 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      if (ref || onAddValueItem) {
-        const commands: PrivateDatePickerCommands = {
-          getType: () => 'default',
-          getName: () => name,
-          getReset: () => initValue,
-          reset: () => updateValue(initValue),
-          getValue: () => valueRef.current,
-          setValue: updateValue,
-          getData: () => dataRef.current,
-          setData,
-          isExceptValue: () => !!exceptValue,
-          isDisabled: () => !!disabledRef.current,
-          setDisabled,
-          isHidden: () => !!hiddenRef.current,
-          setHidden,
-          focus,
-          focusValidate: focus,
-          validate: () => validate(valueRef.current),
-          setError: (error: boolean, errorText: ReactNode | undefined) =>
-            setErrorErrorHelperText(error, error ? errorText : undefined),
-          getFormValueFormat: () =>
-            initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time),
-        };
+    const commands = useMemo<PrivateDatePickerCommands>(
+      () => ({
+        getType: () => 'default',
+        getName: () => name,
+        getReset: () => initValue,
+        reset: () => updateValue(initValue),
+        getValue: () => valueRef.current,
+        setValue: updateValue,
+        getData: () => dataRef.current,
+        setData,
+        isExceptValue: () => !!exceptValue,
+        isDisabled: () => !!disabledRef.current,
+        setDisabled,
+        isHidden: () => !!hiddenRef.current,
+        setHidden,
+        focus,
+        focusValidate: focus,
+        validate: () => validate(valueRef.current),
+        setError: (error: boolean, errorText: ReactNode | undefined) =>
+          setErrorErrorHelperText(error, error ? errorText : undefined),
+        getFormValueFormat: () => (initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time)),
+      }),
+      [
+        dataRef,
+        disabledRef,
+        exceptValue,
+        focus,
+        hiddenRef,
+        initFormValueFormat,
+        initValue,
+        name,
+        setData,
+        setDisabled,
+        setErrorErrorHelperText,
+        setHidden,
+        time,
+        type,
+        updateValue,
+        validate,
+        valueRef,
+      ]
+    );
 
-        if (ref) {
-          if (typeof ref === 'function') {
-            ref(commands);
-          } else {
-            ref.current = commands;
-          }
-        }
-
-        if (onAddValueItem) onAddValueItem(id, commands);
-
-        return () => {
-          if (ref) {
-            if (typeof ref === 'function') {
-              ref(null);
-            } else {
-              ref.current = null;
-            }
-          }
-
-          if (onRemoveValueItem) onRemoveValueItem(id);
-        };
-      }
-    }, [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      hiddenRef,
-      id,
-      initFormValueFormat,
-      initValue,
-      name,
-      onAddValueItem,
-      onRemoveValueItem,
+    useForwardLayoutRef(
       ref,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      time,
-      type,
-      updateValue,
-      validate,
-      valueRef,
-    ]);
+      commands,
+      useCallback((commands: PrivateDatePickerCommands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+    );
 
     /********************************************************************************************************************
      * Event Handler

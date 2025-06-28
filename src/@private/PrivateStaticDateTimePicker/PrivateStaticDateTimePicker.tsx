@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   PrivateStaticDateTimePickerProps as Props,
@@ -14,6 +14,7 @@ import { PrivateTimeSelectCommands } from '../PrivateTimeSelect';
 import { checkDateAvailable, getAvailableDate, isDateAvailable, makeAvailableDate } from '../../@util.private';
 import { PrivateTimeSection } from '../PrivateTimeSection';
 import './PrivateStaticDateTimePicker.scss';
+import { useForwardLayoutRef } from '@pdg/react-hook';
 
 const DEFAULT_HOURS: number[] = new Array(24).fill(0);
 for (let i = 0; i < DEFAULT_HOURS.length; i += 1) {
@@ -170,27 +171,15 @@ const PrivateStaticDateTimePicker = React.forwardRef<PrivateStaticDateTimePicker
      * Commands
      * ******************************************************************************************************************/
 
-    useLayoutEffect(() => {
-      if (ref) {
-        const commands: PrivateStaticDateTimePickerCommands = {
+    useForwardLayoutRef(
+      ref,
+      useMemo<PrivateStaticDateTimePickerCommands>(
+        () => ({
           timeSelectScrollToDate,
-        };
-
-        if (typeof ref === 'function') {
-          ref(commands);
-        } else {
-          ref.current = commands;
-        }
-
-        return () => {
-          if (typeof ref === 'function') {
-            ref(null);
-          } else {
-            ref.current = null;
-          }
-        };
-      }
-    }, [ref, timeSelectScrollToDate]);
+        }),
+        [timeSelectScrollToDate]
+      )
+    );
 
     /********************************************************************************************************************
      * Render - Function
