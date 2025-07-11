@@ -9087,7 +9087,6 @@ var PFormMonthPicker = React.forwardRef(function (_a, ref) {
         if (ratingRef.current) {
             inputRef.current = ratingRef.current.querySelector('input') || undefined;
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useFirstSkipEffect(function () {
         if (open) {
@@ -9797,7 +9796,6 @@ var PFormYearPicker = React.forwardRef(function (_a, ref) {
         if (ratingRef.current) {
             inputRef.current = ratingRef.current.querySelector('input') || undefined;
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useFirstSkipEffect(function () {
         if (open) {

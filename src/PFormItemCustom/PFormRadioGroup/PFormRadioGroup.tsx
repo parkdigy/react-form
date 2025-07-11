@@ -1,14 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useRef,
-  ReactNode,
-  useId,
-  ChangeEvent,
-  useLayoutEffect,
-  useMemo,
-} from 'react';
+import React, { useEffect, useState, useCallback, useRef, ReactNode, useId, ChangeEvent, useMemo } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from '@mui/material';
@@ -24,7 +14,6 @@ import {
 } from './PFormRadioGroup.types';
 import { useFormState } from '../../PFormContext';
 import PFormItemBase from '../PFormItemBase';
-import { PFormSwitchCommands } from '../PFormSwitch';
 
 const PADDING_LEFT = 3;
 

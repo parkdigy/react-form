@@ -1,4 +1,4 @@
-import React, { useId, useRef, useState, useCallback, ReactNode, useLayoutEffect, useMemo } from 'react';
+import React, { useId, useRef, useState, useCallback, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
 import { Box, IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useForwardLayoutRef } from '@pdg/react-hook';
@@ -8,7 +8,6 @@ import { useFormState } from '../../PFormContext';
 import { PIcon } from '@pdg/react-component';
 import './PFormTextField.scss';
 import { InputProps as StandardInputProps } from '@mui/material/Input/Input';
-import { PFormSwitchCommands } from '../../PFormItemCustom';
 
 type inputSlotProps = StandardInputProps;
 
