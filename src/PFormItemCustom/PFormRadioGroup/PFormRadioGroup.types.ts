@@ -28,8 +28,8 @@ export interface PFormRadioGroupProps<T extends PFormRadioGroupSingleValue>
   inline?: boolean;
   loading?: boolean;
   nowrap?: boolean;
-  onLoadItems?(): Promise<PFormRadioGroupItem<T>[]>;
-  onValue?(value: PFormRadioGroupValue<T>): PFormRadioGroupValue<T>;
+  onLoadItems?: () => Promise<PFormRadioGroupItem<T>[]>;
+  onValue?: (value: PFormRadioGroupValue<T>) => PFormRadioGroupValue<T>;
 }
 
 export interface PFormRadioGroupCommands<T extends PFormRadioGroupSingleValue>

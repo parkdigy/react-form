@@ -66,7 +66,7 @@ const PFormRating = React.forwardRef<PFormRatingCommands, Props>(
       onValueChange,
       onValueChangeByUser,
       onRequestSearchSubmit,
-    } = useFormState();
+    } = useFormState<PFormRatingValue, false>();
 
     /********************************************************************************************************************
      * Memo - FormState

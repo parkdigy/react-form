@@ -131,7 +131,7 @@ const PrivateDatePicker = React.forwardRef<PrivateDatePickerCommands, Props>(
       onValueChange,
       onValueChangeByUser,
       onRequestSearchSubmit,
-    } = useFormState();
+    } = useFormState<PrivateDatePickerValue, false>();
 
     /********************************************************************************************************************
      * Value

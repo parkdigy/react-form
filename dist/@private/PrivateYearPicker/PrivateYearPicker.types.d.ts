@@ -11,5 +11,5 @@ export interface PrivateYearPickerProps {
     hideHeader?: boolean;
     selectFromYear?: PrivateYearPickerValue;
     selectToYear?: PrivateYearPickerValue;
-    onChange(value: PrivateYearPickerBaseValue, isClick: boolean): void;
+    onChange: (value: PrivateYearPickerBaseValue, isClick: boolean) => void;
 }

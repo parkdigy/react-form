@@ -9,6 +9,7 @@ import { useFormState } from '../../PFormContext';
 import PFormContextProvider from '../../PFormContextProvider';
 import { PFormTextFieldProps } from '../PFormTextField';
 import { PFormTagText, PFormTagTextProps } from './PFormTagText';
+import { PFormValueItemCommands } from '../../@types';
 
 const _emptyValue: string[] = [];
 
@@ -60,7 +61,7 @@ const PFormTag = React.forwardRef<PFormTagCommands, PFormTagProps>(
       onValueChangeByUser,
       onRequestSearchSubmit,
       ...otherFormState
-    } = useFormState();
+    } = useFormState<PFormTagValue, false>();
 
     /********************************************************************************************************************
      * FormState - Variables
@@ -194,7 +195,9 @@ const PFormTag = React.forwardRef<PFormTagCommands, PFormTagProps>(
           getReset: () => getFinalValue(initValue),
           reset: () => updateValue(initValue),
           getValue: () => valueRef.current,
-          setValue: (newValue: PFormTagValue) => updateValue(newValue),
+          setValue: (newValue: PFormTagValue) => {
+            updateValue(newValue);
+          },
           validate: () => validate(valueRef.current),
           ...getExtraCommands(),
         };
@@ -244,10 +247,10 @@ const PFormTag = React.forwardRef<PFormTagCommands, PFormTagProps>(
      * ******************************************************************************************************************/
 
     const handleAddValueItem = useCallback(
-      (id: string, commands: PFormTextCommands) => {
-        onAddValueItem(id, getCommands(commands));
+      (id: string, commands: PFormValueItemCommands<PFormTagValue, false>) => {
+        onAddValueItem(id, commands);
       },
-      [onAddValueItem, getCommands]
+      [onAddValueItem]
     );
 
     const handleRef = useCallback(

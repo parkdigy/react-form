@@ -10,5 +10,5 @@ export interface PrivateMonthPickerProps {
   disableFuture?: boolean;
   selectFromValue?: PrivateMonthPickerValue;
   selectToValue?: PrivateMonthPickerValue;
-  onChange(value: PrivateMonthPickerBaseValue, isMonthSelect: boolean): void;
+  onChange: (value: PrivateMonthPickerBaseValue, isMonthSelect: boolean) => void;
 }

@@ -14,5 +14,5 @@ export interface PFormDividerProps extends PCommonSxProps {
     collapseIn?: boolean;
     error?: boolean;
     warning?: boolean;
-    onCollapseChange?(collapseIn: boolean): void;
+    onCollapseChange?: (collapseIn: boolean) => void;
 }

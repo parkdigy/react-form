@@ -21,7 +21,7 @@ export interface PFormFileProps extends PCommonSxProps, PFormValueItemProps<PFor
     labelShrink?: boolean;
     maxFileSize?: number;
     preview?: ReactNode;
-    onFile?(file: File): Promise<string>;
-    onLink?(url: string): Promise<string>;
+    onFile?: (file: File) => Promise<string>;
+    onLink?: (url: string) => Promise<string>;
 }
 export type PFormFileCommands = PFormValueItemCommands<PFormFileValue, false>;

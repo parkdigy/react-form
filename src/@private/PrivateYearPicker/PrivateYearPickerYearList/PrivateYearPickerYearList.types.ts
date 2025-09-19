@@ -5,5 +5,5 @@ export interface PrivateYearPickerYearListProps
     Required<Pick<PrivateYearPickerProps, 'minYear' | 'maxYear'>> {
   selectFromYear?: PrivateYearPickerValue;
   selectToYear?: PrivateYearPickerValue;
-  onChange(year: PrivateYearPickerBaseValue): void;
+  onChange: (year: PrivateYearPickerBaseValue) => void;
 }

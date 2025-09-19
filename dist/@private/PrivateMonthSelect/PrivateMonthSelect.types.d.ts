@@ -5,5 +5,5 @@ export interface PrivateMonthSelectProps {
     selectMonth: number | null;
     activeMonth: number;
     availableDate: PFormAvailableDate;
-    onSelect(month: number): void;
+    onSelect: (month: number) => void;
 }

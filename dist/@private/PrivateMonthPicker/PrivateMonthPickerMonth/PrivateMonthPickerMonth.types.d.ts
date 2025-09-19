@@ -9,5 +9,5 @@ export interface PrivateMonthPickerMonthProps extends Pick<ButtonProps, 'onMouse
     selectedStart?: boolean;
     selectedEnd?: boolean;
     selectedTemp?: boolean;
-    onClick?(month: number): void;
+    onClick?: (month: number) => void;
 }

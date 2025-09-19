@@ -11,5 +11,5 @@ export interface PrivateMonthRangePickerProps {
     maxValue?: PrivateMonthRangePickerBaseValue;
     disablePast?: boolean;
     disableFuture?: boolean;
-    onChange(value: PrivateMonthRangePickerValue, selectType: PrivateMonthRangePickerSelectType, isMonthSelect: boolean): void;
+    onChange: (value: PrivateMonthRangePickerValue, selectType: PrivateMonthRangePickerSelectType, isMonthSelect: boolean) => void;
 }

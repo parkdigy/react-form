@@ -2,8 +2,11 @@ import React from 'react';
 import { PFormContextProviderProps as Props } from './PFormContextProvider.types';
 import PFormContext from '../PFormContext';
 
-const PFormContextProvider: React.FC<Props> = ({ children, value }) => {
-  return <PFormContext.Provider value={value}>{children}</PFormContext.Provider>;
-};
+function PFormContextProvider<T = any, AllowUndefinedValue extends boolean = true>({
+  children,
+  value,
+}: Props<T, AllowUndefinedValue>) {
+  return <PFormContext.Provider value={value as any}>{children}</PFormContext.Provider>;
+}
 
 export default PFormContextProvider;

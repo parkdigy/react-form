@@ -12,10 +12,10 @@ export interface PrivateStaticDateTimePickerProps extends Omit<StaticDateTimePic
     seconds?: number[];
     minuteInterval?: number;
     secondInterval?: number;
-    onChange(unit: PrivateStaticDateTimePickerUnit, newValue: Dayjs | null): void;
-    onClose?(): void;
+    onChange: (unit: PrivateStaticDateTimePickerUnit, newValue: Dayjs | null) => void;
+    onClose?: () => void;
 }
 export type TimeSelectScrollToDateUnit = 'hour' | 'minute' | 'second';
 export interface PrivateStaticDateTimePickerCommands {
-    timeSelectScrollToDate(date: Dayjs, times?: TimeSelectScrollToDateUnit[]): void;
+    timeSelectScrollToDate: (date: Dayjs, times?: TimeSelectScrollToDateUnit[]) => void;
 }

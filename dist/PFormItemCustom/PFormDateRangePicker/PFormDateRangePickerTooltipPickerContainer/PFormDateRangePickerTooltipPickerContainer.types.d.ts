@@ -11,17 +11,17 @@ export interface PFormDateRangePickerTooltipPickerContainerProps {
     disableFuture?: boolean;
     minDate?: Dayjs;
     maxDate?: Dayjs;
-    onGetActionButtons?(): {
+    onGetActionButtons?: () => {
         label: string;
         start: Dayjs;
         end: Dayjs;
     }[];
-    onChange(newValue: PFormDateRangePickerTooltipPickerValue): void;
-    onValueChange(selectType: PFormDateRangePickerTooltipPickerSelectType, newValue: PFormDateRangePickerTooltipPickerDateValue): void;
-    onMonthsChange(months: PFormDateRangePickerTooltipPickerContainerMonths): void;
+    onChange: (newValue: PFormDateRangePickerTooltipPickerValue) => void;
+    onValueChange: (selectType: PFormDateRangePickerTooltipPickerSelectType, newValue: PFormDateRangePickerTooltipPickerDateValue) => void;
+    onMonthsChange: (months: PFormDateRangePickerTooltipPickerContainerMonths) => void;
 }
 export interface PFormDateRangePickerTooltipPickerContainerCommands {
-    previousMonth(): void;
-    nextMonth(): void;
-    activeMonth(month: Dayjs): void;
+    previousMonth: () => void;
+    nextMonth: () => void;
+    activeMonth: (month: Dayjs) => void;
 }

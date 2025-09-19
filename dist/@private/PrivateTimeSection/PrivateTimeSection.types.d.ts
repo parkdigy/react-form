@@ -18,6 +18,6 @@ export interface PrivateTimeSectionProps {
     minuteInterval?: number;
     secondInterval?: number;
     value?: Dayjs | null;
-    onChange(unit: PrivateStaticDateTimePickerUnit, newValue: Dayjs | null): void;
-    onClose?(): void;
+    onChange: (unit: PrivateStaticDateTimePickerUnit, newValue: Dayjs | null) => void;
+    onClose?: () => void;
 }

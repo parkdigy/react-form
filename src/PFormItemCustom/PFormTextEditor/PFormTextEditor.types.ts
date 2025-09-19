@@ -11,10 +11,10 @@ export interface PFormTextEditorProps
   required?: boolean;
   menubar?: boolean;
   height?: number;
-  onImageUpload?(
+  onImageUpload?: (
     blob: Blob,
     success: (url: string) => void,
     failure: (err: string) => void,
     progress?: (percent: number) => void
-  ): void;
+  ) => void;
 }

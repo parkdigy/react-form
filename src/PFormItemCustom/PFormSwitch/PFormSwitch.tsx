@@ -60,7 +60,7 @@ const PFormSwitch = React.forwardRef<PFormSwitchCommands, Props>(
       onValueChange,
       onValueChangeByUser,
       onRequestSearchSubmit,
-    } = useFormState();
+    } = useFormState<boolean, false>();
 
     /********************************************************************************************************************
      * Memo - FormState

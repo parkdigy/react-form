@@ -12,8 +12,8 @@ export interface PrivateStaticDatePickerProps extends Omit<StaticDatePickerProps
     seconds?: number[];
     minuteInterval?: number;
     secondInterval?: number;
-    onChange(unit: PrivateStaticDatePickerUnit, newValue: Dayjs | null): void;
-    onClose?(): void;
+    onChange: (unit: PrivateStaticDatePickerUnit, newValue: Dayjs | null) => void;
+    onClose?: () => void;
 }
 export interface PrivateStaticDatePickerCommands {
 }

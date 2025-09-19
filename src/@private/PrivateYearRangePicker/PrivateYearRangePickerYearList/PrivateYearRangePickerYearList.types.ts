@@ -9,5 +9,5 @@ export interface PrivateYearRangePickerYearListProps
     Required<Pick<PrivateYearRangePickerProps, 'minYear' | 'maxYear'>> {
   selectType: PrivateYearRangePickerSelectType;
   displayValue: PrivateYearRangePickerBaseValue[];
-  onChange(year: number): void;
+  onChange: (year: number) => void;
 }

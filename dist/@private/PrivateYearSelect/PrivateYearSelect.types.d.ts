@@ -3,5 +3,5 @@ export interface PrivateYearSelectProps {
     selectYear: number | null;
     activeYear: number;
     availableDate: PFormAvailableDate;
-    onSelect(year: number): void;
+    onSelect: (year: number) => void;
 }

@@ -3,5 +3,5 @@ export interface PrivateMonthPickerMonthListProps extends Pick<PrivateMonthPicke
     defaultValue?: PrivateMonthPickerValue;
     minAvailableValue: PrivateMonthPickerBaseValue;
     maxAvailableValue: PrivateMonthPickerBaseValue;
-    onChange(value: PrivateMonthPickerBaseValue): void;
+    onChange: (value: PrivateMonthPickerBaseValue) => void;
 }

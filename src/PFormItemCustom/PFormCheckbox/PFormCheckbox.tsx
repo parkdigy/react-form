@@ -72,7 +72,7 @@ const PFormCheckbox = React.forwardRef<PFormCheckboxCommands, Props>(
       onValueChange,
       onValueChangeByUser,
       onRequestSearchSubmit,
-    } = useFormState();
+    } = useFormState<PFormCheckboxValue, false>();
 
     /********************************************************************************************************************
      * Memo - FormState

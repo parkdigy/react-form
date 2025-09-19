@@ -11,6 +11,7 @@ import {
   PFormRadioGroupCommands,
   PFormRadioGroupValue,
   PFormRadioGroupSingleValue,
+  PFormRadioGroupItem,
 } from './PFormRadioGroup.types';
 import { useFormState } from '../../PFormContext';
 import PFormItemBase from '../PFormItemBase';
@@ -86,7 +87,7 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
       onValueChange,
       onValueChangeByUser,
       onRequestSearchSubmit,
-    } = useFormState();
+    } = useFormState<Value, true, PFormRadioGroupItem<T>>();
 
     /********************************************************************************************************************
      * Memo - FormState

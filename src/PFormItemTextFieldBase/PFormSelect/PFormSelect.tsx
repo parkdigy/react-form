@@ -9,11 +9,14 @@ import {
   PFormSelectExtraCommands,
   PFormSelectCommands,
   PFormSelectSingleValue,
+  PFormSelectValue,
+  PFormSelectItem,
 } from './PFormSelect.types';
 import { useFormState } from '../../PFormContext';
 import PFormContextProvider from '../../PFormContextProvider';
-import PFormTextField from '../PFormTextField';
+import PFormTextField, { PFormTextFieldCommands } from '../PFormTextField';
 import './PFormSelect.scss';
+import { PFormValueItemCommands } from '../../@types';
 
 interface ItemValueLabelMap {
   [key: string]: ReactNode;
@@ -53,12 +56,18 @@ const PFormSelect = ToForwardRefExoticComponent(
 
     type Props = PFormSelectProps<T, Multiple>;
     type Commands = PFormSelectCommands<T, Multiple>;
+    type Value = PFormSelectValue<T, Multiple>;
 
     /********************************************************************************************************************
      * FormState
      * ******************************************************************************************************************/
 
-    const { fullWidth: formFullWidth, onAddValueItem, onValueChange, ...otherFormState } = useFormState();
+    const {
+      fullWidth: formFullWidth,
+      onAddValueItem,
+      onValueChange,
+      ...otherFormState
+    } = useFormState<Value, false, PFormSelectItem<T>>();
 
     /********************************************************************************************************************
      * Memo - FormState
@@ -271,7 +280,7 @@ const PFormSelect = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     const handleRef = useCallback(
-      (commands: Commands | null) => {
+      (commands: PFormTextFieldCommands<Value, false> | null) => {
         if (ref) {
           const finalCommands: Commands | null = commands
             ? {
@@ -292,7 +301,7 @@ const PFormSelect = ToForwardRefExoticComponent(
     );
 
     const handleAddValueItem = useCallback(
-      (id: string, commands: Commands) => {
+      (id: string, commands: PFormValueItemCommands<Value, false, T>) => {
         onAddValueItem(id, {
           ...commands,
           ...getBaseCommands(),
@@ -302,12 +311,12 @@ const PFormSelect = ToForwardRefExoticComponent(
       [onAddValueItem, getBaseCommands, getExtraCommands]
     );
 
-    const handleChange = (newValue: any) => {
+    const handleChange = (newValue: Value) => {
       updateValue(newValue);
     };
 
     const handleValue = useCallback(
-      (value: any) => {
+      (value: Value) => {
         return getFinalValue(value);
       },
       [getFinalValue]
@@ -409,7 +418,7 @@ const PFormSelect = ToForwardRefExoticComponent(
           onValueChange: () => {},
         }}
       >
-        <PFormTextField
+        <PFormTextField<Value, false>
           select
           ref={handleRef}
           name={name}

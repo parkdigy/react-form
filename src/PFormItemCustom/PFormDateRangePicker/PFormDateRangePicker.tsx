@@ -110,7 +110,7 @@ const PFormDateRangePicker = React.forwardRef<PFormDateRangePickerCommands, Prop
       onValueChange,
       onValueChangeByUser,
       onRequestSearchSubmit,
-    } = useFormState();
+    } = useFormState<PFormDateRangePickerValue, false, any, PFormDateRangePickerDateValue>();
 
     /********************************************************************************************************************
      * Memo - FormState
@@ -419,7 +419,7 @@ const PFormDateRangePicker = React.forwardRef<PFormDateRangePickerCommands, Prop
 
                 if (fromInput && !open) {
                   setTimeout(() => {
-                    onRequestSearchSubmit(name, finalValue);
+                    onRequestSearchSubmit(name, finalValue!);
                   });
                 }
               } else {
@@ -435,7 +435,7 @@ const PFormDateRangePicker = React.forwardRef<PFormDateRangePickerCommands, Prop
         updateValue(finalValue);
 
         setTimeout(() => {
-          onValueChangeByUser(name, finalValue);
+          onValueChangeByUser(name, finalValue!);
         });
       },
       [

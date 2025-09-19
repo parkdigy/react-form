@@ -6,7 +6,7 @@ export interface PFormRatingProps extends PCommonSxProps, PartialPick<RatingProp
     required?: boolean;
     icon?: string;
     emptyIcon?: string;
-    onValue?(value: PFormRatingValue): PFormRatingValue;
+    onValue?: (value: PFormRatingValue) => PFormRatingValue;
 }
 export interface PFormRatingCommands extends PFormValueItemBaseCommands<PFormRatingValue, false> {
 }

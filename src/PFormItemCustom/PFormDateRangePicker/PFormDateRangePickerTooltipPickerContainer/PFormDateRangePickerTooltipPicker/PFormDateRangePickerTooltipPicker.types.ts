@@ -18,16 +18,16 @@ export interface PFormDateRangePickerTooltipPickerProps {
   disableFuture?: boolean;
   minDate?: Dayjs;
   maxDate?: Dayjs;
-  onValueChange?(
+  onValueChange?: (
     selectType: PFormDateRangePickerTooltipPickerSelectType,
     value: PFormDateRangePickerTooltipPickerDateValue
-  ): void;
-  onMouseEnterPickersDay?(date: PFormDateRangePickerTooltipPickerDateValue): void;
-  onMonthChange?(date: Dayjs): void;
+  ) => void;
+  onMouseEnterPickersDay?: (date: PFormDateRangePickerTooltipPickerDateValue) => void;
+  onMonthChange?: (date: Dayjs) => void;
 }
 
 export interface PFormDateRangePickerTooltipPickerCommands {
-  previousMonth(): void;
-  nextMonth(): void;
-  activeMonth(month: Dayjs): void;
+  previousMonth: () => void;
+  nextMonth: () => void;
+  activeMonth: (month: Dayjs) => void;
 }

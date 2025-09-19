@@ -16,5 +16,5 @@ export type PFormTextFieldProps<T = PFormTextFieldValue, AllowUndefinedValue ext
     noFormValueItem?: boolean;
     disableReturnKey?: boolean;
     submitWhenReturnKey?: boolean;
-    onValue?(value: V): V;
+    onValue?: (value: V) => V;
 };

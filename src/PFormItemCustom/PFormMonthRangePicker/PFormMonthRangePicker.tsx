@@ -8,6 +8,7 @@ import {
   PFormMonthRangePickerProps as Props,
   PFormMonthRangePickerCommands,
   PFormMonthRangePickerValue,
+  PFormMonthRangePickerBaseValue,
 } from './PFormMonthRangePicker.types';
 import { useFormState } from '../../PFormContext';
 import { LocalizationProvider, DateValidationError } from '@mui/x-date-pickers';
@@ -108,7 +109,7 @@ const PFormMonthRangePicker = React.forwardRef<PFormMonthRangePickerCommands, Pr
       onValueChange,
       onValueChangeByUser,
       onRequestSearchSubmit,
-    } = useFormState();
+    } = useFormState<PFormMonthRangePickerValue, false, any, PFormMonthRangePickerBaseValue>();
 
     /********************************************************************************************************************
      * Memo - FormState

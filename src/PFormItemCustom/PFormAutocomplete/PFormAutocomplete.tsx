@@ -17,6 +17,7 @@ import {
   PFormAutocompleteItem,
   PFormAutocompleteComponentValue,
   PFormAutocompleteSingleValue,
+  PFormAutocompleteValue,
 } from './PFormAutocomplete.types';
 import { useFormState } from '../../PFormContext';
 import { PFormTextField, PFormTextFieldCommands } from '../../PFormItemTextFieldBase';
@@ -116,7 +117,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
       onValueChange,
       onValueChangeByUser,
       onRequestSearchSubmit,
-    } = useFormState();
+    } = useFormState<PFormAutocompleteValue<T, Multiple>, false, PFormAutocompleteItem<T>>();
 
     /********************************************************************************************************************
      * Memo - FormState

@@ -18,6 +18,7 @@ import {
   PrivateInputDatePicker,
   PrivateStyledTooltip,
   PrivateYearPicker,
+  PrivateYearPickerValue,
 } from '../../@private';
 import { Dayjs } from 'dayjs';
 import { dateToValue, getFinalValue, valueToDate } from './PFormYearPicker.function.private';
@@ -91,7 +92,7 @@ const PFormYearPicker = React.forwardRef<PFormYearPickerCommands, Props>(
       onValueChange,
       onValueChangeByUser,
       onRequestSearchSubmit,
-    } = useFormState();
+    } = useFormState<PrivateYearPickerValue, false>();
 
     /********************************************************************************************************************
      * Memo - FormState

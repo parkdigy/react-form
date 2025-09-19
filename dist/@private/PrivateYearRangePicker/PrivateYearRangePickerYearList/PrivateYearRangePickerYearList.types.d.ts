@@ -2,5 +2,5 @@ import { PrivateYearRangePickerBaseValue, PrivateYearRangePickerProps, PrivateYe
 export interface PrivateYearRangePickerYearListProps extends Pick<PrivateYearRangePickerProps, 'value' | 'disablePast' | 'disableFuture'>, Required<Pick<PrivateYearRangePickerProps, 'minYear' | 'maxYear'>> {
     selectType: PrivateYearRangePickerSelectType;
     displayValue: PrivateYearRangePickerBaseValue[];
-    onChange(year: number): void;
+    onChange: (year: number) => void;
 }

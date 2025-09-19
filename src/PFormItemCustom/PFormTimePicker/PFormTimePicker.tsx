@@ -1,23 +1,24 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import { PFormTimePickerProps as Props, PFormTimePickerCommands } from './PFormTimePicker.types';
-import { PrivateDateTimePicker, PrivateDateTimePickerCommands } from '../../@private';
+import { PFormTimePickerProps as Props, PFormTimePickerCommands, PFormTimePickerValue } from './PFormTimePicker.types';
+import { PrivateDateTimePicker } from '../../@private';
 import PFormContextProvider from '../../PFormContextProvider';
 import { useFormState } from '../../PFormContext';
+import { PFormValueItemCommands } from '../../@types';
 
 const PFormTimePicker = React.forwardRef<PFormTimePickerCommands, Props>(({ className, ...props }, ref) => {
   /********************************************************************************************************************
    * FormState
    * ******************************************************************************************************************/
 
-  const { onAddValueItem, ...otherFormState } = useFormState();
+  const { onAddValueItem, ...otherFormState } = useFormState<PFormTimePickerValue, false>();
 
   /********************************************************************************************************************
    * Event Handler
    * ******************************************************************************************************************/
 
   const handleAddValueItem = useCallback(
-    (id: string, commands: PrivateDateTimePickerCommands) => {
+    (id: string, commands: PFormValueItemCommands<PFormTimePickerValue, false>) => {
       commands.getType = () => 'PFormTimePicker';
       onAddValueItem(id, commands);
     },
@@ -29,7 +30,7 @@ const PFormTimePicker = React.forwardRef<PFormTimePickerCommands, Props>(({ clas
    * ******************************************************************************************************************/
 
   return (
-    <PFormContextProvider
+    <PFormContextProvider<PFormTimePickerValue, false>
       value={{
         ...otherFormState,
         onAddValueItem: handleAddValueItem,

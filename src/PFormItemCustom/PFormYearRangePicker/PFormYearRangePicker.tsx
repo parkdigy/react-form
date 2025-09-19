@@ -8,6 +8,7 @@ import {
   PFormYearRangePickerProps as Props,
   PFormYearRangePickerCommands,
   PFormYearRangePickerValue,
+  PFormYearRangePickerBaseValue,
 } from './PFormYearRangePicker.types';
 import { useFormState } from '../../PFormContext';
 import { LocalizationProvider, DateValidationError } from '@mui/x-date-pickers';
@@ -94,7 +95,7 @@ const PFormYearRangePicker = React.forwardRef<PFormYearRangePickerCommands, Prop
       onValueChange,
       onValueChangeByUser,
       onRequestSearchSubmit,
-    } = useFormState();
+    } = useFormState<PFormYearRangePickerValue, false, any, PFormYearRangePickerBaseValue>();
 
     /********************************************************************************************************************
      * Memo - FormState

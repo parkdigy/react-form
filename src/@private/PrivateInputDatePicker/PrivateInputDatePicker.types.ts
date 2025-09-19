@@ -30,8 +30,8 @@ export interface PrivateInputDatePickerProps
   maxDate?: Dayjs;
   align?: 'left' | 'center' | 'right';
   enableKeyboardInput?: boolean;
-  onChange(newValue: PrivateInputDatePickerValue): void;
+  onChange: (newValue: PrivateInputDatePickerValue) => void;
   onFocus: TextFieldProps['onFocus'];
   onBlur?: TextFieldProps['onBlur'];
-  onError?(reason: DateValidationError, value: PrivateInputDatePickerValue): void;
+  onError?: (reason: DateValidationError, value: PrivateInputDatePickerValue) => void;
 }

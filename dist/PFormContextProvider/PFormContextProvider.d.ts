@@ -1,4 +1,4 @@
 import React from 'react';
 import { PFormContextProviderProps as Props } from './PFormContextProvider.types';
-declare const PFormContextProvider: React.FC<Props>;
+declare function PFormContextProvider<T = any, AllowUndefinedValue extends boolean = true>({ children, value, }: Props<T, AllowUndefinedValue>): React.JSX.Element;
 export default PFormContextProvider;

@@ -14,5 +14,5 @@ export interface PrivateYearRangePickerProps {
   disablePast?: boolean;
   disableFuture?: boolean;
   hideHeader?: boolean;
-  onChange(value: PrivateYearRangePickerValue, selectType: PrivateYearRangePickerSelectType): void;
+  onChange: (value: PrivateYearRangePickerValue, selectType: PrivateYearRangePickerSelectType) => void;
 }

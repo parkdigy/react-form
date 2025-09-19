@@ -6,5 +6,5 @@ export interface PFormTextEditorProps extends PCommonSxProps, Omit<PFormValueIte
     required?: boolean;
     menubar?: boolean;
     height?: number;
-    onImageUpload?(blob: Blob, success: (url: string) => void, failure: (err: string) => void, progress?: (percent: number) => void): void;
+    onImageUpload?: (blob: Blob, success: (url: string) => void, failure: (err: string) => void, progress?: (percent: number) => void) => void;
 }

@@ -10,6 +10,8 @@ import {
   PFormToggleButtonGroupProps,
   PFormToggleButtonGroupCommands,
   PFormToggleButtonGroupSingleValue,
+  PFormToggleButtonGroupValue,
+  PFormToggleButtonGroupItem,
 } from './PFormToggleButtonGroup.types';
 import { useFormState } from '../../PFormContext';
 import PFormItemBase, { PFormItemBaseProps } from '../PFormItemBase';
@@ -63,6 +65,7 @@ const PFormToggleButtonGroup = ToForwardRefExoticComponent(
 
     type Props = PFormToggleButtonGroupProps<T, Multiple>;
     type Commands = PFormToggleButtonGroupCommands<T, Multiple>;
+    type Value = PFormToggleButtonGroupValue<T, Multiple>;
 
     /********************************************************************************************************************
      * ID
@@ -88,7 +91,7 @@ const PFormToggleButtonGroup = ToForwardRefExoticComponent(
       onValueChange,
       onValueChangeByUser,
       onRequestSearchSubmit,
-    } = useFormState();
+    } = useFormState<Value, true, PFormToggleButtonGroupItem<T>>();
 
     /********************************************************************************************************************
      * Variables - FormState

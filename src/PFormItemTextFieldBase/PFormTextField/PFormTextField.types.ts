@@ -37,5 +37,5 @@ export type PFormTextFieldProps<
     noFormValueItem?: boolean;
     disableReturnKey?: boolean;
     submitWhenReturnKey?: boolean;
-    onValue?(value: V): V;
+    onValue?: (value: V) => V;
   };

@@ -11,7 +11,7 @@ export interface PFormRatingProps
   required?: boolean;
   icon?: string;
   emptyIcon?: string;
-  onValue?(value: PFormRatingValue): PFormRatingValue;
+  onValue?: (value: PFormRatingValue) => PFormRatingValue;
 }
 
 export interface PFormRatingCommands extends PFormValueItemBaseCommands<PFormRatingValue, false> {}

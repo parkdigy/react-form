@@ -84,10 +84,10 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
         throw new Error('useFormState should be used within FormContext.Provider');
     }
     return value;
-}var PFormContextProvider = function (_a) {
+}function PFormContextProvider(_a) {
     var children = _a.children, value = _a.value;
     return React.createElement(PFormContext.Provider, { value: value }, children);
-};/********************************************************************************************************************
+}/********************************************************************************************************************
  * getItemFormValue
  * ******************************************************************************************************************/
 var getItemFormValue = function (commands, reset) {
@@ -1463,7 +1463,9 @@ var PFormTag = React.forwardRef(function (_a, ref) {
      * Function - getCommands
      * ******************************************************************************************************************/
     var getCommands = useCallback(function (baseCommands) {
-        return __assign(__assign(__assign({}, baseCommands), { getReset: function () { return getFinalValue(initValue); }, reset: function () { return updateValue(initValue); }, getValue: function () { return valueRef.current; }, setValue: function (newValue) { return updateValue(newValue); }, validate: function () { return validate(valueRef.current); } }), getExtraCommands());
+        return __assign(__assign(__assign({}, baseCommands), { getReset: function () { return getFinalValue(initValue); }, reset: function () { return updateValue(initValue); }, getValue: function () { return valueRef.current; }, setValue: function (newValue) {
+                updateValue(newValue);
+            }, validate: function () { return validate(valueRef.current); } }), getExtraCommands());
     }, [getExtraCommands, getFinalValue, initValue, updateValue, valueRef, validate]);
     /********************************************************************************************************************
      * Function - appendTag, removeTag
@@ -1497,8 +1499,8 @@ var PFormTag = React.forwardRef(function (_a, ref) {
      * Event Handler
      * ******************************************************************************************************************/
     var handleAddValueItem = useCallback(function (id, commands) {
-        onAddValueItem(id, getCommands(commands));
-    }, [onAddValueItem, getCommands]);
+        onAddValueItem(id, commands);
+    }, [onAddValueItem]);
     var handleRef = useCallback(function (commands) {
         if (ref) {
             var finalCommands = getCommands(commands);
@@ -1668,6 +1670,12 @@ PFormMobile.displayName = 'PFormMobile';var NumberFormatCustom = React.forwardRe
         thousandSeparator,
     ]);
     /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+    var getFinalValue = useCallback(function (value) {
+        return empty(value) || value === '-' || value === '.' ? undefined : Number(value);
+    }, []);
+    /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
     var handleChange = useCallback(function (value) {
@@ -1718,10 +1726,32 @@ PFormMobile.displayName = 'PFormMobile';var NumberFormatCustom = React.forwardRe
             return true;
         }
     }, [onValidate]);
+    var handleRef = useCallback(function (commands) {
+        if (ref) {
+            var finalCommands = commands
+                ? __assign(__assign({}, commands), { getReset: function () { return initValue; }, getValue: function () { return getFinalValue(strValueRef.current); }, setValue: function (value) {
+                        var strValue = value !== undefined ? "".concat(value) : '';
+                        if (strValueRef.current === strValue) {
+                            strValueRef.current = "".concat(strValue, " ");
+                        }
+                        else {
+                            strValueRef.current = strValue;
+                        }
+                        onChange && onChange(value);
+                        forceUpdate();
+                    } }) : null;
+            if (typeof ref === 'function') {
+                return ref(finalCommands);
+            }
+            else {
+                ref.current = finalCommands;
+            }
+        }
+    }, [forceUpdate, getFinalValue, initValue, onChange, ref, strValueRef]);
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(PFormTextField, __assign({ ref: ref, className: classNames(className, 'PFormNumber'), disableReturnKey: true, labelShrink: strValueRef.current === '' || strValueRef.current === undefined ? labelShrink : true, slotProps: slotProps, readOnly: readOnly, clear: clear, value: strValueRef.current, onChange: handleChange, onValue: handleValue, onValidate: handleValidate }, props)));
+    return (React.createElement(PFormTextField, __assign({ ref: handleRef, className: classNames(className, 'PFormNumber'), disableReturnKey: true, labelShrink: strValueRef.current === '' || strValueRef.current === undefined ? labelShrink : true, slotProps: slotProps, readOnly: readOnly, clear: clear, value: strValueRef.current, onChange: handleChange, onValue: handleValue, onValidate: handleValidate }, props)));
 });
 PFormNumber.displayName = 'PFormNumber';insertStyle(".PFormSearch input[type=search]::-webkit-search-decoration,.PFormSearch input[type=search]::-webkit-search-cancel-button,.PFormSearch input[type=search]::-webkit-search-results-button,.PFormSearch input[type=search]::-webkit-search-results-decoration{-webkit-appearance:none}");var PFormSearch = React.forwardRef(function (_a, ref) {
     var className = _a.className, props = __rest(_a, ["className"]);

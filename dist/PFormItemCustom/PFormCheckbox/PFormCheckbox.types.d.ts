@@ -3,7 +3,7 @@ import { ButtonBaseActions, CheckboxProps } from '@mui/material';
 import { PCommonSxProps, PFormCheckValueItemCommands, PFormValueItemBaseCommands, PFormValueItemProps } from '../../@types';
 export type PFormCheckboxValue = string | number | boolean;
 export interface PFormCheckboxCommands extends Omit<PFormValueItemBaseCommands<PFormCheckboxValue, false>, 'getReset'>, PFormCheckValueItemCommands<PFormCheckboxValue> {
-    getReset(): boolean;
+    getReset: () => boolean;
 }
 export interface PFormCheckboxProps extends PCommonSxProps, Omit<CheckboxProps, 'size' | 'color' | 'name' | 'inputRef' | 'action' | 'required' | 'onChange'>, Omit<PFormValueItemProps<PFormCheckboxValue, false>, 'value' | 'onChange'> {
     value?: PFormCheckboxValue;
@@ -11,5 +11,5 @@ export interface PFormCheckboxProps extends PCommonSxProps, Omit<CheckboxProps, 
     text?: ReactNode;
     inputRef?: RefObject<HTMLInputElement>;
     action?: RefObject<ButtonBaseActions>;
-    onChange?(checked: boolean): void;
+    onChange?: (checked: boolean) => void;
 }

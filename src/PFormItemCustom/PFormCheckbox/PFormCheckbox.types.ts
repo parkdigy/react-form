@@ -12,7 +12,7 @@ export type PFormCheckboxValue = string | number | boolean;
 export interface PFormCheckboxCommands
   extends Omit<PFormValueItemBaseCommands<PFormCheckboxValue, false>, 'getReset'>,
     PFormCheckValueItemCommands<PFormCheckboxValue> {
-  getReset(): boolean;
+  getReset: () => boolean;
 }
 
 export interface PFormCheckboxProps
@@ -24,5 +24,5 @@ export interface PFormCheckboxProps
   text?: ReactNode;
   inputRef?: RefObject<HTMLInputElement>;
   action?: RefObject<ButtonBaseActions>;
-  onChange?(checked: boolean): void;
+  onChange?: (checked: boolean) => void;
 }

@@ -55,11 +55,11 @@ export interface PFormDateRangePickerProps
   disableFuture?: boolean;
   minDate?: Dayjs;
   maxDate?: Dayjs;
-  onGetActionButtons?(): { label: string; start: Dayjs; end: Dayjs }[];
+  onGetActionButtons?: () => { label: string; start: Dayjs; end: Dayjs }[];
 }
 
 export interface PFormDateRangePickerCommands
   extends PFormValueItemBaseCommands<PFormDateRangePickerValue, false>,
     PFormDateValueItemCommands,
-    PFormRangeValueItemCommands<Dayjs>,
+    PFormRangeValueItemCommands<PFormDateRangePickerDateValue>,
     PFormRangeValueItemNameCommands {}

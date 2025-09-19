@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { NumericFormatProps } from 'react-number-format';
 import NumberFormatCustom from './NumberFormatCustom.private';
 import { PFormNumberProps as Props, PFormNumberCommands } from './PFormNumber.types';
-import PFormTextField from '../PFormTextField';
+import PFormTextField, { PFormTextFieldCommands } from '../PFormTextField';
 import { empty } from '@pdg/compare';
 import { InputBaseProps } from '@mui/material/InputBase';
 import { useAutoUpdateRef, useForceUpdate } from '@pdg/react-hook';
@@ -36,6 +36,7 @@ const PFormNumber = React.forwardRef<PFormNumberCommands, Props>(
      * ******************************************************************************************************************/
 
     const forceUpdate = useForceUpdate(1);
+    type Commands = PFormNumberCommands;
 
     /********************************************************************************************************************
      * Ref
@@ -86,6 +87,14 @@ const PFormNumber = React.forwardRef<PFormNumberCommands, Props>(
       tabIndex,
       thousandSeparator,
     ]);
+
+    /********************************************************************************************************************
+     * Function
+     * ******************************************************************************************************************/
+
+    const getFinalValue = useCallback((value: string | undefined) => {
+      return empty(value) || value === '-' || value === '.' ? undefined : Number(value);
+    }, []);
 
     /********************************************************************************************************************
      * Event Handler
@@ -146,13 +155,44 @@ const PFormNumber = React.forwardRef<PFormNumberCommands, Props>(
       [onValidate]
     );
 
+    const handleRef = useCallback(
+      (commands: PFormTextFieldCommands<string> | null) => {
+        if (ref) {
+          const finalCommands: Commands | null = commands
+            ? {
+                ...commands,
+                getReset: () => initValue,
+                getValue: () => getFinalValue(strValueRef.current),
+                setValue: (value: number | undefined) => {
+                  const strValue = value !== undefined ? `${value}` : '';
+                  if (strValueRef.current === strValue) {
+                    strValueRef.current = `${strValue} `;
+                  } else {
+                    strValueRef.current = strValue;
+                  }
+                  onChange && onChange(value);
+                  forceUpdate();
+                },
+              }
+            : null;
+
+          if (typeof ref === 'function') {
+            return ref(finalCommands);
+          } else {
+            ref.current = finalCommands;
+          }
+        }
+      },
+      [forceUpdate, getFinalValue, initValue, onChange, ref, strValueRef]
+    );
+
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
 
     return (
-      <PFormTextField<string | number>
-        ref={ref}
+      <PFormTextField<string>
+        ref={handleRef}
         className={classNames(className, 'PFormNumber')}
         disableReturnKey
         labelShrink={strValueRef.current === '' || strValueRef.current === undefined ? labelShrink : true}
