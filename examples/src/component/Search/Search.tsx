@@ -71,7 +71,10 @@ const Search = () => {
           {leftSearchGroup}
 
           <PSearchGroup align='right'>
-            <PSearchButton startIcon='download' />
+            <>
+              <PSearchButton startIcon='download' />
+              <PSearchButton startIcon='download' />
+            </>
             <PSearchButton
               startIcon='add'
               startIconMarginLeft={-5}

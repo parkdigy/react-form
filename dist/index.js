@@ -10570,30 +10570,30 @@ var templateObject_1;var isReactFragment = function (child) {
         return false;
     }
 };
-var removeReactFragment = function (el) {
+var removeReactFragment = function (el, key) {
     if (isReactFragment(el)) {
         var children = el.props.children;
         if (children) {
             if (Array.isArray(children)) {
-                return children.map(function (child) {
+                return children.map(function (child, idx) {
                     if (React.isValidElement(child)) {
-                        return removeReactFragment(child);
+                        return removeReactFragment(child, idx);
                     }
                     else {
-                        return React.createElement(material.Grid, null, child);
+                        return React.createElement(material.Grid, { key: idx }, child);
                     }
                 });
             }
             else {
-                return React.createElement(StyledItem, { style: { display: el.type === PFormHidden ? 'none' : undefined } }, el);
+                return (React.createElement(StyledItem, { key: key, style: { display: el.type === PFormHidden ? 'none' : undefined } }, el));
             }
         }
         else {
-            return React.createElement(StyledItem, { style: { display: el.type === PFormHidden ? 'none' : undefined } }, el);
+            return (React.createElement(StyledItem, { key: key, style: { display: el.type === PFormHidden ? 'none' : undefined } }, el));
         }
     }
     else {
-        return React.createElement(StyledItem, { style: { display: el.type === PFormHidden ? 'none' : undefined } }, el);
+        return (React.createElement(StyledItem, { key: key, style: { display: el.type === PFormHidden ? 'none' : undefined } }, el));
     }
 };
 var PSearchGroup = function (_a) {

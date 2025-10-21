@@ -13,26 +13,38 @@ const isReactFragment = (child: ReactElement) => {
   }
 };
 
-const removeReactFragment = (el: ReactElement): any => {
+const removeReactFragment = (el: ReactElement, key?: string | number): any => {
   if (isReactFragment(el)) {
     const children: ReactElement | ReactElement[] = (el.props as any).children;
     if (children) {
       if (Array.isArray(children)) {
-        return children.map((child) => {
+        return children.map((child, idx) => {
           if (React.isValidElement(child)) {
-            return removeReactFragment(child);
+            return removeReactFragment(child, idx);
           } else {
-            return <Grid>{child}</Grid>;
+            return <Grid key={idx}>{child}</Grid>;
           }
         });
       } else {
-        return <StyledItem style={{ display: el.type === PFormHidden ? 'none' : undefined }}>{el}</StyledItem>;
+        return (
+          <StyledItem key={key} style={{ display: el.type === PFormHidden ? 'none' : undefined }}>
+            {el}
+          </StyledItem>
+        );
       }
     } else {
-      return <StyledItem style={{ display: el.type === PFormHidden ? 'none' : undefined }}>{el}</StyledItem>;
+      return (
+        <StyledItem key={key} style={{ display: el.type === PFormHidden ? 'none' : undefined }}>
+          {el}
+        </StyledItem>
+      );
     }
   } else {
-    return <StyledItem style={{ display: el.type === PFormHidden ? 'none' : undefined }}>{el}</StyledItem>;
+    return (
+      <StyledItem key={key} style={{ display: el.type === PFormHidden ? 'none' : undefined }}>
+        {el}
+      </StyledItem>
+    );
   }
 };
 
