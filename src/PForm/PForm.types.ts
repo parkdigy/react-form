@@ -27,7 +27,7 @@ export interface PFormProps
   disabled?: boolean;
   submitWhenReturnKey?: boolean;
   //--------------------------------------------------------------------------------------------------------------------
-  onSubmit?: (data: PFormValueMap) => void;
+  onSubmit?(data: PFormValueMap): void;
   onInvalid?: (invalidItems: PFormInvalidItems) => void;
   onValueChange?: (name: string, value: any) => void;
   onValueChangeByUser?: (name: string, value: any) => void;
