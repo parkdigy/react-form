@@ -3,13 +3,17 @@ import classNames from 'classnames';
 import { Editor } from '@tinymce/tinymce-react';
 import { Skeleton } from '@mui/material';
 import { useAutoUpdateRefState, useAutoUpdateState, useForwardLayoutRef } from '@pdg/react-hook';
-import { empty, ifUndefined } from '@pdg/compare';
+import { empty, ifEmpty, ifUndefined } from '@pdg/compare';
 import { PFormTextEditorProps as Props, PFormTextEditorCommands, PFormTextEditorValue } from './PFormTextEditor.types';
 import PFormItemBase from '../PFormItemBase';
 import { useFormState } from '../../PFormContext';
 import { getFinalValue } from './PFormTextEditor.function.private';
 import type { Editor as TinyMCEEditor } from 'tinymce';
 import './PFormTextEditor.scss';
+
+type PFormTextEditorType = typeof PFormTextEditor & {
+  apiKey: string;
+};
 
 interface BlobInfo {
   id: () => string;
@@ -31,6 +35,8 @@ const PFormTextEditor = React.forwardRef<PFormTextEditorCommands, Props>(
       // ---------------------------------------------------------------------------------------------------------------
       apiKey,
       toolbar,
+      onOpenWindow,
+      onCloseWindow,
       //----------------------------------------------------------------------------------------------------------------
       menubar = true,
       height = 500,
@@ -295,7 +301,7 @@ const PFormTextEditor = React.forwardRef<PFormTextEditorCommands, Props>(
           <>
             {!initialized ? <Skeleton variant='rectangular' width='100%' height={height} /> : null}
             <Editor
-              apiKey={apiKey}
+              apiKey={ifEmpty(apiKey, (PFormTextEditor as PFormTextEditorType).apiKey)}
               value={value}
               disabled={readOnly || disabled}
               init={{
@@ -333,6 +339,14 @@ const PFormTextEditor = React.forwardRef<PFormTextEditorCommands, Props>(
               onInit={(evt, editor) => {
                 editorRef.current = editor;
 
+                editor.on('OpenWindow', () => {
+                  onOpenWindow?.();
+                });
+
+                editor.on('CloseWindow', () => {
+                  onCloseWindow?.();
+                });
+
                 setTimeout(() => setInitialized(true), 10);
               }}
               onEditorChange={handleEditorChange}
@@ -349,4 +363,6 @@ const PFormTextEditor = React.forwardRef<PFormTextEditorCommands, Props>(
 
 PFormTextEditor.displayName = 'PFormTextEditor';
 
-export default PFormTextEditor;
+(PFormTextEditor as PFormTextEditorType).apiKey = '';
+
+export default PFormTextEditor as PFormTextEditorType;

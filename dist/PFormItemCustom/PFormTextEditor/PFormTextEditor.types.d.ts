@@ -7,4 +7,6 @@ export interface PFormTextEditorProps extends PCommonSxProps, Omit<PFormValueIte
     menubar?: boolean;
     height?: number;
     onImageUpload?: (blob: Blob, success: (url: string) => void, failure: (err: string) => void, progress?: (percent: number) => void) => void;
+    onOpenWindow?: () => void;
+    onCloseWindow?: () => void;
 }

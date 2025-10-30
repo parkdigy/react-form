@@ -1,4 +1,4 @@
-import React,{createContext,useContext,useRef,useCallback,useMemo,useEffect,useState,useId,useLayoutEffect}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,ifUndefined,notEmpty,equal}from'@pdg/compare';import dayjs from'dayjs';import {useAutoUpdateLayoutRef,useForwardLayoutRef,useAutoUpdateState,useAutoUpdateRefState,useForceUpdate,useAutoUpdateRef,useFirstSkipEffect}from'@pdg/react-hook';import {PButton,PIcon,PIconText}from'@pdg/react-component';import {useResizeDetector}from'react-resize-detector';import {formatTelNo,formatBusinessNo,formatPersonalNo}from'@pdg/formatting';import {NumericFormat}from'react-number-format';import {CheckBoxOutlineBlank,CheckBox,RadioButtonChecked,RadioButtonUnchecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';function insertStyle(css) {
+import React,{createContext,useContext,useRef,useCallback,useMemo,useEffect,useState,useId,useLayoutEffect}from'react';import classNames from'classnames';import {Box,styled,useTheme,InputLabel,Grid,Collapse,FormHelperText,InputAdornment,IconButton,TextField,Chip,Autocomplete,Icon,CircularProgress,MenuItem,Checkbox,FormControl,Input,OutlinedInput,FilledInput,FormControlLabel,Typography,RadioGroup,Radio,ToggleButton,ToggleButtonGroup,Rating,Skeleton,darken,Button,Tooltip,tooltipClasses,ClickAwayListener,Dialog,DialogTitle,DialogContent,DialogActions,Switch,Paper,Menu}from'@mui/material';import {empty,ifUndefined,notEmpty,equal,ifEmpty}from'@pdg/compare';import dayjs from'dayjs';import {useAutoUpdateLayoutRef,useForwardLayoutRef,useAutoUpdateState,useAutoUpdateRefState,useForceUpdate,useAutoUpdateRef,useFirstSkipEffect}from'@pdg/react-hook';import {PButton,PIcon,PIconText}from'@pdg/react-component';import {useResizeDetector}from'react-resize-detector';import {formatTelNo,formatBusinessNo,formatPersonalNo}from'@pdg/formatting';import {NumericFormat}from'react-number-format';import {CheckBoxOutlineBlank,CheckBox,RadioButtonChecked,RadioButtonUnchecked}from'@mui/icons-material';import {Editor}from'@tinymce/tinymce-react';import {PickersDay,StaticDatePicker,LocalizationProvider,DesktopDatePicker,StaticDateTimePicker,DesktopDateTimePicker}from'@mui/x-date-pickers';import SimpleBar from'simplebar-react';function insertStyle(css) {
     if (!css || typeof window === 'undefined')
         return;
     const style = document.createElement('style');
@@ -3677,7 +3677,7 @@ PFormRating.displayName = 'PFormRating';var getFinalValue$8 = function (value) {
      * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     // ---------------------------------------------------------------------------------------------------------------
-    apiKey = _a.apiKey, toolbar = _a.toolbar, 
+    apiKey = _a.apiKey, toolbar = _a.toolbar, onOpenWindow = _a.onOpenWindow, onCloseWindow = _a.onCloseWindow, 
     //----------------------------------------------------------------------------------------------------------------
     _b = _a.menubar, 
     //----------------------------------------------------------------------------------------------------------------
@@ -3833,7 +3833,7 @@ PFormRating.displayName = 'PFormRating';var getFinalValue$8 = function (value) {
      * ******************************************************************************************************************/
     return (React.createElement(PFormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'PFormValueItem', 'PFormTextEditor', !initialized && 'initializing'), labelIcon: labelIcon, label: label, error: error, required: required, fullWidth: true, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: { width: '100%' }, hidden: hidden, controlHeight: height, control: React.createElement(React.Fragment, null,
             !initialized ? React.createElement(Skeleton, { variant: 'rectangular', width: '100%', height: height }) : null,
-            React.createElement(Editor, { apiKey: apiKey, value: value, disabled: readOnly || disabled, init: {
+            React.createElement(Editor, { apiKey: ifEmpty(apiKey, PFormTextEditor.apiKey), value: value, disabled: readOnly || disabled, init: {
                     height: height,
                     menubar: menubar,
                     language: 'ko_KR',
@@ -3864,10 +3864,17 @@ PFormRating.displayName = 'PFormRating';var getFinalValue$8 = function (value) {
                     images_upload_handler: handleImageUpload,
                 }, onInit: function (evt, editor) {
                     editorRef.current = editor;
+                    editor.on('OpenWindow', function () {
+                        onOpenWindow === null || onOpenWindow === void 0 ? void 0 : onOpenWindow();
+                    });
+                    editor.on('CloseWindow', function () {
+                        onCloseWindow === null || onCloseWindow === void 0 ? void 0 : onCloseWindow();
+                    });
                     setTimeout(function () { return setInitialized(true); }, 10);
                 }, onEditorChange: handleEditorChange, onKeyDown: handleKeyDown, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } })) }));
 });
-PFormTextEditor.displayName = 'PFormTextEditor';var PFormAutocomplete = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
+PFormTextEditor.displayName = 'PFormTextEditor';
+PFormTextEditor.apiKey = '';var PFormAutocomplete = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * type
      * ******************************************************************************************************************/

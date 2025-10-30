@@ -17,4 +17,6 @@ export interface PFormTextEditorProps
     failure: (err: string) => void,
     progress?: (percent: number) => void
   ) => void;
+  onOpenWindow?: () => void;
+  onCloseWindow?: () => void;
 }

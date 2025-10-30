@@ -3677,7 +3677,7 @@ PFormRating.displayName = 'PFormRating';var getFinalValue$8 = function (value) {
      * ******************************************************************************************************************/
     var initVariant = _a.variant, initSize = _a.size, initColor = _a.color, initFocused = _a.focused, 
     // ---------------------------------------------------------------------------------------------------------------
-    apiKey = _a.apiKey, toolbar = _a.toolbar, 
+    apiKey = _a.apiKey, toolbar = _a.toolbar, onOpenWindow = _a.onOpenWindow, onCloseWindow = _a.onCloseWindow, 
     //----------------------------------------------------------------------------------------------------------------
     _b = _a.menubar, 
     //----------------------------------------------------------------------------------------------------------------
@@ -3833,7 +3833,7 @@ PFormRating.displayName = 'PFormRating';var getFinalValue$8 = function (value) {
      * ******************************************************************************************************************/
     return (React.createElement(PFormItemBase, { variant: variant, size: size, color: color, focused: focused, className: classNames(className, 'PFormValueItem', 'PFormTextEditor', !initialized && 'initializing'), labelIcon: labelIcon, label: label, error: error, required: required, fullWidth: true, helperText: error ? errorHelperText : helperText, helperTextProps: { style: { marginLeft: 5 } }, style: { width: '100%' }, hidden: hidden, controlHeight: height, control: React.createElement(React.Fragment, null,
             !initialized ? React.createElement(material.Skeleton, { variant: 'rectangular', width: '100%', height: height }) : null,
-            React.createElement(tinymceReact.Editor, { apiKey: apiKey, value: value, disabled: readOnly || disabled, init: {
+            React.createElement(tinymceReact.Editor, { apiKey: compare.ifEmpty(apiKey, PFormTextEditor.apiKey), value: value, disabled: readOnly || disabled, init: {
                     height: height,
                     menubar: menubar,
                     language: 'ko_KR',
@@ -3864,10 +3864,17 @@ PFormRating.displayName = 'PFormRating';var getFinalValue$8 = function (value) {
                     images_upload_handler: handleImageUpload,
                 }, onInit: function (evt, editor) {
                     editorRef.current = editor;
+                    editor.on('OpenWindow', function () {
+                        onOpenWindow === null || onOpenWindow === void 0 ? void 0 : onOpenWindow();
+                    });
+                    editor.on('CloseWindow', function () {
+                        onCloseWindow === null || onCloseWindow === void 0 ? void 0 : onCloseWindow();
+                    });
                     setTimeout(function () { return setInitialized(true); }, 10);
                 }, onEditorChange: handleEditorChange, onKeyDown: handleKeyDown, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } })) }));
 });
-PFormTextEditor.displayName = 'PFormTextEditor';var PFormAutocomplete = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
+PFormTextEditor.displayName = 'PFormTextEditor';
+PFormTextEditor.apiKey = '';var PFormAutocomplete = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_a, ref) {
     /********************************************************************************************************************
      * type
      * ******************************************************************************************************************/

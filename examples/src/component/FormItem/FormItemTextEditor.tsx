@@ -53,7 +53,6 @@ const FormItemTextEditor = () => {
           <PFormRow>
             <PFormCol>
               <PFormTextEditor
-                apiKey='[your-api-key]'
                 required
                 name='PFormTextEditor'
                 label='PFormTextEditor'
