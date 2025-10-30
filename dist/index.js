@@ -3865,10 +3865,14 @@ PFormRating.displayName = 'PFormRating';var getFinalValue$8 = function (value) {
                 }, onInit: function (evt, editor) {
                     editorRef.current = editor;
                     editor.on('OpenWindow', function () {
+                        var _a, _b;
                         onOpenWindow === null || onOpenWindow === void 0 ? void 0 : onOpenWindow();
+                        (_b = (_a = PFormTextEditor).onOpenWindow) === null || _b === void 0 ? void 0 : _b.call(_a);
                     });
                     editor.on('CloseWindow', function () {
+                        var _a, _b;
                         onCloseWindow === null || onCloseWindow === void 0 ? void 0 : onCloseWindow();
+                        (_b = (_a = PFormTextEditor).onCloseWindow) === null || _b === void 0 ? void 0 : _b.call(_a);
                     });
                     setTimeout(function () { return setInitialized(true); }, 10);
                 }, onEditorChange: handleEditorChange, onKeyDown: handleKeyDown, onFocus: function () { return setFocused(initFocused || true); }, onBlur: function () { return setFocused(initFocused || false); } })) }));

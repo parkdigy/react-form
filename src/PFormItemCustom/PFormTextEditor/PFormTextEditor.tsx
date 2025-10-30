@@ -13,6 +13,8 @@ import './PFormTextEditor.scss';
 
 type PFormTextEditorType = typeof PFormTextEditor & {
   apiKey: string;
+  onOpenWindow?: () => void;
+  onCloseWindow?: () => void;
 };
 
 interface BlobInfo {
@@ -341,10 +343,12 @@ const PFormTextEditor = React.forwardRef<PFormTextEditorCommands, Props>(
 
                 editor.on('OpenWindow', () => {
                   onOpenWindow?.();
+                  (PFormTextEditor as PFormTextEditorType).onOpenWindow?.();
                 });
 
                 editor.on('CloseWindow', () => {
                   onCloseWindow?.();
+                  (PFormTextEditor as PFormTextEditorType).onCloseWindow?.();
                 });
 
                 setTimeout(() => setInitialized(true), 10);

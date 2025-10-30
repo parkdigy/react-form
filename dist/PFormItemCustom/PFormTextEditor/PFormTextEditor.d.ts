@@ -3,6 +3,8 @@ import { PFormTextEditorProps as Props, PFormTextEditorCommands } from './PFormT
 import './PFormTextEditor.scss';
 type PFormTextEditorType = typeof PFormTextEditor & {
     apiKey: string;
+    onOpenWindow?: () => void;
+    onCloseWindow?: () => void;
 };
 declare const PFormTextEditor: React.ForwardRefExoticComponent<Props & React.RefAttributes<PFormTextEditorCommands>>;
 declare const _default: PFormTextEditorType;
