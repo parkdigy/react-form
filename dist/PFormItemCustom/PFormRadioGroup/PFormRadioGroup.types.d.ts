@@ -19,4 +19,5 @@ export interface PFormRadioGroupProps<T extends PFormRadioGroupSingleValue> exte
     onValue?: (value: PFormRadioGroupValue<T>) => PFormRadioGroupValue<T>;
 }
 export interface PFormRadioGroupCommands<T extends PFormRadioGroupSingleValue> extends PFormValueItemBaseCommands<T, true>, PFormItemsValueItemCommands<PFormRadioGroupItem<T>>, PFormLoadingValueItemCommands {
+    reloadItems: () => void;
 }

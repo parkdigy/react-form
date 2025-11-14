@@ -68,4 +68,6 @@ export interface PFormAutocompleteCommands<
     PFormArrayValueItemCommands,
     PFormItemsValueItemCommands<PFormAutocompleteItem<T>>,
     PFormMultipleValueItemCommands,
-    PFormLoadingValueItemCommands {}
+    PFormLoadingValueItemCommands {
+  reloadItems: () => void;
+}

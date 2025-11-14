@@ -334,6 +334,15 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
         setItems,
         getLoading: () => !!loadingRef.current,
         setLoading,
+        reloadItems: () => {
+          if (onLoadItems) {
+            setIsOnGetItemLoading(true);
+            onLoadItems().then((items) => {
+              setItems(items);
+              setIsOnGetItemLoading(false);
+            });
+          }
+        },
       }),
       [
         dataRef,
@@ -346,6 +355,7 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
         itemsRef,
         loadingRef,
         name,
+        onLoadItems,
         setData,
         setDisabled,
         setErrorErrorHelperText,

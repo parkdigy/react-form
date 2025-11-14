@@ -35,4 +35,6 @@ export interface PFormRadioGroupProps<T extends PFormRadioGroupSingleValue>
 export interface PFormRadioGroupCommands<T extends PFormRadioGroupSingleValue>
   extends PFormValueItemBaseCommands<T, true>,
     PFormItemsValueItemCommands<PFormRadioGroupItem<T>>,
-    PFormLoadingValueItemCommands {}
+    PFormLoadingValueItemCommands {
+  reloadItems: () => void;
+}

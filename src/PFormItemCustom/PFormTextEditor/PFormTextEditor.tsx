@@ -15,6 +15,7 @@ type PFormTextEditorType = typeof PFormTextEditor & {
   apiKey: string;
   onOpenWindow?: () => void;
   onCloseWindow?: () => void;
+  onImageUpload?: Props['onImageUpload'];
 };
 
 interface BlobInfo {
@@ -261,8 +262,9 @@ const PFormTextEditor = React.forwardRef<PFormTextEditorCommands, Props>(
     const handleImageUpload = useCallback(
       (blobInfo: BlobInfo, progress: (percent: number) => void) => {
         return new Promise<string>((resolve, reject) => {
-          if (onImageUpload) {
-            onImageUpload(
+          const onImageUploadFunc = onImageUpload ?? (PFormTextEditor as PFormTextEditorType).onImageUpload;
+          if (onImageUploadFunc) {
+            onImageUploadFunc(
               blobInfo.blob(),
               (url) => {
                 resolve(url);

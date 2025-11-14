@@ -488,8 +488,18 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
         isMultiple: () => !!multiple,
         getLoading: () => !!loadingRef.current,
         setLoading: (loading) => setLoading(loading),
+        reloadItems: () => {
+          if (!async && onLoadItems) {
+            showOnGetItemLoading();
+            onLoadItems().then((items) => {
+              setItems(items);
+              hideOnGetItemLoading();
+            });
+          }
+        },
       }),
       [
+        async,
         dataRef,
         disabledRef,
         exceptValue,
@@ -498,17 +508,20 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
         formValueSort,
         getFinalValue,
         hiddenRef,
+        hideOnGetItemLoading,
         initValue,
         itemsRef,
         loadingRef,
         multiple,
         name,
+        onLoadItems,
         setData,
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
         setItems,
         setLoading,
+        showOnGetItemLoading,
         updateValue,
         validate,
         valueRef,

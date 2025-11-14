@@ -6,6 +6,7 @@ export type PFormSelectValue<T extends PFormSelectSingleValue, Multiple extends 
     Multiple
 ] extends [true] ? T[] : '' | T;
 export interface PFormSelectExtraCommands<T extends PFormSelectSingleValue> extends PFormArrayValueItemCommands, PFormItemsValueItemCommands<PFormSelectItem<T>>, PFormMultipleValueItemCommands, PFormLoadingValueItemCommands {
+    reloadItems: () => void;
 }
 export interface PFormSelectCommands<T extends PFormSelectSingleValue, Multiple extends boolean | undefined = undefined> extends PFormValueItemBaseCommands<PFormSelectValue<T, Multiple>, false>, PFormSelectExtraCommands<T> {
 }

@@ -27,4 +27,5 @@ export interface PFormToggleButtonGroupProps<T extends PFormToggleButtonGroupSin
 export interface PFormToggleButtonGroupExtraCommands<T extends PFormToggleButtonGroupSingleValue> extends PFormArrayValueItemCommands, PFormItemsValueItemCommands<PFormToggleButtonGroupItem<T>>, PFormMultipleValueItemCommands, PFormLoadingValueItemCommands {
 }
 export interface PFormToggleButtonGroupCommands<T extends PFormToggleButtonGroupSingleValue, Multiple extends boolean | undefined = undefined> extends PFormValueItemBaseCommands<PFormToggleButtonGroupValue<T, Multiple>, true>, PFormToggleButtonGroupExtraCommands<T> {
+    reloadItems: () => void;
 }

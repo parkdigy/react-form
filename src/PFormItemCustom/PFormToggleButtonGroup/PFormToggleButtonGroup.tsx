@@ -371,6 +371,15 @@ const PFormToggleButtonGroup = ToForwardRefExoticComponent(
         isMultiple: () => !!multiple,
         getLoading: () => !!loadingRef.current,
         setLoading,
+        reloadItems: () => {
+          if (onLoadItems) {
+            setIsOnGetItemLoading(true);
+            onLoadItems().then((items) => {
+              setItems(items);
+              setIsOnGetItemLoading(false);
+            });
+          }
+        },
       }),
       [
         dataRef,
@@ -386,6 +395,7 @@ const PFormToggleButtonGroup = ToForwardRefExoticComponent(
         loadingRef,
         multiple,
         name,
+        onLoadItems,
         setData,
         setDisabled,
         setErrorErrorHelperText,

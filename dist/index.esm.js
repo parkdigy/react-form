@@ -2263,8 +2263,17 @@ function AutoTypeForwardRef(render) {
                 lastLoading = loading;
                 setLoading(lastLoading);
             },
+            reloadItems: function () {
+                if (onLoadItems) {
+                    setIsOnGetItemLoading(true);
+                    onLoadItems().then(function (items) {
+                        setItems(items);
+                        setIsOnGetItemLoading(false);
+                    });
+                }
+            },
         };
-    }, [items, loading, formValueSeparator, formValueSort, setItems, multiple]);
+    }, [items, loading, formValueSeparator, formValueSort, setItems, multiple, onLoadItems]);
     /********************************************************************************************************************
      * Event Handler
      * ******************************************************************************************************************/
@@ -2933,6 +2942,15 @@ var PFormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_
         setItems: setItems,
         getLoading: function () { return !!loadingRef.current; },
         setLoading: setLoading,
+        reloadItems: function () {
+            if (onLoadItems) {
+                setIsOnGetItemLoading(true);
+                onLoadItems().then(function (items) {
+                    setItems(items);
+                    setIsOnGetItemLoading(false);
+                });
+            }
+        },
     }); }, [
         dataRef,
         disabledRef,
@@ -2944,6 +2962,7 @@ var PFormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_
         itemsRef,
         loadingRef,
         name,
+        onLoadItems,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -3314,6 +3333,15 @@ PFormRadioGroup.displayName = 'PFormRadioGroup';insertStyle(".PFormToggleButtonG
         isMultiple: function () { return !!multiple; },
         getLoading: function () { return !!loadingRef.current; },
         setLoading: setLoading,
+        reloadItems: function () {
+            if (onLoadItems) {
+                setIsOnGetItemLoading(true);
+                onLoadItems().then(function (items) {
+                    setItems(items);
+                    setIsOnGetItemLoading(false);
+                });
+            }
+        },
     }); }, [
         dataRef,
         disabledRef,
@@ -3328,6 +3356,7 @@ PFormRadioGroup.displayName = 'PFormRadioGroup';insertStyle(".PFormToggleButtonG
         loadingRef,
         multiple,
         name,
+        onLoadItems,
         setData,
         setDisabled,
         setErrorErrorHelperText,
@@ -3818,8 +3847,9 @@ PFormRating.displayName = 'PFormRating';var getFinalValue$8 = function (value) {
     }, []);
     var handleImageUpload = useCallback(function (blobInfo, progress) {
         return new Promise(function (resolve, reject) {
-            if (onImageUpload) {
-                onImageUpload(blobInfo.blob(), function (url) {
+            var onImageUploadFunc = onImageUpload !== null && onImageUpload !== void 0 ? onImageUpload : PFormTextEditor.onImageUpload;
+            if (onImageUploadFunc) {
+                onImageUploadFunc(blobInfo.blob(), function (url) {
                     resolve(url);
                 }, function (err) { return reject(err); }, progress);
             }
@@ -4233,7 +4263,17 @@ PFormTextEditor.apiKey = '';var PFormAutocomplete = ToForwardRefExoticComponent(
         isMultiple: function () { return !!multiple; },
         getLoading: function () { return !!loadingRef.current; },
         setLoading: function (loading) { return setLoading(loading); },
+        reloadItems: function () {
+            if (!async && onLoadItems) {
+                showOnGetItemLoading();
+                onLoadItems().then(function (items) {
+                    setItems(items);
+                    hideOnGetItemLoading();
+                });
+            }
+        },
     }); }, [
+        async,
         dataRef,
         disabledRef,
         exceptValue,
@@ -4242,17 +4282,20 @@ PFormTextEditor.apiKey = '';var PFormAutocomplete = ToForwardRefExoticComponent(
         formValueSort,
         getFinalValue,
         hiddenRef,
+        hideOnGetItemLoading,
         initValue,
         itemsRef,
         loadingRef,
         multiple,
         name,
+        onLoadItems,
         setData,
         setDisabled,
         setErrorErrorHelperText,
         setHidden,
         setItems,
         setLoading,
+        showOnGetItemLoading,
         updateValue,
         validate,
         valueRef,

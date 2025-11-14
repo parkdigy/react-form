@@ -272,8 +272,17 @@ const PFormSelect = ToForwardRefExoticComponent(
           lastLoading = loading;
           setLoading(lastLoading);
         },
+        reloadItems: () => {
+          if (onLoadItems) {
+            setIsOnGetItemLoading(true);
+            onLoadItems().then((items) => {
+              setItems(items);
+              setIsOnGetItemLoading(false);
+            });
+          }
+        },
       };
-    }, [items, loading, formValueSeparator, formValueSort, setItems, multiple]);
+    }, [items, loading, formValueSeparator, formValueSort, setItems, multiple, onLoadItems]);
 
     /********************************************************************************************************************
      * Event Handler

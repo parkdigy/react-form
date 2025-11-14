@@ -37,4 +37,5 @@ export interface PFormAutocompleteProps<T extends PFormAutocompleteSingleValue, 
     getOptionDisabled?: (item: PFormAutocompleteItem<T>) => boolean;
 }
 export interface PFormAutocompleteCommands<T extends PFormAutocompleteSingleValue, Multiple extends boolean | undefined = undefined> extends PFormValueItemBaseCommands<PFormAutocompleteValue<T, Multiple>, true>, PFormArrayValueItemCommands, PFormItemsValueItemCommands<PFormAutocompleteItem<T>>, PFormMultipleValueItemCommands, PFormLoadingValueItemCommands {
+    reloadItems: () => void;
 }
