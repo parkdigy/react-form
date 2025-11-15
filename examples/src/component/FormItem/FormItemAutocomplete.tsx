@@ -19,7 +19,8 @@ import {
 import { OutlinedPaper } from '@ccomp';
 import { lv } from '@pdg/data';
 
-const DEFAULT_ITEMS: PFormAutocompleteItem<number>[] = [
+const DEFAULT_ITEMS: PFormAutocompleteItem<number | ''>[] = [
+  lv('전체', ''),
   lv('Item 1', 1),
   lv('Item 2', 2),
   lv('Item 3', 3, { disabled: true }),
@@ -35,7 +36,7 @@ const FormItemAutocomplete = () => {
    * Ref
    * ******************************************************************************************************************/
 
-  const asyncLoadAutocompleteRef = useRef<PFormAutocompleteCommands<number>>(null);
+  const asyncLoadAutocompleteRef = useRef<PFormAutocompleteCommands<number | ''>>(null);
 
   /********************************************************************************************************************
    * State
@@ -76,7 +77,7 @@ const FormItemAutocomplete = () => {
    * ******************************************************************************************************************/
 
   const handleLoadItems = useCallback((keyword?: string) => {
-    return new Promise<PFormAutocompleteItems<number>>((resolve) => {
+    return new Promise<PFormAutocompleteItems<number | ''>>((resolve) => {
       setTimeout(() => {
         if (keyword) {
           resolve(
@@ -92,14 +93,14 @@ const FormItemAutocomplete = () => {
     });
   }, []);
 
-  const handleAsyncLoadMultipleValueItem = useCallback((value: PFormAutocompleteValue<number, true>) => {
-    return new Promise<PFormAutocompleteComponentValue<number, true>>((resolve) => {
+  const handleAsyncLoadMultipleValueItem = useCallback((value: PFormAutocompleteValue<number | '', true>) => {
+    return new Promise<PFormAutocompleteComponentValue<number | '', true>>((resolve) => {
       resolve(DEFAULT_ITEMS.filter((info) => !!value && value.includes(info.value)));
     });
   }, []);
 
-  const handleAsyncLoadValueItem = useCallback((value: PFormAutocompleteValue<number, false>) => {
-    return new Promise<PFormAutocompleteComponentValue<number, false>>((resolve) => {
+  const handleAsyncLoadValueItem = useCallback((value: PFormAutocompleteValue<number | '', false>) => {
+    return new Promise<PFormAutocompleteComponentValue<number | '', false>>((resolve) => {
       resolve(DEFAULT_ITEMS.find((info) => info.value === value) || null);
     });
   }, []);
@@ -179,6 +180,7 @@ const FormItemAutocomplete = () => {
                 {...additionalProps}
                 name='required'
                 items={items}
+                value={''}
                 label='PFormAutocomplete'
                 required
                 helperText='required=true'

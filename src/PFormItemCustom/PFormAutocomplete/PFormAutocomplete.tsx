@@ -224,7 +224,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
         let finalValue = value;
         if (multiple) {
           if (!Array.isArray(finalValue)) {
-            if (finalValue != null && notEmpty(finalValue)) {
+            if (finalValue != null) {
               if (typeof finalValue === 'string') {
                 finalValue = Array.from(new Set(finalValue.split(formValueSeparator || ',')));
               } else {
@@ -309,7 +309,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
 
       let newComponentValue: ComponentValue = (multiple ? [] : null) as ComponentValue;
 
-      if (notEmpty(finalValue)) {
+      if (finalValue != null) {
         if (items) {
           if (Array.isArray(finalValue)) {
             finalValue.forEach((v) => {

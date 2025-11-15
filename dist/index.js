@@ -4012,7 +4012,7 @@ PFormTextEditor.apiKey = '';var PFormAutocomplete = ToForwardRefExoticComponent(
         var finalValue = value;
         if (multiple) {
             if (!Array.isArray(finalValue)) {
-                if (finalValue != null && compare.notEmpty(finalValue)) {
+                if (finalValue != null) {
                     if (typeof finalValue === 'string') {
                         finalValue = Array.from(new Set(finalValue.split(formValueSeparator || ',')));
                     }
@@ -4091,7 +4091,7 @@ PFormTextEditor.apiKey = '';var PFormAutocomplete = ToForwardRefExoticComponent(
             finalValue = (multiple ? [] : undefined);
         }
         var newComponentValue = (multiple ? [] : null);
-        if (compare.notEmpty(finalValue)) {
+        if (finalValue != null) {
             if (items) {
                 if (Array.isArray(finalValue)) {
                     finalValue.forEach(function (v) {
