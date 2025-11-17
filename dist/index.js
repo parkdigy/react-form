@@ -4369,7 +4369,7 @@ PFormTextEditor.apiKey = '';var PFormAutocomplete = ToForwardRefExoticComponent(
     /********************************************************************************************************************
      * Render
      * ******************************************************************************************************************/
-    return (React.createElement(material.Autocomplete, { options: items || [], className: classNames(className, 'PFormValueItem', 'PFormAutocomplete'), sx: sx, multiple: multiple, fullWidth: !width && fullWidth, openOnFocus: openOnFocus, disableClearable: disableClearable, disablePortal: disablePortal, noOptionsText: noOptionsText, autoFocus: autoFocus, value: componentValue, style: style, isOptionEqualToValue: function (option, value) { return option.value === value.value; }, getOptionDisabled: handleGetOptionDisabled, disabled: disabled, readOnly: readOnly, loading: loading || isOnGetItemLoading, loadingText: loadingText, limitTags: limitTags, getLimitTagsText: getLimitTagsText, onChange: function (e, value, reason, details) { return handleChange(value, reason, details); }, renderOption: function (props, option) { return (React.createElement("li", __assign({}, props, { key: "".concat(option.value) }), onRenderItem ? onRenderItem(option) : option.label)); }, onInputChange: function (event, newInputValue, reason) {
+    return (React.createElement(material.Autocomplete, { options: items || [], className: classNames(className, 'PFormValueItem', 'PFormAutocomplete'), sx: sx, multiple: multiple, fullWidth: !width && fullWidth, openOnFocus: openOnFocus, disableClearable: disableClearable, disablePortal: disablePortal, noOptionsText: noOptionsText, value: componentValue, style: style, isOptionEqualToValue: function (option, value) { return option.value === value.value; }, getOptionDisabled: handleGetOptionDisabled, disabled: disabled, readOnly: readOnly, loading: loading || isOnGetItemLoading, loadingText: loadingText, limitTags: limitTags, getLimitTagsText: getLimitTagsText, onChange: function (e, value, reason, details) { return handleChange(value, reason, details); }, renderOption: function (props, option) { return (React.createElement("li", __assign({}, props, { key: "".concat(option.value) }), onRenderItem ? onRenderItem(option) : option.label)); }, onInputChange: function (event, newInputValue, reason) {
             if (reason === 'input') {
                 setInputValue(newInputValue);
             }
@@ -4388,7 +4388,7 @@ PFormTextEditor.apiKey = '';var PFormAutocomplete = ToForwardRefExoticComponent(
             : undefined, renderInput: function (params) {
             var _a;
             var slotProps = {
-                input: __assign(__assign({}, params.InputProps), { style: {
+                input: __assign(__assign({}, params.InputProps), { autoFocus: autoFocus, style: {
                         paddingTop: variant === 'outlined' && size === 'small' ? 7 : undefined,
                         paddingBottom: variant === 'outlined' && size === 'small' ? 5 : undefined,
                         marginTop: variant === 'outlined' && size === 'small' ? -1 : undefined,

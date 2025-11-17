@@ -631,7 +631,6 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
         disableClearable={disableClearable}
         disablePortal={disablePortal}
         noOptionsText={noOptionsText}
-        autoFocus={autoFocus}
         value={componentValue as any}
         style={style}
         isOptionEqualToValue={(option, value) => option.value === value.value}
@@ -684,6 +683,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
           const slotProps = {
             input: {
               ...params.InputProps,
+              autoFocus,
               style: {
                 paddingTop: variant === 'outlined' && size === 'small' ? 7 : undefined,
                 paddingBottom: variant === 'outlined' && size === 'small' ? 5 : undefined,
