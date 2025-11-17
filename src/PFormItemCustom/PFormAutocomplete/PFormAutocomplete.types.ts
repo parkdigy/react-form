@@ -50,6 +50,7 @@ export interface PFormAutocompleteProps<
   openOnFocus?: boolean;
   disableClearable?: boolean;
   async?: boolean;
+  autoFocus?: boolean;
   onLoadItems?: (inputValue?: string) => Promise<PFormAutocompleteItems<T>>;
   onAsyncLoadValueItem?: (
     value: PFormAutocompleteValue<T, Multiple>

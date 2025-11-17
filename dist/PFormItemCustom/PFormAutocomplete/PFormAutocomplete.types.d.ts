@@ -28,6 +28,7 @@ export interface PFormAutocompleteProps<T extends PFormAutocompleteSingleValue, 
     openOnFocus?: boolean;
     disableClearable?: boolean;
     async?: boolean;
+    autoFocus?: boolean;
     onLoadItems?: (inputValue?: string) => Promise<PFormAutocompleteItems<T>>;
     onAsyncLoadValueItem?: (value: PFormAutocompleteValue<T, Multiple>) => Promise<PFormAutocompleteComponentValue<T, Multiple>>;
     onRenderItem?: (item: PFormAutocompleteItem<T>) => ReactNode;

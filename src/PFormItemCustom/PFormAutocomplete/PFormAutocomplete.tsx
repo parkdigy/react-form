@@ -58,6 +58,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
       openOnFocus,
       disableClearable,
       async,
+      autoFocus,
       hidden: initHidden,
       onLoadItems,
       onAsyncLoadValueItem,
@@ -630,6 +631,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
         disableClearable={disableClearable}
         disablePortal={disablePortal}
         noOptionsText={noOptionsText}
+        autoFocus={autoFocus}
         value={componentValue as any}
         style={style}
         isOptionEqualToValue={(option, value) => option.value === value.value}
