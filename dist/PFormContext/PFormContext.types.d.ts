@@ -1,16 +1,16 @@
 import { PartialPick, PFormValueItemCommands } from '../@types';
 import { PFormProps } from '../PForm/PForm.types';
-export interface PFormContextValue<T = any, AllowUndefinedValue extends boolean = true, ItemValue = any, RangeItemValue = any> extends PartialPick<PFormProps, 'variant' | 'size' | 'color' | 'spacing' | 'formColGap' | 'focused' | 'labelShrink' | 'fullWidth'> {
+export interface PFormContextValue<T = any, AllowUndefinedValue extends boolean = true, ItemValue = any, RangeItemValue = any, TV = T | (AllowUndefinedValue extends true ? undefined : never)> extends PartialPick<PFormProps, 'variant' | 'size' | 'color' | 'spacing' | 'formColGap' | 'focused' | 'labelShrink' | 'fullWidth'> {
     id: string;
     fullHeight?: boolean;
     disabled?: boolean;
     submitWhenReturnKey?: boolean;
     onAddValueItem: (id: string, commands: PFormValueItemCommands<T, AllowUndefinedValue, ItemValue, RangeItemValue>) => void;
     onRemoveValueItem: (id: string) => void;
-    onValueChange: (name: string, value: T) => void;
-    onValueChangeByUser: (name: string, value: T) => void;
-    onRequestSubmit: (name: string, value: T) => void;
-    onRequestSearchSubmit: (name: string, value: T) => void;
+    onValueChange: (name: string, value: TV) => void;
+    onValueChangeByUser: (name: string, value: TV) => void;
+    onRequestSubmit: (name: string, value: TV) => void;
+    onRequestSearchSubmit: (name: string, value: TV) => void;
     /** PFormRow */
     formColAutoXs?: number;
     formColWidth?: number;

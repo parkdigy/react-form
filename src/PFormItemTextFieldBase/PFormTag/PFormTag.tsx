@@ -142,10 +142,7 @@ const PFormTag = React.forwardRef<PFormTagCommands, PFormTagProps>(
       [onValue]
     );
 
-    const [valueRef, value, _setValue] = useAutoUpdateRefState<PFormTagValue, GetFinalValueParam>(
-      initValue,
-      getFinalValue
-    );
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
     const valueSet = useMemo(() => new Set(value), [value]);
 
     const updateValue = useCallback(

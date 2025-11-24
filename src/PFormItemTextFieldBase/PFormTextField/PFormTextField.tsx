@@ -192,7 +192,7 @@ const PFormTextField: WithForwardRefType = React.forwardRef<PFormTextFieldComman
       [onValue]
     );
 
-    const [valueRef, value, _setValue] = useAutoUpdateRefState<PFormTextFieldProps['value']>(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
     const updateValue = useCallback(
       (newValue: PFormTextFieldProps['value']) => {

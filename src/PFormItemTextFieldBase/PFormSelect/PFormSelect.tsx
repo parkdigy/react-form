@@ -11,6 +11,7 @@ import {
   PFormSelectSingleValue,
   PFormSelectValue,
   PFormSelectItem,
+  PFormSelectItems,
 } from './PFormSelect.types';
 import { useFormState } from '../../PFormContext';
 import PFormContextProvider from '../../PFormContextProvider';
@@ -23,7 +24,11 @@ interface ItemValueLabelMap {
 }
 
 const PFormSelect = ToForwardRefExoticComponent(
-  AutoTypeForwardRef(function <T extends PFormSelectSingleValue, Multiple extends boolean | undefined>(
+  AutoTypeForwardRef(function <
+    T extends PFormSelectSingleValue,
+    Multiple extends boolean | undefined = undefined,
+    Items extends PFormSelectItems<T> = [],
+  >(
     {
       className,
       name,
@@ -47,14 +52,14 @@ const PFormSelect = ToForwardRefExoticComponent(
       onChange,
       onValue,
       ...props
-    }: PFormSelectProps<T, Multiple>,
+    }: PFormSelectProps<T, Multiple, Items>,
     ref: React.ForwardedRef<PFormSelectCommands<T, Multiple>>
   ) {
     /********************************************************************************************************************
      * type
      * ******************************************************************************************************************/
 
-    type Props = PFormSelectProps<T, Multiple>;
+    type Props = PFormSelectProps<T, Multiple, Items>;
     type Commands = PFormSelectCommands<T, Multiple>;
     type Value = PFormSelectValue<T, Multiple>;
 
@@ -149,7 +154,7 @@ const PFormSelect = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     const getFinalValue = useCallback(
-      (newValue?: any): any => {
+      (newValue: Props['value']): Value => {
         let finalValue: any = newValue == null ? '' : newValue;
         if (multiple) {
           if (!Array.isArray(finalValue)) {
@@ -193,7 +198,7 @@ const PFormSelect = ToForwardRefExoticComponent(
 
         finalValue = onValue ? onValue(finalValue) : finalValue;
 
-        return equal(newValue, finalValue) ? newValue : finalValue;
+        return (equal(newValue, finalValue) ? newValue : finalValue) as Value;
       },
       [multiple, formValueSeparator, itemsValues, onValue]
     );
@@ -202,14 +207,14 @@ const PFormSelect = ToForwardRefExoticComponent(
      * value
      * ******************************************************************************************************************/
 
-    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState<any, Props['value'], Value>(initValue, getFinalValue);
 
     const updateValue = useCallback(
-      (newValue: Props['value']) => {
-        const finalValue = _setValue(newValue);
+      (newValue: Props['value'], skipCallback = false) => {
+        const finalValue = _setValue(newValue, skipCallback);
 
-        if (onChange) onChange(finalValue);
-        onValueChange(name, finalValue);
+        if (onChange) onChange(finalValue as any);
+        onValueChange(name, finalValue as any);
 
         return finalValue;
       },
@@ -249,12 +254,12 @@ const PFormSelect = ToForwardRefExoticComponent(
       return {
         getReset: () => getFinalValue(initValue),
         reset: () => updateValue(initValue),
-        getValue: () => valueRef.current,
+        getValue: () => valueRef.current as any,
         setValue: (value: Props['value']) => updateValue(value),
       };
     }, [getFinalValue, initValue, updateValue, valueRef]);
 
-    const getExtraCommands = useCallback((): PFormSelectExtraCommands<any> => {
+    const getExtraCommands = useCallback((): PFormSelectExtraCommands<T> => {
       let lastItems = items;
       let lastLoading = loading;
 
@@ -263,7 +268,7 @@ const PFormSelect = ToForwardRefExoticComponent(
         isFormValueSort: () => !!formValueSort,
         getItems: () => lastItems,
         setItems: (items) => {
-          lastItems = items;
+          lastItems = items as any;
           setItems(lastItems);
         },
         isMultiple: () => !!multiple,
@@ -435,7 +440,7 @@ const PFormSelect = ToForwardRefExoticComponent(
           fullWidth={fullWidth}
           {...props}
           startAdornment={startAdornment}
-          value={finalValue}
+          value={finalValue as any}
           clear={false}
           readOnly={readOnly || empty(items)}
           slotProps={slotProps}
@@ -455,7 +460,9 @@ const PFormSelect = ToForwardRefExoticComponent(
                 value={typeof itemValue === 'boolean' ? `${itemValue}` : itemValue}
                 disabled={disabled}
               >
-                {multiple && checkbox && Array.isArray(value) && <Checkbox checked={value.includes(itemValue)} />}
+                {multiple && checkbox && Array.isArray(value) && (
+                  <Checkbox checked={value.includes(itemValue as any)} />
+                )}
                 {itemLabel}
               </MenuItem>
             ))

@@ -184,10 +184,7 @@ const PFormFile = React.forwardRef<PFormFileCommands, Props>(
      * State - value
      * ******************************************************************************************************************/
 
-    const [valueRef, value, _setValue] = useAutoUpdateRefState<PFormFileValue, Props['value']>(
-      initValue,
-      getFinalValue
-    );
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
     const updateValue = useCallback(
       (newValue: Props['value']) => {

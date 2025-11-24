@@ -51,8 +51,8 @@ const FormBase = () => {
 
   const [variant, setVariant] = useState<PFormProps['variant']>('outlined');
   const [size, setSize] = useState<PFormProps['size']>('medium');
-  const [spacing, setSpacing] = useState<PFormProps['spacing']>(2);
-  const [formColGap, setFormColGap] = useState<PFormProps['formColGap']>(1.5);
+  const [spacing, setSpacing] = useState<0|1|2|3|4|5>(2);
+  const [formColGap, setFormColGap] = useState<0|1|1.5|2|3|4>(1.5);
   const [color, setColor] = useState<PFormProps['color']>('primary');
   const [focused, setFocused] = useState<PFormProps['focused']>(false);
   const [labelShrink, setLabelShrink] = useState<PFormProps['labelShrink']>(false);
@@ -130,15 +130,15 @@ const FormBase = () => {
                 <PFormSelect
                   name='spacing'
                   label='spacing'
-                  value={Number(spacing)}
-                  onChange={setSpacing}
+                  value={spacing}
+                  onChange={(v) => (v === '' ? 1.5 : setSpacing(v))}
                   items={[lv('0', 0), lv('1', 1), lv('2 (Default)', 2), lv('3', 3), lv('4', 4), lv('5', 5)]}
                   fullWidth={false}
                 />
                 <PFormSelect
                   name='formColGap'
                   label='formColGap'
-                  value={Number(formColGap)}
+                  value={formColGap}
                   onChange={(v) => (v === '' ? 1.5 : setFormColGap(v))}
                   items={[lv('0', 0), lv('1', 1), lv('1.5 (Default)', 1.5), lv('2', 2), lv('3', 3), lv('4', 4)]}
                   fullWidth={false}

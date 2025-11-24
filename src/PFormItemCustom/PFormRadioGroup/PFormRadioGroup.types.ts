@@ -15,21 +15,24 @@ export interface PFormRadioGroupItem<T extends PFormRadioGroupSingleValue> {
   disabled?: boolean;
 }
 
-export type PFormRadioGroupItems<T extends PFormRadioGroupSingleValue> = PFormRadioGroupItem<T>[];
+export type PFormRadioGroupItems<T extends PFormRadioGroupSingleValue> = readonly PFormRadioGroupItem<T>[];
 
 export type PFormRadioGroupValue<T extends PFormRadioGroupSingleValue> = T | undefined;
 
-export interface PFormRadioGroupProps<T extends PFormRadioGroupSingleValue>
-  extends PCommonSxProps,
-    Omit<PFormValueItemProps<T>, 'value'> {
-  value?: T;
-  items?: PFormRadioGroupItem<T>[];
+export interface PFormRadioGroupProps<
+  BaseValue extends PFormRadioGroupSingleValue,
+  Items extends PFormRadioGroupItems<BaseValue>,
+  Value extends PFormRadioGroupSingleValue = Items[number]['value'],
+> extends PCommonSxProps,
+    Omit<PFormValueItemProps<PFormRadioGroupValue<Value>>, 'value'> {
+  value?: Value;
+  items?: Items;
   required?: boolean;
   inline?: boolean;
   loading?: boolean;
   nowrap?: boolean;
-  onLoadItems?: () => Promise<PFormRadioGroupItem<T>[]>;
-  onValue?: (value: PFormRadioGroupValue<T>) => PFormRadioGroupValue<T>;
+  onLoadItems?: () => Promise<Items>;
+  onValue?: (value: PFormRadioGroupValue<Value>) => PFormRadioGroupValue<Value>;
 }
 
 export interface PFormRadioGroupCommands<T extends PFormRadioGroupSingleValue>

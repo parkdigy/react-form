@@ -298,10 +298,7 @@ const PFormDateRangePicker = React.forwardRef<PFormDateRangePickerCommands, Prop
      * value
      * ******************************************************************************************************************/
 
-    const [valueRef, value, _setValue] = useAutoUpdateRefState<PFormDateRangePickerValue, Props['value']>(
-      initValue,
-      getFinalValue
-    );
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
     const updateValue = useCallback(
       (newValue: Props['value']) => {

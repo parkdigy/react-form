@@ -2202,14 +2202,15 @@ function AutoTypeForwardRef(render) {
             }
         }
         finalValue = onValue ? onValue(finalValue) : finalValue;
-        return compare.equal(newValue, finalValue) ? newValue : finalValue;
+        return (compare.equal(newValue, finalValue) ? newValue : finalValue);
     }, [multiple, formValueSeparator, itemsValues, onValue]);
     /********************************************************************************************************************
      * value
      * ******************************************************************************************************************/
     var _k = reactHook.useAutoUpdateRefState(initValue, getFinalValue), valueRef = _k[0], value = _k[1], _setValue = _k[2];
-    var updateValue = React.useCallback(function (newValue) {
-        var finalValue = _setValue(newValue);
+    var updateValue = React.useCallback(function (newValue, skipCallback) {
+        if (skipCallback === void 0) { skipCallback = false; }
+        var finalValue = _setValue(newValue, skipCallback);
         if (onChange)
             onChange(finalValue);
         onValueChange(name, finalValue);
@@ -2374,7 +2375,7 @@ function AutoTypeForwardRef(render) {
             items && compare.notEmpty(items) ? (items.map(function (_a) {
                 var itemLabel = _a.label, itemValue = _a.value, disabled = _a.disabled;
                 return (React.createElement(material.MenuItem, { key: compare.empty(itemValue) ? '$$$EmptyValue$$$' : "".concat(itemValue), value: typeof itemValue === 'boolean' ? "".concat(itemValue) : itemValue, disabled: disabled },
-                    multiple && checkbox && Array.isArray(value) && React.createElement(material.Checkbox, { checked: value.includes(itemValue) }),
+                    multiple && checkbox && Array.isArray(value) && (React.createElement(material.Checkbox, { checked: value.includes(itemValue) })),
                     itemLabel));
             })) : (React.createElement(material.MenuItem, { value: '' })))));
 }));
@@ -2629,7 +2630,7 @@ PFormItemBase.displayName = 'PFormItemBase';var PFormCheckbox = React.forwardRef
     /********************************************************************************************************************
      * State - checked
      * ******************************************************************************************************************/
-    var _p = reactHook.useAutoUpdateRefState(initChecked, React.useCallback(function (newChecked) { return !!newChecked; }, [])), checkedRef = _p[0], checked = _p[1], _setChecked = _p[2];
+    var _p = reactHook.useAutoUpdateRefState(initChecked), checkedRef = _p[0], checked = _p[1], _setChecked = _p[2];
     var updateChecked = React.useCallback(function (newChecked, notFireOnChange) {
         if (notFireOnChange === void 0) { notFireOnChange = false; }
         var finalChecked = _setChecked(newChecked);
@@ -2939,7 +2940,7 @@ var PFormRadioGroup = ToForwardRefExoticComponent(AutoTypeForwardRef(function (_
             return setErrorErrorHelperText(error, error ? errorHelperText : undefined);
         },
         getItems: function () { return itemsRef.current; },
-        setItems: setItems,
+        setItems: function (v) { return setItems(v); },
         getLoading: function () { return !!loadingRef.current; },
         setLoading: setLoading,
         reloadItems: function () {
@@ -3133,7 +3134,13 @@ PFormRadioGroup.displayName = 'PFormRadioGroup';insertStyle(".PFormToggleButtonG
     var _p = reactHook.useAutoUpdateRefState(React.useMemo(function () { return (initDisabled == null ? formDisabled : initDisabled); }, [initDisabled, formDisabled])), disabledRef = _p[0], disabled = _p[1], setDisabled = _p[2];
     var _q = reactHook.useAutoUpdateRefState(initHidden), hiddenRef = _q[0], hidden = _q[1], setHidden = _q[2];
     var _r = reactHook.useAutoUpdateRefState(initLoading), loadingRef = _r[0], loading = _r[1], setLoading = _r[2];
-    var _s = reactHook.useAutoUpdateRefState(initItems), itemsRef = _s[0], items = _s[1], setItems = _s[2];
+    var _s = reactHook.useAutoUpdateRefState(initItems), itemsRef = _s[0], items = _s[1], _setItems = _s[2];
+    /********************************************************************************************************************
+     * State Function
+     * ******************************************************************************************************************/
+    var setItems = React.useCallback(function (newItems) {
+        _setItems(newItems);
+    }, [_setItems]);
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -3953,7 +3960,13 @@ PFormTextEditor.apiKey = '';var PFormAutocomplete = ToForwardRefExoticComponent(
     var _k = reactHook.useAutoUpdateRefState(React.useMemo(function () { return (initDisabled == null ? formDisabled : initDisabled); }, [initDisabled, formDisabled])), disabledRef = _k[0], disabled = _k[1], setDisabled = _k[2];
     var _l = reactHook.useAutoUpdateRefState(initHidden), hiddenRef = _l[0], hidden = _l[1], setHidden = _l[2];
     var _m = reactHook.useAutoUpdateRefState(initLoading), loadingRef = _m[0], loading = _m[1], setLoading = _m[2];
-    var _o = reactHook.useAutoUpdateRefState(initItems), itemsRef = _o[0], items = _o[1], setItems = _o[2];
+    var _o = reactHook.useAutoUpdateRefState(initItems), itemsRef = _o[0], items = _o[1], _setItems = _o[2];
+    /********************************************************************************************************************
+     * State Function
+     * ******************************************************************************************************************/
+    var setItems = React.useCallback(function (newItems) {
+        _setItems(newItems);
+    }, [_setItems]);
     /********************************************************************************************************************
      * Memo
      * ******************************************************************************************************************/
@@ -4102,7 +4115,7 @@ PFormTextEditor.apiKey = '';var PFormAutocomplete = ToForwardRefExoticComponent(
                     });
                 }
                 else {
-                    newComponentValue = (items.find(function (info) { return info.value === value; }) ||
+                    newComponentValue = (items.find(function (info) { return info.value === finalValue; }) ||
                         (multiple ? [] : null));
                 }
             }
@@ -4259,7 +4272,7 @@ PFormTextEditor.apiKey = '';var PFormAutocomplete = ToForwardRefExoticComponent(
         getFormValueSeparator: function () { return formValueSeparator; },
         isFormValueSort: function () { return !!formValueSort; },
         getItems: function () { return itemsRef.current; },
-        setItems: function (items) { return setItems(items); },
+        setItems: setItems,
         isMultiple: function () { return !!multiple; },
         getLoading: function () { return !!loadingRef.current; },
         setLoading: function (loading) { return setLoading(loading); },
@@ -4425,7 +4438,7 @@ var hasRequiredWeekOfYear;
 function requireWeekOfYear () {
 	if (hasRequiredWeekOfYear) return weekOfYear$1.exports;
 	hasRequiredWeekOfYear = 1;
-	(function (module, exports) {
+	(function (module, exports$1) {
 		!function(e,t){module.exports=t();}(weekOfYear,(function(){var e="week",t="year";return function(i,n,r){var f=n.prototype;f.week=function(i){if(void 0===i&&(i=null),null!==i)return this.add(7*(i-this.week()),"day");var n=this.$locale().yearStart||1;if(11===this.month()&&this.date()>25){var f=r(this).startOf(t).add(1,t).date(n),s=r(this).endOf(e);if(f.isBefore(s))return 1}var a=r(this).startOf(t).date(n).startOf(e).subtract(1,"millisecond"),o=this.diff(a,e,true);return o<0?r(this).startOf("week").week():Math.ceil(o)},f.weeks=function(e){return void 0===e&&(e=null),this.week(e)};}})); 
 	} (weekOfYear$1));
 	return weekOfYear$1.exports;
@@ -4437,7 +4450,7 @@ var hasRequiredCustomParseFormat;
 function requireCustomParseFormat () {
 	if (hasRequiredCustomParseFormat) return customParseFormat$1.exports;
 	hasRequiredCustomParseFormat = 1;
-	(function (module, exports) {
+	(function (module, exports$1) {
 		!function(e,t){module.exports=t();}(customParseFormat,(function(){var e={LTS:"h:mm:ss A",LT:"h:mm A",L:"MM/DD/YYYY",LL:"MMMM D, YYYY",LLL:"MMMM D, YYYY h:mm A",LLLL:"dddd, MMMM D, YYYY h:mm A"},t=/(\[[^[]*\])|([-_:/.,()\s]+)|(A|a|Q|YYYY|YY?|ww?|MM?M?M?|Do|DD?|hh?|HH?|mm?|ss?|S{1,3}|z|ZZ?)/g,n=/\d/,r=/\d\d/,i=/\d\d?/,o=/\d*[^-_:/,()\s\d]+/,s={},a=function(e){return (e=+e)+(e>68?1900:2e3)};var f=function(e){return function(t){this[e]=+t;}},h=[/[+-]\d\d:?(\d\d)?|Z/,function(e){(this.zone||(this.zone={})).offset=function(e){if(!e)return 0;if("Z"===e)return 0;var t=e.match(/([+-]|\d\d)/g),n=60*t[1]+(+t[2]||0);return 0===n?0:"+"===t[0]?-n:n}(e);}],u=function(e){var t=s[e];return t&&(t.indexOf?t:t.s.concat(t.f))},d=function(e,t){var n,r=s.meridiem;if(r){for(var i=1;i<=24;i+=1)if(e.indexOf(r(i,0,t))>-1){n=i>12;break}}else n=e===(t?"pm":"PM");return n},c={A:[o,function(e){this.afternoon=d(e,false);}],a:[o,function(e){this.afternoon=d(e,true);}],Q:[n,function(e){this.month=3*(e-1)+1;}],S:[n,function(e){this.milliseconds=100*+e;}],SS:[r,function(e){this.milliseconds=10*+e;}],SSS:[/\d{3}/,function(e){this.milliseconds=+e;}],s:[i,f("seconds")],ss:[i,f("seconds")],m:[i,f("minutes")],mm:[i,f("minutes")],H:[i,f("hours")],h:[i,f("hours")],HH:[i,f("hours")],hh:[i,f("hours")],D:[i,f("day")],DD:[r,f("day")],Do:[o,function(e){var t=s.ordinal,n=e.match(/\d+/);if(this.day=n[0],t)for(var r=1;r<=31;r+=1)t(r).replace(/\[|\]/g,"")===e&&(this.day=r);}],w:[i,f("week")],ww:[r,f("week")],M:[i,f("month")],MM:[r,f("month")],MMM:[o,function(e){var t=u("months"),n=(u("monthsShort")||t.map((function(e){return e.slice(0,3)}))).indexOf(e)+1;if(n<1)throw new Error;this.month=n%12||n;}],MMMM:[o,function(e){var t=u("months").indexOf(e)+1;if(t<1)throw new Error;this.month=t%12||t;}],Y:[/[+-]?\d+/,f("year")],YY:[r,function(e){this.year=a(e);}],YYYY:[/\d{4}/,f("year")],Z:h,ZZ:h};function l(n){var r,i;r=n,i=s&&s.formats;for(var o=(n=r.replace(/(\[[^\]]+])|(LTS?|l{1,4}|L{1,4})/g,(function(t,n,r){var o=r&&r.toUpperCase();return n||i[r]||e[r]||i[o].replace(/(\[[^\]]+])|(MMMM|MM|DD|dddd)/g,(function(e,t,n){return t||n.slice(1)}))}))).match(t),a=o.length,f=0;f<a;f+=1){var h=o[f],u=c[h],d=u&&u[0],l=u&&u[1];o[f]=l?{regex:d,parser:l}:h.replace(/^\[|\]$/g,"");}return function(e){for(var t={},n=0,r=0;n<a;n+=1){var i=o[n];if("string"==typeof i)r+=i.length;else {var s=i.regex,f=i.parser,h=e.slice(r),u=s.exec(h)[0];f.call(t,u),e=e.replace(u,"");}}return function(e){var t=e.afternoon;if(void 0!==t){var n=e.hours;t?n<12&&(e.hours+=12):12===n&&(e.hours=0),delete e.afternoon;}}(t),t}}return function(e,t,n){n.p.customParseFormat=true,e&&e.parseTwoDigitYear&&(a=e.parseTwoDigitYear);var r=t.prototype,i=r.parse;r.parse=function(e){var t=e.date,r=e.utc,o=e.args;this.$u=r;var a=o[1];if("string"==typeof a){var f=true===o[2],h=true===o[3],u=f||h,d=o[2];h&&(d=o[2]),s=this.$locale(),!f&&d&&(s=n.Ls[d]),this.$d=function(e,t,n,r){try{if(["x","X"].indexOf(t)>-1)return new Date(("X"===t?1e3:1)*e);var i=l(t)(e),o=i.year,s=i.month,a=i.day,f=i.hours,h=i.minutes,u=i.seconds,d=i.milliseconds,c=i.zone,m=i.week,M=new Date,Y=a||(o||s?1:M.getDate()),p=o||M.getFullYear(),v=0;o&&!s||(v=s>0?s-1:M.getMonth());var D,w=f||0,g=h||0,y=u||0,L=d||0;return c?new Date(Date.UTC(p,v,Y,w,g,y,L+60*c.offset*1e3)):n?new Date(Date.UTC(p,v,Y,w,g,y,L)):(D=new Date(p,v,Y,w,g,y,L),m&&(D=r(D).week(m).toDate()),D)}catch(e){return new Date("")}}(t,a,r,n),this.init(),d&&true!==d&&(this.$L=this.locale(d).$L),u&&t!=this.format(a)&&(this.$d=new Date("")),s={};}else if(a instanceof Array)for(var c=a.length,m=1;m<=c;m+=1){o[1]=a[m-1];var M=n.apply(this,o);if(M.isValid()){this.$d=M.$d,this.$L=M.$L,this.init();break}m===c&&(this.$d=new Date(""));}else i.call(this,e);};}})); 
 	} (customParseFormat$1));
 	return customParseFormat$1.exports;
@@ -4449,7 +4462,7 @@ var hasRequiredLocalizedFormat;
 function requireLocalizedFormat () {
 	if (hasRequiredLocalizedFormat) return localizedFormat$1.exports;
 	hasRequiredLocalizedFormat = 1;
-	(function (module, exports) {
+	(function (module, exports$1) {
 		!function(e,t){module.exports=t();}(localizedFormat,(function(){var e={LTS:"h:mm:ss A",LT:"h:mm A",L:"MM/DD/YYYY",LL:"MMMM D, YYYY",LLL:"MMMM D, YYYY h:mm A",LLLL:"dddd, MMMM D, YYYY h:mm A"};return function(t,o,n){var r=o.prototype,i=r.format;n.en.formats=e,r.format=function(t){ void 0===t&&(t="YYYY-MM-DDTHH:mm:ssZ");var o=this.$locale().formats,n=function(t,o){return t.replace(/(\[[^\]]+])|(LTS?|l{1,4}|L{1,4})/g,(function(t,n,r){var i=r&&r.toUpperCase();return n||o[r]||e[r]||o[i].replace(/(\[[^\]]+])|(MMMM|MM|DD|dddd)/g,(function(e,t,o){return t||o.slice(1)}))}))}(t,void 0===o?{}:o);return i.call(this,n)};}})); 
 	} (localizedFormat$1));
 	return localizedFormat$1.exports;
@@ -4461,7 +4474,7 @@ var hasRequiredIsBetween;
 function requireIsBetween () {
 	if (hasRequiredIsBetween) return isBetween$1.exports;
 	hasRequiredIsBetween = 1;
-	(function (module, exports) {
+	(function (module, exports$1) {
 		!function(e,i){module.exports=i();}(isBetween,(function(){return function(e,i,t){i.prototype.isBetween=function(e,i,s,f){var n=t(e),o=t(i),r="("===(f=f||"()")[0],u=")"===f[1];return (r?this.isAfter(n,s):!this.isBefore(n,s))&&(u?this.isBefore(o,s):!this.isAfter(o,s))||(r?this.isBefore(n,s):!this.isAfter(n,s))&&(u?this.isAfter(o,s):!this.isBefore(o,s))};}})); 
 	} (isBetween$1));
 	return isBetween$1.exports;
@@ -4473,7 +4486,7 @@ var hasRequiredAdvancedFormat;
 function requireAdvancedFormat () {
 	if (hasRequiredAdvancedFormat) return advancedFormat$1.exports;
 	hasRequiredAdvancedFormat = 1;
-	(function (module, exports) {
+	(function (module, exports$1) {
 		!function(e,t){module.exports=t();}(advancedFormat,(function(){return function(e,t){var r=t.prototype,n=r.format;r.format=function(e){var t=this,r=this.$locale();if(!this.isValid())return n.bind(this)(e);var s=this.$utils(),a=(e||"YYYY-MM-DDTHH:mm:ssZ").replace(/\[([^\]]+)]|Q|wo|ww|w|WW|W|zzz|z|gggg|GGGG|Do|X|x|k{1,2}|S/g,(function(e){switch(e){case "Q":return Math.ceil((t.$M+1)/3);case "Do":return r.ordinal(t.$D);case "gggg":return t.weekYear();case "GGGG":return t.isoWeekYear();case "wo":return r.ordinal(t.week(),"W");case "w":case "ww":return s.s(t.week(),"w"===e?1:2,"0");case "W":case "WW":return s.s(t.isoWeek(),"W"===e?1:2,"0");case "k":case "kk":return s.s(String(0===t.$H?24:t.$H),"k"===e?1:2,"0");case "X":return Math.floor(t.$d.getTime()/1e3);case "x":return t.$d.getTime();case "z":return "["+t.offsetName()+"]";case "zzz":return "["+t.offsetName("long")+"]";default:return e}}));return n.bind(this)(a)};}})); 
 	} (advancedFormat$1));
 	return advancedFormat$1.exports;
@@ -9029,7 +9042,7 @@ var hasRequiredKo;
 function requireKo () {
 	if (hasRequiredKo) return ko$1.exports;
 	hasRequiredKo = 1;
-	(function (module, exports) {
+	(function (module, exports$1) {
 		!function(e,_){module.exports=_(dayjs);}(ko,(function(e){function _(e){return e&&"object"==typeof e&&"default"in e?e:{default:e}}var d=_(e),t={name:"ko",weekdays:"일요일_월요일_화요일_수요일_목요일_금요일_토요일".split("_"),weekdaysShort:"일_월_화_수_목_금_토".split("_"),weekdaysMin:"일_월_화_수_목_금_토".split("_"),months:"1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월".split("_"),monthsShort:"1월_2월_3월_4월_5월_6월_7월_8월_9월_10월_11월_12월".split("_"),ordinal:function(e){return e+"일"},formats:{LT:"A h:mm",LTS:"A h:mm:ss",L:"YYYY.MM.DD.",LL:"YYYY년 MMMM D일",LLL:"YYYY년 MMMM D일 A h:mm",LLLL:"YYYY년 MMMM D일 dddd A h:mm",l:"YYYY.MM.DD.",ll:"YYYY년 MMMM D일",lll:"YYYY년 MMMM D일 A h:mm",llll:"YYYY년 MMMM D일 dddd A h:mm"},meridiem:function(e){return e<12?"오전":"오후"},relativeTime:{future:"%s 후",past:"%s 전",s:"몇 초",m:"1분",mm:"%d분",h:"한 시간",hh:"%d시간",d:"하루",dd:"%d일",M:"한 달",MM:"%d달",y:"일 년",yy:"%d년"}};return d.default.locale(t,null,true),t})); 
 	} (ko$1));
 	return ko$1.exports;

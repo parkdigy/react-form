@@ -45,8 +45,8 @@ export interface PFormArrayValueItemCommands {
     getFormValueSeparator: () => string;
 }
 export interface PFormItemsValueItemCommands<T> {
-    getItems: () => T[] | undefined;
-    setItems: (items: T[] | undefined) => void;
+    getItems: () => readonly T[] | undefined;
+    setItems: (items: readonly T[] | undefined) => void;
 }
 export interface PFormCheckValueItemCommands<T> {
     getChecked: () => boolean;

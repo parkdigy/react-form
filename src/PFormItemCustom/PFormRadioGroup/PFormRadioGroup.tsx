@@ -12,6 +12,7 @@ import {
   PFormRadioGroupValue,
   PFormRadioGroupSingleValue,
   PFormRadioGroupItem,
+  PFormRadioGroupItems,
 } from './PFormRadioGroup.types';
 import { useFormState } from '../../PFormContext';
 import PFormItemBase from '../PFormItemBase';
@@ -19,7 +20,10 @@ import PFormItemBase from '../PFormItemBase';
 const PADDING_LEFT = 3;
 
 const PFormRadioGroup = ToForwardRefExoticComponent(
-  AutoTypeForwardRef(function <T extends PFormRadioGroupSingleValue>(
+  AutoTypeForwardRef(function <
+    BaseValue extends PFormRadioGroupSingleValue,
+    Items extends PFormRadioGroupItems<BaseValue>,
+  >(
     {
       variant: initVariant,
       size: initSize,
@@ -54,16 +58,15 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
       sx,
       //----------------------------------------------------------------------------------------------------------------
       ...props
-    }: PFormRadioGroupProps<T>,
-    ref: React.ForwardedRef<PFormRadioGroupCommands<T>>
+    }: PFormRadioGroupProps<BaseValue, Items>,
+    ref: React.ForwardedRef<PFormRadioGroupCommands<BaseValue>>
   ) {
     /********************************************************************************************************************
      * type
      * ******************************************************************************************************************/
 
-    type Props = PFormRadioGroupProps<T>;
-    type Commands = PFormRadioGroupCommands<T>;
-    type Value = PFormRadioGroupValue<T>;
+    type Props = PFormRadioGroupProps<BaseValue, Items>;
+    type Commands = PFormRadioGroupCommands<BaseValue>;
 
     /********************************************************************************************************************
      * ID
@@ -87,7 +90,7 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
       onValueChange,
       onValueChangeByUser,
       onRequestSearchSubmit,
-    } = useFormState<Value, true, PFormRadioGroupItem<T>>();
+    } = useFormState<PFormRadioGroupValue<BaseValue>, true, PFormRadioGroupItem<BaseValue>>();
 
     /********************************************************************************************************************
      * Memo - FormState
@@ -175,7 +178,7 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     const validate = useCallback(
-      function (value: Value) {
+      function (value: PFormRadioGroupValue<BaseValue>) {
         if (required && empty(value)) {
           setErrorErrorHelperText(true, '필수 선택 항목입니다.');
           return false;
@@ -200,13 +203,13 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     const getFinalValue = useCallback(
-      (value: any) => {
+      (value: PFormRadioGroupValue<BaseValue>) => {
         return onValue ? onValue(value) : value;
       },
       [onValue]
     );
 
-    const [valueRef, value, _setValue] = useAutoUpdateRefState<Value, any>(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
     const updateValue = useCallback(
       (newValue: Props['value'], skipCallback = false) => {
@@ -331,7 +334,7 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
         setError: (error: boolean, errorHelperText: ReactNode) =>
           setErrorErrorHelperText(error, error ? errorHelperText : undefined),
         getItems: () => itemsRef.current,
-        setItems,
+        setItems: (v) => setItems(v as Props['items']),
         getLoading: () => !!loadingRef.current,
         setLoading,
         reloadItems: () => {
@@ -384,7 +387,7 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
         if (readOnly) {
           e.preventDefault();
         } else {
-          let finalValue: Value = e.target.value as Value;
+          let finalValue = e.target.value as PFormRadioGroupValue<BaseValue>;
           if (items) {
             const item = items.find(({ value }) => value.toString() === finalValue);
             if (item) {

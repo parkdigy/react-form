@@ -17,13 +17,17 @@ import {
   PFormAutocompleteItem,
   PFormAutocompleteComponentValue,
   PFormAutocompleteSingleValue,
-  PFormAutocompleteValue,
+  PFormAutocompleteItems,
 } from './PFormAutocomplete.types';
 import { useFormState } from '../../PFormContext';
 import { PFormTextField, PFormTextFieldCommands } from '../../PFormItemTextFieldBase';
 
 const PFormAutocomplete = ToForwardRefExoticComponent(
-  AutoTypeForwardRef(function <T extends PFormAutocompleteSingleValue, Multiple extends boolean | undefined>(
+  AutoTypeForwardRef(function <
+    T extends PFormAutocompleteSingleValue,
+    Multiple extends boolean | undefined = undefined,
+    Items extends PFormAutocompleteItems<T> = [],
+  >(
     {
       variant: initVariant,
       size: initSize,
@@ -76,14 +80,14 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
       className,
       style: initStyle,
       sx,
-    }: PFormAutocompleteProps<T, Multiple>,
+    }: PFormAutocompleteProps<T, Multiple, Items>,
     ref: React.ForwardedRef<PFormAutocompleteCommands<T, Multiple>>
   ) {
     /********************************************************************************************************************
      * type
      * ******************************************************************************************************************/
 
-    type Props = PFormAutocompleteProps<T, Multiple>;
+    type Props = PFormAutocompleteProps<T, Multiple, Items>;
     type Commands = PFormAutocompleteCommands<T, Multiple>;
     type ComponentValue = PFormAutocompleteComponentValue<T, Multiple>;
 
@@ -118,7 +122,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
       onValueChange,
       onValueChangeByUser,
       onRequestSearchSubmit,
-    } = useFormState<PFormAutocompleteValue<T, Multiple>, false, PFormAutocompleteItem<T>>();
+    } = useFormState<T, true, PFormAutocompleteItem<T>>();
 
     /********************************************************************************************************************
      * Memo - FormState
@@ -148,7 +152,18 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
     );
     const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
     const [loadingRef, loading, setLoading] = useAutoUpdateRefState(initLoading);
-    const [itemsRef, items, setItems] = useAutoUpdateRefState<Props['items']>(initItems);
+    const [itemsRef, items, _setItems] = useAutoUpdateRefState(initItems);
+
+    /********************************************************************************************************************
+     * State Function
+     * ******************************************************************************************************************/
+
+    const setItems = useCallback(
+      (newItems: PFormAutocompleteItems<T> | undefined) => {
+        _setItems(newItems as Props['items']);
+      },
+      [_setItems]
+    );
 
     /********************************************************************************************************************
      * Memo
@@ -221,8 +236,8 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     const getFinalValue = useCallback(
-      (value: any) => {
-        let finalValue = value;
+      (value?: Props['value']): Props['value'] => {
+        let finalValue: any = value;
         if (multiple) {
           if (!Array.isArray(finalValue)) {
             if (finalValue != null) {
@@ -263,13 +278,13 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
           }
         }
 
-        return onValue ? onValue(finalValue) : finalValue;
+        return onValue ? onValue(finalValue) : (finalValue as Props['value']);
       },
       [multiple, formValueSeparator, itemsValues, onValue]
     );
 
     const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
-    const [valueItem, setValueItem] = useState<ComponentValue>(null);
+    const [valueItem, setValueItem] = useState<ComponentValue | null>(null);
 
     const updateValue = useCallback(
       (newValue: Props['value'], skipCallback = false) => {
@@ -277,7 +292,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
 
         if (error) validate(finalValue);
         if (onChange) onChange(finalValue);
-        onValueChange(name, finalValue);
+        onValueChange(name, finalValue as any);
 
         return finalValue;
       },
@@ -293,7 +308,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     const componentValue = useMemo(() => {
-      let finalValue: Props['value'] = value;
+      let finalValue = value;
       if (finalValue != null) {
         if (multiple) {
           if (!Array.isArray(finalValue)) {
@@ -301,7 +316,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
           }
         } else {
           if (Array.isArray(finalValue)) {
-            finalValue = finalValue[0] as Props['value'];
+            finalValue = finalValue[0] as unknown as Props['value'];
           }
         }
       } else {
@@ -320,7 +335,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
               }
             });
           } else {
-            newComponentValue = (items.find((info) => info.value === value) ||
+            newComponentValue = (items.find((info) => info.value === finalValue) ||
               (multiple ? [] : null)) as ComponentValue;
           }
         }
@@ -485,7 +500,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
         getFormValueSeparator: () => formValueSeparator,
         isFormValueSort: () => !!formValueSort,
         getItems: () => itemsRef.current,
-        setItems: (items) => setItems(items),
+        setItems,
         isMultiple: () => !!multiple,
         getLoading: () => !!loadingRef.current,
         setLoading: (loading) => setLoading(loading),
@@ -532,7 +547,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
     useForwardLayoutRef(
       ref,
       commands,
-      useCallback((commands: Commands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+      useCallback((commands: Commands) => onAddValueItem(id, commands as any), [id, onAddValueItem]),
       useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
     );
 
@@ -564,8 +579,8 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
             updateValue(finalValue, true);
             setValueItem(componentValue);
             setTimeout(() => {
-              onValueChangeByUser(name, finalValue);
-              onRequestSearchSubmit(name, finalValue);
+              onValueChangeByUser(name, finalValue as any);
+              onRequestSearchSubmit(name, finalValue as any);
             });
           }
         };

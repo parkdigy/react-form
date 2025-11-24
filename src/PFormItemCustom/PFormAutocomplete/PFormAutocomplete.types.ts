@@ -18,25 +18,30 @@ export interface PFormAutocompleteItem<T extends PFormAutocompleteSingleValue> {
   [key: string]: any;
 }
 
-export type PFormAutocompleteItems<T extends PFormAutocompleteSingleValue> = PFormAutocompleteItem<T>[];
+export type PFormAutocompleteItems<T extends PFormAutocompleteSingleValue> = readonly PFormAutocompleteItem<T>[];
 
-export type PFormAutocompleteValue<T extends PFormAutocompleteSingleValue, Multiple extends boolean | undefined> =
-  | ([Multiple] extends [true] ? T[] : T)
-  | undefined;
+export type PFormAutocompleteValue<
+  T extends PFormAutocompleteSingleValue,
+  Multiple extends boolean | undefined = undefined,
+> = (Multiple extends true ? T[] : T) | undefined;
 
 export type PFormAutocompleteComponentValue<
   T extends PFormAutocompleteSingleValue,
-  Multiple extends boolean | undefined,
-> = ([Multiple] extends [true] ? PFormAutocompleteItem<T>[] : PFormAutocompleteItem<T>) | null;
+  Multiple extends boolean | undefined = undefined,
+> = (Multiple extends true ? PFormAutocompleteItem<T>[] : PFormAutocompleteItem<T>) | null;
 
 export interface PFormAutocompleteProps<
   T extends PFormAutocompleteSingleValue,
   Multiple extends boolean | undefined = undefined,
+  Items extends PFormAutocompleteItems<T> = [],
+  SingleValue extends Items[number]['value'] = Items[number]['value'],
+  Item = PFormAutocompleteItem<SingleValue>,
+  Value = Multiple extends true ? SingleValue[] : SingleValue,
+  ComponentValue = PFormAutocompleteComponentValue<SingleValue, Multiple>,
 > extends PCommonSxProps,
-    Omit<PFormValueItemProps<PFormAutocompleteValue<T, Multiple>>, 'value'>,
-    Pick<PFormTextFieldProps<T>, 'required' | 'focused' | 'labelShrink' | 'onFocus' | 'onBlur'> {
-  value?: PFormAutocompleteValue<T, Multiple>;
-  items?: PFormAutocompleteItems<T>;
+    PFormValueItemProps<Value>,
+    Pick<PFormTextFieldProps<SingleValue>, 'required' | 'focused' | 'labelShrink' | 'onFocus' | 'onBlur'> {
+  items?: Items;
   multiple?: Multiple;
   formValueSeparator?: string;
   formValueSort?: boolean;
@@ -51,15 +56,13 @@ export interface PFormAutocompleteProps<
   disableClearable?: boolean;
   async?: boolean;
   autoFocus?: boolean;
-  onLoadItems?: (inputValue?: string) => Promise<PFormAutocompleteItems<T>>;
-  onAsyncLoadValueItem?: (
-    value: PFormAutocompleteValue<T, Multiple>
-  ) => Promise<PFormAutocompleteComponentValue<T, Multiple>>;
-  onRenderItem?: (item: PFormAutocompleteItem<T>) => ReactNode;
-  onRenderTag?: (item: PFormAutocompleteItem<T>) => ReactNode;
-  onValue?: (value: PFormAutocompleteValue<T, Multiple>) => PFormAutocompleteValue<T, Multiple>;
-  onAddItem?: (item: PFormAutocompleteItem<T>) => boolean | Promise<boolean>;
-  getOptionDisabled?: (item: PFormAutocompleteItem<T>) => boolean;
+  onLoadItems?: (inputValue?: string) => Promise<Items>;
+  onAsyncLoadValueItem?: (value: Value) => Promise<ComponentValue>;
+  onRenderItem?: (item: Item) => ReactNode;
+  onRenderTag?: (item: Item) => ReactNode;
+  onValue?: (value: Value | undefined) => Value | undefined;
+  onAddItem?: (item: Item) => boolean | Promise<boolean>;
+  getOptionDisabled?: (item: Item) => boolean;
 }
 
 export interface PFormAutocompleteCommands<

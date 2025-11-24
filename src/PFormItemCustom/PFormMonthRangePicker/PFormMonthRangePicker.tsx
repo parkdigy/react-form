@@ -218,10 +218,7 @@ const PFormMonthRangePicker = React.forwardRef<PFormMonthRangePickerCommands, Pr
      * State - value
      * ******************************************************************************************************************/
 
-    const [valueRef, value, _setValue] = useAutoUpdateRefState<PFormMonthRangePickerValue, Props['value']>(
-      initValue,
-      getFinalValue
-    );
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
     const updateValue = useCallback(
       (newValue: Props['value']) => {

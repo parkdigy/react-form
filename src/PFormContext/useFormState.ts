@@ -12,5 +12,5 @@ export default function useFormState<
   if (value === undefined) {
     throw new Error('useFormState should be used within FormContext.Provider');
   }
-  return value as PFormContextValue<T, AllowUndefinedValue>;
+  return value as any;
 }

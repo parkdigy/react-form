@@ -9,20 +9,19 @@ export interface PFormToggleButtonGroupItem<T extends PFormToggleButtonGroupSing
     disabled?: boolean;
     color?: ToggleButtonProps['color'];
 }
-export type PFormToggleButtonGroupItems<T extends PFormToggleButtonGroupSingleValue> = PFormToggleButtonGroupItem<T>[];
+export type PFormToggleButtonGroupItems<T extends PFormToggleButtonGroupSingleValue> = readonly PFormToggleButtonGroupItem<T>[];
 export type PFormToggleButtonGroupValue<T extends PFormToggleButtonGroupSingleValue, Multiple extends boolean | undefined> = ([Multiple] extends [true] ? T[] : T) | undefined;
-export interface PFormToggleButtonGroupProps<T extends PFormToggleButtonGroupSingleValue, Multiple extends boolean | undefined = undefined> extends PCommonSxProps, Omit<PFormValueItemProps<PFormToggleButtonGroupValue<T, Multiple>>, 'value'>, PartialPick<PFormItemBaseProps, 'required' | 'focused'> {
+export interface PFormToggleButtonGroupProps<T extends PFormToggleButtonGroupSingleValue, Multiple extends boolean | undefined = undefined, Items extends PFormToggleButtonGroupItems<T> = [], SingleValue extends Items[number]['value'] = Items[number]['value'], Value = PFormToggleButtonGroupValue<SingleValue, Multiple>> extends PCommonSxProps, PFormValueItemProps<Value>, PartialPick<PFormItemBaseProps, 'required' | 'focused'> {
     type?: 'button' | 'checkbox' | 'radio';
-    value?: PFormToggleButtonGroupValue<T, Multiple>;
-    items?: PFormToggleButtonGroupItem<T>[];
+    items?: Items;
     multiple?: Multiple;
     notAllowEmptyValue?: boolean;
     formValueSeparator?: string;
     formValueSort?: boolean;
     loading?: boolean;
     itemWidth?: number | string;
-    onLoadItems?: () => Promise<PFormToggleButtonGroupItem<T>[]>;
-    onValue?: (value: PFormToggleButtonGroupValue<T, Multiple>) => PFormToggleButtonGroupValue<T, Multiple>;
+    onLoadItems?: () => Promise<Items>;
+    onValue?: (value: Value) => Value;
 }
 export interface PFormToggleButtonGroupExtraCommands<T extends PFormToggleButtonGroupSingleValue> extends PFormArrayValueItemCommands, PFormItemsValueItemCommands<PFormToggleButtonGroupItem<T>>, PFormMultipleValueItemCommands, PFormLoadingValueItemCommands {
 }

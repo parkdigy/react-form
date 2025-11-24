@@ -109,13 +109,13 @@ const PFormCheckbox = React.forwardRef<PFormCheckboxCommands, Props>(
       useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
     );
     const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
-    const [uncheckedValueRef, , setUncheckedValue] = useAutoUpdateRefState<PFormCheckboxValue, Props['uncheckedValue']>(
+    const [uncheckedValueRef, , setUncheckedValue] = useAutoUpdateRefState(
       initUncheckedValue,
-      useCallback((newUncheckedValue) => (newUncheckedValue == null ? 0 : newUncheckedValue), [])
+      useCallback((newUncheckedValue: PFormCheckboxValue) => (newUncheckedValue == null ? 0 : newUncheckedValue), [])
     );
-    const [valueRef, , setValue] = useAutoUpdateRefState<PFormCheckboxValue, Props['value']>(
+    const [valueRef, , setValue] = useAutoUpdateRefState(
       initValue,
-      useCallback((newValue) => (newValue == null ? 0 : newValue), [])
+      useCallback((newValue: PFormCheckboxValue) => (newValue == null ? 0 : newValue), [])
     );
 
     /********************************************************************************************************************
@@ -155,10 +155,7 @@ const PFormCheckbox = React.forwardRef<PFormCheckboxCommands, Props>(
      * State - checked
      * ******************************************************************************************************************/
 
-    const [checkedRef, checked, _setChecked] = useAutoUpdateRefState<boolean, Props['checked']>(
-      initChecked,
-      useCallback((newChecked) => !!newChecked, [])
-    );
+    const [checkedRef, checked, _setChecked] = useAutoUpdateRefState(initChecked);
 
     const updateChecked = useCallback(
       (newChecked: boolean, notFireOnChange = false) => {

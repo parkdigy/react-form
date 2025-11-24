@@ -12,13 +12,18 @@ import {
   PFormToggleButtonGroupSingleValue,
   PFormToggleButtonGroupValue,
   PFormToggleButtonGroupItem,
+  PFormToggleButtonGroupItems,
 } from './PFormToggleButtonGroup.types';
 import { useFormState } from '../../PFormContext';
 import PFormItemBase, { PFormItemBaseProps } from '../PFormItemBase';
 import './PFormToggleButtonGroup.scss';
 
 const PFormToggleButtonGroup = ToForwardRefExoticComponent(
-  AutoTypeForwardRef(function <T extends PFormToggleButtonGroupSingleValue, Multiple extends boolean | undefined>(
+  AutoTypeForwardRef(function <
+    T extends PFormToggleButtonGroupSingleValue,
+    Multiple extends boolean | undefined = undefined,
+    Items extends PFormToggleButtonGroupItems<T> = [],
+  >(
     {
       variant: initVariant,
       size: initSize,
@@ -56,14 +61,14 @@ const PFormToggleButtonGroup = ToForwardRefExoticComponent(
       className,
       style: initStyle,
       sx,
-    }: PFormToggleButtonGroupProps<T, Multiple>,
+    }: PFormToggleButtonGroupProps<T, Multiple, Items>,
     ref: React.ForwardedRef<PFormToggleButtonGroupCommands<T, Multiple>>
   ) {
     /********************************************************************************************************************
      * type
      * ******************************************************************************************************************/
 
-    type Props = PFormToggleButtonGroupProps<T, Multiple>;
+    type Props = PFormToggleButtonGroupProps<T, Multiple, Items>;
     type Commands = PFormToggleButtonGroupCommands<T, Multiple>;
     type Value = PFormToggleButtonGroupValue<T, Multiple>;
 
@@ -145,7 +150,18 @@ const PFormToggleButtonGroup = ToForwardRefExoticComponent(
     );
     const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
     const [loadingRef, loading, setLoading] = useAutoUpdateRefState(initLoading);
-    const [itemsRef, items, setItems] = useAutoUpdateRefState(initItems);
+    const [itemsRef, items, _setItems] = useAutoUpdateRefState(initItems);
+
+    /********************************************************************************************************************
+     * State Function
+     * ******************************************************************************************************************/
+
+    const setItems = useCallback(
+      (newItems: PFormToggleButtonGroupItems<T> | undefined) => {
+        _setItems(newItems as Props['items']);
+      },
+      [_setItems]
+    );
 
     /********************************************************************************************************************
      * Memo
@@ -226,7 +242,7 @@ const PFormToggleButtonGroup = ToForwardRefExoticComponent(
      * ******************************************************************************************************************/
 
     const getFinalValue = useCallback(
-      (value: any) => {
+      (value: Props['value']) => {
         let finalValue = value;
         if (multiple) {
           if (!Array.isArray(finalValue)) {
@@ -275,7 +291,7 @@ const PFormToggleButtonGroup = ToForwardRefExoticComponent(
       [multiple, formValueSeparator, itemsValues, onValue]
     );
 
-    const [valueRef, value, _setValue] = useAutoUpdateRefState<Props['value'], any>(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
     const updateValue = useCallback(
       (newValue: Props['value'], skipCallback = false) => {

@@ -153,7 +153,7 @@ const PFormRating = React.forwardRef<PFormRatingCommands, Props>(
       [onValue]
     );
 
-    const [valueRef, value, _setValue] = useAutoUpdateRefState<number, Props['value'] | null>(initValue, getFinalValue);
+    const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
     const updateValue = useCallback(
       (newValue: Props['value'] | null) => {
