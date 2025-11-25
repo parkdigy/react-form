@@ -4285,6 +4285,7 @@ PFormTextEditor.apiKey = '';var PFormAutocomplete = ToForwardRefExoticComponent(
                 });
             }
         },
+        setInputValue: setInputValue,
     }); }, [
         async,
         dataRef,

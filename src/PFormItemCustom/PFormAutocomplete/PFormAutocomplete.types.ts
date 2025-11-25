@@ -74,4 +74,5 @@ export interface PFormAutocompleteCommands<
     PFormMultipleValueItemCommands,
     PFormLoadingValueItemCommands {
   reloadItems: () => void;
+  setInputValue: (value: string) => void;
 }

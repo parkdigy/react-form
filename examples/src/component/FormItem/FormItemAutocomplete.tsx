@@ -221,7 +221,6 @@ const FormItemAutocomplete = () => {
             <PFormCol xs={3}>
               <PFormAutocomplete
                 {...additionalProps}
-                ref={asyncLoadAutocompleteRef}
                 name='asyncLoadItems'
                 label='PFormAutocomplete'
                 helperText='Async Load Items'
@@ -242,6 +241,7 @@ const FormItemAutocomplete = () => {
               ) : (
                 <PFormAutocomplete
                   {...additionalProps}
+                  ref={asyncLoadAutocompleteRef}
                   multiple={false}
                   name='onLoadItems'
                   label='PFormAutocomplete'

@@ -514,6 +514,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
             });
           }
         },
+        setInputValue,
       }),
       [
         async,
