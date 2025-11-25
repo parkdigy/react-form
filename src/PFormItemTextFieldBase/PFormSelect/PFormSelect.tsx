@@ -28,6 +28,7 @@ const PFormSelect = ToForwardRefExoticComponent(
     T extends PFormSelectSingleValue,
     Multiple extends boolean | undefined = undefined,
     Items extends PFormSelectItems<T> = PFormSelectItems<T>,
+    SingleValue extends Items[number]['value'] = Items[number]['value'],
   >(
     {
       className,
@@ -53,7 +54,7 @@ const PFormSelect = ToForwardRefExoticComponent(
       onValue,
       ...props
     }: PFormSelectProps<T, Multiple, Items>,
-    ref: React.ForwardedRef<PFormSelectCommands<T, Multiple>>
+    ref: React.ForwardedRef<PFormSelectCommands<SingleValue, Multiple>>
   ) {
     /********************************************************************************************************************
      * type
@@ -305,9 +306,9 @@ const PFormSelect = ToForwardRefExoticComponent(
             : null;
 
           if (typeof ref === 'function') {
-            return ref(finalCommands);
+            return ref(finalCommands as any);
           } else {
-            ref.current = finalCommands;
+            ref.current = finalCommands as any;
           }
         }
       },

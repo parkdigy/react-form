@@ -23,6 +23,7 @@ const PFormToggleButtonGroup = ToForwardRefExoticComponent(
     T extends PFormToggleButtonGroupSingleValue,
     Multiple extends boolean | undefined = undefined,
     Items extends PFormToggleButtonGroupItems<T> = PFormToggleButtonGroupItems<T>,
+    SingleValue extends Items[number]['value'] = Items[number]['value'],
   >(
     {
       variant: initVariant,
@@ -62,7 +63,7 @@ const PFormToggleButtonGroup = ToForwardRefExoticComponent(
       style: initStyle,
       sx,
     }: PFormToggleButtonGroupProps<T, Multiple, Items>,
-    ref: React.ForwardedRef<PFormToggleButtonGroupCommands<T, Multiple>>
+    ref: React.ForwardedRef<PFormToggleButtonGroupCommands<SingleValue, Multiple>>
   ) {
     /********************************************************************************************************************
      * type
@@ -425,7 +426,7 @@ const PFormToggleButtonGroup = ToForwardRefExoticComponent(
     );
 
     useForwardLayoutRef(
-      ref,
+      ref as any,
       commands,
       useCallback((commands: Commands) => onAddValueItem(id, commands), [id, onAddValueItem]),
       useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])

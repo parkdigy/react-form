@@ -27,6 +27,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
     T extends PFormAutocompleteSingleValue,
     Multiple extends boolean | undefined = undefined,
     Items extends PFormAutocompleteItems<T> = PFormAutocompleteItems<T>,
+    SingleValue extends Items[number]['value'] = Items[number]['value'],
   >(
     {
       variant: initVariant,
@@ -81,7 +82,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
       style: initStyle,
       sx,
     }: PFormAutocompleteProps<T, Multiple, Items>,
-    ref: React.ForwardedRef<PFormAutocompleteCommands<T, Multiple>>
+    ref: React.ForwardedRef<PFormAutocompleteCommands<SingleValue, Multiple>>
   ) {
     /********************************************************************************************************************
      * type
@@ -545,7 +546,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
     );
 
     useForwardLayoutRef(
-      ref,
+      ref as any,
       commands,
       useCallback((commands: Commands) => onAddValueItem(id, commands as any), [id, onAddValueItem]),
       useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])

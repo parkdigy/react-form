@@ -23,6 +23,7 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
   AutoTypeForwardRef(function <
     BaseValue extends PFormRadioGroupSingleValue,
     Items extends PFormRadioGroupItems<BaseValue> = PFormRadioGroupItems<BaseValue>,
+    Value extends Items[number]['value'] = Items[number]['value'],
   >(
     {
       variant: initVariant,
@@ -59,7 +60,7 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
       //----------------------------------------------------------------------------------------------------------------
       ...props
     }: PFormRadioGroupProps<BaseValue, Items>,
-    ref: React.ForwardedRef<PFormRadioGroupCommands<BaseValue>>
+    ref: React.ForwardedRef<PFormRadioGroupCommands<Value>>
   ) {
     /********************************************************************************************************************
      * type
@@ -372,7 +373,7 @@ const PFormRadioGroup = ToForwardRefExoticComponent(
     );
 
     useForwardLayoutRef(
-      ref,
+      ref as any,
       commands,
       useCallback((commands: Commands) => onAddValueItem(id, commands), [id, onAddValueItem]),
       useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
