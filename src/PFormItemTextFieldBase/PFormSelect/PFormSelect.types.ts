@@ -39,7 +39,7 @@ export type PFormSelectItems<T extends PFormSelectSingleValue> = readonly PFormS
 export type PFormSelectProps<
   T extends PFormSelectSingleValue,
   Multiple extends boolean | undefined = undefined,
-  Items extends PFormSelectItems<T> = [],
+  Items extends PFormSelectItems<T> = PFormSelectItems<T>,
   SingleValue extends Items[number]['value'] = Items[number]['value'],
   Value extends PFormSelectValue<SingleValue, Multiple> = PFormSelectValue<SingleValue, Multiple>,
 > = Omit<PFormTextFieldProps<Value, false>, 'type' | 'clear'> & {

@@ -10,13 +10,10 @@ import {
   PFormValueMap,
   PFormBody,
   PFormFooter,
-  PFormRadioGroupItems,
 } from '../../../../src';
 import { lv } from '@pdg/data';
 
-const DEFAULT_ITEMS: PFormRadioGroupItem<number>[] = new Array(3)
-  .fill(0)
-  .map((v, idx) => lv(`Item ${idx + 1}`, idx + 1));
+const DEFAULT_ITEMS = [lv('전체', ''), ...new Array(3).fill(0).map((v, idx) => lv(`Item ${idx + 1}`, idx + 1))];
 
 const DEFAULT_ITEMS_2: PFormRadioGroupItem<number>[] = new Array(10)
   .fill(0)
@@ -27,7 +24,7 @@ const FormItemRadioGroup = () => {
    * Ref
    * ******************************************************************************************************************/
 
-  const asyncLoadRadioGroupRef = useRef<PFormRadioGroupCommands<number>>(null);
+  const asyncLoadRadioGroupRef = useRef<PFormRadioGroupCommands<'' | number>>(null);
 
   /********************************************************************************************************************
    * Ref
@@ -57,14 +54,6 @@ const FormItemRadioGroup = () => {
   /********************************************************************************************************************
    * Event Handler
    * ******************************************************************************************************************/
-
-  const handleLoadItems = useCallback(() => {
-    return new Promise<PFormRadioGroupItems<number>>((resolve) => {
-      setTimeout(() => {
-        resolve(DEFAULT_ITEMS);
-      }, 2000);
-    });
-  }, []);
 
   const handleSubmit = useCallback((data: PFormValueMap) => {
     ll(data);
@@ -122,7 +111,10 @@ const FormItemRadioGroup = () => {
               name='onLoadItems'
               label='PFormRadioGroup'
               helperText='onLoadItems'
-              onLoadItems={handleLoadItems}
+              onLoadItems={async () => {
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+                return DEFAULT_ITEMS;
+              }}
             />
           </PFormCol>
           <PFormCol xs={3}>

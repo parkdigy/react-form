@@ -21,7 +21,7 @@ export type PFormRadioGroupValue<T extends PFormRadioGroupSingleValue> = T | und
 
 export interface PFormRadioGroupProps<
   BaseValue extends PFormRadioGroupSingleValue,
-  Items extends PFormRadioGroupItems<BaseValue>,
+  Items extends PFormRadioGroupItems<BaseValue> = PFormRadioGroupItems<BaseValue>,
   Value extends PFormRadioGroupSingleValue = Items[number]['value'],
 > extends PCommonSxProps,
     Omit<PFormValueItemProps<PFormRadioGroupValue<Value>>, 'value'> {

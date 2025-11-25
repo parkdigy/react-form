@@ -26,7 +26,7 @@ const PFormAutocomplete = ToForwardRefExoticComponent(
   AutoTypeForwardRef(function <
     T extends PFormAutocompleteSingleValue,
     Multiple extends boolean | undefined = undefined,
-    Items extends PFormAutocompleteItems<T> = [],
+    Items extends PFormAutocompleteItems<T> = PFormAutocompleteItems<T>,
   >(
     {
       variant: initVariant,

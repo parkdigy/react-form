@@ -8,7 +8,7 @@ export interface PFormRadioGroupItem<T extends PFormRadioGroupSingleValue> {
 }
 export type PFormRadioGroupItems<T extends PFormRadioGroupSingleValue> = readonly PFormRadioGroupItem<T>[];
 export type PFormRadioGroupValue<T extends PFormRadioGroupSingleValue> = T | undefined;
-export interface PFormRadioGroupProps<BaseValue extends PFormRadioGroupSingleValue, Items extends PFormRadioGroupItems<BaseValue>, Value extends PFormRadioGroupSingleValue = Items[number]['value']> extends PCommonSxProps, Omit<PFormValueItemProps<PFormRadioGroupValue<Value>>, 'value'> {
+export interface PFormRadioGroupProps<BaseValue extends PFormRadioGroupSingleValue, Items extends PFormRadioGroupItems<BaseValue> = PFormRadioGroupItems<BaseValue>, Value extends PFormRadioGroupSingleValue = Items[number]['value']> extends PCommonSxProps, Omit<PFormValueItemProps<PFormRadioGroupValue<Value>>, 'value'> {
     value?: Value;
     items?: Items;
     required?: boolean;

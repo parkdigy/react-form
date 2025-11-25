@@ -33,7 +33,7 @@ export type PFormAutocompleteComponentValue<
 export interface PFormAutocompleteProps<
   T extends PFormAutocompleteSingleValue,
   Multiple extends boolean | undefined = undefined,
-  Items extends PFormAutocompleteItems<T> = [],
+  Items extends PFormAutocompleteItems<T> = PFormAutocompleteItems<T>,
   SingleValue extends Items[number]['value'] = Items[number]['value'],
   Item = PFormAutocompleteItem<SingleValue>,
   Value = Multiple extends true ? SingleValue[] : SingleValue,

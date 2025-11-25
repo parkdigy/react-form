@@ -22,7 +22,7 @@ const PADDING_LEFT = 3;
 const PFormRadioGroup = ToForwardRefExoticComponent(
   AutoTypeForwardRef(function <
     BaseValue extends PFormRadioGroupSingleValue,
-    Items extends PFormRadioGroupItems<BaseValue>,
+    Items extends PFormRadioGroupItems<BaseValue> = PFormRadioGroupItems<BaseValue>,
   >(
     {
       variant: initVariant,

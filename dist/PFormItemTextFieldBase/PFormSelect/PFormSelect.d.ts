@@ -1,7 +1,7 @@
 import React from 'react';
 import { PFormSelectCommands, PFormSelectSingleValue, PFormSelectValue, PFormSelectItems } from './PFormSelect.types';
 import './PFormSelect.scss';
-declare const PFormSelect: (<T extends PFormSelectSingleValue, Multiple extends boolean | undefined = undefined, Items extends PFormSelectItems<T> = []>(props: Omit<import("../PFormTextField").PFormTextFieldProps<PFormSelectValue<Items[number]["value"], Multiple>, false>, "type" | "clear"> & {
+declare const PFormSelect: (<T extends PFormSelectSingleValue, Multiple extends boolean | undefined = undefined, Items extends PFormSelectItems<T> = PFormSelectItems<T>>(props: Omit<import("../PFormTextField").PFormTextFieldProps<PFormSelectValue<Items[number]["value"], Multiple>, false>, "type" | "clear"> & {
     items?: Items | undefined;
     multiple?: Multiple | undefined;
     checkbox?: boolean;

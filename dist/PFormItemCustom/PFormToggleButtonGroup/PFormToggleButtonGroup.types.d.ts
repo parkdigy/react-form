@@ -11,7 +11,7 @@ export interface PFormToggleButtonGroupItem<T extends PFormToggleButtonGroupSing
 }
 export type PFormToggleButtonGroupItems<T extends PFormToggleButtonGroupSingleValue> = readonly PFormToggleButtonGroupItem<T>[];
 export type PFormToggleButtonGroupValue<T extends PFormToggleButtonGroupSingleValue, Multiple extends boolean | undefined> = ([Multiple] extends [true] ? T[] : T) | undefined;
-export interface PFormToggleButtonGroupProps<T extends PFormToggleButtonGroupSingleValue, Multiple extends boolean | undefined = undefined, Items extends PFormToggleButtonGroupItems<T> = [], SingleValue extends Items[number]['value'] = Items[number]['value'], Value = PFormToggleButtonGroupValue<SingleValue, Multiple>> extends PCommonSxProps, PFormValueItemProps<Value>, PartialPick<PFormItemBaseProps, 'required' | 'focused'> {
+export interface PFormToggleButtonGroupProps<T extends PFormToggleButtonGroupSingleValue, Multiple extends boolean | undefined = undefined, Items extends PFormToggleButtonGroupItems<T> = PFormToggleButtonGroupItems<T>, SingleValue extends Items[number]['value'] = Items[number]['value'], Value = PFormToggleButtonGroupValue<SingleValue, Multiple>> extends PCommonSxProps, PFormValueItemProps<Value>, PartialPick<PFormItemBaseProps, 'required' | 'focused'> {
     type?: 'button' | 'checkbox' | 'radio';
     items?: Items;
     multiple?: Multiple;

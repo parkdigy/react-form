@@ -22,7 +22,7 @@ const PFormToggleButtonGroup = ToForwardRefExoticComponent(
   AutoTypeForwardRef(function <
     T extends PFormToggleButtonGroupSingleValue,
     Multiple extends boolean | undefined = undefined,
-    Items extends PFormToggleButtonGroupItems<T> = [],
+    Items extends PFormToggleButtonGroupItems<T> = PFormToggleButtonGroupItems<T>,
   >(
     {
       variant: initVariant,

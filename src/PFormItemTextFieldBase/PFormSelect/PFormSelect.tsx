@@ -27,7 +27,7 @@ const PFormSelect = ToForwardRefExoticComponent(
   AutoTypeForwardRef(function <
     T extends PFormSelectSingleValue,
     Multiple extends boolean | undefined = undefined,
-    Items extends PFormSelectItems<T> = [],
+    Items extends PFormSelectItems<T> = PFormSelectItems<T>,
   >(
     {
       className,
