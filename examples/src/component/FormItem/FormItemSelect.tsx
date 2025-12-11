@@ -147,11 +147,28 @@ const FormItemSelect = () => {
           <PFormRow line>
             <PFormCol helperText='하나의 FormCol 에 여러개의 Select' helperTextShift fullWidth={false}>
               <PFormSelect
-                name='onLoadItems'
+                name='select1'
                 label='PFormSelect'
                 placeholder='선택하세요'
-                helperText='onLoadItems'
-                value={1}
+                items={items}
+                multiple={isMultiple}
+                checkbox={isCheckbox}
+                onLoadItems={handleLoadItems}
+              />
+              <PFormSelect
+                name='select2'
+                label='PFormSelect'
+                placeholder='선택하세요'
+                items={items}
+                multiple={isMultiple}
+                checkbox={isCheckbox}
+                onLoadItems={handleLoadItems}
+              />
+              <PFormSelect
+                name='select3'
+                label='PFormSelect'
+                placeholder='선택하세요'
+                items={items}
                 multiple={isMultiple}
                 checkbox={isCheckbox}
                 onLoadItems={handleLoadItems}
