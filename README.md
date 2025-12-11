@@ -1,8 +1,8 @@
-# @pdg/npm-react-admin-layout-template
+# @pdg/react-form
 
-NPM React Admin Layout Template
+Typescript React Form Module
 
 ## 설치
 ```
-npm install -D @pdg/npm-react-admin-layout-template
+npm install -D @pdg/react-form
 ```

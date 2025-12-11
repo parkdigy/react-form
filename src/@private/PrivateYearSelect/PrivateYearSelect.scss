@@ -1,0 +1,15 @@
+.PrivateYearSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: white;
+  //overflow-y: scroll;
+
+  button {
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 18px;
+  }
+}

@@ -1,35 +1,122 @@
 [
   {
-    "id": "Home",
+    "id": "home",
     "name": "Home",
     "depth": 1,
     "uri": "/",
     "icon": "Home"
   },
   {
-    "id": "test_menu",
-    "name": "Test Menu",
+    "id": "form",
+    "name": "Form",
     "depth": 1,
-    "icon": "AutoStories",
+    "uri": "/form",
+    "icon": "CallToAction"
+  },
+  {
+    "id": "form_item",
+    "name": "Form Item",
+    "depth": 1,
+    "icon": "ViewModule",
     "items": [
       {
-        "id": "test_menu_1",
-        "name": "Sub Menu 1",
+        "id": "form_item/styling",
+        "name": "Styling",
         "depth": 2,
-        "uri": "/test_menu/sub_1"
+        "uri": "/form_item/styling"
       },
       {
-        "id": "test_menu_2",
-        "name": "Sub Menu 2 ",
+        "id": "form_item/text",
+        "name": "Text ...",
         "depth": 2,
-        "uri": "/test_menu/sub_2"
+        "uri": "/form_item/text"
       },
       {
-        "id": "test_menu_3",
-        "name": "Sub Menu 3",
+        "id": "form_item/number",
+        "name": "Number",
         "depth": 2,
-        "uri": "/test_menu/sub_3"
+        "uri": "/form_item/number"
+      },
+      {
+        "id": "form_item/tag",
+        "name": "Tag",
+        "depth": 2,
+        "uri": "/form_item/tag"
+      },
+      {
+        "id": "form_item/textarea",
+        "name": "Textarea",
+        "depth": 2,
+        "uri": "/form_item/textarea"
+      },
+      {
+        "id": "form_item/checkbox",
+        "name": "Checkbox",
+        "depth": 2,
+        "uri": "/form_item/checkbox"
+      },
+      {
+        "id": "form_item/select",
+        "name": "Select",
+        "depth": 2,
+        "uri": "/form_item/select"
+      },
+      {
+        "id": "form_item/date",
+        "name": "Date / Time",
+        "depth": 2,
+        "uri": "/form_item/date"
+      },
+      {
+        "id": "form_item/autocomplete",
+        "name": "Autocomplete",
+        "depth": 2,
+        "uri": "/form_item/autocomplete"
+      },
+      {
+        "id": "form_item/radio",
+        "name": "RadioGroup",
+        "depth": 2,
+        "uri": "/form_item/radio"
+      },
+      {
+        "id": "form_item/toggle_button",
+        "name": "ToggleButtonGroup",
+        "depth": 2,
+        "uri": "/form_item/toggle_button"
+      },
+      {
+        "id": "form_item/rating",
+        "name": "Rating",
+        "depth": 2,
+        "uri": "/form_item/rating"
+      },
+      {
+        "id": "form_item/text_editor",
+        "name": "TextEditor",
+        "depth": 2,
+        "uri": "/form_item/text_editor"
+      },
+      {
+        "id": "form_item/file",
+        "name": "File",
+        "depth": 2,
+        "uri": "/form_item/file"
       }
     ]
+  },
+  {
+    "id": "search",
+    "name": "Search",
+    "depth": 1,
+    "uri": "/search",
+    "icon": "Search"
+  },
+  {
+    "id": "hash_search",
+    "name": "HashSearch",
+    "depth": 1,
+    "uri": "/hash_search",
+    "icon": "Search"
   }
 ]

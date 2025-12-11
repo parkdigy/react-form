@@ -1,7 +1,7 @@
 # 최종 프로젝트에서는 dist, /404.html, /index.html 주석 처리
-dist
-/404.html
-/index.html
+#dist
+#/404.html
+#/index.html
 
 # 기본
 node_modules

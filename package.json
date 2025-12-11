@@ -1,8 +1,8 @@
 {
-  "name": "@pdg/npm-react-admin-layout-template",
-  "title": "NPM React Admin Layout Template",
-  "description": "NPM React Admin Layout Template",
-  "version": "1.0.0",
+  "name": "@pdg/react-form",
+  "title": "Typescript React Form Module",
+  "description": "Typescript React Form Module",
+  "version": "1.1.21",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.esm.js",
@@ -16,13 +16,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/parkdigy/npm-react-admin-layout-template.git",
-    "baseUrl": "https://github.com/parkdigy/npm-react-admin-layout-template"
+    "url": "git+https://github.com/parkdigy/react-form.git",
+    "baseUrl": "https://github.com/parkdigy/react-form"
   },
   "bugs": {
-    "url": "https://github.com/parkdigy/npm-react-admin-layout-template/issues"
+    "url": "https://github.com/parkdigy/react-form/issues"
   },
-  "homepage": "https://github.com/parkdigy/npm-react-admin-layout-template#readme",
+  "homepage": "https://github.com/parkdigy/react-form#readme",
   "files": [
     "dist",
     "README.md"
@@ -53,6 +53,26 @@
   "peerDependencies": {
     "react": ">=17.0.0",
     "react-dom": ">=17.0.0"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.6",
+    "@mui/material": "^7.3.6",
+    "@mui/x-date-pickers": "^7.29.4",
+    "@pdg/compare": "^1.0.8",
+    "@pdg/data": "^1.0.5",
+    "@pdg/formatting": "^1.0.8",
+    "@pdg/react-component": "^1.1.6",
+    "@pdg/react-hook": "^1.0.43",
+    "@pdg/types": "^1.0.9",
+    "@tinymce/miniature": "^6.0.0",
+    "@tinymce/tinymce-react": "^6.3.0",
+    "classnames": "^2.5.1",
+    "dayjs": "^1.11.19",
+    "react-number-format": "^5.4.4",
+    "react-resize-detector": "^12.3.0",
+    "simplebar-react": "^3.3.2"
   },
   "devDependencies": {
     "@eslint/js": "9.39.1",

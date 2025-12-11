@@ -13,7 +13,8 @@
     "preserveSymlinks": true,
     "baseUrl": "./",
     "paths": {
-      "@comp": ["src/component"]
+      "@comp": ["src/component"],
+      "@ccomp": ["src/component/Common"]
     },
     "typeRoots": ["node_modules/@types", "src/@types"]
   },

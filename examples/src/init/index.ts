@@ -12,6 +12,8 @@ declare global {
   function ll(message?: any, ...optionalParams: any[]): void;
 
   var styled: typeof _styled;
+
+  function getName(prefix: string, resetSeq?: boolean): string;
 }
 /* eslint-enable no-var */
 
@@ -29,5 +31,14 @@ globalThis.ll = function (message?: any, ...optionalParams: any[]) {
 };
 
 globalThis.styled = _styled;
+
+let nameSeq = 0;
+globalThis.getName = (prefix: string, resetSeq?: boolean): string => {
+  if (resetSeq) {
+    nameSeq = 0;
+  }
+  nameSeq += 1;
+  return `${prefix}_${nameSeq}`;
+};
 
 export {};

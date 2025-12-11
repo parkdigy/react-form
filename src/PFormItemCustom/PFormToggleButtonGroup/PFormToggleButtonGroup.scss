@@ -1,0 +1,229 @@
+$outlined-medium-no-label-height: 52px;
+$outlined-small-no-label-height: 37px;
+$outlined-medium-label-height: 37px;
+$outlined-small-label-height: 24px;
+
+$filled-medium-no-label-height: 52px;
+$filled-small-no-label-height: 44px;
+$filled-medium-label-height: 37px;
+$filled-small-label-height: 31px;
+
+$standard-medium-no-label-height: 28px;
+$standard-small-no-label-height: 26px;
+$standard-medium-label-height: 28px;
+$standard-small-label-height: 26px;
+
+.PFormToggleButtonGroup {
+  &.loading {
+    .PFormItemBase-Control-wrap {
+      .PFormItemBase-Control {
+        align-items: center !important;
+      }
+    }
+  }
+  .ToggleButton {
+    display: inline-flex;
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+
+    .__label__ {
+      height: 0;
+      line-height: 0 !important;
+      overflow: visible !important;
+    }
+  }
+
+  &.type-checkbox,
+  &.type-radio {
+    .ToggleButton {
+      padding-left: 3px;
+      padding-right: 5px;
+      border: 0 !important;
+      margin-left: 0 !important;
+      justify-content: flex-start;
+
+      display: flex;
+      background-color: transparent !important;
+
+      &:not(:last-child) {
+        margin-right: 5px;
+      }
+
+      .__checkbox-checked__,
+      .__checkbox-unchecked__ {
+        margin-right: 3px;
+      }
+
+      .__checkbox-checked__ {
+        display: none;
+      }
+
+      &.Mui-selected {
+        &.Mui-disabled {
+          opacity: 0.5;
+        }
+
+        .__checkbox-checked__ {
+          display: block;
+        }
+
+        .__checkbox-unchecked__ {
+          display: none;
+        }
+      }
+    }
+  }
+
+  // Label 없음
+  &:not(.with-label) {
+    &.variant-outlined .PFormItemBase-Control-wrap {
+      margin-top: calc(($outlined-medium-no-label-height - $outlined-medium-label-height));
+      margin-bottom: -(calc(($outlined-medium-no-label-height - $outlined-medium-label-height)));
+      .ToggleButton {
+        height: $outlined-medium-label-height;
+      }
+    }
+    &.variant-filled .PFormItemBase-Control-wrap {
+      margin-top: calc(($filled-medium-no-label-height - $filled-medium-label-height));
+      margin-bottom: -(calc(($filled-medium-no-label-height - $filled-medium-label-height)));
+      .ToggleButton {
+        height: $filled-medium-label-height;
+      }
+    }
+    &.variant-standard .PFormItemBase-Control-wrap {
+      margin-top: calc(($standard-medium-no-label-height - $standard-medium-label-height));
+      margin-bottom: -(calc(($standard-medium-no-label-height - $standard-medium-label-height)));
+      .ToggleButton {
+        height: $standard-medium-no-label-height;
+      }
+    }
+
+    &.size-small {
+      &.variant-outlined .PFormItemBase-Control-wrap {
+        margin-top: calc(($outlined-small-no-label-height - $outlined-small-label-height));
+        margin-bottom: -(calc(($outlined-small-no-label-height - $outlined-small-label-height)));
+        .ToggleButton {
+          height: $outlined-small-label-height;
+        }
+      }
+      &.variant-filled .PFormItemBase-Control-wrap {
+        margin-top: calc(($filled-small-no-label-height - $filled-small-label-height));
+        margin-bottom: -(calc(($filled-small-no-label-height - $filled-small-label-height)));
+        .ToggleButton {
+          height: $filled-small-label-height;
+        }
+      }
+      &.variant-standard .PFormItemBase-Control-wrap {
+        margin-top: calc(($standard-small-no-label-height - $standard-small-label-height));
+        margin-bottom: -(calc(($standard-small-no-label-height - $standard-small-label-height)));
+        .ToggleButton {
+          height: $standard-small-label-height;
+        }
+      }
+    }
+  }
+
+  // Label 있음
+  &.with-label {
+    &.variant-outlined .PFormItemBase-Control-wrap {
+      margin-top: 0;
+      margin-bottom: 0;
+      .ToggleButton {
+        height: $outlined-medium-label-height;
+      }
+    }
+    &.variant-filled .PFormItemBase-Control-wrap {
+      margin-top: 0;
+      margin-bottom: 0;
+      .ToggleButton {
+        height: $filled-medium-label-height;
+      }
+    }
+    &.variant-standard .PFormItemBase-Control-wrap {
+      margin-top: 0;
+      margin-bottom: 0;
+      .ToggleButton {
+        height: $standard-medium-label-height;
+      }
+    }
+
+    &.size-small {
+      &.variant-outlined .PFormItemBase-Control-wrap {
+        margin-top: 0;
+        margin-bottom: 0;
+        .ToggleButton {
+          height: $outlined-small-label-height;
+        }
+      }
+      &.variant-filled .PFormItemBase-Control-wrap {
+        margin-top: 0;
+        margin-bottom: 0;
+        .ToggleButton {
+          height: $filled-small-label-height;
+        }
+      }
+      &.variant-standard .PFormItemBase-Control-wrap {
+        margin-top: 0;
+        margin-bottom: 0;
+        .ToggleButton {
+          height: $standard-small-label-height;
+        }
+      }
+    }
+  }
+}
+
+.PForm {
+  .PFormCol.with-label {
+    .PFormToggleButtonGroup {
+      &.variant-outlined .PFormItemBase-Control-wrap {
+        margin-top: 0;
+        margin-bottom: 0;
+        .ToggleButton {
+          height: $outlined-medium-label-height;
+        }
+      }
+      &.variant-filled .PFormItemBase-Control-wrap {
+        margin-top: 0;
+        margin-bottom: 0;
+        .ToggleButton {
+          height: $filled-medium-label-height;
+        }
+      }
+      &.variant-standard .PFormItemBase-Control-wrap {
+        margin-top: 0;
+        margin-bottom: 0;
+        .ToggleButton {
+          height: $standard-medium-label-height;
+        }
+      }
+
+      &.size-small {
+        &.variant-outlined .PFormItemBase-Control-wrap {
+          margin-top: 0;
+          margin-bottom: 0;
+          .ToggleButton {
+            height: $outlined-small-label-height;
+          }
+        }
+        &.variant-filled .PFormItemBase-Control-wrap {
+          margin-top: 0;
+          margin-bottom: 0;
+          .ToggleButton {
+            height: $filled-small-label-height;
+          }
+        }
+        &.variant-standard .PFormItemBase-Control-wrap {
+          margin-top: 0;
+          margin-bottom: 0;
+          .ToggleButton {
+            height: $standard-small-label-height;
+          }
+        }
+      }
+    }
+  }
+}

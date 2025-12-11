@@ -1,0 +1,29 @@
+// test
+//.PFormItemBase {
+//  .PFormItemBase-InputLabel {
+//    background: yellow;
+//  }
+//  .PFormItemBase-Control-wrap {
+//    background: #00000033;
+//    .PFormItemBase-Control {
+//      background: #00000022;
+//    }
+//  }
+//}
+
+.PFormItemBase {
+  .PFormItemBase-InputLabel {
+    overflow: visible;
+    padding-left: 5px;
+
+    &.MuiInputLabel-sizeSmall {
+      transform: translate(0, -1.5px) scale(0.7);
+    }
+  }
+
+  &.variant-standard {
+    .PFormItemBase-Control-wrap {
+      margin-top: 16px;
+    }
+  }
+}

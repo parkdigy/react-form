@@ -1,0 +1,21 @@
+.PFormTextField {
+  min-width: 200px;
+
+  .clear-icon-button-wrap {
+    visibility: hidden;
+  }
+
+  &.variant-filled {
+    .clear-icon-button-wrap {
+      margin-top: 9px;
+      margin-bottom: -9px;
+    }
+  }
+
+  &:hover,
+  .MuiInputBase-root.Mui-focused {
+    .clear-icon-button-wrap.show {
+      visibility: visible;
+    }
+  }
+}

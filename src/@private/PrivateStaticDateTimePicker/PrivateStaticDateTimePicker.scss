@@ -1,0 +1,84 @@
+.PrivateStaticDateTimePicker {
+  $border: 1px solid #efefef;
+  $border2: 2px solid #bfbfbf;
+
+  &.time {
+    height: 400px;
+  }
+
+  .MuiPickersCalendarHeader-root {
+    display: none;
+  }
+
+  .month-title-container {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+
+    .month-title-wrap {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      .month-title button {
+        font-size: 15px;
+        padding-left: 8px;
+        padding-right: 0;
+        min-width: 0;
+
+        &:not(.active) {
+          color: unset;
+        }
+      }
+    }
+  }
+
+  .action-buttons {
+    border-top: $border;
+    padding: 10px;
+    text-align: right;
+
+    button {
+      min-width: 0;
+      color: inherit;
+      &:not(:first-of-type) {
+        margin-left: 5px;
+      }
+      &.disabled {
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+
+  .time {
+    border-left: $border2;
+
+    .time-container {
+      height: 100%;
+
+      .time-title {
+        text-align: center;
+        padding: 22px 0;
+        font-size: 15px;
+      }
+      .time-select-wrap {
+        flex: 1;
+        border-top: $border;
+      }
+    }
+  }
+
+  &.time {
+    .time {
+      .time-container {
+        .time-select-wrap {
+          > div > div {
+            &:not(:first-of-type) {
+              border-left: $border;
+            }
+          }
+        }
+      }
+    }
+  }
+}

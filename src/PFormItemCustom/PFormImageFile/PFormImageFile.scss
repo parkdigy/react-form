@@ -1,0 +1,12 @@
+.PFormImageFile {
+  .preview-img {
+    max-width: 100%;
+  }
+  &:not(.hide-file-name) {
+    &:not(.variant-standard) {
+      .preview-img {
+        padding-right: 14px;
+      }
+    }
+  }
+}
