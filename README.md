@@ -6,3 +6,8 @@ Typescript React Form Module
 ```
 npm install -D @pdg/react-form
 ```
+
+### simplebar-react css 추가
+```
+import 'simplebar-react/dist/simplebar.min.css';
+```
