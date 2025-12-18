@@ -1,3 +1,4 @@
+import React, { ReactNode } from 'react';
 import {
   PFormValueItemProps,
   PFormValueItemBaseCommands,
@@ -6,7 +7,6 @@ import {
   PFormYearMonthRangeValueItemCommands,
 } from '../../@types';
 import { PCommonSxProps } from '../../@types';
-import { ReactNode } from 'react';
 import {
   PrivateInputDatePickerProps,
   PrivateMonthRangePickerBaseValue,
@@ -18,9 +18,11 @@ export type PFormMonthRangePickerBaseValue = PrivateMonthRangePickerBaseValue;
 export type PFormMonthRangePickerValue = PrivateMonthRangePickerValue;
 
 export interface PFormMonthRangePickerProps
-  extends PCommonSxProps,
+  extends
+    PCommonSxProps,
     Omit<PFormValueItemProps<PFormMonthRangePickerValue, false>, 'label' | 'labelIcon' | 'width'>,
     Pick<PrivateInputDatePickerProps, 'align'> {
+  ref?: React.Ref<PFormMonthRangePickerCommands>;
   fromLabel?: ReactNode;
   fromLabelIcon?: string;
   toLabel?: ReactNode;
@@ -44,7 +46,8 @@ export interface PFormMonthRangePickerProps
 }
 
 export interface PFormMonthRangePickerCommands
-  extends PFormValueItemBaseCommands<PFormMonthRangePickerValue, false>,
+  extends
+    PFormValueItemBaseCommands<PFormMonthRangePickerValue, false>,
     PFormRangeValueItemCommands<PFormMonthRangePickerBaseValue>,
     PFormYearMonthRangeValueItemCommands,
     PFormYearMonthRangeValueItemNameCommands {}

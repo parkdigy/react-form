@@ -1,21 +1,19 @@
 import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import React from 'react';
 
-interface NumberFormatCustomProps extends Omit<NumericFormatProps, 'onChange'> {
+interface Props extends Omit<NumericFormatProps, 'onChange'> {
+  ref?: React.Ref<HTMLInputElement>;
   onChange: (value: any) => void;
 }
-const NumberFormatCustom = React.forwardRef<HTMLInputElement, NumberFormatCustomProps>(
-  ({ onChange, ...props }, ref) => {
-    return (
-      <NumericFormat
-        {...props}
-        getInputRef={ref}
-        onValueChange={(values) => {
-          if (onChange) onChange({ target: { value: values.value } });
-        }}
-      />
-    );
-  }
-);
 
+const NumberFormatCustom = ({ onChange, ...props }: Props) => {
+  return (
+    <NumericFormat
+      {...props}
+      onValueChange={(values) => {
+        if (onChange) onChange({ target: { value: values.value } });
+      }}
+    />
+  );
+};
 export default NumberFormatCustom;

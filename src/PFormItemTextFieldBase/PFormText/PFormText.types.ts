@@ -1,10 +1,13 @@
+import React from 'react';
 import { PFormTextFieldProps, PFormTextFieldCommands } from '../PFormTextField';
 
 export type PFormTextValue = string;
 
 export type PFormTextCommands = PFormTextFieldCommands<PFormTextValue, false>;
 
-export type PFormTextProps = Omit<
+export interface PFormTextProps extends Omit<
   PFormTextFieldProps<PFormTextValue, false>,
-  'disableReturnKey' | 'minRows' | 'maxRows'
->;
+  'ref' | 'disableReturnKey' | 'minRows' | 'maxRows'
+> {
+  ref?: React.Ref<PFormTextCommands>;
+}

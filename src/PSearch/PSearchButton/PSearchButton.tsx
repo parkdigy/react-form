@@ -4,7 +4,7 @@ import { PSearchButtonProps as Props } from './PSearchButton.types';
 import { PButton } from '@pdg/react-component';
 import { ifUndefined } from '@pdg/compare';
 
-const PSearchButton: React.FC<Props> = ({ children, className, size, sx: initSx, ...props }) => {
+const PSearchButton = ({ children, className, size, sx: initSx, ...props }: Props) => {
   /********************************************************************************************************************
    * Render
    * ******************************************************************************************************************/
@@ -22,4 +22,4 @@ const PSearchButton: React.FC<Props> = ({ children, className, size, sx: initSx,
   );
 };
 
-export default React.memo(PSearchButton);
+export default PSearchButton;

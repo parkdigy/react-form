@@ -1,3 +1,4 @@
+import React from 'react';
 import { StaticDatePickerProps } from '@mui/x-date-pickers';
 import { Dayjs } from 'dayjs';
 import { PFormAvailableDate } from '../@types';
@@ -5,8 +6,11 @@ import { PFormDateType, PFormTimeType } from '../../@types';
 
 export type PrivateStaticDatePickerUnit = 'date' | 'action_date' | 'hour' | 'minute' | 'second';
 
-export interface PrivateStaticDatePickerProps
-  extends Omit<StaticDatePickerProps<Dayjs>, 'displayStaticWrapperAs' | 'renderInput' | 'onChange'> {
+export interface PrivateStaticDatePickerProps extends Omit<
+  StaticDatePickerProps<Dayjs>,
+  'displayStaticWrapperAs' | 'renderInput' | 'onChange'
+> {
+  ref?: React.Ref<PrivateStaticDatePickerCommands>;
   type: PFormDateType;
   time?: PFormTimeType;
   availableDate?: PFormAvailableDate;

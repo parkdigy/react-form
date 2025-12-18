@@ -1,4 +1,7 @@
+import React from 'react';
+
 export interface PrivateTimeSelectProps {
+  ref?: React.Ref<PrivateTimeSelectCommands>;
   list: number[];
   listInterval?: number;
   unit: string;

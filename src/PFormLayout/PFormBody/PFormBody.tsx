@@ -6,7 +6,7 @@ import { Grid } from '@mui/material';
 import { StyledContainerDiv, StyledContentDiv } from './PFormBody.style.private';
 import { ifUndefined } from '@pdg/compare';
 
-const PFormBody: React.FC<Props> = ({ children, hidden, fullHeight: initFullHeight, style: initStyle }) => {
+const PFormBody = ({ children, hidden, fullHeight: initFullHeight, style: initStyle }: Props) => {
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/

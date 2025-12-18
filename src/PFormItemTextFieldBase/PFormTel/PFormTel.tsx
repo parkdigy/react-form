@@ -4,45 +4,39 @@ import classNames from 'classnames';
 import { PFormTelProps as Props, PFormTelCommands, PFormTelValue } from './PFormTel.types';
 import { formatTelNo } from '@pdg/formatting';
 
-const PFormTel = React.forwardRef<PFormTelCommands, Props>(
-  (
-    {
-      className,
-      onValue,
-      validPattern = /(^([0-9]{2,3})([0-9]{3,4})([0-9]{4})$)|(^([0-9]{2,3})-([0-9]{3,4})-([0-9]{4})$)|(^([0-9]{4})-([0-9]{4})$)|(^\+(?:[-]?[0-9]){8,}$)/,
-      ...props
+const PFormTel = ({
+  ref,
+  className,
+  onValue,
+  validPattern = /(^([0-9]{2,3})([0-9]{3,4})([0-9]{4})$)|(^([0-9]{2,3})-([0-9]{3,4})-([0-9]{4})$)|(^([0-9]{4})-([0-9]{4})$)|(^\+(?:[-]?[0-9]){8,}$)/,
+  ...props
+}: Props) => {
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
+
+  const handleValue = useCallback(
+    (value: PFormTelValue) => {
+      const newValue = formatTelNo(value.replace(/[^0-9]/gi, ''));
+      return onValue ? onValue(newValue) : newValue;
     },
-    ref
-  ) => {
-    /********************************************************************************************************************
-     * Event Handler
-     * ******************************************************************************************************************/
+    [onValue]
+  );
 
-    const handleValue = useCallback(
-      (value: PFormTelValue) => {
-        const newValue = formatTelNo(value.replace(/[^0-9]/gi, ''));
-        return onValue ? onValue(newValue) : newValue;
-      },
-      [onValue]
-    );
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
-    /********************************************************************************************************************
-     * Render
-     * ******************************************************************************************************************/
-
-    return (
-      <PFormText
-        ref={ref}
-        className={classNames(className, 'PFormTel')}
-        onValue={handleValue}
-        maxLength={13}
-        validPattern={validPattern}
-        {...props}
-      />
-    );
-  }
-);
-
-PFormTel.displayName = 'PFormTel';
+  return (
+    <PFormText
+      ref={ref}
+      className={classNames(className, 'PFormTel')}
+      onValue={handleValue}
+      maxLength={13}
+      validPattern={validPattern}
+      {...props}
+    />
+  );
+};
 
 export default PFormTel;

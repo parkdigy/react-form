@@ -1,12 +1,14 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { PartialPick, PCommonSxProps } from '../../@types';
 import { PFormLabelProps } from '../../PFormCommon';
 import { PFormContextValue } from '../../PFormContext';
 
 export interface PFormColProps
-  extends PCommonSxProps,
+  extends
+    PCommonSxProps,
     PartialPick<PFormContextValue, 'variant' | 'size' | 'color' | 'spacing' | 'focused' | 'labelShrink' | 'fullWidth'>,
     PartialPick<PFormLabelProps, 'icon' | 'error' | 'warning'> {
+  ref?: React.Ref<HTMLDivElement>;
   xs?: number;
   label?: ReactNode;
   hidden?: boolean;

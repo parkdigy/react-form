@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import {
   PCommonSxProps,
   PFormItemsValueItemCommands,
@@ -23,8 +23,9 @@ export interface PFormRadioGroupProps<
   BaseValue extends PFormRadioGroupSingleValue,
   Items extends PFormRadioGroupItems<BaseValue> = PFormRadioGroupItems<BaseValue>,
   Value extends PFormRadioGroupSingleValue = Items[number]['value'],
-> extends PCommonSxProps,
-    Omit<PFormValueItemProps<PFormRadioGroupValue<Value>>, 'value'> {
+>
+  extends PCommonSxProps, Omit<PFormValueItemProps<PFormRadioGroupValue<Value>>, 'value'> {
+  ref?: React.Ref<PFormRadioGroupCommands<Value>>;
   value?: Value;
   items?: Items;
   required?: boolean;
@@ -38,7 +39,8 @@ export interface PFormRadioGroupProps<
 }
 
 export interface PFormRadioGroupCommands<T extends PFormRadioGroupSingleValue>
-  extends PFormValueItemBaseCommands<T, true>,
+  extends
+    PFormValueItemBaseCommands<T, true>,
     PFormItemsValueItemCommands<PFormRadioGroupItem<T>>,
     PFormLoadingValueItemCommands {
   reloadItems: () => void;

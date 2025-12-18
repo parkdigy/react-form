@@ -5,7 +5,7 @@ import { PFormMonthPickerBaseValue } from '../../../PFormItemCustom';
 import dayjs, { Dayjs } from 'dayjs';
 import { StyledContainer } from './PrivateMonthPickerMonthList.style.private';
 
-const PrivateMonthPickerMonthList: React.FC<Props> = ({
+const PrivateMonthPickerMonthList = ({
   value,
   defaultValue: initDefaultValue,
   minAvailableValue,
@@ -15,7 +15,7 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
   selectFromValue,
   selectToValue,
   onChange,
-}) => {
+}: Props) => {
   /********************************************************************************************************************
    * Memo
    * ******************************************************************************************************************/
@@ -46,7 +46,7 @@ const PrivateMonthPickerMonthList: React.FC<Props> = ({
   const currentYear = value ? value.year : dateInfo.defaultValue.year;
 
   /********************************************************************************************************************
-   * Memo
+   * months
    * ******************************************************************************************************************/
 
   const months = useMemo(() => {

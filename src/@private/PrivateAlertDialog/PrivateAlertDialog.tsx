@@ -1,14 +1,14 @@
 import React, { useCallback } from 'react';
 import { PrivateAlertDialogProps as Props } from './PrivateAlertDialog.types';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { useAutoUpdateLayoutRef } from '@pdg/react-hook';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
-const PrivateAlertDialog: React.FC<Props> = ({ color = 'primary', open, title, content, onClose: initOnClose }) => {
+const PrivateAlertDialog = ({ color = 'primary', open, title, content, onClose: initOnClose }: Props) => {
   /********************************************************************************************************************
    * Ref
    * ******************************************************************************************************************/
 
-  const onCloseRef = useAutoUpdateLayoutRef(initOnClose);
+  const onCloseRef = useAutoUpdateRef(initOnClose);
 
   /********************************************************************************************************************
    * Event Handler

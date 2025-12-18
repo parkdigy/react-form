@@ -38,9 +38,12 @@ export interface PFormAutocompleteProps<
   Item = PFormAutocompleteItem<SingleValue>,
   Value = Multiple extends true ? SingleValue[] : SingleValue,
   ComponentValue = PFormAutocompleteComponentValue<SingleValue, Multiple>,
-> extends PCommonSxProps,
+>
+  extends
+    PCommonSxProps,
     PFormValueItemProps<Value>,
     Pick<PFormTextFieldProps<SingleValue>, 'required' | 'focused' | 'labelShrink' | 'onFocus' | 'onBlur'> {
+  ref?: React.Ref<PFormAutocompleteCommands<SingleValue, Multiple>>;
   items?: Items;
   multiple?: Multiple;
   formValueSeparator?: string;
@@ -68,7 +71,9 @@ export interface PFormAutocompleteProps<
 export interface PFormAutocompleteCommands<
   T extends PFormAutocompleteSingleValue,
   Multiple extends boolean | undefined = undefined,
-> extends PFormValueItemBaseCommands<PFormAutocompleteValue<T, Multiple>, true>,
+>
+  extends
+    PFormValueItemBaseCommands<PFormAutocompleteValue<T, Multiple>, true>,
     PFormArrayValueItemCommands,
     PFormItemsValueItemCommands<PFormAutocompleteItem<T>>,
     PFormMultipleValueItemCommands,

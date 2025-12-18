@@ -4,7 +4,7 @@ import {
   PrivateYearPickerValue,
   PrivateYearPickerBaseValue,
 } from './PrivateYearPicker.types';
-import { useAutoUpdateLayoutRef, useAutoUpdateState } from '@pdg/react-hook';
+import { useAutoUpdateRef, useAutoUpdateState } from '@pdg/react-hook';
 import PrivateYearPickerYearList from './PrivateYearPickerYearList';
 import {
   StyledIconButton,
@@ -17,7 +17,7 @@ import { PIcon } from '@pdg/react-component';
 const DEFAULT_MIN_YEAR = 2020;
 const DEFAULT_MAX_YEAR = 2050;
 
-const PrivateYearPicker: React.FC<Props> = ({
+const PrivateYearPicker = ({
   value: initValue = null,
   minYear = DEFAULT_MIN_YEAR,
   maxYear = DEFAULT_MAX_YEAR,
@@ -27,12 +27,12 @@ const PrivateYearPicker: React.FC<Props> = ({
   selectFromYear,
   selectToYear,
   onChange: initOnChange,
-}) => {
+}: Props) => {
   /********************************************************************************************************************
    * Ref
    * ******************************************************************************************************************/
 
-  const onChangeRef = useAutoUpdateLayoutRef(initOnChange);
+  const onChangeRef = useAutoUpdateRef(initOnChange);
 
   /********************************************************************************************************************
    * State

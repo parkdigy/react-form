@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import { PFormDatePickerProps as Props, PFormDatePickerCommands, PFormDatePickerValue } from './PFormDatePicker.types';
+import { PFormDatePickerProps as Props, PFormDatePickerValue } from './PFormDatePicker.types';
 import { PrivateDatePicker, PrivateDatePickerValue } from '../../@private';
 import PFormContextProvider from '../../PFormContextProvider';
 import { useFormState } from '../../PFormContext';
 import { PFormValueItemCommands } from '../../@types';
 
-const PFormDatePicker = React.forwardRef<PFormDatePickerCommands, Props>(({ className, ...props }, ref) => {
+const PFormDatePicker = ({ ref, className, ...props }: Props) => {
   /********************************************************************************************************************
    * FormState
    * ******************************************************************************************************************/
@@ -39,8 +39,6 @@ const PFormDatePicker = React.forwardRef<PFormDatePickerCommands, Props>(({ clas
       <PrivateDatePicker className={classNames(className, 'PFormDatePicker')} {...props} ref={ref} type='date' />
     </PFormContextProvider>
   );
-});
-
-PFormDatePicker.displayName = 'PFormDatePicker';
+};
 
 export default PFormDatePicker;

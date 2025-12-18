@@ -1,7 +1,11 @@
+import React from 'react';
 import { ButtonProps } from '@mui/material';
 
-export interface PrivateYearRangePickerYearProps
-  extends Pick<ButtonProps, 'onClick' | 'onMouseEnter' | 'onMouseLeave'> {
+export interface PrivateYearRangePickerYearProps extends Pick<
+  ButtonProps,
+  'onClick' | 'onMouseEnter' | 'onMouseLeave'
+> {
+  ref?: React.Ref<HTMLDivElement>;
   year: number;
   disabled?: boolean;
   isDefault?: boolean;

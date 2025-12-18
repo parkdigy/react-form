@@ -14,7 +14,8 @@
     "baseUrl": "./",
     "paths": {
       "@comp": ["src/component"],
-      "@ccomp": ["src/component/Common"]
+      "@ccomp": ["src/component/Common"],
+      "@common": ["src/common"]
     },
     "typeRoots": ["node_modules/@types", "src/@types"]
   },

@@ -4,7 +4,7 @@ import { PSearchMenuButtonProps as Props } from './PSearchMenuButton.types';
 import { PFormButton } from '../../PFormCommon';
 import { Menu, PopoverOrigin } from '@mui/material';
 
-const PSearchMenuButton: React.FC<Props> = ({ children, className, sx: initSx, menuList, placement, ...props }) => {
+const PSearchMenuButton = ({ children, className, sx: initSx, menuList, placement, ...props }: Props) => {
   /********************************************************************************************************************
    * ID
    * ******************************************************************************************************************/

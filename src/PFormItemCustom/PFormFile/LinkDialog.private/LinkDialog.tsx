@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { LinkDialogProps as Props } from './LinkDialog.types';
 import { PFormUrl, PFormUrlCommands } from '../../../PFormItemTextFieldBase';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { empty } from '@pdg/compare';
+import { useChange } from '@pdg/react-hook';
 
-const LinkDialog: React.FC<Props> = ({ open, onConfirm, onCancel, onClose }) => {
+const LinkDialog = ({ open, onConfirm, onCancel, onClose }: Props) => {
   /********************************************************************************************************************
    * Ref
    * ******************************************************************************************************************/
@@ -18,14 +19,14 @@ const LinkDialog: React.FC<Props> = ({ open, onConfirm, onCancel, onClose }) => 
   const [value, setValue] = useState('');
 
   /********************************************************************************************************************
-   * Effect
+   * Change
    * ******************************************************************************************************************/
 
-  useEffect(() => {
+  useChange(open, () => {
     if (!open) {
       setValue('');
     }
-  }, [open]);
+  });
 
   /********************************************************************************************************************
    * Event Handler

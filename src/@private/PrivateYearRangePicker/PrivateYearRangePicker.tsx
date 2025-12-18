@@ -15,7 +15,7 @@ const DEFAULT_MIN_YEAR = 2020;
 const DEFAULT_MAX_YEAR = 2050;
 const DEFAULT_VALUE = [null, null] as PrivateYearRangePickerValue;
 
-const PrivateYearRangePicker: React.FC<Props> = ({
+const PrivateYearRangePicker = ({
   selectType,
   value: initValue = DEFAULT_VALUE,
   minYear = DEFAULT_MIN_YEAR,
@@ -24,7 +24,7 @@ const PrivateYearRangePicker: React.FC<Props> = ({
   disableFuture,
   hideHeader,
   onChange,
-}) => {
+}: Props) => {
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/

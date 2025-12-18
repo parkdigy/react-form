@@ -4,7 +4,7 @@ import { PFormCol, PFormRow } from '../../PFormLayout';
 import { Grid } from '@mui/material';
 import classNames from 'classnames';
 
-const PSearchGroupRow: React.FC<Props> = ({ children, className, ...props }) => {
+const PSearchGroupRow = ({ children, className, ...props }: Props) => {
   return (
     <PFormRow className={classNames(className, 'PSearchGroupRow')} {...props}>
       <PFormCol>

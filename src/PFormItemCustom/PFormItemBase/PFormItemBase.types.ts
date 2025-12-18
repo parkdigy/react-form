@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { FormHelperTextProps } from '@mui/material';
 import { PartialPick, PCommonSxProps, PCommonProps } from '../../@types';
 import { PFormContextValue } from '../../PFormContext';
 
 export interface PFormItemBaseProps
-  extends PCommonSxProps,
-    PartialPick<PFormContextValue, 'variant' | 'size' | 'color'> {
+  extends PCommonSxProps, PartialPick<PFormContextValue, 'variant' | 'size' | 'color'> {
+  ref?: React.Ref<HTMLDivElement>;
   control: ReactNode;
   controlHeight?: number;
   controlSingleHeight?: number;

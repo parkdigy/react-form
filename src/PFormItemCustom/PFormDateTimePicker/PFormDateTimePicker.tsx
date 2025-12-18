@@ -1,16 +1,12 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import {
-  PFormDateTimePickerProps as Props,
-  PFormDateTimePickerCommands,
-  PFormDateTimePickerValue,
-} from './PFormDateTimePicker.types';
+import { PFormDateTimePickerProps as Props, PFormDateTimePickerValue } from './PFormDateTimePicker.types';
 import { PrivateDateTimePicker } from '../../@private';
 import PFormContextProvider from '../../PFormContextProvider';
 import { useFormState } from '../../PFormContext';
 import { PFormValueItemCommands } from '../../@types';
 
-const PFormDateTimePicker = React.forwardRef<PFormDateTimePickerCommands, Props>(({ className, ...props }, ref) => {
+const PFormDateTimePicker = ({ ref, className, ...props }: Props) => {
   /********************************************************************************************************************
    * FormState
    * ******************************************************************************************************************/
@@ -48,8 +44,6 @@ const PFormDateTimePicker = React.forwardRef<PFormDateTimePickerCommands, Props>
       />
     </PFormContextProvider>
   );
-});
-
-PFormDateTimePicker.displayName = 'PFormDateTimePicker';
+};
 
 export default PFormDateTimePicker;

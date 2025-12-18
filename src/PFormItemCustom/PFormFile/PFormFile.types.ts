@@ -1,9 +1,12 @@
+import React, { ReactNode } from 'react';
 import { PCommonSxProps, PFormValueItemCommands, PFormValueItemProps } from '../../@types';
-import { ReactNode } from 'react';
 
 export type PFormFileValue = string;
 
+export type PFormFileCommands = PFormValueItemCommands<PFormFileValue, false>;
+
 export interface PFormFileProps extends PCommonSxProps, PFormValueItemProps<PFormFileValue, false> {
+  ref?: React.Ref<PFormFileCommands>;
   required?: boolean;
   accept?: string;
   hideUrl?: boolean;
@@ -26,5 +29,3 @@ export interface PFormFileProps extends PCommonSxProps, PFormValueItemProps<PFor
   onFile?: (file: File) => Promise<string>;
   onLink?: (url: string) => Promise<string>;
 }
-
-export type PFormFileCommands = PFormValueItemCommands<PFormFileValue, false>;

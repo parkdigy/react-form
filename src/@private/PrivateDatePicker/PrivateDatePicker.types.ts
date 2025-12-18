@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { DesktopDatePickerProps } from '@mui/x-date-pickers';
 import {
   PCommonSxProps,
@@ -13,7 +13,8 @@ import { Dayjs } from 'dayjs';
 export type PrivateDatePickerValue = Dayjs | null;
 
 export interface PrivateDatePickerProps
-  extends PCommonSxProps,
+  extends
+    PCommonSxProps,
     Partial<
       Omit<
         DesktopDatePickerProps<Dayjs>,
@@ -21,6 +22,7 @@ export interface PrivateDatePickerProps
       >
     >,
     PFormValueItemProps<PrivateDatePickerValue, false> {
+  ref?: React.Ref<PrivateDatePickerCommands>;
   type: PFormDateType;
   time?: PFormTimeType;
   hours?: number[];
@@ -41,5 +43,4 @@ export interface PrivateDatePickerProps
 }
 
 export interface PrivateDatePickerCommands
-  extends PFormValueItemBaseCommands<PrivateDatePickerValue, false>,
-    PFormDateValueItemCommands {}
+  extends PFormValueItemBaseCommands<PrivateDatePickerValue, false>, PFormDateValueItemCommands {}

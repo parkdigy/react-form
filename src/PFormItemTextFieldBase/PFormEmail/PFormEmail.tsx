@@ -1,47 +1,39 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import PFormText from '../PFormText';
-import { PFormEmailProps, PFormEmailCommands, PFormEmailValue } from './PFormEmail.types';
+import { PFormEmailProps as Props, PFormEmailValue } from './PFormEmail.types';
 
-const PFormEmail = React.forwardRef<PFormEmailCommands, PFormEmailProps>(
-  (
-    {
-      className,
-      validPattern = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/g,
-      onValue,
-      ...props
+const PFormEmail = ({
+  className,
+  validPattern = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/g,
+  onValue,
+  ...props
+}: Props) => {
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
+
+  const handleValue = useCallback(
+    (value: PFormEmailValue) => {
+      const newValue = value.replace(/ /gi, '');
+      return onValue ? onValue(newValue) : newValue;
     },
-    ref
-  ) => {
-    /********************************************************************************************************************
-     * Event Handler
-     * ******************************************************************************************************************/
+    [onValue]
+  );
 
-    const handleValue = useCallback(
-      (value: PFormEmailValue) => {
-        const newValue = value.replace(/ /gi, '');
-        return onValue ? onValue(newValue) : newValue;
-      },
-      [onValue]
-    );
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
-    /********************************************************************************************************************
-     * Render
-     * ******************************************************************************************************************/
-
-    return (
-      <PFormText
-        ref={ref}
-        className={classNames(className, 'PFormEmail')}
-        type='email'
-        validPattern={validPattern}
-        onValue={handleValue}
-        {...props}
-      />
-    );
-  }
-);
-
-PFormEmail.displayName = 'PFormEmail';
+  return (
+    <PFormText
+      className={classNames(className, 'PFormEmail')}
+      type='email'
+      validPattern={validPattern}
+      onValue={handleValue}
+      {...props}
+    />
+  );
+};
 
 export default PFormEmail;

@@ -1,93 +1,91 @@
 import React, { useCallback, useRef } from 'react';
 import { PFormTagTextProps as Props } from './PFormTagText.types';
-import PFormText, { PFormTextCommands } from '../../PFormText';
+import PFormText from '../../PFormText';
 import { notEmpty } from '@pdg/compare';
 import { useForceUpdate } from '@pdg/react-hook';
 import { styled } from '@mui/material';
 
-export const PFormTagText = React.forwardRef<PFormTextCommands, Props>(
-  ({ allowSpace, onKeyDown, onBlur, onAppendTag, ...props }, ref) => {
-    /********************************************************************************************************************
-     * Use
-     * ******************************************************************************************************************/
+export const PFormTagText = ({ ref, allowSpace, onKeyDown, onBlur, onAppendTag, ...props }: Props) => {
+  /********************************************************************************************************************
+   * Use
+   * ******************************************************************************************************************/
 
-    const forceUpdate = useForceUpdate();
+  const forceUpdate = useForceUpdate();
 
-    /********************************************************************************************************************
-     * Ref
-     * ******************************************************************************************************************/
+  /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
 
-    const valueRef = useRef<string>('');
+  const valueRef = useRef<string>('');
 
-    /********************************************************************************************************************
-     * Function
-     * ******************************************************************************************************************/
+  /********************************************************************************************************************
+   * Function
+   * ******************************************************************************************************************/
 
-    const appendTag = useCallback(() => {
-      onAppendTag(valueRef.current);
-      valueRef.current = ' ';
+  const appendTag = useCallback(() => {
+    onAppendTag(valueRef.current);
+    valueRef.current = ' ';
+    forceUpdate();
+    setTimeout(() => {
+      valueRef.current = '';
       forceUpdate();
-      setTimeout(() => {
-        valueRef.current = '';
-        forceUpdate();
-      });
-    }, [forceUpdate, onAppendTag]);
+    });
+  }, [forceUpdate, onAppendTag]);
 
-    /********************************************************************************************************************
-     * Event Handler
-     * ******************************************************************************************************************/
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
 
-    const handleKeyDown = useCallback(
-      (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const appendKeys = allowSpace ? [',', 'Enter'] : [' ', ',', 'Enter'];
-        if (appendKeys.includes(e.key)) {
-          e.preventDefault();
-          e.stopPropagation();
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      const appendKeys = allowSpace ? [',', 'Enter'] : [' ', ',', 'Enter'];
+      if (appendKeys.includes(e.key)) {
+        e.preventDefault();
+        e.stopPropagation();
 
-          if (notEmpty(valueRef.current)) {
-            appendTag();
-          }
-        } else {
-          if (onKeyDown) onKeyDown(e);
-        }
-      },
-      [allowSpace, appendTag, onKeyDown]
-    );
-
-    const handleChange = useCallback(
-      (value: string) => {
-        valueRef.current = allowSpace ? value.replace(/,/g, '') : value.replace(/ /g, '').replace(/,/g, '');
-      },
-      [allowSpace]
-    );
-
-    const handleBlur = useCallback(
-      (e: React.FocusEvent<HTMLInputElement>) => {
         if (notEmpty(valueRef.current)) {
           appendTag();
         }
-        if (onBlur) onBlur(e);
-      },
-      [onBlur, appendTag]
-    );
+      } else {
+        if (onKeyDown) onKeyDown(e);
+      }
+    },
+    [allowSpace, appendTag, onKeyDown]
+  );
 
-    /********************************************************************************************************************
-     * Render
-     * ******************************************************************************************************************/
+  const handleChange = useCallback(
+    (value: string) => {
+      valueRef.current = allowSpace ? value.replace(/,/g, '') : value.replace(/ /g, '').replace(/,/g, '');
+    },
+    [allowSpace]
+  );
 
-    return (
-      <StyledFormText
-        ref={ref}
-        {...props}
-        clear={false}
-        value={valueRef.current}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        onBlur={handleBlur}
-      />
-    );
-  }
-);
+  const handleBlur = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      if (notEmpty(valueRef.current)) {
+        appendTag();
+      }
+      if (onBlur) onBlur(e);
+    },
+    [onBlur, appendTag]
+  );
+
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
+
+  return (
+    <StyledFormText
+      ref={ref}
+      {...props}
+      clear={false}
+      value={valueRef.current}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+      onBlur={handleBlur}
+    />
+  );
+};
 
 export default PFormTagText;
 

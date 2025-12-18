@@ -9,7 +9,7 @@ import { Grid } from '@mui/material';
 import PrivateMonthPicker, { PrivateMonthPickerBaseValue } from '../PrivateMonthPicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { StyledActionButton, StyledActionContainer, StyledDiv } from './PrivateMonthRangePicker.style.private';
-import { useAutoUpdateLayoutRef } from '@pdg/react-hook';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const DEFAULT_MIN_VALUE = {
   year: 2020,
@@ -20,19 +20,19 @@ const DEFAULT_MAX_VALUE = {
   month: 12,
 };
 
-const PrivateMonthRangePicker: React.FC<Props> = ({
+const PrivateMonthRangePicker = ({
   value,
   minValue = DEFAULT_MIN_VALUE,
   maxValue = DEFAULT_MAX_VALUE,
   disablePast,
   disableFuture,
   onChange: initOnChange,
-}) => {
+}: Props) => {
   /********************************************************************************************************************
    * Ref
    * ******************************************************************************************************************/
 
-  const onChangeRef = useAutoUpdateLayoutRef(initOnChange);
+  const onChangeRef = useAutoUpdateRef(initOnChange);
 
   /********************************************************************************************************************
    * Memo

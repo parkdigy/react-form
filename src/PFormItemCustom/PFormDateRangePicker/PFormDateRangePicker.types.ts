@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import {
   PFormDateRangePickerTooltipPickerContainerCalendarCount,
   PFormDateRangePickerTooltipPickerDateValue,
@@ -21,9 +21,11 @@ export type PFormDateRangePickerValue = [PFormDateRangePickerDateValue, PFormDat
 export type PFormDateRangePickerCalendarCount = PFormDateRangePickerTooltipPickerContainerCalendarCount;
 
 export interface PFormDateRangePickerProps
-  extends PCommonSxProps,
+  extends
+    PCommonSxProps,
     Omit<PFormValueItemProps<PFormDateRangePickerValue, false>, 'label' | 'labelIcon' | 'width'>,
     Pick<PrivateInputDatePickerProps, 'align'> {
+  ref?: React.Ref<PFormDateRangePickerCommands>;
   fromLabel?: ReactNode;
   fromLabelIcon?: string;
   toLabel?: ReactNode;
@@ -59,7 +61,8 @@ export interface PFormDateRangePickerProps
 }
 
 export interface PFormDateRangePickerCommands
-  extends PFormValueItemBaseCommands<PFormDateRangePickerValue, false>,
+  extends
+    PFormValueItemBaseCommands<PFormDateRangePickerValue, false>,
     PFormDateValueItemCommands,
     PFormRangeValueItemCommands<PFormDateRangePickerDateValue>,
     PFormRangeValueItemNameCommands {}

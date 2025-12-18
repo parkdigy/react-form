@@ -1,4 +1,4 @@
-import React, { useId, useMemo } from 'react';
+import React, { useCallback, useId, useMemo } from 'react';
 import classNames from 'classnames';
 import { PrivateInputDatePickerProps as Props } from './PrivateInputDatePicker.types';
 import { InputProps, InputAdornment, InputBaseComponentProps } from '@mui/material';
@@ -6,162 +6,186 @@ import { DesktopDatePicker, DesktopDatePickerProps } from '@mui/x-date-pickers';
 import { Dayjs } from 'dayjs';
 import './PrivateInputDatePicker.scss';
 import { PIcon } from '@pdg/react-component';
-import { useAutoUpdateLayoutRef } from '@pdg/react-hook';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
-const PrivateInputDatePicker = React.forwardRef<HTMLDivElement, Props>(
-  (
-    {
-      variant,
-      size,
-      color,
-      focused,
-      fullWidth,
-      disabled,
-      readOnly,
-      required,
-      labelShrink,
-      //--------------------------------------------------------------------------------------------------------------------
-      className,
-      style,
-      sx,
-      value,
-      label: initLabel,
-      labelIcon,
-      inputRef,
-      format,
-      error,
-      icon,
-      startAdornment,
-      endAdornment,
-      align = 'center',
-      enableKeyboardInput,
-      onFocus: initOnFocus,
-      onBlur: initOnBlur,
-      ...props
+const PrivateInputDatePicker = ({
+  ref,
+  variant,
+  size,
+  color,
+  focused,
+  fullWidth,
+  disabled,
+  readOnly,
+  required,
+  labelShrink,
+  //--------------------------------------------------------------------------------------------------------------------
+  className,
+  style,
+  sx,
+  value,
+  label: initLabel,
+  labelIcon,
+  inputRef,
+  format,
+  error,
+  icon,
+  startAdornment,
+  endAdornment,
+  align = 'center',
+  enableKeyboardInput,
+  onFocus: initOnFocus,
+  onBlur: initOnBlur,
+  ...props
+}: Props) => {
+  /********************************************************************************************************************
+   * ID
+   * ******************************************************************************************************************/
+
+  const id = useId();
+
+  /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
+
+  const onFocusRef = useAutoUpdateRef(initOnFocus);
+  const onBlurRef = useAutoUpdateRef(initOnBlur);
+
+  /********************************************************************************************************************
+   * slotProps
+   * ******************************************************************************************************************/
+
+  /** slotPropsInputRef */
+  const slotPropsInputRef = useCallback(
+    (ref: any) => {
+      if (inputRef) {
+        inputRef.current = ref;
+      }
     },
-    ref
-  ) => {
-    /********************************************************************************************************************
-     * ID
-     * ******************************************************************************************************************/
+    [inputRef]
+  );
 
-    const id = useId();
+  const slotPropsLabel = useMemo(
+    () =>
+      labelIcon ? (
+        <>
+          <PIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PIcon>
+          <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
+        </>
+      ) : (
+        initLabel
+      ),
+    [initLabel, labelIcon]
+  );
 
-    /********************************************************************************************************************
-     * Ref
-     * ******************************************************************************************************************/
+  /** slotPropsMuiInputProps */
+  const slotPropsMuiInputProps = useMemo(() => {
+    const muiInputProps: InputProps = {
+      endAdornment: undefined,
+    };
+    if (startAdornment || icon || muiInputProps.startAdornment) {
+      muiInputProps.startAdornment = (
+        <>
+          {icon && (
+            <InputAdornment position='start'>
+              <PIcon size='small'>{icon}</PIcon>
+            </InputAdornment>
+          )}
+          {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
+          {muiInputProps.startAdornment}
+        </>
+      );
+    }
+    if (endAdornment) {
+      muiInputProps.endAdornment = (
+        <>{endAdornment && <InputAdornment position='end'>{endAdornment}</InputAdornment>}</>
+      );
+    }
 
-    const onFocusRef = useAutoUpdateLayoutRef(initOnFocus);
-    const onBlurRef = useAutoUpdateLayoutRef(initOnBlur);
+    return muiInputProps;
+  }, [endAdornment, icon, startAdornment]);
 
-    /********************************************************************************************************************
-     * Memo
-     * ******************************************************************************************************************/
+  /** slotPropsHandleFocus */
+  const slotPropsHandleFocus = useCallback(
+    (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      onFocusRef.current?.(e);
+    },
+    [onFocusRef]
+  );
 
-    const slotProps = useMemo<DesktopDatePickerProps<Dayjs>['slotProps']>(() => {
-      const inputLabelProps = labelShrink ? { shrink: true } : undefined;
+  /** slotPropsHandleBlur */
+  const slotPropsHandleBlur = useCallback(
+    (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      onBlurRef.current?.(e);
+    },
+    [onBlurRef]
+  );
 
-      const muiInputProps: InputProps = {
-        endAdornment: undefined,
-      };
-      if (startAdornment || icon || muiInputProps.startAdornment) {
-        muiInputProps.startAdornment = (
-          <>
-            {icon && (
-              <InputAdornment position='start'>
-                <PIcon size='small'>{icon}</PIcon>
-              </InputAdornment>
-            )}
-            {startAdornment && <InputAdornment position='start'>{startAdornment}</InputAdornment>}
-            {muiInputProps.startAdornment}
-          </>
-        );
-      }
-      if (endAdornment) {
-        muiInputProps.endAdornment = (
-          <>{endAdornment && <InputAdornment position='end'>{endAdornment}</InputAdornment>}</>
-        );
-      }
-
-      const inputProps: InputBaseComponentProps = {};
-      if (readOnly) {
-        inputProps.tabIndex = -1;
-        inputProps.className = classNames(inputProps.className, 'Mui-disabled');
-      }
-
-      return {
-        textField: {
-          variant,
-          size,
-          color,
-          focused,
-          fullWidth,
-          required,
-          name: id,
-          label: labelIcon ? (
-            <>
-              <PIcon style={{ verticalAlign: 'middle', marginRight: 4 }}>{labelIcon}</PIcon>
-              <span style={{ verticalAlign: 'middle' }}>{initLabel}</span>
-            </>
-          ) : (
-            initLabel
-          ),
-          style,
-          sx,
-          error,
-          InputProps: muiInputProps,
-          inputProps,
-          inputRef: (ref) => {
-            if (inputRef) {
-              inputRef.current = ref;
+  /** slotProps */
+  const slotProps = useMemo<DesktopDatePickerProps<Dayjs>['slotProps']>(() => {
+    return {
+      textField: {
+        variant,
+        size,
+        color,
+        focused,
+        fullWidth,
+        required,
+        name: id,
+        label: slotPropsLabel,
+        style,
+        sx,
+        error,
+        InputProps: slotPropsMuiInputProps,
+        inputProps: readOnly
+          ? {
+              className: 'Mui-disabled',
+              tabIndex: -1,
             }
-          },
-          InputLabelProps: inputLabelProps,
-          onFocus: onFocusRef.current,
-          onBlur: onBlurRef.current,
-        },
-      };
-    }, [
-      color,
-      endAdornment,
-      error,
-      focused,
-      fullWidth,
-      icon,
-      id,
-      initLabel,
-      inputRef,
-      labelIcon,
-      labelShrink,
-      onBlurRef,
-      onFocusRef,
-      readOnly,
-      required,
-      size,
-      startAdornment,
-      style,
-      sx,
-      variant,
-    ]);
+          : undefined,
+        inputRef: slotPropsInputRef,
+        InputLabelProps: labelShrink ? { shrink: true } : undefined,
+        onFocus: slotPropsHandleFocus,
+        onBlur: slotPropsHandleBlur,
+      },
+    };
+  }, [
+    color,
+    error,
+    focused,
+    fullWidth,
+    id,
+    labelShrink,
+    readOnly,
+    required,
+    size,
+    slotPropsHandleBlur,
+    slotPropsHandleFocus,
+    slotPropsInputRef,
+    slotPropsLabel,
+    slotPropsMuiInputProps,
+    style,
+    sx,
+    variant,
+  ]);
 
-    /********************************************************************************************************************
-     * Render
-     * ******************************************************************************************************************/
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
-    return (
-      <DesktopDatePicker
-        {...props}
-        ref={ref}
-        className={classNames(className, 'PrivateInputDatePicker', `align-${align}`)}
-        open={false}
-        value={value}
-        format={format}
-        disabled={disabled}
-        readOnly={readOnly || !enableKeyboardInput}
-        slotProps={slotProps}
-      />
-    );
-  }
-);
+  return (
+    <DesktopDatePicker
+      {...props}
+      ref={ref}
+      className={classNames(className, 'PrivateInputDatePicker', `align-${align}`)}
+      open={false}
+      value={value}
+      format={format}
+      disabled={disabled}
+      readOnly={readOnly || !enableKeyboardInput}
+      slotProps={slotProps}
+    />
+  );
+};
 
 export default PrivateInputDatePicker;

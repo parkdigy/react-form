@@ -10,14 +10,7 @@ for (let i = 0; i < 12; i += 1) {
   MONTHS[i] = i;
 }
 
-const PrivateMonthSelect: React.FC<Props> = ({
-  year,
-  selectYear,
-  selectMonth,
-  activeMonth,
-  availableDate,
-  onSelect,
-}) => {
+const PrivateMonthSelect = ({ year, selectYear, selectMonth, activeMonth, availableDate, onSelect }: Props) => {
   const today = dayjs().startOf('date');
 
   return (

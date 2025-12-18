@@ -5,7 +5,7 @@ import { StyledContainer } from './PrivateYearRangePickerYearList.style.private'
 
 let _lastCloseTime = 0;
 
-const PrivateYearRangePickerYearList: React.FC<Props> = ({
+const PrivateYearRangePickerYearList = ({
   value,
   displayValue,
   selectType,
@@ -14,7 +14,7 @@ const PrivateYearRangePickerYearList: React.FC<Props> = ({
   disablePast,
   disableFuture,
   onChange,
-}) => {
+}: Props) => {
   /********************************************************************************************************************
    * Ref
    * ******************************************************************************************************************/

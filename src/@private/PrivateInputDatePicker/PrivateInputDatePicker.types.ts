@@ -7,7 +7,8 @@ import { DesktopDatePickerProps } from '@mui/x-date-pickers';
 export type PrivateInputDatePickerValue = Dayjs | null;
 
 export interface PrivateInputDatePickerProps
-  extends PCommonSxProps,
+  extends
+    PCommonSxProps,
     Pick<
       DesktopDatePickerProps<Dayjs>,
       'name' | 'disablePast' | 'disableFuture' | 'shouldDisableYear' | 'shouldDisableMonth' | 'shouldDisableDate'
@@ -16,6 +17,7 @@ export interface PrivateInputDatePickerProps
       PFormValueItemProps<PrivateInputDatePickerValue>,
       'variant' | 'size' | 'color' | 'focused' | 'fullWidth' | 'readOnly' | 'label' | 'labelIcon' | 'error'
     > {
+  ref?: React.Ref<HTMLDivElement>;
   className?: string;
   value: PrivateInputDatePickerValue;
   disabled?: boolean;

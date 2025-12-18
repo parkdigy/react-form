@@ -1,3 +1,4 @@
+import React from 'react';
 import { Dayjs } from 'dayjs';
 
 export type PFormDateRangePickerTooltipPickerDateValue = Dayjs | null;
@@ -10,6 +11,7 @@ export type PFormDateRangePickerTooltipPickerValue = [
 export type PFormDateRangePickerTooltipPickerSelectType = 'start' | 'end';
 
 export interface PFormDateRangePickerTooltipPickerProps {
+  ref?: React.Ref<PFormDateRangePickerTooltipPickerCommands>;
   selectType: PFormDateRangePickerTooltipPickerSelectType;
   value?: PFormDateRangePickerTooltipPickerValue;
   focusedDate?: PFormDateRangePickerTooltipPickerDateValue;

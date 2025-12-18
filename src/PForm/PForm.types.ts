@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { FormControlProps, GridProps, InputLabelProps } from '@mui/material';
 import {
   PartialPick,
@@ -17,9 +17,11 @@ export interface PFormInvalidItemInfo {
 export type PFormInvalidItems = PFormInvalidItemInfo[];
 
 export interface PFormProps
-  extends PCommonSxProps,
+  extends
+    PCommonSxProps,
     PartialPick<FormControlProps, 'variant' | 'size' | 'color' | 'focused'>,
     PartialPick<GridProps, 'spacing'> {
+  ref?: React.Ref<PFormCommands>;
   labelShrink?: InputLabelProps['shrink'];
   fullWidth?: boolean;
   fullHeight?: boolean;

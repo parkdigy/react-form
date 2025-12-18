@@ -27,7 +27,7 @@ const DEFAULT_MAX_VALUE = {
   month: 12,
 };
 
-const PrivateMonthPicker: React.FC<Props> = ({
+const PrivateMonthPicker = ({
   value: initValue = null,
   minValue = DEFAULT_MIN_VALUE,
   maxValue = DEFAULT_MAX_VALUE,
@@ -36,7 +36,7 @@ const PrivateMonthPicker: React.FC<Props> = ({
   selectFromValue,
   selectToValue,
   onChange,
-}) => {
+}: Props) => {
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/

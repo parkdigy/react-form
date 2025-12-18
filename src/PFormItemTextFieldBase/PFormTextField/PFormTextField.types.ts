@@ -1,11 +1,13 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { TextFieldProps } from '@mui/material';
 import { PFormValueItemBaseCommands, PFormValueItemProps } from '../../@types';
 
 export type PFormTextFieldValue = any;
 
-export interface PFormTextFieldCommands<T = PFormTextFieldValue, AllowUndefinedValue extends boolean = true>
-  extends PFormValueItemBaseCommands<T, AllowUndefinedValue> {}
+export interface PFormTextFieldCommands<
+  T = PFormTextFieldValue,
+  AllowUndefinedValue extends boolean = true,
+> extends PFormValueItemBaseCommands<T, AllowUndefinedValue> {}
 
 export type PFormTextFieldProps<
   T = PFormTextFieldValue,
@@ -26,6 +28,7 @@ export type PFormTextFieldProps<
   | 'aria-grabbed'
 > &
   Omit<PFormValueItemProps<T, AllowUndefinedValue>, 'label' | 'fullWidth' | 'disabled' | 'error'> & {
+    ref?: React.Ref<PFormTextFieldCommands<T, AllowUndefinedValue>>;
     icon?: string;
     clear?: boolean;
     maxLength?: number;

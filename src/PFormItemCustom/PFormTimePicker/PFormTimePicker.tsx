@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import { PFormTimePickerProps as Props, PFormTimePickerCommands, PFormTimePickerValue } from './PFormTimePicker.types';
+import { PFormTimePickerProps as Props, PFormTimePickerValue } from './PFormTimePicker.types';
 import { PrivateDateTimePicker } from '../../@private';
 import PFormContextProvider from '../../PFormContextProvider';
 import { useFormState } from '../../PFormContext';
 import { PFormValueItemCommands } from '../../@types';
 
-const PFormTimePicker = React.forwardRef<PFormTimePickerCommands, Props>(({ className, ...props }, ref) => {
+const PFormTimePicker = ({ className, ...props }: Props) => {
   /********************************************************************************************************************
    * FormState
    * ******************************************************************************************************************/
@@ -36,11 +36,9 @@ const PFormTimePicker = React.forwardRef<PFormTimePickerCommands, Props>(({ clas
         onAddValueItem: handleAddValueItem,
       }}
     >
-      <PrivateDateTimePicker className={classNames(className, 'PFormTimePicker')} {...props} ref={ref} type='time' />
+      <PrivateDateTimePicker className={classNames(className, 'PFormTimePicker')} {...props} type='time' />
     </PFormContextProvider>
   );
-});
-
-PFormTimePicker.displayName = 'PFormTimePicker';
+};
 
 export default PFormTimePicker;

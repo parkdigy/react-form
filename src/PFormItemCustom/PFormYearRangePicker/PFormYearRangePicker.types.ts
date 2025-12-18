@@ -1,3 +1,4 @@
+import React, { ReactNode } from 'react';
 import {
   PFormValueItemProps,
   PFormValueItemBaseCommands,
@@ -5,7 +6,6 @@ import {
   PFormRangeValueItemNameCommands,
 } from '../../@types';
 import { PCommonSxProps } from '../../@types';
-import { ReactNode } from 'react';
 import {
   PrivateInputDatePickerProps,
   PrivateYearRangePickerBaseValue,
@@ -17,9 +17,11 @@ export type PFormYearRangePickerBaseValue = PrivateYearRangePickerBaseValue;
 export type PFormYearRangePickerValue = PrivateYearRangePickerValue;
 
 export interface PFormYearRangePickerProps
-  extends PCommonSxProps,
+  extends
+    PCommonSxProps,
     Omit<PFormValueItemProps<PFormYearRangePickerValue, false>, 'label' | 'labelIcon' | 'width'>,
     Pick<PrivateInputDatePickerProps, 'align'> {
+  ref?: React.Ref<PFormYearRangePickerCommands>;
   fromLabel?: ReactNode;
   fromLabelIcon?: string;
   toLabel?: ReactNode;
@@ -41,6 +43,7 @@ export interface PFormYearRangePickerProps
 }
 
 export interface PFormYearRangePickerCommands
-  extends PFormValueItemBaseCommands<PFormYearRangePickerValue, false>,
+  extends
+    PFormValueItemBaseCommands<PFormYearRangePickerValue, false>,
     PFormRangeValueItemCommands<PFormYearRangePickerBaseValue>,
     PFormRangeValueItemNameCommands {}

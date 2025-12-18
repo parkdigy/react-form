@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { ToggleButtonProps } from '@mui/material';
 import {
   PartialPick,
@@ -35,9 +35,9 @@ export interface PFormToggleButtonGroupProps<
   Items extends PFormToggleButtonGroupItems<T> = PFormToggleButtonGroupItems<T>,
   SingleValue extends Items[number]['value'] = Items[number]['value'],
   Value = PFormToggleButtonGroupValue<SingleValue, Multiple>,
-> extends PCommonSxProps,
-    PFormValueItemProps<Value>,
-    PartialPick<PFormItemBaseProps, 'required' | 'focused'> {
+>
+  extends PCommonSxProps, PFormValueItemProps<Value>, PartialPick<PFormItemBaseProps, 'required' | 'focused'> {
+  ref?: React.Ref<PFormToggleButtonGroupCommands<SingleValue, Multiple>>;
   type?: 'button' | 'checkbox' | 'radio';
   items?: Items;
   multiple?: Multiple;
@@ -53,7 +53,8 @@ export interface PFormToggleButtonGroupProps<
 }
 
 export interface PFormToggleButtonGroupExtraCommands<T extends PFormToggleButtonGroupSingleValue>
-  extends PFormArrayValueItemCommands,
+  extends
+    PFormArrayValueItemCommands,
     PFormItemsValueItemCommands<PFormToggleButtonGroupItem<T>>,
     PFormMultipleValueItemCommands,
     PFormLoadingValueItemCommands {}
@@ -61,7 +62,9 @@ export interface PFormToggleButtonGroupExtraCommands<T extends PFormToggleButton
 export interface PFormToggleButtonGroupCommands<
   T extends PFormToggleButtonGroupSingleValue,
   Multiple extends boolean | undefined = undefined,
-> extends PFormValueItemBaseCommands<PFormToggleButtonGroupValue<T, Multiple>, true>,
+>
+  extends
+    PFormValueItemBaseCommands<PFormToggleButtonGroupValue<T, Multiple>, true>,
     PFormToggleButtonGroupExtraCommands<T> {
   reloadItems: () => void;
 }

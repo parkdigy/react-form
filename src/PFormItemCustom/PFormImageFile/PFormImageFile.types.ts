@@ -1,3 +1,4 @@
+import React from 'react';
 import { PFormFileCommands, PFormFileProps } from '../PFormFile';
 
 export interface PFormImageFileImageSize {
@@ -6,6 +7,7 @@ export interface PFormImageFileImageSize {
 }
 
 export interface PFormImageFileProps extends Omit<PFormFileProps, 'preview'> {
+  ref?: React.Ref<PFormImageFileCommands>;
   imageSize?: PFormImageFileImageSize | PFormImageFileImageSize[];
   preview?: boolean;
   previewMaxHeight?: number;

@@ -5,21 +5,21 @@ import dayjs from 'dayjs';
 import './PrivateYearSelect.scss';
 import PrivateToggleButton from '../PrivateToggleButton';
 import SimpleBar from 'simplebar-react';
-import { useAutoUpdateLayoutRef } from '@pdg/react-hook';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const YEARS = new Array(200).fill(0);
 for (let i = 0; i < 200; i += 1) {
   YEARS[i] = 1900 + i;
 }
 
-const PrivateYearSelect: React.FC<Props> = ({ selectYear, activeYear, availableDate, onSelect: initOnSelect }) => {
+const PrivateYearSelect = ({ selectYear, activeYear, availableDate, onSelect: initOnSelect }: Props) => {
   /********************************************************************************************************************
    * Ref
    * ******************************************************************************************************************/
 
   const containerRef = useRef<HTMLDivElement>(null);
   const simpleBarRef = useRef<HTMLDivElement>(null);
-  const onSelectRef = useAutoUpdateLayoutRef(initOnSelect);
+  const onSelectRef = useAutoUpdateRef(initOnSelect);
 
   /********************************************************************************************************************
    * Effect

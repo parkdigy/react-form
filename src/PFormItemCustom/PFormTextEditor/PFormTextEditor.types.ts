@@ -1,3 +1,4 @@
+import React from 'react';
 import { PCommonSxProps, PFormValueItemCommands, PFormValueItemProps } from '../../@types';
 import { IAllProps } from '@tinymce/tinymce-react';
 
@@ -5,9 +6,11 @@ export type PFormTextEditorValue = string;
 export type PFormTextEditorCommands = PFormValueItemCommands<PFormTextEditorValue, false>;
 
 export interface PFormTextEditorProps
-  extends PCommonSxProps,
+  extends
+    PCommonSxProps,
     Omit<PFormValueItemProps<PFormTextEditorValue, false>, 'fullWidth'>,
     Partial<Pick<IAllProps, 'apiKey' | 'toolbar'>> {
+  ref?: React.Ref<PFormTextEditorCommands>;
   required?: boolean;
   menubar?: boolean;
   height?: number;

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { PFormArrayValueItemCommands } from '../../@types';
 import { PFormTextFieldCommands, PFormTextFieldProps } from '../PFormTextField';
 
@@ -9,6 +9,7 @@ export type PFormTagExtraCommands = PFormArrayValueItemCommands;
 export type PFormTagCommands = PFormTextFieldCommands<PFormTagValue, false> & PFormTagExtraCommands;
 
 export type PFormTagProps = Omit<PFormTextFieldProps<PFormTagValue, false>, 'type'> & {
+  ref?: React.Ref<PFormTagCommands>;
   formValueSeparator?: string;
   formValueSort?: boolean;
   limitTags?: number;

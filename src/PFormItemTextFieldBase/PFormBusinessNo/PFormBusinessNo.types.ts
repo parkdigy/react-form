@@ -1,7 +1,10 @@
+import React from 'react';
 import { PFormTextProps, PFormTextCommands, PFormTextValue } from '../PFormText';
 
 export type PFormBusinessNoValue = PFormTextValue;
 
 export type PFormBusinessNoCommands = PFormTextCommands;
 
-export type PFormBusinessNoProps = Omit<PFormTextProps, 'type' | 'maxLength'>;
+export interface PFormBusinessNoProps extends Omit<PFormTextProps, 'type' | 'maxLength'> {
+  ref?: React.Ref<PFormBusinessNoCommands>;
+}

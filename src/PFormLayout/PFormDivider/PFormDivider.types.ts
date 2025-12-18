@@ -1,9 +1,10 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { PCommonSxProps } from '../../@types';
 import { PFormProps } from '../../PForm';
 import { PIconProps } from '@pdg/react-component';
 
 export interface PFormDividerProps extends PCommonSxProps {
+  ref?: React.Ref<HTMLDivElement>;
   size?: PFormProps['size'];
   color?: PFormProps['color'];
   //--------------------------------------------------------------------------------------------------------------------

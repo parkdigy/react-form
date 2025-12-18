@@ -5,52 +5,48 @@ import { useFormState } from '../../PFormContext';
 import { PButton } from '@pdg/react-component';
 import { ifUndefined } from '@pdg/compare';
 
-const PFormButton = React.forwardRef<HTMLButtonElement, Props>(
-  (
-    {
-      size: initSize,
-      color: initColor,
-      variant: initVariant,
-      fullWidth: initFullWidth,
-      className,
-      type = 'button',
-      onClick,
-      ...props
-    },
-    ref
-  ) => {
-    /********************************************************************************************************************
-     * FormState
-     * ******************************************************************************************************************/
+const PFormButton = ({
+  ref,
+  size: initSize,
+  color: initColor,
+  variant: initVariant,
+  fullWidth: initFullWidth,
+  className,
+  type = 'button',
+  onClick,
+  ...props
+}: Props) => {
+  /********************************************************************************************************************
+   * FormState
+   * ******************************************************************************************************************/
 
-    const { size: formSize, color: formColor, fullWidth: formFullWidth } = useFormState();
+  const { size: formSize, color: formColor, fullWidth: formFullWidth } = useFormState();
 
-    /********************************************************************************************************************
-     * FormState
-     * ******************************************************************************************************************/
+  /********************************************************************************************************************
+   * FormState
+   * ******************************************************************************************************************/
 
-    const size = ifUndefined(initSize, formSize);
-    const color = ifUndefined(initColor, formColor);
-    const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+  const size = ifUndefined(initSize, formSize);
+  const color = ifUndefined(initColor, formColor);
+  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
-    /********************************************************************************************************************
-     * Render
-     * ******************************************************************************************************************/
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
-    return (
-      <PButton
-        ref={ref}
-        className={classNames(className, 'PFormButton')}
-        type={type}
-        variant={initVariant ? initVariant : type === 'submit' ? 'contained' : 'outlined'}
-        size={size}
-        color={color}
-        fullWidth={fullWidth}
-        onClick={onClick}
-        {...props}
-      />
-    );
-  }
-);
+  return (
+    <PButton
+      ref={ref}
+      className={classNames(className, 'PFormButton')}
+      type={type}
+      variant={initVariant ? initVariant : type === 'submit' ? 'contained' : 'outlined'}
+      size={size}
+      color={color}
+      fullWidth={fullWidth}
+      onClick={onClick}
+      {...props}
+    />
+  );
+};
 
-export default React.memo(PFormButton);
+export default PFormButton;
