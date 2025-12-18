@@ -8,6 +8,8 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const { SourceMapDevToolPlugin } = require('webpack');
+const MyDefinePlugin = require('./webpack.DefinePlugin');
+const MyProvidePlugin = require('./webpack.ProvidePlugin');
 const sass = require('sass');
 const TsConfigJson = require('./tsconfig.json');
 const RootPackageJson = require('../package.json');
@@ -135,6 +137,11 @@ const options = {
       : {},
   },
   plugins: [
+    new MyDefinePlugin({
+      mode: process.env.NODE_ENV,
+      name: repositoryName,
+    }),
+    new MyProvidePlugin(),
     new ForkTsCheckerWebpackPlugin(),
     new ESLintPlugin({
       extensions: ['js', 'jsx', 'ts', 'tsx'],
@@ -176,13 +183,6 @@ const options = {
         use: [
           {
             loader: 'babel-loader',
-          },
-          {
-            loader: 'ts-loader',
-            options: {
-              transpileOnly: true,
-              experimentalWatchApi: true,
-            },
           },
         ],
       },

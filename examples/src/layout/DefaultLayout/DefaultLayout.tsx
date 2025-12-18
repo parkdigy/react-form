@@ -15,8 +15,6 @@ const menu = Menu.map((info) => ({
 }));
 
 const DefaultLayout = () => {
-  //--------------------------------------------------------------------------------------------------------------------
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

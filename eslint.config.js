@@ -1,14 +1,16 @@
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
-import reactRefresh from 'eslint-plugin-react-refresh';
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import typescriptEslintParser from '@typescript-eslint/parser';
 import pluginReact from 'eslint-plugin-react';
+import pluginReactRefresh from 'eslint-plugin-react-refresh';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
 
 export default defineConfig([
-  ...tseslint.config(eslint.configs.recommended, tseslint.configs.recommended, reactRefresh.configs.recommended),
+  ...tseslint.config(eslint.configs.recommended, tseslint.configs.recommended, pluginReactRefresh.configs.recommended),
+  pluginReact.configs.flat.recommended,
+  pluginReactHooks.configs.flat.recommended,
   {
     ignores: ['node_modules/', 'dist/'],
     files: ['**/*.{js,jsx,ts,tsx}'],
@@ -29,10 +31,7 @@ export default defineConfig([
         __dirname: 'readonly',
       },
     },
-    plugins: {
-      react: pluginReact,
-      'react-hooks': pluginReactHooks,
-    },
+    plugins: {},
     settings: {
       react: {
         version: 'detect', // Auto-detect React version

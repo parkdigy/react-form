@@ -7,6 +7,8 @@ import pluginReactHooks from 'eslint-plugin-react-hooks';
 
 export default defineConfig([
   ...tseslint.config(eslint.configs.recommended, tseslint.configs.recommended),
+  pluginReact.configs.flat.recommended,
+  pluginReactHooks.configs.flat.recommended,
   {
     ignores: ['node_modules/', 'dist/'],
     files: ['**/*.{js,jsx,ts,tsx}'],
@@ -22,14 +24,10 @@ export default defineConfig([
       globals: {
         module: 'readonly',
         process: 'readonly',
-        console: 'readonly',
         __dirname: 'readonly',
       },
     },
-    plugins: {
-      react: pluginReact,
-      'react-hooks': pluginReactHooks,
-    },
+    plugins: {},
     settings: {
       react: {
         version: 'detect', // Auto-detect React version
@@ -42,16 +40,16 @@ export default defineConfig([
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
-      '@typescript-eslint/no-unused-vars': ['warn'],
+      '@typescript-eslint/no-unused-vars': 'warn',
       'no-empty-pattern': 'off',
-      'no-useless-constructor': ['warn'],
-      'react/no-unused-state': ['warn'],
+      'no-useless-constructor': 'warn',
+      'react/no-unused-state': 'warn',
       'react/state-in-constructor': ['error', 'always'],
-      'react/no-deprecated': ['error'],
+      'react/no-deprecated': 'error',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'error',
-      'no-plusplus': ['error'],
-      'prefer-template': ['error'],
+      'no-plusplus': 'error',
+      'prefer-template': 'error',
       'jsx-quotes': ['error', 'prefer-single'],
       'react/prop-types': [
         'error',

@@ -16,7 +16,8 @@
     "reinstall": "npm run reinstall:module",
     "reinstall:module": "rm -rf node_modules && rm -f package-lock.json && npm i",
     "lint": "eslint src",
-    "tsc": "npx tsc --noEmit"
+    "tsc": "npx tsc --noEmit",
+    "pub": "cd .. && npm run pub"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
@@ -24,7 +25,7 @@
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.27.1",
     "@eslint/js": "^9.28.0",
-    "@pdg/react-admin-layout": "^1.0.50",
+    "@pdg/react-admin-layout": "^1.0.54",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.6.0",
     "@soda/friendly-errors-webpack-plugin": "^1.8.1",
     "@types/jest": "^29.5.14",
@@ -33,6 +34,7 @@
     "@types/react-dom": "^19.1.5",
     "@typescript-eslint/parser": "^8.33.0",
     "babel-loader": "^10.0.0",
+    "babel-plugin-react-compiler": "1.0.0",
     "baseline-browser-mapping": "^2.8.25",
     "browserslist-config-baseline": "^0.5.0",
     "classnames": "^2.5.1",
@@ -46,7 +48,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-prettier": "^5.4.1",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-webpack-plugin": "^5.0.1",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
     "html-loader": "^5.1.0",
@@ -59,7 +61,6 @@
     "source-map-loader": "^5.0.0",
     "style-loader": "^4.0.0",
     "styled-components": "^6.1.18",
-    "ts-loader": "^9.5.2",
     "typescript": "5.8.3",
     "typescript-eslint": "^8.33.0",
     "url-loader": "^4.1.1",
