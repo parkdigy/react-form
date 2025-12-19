@@ -1,6 +1,5 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { PrivateYearRangePickerProps as Props, PrivateYearRangePickerValue } from './PrivateYearRangePicker.types';
-import { useAutoUpdateState } from '@pdg/react-hook';
 import PrivateYearRangePickerYearList from './PrivateYearRangePickerYearList';
 import {
   StyledActionButton,
@@ -10,6 +9,7 @@ import {
   StyledYear,
   StyledYearError,
 } from './PrivateYearRangePicker.style.private';
+import { useChanged } from '@pdg/react-hook';
 
 const DEFAULT_MIN_YEAR = 2020;
 const DEFAULT_MAX_YEAR = 2050;
@@ -26,10 +26,11 @@ const PrivateYearRangePicker = ({
   onChange,
 }: Props) => {
   /********************************************************************************************************************
-   * State
+   * value
    * ******************************************************************************************************************/
 
-  const [value, setValue] = useAutoUpdateState<PrivateYearRangePickerValue>(initValue);
+  const [value, setValue] = useState(initValue);
+  useChanged(initValue) && setValue(initValue);
 
   /********************************************************************************************************************
    * Memo

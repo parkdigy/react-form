@@ -4,7 +4,6 @@ import { useResizeDetector } from 'react-resize-detector';
 import { useFormState } from '../../PFormContext';
 import { Grid } from '@mui/material';
 import { StyledContainerDiv, StyledContentDiv } from './PFormBody.style.private';
-import { ifUndefined } from '@pdg/compare';
 
 const PFormBody = ({ children, hidden, fullHeight: initFullHeight, style: initStyle }: Props) => {
   /********************************************************************************************************************
@@ -18,7 +17,7 @@ const PFormBody = ({ children, hidden, fullHeight: initFullHeight, style: initSt
    * ******************************************************************************************************************/
 
   const { ref: containerRef, height: resizedHeight } = useResizeDetector({ handleWidth: false });
-  const height = ifUndefined(resizedHeight, 0);
+  const height = resizedHeight ?? 0;
 
   /********************************************************************************************************************
    * Style

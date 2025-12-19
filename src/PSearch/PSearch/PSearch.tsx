@@ -6,6 +6,7 @@ import { PFormBody } from '../../PFormLayout';
 import PFormContextProvider from '../../PFormContextProvider';
 import { PFormContextValue } from '../../PFormContext';
 import PSearchGroupRow from '../PSearchGroupRow';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const PSearch = ({
   ref,
@@ -31,12 +32,12 @@ const PSearch = ({
    * Effect
    * ******************************************************************************************************************/
 
+  const autoSubmitRef = useAutoUpdateRef(autoSubmit);
   useEffect(() => {
-    if (autoSubmit) {
+    if (autoSubmitRef.current) {
       formRef.current?.submit();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [autoSubmitRef]);
 
   /********************************************************************************************************************
    * Memo
@@ -67,6 +68,20 @@ const PSearch = ({
    * FormContextValue
    * ******************************************************************************************************************/
 
+  const emptyHandler = useCallback(() => {
+    //
+  }, []);
+
+  const handleRequestSubmit = useCallback(() => {
+    formRef.current?.submit();
+  }, []);
+
+  const handleRequestSearchSubmit = useCallback(() => {
+    if (autoSubmit) {
+      formRef.current?.submit();
+    }
+  }, [autoSubmit]);
+
   const formContextValue = useMemo(
     () =>
       ({
@@ -78,20 +93,14 @@ const PSearch = ({
         focused,
         labelShrink,
         fullWidth: false,
-        onAddValueItem() {},
-        onRemoveValueItem() {},
-        onValueChange() {},
-        onValueChangeByUser() {},
-        onRequestSubmit() {
-          formRef.current?.submit();
-        },
-        onRequestSearchSubmit() {
-          if (autoSubmit) {
-            formRef.current?.submit();
-          }
-        },
+        onAddValueItem: emptyHandler,
+        onRemoveValueItem: emptyHandler,
+        onValueChange: emptyHandler,
+        onValueChangeByUser: emptyHandler,
+        onRequestSubmit: handleRequestSubmit,
+        onRequestSearchSubmit: handleRequestSearchSubmit,
       }) as PFormContextValue,
-    [autoSubmit, color, focused, labelShrink, spacing]
+    [color, emptyHandler, focused, handleRequestSearchSubmit, handleRequestSubmit, labelShrink, spacing]
   );
 
   /********************************************************************************************************************

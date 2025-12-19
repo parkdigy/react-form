@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import PFormText from '../PFormText';
 import classNames from 'classnames';
-import { PFormTelProps as Props, PFormTelCommands, PFormTelValue } from './PFormTel.types';
+import { PFormTelProps as Props, PFormTelValue } from './PFormTel.types';
 import { formatTelNo } from '@pdg/formatting';
 
 const PFormTel = ({

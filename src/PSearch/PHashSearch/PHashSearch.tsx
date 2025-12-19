@@ -18,14 +18,23 @@ import { Dict } from '@pdg/types';
 import { equal, notEmpty } from '@pdg/compare';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
+import { useLocation } from 'react-router';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestHashChange, ...props }: Props) => {
+  /********************************************************************************************************************
+   * Use
+   * ******************************************************************************************************************/
+
+  const location = useLocation();
+
   /********************************************************************************************************************
    * Ref
    * ******************************************************************************************************************/
 
   const searchRef = useRef<PSearchCommands>(null);
   const initPathRef = useRef(window.location.pathname);
+  const onSubmitRef = useAutoUpdateRef(onSubmit);
 
   /********************************************************************************************************************
    * State
@@ -37,17 +46,17 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
    * Function
    * ******************************************************************************************************************/
 
-  const deHash = useCallback(() => {
-    const values: Dict<string> = {};
-    const hash = window.location.hash.substring(1);
-    hash.replace(/([^=&]+)=([^&]*)/g, (substring, key, value) => {
-      values[decodeURIComponent(key)] = decodeURIComponent(value);
-      return substring;
-    });
-    return values;
-  }, []);
-
   const hashToSearchValue = useCallback((): PFormValueMap | undefined => {
+    const deHash = () => {
+      const values: Dict<string> = {};
+      const hash = window.location.hash.substring(1);
+      hash.replace(/([^=&]+)=([^&]*)/g, (substring, key, value) => {
+        values[decodeURIComponent(key)] = decodeURIComponent(value);
+        return substring;
+      });
+      return values;
+    };
+
     const commands = searchRef.current;
     if (commands) {
       commands.resetAll();
@@ -159,19 +168,18 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
       });
       return commands.getAllFormValue();
     }
-  }, [deHash]);
+  }, []);
 
   /********************************************************************************************************************
    * hash
    * ******************************************************************************************************************/
 
   useEffect(() => {
-    if (window.location.pathname === initPathRef.current) {
+    if (location.pathname === initPathRef.current) {
       const data = hashToSearchValue();
-      if (data) onSubmit?.(data);
+      if (data) onSubmitRef.current?.(data);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window.location.hash]);
+  }, [hashToSearchValue, location.hash, location.pathname, onSubmitRef]);
 
   const hashChange = useCallback(
     (params: PFormValueMap) => {

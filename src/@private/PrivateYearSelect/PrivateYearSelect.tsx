@@ -25,8 +25,11 @@ const PrivateYearSelect = ({ selectYear, activeYear, availableDate, onSelect: in
    * Effect
    * ******************************************************************************************************************/
 
+  const activeYearRef = useAutoUpdateRef(activeYear);
   useEffect(() => {
-    const activeEls = containerRef.current?.getElementsByClassName(`private-year-select-value-${activeYear}`);
+    const activeEls = containerRef.current?.getElementsByClassName(
+      `private-year-select-value-${activeYearRef.current}`
+    );
     if (activeEls && activeEls.length > 0) {
       const activeEl = activeEls[0];
 
@@ -43,8 +46,7 @@ const PrivateYearSelect = ({ selectYear, activeYear, availableDate, onSelect: in
         });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [activeYearRef]);
 
   /********************************************************************************************************************
    * Event Handler

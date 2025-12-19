@@ -7,7 +7,7 @@ import {
   DesktopDateTimePicker,
   DesktopDateTimePickerProps,
 } from '@mui/x-date-pickers';
-import { useAutoUpdateRefState, useAutoUpdateState, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, TooltipSlotsAndSlotProps } from '@mui/material';
 import { PIcon, PIconText } from '@pdg/react-component';
 import {
@@ -30,7 +30,7 @@ import { PrivateStaticDateTimePickerCommands, PrivateStaticDateTimePickerUnit } 
 import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
 import { Dayjs } from 'dayjs';
 import PrivateStaticDateTimePicker from '../PrivateStaticDateTimePicker';
-import { empty, ifUndefined, notEmpty } from '@pdg/compare';
+import { empty, notEmpty } from '@pdg/compare';
 import { getFinalValue } from './PrivateDateTimePicker.function.private';
 import { PrivateDatePickerValue } from '../PrivateDatePicker';
 import './PrivateDateTimePicker.scss';
@@ -123,12 +123,12 @@ const PrivateDateTimePicker = ({
    * Value
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const focused = ifUndefined(initFocused, formFocused);
-  const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const focused = initFocused ?? formFocused;
+  const labelShrink = initLabelShrink ?? formLabelShrink;
+  const fullWidth = initFullWidth ?? formFullWidth;
 
   /********************************************************************************************************************
    * State - open
@@ -138,19 +138,44 @@ const PrivateDateTimePicker = ({
   const [openValue, setOpenValue] = useState<PrivateDatePickerValue | undefined>(undefined);
 
   /********************************************************************************************************************
+   * State - error
+   * ******************************************************************************************************************/
+
+  const [error, setError] = useState(initError);
+  useChanged(initError) && setError(initError);
+
+  /********************************************************************************************************************
+   * State - data
+   * ******************************************************************************************************************/
+
+  const [data, setData] = useState(initData);
+  useChanged(initData) && setData(initData);
+
+  const dataRef = useAutoUpdateRef(data);
+
+  /********************************************************************************************************************
+   * State - disabled
+   * ******************************************************************************************************************/
+
+  const finalInitDisabled = initDisabled ?? formDisabled;
+
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /********************************************************************************************************************
+   * State - hidden
+   * ******************************************************************************************************************/
+
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
+
+  /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [error, setError] = useAutoUpdateState<Props['error']>(initError);
   const [timeError, setTimeError] = useState<DateTimeValidationError>(null);
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
   const [datePickerError, setDatePickerError] = useState<DateTimeValidationError>(null);
-
-  const [dataRef, , setData] = useAutoUpdateRefState(initData);
-  const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
-    useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
-  );
-  const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
 
   /********************************************************************************************************************
    * Memo
@@ -213,12 +238,17 @@ const PrivateDateTimePicker = ({
    * State - value
    * ******************************************************************************************************************/
 
-  const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
-  const [inputValue, setInputValue] = useAutoUpdateState<PrivateDateTimePickerValue>(value);
+  const [value, setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && setValue(getFinalValue(initValue));
 
+  const valueRef = useAutoUpdateRef(value);
+
+  /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: PrivateDateTimePickerValue) => {
-      const finalValue = _setValue(newValue);
+      const finalValue = getFinalValue(newValue);
+      setValue(finalValue);
+      valueRef.current = finalValue;
 
       if (error) validate(finalValue);
       if (onChange) onChange(finalValue);
@@ -243,16 +273,21 @@ const PrivateDateTimePicker = ({
 
       return finalValue;
     },
-    [_setValue, availableDate, error, name, onChange, onValueChange, time, type, validate]
+    [availableDate, error, name, onChange, onValueChange, time, type, validate, valueRef]
   );
+
+  /********************************************************************************************************************
+   * State - inputValue
+   * ******************************************************************************************************************/
+
+  const [inputValue, setInputValue] = useState(value);
+  useChanged(value) && setInputValue(value);
 
   /********************************************************************************************************************
    * timeError 변경 시 validate 실행
    * ******************************************************************************************************************/
 
-  const [prevTimeError, setPrevTimeError] = useState(timeError);
-  if (timeError !== prevTimeError) {
-    setPrevTimeError(timeError);
+  if (useChanged(timeError)) {
     if (error && !timeError) {
       validate(value);
     }
@@ -262,10 +297,7 @@ const PrivateDateTimePicker = ({
    * open 변경 시 처리
    * ******************************************************************************************************************/
 
-  const [prevOpen, setPrevOpen] = useState(open);
-  if (open !== prevOpen) {
-    setPrevOpen(open);
-
+  if (useChanged(open)) {
     if (open) {
       setOpenValue(value);
     } else {
@@ -307,9 +339,9 @@ const PrivateDateTimePicker = ({
       getData: () => dataRef.current,
       setData,
       isExceptValue: () => !!exceptValue,
-      isDisabled: () => !!disabledRef.current,
+      isDisabled: () => !!disabled,
       setDisabled,
-      isHidden: () => !!hiddenRef.current,
+      isHidden: () => !!hidden,
       setHidden,
       focus,
       focusValidate: focus,
@@ -320,17 +352,14 @@ const PrivateDateTimePicker = ({
     }),
     [
       dataRef,
-      disabledRef,
+      disabled,
       exceptValue,
       focus,
-      hiddenRef,
+      hidden,
       initFormValueFormat,
       initValue,
       name,
-      setData,
-      setDisabled,
       setErrorErrorHelperText,
-      setHidden,
       time,
       type,
       updateValue,

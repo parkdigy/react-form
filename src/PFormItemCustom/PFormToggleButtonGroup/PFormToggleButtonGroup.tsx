@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback, useId, ReactNode, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useId, ReactNode, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect, useForwardRef } from '@pdg/react-hook';
-import { empty, notEmpty, equal, ifUndefined } from '@pdg/compare';
+import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
+import { empty, notEmpty, equal } from '@pdg/compare';
 import { PartialPick } from '../../@types';
 import {
   PFormToggleButtonGroupProps,
@@ -21,7 +21,6 @@ function PFormToggleButtonGroup<
   T extends PFormToggleButtonGroupSingleValue,
   Multiple extends boolean | undefined = undefined,
   Items extends PFormToggleButtonGroupItems<T> = PFormToggleButtonGroupItems<T>,
-  SingleValue extends Items[number]['value'] = Items[number]['value'],
 >({
   ref,
   variant: initVariant,
@@ -72,6 +71,13 @@ function PFormToggleButtonGroup<
   type Value = PFormToggleButtonGroupValue<T, Multiple>;
 
   /********************************************************************************************************************
+   * Props Changed
+   * ******************************************************************************************************************/
+
+  const isMultipleChanged = useChanged(multiple);
+  const isNotAllowEmptyValueChanged = useChanged(notAllowEmptyValue);
+
+  /********************************************************************************************************************
    * ID
    * ******************************************************************************************************************/
 
@@ -101,16 +107,19 @@ function PFormToggleButtonGroup<
    * Variables - FormState
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const fullWidth = type === 'checkbox' || type === 'radio' ? true : ifUndefined(initFullWidth, formFullWidth);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const fullWidth = type === 'checkbox' || type === 'radio' ? true : (initFullWidth ?? formFullWidth);
 
   /********************************************************************************************************************
    * State - FormState
    * ******************************************************************************************************************/
 
-  const [focused, setFocused] = useAutoUpdateState<Props['focused']>(ifUndefined(initFocused, formFocused));
+  const [focused, setFocused] = useState(initFocused ?? formFocused);
+  if ((initFocused ?? formFocused) !== focused) {
+    setFocused(initFocused ?? formFocused);
+  }
 
   /********************************************************************************************************************
    * Theme
@@ -132,35 +141,75 @@ function PFormToggleButtonGroup<
   const { ref: refForButtonsResizeHeightDetect, height: realHeight } = useResizeDetector({ handleWidth: false });
   const { ref: refForLoadingResizeHeightDetect, height: loadingHeight } = useResizeDetector({ handleWidth: false });
 
-  const height = ifUndefined(buttonHeight, loadingHeight);
+  const height = buttonHeight ?? loadingHeight;
+
+  /********************************************************************************************************************
+   * State - error
+   * ******************************************************************************************************************/
+
+  const [error, setError] = useState(initError);
+  useChanged(initError) && setError(initError);
+
+  /********************************************************************************************************************
+   * State - data
+   * ******************************************************************************************************************/
+
+  const [data, setData] = useState(initData);
+  useChanged(initData) && setData(initData);
+
+  const dataRef = useAutoUpdateRef(data);
+
+  /********************************************************************************************************************
+   * State - disabled
+   * ******************************************************************************************************************/
+
+  const finalInitDisabled = initDisabled ?? formDisabled;
+
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /********************************************************************************************************************
+   * State - hidden
+   * ******************************************************************************************************************/
+
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
+
+  /********************************************************************************************************************
+   * State - loading
+   * ******************************************************************************************************************/
+
+  const [loading, setLoading] = useState(initLoading);
+  useChanged(initLoading) && setLoading(initLoading);
+
+  const loadingRef = useAutoUpdateRef(loading);
+
+  /********************************************************************************************************************
+   * State - items
+   * ******************************************************************************************************************/
+
+  const [items, _setItems] = useState(initItems);
+  useChanged(initItems) && _setItems(initItems);
+
+  const itemsRef = useAutoUpdateRef(items);
+
+  const setItems = useCallback((newItems: PFormToggleButtonGroupItems<T> | undefined) => {
+    _setItems(newItems as Props['items']);
+  }, []);
 
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
+  const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(!!onLoadItems);
 
-  const [error, setError] = useAutoUpdateState<Props['error']>(initError);
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
 
-  const [dataRef, , setData] = useAutoUpdateRefState(initData);
-  const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
-    useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
-  );
-  const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
-  const [loadingRef, loading, setLoading] = useAutoUpdateRefState(initLoading);
-  const [itemsRef, items, _setItems] = useAutoUpdateRefState(initItems);
+  useEffect(() => {}, [initData]);
 
   /********************************************************************************************************************
    * State Function
    * ******************************************************************************************************************/
-
-  const setItems = useCallback(
-    (newItems: PFormToggleButtonGroupItems<T> | undefined) => {
-      _setItems(newItems as Props['items']);
-    },
-    [_setItems]
-  );
 
   /********************************************************************************************************************
    * Memo
@@ -290,11 +339,15 @@ function PFormToggleButtonGroup<
     [multiple, formValueSeparator, itemsValues, onValue]
   );
 
-  const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+  const [value, setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && setValue(getFinalValue(initValue));
+
+  const valueRef = useAutoUpdateRef(value);
 
   const updateValue = useCallback(
-    (newValue: Props['value'], skipCallback = false) => {
-      const finalValue = _setValue(newValue, skipCallback);
+    (newValue: Props['value'], skipGetFinalValue = false) => {
+      const finalValue = skipGetFinalValue ? newValue : getFinalValue(newValue);
+      setValue(finalValue);
 
       if (error) validate(finalValue);
       if (onChange) onChange(finalValue);
@@ -302,29 +355,36 @@ function PFormToggleButtonGroup<
 
       return finalValue;
     },
-    [_setValue, error, name, onChange, onValueChange, validate]
+    [error, getFinalValue, name, onChange, onValueChange, validate]
   );
+  const updateValueRef = useAutoUpdateRef(updateValue);
 
-  useFirstSkipEffect(() => {
-    updateValue(valueRef.current);
-  }, [multiple]);
+  /********************************************************************************************************************
+   * multiple 변경 시 value 업데이트
+   * ******************************************************************************************************************/
+
+  useEffect(() => {
+    updateValueRef.current(valueRef.current);
+  }, [multiple, updateValueRef, valueRef]);
 
   /********************************************************************************************************************
    * Effect
    * ******************************************************************************************************************/
 
+  const firstOnLoadItems = useRef(onLoadItems);
+  const firstSetItems = useRef(setItems);
   useEffect(() => {
-    if (onLoadItems) {
-      setIsOnGetItemLoading(true);
-      onLoadItems().then((items) => {
-        setItems(items);
+    if (firstOnLoadItems.current) {
+      firstOnLoadItems.current().then((items) => {
+        firstSetItems.current(items);
         setIsOnGetItemLoading(false);
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
+  const isItemsChanged = useChanged(items);
+  const isValueChanged = useChanged(value);
+  if (isMultipleChanged || isItemsChanged || isValueChanged || isNotAllowEmptyValueChanged) {
     if (notAllowEmptyValue) {
       if (items && notEmpty(items)) {
         let setFirstItem = false;
@@ -344,8 +404,7 @@ function PFormToggleButtonGroup<
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items, value, multiple, notAllowEmptyValue]);
+  }
 
   /********************************************************************************************************************
    * Function - focus
@@ -359,20 +418,22 @@ function PFormToggleButtonGroup<
    * Commands
    * ******************************************************************************************************************/
 
-  const commands = useMemo<Commands>(
-    () => ({
+  const commands = useMemo<Commands>(() => {
+    return {
       getType: () => 'PFormToggleButtonGroup',
       getName: () => name,
       getReset: () => getFinalValue(initValue),
       reset: () => updateValue(initValue),
       getValue: () => valueRef.current,
-      setValue: updateValue,
+      setValue: (v) => {
+        valueRef.current = updateValue(v);
+      },
       getData: () => dataRef.current,
       setData,
       isExceptValue: () => !!exceptValue,
-      isDisabled: () => !!disabledRef.current,
+      isDisabled: () => !!disabled,
       setDisabled,
-      isHidden: () => !!hiddenRef.current,
+      isHidden: () => !!hidden,
       setHidden,
       focus,
       focusValidate: focus,
@@ -395,33 +456,28 @@ function PFormToggleButtonGroup<
           });
         }
       },
-    }),
-    [
-      dataRef,
-      disabledRef,
-      exceptValue,
-      focus,
-      formValueSeparator,
-      formValueSort,
-      getFinalValue,
-      hiddenRef,
-      initValue,
-      itemsRef,
-      loadingRef,
-      multiple,
-      name,
-      onLoadItems,
-      setData,
-      setDisabled,
-      setErrorErrorHelperText,
-      setHidden,
-      setItems,
-      setLoading,
-      updateValue,
-      validate,
-      valueRef,
-    ]
-  );
+    };
+  }, [
+    dataRef,
+    disabled,
+    exceptValue,
+    focus,
+    formValueSeparator,
+    formValueSort,
+    getFinalValue,
+    hidden,
+    initValue,
+    itemsRef,
+    loadingRef,
+    multiple,
+    name,
+    onLoadItems,
+    setErrorErrorHelperText,
+    setItems,
+    updateValue,
+    validate,
+    valueRef,
+  ]);
 
   useForwardRef(
     ref as any,
@@ -443,19 +499,19 @@ function PFormToggleButtonGroup<
         if (notAllowEmptyValue) {
           if (multiple) {
             if (empty(finalValue)) {
-              if (Array.isArray(valueRef.current) && valueRef.current.length > 0) {
-                finalValue = [valueRef.current[0]] as Props['value'];
+              if (Array.isArray(value) && value.length > 0) {
+                finalValue = [value[0]] as Props['value'];
               }
             }
           } else {
             if (finalValue == null) {
-              finalValue = valueRef.current;
+              finalValue = value;
             }
           }
         }
         finalValue = getFinalValue(finalValue);
-        if (!equal(valueRef.current, finalValue)) {
-          updateValue(finalValue, true);
+        if (!equal(value, finalValue)) {
+          valueRef.current = updateValue(finalValue, true);
           setTimeout(() => {
             onValueChangeByUser(name, finalValue);
             onRequestSearchSubmit(name, finalValue);
@@ -467,8 +523,9 @@ function PFormToggleButtonGroup<
       readOnly,
       notAllowEmptyValue,
       getFinalValue,
-      valueRef,
+      value,
       multiple,
+      valueRef,
       updateValue,
       onValueChangeByUser,
       name,
@@ -477,14 +534,16 @@ function PFormToggleButtonGroup<
   );
 
   /********************************************************************************************************************
-   * Render
+   * Render Variable
    * ******************************************************************************************************************/
 
+  /** formControlBaseProps */
   const formControlBaseProps: PartialPick<PFormItemBaseProps, 'focused'> = {};
   if (focused) {
     formControlBaseProps.focused = true;
   }
 
+  /** buttons */
   const buttons = useMemo(() => {
     let finalItemWidth: number | string | undefined = undefined;
     if (type === 'button' && !fullWidth) {
@@ -555,6 +614,7 @@ function PFormToggleButtonGroup<
     type,
   ]);
 
+  /** realValue */
   const realValue = useMemo(() => {
     let newRealValue: T | T[] | null = value == null ? null : value;
     if (items && value != null) {
@@ -575,14 +635,10 @@ function PFormToggleButtonGroup<
     return newRealValue;
   }, [items, multiple, value]);
 
+  /** control */
   const control = useMemo(() => {
     return isOnGetItemLoading || loading ? (
-      <div
-        style={{ opacity: 0.54 }}
-        ref={(ref) => {
-          refForLoadingResizeHeightDetect.current = ref;
-        }}
-      >
+      <div style={{ opacity: 0.54 }} ref={refForLoadingResizeHeightDetect}>
         <CircularProgress size={16} color='inherit' />
       </div>
     ) : (
@@ -593,9 +649,7 @@ function PFormToggleButtonGroup<
         <div style={{ flex: 1 }}>
           {!fullWidth && !isOnGetItemLoading && !loading && items && (
             <div
-              ref={(ref) => {
-                refForResizeWidthDetect.current = ref;
-              }}
+              ref={refForResizeWidthDetect}
               style={{
                 display: 'grid',
                 position: 'absolute',
@@ -609,9 +663,7 @@ function PFormToggleButtonGroup<
             </div>
           )}
           <ToggleButtonGroup
-            ref={(ref) => {
-              refForButtonsResizeHeightDetect.current = ref;
-            }}
+            ref={refForButtonsResizeHeightDetect}
             className='ToggleButtonGroup'
             exclusive={!multiple}
             fullWidth={fullWidth}
@@ -628,9 +680,7 @@ function PFormToggleButtonGroup<
           >
             {isOnGetItemLoading || loading || !items || empty(items) ? (
               <ToggleButton
-                ref={(ref) => {
-                  refForButtonResizeHeightDetect.current = ref;
-                }}
+                ref={refForButtonResizeHeightDetect}
                 size={size}
                 className='ToggleButton'
                 disabled={disabled || readOnly}
@@ -671,7 +721,11 @@ function PFormToggleButtonGroup<
   ]);
 
   const controlHeight = height || 0;
-  const isMultiline = controlHeight <= ifUndefined(realHeight, 0);
+  const isMultiline = controlHeight <= (realHeight ?? 0);
+
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <PFormItemBase

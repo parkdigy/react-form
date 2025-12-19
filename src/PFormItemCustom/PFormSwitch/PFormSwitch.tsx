@@ -1,8 +1,7 @@
 import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { FormControlLabel, Switch } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useForwardRef } from '@pdg/react-hook';
-import { ifUndefined } from '@pdg/compare';
+import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
 import { PFormSwitchProps as Props, PFormSwitchCommands } from './PFormSwitch.types';
 import PFormItemBase from '../PFormItemBase';
 import { useFormState } from '../../PFormContext';
@@ -63,15 +62,18 @@ const PFormSwitch = ({
    * Memo - FormState
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
 
   /********************************************************************************************************************
-   * State - FormState
+   * State - focused
    * ******************************************************************************************************************/
 
-  const [focused, setFocused] = useAutoUpdateState<Props['focused']>(initFocused == null ? formFocused : initFocused);
+  const finalInitFocused = initFocused ?? formFocused;
+
+  const [focused, setFocused] = useState(finalInitFocused);
+  useChanged(finalInitFocused) && setFocused(finalInitFocused);
 
   /********************************************************************************************************************
    * Ref
@@ -80,17 +82,42 @@ const PFormSwitch = ({
   const inputRef = useRef<HTMLInputElement>(undefined);
 
   /********************************************************************************************************************
+   * State - error
+   * ******************************************************************************************************************/
+
+  const [error, setError] = useState(initError);
+  useChanged(initError) && setError(initError);
+
+  /********************************************************************************************************************
+   * State - data
+   * ******************************************************************************************************************/
+
+  const [data, setData] = useState(initData);
+  useChanged(initData) && setData(initData);
+
+  const dataRef = useAutoUpdateRef(data);
+
+  /********************************************************************************************************************
+   * State - disabled
+   * ******************************************************************************************************************/
+
+  const finalInitDisabled = initDisabled ?? formDisabled;
+
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /********************************************************************************************************************
+   * State - hidden
+   * ******************************************************************************************************************/
+
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
+
+  /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [error, setError] = useAutoUpdateState<Props['error']>(initError);
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-
-  const [dataRef, , setData] = useAutoUpdateRefState(initData);
-  const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
-    useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
-  );
-  const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
 
   /********************************************************************************************************************
    * Function
@@ -133,11 +160,17 @@ const PFormSwitch = ({
     [onValue]
   );
 
-  const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+  const [value, setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && setValue(getFinalValue(initValue));
 
+  const valueRef = useAutoUpdateRef(value);
+
+  /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: Props['value']) => {
-      const finalValue = _setValue(newValue);
+      const finalValue = getFinalValue(newValue);
+      setValue(finalValue);
+      valueRef.current = finalValue;
 
       if (error) validate(finalValue);
       if (onChange) onChange(finalValue);
@@ -145,7 +178,7 @@ const PFormSwitch = ({
 
       return finalValue;
     },
-    [_setValue, error, name, onChange, onValueChange, validate]
+    [error, getFinalValue, name, onChange, onValueChange, validate, valueRef]
   );
 
   /********************************************************************************************************************
@@ -174,9 +207,9 @@ const PFormSwitch = ({
       getData: () => dataRef.current,
       setData,
       isExceptValue: () => !!exceptValue,
-      isDisabled: () => !!disabledRef.current,
+      isDisabled: () => !!disabled,
       setDisabled,
-      isHidden: () => !!hiddenRef.current,
+      isHidden: () => !!hidden,
       setHidden,
       focus,
       focusValidate: focus,
@@ -186,17 +219,14 @@ const PFormSwitch = ({
     }),
     [
       dataRef,
-      disabledRef,
+      disabled,
       exceptValue,
       focus,
       getFinalValue,
-      hiddenRef,
+      hidden,
       initValue,
       name,
-      setData,
-      setDisabled,
       setErrorErrorHelperText,
-      setHidden,
       updateValue,
       validate,
       valueRef,

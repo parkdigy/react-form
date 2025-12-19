@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from '@mui/material';
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
-import { useAutoUpdateRefState, useAutoUpdateState, useForwardRef } from '@pdg/react-hook';
-import { empty, ifUndefined, notEmpty } from '@pdg/compare';
+import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
+import { empty, notEmpty } from '@pdg/compare';
 import {
   PFormRadioGroupProps,
   PFormRadioGroupCommands,
@@ -94,18 +94,10 @@ function PFormRadioGroup<
    * Memo - FormState
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const focused = ifUndefined(initFocused, formFocused);
-
-  /********************************************************************************************************************
-   * State - FormState
-   * ******************************************************************************************************************/
-
-  const [fullWidth, setFullWidth] = useAutoUpdateState<Props['fullWidth']>(
-    initFullWidth == null ? formFullWidth : initFullWidth
-  );
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const focused = initFocused ?? formFocused;
 
   /********************************************************************************************************************
    * Theme
@@ -119,24 +111,83 @@ function PFormRadioGroup<
 
   const baseRef = useRef<HTMLDivElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
+  const onLoadItemsRef = useAutoUpdateRef(onLoadItems);
+
+  /********************************************************************************************************************
+   * State - fullWidth
+   * ******************************************************************************************************************/
+
+  const finalInitFullWidth = initFullWidth ?? formFullWidth;
+
+  const [fullWidth, setFullWidth] = useState(finalInitFullWidth);
+  useChanged(finalInitFullWidth) && setFullWidth(finalInitFullWidth);
+
+  /********************************************************************************************************************
+   * State - error
+   * ******************************************************************************************************************/
+
+  const [error, setError] = useState(initError);
+  useChanged(initError) && setError(initError);
+
+  /********************************************************************************************************************
+   * State - data
+   * ******************************************************************************************************************/
+
+  const [data, setData] = useState(initData);
+  useChanged(initData) && setData(initData);
+
+  const dataRef = useAutoUpdateRef(data);
+
+  /********************************************************************************************************************
+   * State - disabled
+   * ******************************************************************************************************************/
+
+  const finalInitDisabled = initDisabled ?? formDisabled;
+
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /********************************************************************************************************************
+   * State - hidden
+   * ******************************************************************************************************************/
+
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
+
+  /********************************************************************************************************************
+   * State - width
+   * ******************************************************************************************************************/
+
+  const finalInitWidth = initWidth || '100%';
+
+  const [width, setWidth] = useState<Props['width']>(finalInitWidth);
+  useChanged(finalInitWidth) && setWidth(finalInitWidth);
+
+  /********************************************************************************************************************
+   * State - loading
+   * ******************************************************************************************************************/
+
+  const [loading, setLoading] = useState(initLoading);
+  useChanged(initLoading) && setLoading(initLoading);
+
+  const loadingRef = useAutoUpdateRef(loading);
+
+  /********************************************************************************************************************
+   * State - items
+   * ******************************************************************************************************************/
+
+  const [items, setItems] = useState(initItems);
+  useChanged(initItems) && setItems(initItems);
+
+  const itemsRef = useAutoUpdateRef(items);
 
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [error, setError] = useAutoUpdateState<Props['error']>(initError);
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-  const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
-  const [width, setWidth] = useAutoUpdateState<Props['width']>(initWidth || '100%');
+  const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(!!onLoadItems);
   const [formColWrapRect, setFormColWrapRect] = useState<DOMRect>();
-
-  const [dataRef, , setData] = useAutoUpdateRefState(initData);
-  const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
-    useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
-  );
-  const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
-  const [loadingRef, loading, setLoading] = useAutoUpdateRefState(initLoading);
-  const [itemsRef, items, setItems] = useAutoUpdateRefState(initItems);
 
   /********************************************************************************************************************
    * State - radioGroupNoWrapRect (ResizeDetector)
@@ -207,11 +258,17 @@ function PFormRadioGroup<
     [onValue]
   );
 
-  const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+  const [value, setValue] = useState(initValue);
+  useChanged(initValue) && setValue(initValue);
 
+  const valueRef = useAutoUpdateRef(value);
+
+  /** value 변경 함수 */
   const updateValue = useCallback(
-    (newValue: Props['value'], skipCallback = false) => {
-      const finalValue = _setValue(newValue, skipCallback);
+    (newValue: Props['value'], skipGetFinalValue = false) => {
+      const finalValue = skipGetFinalValue ? newValue : getFinalValue(newValue);
+      setValue(finalValue);
+      valueRef.current = newValue;
 
       if (error) validate(finalValue);
       if (onChange) onChange(finalValue);
@@ -219,24 +276,24 @@ function PFormRadioGroup<
 
       return finalValue;
     },
-    [_setValue, error, name, onChange, onValueChange, validate]
+    [error, getFinalValue, name, onChange, onValueChange, validate, valueRef]
   );
 
   /********************************************************************************************************************
    * Effect
    * ******************************************************************************************************************/
 
+  /** 최초 1회 onLoadItems 실행 */
   useEffect(() => {
-    if (onLoadItems) {
-      setIsOnGetItemLoading(true);
-      onLoadItems().then((items) => {
+    if (onLoadItemsRef.current) {
+      onLoadItemsRef.current().then((items) => {
         setItems(items);
         setIsOnGetItemLoading(false);
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [onLoadItemsRef]);
 
+  /** fullWidth, width 변경 처리 */
   useEffect(() => {
     if (!fullWidth || initWidth) {
       const findParentByClassName = (element: HTMLElement, className: string): HTMLElement | undefined | null => {
@@ -266,10 +323,25 @@ function PFormRadioGroup<
         };
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fullWidth, initWidth]);
+  }, [fullWidth, initWidth, resizeWidthDetectorRef]);
 
-  useEffect(() => {
+  /********************************************************************************************************************
+   * initWidth, formFullWidth, initFullWidth, formColWrapRect, radioGroupNoWrapRect 변경 시 width, fullWidth 재설정
+   * ******************************************************************************************************************/
+
+  const isInitWidthChanged = useChanged(initWidth);
+  const isFormFullWidthChanged = useChanged(formFullWidth);
+  const isInitFullWidthChanged = useChanged(initFullWidth);
+  const isFormColWrapRectChanged = useChanged(formColWrapRect);
+  const isRadioGroupNoWrapRectChanged = useChanged(radioGroupNoWrapRect);
+
+  if (
+    isInitWidthChanged ||
+    isFormFullWidthChanged ||
+    isInitFullWidthChanged ||
+    isFormColWrapRectChanged ||
+    isRadioGroupNoWrapRectChanged
+  ) {
     let width: number | string | undefined;
 
     let fullWidth = initFullWidth == null ? formFullWidth : initFullWidth;
@@ -296,8 +368,7 @@ function PFormRadioGroup<
 
     setWidth(width);
     setFullWidth(fullWidth);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initWidth, formFullWidth, initFullWidth, formColWrapRect, radioGroupNoWrapRect]);
+  }
 
   /********************************************************************************************************************
    * Function - focus
@@ -322,9 +393,9 @@ function PFormRadioGroup<
       getData: () => dataRef.current,
       setData,
       isExceptValue: () => !!exceptValue,
-      isDisabled: () => !!disabledRef.current,
+      isDisabled: () => !!disabled,
       setDisabled,
-      isHidden: () => !!hiddenRef.current,
+      isHidden: () => !!hidden,
       setHidden,
       focus,
       focusValidate: focus,
@@ -347,22 +418,17 @@ function PFormRadioGroup<
     }),
     [
       dataRef,
-      disabledRef,
+      disabled,
       exceptValue,
       focus,
       getFinalValue,
-      hiddenRef,
+      hidden,
       initValue,
       itemsRef,
       loadingRef,
       name,
       onLoadItems,
-      setData,
-      setDisabled,
       setErrorErrorHelperText,
-      setHidden,
-      setItems,
-      setLoading,
       updateValue,
       validate,
       valueRef,
@@ -418,9 +484,7 @@ function PFormRadioGroup<
         <div style={{ flex: 1 }}>
           {!fullWidth && !isOnGetItemLoading && !loading && items && (
             <div
-              ref={(ref) => {
-                resizeWidthDetectorRef.current = ref;
-              }}
+              ref={resizeWidthDetectorRef}
               style={{
                 display: 'grid',
                 position: 'absolute',
@@ -556,7 +620,7 @@ function PFormRadioGroup<
   ]);
 
   const singleHeight = height || (size === 'small' ? 35 : 39);
-  const isMultiline = singleHeight <= ifUndefined(realHeight, 0);
+  const isMultiline = singleHeight <= (realHeight ?? 0);
 
   return (
     <PFormItemBase

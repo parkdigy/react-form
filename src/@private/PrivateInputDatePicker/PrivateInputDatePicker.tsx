@@ -1,7 +1,7 @@
 import React, { useCallback, useId, useMemo } from 'react';
 import classNames from 'classnames';
 import { PrivateInputDatePickerProps as Props } from './PrivateInputDatePicker.types';
-import { InputProps, InputAdornment, InputBaseComponentProps } from '@mui/material';
+import { InputProps, InputAdornment } from '@mui/material';
 import { DesktopDatePicker, DesktopDatePickerProps } from '@mui/x-date-pickers';
 import { Dayjs } from 'dayjs';
 import './PrivateInputDatePicker.scss';

@@ -1,10 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
-import {
-  PrivateYearPickerProps as Props,
-  PrivateYearPickerValue,
-  PrivateYearPickerBaseValue,
-} from './PrivateYearPicker.types';
-import { useAutoUpdateRef, useAutoUpdateState } from '@pdg/react-hook';
+import React, { useCallback, useMemo, useState } from 'react';
+import { PrivateYearPickerProps as Props, PrivateYearPickerBaseValue } from './PrivateYearPicker.types';
+import { useAutoUpdateRef, useChanged } from '@pdg/react-hook';
 import PrivateYearPickerYearList from './PrivateYearPickerYearList';
 import {
   StyledIconButton,
@@ -38,7 +34,8 @@ const PrivateYearPicker = ({
    * State
    * ******************************************************************************************************************/
 
-  const [value, setValue] = useAutoUpdateState<PrivateYearPickerValue>(initValue);
+  const [value, setValue] = useState(initValue);
+  useChanged(initValue) && setValue(initValue);
 
   /********************************************************************************************************************
    * Memo

@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 import { useFormState } from '../../PFormContext';
 import PFormDivider from '../PFormDivider';
 
-const PFormFooter = ({ children, noLine, hidden }): Props => {
+const PFormFooter = ({ children, noLine, hidden }: Props) => {
   const { spacing } = useFormState();
 
   const style = useMemo(() => (hidden ? { display: 'none' } : undefined), [hidden]);

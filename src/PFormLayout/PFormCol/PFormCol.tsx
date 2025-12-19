@@ -6,7 +6,7 @@ import { PFormColProps as Props } from './PFormCol.types';
 import { useFormState } from '../../PFormContext';
 import PFormContextProvider from '../../PFormContextProvider';
 import { StyledContentContainerBox, StyledFormLabel, StyledFormLabelContainerDiv } from './PFormCol.style.private';
-import { ifUndefined } from '@pdg/compare';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const PFormCol = ({
   ref,
@@ -63,14 +63,14 @@ const PFormCol = ({
    * Variable - FormState
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const spacing = ifUndefined(initSpacing, formSpacing);
-  const focused = ifUndefined(initFocused, formFocused);
-  const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
-  const formColGap = ifUndefined(initGap, formFormColGap);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const spacing = initSpacing ?? formSpacing;
+  const focused = initFocused ?? formFocused;
+  const labelShrink = initLabelShrink ?? formLabelShrink;
+  const fullWidth = initFullWidth ?? formFullWidth;
+  const formColGap = initGap ?? formFormColGap;
 
   /********************************************************************************************************************
    * Memo
@@ -92,19 +92,21 @@ const PFormCol = ({
    * ******************************************************************************************************************/
 
   const { ref: gridRef, width: resizedFormColWidth } = useResizeDetector({ handleHeight: false });
-  const formColWidth = ifUndefined(resizedFormColWidth, 0);
+  const formColWidth = resizedFormColWidth ?? 0;
 
   /********************************************************************************************************************
    * LayoutEffect
    * ******************************************************************************************************************/
 
+  const onAddFormColRef = useAutoUpdateRef(onAddFormCol);
+  const onRemoveFormColRef = useAutoUpdateRef(onRemoveFormCol);
   useLayoutEffect(() => {
-    if (onAddFormCol) onAddFormCol(id, xs);
+    onAddFormColRef.current?.(id, xs);
     return () => {
-      if (onRemoveFormCol) onRemoveFormCol(id);
+      onRemoveFormColRef.current?.(id);
+      onRemoveFormColRef.current = undefined;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [xs]);
+  }, [id, onAddFormColRef, onRemoveFormColRef, xs]);
 
   /********************************************************************************************************************
    * Effect
@@ -118,8 +120,7 @@ const PFormCol = ({
         ref.current = gridRef.current;
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [gridRef, ref]);
 
   /********************************************************************************************************************
    * Render

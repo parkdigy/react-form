@@ -6,7 +6,6 @@ import { PFormItemBaseProps as Props } from './PFormItemBase.types';
 import { useFormState } from '../../PFormContext';
 import './PFormItemBase.scss';
 import { PIcon } from '@pdg/react-component';
-import { ifUndefined } from '@pdg/compare';
 
 const PFormItemBase = ({
   ref,
@@ -52,17 +51,17 @@ const PFormItemBase = ({
    * Memo - FormState
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const fullWidth = initFullWidth ?? formFullWidth;
 
   /********************************************************************************************************************
    * State - inputHeight
    * ******************************************************************************************************************/
 
   const { ref: inputRef, height: resizedInputHeight } = useResizeDetector({ handleWidth: false });
-  const inputHeight = ifUndefined(resizedInputHeight, 0);
+  const inputHeight = resizedInputHeight ?? 0;
 
   /********************************************************************************************************************
    * Memo
@@ -205,7 +204,7 @@ const PFormItemBase = ({
                   width: fullWidth ? '100%' : 'auto',
                   display: 'grid',
                   marginTop: -inputHeight,
-                  height: ifUndefined(controlHeight, inputHeight) > inputHeight ? controlHeight : undefined,
+                  height: (controlHeight ?? inputHeight) > inputHeight ? controlHeight : undefined,
                   alignItems: 'flex-start',
                   paddingTop: controlMarginTop,
                   position: 'relative',

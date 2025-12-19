@@ -4,9 +4,9 @@ import { PFormImageFileProps as Props } from './PFormImageFile.types';
 import PFormFile from '../PFormFile';
 import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
 import { Tooltip, Typography } from '@mui/material';
-import { useAutoUpdateState } from '@pdg/react-hook';
 import { getFinalValue } from './PFormImageFile.function.private';
 import './PFormImageFile.scss';
+import { useChanged } from '@pdg/react-hook';
 
 const PFormImageFile = ({
   ref,
@@ -38,17 +38,20 @@ const PFormImageFile = ({
    * value
    * ******************************************************************************************************************/
 
-  const [value, _setValue] = useAutoUpdateState(initValue, getFinalValue);
+  const [value, setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && setValue(getFinalValue(initValue));
 
+  /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: Props['value']) => {
-      const finalValue = _setValue(newValue);
+      const finalValue = getFinalValue(newValue);
+      setValue(finalValue);
 
-      if (onChange) onChange(finalValue);
+      onChange?.(finalValue);
 
       return finalValue;
     },
-    [_setValue, onChange]
+    [onChange]
   );
 
   /********************************************************************************************************************

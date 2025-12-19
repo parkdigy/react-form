@@ -53,7 +53,8 @@
   ],
   "peerDependencies": {
     "react": ">=19.0.0",
-    "react-dom": ">=19.0.0"
+    "react-dom": ">=19.0.0",
+    "react-router": ">=7.6.0"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -64,8 +65,8 @@
     "@pdg/compare": "^1.0.8",
     "@pdg/data": "^1.0.5",
     "@pdg/formatting": "^1.0.8",
-    "@pdg/react-component": "^1.1.7",
-    "@pdg/react-hook": "^2.0.3",
+    "@pdg/react-component": "^1.1.9",
+    "@pdg/react-hook": "^2.0.7",
     "@pdg/types": "^1.0.9",
     "@tinymce/miniature": "^6.0.0",
     "@tinymce/tinymce-react": "^6.3.0",

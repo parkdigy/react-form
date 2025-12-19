@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { PFormButtonProps as Props } from './PFormButton.types';
 import { useFormState } from '../../PFormContext';
 import { PButton } from '@pdg/react-component';
-import { ifUndefined } from '@pdg/compare';
 
 const PFormButton = ({
   ref,
@@ -26,9 +25,9 @@ const PFormButton = ({
    * FormState
    * ******************************************************************************************************************/
 
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const fullWidth = initFullWidth ?? formFullWidth;
 
   /********************************************************************************************************************
    * Render

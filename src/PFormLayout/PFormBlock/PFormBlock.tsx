@@ -1,12 +1,11 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { Collapse, Grid } from '@mui/material';
 import { PFormBlockProps as Props } from './PFormBlock.types';
 import { PFormContext, useFormState } from '../../PFormContext';
 import PFormDivider from '../PFormDivider';
-import { useAutoUpdateState } from '@pdg/react-hook';
 import { StyledWrapGrid } from './PFormBlock.style.private';
-import { ifUndefined } from '@pdg/compare';
+import { useChanged } from '@pdg/react-hook';
 
 const PFormBlock = ({
   ref,
@@ -53,19 +52,20 @@ const PFormBlock = ({
    * Memo - FormState
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const spacing = ifUndefined(initSpacing, formSpacing);
-  const focused = ifUndefined(initFocused, formFocused);
-  const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const spacing = initSpacing ?? formSpacing;
+  const focused = initFocused ?? formFocused;
+  const labelShrink = initLabelShrink ?? formLabelShrink;
+  const fullWidth = initFullWidth ?? formFullWidth;
 
   /********************************************************************************************************************
-   * State
+   * collapseIn
    * ******************************************************************************************************************/
 
-  const [collapseIn, setCollapseIn] = useAutoUpdateState(initCollapseIn);
+  const [collapseIn, setCollapseIn] = useState(initCollapseIn);
+  useChanged(initCollapseIn) && setCollapseIn(initCollapseIn);
 
   /********************************************************************************************************************
    * Memo
@@ -78,14 +78,6 @@ const PFormBlock = ({
       return initStyle;
     }
   }, [hidden, initStyle]);
-
-  /********************************************************************************************************************
-   * Effect
-   * ******************************************************************************************************************/
-
-  useEffect(() => {
-    setCollapseIn(initCollapseIn);
-  }, [initCollapseIn, setCollapseIn]);
 
   /********************************************************************************************************************
    * Memo

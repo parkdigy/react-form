@@ -3,11 +3,10 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { FormControlLabel, Checkbox, Typography, ButtonBaseActions, useTheme } from '@mui/material';
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material';
-import { useAutoUpdateRefState, useAutoUpdateState, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
 import { PFormCheckboxProps as Props, PFormCheckboxCommands, PFormCheckboxValue } from './PFormCheckbox.types';
 import PFormItemBase from '../PFormItemBase';
 import { useFormState } from '../../PFormContext';
-import { ifUndefined } from '@pdg/compare';
 
 const PFormCheckbox = ({
   ref,
@@ -75,11 +74,11 @@ const PFormCheckbox = ({
    * Memo - FormState
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const focused = ifUndefined(initFocused, formFocused);
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const focused = initFocused ?? formFocused;
+  const fullWidth = initFullWidth ?? formFullWidth;
 
   /********************************************************************************************************************
    * Ref
@@ -95,25 +94,64 @@ const PFormCheckbox = ({
   const { ref: labelRef, width, height } = useResizeDetector();
 
   /********************************************************************************************************************
+   * State - error
+   * ******************************************************************************************************************/
+
+  const [error, setError] = useState(initError);
+  useChanged(initError) && setError(initError);
+
+  /********************************************************************************************************************
+   * State - data
+   * ******************************************************************************************************************/
+
+  const [data, setData] = useState(initData);
+  useChanged(initData) && setData(initData);
+
+  const dataRef = useAutoUpdateRef(data);
+
+  /********************************************************************************************************************
+   * State - disabled
+   * ******************************************************************************************************************/
+
+  const finalInitDisabled = initDisabled ?? formDisabled;
+
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /********************************************************************************************************************
+   * State - hidden
+   * ******************************************************************************************************************/
+
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
+
+  /********************************************************************************************************************
+   * State - uncheckedValue
+   * ******************************************************************************************************************/
+
+  const finalInitUncheckedValue = initUncheckedValue ?? 0;
+
+  const [uncheckedValue, setUncheckedValue] = useState(finalInitUncheckedValue);
+  useChanged(finalInitUncheckedValue) && setUncheckedValue(finalInitUncheckedValue);
+
+  const uncheckedValueRef = useAutoUpdateRef(uncheckedValue);
+
+  /********************************************************************************************************************
+   * State - value
+   * ******************************************************************************************************************/
+
+  const finalInitValue = initValue ?? 0;
+
+  const [value, setValue] = useState(finalInitValue);
+  useChanged(finalInitValue) && setValue(finalInitValue);
+
+  const valueRef = useAutoUpdateRef(value);
+
+  /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [error, setError] = useAutoUpdateState<Props['error']>(initError);
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-
-  const [dataRef, , setData] = useAutoUpdateRefState(initData);
-  const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
-    useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
-  );
-  const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
-  const [uncheckedValueRef, , setUncheckedValue] = useAutoUpdateRefState(
-    initUncheckedValue,
-    useCallback((newUncheckedValue: PFormCheckboxValue) => (newUncheckedValue == null ? 0 : newUncheckedValue), [])
-  );
-  const [valueRef, , setValue] = useAutoUpdateRefState(
-    initValue,
-    useCallback((newValue: PFormCheckboxValue) => (newValue == null ? 0 : newValue), [])
-  );
 
   /********************************************************************************************************************
    * Function - setErrorErrorHelperText
@@ -152,19 +190,24 @@ const PFormCheckbox = ({
    * State - checked
    * ******************************************************************************************************************/
 
-  const [checkedRef, checked, _setChecked] = useAutoUpdateRefState(initChecked);
+  const [checked, setChecked] = useState(initChecked);
+  useChanged(initChecked) && setChecked(initChecked);
 
+  const checkedRef = useAutoUpdateRef(checked);
+
+  /** checked 변경 함수 */
   const updateChecked = useCallback(
     (newChecked: boolean, notFireOnChange = false) => {
-      const finalChecked = _setChecked(newChecked);
+      setChecked(newChecked);
+      checkedRef.current = newChecked;
 
-      if (error) validate(finalChecked);
-      if (!notFireOnChange && onChange) onChange(finalChecked);
-      onValueChange(name, finalChecked);
+      if (error) validate(newChecked);
+      if (!notFireOnChange && onChange) onChange(newChecked);
+      onValueChange(name, newChecked);
 
-      return finalChecked;
+      return newChecked;
     },
-    [_setChecked, error, name, onChange, onValueChange, validate]
+    [checkedRef, error, name, onChange, onValueChange, validate]
   );
 
   /********************************************************************************************************************
@@ -206,9 +249,9 @@ const PFormCheckbox = ({
       getChecked: () => checkedRef.current,
       setChecked: updateChecked,
       isExceptValue: () => !!exceptValue,
-      isDisabled: () => !!disabledRef.current,
+      isDisabled: () => !!disabled,
       setDisabled,
-      isHidden: () => !!hiddenRef.current,
+      isHidden: () => !!hidden,
       setHidden,
       focus,
       focusValidate: focus,
@@ -219,18 +262,13 @@ const PFormCheckbox = ({
     [
       checkedRef,
       dataRef,
-      disabledRef,
+      disabled,
       exceptValue,
       focus,
-      hiddenRef,
+      hidden,
       initChecked,
       name,
-      setData,
-      setDisabled,
       setErrorErrorHelperText,
-      setHidden,
-      setUncheckedValue,
-      setValue,
       uncheckedValueRef,
       updateChecked,
       validate,

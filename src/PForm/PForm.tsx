@@ -1,7 +1,7 @@
 import React, { useRef, FormEvent, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { Box } from '@mui/material';
-import { ifUndefined, notEmpty } from '@pdg/compare';
+import { notEmpty } from '@pdg/compare';
 import { PFormProps as Props, PFormCommands, PFormInvalidItems } from './PForm.types';
 import PFormContextProvider from '../PFormContextProvider';
 import { PFormContextValue, useFormState } from '../PFormContext';
@@ -79,17 +79,19 @@ const PForm = ({
    * Memo - FormState
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const spacing = ifUndefined(initSpacing, formSpacing);
-  const formColGap = ifUndefined(initFormColGap, formFormColGap);
-  const focused = ifUndefined(initFocused, formFocused);
-  const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
-  const fullWidth = ifUndefined(ifUndefined(initFullWidth, formFullWidth), true);
-  const fullHeight = ifUndefined(ifUndefined(initFullHeight, formFullHeight), false);
-  const disabled = ifUndefined(ifUndefined(initDisabled, formDisabled), false);
-  const submitWhenReturnKey = ifUndefined(ifUndefined(initSubmitWhenReturnKey, formSubmitWhenReturnKey), false);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const spacing = initSpacing ?? formSpacing;
+  const formColGap = initFormColGap ?? formFormColGap;
+  const focused = initFocused ?? formFocused;
+  const labelShrink = initLabelShrink ?? formLabelShrink;
+  const fullWidth = initFullWidth ?? formFullWidth ?? true;
+  const fullHeight = initFullHeight ?? formFullHeight ?? false;
+  const submitWhenReturnKey = initSubmitWhenReturnKey ?? formSubmitWhenReturnKey ?? false;
+
+  const disabled = initDisabled ?? formDisabled ?? false;
+  const disabledRef = useAutoUpdateRef(disabled);
 
   /********************************************************************************************************************
    * Ref
@@ -147,40 +149,42 @@ const PForm = ({
    * Commands
    * ******************************************************************************************************************/
 
-  const commands = useMemo<PFormCommands>(() => {
-    const findValueItem = function <T extends PFormValueItemBaseCommands<any, true> = PFormValueItemCommands<any>>(
-      name: string
-    ): T | undefined {
-      return Object.values(valueItems.current).find((commands) => {
-        if (commands) {
-          if (commands.getName() === name) {
-            return true;
-          }
-          switch (commands.getType()) {
-            case 'PFormDateRangePicker':
-            case 'PFormYearRangePicker':
-              return (
-                name === (commands as PFormRangeValueItemNameCommands).getFormValueFromName() ||
-                name === (commands as PFormRangeValueItemNameCommands).getFormValueToName()
-              );
-            case 'PFormMonthPicker':
-              return (
-                name === (commands as PFormYearMonthValueItemNameCommands).getFormValueYearName() ||
-                name === (commands as PFormYearMonthValueItemNameCommands).getFormValueMonthName()
-              );
-            case 'PFormMonthRangePicker':
-              return (
-                name === (commands as PFormYearMonthRangeValueItemNameCommands).getFormValueFromYearName() ||
-                name === (commands as PFormYearMonthRangeValueItemNameCommands).getFormValueFromMonthName() ||
-                name === (commands as PFormYearMonthRangeValueItemNameCommands).getFormValueToYearName() ||
-                name === (commands as PFormYearMonthRangeValueItemNameCommands).getFormValueToMonthName()
-              );
-          }
+  /** findValueItem */
+  const findValueItem = useCallback(function <
+    T extends PFormValueItemBaseCommands<any, true> = PFormValueItemCommands<any>,
+  >(name: string): T | undefined {
+    return Object.values(valueItems.current).find((itemCommands) => {
+      if (itemCommands) {
+        if (itemCommands.getName() === name) {
+          return true;
         }
-      }) as T;
-    };
+        switch (itemCommands.getType()) {
+          case 'PFormDateRangePicker':
+          case 'PFormYearRangePicker':
+            return (
+              name === (itemCommands as PFormRangeValueItemNameCommands).getFormValueFromName() ||
+              name === (itemCommands as PFormRangeValueItemNameCommands).getFormValueToName()
+            );
+          case 'PFormMonthPicker':
+            return (
+              name === (itemCommands as PFormYearMonthValueItemNameCommands).getFormValueYearName() ||
+              name === (itemCommands as PFormYearMonthValueItemNameCommands).getFormValueMonthName()
+            );
+          case 'PFormMonthRangePicker':
+            return (
+              name === (itemCommands as PFormYearMonthRangeValueItemNameCommands).getFormValueFromYearName() ||
+              name === (itemCommands as PFormYearMonthRangeValueItemNameCommands).getFormValueFromMonthName() ||
+              name === (itemCommands as PFormYearMonthRangeValueItemNameCommands).getFormValueToYearName() ||
+              name === (itemCommands as PFormYearMonthRangeValueItemNameCommands).getFormValueToMonthName()
+            );
+        }
+      }
+    }) as any;
+  }, []);
 
-    const getFormValue = (name: string, subKey?: string, isReset?: boolean) => {
+  /** getFormValue */
+  const getFormValue = useCallback(
+    (name: string, subKey?: string, isReset?: boolean) => {
       const valueItem = findValueItem(name);
       if (valueItem) {
         switch (valueItem.getType()) {
@@ -244,11 +248,14 @@ const PForm = ({
             return getItemFormValue(valueItem, !!isReset) as PFormValue;
         }
       } else throw new Error(`'${name}' 이 존재하지 않습니다.`);
-    };
+    },
+    [findValueItem]
+  );
 
+  const commands = useMemo((): PFormCommands => {
     return {
       submit,
-      getAllFormValue: () => {
+      getAllFormValue() {
         const data: PFormValueMap = {};
 
         Object.keys(valueItems.current).forEach((id) => {
@@ -262,7 +269,7 @@ const PForm = ({
 
         return data;
       },
-      resetAll: () => {
+      resetAll() {
         Object.keys(valueItems.current).forEach((id) => {
           valueItems.current[id]?.reset();
         });
@@ -340,7 +347,7 @@ const PForm = ({
         else throw new Error(`'${name}' 이 존재하지 않습니다.`);
       },
     };
-  }, [submit]);
+  }, [findValueItem, getFormValue, submit]);
 
   useForwardRef(ref, commands);
 
@@ -352,16 +359,56 @@ const PForm = ({
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      if (!disabled) {
+      if (!disabledRef.current) {
         submit();
       }
     },
-    [disabled, submit]
+    [disabledRef, submit]
   );
 
   /********************************************************************************************************************
    * FormContextValue
    * ******************************************************************************************************************/
+
+  const handleAddValueItem = useCallback(
+    (id: string, item: any) => {
+      valueItems.current[id] = item;
+      formAddValueItem?.(id, item);
+    },
+    [formAddValueItem]
+  );
+
+  const handleRemoveValueItem = useCallback(
+    (id: string) => {
+      valueItems.current[id] = undefined;
+      formRemoveValueItem?.(id);
+    },
+    [formRemoveValueItem]
+  );
+
+  const handleValueChange = useCallback(
+    (name: string, value: PFormValue) => {
+      if (onValueChangeRef.current) onValueChangeRef.current(name, value);
+      formValueChange?.(name, value);
+    },
+    [formValueChange, onValueChangeRef]
+  );
+
+  const handleValueChangeByUser = useCallback(
+    (name: string, value: any) => {
+      if (onValueChangeByUserRef.current) onValueChangeByUserRef.current(name, value);
+      formValueChangeByUser?.(name, value);
+    },
+    [formValueChangeByUser, onValueChangeByUserRef]
+  );
+
+  const handleRequestSubmit = useCallback(
+    (name: string, value: any) => {
+      if (!disabledRef.current) submit();
+      formRequestSubmit?.(name, value);
+    },
+    [disabledRef, formRequestSubmit, submit]
+  );
 
   const formContextValue = useMemo(
     () =>
@@ -378,26 +425,11 @@ const PForm = ({
         fullHeight,
         disabled,
         submitWhenReturnKey,
-        onAddValueItem(id, item) {
-          valueItems.current[id] = item;
-          if (formAddValueItem) formAddValueItem(id, item);
-        },
-        onRemoveValueItem(id) {
-          valueItems.current[id] = undefined;
-          if (formRemoveValueItem) formRemoveValueItem(id);
-        },
-        onValueChange(name: string, value: PFormValue) {
-          if (onValueChangeRef.current) onValueChangeRef.current(name, value);
-          if (formValueChange) formValueChange(name, value);
-        },
-        onValueChangeByUser(name, value) {
-          if (onValueChangeByUserRef.current) onValueChangeByUserRef.current(name, value);
-          if (formValueChangeByUser) formValueChangeByUser(name, value);
-        },
-        onRequestSubmit(name: string, value: any) {
-          if (!disabled) submit();
-          if (formRequestSubmit) formRequestSubmit(name, value);
-        },
+        onAddValueItem: handleAddValueItem,
+        onRemoveValueItem: handleRemoveValueItem,
+        onValueChange: handleValueChange,
+        onValueChangeByUser: handleValueChangeByUser,
+        onRequestSubmit: handleRequestSubmit,
         onRequestSearchSubmit: formRequestSearchSubmit,
         formColAutoXs,
         formColWidth,
@@ -420,6 +452,11 @@ const PForm = ({
       fullHeight,
       disabled,
       submitWhenReturnKey,
+      handleAddValueItem,
+      handleRemoveValueItem,
+      handleValueChange,
+      handleValueChangeByUser,
+      handleRequestSubmit,
       formRequestSearchSubmit,
       formColAutoXs,
       formColWidth,
@@ -428,14 +465,6 @@ const PForm = ({
       formColXs,
       formColWithLabel,
       formColWithHelperText,
-      formAddValueItem,
-      formRemoveValueItem,
-      onValueChangeRef,
-      formValueChange,
-      onValueChangeByUserRef,
-      formValueChangeByUser,
-      submit,
-      formRequestSubmit,
     ]
   );
 

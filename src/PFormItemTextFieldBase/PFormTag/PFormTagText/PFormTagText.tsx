@@ -1,36 +1,27 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useState } from 'react';
 import { PFormTagTextProps as Props } from './PFormTagText.types';
 import PFormText from '../../PFormText';
 import { notEmpty } from '@pdg/compare';
-import { useForceUpdate } from '@pdg/react-hook';
 import { styled } from '@mui/material';
 
 export const PFormTagText = ({ ref, allowSpace, onKeyDown, onBlur, onAppendTag, ...props }: Props) => {
   /********************************************************************************************************************
-   * Use
-   * ******************************************************************************************************************/
-
-  const forceUpdate = useForceUpdate();
-
-  /********************************************************************************************************************
    * Ref
    * ******************************************************************************************************************/
 
-  const valueRef = useRef<string>('');
+  const [value, setValue] = useState<string>('');
 
   /********************************************************************************************************************
    * Function
    * ******************************************************************************************************************/
 
   const appendTag = useCallback(() => {
-    onAppendTag(valueRef.current);
-    valueRef.current = ' ';
-    forceUpdate();
+    onAppendTag(value);
+    setValue(' ');
     setTimeout(() => {
-      valueRef.current = '';
-      forceUpdate();
+      setValue('');
     });
-  }, [forceUpdate, onAppendTag]);
+  }, [onAppendTag, value]);
 
   /********************************************************************************************************************
    * Event Handler
@@ -43,31 +34,31 @@ export const PFormTagText = ({ ref, allowSpace, onKeyDown, onBlur, onAppendTag, 
         e.preventDefault();
         e.stopPropagation();
 
-        if (notEmpty(valueRef.current)) {
+        if (notEmpty(value)) {
           appendTag();
         }
       } else {
         if (onKeyDown) onKeyDown(e);
       }
     },
-    [allowSpace, appendTag, onKeyDown]
+    [allowSpace, appendTag, onKeyDown, value]
   );
 
   const handleChange = useCallback(
     (value: string) => {
-      valueRef.current = allowSpace ? value.replace(/,/g, '') : value.replace(/ /g, '').replace(/,/g, '');
+      setValue(allowSpace ? value.replace(/,/g, '') : value.replace(/ /g, '').replace(/,/g, ''));
     },
     [allowSpace]
   );
 
   const handleBlur = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
-      if (notEmpty(valueRef.current)) {
+      if (notEmpty(value)) {
         appendTag();
       }
       if (onBlur) onBlur(e);
     },
-    [onBlur, appendTag]
+    [value, onBlur, appendTag]
   );
 
   /********************************************************************************************************************
@@ -79,7 +70,7 @@ export const PFormTagText = ({ ref, allowSpace, onKeyDown, onBlur, onAppendTag, 
       ref={ref}
       {...props}
       clear={false}
-      value={valueRef.current}
+      value={value}
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       onBlur={handleBlur}

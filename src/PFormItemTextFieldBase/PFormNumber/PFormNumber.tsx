@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { NumericFormatProps } from 'react-number-format';
 import NumberFormatCustom from './NumberFormatCustom.private';
@@ -6,7 +6,7 @@ import { PFormNumberProps as Props, PFormNumberCommands } from './PFormNumber.ty
 import PFormTextField, { PFormTextFieldCommands } from '../PFormTextField';
 import { empty } from '@pdg/compare';
 import { InputBaseProps } from '@mui/material/InputBase';
-import { useAutoUpdateRef, useForceUpdate } from '@pdg/react-hook';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const PFormNumber = ({
   ref,
@@ -32,14 +32,14 @@ const PFormNumber = ({
    * Use
    * ******************************************************************************************************************/
 
-  const forceUpdate = useForceUpdate(1);
   type Commands = PFormNumberCommands;
 
   /********************************************************************************************************************
-   * Ref
+   * State
    * ******************************************************************************************************************/
 
-  const strValueRef = useAutoUpdateRef<string | undefined>(initValue !== undefined ? `${initValue}` : '');
+  const [strValue, setStrValue] = useState<string | undefined>(initValue !== undefined ? `${initValue}` : '');
+  const strValueRef = useAutoUpdateRef(strValue);
 
   /********************************************************************************************************************
    * Memo
@@ -92,31 +92,28 @@ const PFormNumber = ({
       if (Number(value) > Number.MAX_SAFE_INTEGER) {
         const newValue = Number.MAX_SAFE_INTEGER;
         const newStrValue = `${newValue}`;
-        if (strValueRef.current === newStrValue) {
-          strValueRef.current = `${newValue} `;
+        if (strValue === newStrValue) {
+          setStrValue(`${newValue} `);
         } else {
-          strValueRef.current = `${newValue}`;
+          setStrValue(`${newValue}`);
         }
         onChange && onChange(newValue);
-        forceUpdate();
       } else if (Number(value) < Number.MIN_SAFE_INTEGER) {
         const newValue = Number.MIN_SAFE_INTEGER;
         const newStrValue = `${newValue}`;
-        if (strValueRef.current === newStrValue) {
-          strValueRef.current = `${newValue} `;
+        if (strValue === newStrValue) {
+          setStrValue(`${newValue} `);
         } else {
-          strValueRef.current = `${newValue}`;
+          setStrValue(`${newValue}`);
         }
         onChange && onChange(newValue);
-        forceUpdate();
       } else {
         const newValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
         onChange && onChange(newValue);
-        strValueRef.current = value;
-        forceUpdate();
+        setStrValue(value);
       }
     },
-    [forceUpdate, onChange, strValueRef]
+    [onChange, strValue]
   );
 
   const handleValue = useCallback(
@@ -152,13 +149,12 @@ const PFormNumber = ({
               getValue: () => getFinalValue(strValueRef.current),
               setValue: (value: number | undefined) => {
                 const strValue = value !== undefined ? `${value}` : '';
-                if (strValueRef.current === strValue) {
-                  strValueRef.current = `${strValue} `;
+                if (strValue === strValue) {
+                  setStrValue(`${strValue} `);
                 } else {
-                  strValueRef.current = strValue;
+                  setStrValue(strValue);
                 }
                 onChange && onChange(value);
-                forceUpdate();
               },
             }
           : null;
@@ -170,7 +166,7 @@ const PFormNumber = ({
         }
       }
     },
-    [forceUpdate, getFinalValue, initValue, onChange, ref, strValueRef]
+    [getFinalValue, initValue, onChange, ref, strValueRef]
   );
 
   /********************************************************************************************************************
@@ -182,11 +178,11 @@ const PFormNumber = ({
       ref={handleRef}
       className={classNames(className, 'PFormNumber')}
       disableReturnKey
-      labelShrink={strValueRef.current === '' || strValueRef.current === undefined ? labelShrink : true}
+      labelShrink={strValue === '' || strValue === undefined ? labelShrink : true}
       slotProps={slotProps}
       readOnly={readOnly}
       clear={clear}
-      value={strValueRef.current}
+      value={strValue}
       onChange={handleChange}
       onValue={handleValue}
       onValidate={handleValidate}

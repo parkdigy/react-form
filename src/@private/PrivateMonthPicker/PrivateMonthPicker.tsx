@@ -1,11 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
-import {
-  PrivateMonthPickerProps as Props,
-  PrivateMonthPickerValue,
-  PrivateMonthPickerBaseValue,
-} from './PrivateMonthPicker.types';
+import React, { useCallback, useMemo, useState } from 'react';
+import { PrivateMonthPickerProps as Props, PrivateMonthPickerBaseValue } from './PrivateMonthPicker.types';
 import dayjs from 'dayjs';
-import { useAutoUpdateState } from '@pdg/react-hook';
 import PrivateYearPicker from '../PrivateYearPicker';
 import PrivateMonthPickerMonthList from './PrivateMonthPickerMonthList';
 import {
@@ -17,6 +12,7 @@ import {
 } from './PrivateMonthPicker.style.private';
 import { PIcon } from '@pdg/react-component';
 import { dateToValue, valueToDate, valueToYm } from './PrivateMonthPicker.function.private';
+import { useChanged } from '@pdg/react-hook';
 
 const DEFAULT_MIN_VALUE = {
   year: 2020,
@@ -38,10 +34,11 @@ const PrivateMonthPicker = ({
   onChange,
 }: Props) => {
   /********************************************************************************************************************
-   * State
+   * value
    * ******************************************************************************************************************/
 
-  const [value, setValue] = useAutoUpdateState<PrivateMonthPickerValue>(initValue);
+  const [value, setValue] = useState(initValue);
+  useChanged(initValue) && setValue(initValue);
 
   /********************************************************************************************************************
    * Memo

@@ -1,15 +1,15 @@
 import React, { useId, useRef, useState, useCallback, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
 import { Box, IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useForwardRef } from '@pdg/react-hook';
-import { empty, ifUndefined, notEmpty } from '@pdg/compare';
+import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
+import { empty, notEmpty } from '@pdg/compare';
 import { PFormTextFieldProps, PFormTextFieldCommands, PFormTextFieldValue } from './PFormTextField.types';
 import { useFormState } from '../../PFormContext';
 import { PIcon } from '@pdg/react-component';
 import { InputProps as StandardInputProps } from '@mui/material/Input/Input';
 import './PFormTextField.scss';
 
-type inputSlotProps = StandardInputProps;
+type InputSlotProps = StandardInputProps;
 
 function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boolean = true>({
   ref,
@@ -105,26 +105,51 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
    * Memo - FormState
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const focused = ifUndefined(initFocused, formFocused);
-  const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
-  const submitWhenReturnKey = ifUndefined(initSubmitWhenReturnKey, formSubmitWhenReturnKey);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const focused = initFocused ?? formFocused;
+  const labelShrink = initLabelShrink ?? formLabelShrink;
+  const fullWidth = initFullWidth ?? formFullWidth;
+  const submitWhenReturnKey = initSubmitWhenReturnKey ?? formSubmitWhenReturnKey;
+
+  /********************************************************************************************************************
+   * State - error
+   * ******************************************************************************************************************/
+
+  const [error, setError] = useState(initError);
+  useChanged(initError) && setError(initError);
+
+  /********************************************************************************************************************
+   * State - data
+   * ******************************************************************************************************************/
+
+  const [data, setData] = useState(initData);
+  useChanged(initData) && setData(initData);
+
+  const dataRef = useAutoUpdateRef(data);
+
+  /********************************************************************************************************************
+   * State - disabled
+   * ******************************************************************************************************************/
+
+  const finalInitDisabled = initDisabled ?? formDisabled;
+
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /********************************************************************************************************************
+   * State - hidden
+   * ******************************************************************************************************************/
+
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
 
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [error, setError] = useAutoUpdateState<PFormTextFieldProps['error']>(initError);
   const [errorHelperText, setErrorHelperText] = useState<PFormTextFieldProps['helperText']>();
-
-  const [dataRef, , setData] = useAutoUpdateRefState<PFormTextFieldProps['data']>(initData);
-  const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState<PFormTextFieldProps['disabled']>(
-    useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
-  );
-  const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState<PFormTextFieldProps['hidden']>(initHidden);
 
   /********************************************************************************************************************
    * Function - setErrorErrorHelperText
@@ -187,11 +212,17 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
     [onValue]
   );
 
-  const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+  const [value, setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && setValue(getFinalValue(initValue));
 
+  const valueRef = useAutoUpdateRef(value);
+
+  /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: PFormTextFieldProps['value']) => {
-      const finalValue = _setValue(newValue);
+      const finalValue = getFinalValue(newValue);
+      setValue(finalValue);
+      valueRef.current = finalValue;
 
       if (error) validate(finalValue);
       if (onChange) onChange(finalValue);
@@ -201,7 +232,7 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
 
       return finalValue;
     },
-    [_setValue, error, name, noFormValueItem, onChange, onValueChange, validate]
+    [error, getFinalValue, name, noFormValueItem, onChange, onValueChange, validate, valueRef]
   );
 
   /********************************************************************************************************************
@@ -240,9 +271,9 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
       getData: () => dataRef.current,
       setData,
       isExceptValue: () => !!exceptValue,
-      isDisabled: () => !!disabledRef.current,
+      isDisabled: () => !!disabled,
       setDisabled,
-      isHidden: () => !!hiddenRef.current,
+      isHidden: () => !!hidden,
       setHidden,
       focus,
       focusValidate: focus,
@@ -252,17 +283,14 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
     }),
     [
       dataRef,
-      disabledRef,
+      disabled,
       exceptValue,
       focus,
       getFinalValue,
-      hiddenRef,
+      hidden,
       initValue,
       name,
-      setData,
-      setDisabled,
       setErrorErrorHelperText,
-      setHidden,
       updateValue,
       validate,
       valueRef,
@@ -350,8 +378,8 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
    * Memo - slotProps
    * ******************************************************************************************************************/
 
-  const inputSlotProps: inputSlotProps = useMemo(() => {
-    const newProps: inputSlotProps = { ...initSlotProps?.input };
+  const inputSlotProps: InputSlotProps = useMemo(() => {
+    const newProps: InputSlotProps = { ...initSlotProps?.input };
 
     if (startAdornment || icon || newProps.startAdornment) {
       newProps.startAdornment = (

@@ -92,12 +92,13 @@ const PrivateTimeSelect = ({
     };
   }, []);
 
+  const valueRef = useAutoUpdateRef(value);
+  const scrollToValueRef = useAutoUpdateRef(scrollToValue);
   useEffect(() => {
-    if (value != null) {
-      scrollToValue(value);
+    if (valueRef.current != null) {
+      scrollToValueRef.current(valueRef.current);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [scrollToValueRef, valueRef]);
 
   /********************************************************************************************************************
    * Commands

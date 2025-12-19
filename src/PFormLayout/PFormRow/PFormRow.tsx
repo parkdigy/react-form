@@ -5,7 +5,6 @@ import { PFormRowProps as Props, PFormColsInRowMap } from './PFormRow.types';
 import { useFormState } from '../../PFormContext';
 import PFormDivider from '../PFormDivider';
 import { StyledWrapGrid } from './PFormRow.style.private';
-import { ifUndefined } from '@pdg/compare';
 import PFormContextProvider from '../../PFormContextProvider';
 
 const PFormRow = ({
@@ -53,19 +52,19 @@ const PFormRow = ({
    * Value
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const spacing = ifUndefined(initSpacing, formSpacing);
-  const focused = ifUndefined(initFocused, formFocused);
-  const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const spacing = initSpacing ?? formSpacing;
+  const focused = initFocused ?? formFocused;
+  const labelShrink = initLabelShrink ?? formLabelShrink;
+  const fullWidth = initFullWidth ?? formFullWidth;
 
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [formCols] = useState<PFormColsInRowMap>({});
+  const [formCols, setFormCols] = useState<PFormColsInRowMap>({});
   const [formColAutoXs, setFormColAutoXs] = useState<number>(12);
 
   /********************************************************************************************************************
@@ -110,18 +109,22 @@ const PFormRow = ({
 
   const handleAddFormCol = useCallback(
     (id: string, xs: number | undefined) => {
-      formCols[id] = xs;
+      setFormCols((prev) => ({ ...prev, [id]: xs }));
       makeFormColXs();
     },
-    [formCols, makeFormColXs]
+    [makeFormColXs]
   );
 
   const handleRemoveFormCol = useCallback(
     (id: string) => {
-      delete formCols[id];
+      setFormCols((prev) => {
+        const newFormCols = { ...prev };
+        delete newFormCols[id];
+        return newFormCols;
+      });
       makeFormColXs();
     },
-    [formCols, makeFormColXs]
+    [makeFormColXs]
   );
 
   /********************************************************************************************************************

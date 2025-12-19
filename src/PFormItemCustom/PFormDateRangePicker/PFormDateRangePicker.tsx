@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   PFormDateRangePickerProps as Props,
@@ -6,7 +6,7 @@ import {
   PFormDateRangePickerDateValue,
   PFormDateRangePickerCommands,
 } from './PFormDateRangePicker.types';
-import { useAutoUpdateRefState, useAutoUpdateState, useChange, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
@@ -22,7 +22,7 @@ import {
 import dayjs, { Dayjs } from 'dayjs';
 import { useFormState } from '../../PFormContext';
 import { getDateValidationErrorText } from '../../@util.private';
-import { ifUndefined, notEmpty } from '@pdg/compare';
+import { notEmpty } from '@pdg/compare';
 import { DateValidationError } from '@mui/x-date-pickers';
 import { getFinalValue } from './PFormDateRangePicker.function.private';
 
@@ -113,12 +113,12 @@ const PFormDateRangePicker = ({
    * Memo - FormState
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const focused = ifUndefined(initFocused, formFocused);
-  const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const focused = initFocused ?? formFocused;
+  const labelShrink = initLabelShrink ?? formLabelShrink;
+  const fullWidth = initFullWidth ?? formFullWidth;
 
   /********************************************************************************************************************
    * Ref
@@ -134,21 +134,46 @@ const PFormDateRangePicker = ({
   const openValueRef = useRef<PFormDateRangePickerValue>(undefined);
 
   /********************************************************************************************************************
+   * State - error
+   * ******************************************************************************************************************/
+
+  const [error, setError] = useState(initError);
+  useChanged(initError) && setError(initError);
+
+  /********************************************************************************************************************
+   * State - data
+   * ******************************************************************************************************************/
+
+  const [data, setData] = useState(initData);
+  useChanged(initData) && setData(initData);
+
+  const dataRef = useAutoUpdateRef(data);
+
+  /********************************************************************************************************************
+   * State - disabled
+   * ******************************************************************************************************************/
+
+  const finalInitDisabled = initDisabled ?? formDisabled;
+
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /********************************************************************************************************************
+   * State - hidden
+   * ******************************************************************************************************************/
+
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
+
+  /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [error, setError] = useAutoUpdateState<Props['error']>(initError);
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
   const [fromError, setFromError] = useState(false);
   const [fromErrorHelperText, setFromErrorHelperText] = useState<Props['helperText']>();
   const [toError, setToError] = useState(false);
   const [toErrorHelperText, setToErrorHelperText] = useState<Props['helperText']>();
-
-  const [dataRef, , setData] = useAutoUpdateRefState(initData);
-  const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
-    useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
-  );
-  const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
 
   /********************************************************************************************************************
    * Function - focus
@@ -272,7 +297,6 @@ const PFormDateRangePicker = ({
    * State
    * ******************************************************************************************************************/
 
-  const [open, setOpen] = useState(false);
   const [selectType, setSelectType] = useState<PFormDateRangePickerTooltipPickerSelectType>('start');
   const [months, setMonths] = useState<PFormDateRangePickerTooltipPickerContainerMonths>(() => {
     const now = dayjs();
@@ -292,14 +316,19 @@ const PFormDateRangePicker = ({
   );
 
   /********************************************************************************************************************
-   * value
+   * State - value
    * ******************************************************************************************************************/
 
-  const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+  const [value, setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && setValue(getFinalValue(initValue));
+  const valueRef = useAutoUpdateRef(value);
 
+  /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: Props['value']) => {
-      const finalValue = _setValue(newValue);
+      const finalValue = getFinalValue(newValue);
+      setValue(finalValue);
+      valueRef.current = finalValue;
 
       if (error || fromError || toError) validate(finalValue);
       if (onChange) onChange(finalValue);
@@ -307,26 +336,34 @@ const PFormDateRangePicker = ({
 
       return finalValue;
     },
-    [_setValue, error, fromError, name, onChange, onValueChange, toError, validate]
+    [error, fromError, name, onChange, onValueChange, toError, validate, valueRef]
   );
 
   /********************************************************************************************************************
-   * Change
+   * State - open
    * ******************************************************************************************************************/
 
-  useChange(
-    open,
-    () => {
+  const [open, setOpen] = useState(false);
+
+  /** open 변경 시 처리 */
+  const firstSkipRef = useRef(true);
+  const nameRef = useAutoUpdateRef(name);
+  const allowSingleSelectRef = useAutoUpdateRef(allowSingleSelect);
+  const onRequestSearchSubmitRef = useAutoUpdateRef(onRequestSearchSubmit);
+  useEffect(() => {
+    if (firstSkipRef.current) {
+      firstSkipRef.current = false;
+    } else {
       if (open) {
-        openValueRef.current = value;
+        openValueRef.current = valueRef.current;
       } else {
         if (openValueRef.current) {
           const openStartDate = openValueRef.current[0];
           const openEndDate = openValueRef.current[1];
-          const startDate = value[0];
-          const endDate = value[1];
+          const startDate = valueRef.current[0];
+          const endDate = valueRef.current[1];
 
-          if (allowSingleSelect || (startDate != null && endDate != null)) {
+          if (allowSingleSelectRef.current || (startDate != null && endDate != null)) {
             let runOnRequestSearchSubmit = false;
             if (openStartDate !== startDate) {
               if (openStartDate && startDate) {
@@ -344,14 +381,13 @@ const PFormDateRangePicker = ({
             }
 
             if (runOnRequestSearchSubmit) {
-              onRequestSearchSubmit(name, value);
+              onRequestSearchSubmitRef.current(nameRef.current, valueRef.current);
             }
           }
         }
       }
-    },
-    true
-  );
+    }
+  }, [allowSingleSelectRef, nameRef, onRequestSearchSubmitRef, open, valueRef]);
 
   /********************************************************************************************************************
    * Event Handler
@@ -561,9 +597,9 @@ const PFormDateRangePicker = ({
       getToValue: () => valueRef.current[1],
       setToValue: (value) => updateValue([valueRef.current[0], value]),
       isExceptValue: () => !!exceptValue,
-      isDisabled: () => !!disabledRef.current,
+      isDisabled: () => !!disabled,
       setDisabled,
-      isHidden: () => !!hiddenRef.current,
+      isHidden: () => !!hidden,
       setHidden,
       focus,
       focusValidate,
@@ -582,20 +618,17 @@ const PFormDateRangePicker = ({
     }),
     [
       dataRef,
-      disabledRef,
+      disabled,
       exceptValue,
       focus,
       focusValidate,
       formValueFormat,
       formValueFromNameSuffix,
       formValueToNameSuffix,
-      hiddenRef,
+      hidden,
       initValue,
       name,
-      setData,
-      setDisabled,
       setErrorErrorHelperText,
-      setHidden,
       updateValue,
       validate,
       valueRef,

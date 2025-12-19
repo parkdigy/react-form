@@ -1,15 +1,14 @@
-import React, { useEffect, useState, useCallback, ReactNode, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, ReactNode, useRef } from 'react';
 import classNames from 'classnames';
 import { Autocomplete, AutocompleteRenderInputParams, Chip, InputLabelProps } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState } from '@pdg/react-hook';
-import { PFormTagProps, PFormTagExtraCommands, PFormTagCommands, PFormTagValue } from './PFormTag.types';
+import { PFormTagProps as Props, PFormTagExtraCommands, PFormTagValue } from './PFormTag.types';
 import { PFormTextCommands } from '../PFormText';
-import { empty, equal, ifUndefined, notEmpty } from '@pdg/compare';
+import { empty, equal, notEmpty } from '@pdg/compare';
 import { useFormState } from '../../PFormContext';
 import PFormContextProvider from '../../PFormContextProvider';
-import { PFormTextFieldProps } from '../PFormTextField';
 import { PFormTagText, PFormTagTextProps } from './PFormTagText';
 import { PFormValueItemCommands } from '../../@types';
+import { useAutoUpdateRef, useChanged } from '@pdg/react-hook';
 
 const _emptyValue: string[] = [];
 
@@ -64,19 +63,31 @@ const PFormTag = ({
    * FormState - Variables
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const fullWidth = initFullWidth ?? formFullWidth;
+
+  /********************************************************************************************************************
+   * State - error
+   * ******************************************************************************************************************/
+
+  const [error, setError] = useState(initError);
+  useChanged(initError) && setError(initError);
+
+  /********************************************************************************************************************
+   * State - disabled
+   * ******************************************************************************************************************/
+
+  const finalInitDisabled = initDisabled ?? formDisabled;
+
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
 
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [error, setError] = useAutoUpdateState<PFormTagProps['error']>(initError);
-  const [errorHelperText, setErrorHelperText] = useState<PFormTagProps['helperText']>();
-  const [disabled] = useAutoUpdateState<PFormTextFieldProps['disabled']>(
-    initDisabled == null ? formDisabled : initDisabled
-  );
+  const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
 
   /********************************************************************************************************************
    * Function - setErrorErrorHelperText
@@ -139,12 +150,18 @@ const PFormTag = ({
     [onValue]
   );
 
-  const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
-  const valueSet = useMemo(() => new Set(value), [value]);
+  const [value, setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && setValue(getFinalValue(initValue));
 
+  const valueRef = useAutoUpdateRef(value);
+  const [valueSet, setValueSet] = useState(new Set(value));
+
+  /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: GetFinalValueParam) => {
-      const finalValue = _setValue(newValue);
+      const finalValue = getFinalValue(newValue);
+      setValue(finalValue);
+      valueRef.current = finalValue;
 
       if (error) validate(finalValue);
       if (onChange) onChange(finalValue);
@@ -152,19 +169,41 @@ const PFormTag = ({
 
       return finalValue;
     },
-    [_setValue, error, name, onChange, onValueChange, validate]
+    [error, getFinalValue, name, onChange, onValueChange, validate, valueRef]
   );
+
+  /** valueSet에 아이템 추가 */
+  const appendValueSet = useCallback((v: string) => {
+    setValueSet((prev) => {
+      const newValueSet = new Set(prev);
+      newValueSet.add(v);
+      return newValueSet;
+    });
+  }, []);
+
+  /** valueSet에 아이템 제거 */
+  const removeValueSet = useCallback((v: string) => {
+    setValueSet((prev) => {
+      const newValueSet = new Set(prev);
+      newValueSet.delete(v);
+      return newValueSet;
+    });
+  }, []);
 
   /********************************************************************************************************************
    * Effect
    * ******************************************************************************************************************/
 
+  const firstValueRef = useRef(value);
+  const firstNameRef = useRef(name);
+  const firstInitValueRef = useRef(initValue);
+  const firstOnChangeRef = useRef(onChange);
+  const firstOnValueChangeRef = useRef(onValueChange);
   useEffect(() => {
-    if (!equal(value, initValue)) {
-      if (onChange) onChange(value);
-      onValueChange(name, value);
+    if (!equal(firstValueRef.current, firstInitValueRef.current)) {
+      firstOnChangeRef.current?.(firstValueRef.current);
+      firstOnValueChangeRef.current(firstNameRef.current, firstValueRef.current);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /********************************************************************************************************************
@@ -209,7 +248,8 @@ const PFormTag = ({
       if (notEmpty(finalTag) && !valueSet.has(finalTag)) {
         if (onAppendTag && !onAppendTag(finalTag)) return;
 
-        valueSet.add(finalTag);
+        appendValueSet(finalTag);
+
         const finalValue = updateValue(valueSet);
         setTimeout(() => {
           onValueChangeByUser(name, finalValue);
@@ -217,7 +257,7 @@ const PFormTag = ({
         });
       }
     },
-    [valueSet, onAppendTag, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]
+    [valueSet, onAppendTag, appendValueSet, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]
   );
 
   const removeTag = useCallback(
@@ -225,7 +265,8 @@ const PFormTag = ({
       if (valueSet.has(tag)) {
         if (onRemoveTag && !onRemoveTag(tag)) return;
 
-        valueSet.delete(tag);
+        removeValueSet(tag);
+
         const finalValue = updateValue(valueSet);
         setTimeout(() => {
           onValueChangeByUser(name, finalValue);
@@ -233,7 +274,7 @@ const PFormTag = ({
         });
       }
     },
-    [valueSet, onRemoveTag, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]
+    [valueSet, onRemoveTag, removeValueSet, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]
   );
 
   /********************************************************************************************************************

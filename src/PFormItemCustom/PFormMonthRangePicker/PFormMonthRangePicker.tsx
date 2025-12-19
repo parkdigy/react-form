@@ -1,9 +1,8 @@
-import React, { ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useChange, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
-import { ifUndefined } from '@pdg/compare';
 import {
   PFormMonthRangePickerProps as Props,
   PFormMonthRangePickerCommands,
@@ -112,12 +111,12 @@ const PFormMonthRangePicker = ({
    * Memo - FormState
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const focused = ifUndefined(initFocused, formFocused);
-  const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const focused = initFocused ?? formFocused;
+  const labelShrink = initLabelShrink ?? formLabelShrink;
+  const fullWidth = initFullWidth ?? formFullWidth;
 
   /********************************************************************************************************************
    * Ref
@@ -130,22 +129,47 @@ const PFormMonthRangePicker = ({
   const openValueRef = useRef<PFormMonthRangePickerValue>(undefined);
 
   /********************************************************************************************************************
+   * State - error
+   * ******************************************************************************************************************/
+
+  const [error, setError] = useState(initError);
+  useChanged(initError) && setError(initError);
+
+  /********************************************************************************************************************
+   * State - data
+   * ******************************************************************************************************************/
+
+  const [data, setData] = useState(initData);
+  useChanged(initData) && setData(initData);
+
+  const dataRef = useAutoUpdateRef(data);
+
+  /********************************************************************************************************************
+   * State - disabled
+   * ******************************************************************************************************************/
+
+  const finalInitDisabled = initDisabled ?? formDisabled;
+
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /********************************************************************************************************************
+   * State - hidden
+   * ******************************************************************************************************************/
+
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
+
+  /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [error, setError] = useAutoUpdateState<Props['error']>(initError);
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
   const [fromError, setFromError] = useState(false);
   const [fromErrorHelperText, setFromErrorHelperText] = useState<Props['helperText']>();
   const [toError, setToError] = useState(false);
   const [toErrorHelperText, setToErrorHelperText] = useState<Props['helperText']>();
   const [open, setOpen] = useState(false);
-
-  const [dataRef, , setData] = useAutoUpdateRefState(initData);
-  const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
-    useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
-  );
-  const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
 
   /********************************************************************************************************************
    * Function
@@ -215,11 +239,17 @@ const PFormMonthRangePicker = ({
    * State - value
    * ******************************************************************************************************************/
 
-  const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+  const [value, setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && setValue(getFinalValue(initValue));
 
+  const valueRef = useAutoUpdateRef(value);
+
+  /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: Props['value']) => {
-      const finalValue = _setValue(newValue);
+      const finalValue = getFinalValue(newValue);
+      setValue(finalValue);
+      valueRef.current = finalValue;
 
       if (error || fromError || toError) validate(finalValue);
       if (onChange) onChange(finalValue);
@@ -227,7 +257,7 @@ const PFormMonthRangePicker = ({
 
       return finalValue;
     },
-    [_setValue, error, fromError, name, onChange, onValueChange, toError, validate]
+    [error, fromError, name, onChange, onValueChange, toError, validate, valueRef]
   );
 
   /********************************************************************************************************************
@@ -272,28 +302,31 @@ const PFormMonthRangePicker = ({
    * Change
    * ******************************************************************************************************************/
 
-  useChange(
-    open,
-    () => {
+  const firstSkipRef = useRef(true);
+  const nameRef = useAutoUpdateRef(name);
+  const onRequestSearchSubmitRef = useAutoUpdateRef(onRequestSearchSubmit);
+  useEffect(() => {
+    if (firstSkipRef.current) {
+      firstSkipRef.current = false;
+    } else {
       if (open) {
-        openValueRef.current = value;
+        openValueRef.current = valueRef.current;
       } else {
-        if (openValueRef.current !== value) {
+        if (openValueRef.current !== valueRef.current) {
           let runOnRequestSearchSubmit;
-          if (openValueRef.current && value) {
-            runOnRequestSearchSubmit = openValueRef.current !== value;
+          if (openValueRef.current && valueRef.current) {
+            runOnRequestSearchSubmit = openValueRef.current !== valueRef.current;
           } else {
             runOnRequestSearchSubmit = true;
           }
 
           if (runOnRequestSearchSubmit) {
-            onRequestSearchSubmit(name, value);
+            onRequestSearchSubmitRef.current(nameRef.current, valueRef.current);
           }
         }
       }
-    },
-    true
-  );
+    }
+  }, [nameRef, onRequestSearchSubmitRef, open, valueRef]);
 
   /********************************************************************************************************************
    * Function
@@ -366,9 +399,9 @@ const PFormMonthRangePicker = ({
         ]);
       },
       isExceptValue: () => !!exceptValue,
-      isDisabled: () => !!disabledRef.current,
+      isDisabled: () => !!disabled,
       setDisabled,
-      isHidden: () => !!hiddenRef.current,
+      isHidden: () => !!hidden,
       setHidden,
       focus,
       focusValidate: focus,
@@ -394,20 +427,17 @@ const PFormMonthRangePicker = ({
     }),
     [
       dataRef,
-      disabledRef,
+      disabled,
       exceptValue,
       focus,
       formValueFromMonthNameSuffix,
       formValueFromYearNameSuffix,
       formValueToMonthNameSuffix,
       formValueToYearNameSuffix,
-      hiddenRef,
+      hidden,
       initValue,
       name,
-      setData,
-      setDisabled,
       setErrorErrorHelperText,
-      setHidden,
       updateValue,
       validate,
       valueRef,

@@ -3,7 +3,7 @@ import { LinkDialogProps as Props } from './LinkDialog.types';
 import { PFormUrl, PFormUrlCommands } from '../../../PFormItemTextFieldBase';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { empty } from '@pdg/compare';
-import { useChange } from '@pdg/react-hook';
+import { useChanged } from '@pdg/react-hook';
 
 const LinkDialog = ({ open, onConfirm, onCancel, onClose }: Props) => {
   /********************************************************************************************************************
@@ -22,11 +22,11 @@ const LinkDialog = ({ open, onConfirm, onCancel, onClose }: Props) => {
    * Change
    * ******************************************************************************************************************/
 
-  useChange(open, () => {
+  if (useChanged(open, true)) {
     if (!open) {
       setValue('');
     }
-  });
+  }
 
   /********************************************************************************************************************
    * Event Handler

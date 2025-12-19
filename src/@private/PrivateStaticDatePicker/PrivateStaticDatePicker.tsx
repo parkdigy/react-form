@@ -13,7 +13,7 @@ import { PrivateTimeSelectCommands } from '../PrivateTimeSelect';
 import { checkDateAvailable, getAvailableDate, isDateAvailable, makeAvailableDate } from '../../@util.private';
 import { PrivateTimeSection } from '../PrivateTimeSection';
 import './PrivateStaticDatePicker.scss';
-import { useChange, useForwardRef } from '@pdg/react-hook';
+import { useChanged, useForwardRef } from '@pdg/react-hook';
 
 const DEFAULT_HOURS: number[] = new Array(24).fill(0);
 for (let i = 0; i < DEFAULT_HOURS.length; i += 1) {
@@ -80,14 +80,14 @@ const PrivateStaticDatePicker = ({
   );
 
   /********************************************************************************************************************
-   * Change
+   * yearSelectOpen 변경 시 처리
    * ******************************************************************************************************************/
 
-  useChange(yearSelectOpen, () => {
+  if (useChanged(yearSelectOpen)) {
     if (!yearSelectOpen) {
       setActiveMonthValue(null);
     }
-  });
+  }
 
   /********************************************************************************************************************
    * Arrow

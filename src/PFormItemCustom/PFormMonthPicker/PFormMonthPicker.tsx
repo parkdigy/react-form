@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useChange, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
-import { empty, ifUndefined } from '@pdg/compare';
+import { empty } from '@pdg/compare';
 import {
   PFormMonthPickerProps as Props,
   PFormMonthPickerCommands,
@@ -99,12 +99,12 @@ const PFormMonthPicker = ({
    * Memo - FormState
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const focused = ifUndefined(initFocused, formFocused);
-  const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const focused = initFocused ?? formFocused;
+  const labelShrink = initLabelShrink ?? formLabelShrink;
+  const fullWidth = initFullWidth ?? formFullWidth;
 
   /********************************************************************************************************************
    * Ref
@@ -118,18 +118,43 @@ const PFormMonthPicker = ({
   const openValueRef = useRef<PFormMonthPickerValue>(undefined);
 
   /********************************************************************************************************************
+   * State - error
+   * ******************************************************************************************************************/
+
+  const [error, setError] = useState(initError);
+  useChanged(initError) && setError(initError);
+
+  /********************************************************************************************************************
+   * State - data
+   * ******************************************************************************************************************/
+
+  const [data, setData] = useState(initData);
+  useChanged(initData) && setData(initData);
+
+  const dataRef = useAutoUpdateRef(data);
+
+  /********************************************************************************************************************
+   * State - disabled
+   * ******************************************************************************************************************/
+
+  const finalInitDisabled = initDisabled ?? formDisabled;
+
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /********************************************************************************************************************
+   * State - hidden
+   * ******************************************************************************************************************/
+
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
+
+  /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [error, setError] = useAutoUpdateState<Props['error']>(initError);
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
   const [open, setOpen] = useState(false);
-
-  const [dataRef, , setData] = useAutoUpdateRefState(initData);
-  const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
-    useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
-  );
-  const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
 
   /********************************************************************************************************************
    * Function
@@ -174,11 +199,19 @@ const PFormMonthPicker = ({
    * value
    * ******************************************************************************************************************/
 
-  const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+  // const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
 
+  const [value, setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && setValue(getFinalValue(initValue));
+
+  const valueRef = useAutoUpdateRef(value);
+
+  /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: Props['value']) => {
-      const finalValue = _setValue(newValue);
+      const finalValue = getFinalValue(newValue);
+      setValue(finalValue);
+      valueRef.current = finalValue;
 
       if (error) validate(finalValue);
       if (onChange) onChange(finalValue);
@@ -186,7 +219,7 @@ const PFormMonthPicker = ({
 
       return finalValue;
     },
-    [_setValue, error, name, onChange, onValueChange, validate]
+    [error, name, onChange, onValueChange, validate, valueRef]
   );
 
   /********************************************************************************************************************
@@ -241,29 +274,33 @@ const PFormMonthPicker = ({
    * Change
    * ******************************************************************************************************************/
 
-  useChange(
-    open,
-    () => {
+  const firstSkipRef = useRef(true);
+  const nameRef = useAutoUpdateRef(name);
+  const onRequestSearchSubmitRef = useAutoUpdateRef(onRequestSearchSubmit);
+  useEffect(() => {
+    if (firstSkipRef.current) {
+      firstSkipRef.current = false;
+    } else {
       if (open) {
-        openValueRef.current = value;
+        openValueRef.current = valueRef.current;
       } else {
-        if (openValueRef.current !== value) {
+        if (openValueRef.current !== valueRef.current) {
           let runOnRequestSearchSubmit;
-          if (openValueRef.current && value) {
+          if (openValueRef.current && valueRef.current) {
             runOnRequestSearchSubmit =
-              openValueRef.current.year !== value.year || openValueRef.current.month !== value.month;
+              openValueRef.current.year !== valueRef.current.year ||
+              openValueRef.current.month !== valueRef.current.month;
           } else {
             runOnRequestSearchSubmit = true;
           }
 
           if (runOnRequestSearchSubmit) {
-            onRequestSearchSubmit(name, value);
+            onRequestSearchSubmitRef.current(nameRef.current, valueRef.current);
           }
         }
       }
-    },
-    true
-  );
+    }
+  }, [nameRef, onRequestSearchSubmit, onRequestSearchSubmitRef, open, valueRef]);
 
   /********************************************************************************************************************
    * Function
@@ -311,9 +348,9 @@ const PFormMonthPicker = ({
         );
       },
       isExceptValue: () => !!exceptValue,
-      isDisabled: () => !!disabledRef.current,
+      isDisabled: () => !!disabled,
       setDisabled,
-      isHidden: () => !!hiddenRef.current,
+      isHidden: () => !!hidden,
       setHidden,
       focus,
       focusValidate: focus,
@@ -331,18 +368,15 @@ const PFormMonthPicker = ({
     }),
     [
       dataRef,
-      disabledRef,
+      disabled,
       exceptValue,
       focus,
       formValueMonthNameSuffix,
       formValueYearNameSuffix,
-      hiddenRef,
+      hidden,
       initValue,
       name,
-      setData,
-      setDisabled,
       setErrorErrorHelperText,
-      setHidden,
       updateValue,
       validate,
       valueRef,

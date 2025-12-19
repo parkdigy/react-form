@@ -1,9 +1,8 @@
 import React, { ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
-import { ifUndefined } from '@pdg/compare';
 import {
   PFormYearRangePickerProps as Props,
   PFormYearRangePickerCommands,
@@ -98,12 +97,12 @@ const PFormYearRangePicker = ({
    * Memo - FormState
    * ******************************************************************************************************************/
 
-  const variant = ifUndefined(initVariant, formVariant);
-  const size = ifUndefined(initSize, formSize);
-  const color = ifUndefined(initColor, formColor);
-  const focused = ifUndefined(initFocused, formFocused);
-  const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+  const variant = initVariant ?? formVariant;
+  const size = initSize ?? formSize;
+  const color = initColor ?? formColor;
+  const focused = initFocused ?? formFocused;
+  const labelShrink = initLabelShrink ?? formLabelShrink;
+  const fullWidth = initFullWidth ?? formFullWidth;
 
   /********************************************************************************************************************
    * Ref
@@ -113,13 +112,43 @@ const PFormYearRangePicker = ({
   const endInputRef = useRef<HTMLInputElement>(undefined);
   const startInputDatePickerErrorRef = useRef<DateValidationError>(null);
   const endInputDatePickerErrorRef = useRef<DateValidationError>(null);
-  const openValueRef = useRef<PFormYearRangePickerValue>(undefined);
+
+  /********************************************************************************************************************
+   * State - error
+   * ******************************************************************************************************************/
+
+  const [error, setError] = useState(initError);
+  useChanged(initError) && setError(initError);
+
+  /********************************************************************************************************************
+   * State - data
+   * ******************************************************************************************************************/
+
+  const [data, setData] = useState(initData);
+  useChanged(initData) && setData(initData);
+
+  const dataRef = useAutoUpdateRef(data);
+
+  /********************************************************************************************************************
+   * State - disabled
+   * ******************************************************************************************************************/
+
+  const finalInitDisabled = initDisabled ?? formDisabled;
+
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /********************************************************************************************************************
+   * State - hidden
+   * ******************************************************************************************************************/
+
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
 
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [error, setError] = useAutoUpdateState<Props['error']>(initError);
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
   const [fromError, setFromError] = useState(false);
   const [fromErrorHelperText, setFromErrorHelperText] = useState<Props['helperText']>();
@@ -127,12 +156,7 @@ const PFormYearRangePicker = ({
   const [toErrorHelperText, setToErrorHelperText] = useState<Props['helperText']>();
   const [open, setOpen] = useState(false);
   const [selectType, setSelectType] = useState<PrivateYearRangePickerSelectType>('start');
-
-  const [dataRef, , setData] = useAutoUpdateRefState(initData);
-  const [disabledRef, disabled, setDisabled] = useAutoUpdateRefState(
-    useMemo(() => (initDisabled == null ? formDisabled : initDisabled), [initDisabled, formDisabled])
-  );
-  const [hiddenRef, hidden, setHidden] = useAutoUpdateRefState(initHidden);
+  const [openValue, setOpenValue] = useState<PFormYearRangePickerValue>();
 
   /********************************************************************************************************************
    * Function
@@ -202,11 +226,17 @@ const PFormYearRangePicker = ({
    * State - value
    * ******************************************************************************************************************/
 
-  const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
+  const [value, setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && setValue(getFinalValue(initValue));
 
+  const valueRef = useAutoUpdateRef(value);
+
+  /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: Props['value']) => {
-      const finalValue = _setValue(newValue);
+      const finalValue = getFinalValue(newValue);
+      setValue(finalValue);
+      valueRef.current = finalValue;
 
       if (error || fromError || toError) validate(finalValue);
       if (onChange) onChange(finalValue);
@@ -214,7 +244,7 @@ const PFormYearRangePicker = ({
 
       return finalValue;
     },
-    [_setValue, error, fromError, name, onChange, onValueChange, toError, validate]
+    [error, fromError, name, onChange, onValueChange, toError, validate, valueRef]
   );
 
   /********************************************************************************************************************
@@ -229,17 +259,17 @@ const PFormYearRangePicker = ({
   }, [maxYear, minYear]);
 
   /********************************************************************************************************************
-   * Effect
+   * Open 변경 시 처리
    * ******************************************************************************************************************/
 
-  useFirstSkipEffect(() => {
+  if (useChanged(open)) {
     if (open) {
-      openValueRef.current = value;
+      setOpenValue(value);
     } else {
-      if (openValueRef.current !== value) {
+      if (openValue !== value) {
         let runOnRequestSearchSubmit;
-        if (openValueRef.current && value) {
-          runOnRequestSearchSubmit = openValueRef.current !== value;
+        if (openValue && value) {
+          runOnRequestSearchSubmit = openValue !== value;
         } else {
           runOnRequestSearchSubmit = true;
         }
@@ -249,7 +279,7 @@ const PFormYearRangePicker = ({
         }
       }
     }
-  }, [open]);
+  }
 
   /********************************************************************************************************************
    * Function
@@ -278,9 +308,9 @@ const PFormYearRangePicker = ({
       getToValue: () => valueRef.current[1],
       setToValue: (value) => updateValue([valueRef.current[0], value]),
       isExceptValue: () => !!exceptValue,
-      isDisabled: () => !!disabledRef.current,
+      isDisabled: () => !!disabled,
       setDisabled,
-      isHidden: () => !!hiddenRef.current,
+      isHidden: () => !!hidden,
       setHidden,
       focus,
       focusValidate: focus,
@@ -298,18 +328,15 @@ const PFormYearRangePicker = ({
     }),
     [
       dataRef,
-      disabledRef,
+      disabled,
       exceptValue,
       focus,
       formValueFromNameSuffix,
       formValueToNameSuffix,
-      hiddenRef,
+      hidden,
       initValue,
       name,
-      setData,
-      setDisabled,
       setErrorErrorHelperText,
-      setHidden,
       updateValue,
       validate,
       valueRef,

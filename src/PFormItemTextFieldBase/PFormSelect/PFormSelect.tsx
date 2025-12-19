@@ -1,8 +1,7 @@
 import React, { useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { Box, Checkbox, Chip, CircularProgress, MenuItem, SelectProps } from '@mui/material';
-import { useAutoUpdateRefState, useAutoUpdateState, useFirstSkipEffect } from '@pdg/react-hook';
-import { empty, notEmpty, equal, ifUndefined } from '@pdg/compare';
+import { empty, notEmpty, equal } from '@pdg/compare';
 import {
   PFormSelectProps,
   PFormSelectExtraCommands,
@@ -17,6 +16,7 @@ import PFormContextProvider from '../../PFormContextProvider';
 import PFormTextField, { PFormTextFieldCommands } from '../PFormTextField';
 import './PFormSelect.scss';
 import { PFormValueItemCommands } from '../../@types';
+import { useAutoUpdateRef, useChanged } from '@pdg/react-hook';
 
 interface ItemValueLabelMap {
   [key: string]: ReactNode;
@@ -40,8 +40,6 @@ function PFormSelect<
   startAdornment: initStartAdornment,
   value: initValue,
   slotProps: initSlotProps,
-  // InputLabelProps: initInputLabelProps,
-  // SelectProps: initSelectProps,
   formValueSeparator = ',',
   formValueSort,
   width,
@@ -60,6 +58,12 @@ function PFormSelect<
   type Value = PFormSelectValue<T, Multiple>;
 
   /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
+
+  const onLoadItemsRef = useAutoUpdateRef(onLoadItems);
+
+  /********************************************************************************************************************
    * FormState
    * ******************************************************************************************************************/
 
@@ -74,7 +78,7 @@ function PFormSelect<
    * Memo - FormState
    * ******************************************************************************************************************/
 
-  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
+  const fullWidth = initFullWidth ?? formFullWidth;
 
   /********************************************************************************************************************
    * State
@@ -83,7 +87,7 @@ function PFormSelect<
   const [emptyValue] = useState([]);
   const [itemValueLabels, setItemValueLabels] = useState<ItemValueLabelMap>({});
   const [hasEmptyValue, setHasEmptyValue] = useState<boolean>(false);
-  const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(false);
+  const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(!!onLoadItems);
   const [loading, setLoading] = useState<boolean | undefined>(initLoading);
 
   /********************************************************************************************************************
@@ -113,22 +117,23 @@ function PFormSelect<
    * State - items
    * ******************************************************************************************************************/
 
-  const [items, setItems] = useAutoUpdateState<Props['items']>(initItems);
+  const [items, setItems] = useState(initItems);
+  if (useChanged(initItems)) {
+    setItems(initItems);
 
-  useEffect(() => {
-    if (items) {
+    if (initItems) {
       setItemValueLabels(
-        items.reduce<ItemValueLabelMap>((res, item) => {
+        initItems.reduce<ItemValueLabelMap>((res, item) => {
           res[`${item.value}`] = item.label;
           return res;
         }, {})
       );
-      setHasEmptyValue(!!items.find(({ value }) => value === ''));
+      setHasEmptyValue(!!initItems.find(({ value }) => value === ''));
     } else {
       setItemValueLabels({});
       setHasEmptyValue(false);
     }
-  }, [items]);
+  }
 
   /********************************************************************************************************************
    * Memo
@@ -146,7 +151,7 @@ function PFormSelect<
   }, [items]);
 
   /********************************************************************************************************************
-   * Function - getFinalValue
+   * value
    * ******************************************************************************************************************/
 
   const getFinalValue = useCallback(
@@ -199,42 +204,45 @@ function PFormSelect<
     [multiple, formValueSeparator, itemsValues, onValue]
   );
 
-  /********************************************************************************************************************
-   * value
-   * ******************************************************************************************************************/
+  const [value, setValue] = useState<Props['value']>(getFinalValue(initValue));
+  useChanged(initValue) && setValue(getFinalValue(initValue));
 
-  const [valueRef, value, _setValue] = useAutoUpdateRefState<any, Props['value'], Value>(initValue, getFinalValue);
+  const valueRef = useAutoUpdateRef(value);
 
+  /** value 변경 함수 */
   const updateValue = useCallback(
-    (newValue: Props['value'], skipCallback = false) => {
-      const finalValue = _setValue(newValue, skipCallback);
+    (newValue: Props['value'], skipGetFinalValue = false) => {
+      const finalValue = skipGetFinalValue ? newValue : getFinalValue(newValue);
+      setValue(finalValue);
 
       if (onChange) onChange(finalValue as any);
       onValueChange(name, finalValue as any);
 
       return finalValue;
     },
-    [_setValue, name, onChange, onValueChange]
+    [getFinalValue, name, onChange, onValueChange]
   );
 
-  useFirstSkipEffect(() => {
-    updateValue(valueRef.current);
-  }, [multiple]);
+  /********************************************************************************************************************
+   * multiple 변경 시 updateValue 호출
+   * ******************************************************************************************************************/
+
+  if (useChanged(multiple)) {
+    updateValue(value);
+  }
 
   /********************************************************************************************************************
    * Effect
    * ******************************************************************************************************************/
 
   useEffect(() => {
-    if (onLoadItems) {
-      setIsOnGetItemLoading(true);
-      onLoadItems().then((items) => {
+    if (onLoadItemsRef.current) {
+      onLoadItemsRef.current().then((items) => {
         setItems(items);
         setIsOnGetItemLoading(false);
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [onLoadItemsRef]);
 
   /********************************************************************************************************************
    * Variable
@@ -333,14 +341,36 @@ function PFormSelect<
   );
 
   /********************************************************************************************************************
-   * Render
+   * Render Variable
    * ******************************************************************************************************************/
+
+  const finalValue = useMemo(() => {
+    let newFinalValue;
+    if (notEmpty(items)) {
+      newFinalValue = value;
+    } else {
+      newFinalValue = multiple ? emptyValue : '';
+    }
+
+    if (multiple) {
+      if (newFinalValue != null && !Array.isArray(newFinalValue)) {
+        newFinalValue = [newFinalValue];
+      }
+    } else {
+      if (Array.isArray(newFinalValue)) {
+        newFinalValue = newFinalValue[0];
+      }
+
+      newFinalValue = newFinalValue ?? '';
+    }
+    return newFinalValue;
+  }, [emptyValue, items, multiple, value]);
 
   const selectProps = useMemo(() => {
     const finalSelectProps: SelectProps = {
       displayEmpty: true,
       multiple: !!multiple,
-      value,
+      value: finalValue,
     };
     if (multiple) {
       finalSelectProps.renderValue = (selected) => {
@@ -369,37 +399,7 @@ function PFormSelect<
     };
 
     return finalSelectProps;
-  }, [isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, value, width]);
-
-  const finalValue = useMemo(() => {
-    let newFinalValue;
-    if (notEmpty(items)) {
-      newFinalValue = value;
-    } else {
-      newFinalValue = multiple ? emptyValue : '';
-    }
-
-    selectProps.value = newFinalValue;
-
-    if (multiple) {
-      if (selectProps.value != null && !Array.isArray(selectProps.value)) {
-        selectProps.value = [selectProps.value];
-      }
-      if (newFinalValue !== undefined && !Array.isArray(newFinalValue)) {
-        newFinalValue = [newFinalValue];
-      }
-    } else {
-      if (Array.isArray(selectProps.value)) {
-        selectProps.value = selectProps.value[0];
-      }
-      if (Array.isArray(newFinalValue)) {
-        newFinalValue = newFinalValue[0];
-      }
-
-      newFinalValue = ifUndefined(newFinalValue, '');
-    }
-    return newFinalValue;
-  }, [emptyValue, items, multiple, selectProps, value]);
+  }, [finalValue, isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, width]);
 
   const slotProps = useMemo(() => {
     const inputLabelAdditionalProps: { shrink?: boolean } = {};
@@ -418,6 +418,10 @@ function PFormSelect<
       },
     } as PFormSelectProps<T>['slotProps'];
   }, [hasEmptyValue, initSlotProps?.inputLabel, initSlotProps?.select, placeholder, selectProps]);
+
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <PFormContextProvider

@@ -10,7 +10,7 @@ import { PickersDay, PickersDayProps, StaticDatePicker } from '@mui/x-date-picke
 import { IconButton, IconButtonProps } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import './PFormDateRangePickerTooltipPicker.scss';
-import { useChange, useForwardRef } from '@pdg/react-hook';
+import { useChanged, useForwardRef } from '@pdg/react-hook';
 
 interface ClassNameMap {
   [key: number]: string;
@@ -68,12 +68,12 @@ const PFormDateRangePickerTooltipPicker = ({
   );
 
   /********************************************************************************************************************
-   * Change
+   * selectType 변경 시 처리
    * ******************************************************************************************************************/
 
-  useChange(selectType, () => {
+  if (useChanged(selectType, true)) {
     setActiveMonthValue(null);
-  });
+  }
 
   /********************************************************************************************************************
    * Function
