@@ -2,17 +2,17 @@ import React, { ReactNode, useCallback, useId, useMemo, useRef, useState } from 
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
-  LocalizationProvider,
-  DesktopDatePicker,
   DateValidationError,
+  DesktopDatePicker,
   DesktopDatePickerProps,
+  LocalizationProvider,
 } from '@mui/x-date-pickers';
 import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
-import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
+import { ClickAwayListener, FormHelperText, InputAdornment, InputLabelProps, InputProps } from '@mui/material';
 import { PIcon, PIconText } from '@pdg/react-component';
 import {
-  PrivateDatePickerProps as Props,
   PrivateDatePickerCommands,
+  PrivateDatePickerProps as Props,
   PrivateDatePickerValue,
 } from './PrivateDatePicker.types';
 import { useFormState } from '../../PFormContext';
@@ -32,7 +32,6 @@ import {
   PrivateStaticDatePickerUnit,
 } from '../PrivateStaticDatePicker';
 import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
-import { Dayjs } from 'dayjs';
 import { empty, notEmpty } from '@pdg/compare';
 import './PrivateDatePicker.scss';
 
@@ -506,7 +505,7 @@ const PrivateDatePicker = ({
   }, [endAdornment, icon, startAdornment]);
 
   /** slotProps */
-  const slotProps: DesktopDatePickerProps<Dayjs>['slotProps'] = useMemo(() => {
+  const slotProps: DesktopDatePickerProps['slotProps'] = useMemo(() => {
     const textFieldInputLabelProps: Partial<InputLabelProps> = {};
     if (labelShrink) {
       textFieldInputLabelProps.shrink = labelShrink;

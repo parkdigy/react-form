@@ -17,7 +17,7 @@ export interface PrivateDatePickerProps
     PCommonSxProps,
     Partial<
       Omit<
-        DesktopDatePickerProps<Dayjs>,
+        DesktopDatePickerProps,
         'children' | 'name' | 'className' | 'style' | 'sx' | 'value' | 'inputFormat' | 'views' | 'onChange'
       >
     >,
