@@ -17,7 +17,7 @@ export interface PrivateDateTimePickerProps
     PCommonSxProps,
     Partial<
       Omit<
-        DesktopDateTimePickerProps<Dayjs>,
+        DesktopDateTimePickerProps,
         | 'children'
         | 'className'
         | 'name'
@@ -39,7 +39,7 @@ export interface PrivateDateTimePickerProps
     PFormValueItemProps<PrivateDateTimePickerValue, false> {
   ref?: React.Ref<PrivateDateTimePickerCommands>;
   type: PFormDateType;
-  time?: PFormTimeType;
+  time: PFormTimeType;
   hours?: number[];
   minutes?: number[];
   seconds?: number[];

@@ -7,7 +7,7 @@ import { PFormDateType, PFormTimeType } from '../../@types';
 export type PrivateStaticDateTimePickerUnit = 'date' | 'action_date' | 'hour' | 'minute' | 'second';
 
 export interface PrivateStaticDateTimePickerProps extends Omit<
-  StaticDateTimePickerProps<Dayjs>,
+  StaticDateTimePickerProps,
   'displayStaticWrapperAs' | 'renderInput' | 'onChange'
 > {
   ref?: React.Ref<PrivateStaticDateTimePickerCommands>;

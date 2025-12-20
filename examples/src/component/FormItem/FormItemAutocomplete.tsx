@@ -18,6 +18,7 @@ import {
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
 import { lv } from '@pdg/data';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const DEFAULT_ITEMS: PFormAutocompleteItem<number | ''>[] = [
   lv('전체', ''),
@@ -48,15 +49,6 @@ const FormItemAutocomplete = () => {
   const [limitTags, setLimitTags] = useState<number>();
 
   /********************************************************************************************************************
-   * Effect
-   * ******************************************************************************************************************/
-
-  useEffect(() => {
-    loadList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  /********************************************************************************************************************
    * Function
    * ******************************************************************************************************************/
 
@@ -64,19 +56,33 @@ const FormItemAutocomplete = () => {
     if (asyncLoadAutocompleteRef.current) {
       const { setLoading, setItems } = asyncLoadAutocompleteRef.current;
 
-      if (setLoading) setLoading(true);
+      setLoading(true);
+
       setTimeout(() => {
-        if (setItems) setItems(DEFAULT_ITEMS);
-        if (setLoading) setLoading(false);
-      }, 5000);
+        setItems(DEFAULT_ITEMS);
+        setLoading(false);
+      }, 2000);
     }
   }, []);
+  const loadListRef = useAutoUpdateRef(loadList);
+
+  /********************************************************************************************************************
+   * Effect
+   * ******************************************************************************************************************/
+
+  useEffect(() => {
+    loadListRef.current();
+  }, [loadListRef]);
 
   /********************************************************************************************************************
    * Event Handler
    * ******************************************************************************************************************/
 
-  const handleLoadItems = useCallback((keyword?: string) => {
+  const handleLoadItems = useCallback(async () => {
+    return DEFAULT_ITEMS;
+  }, []);
+
+  const handleAsyncLoadItems = useCallback((keyword?: string) => {
     return new Promise<PFormAutocompleteItems<number | ''>>((resolve) => {
       setTimeout(() => {
         if (keyword) {
@@ -221,9 +227,11 @@ const FormItemAutocomplete = () => {
             <PFormCol xs={3}>
               <PFormAutocomplete
                 {...additionalProps}
+                async
                 name='asyncLoadItems'
                 label='PFormAutocomplete'
                 helperText='Async Load Items'
+                onLoadItems={handleLoadItems}
               />
             </PFormCol>{' '}
             <PFormCol xs={3}>
@@ -235,7 +243,7 @@ const FormItemAutocomplete = () => {
                   label='PFormAutocomplete'
                   helperText='async=true'
                   async
-                  onLoadItems={handleLoadItems}
+                  onLoadItems={handleAsyncLoadItems}
                   onAsyncLoadValueItem={handleAsyncLoadMultipleValueItem}
                 />
               ) : (
@@ -247,7 +255,7 @@ const FormItemAutocomplete = () => {
                   label='PFormAutocomplete'
                   helperText='async=true'
                   async
-                  onLoadItems={handleLoadItems}
+                  items={items}
                   onAsyncLoadValueItem={handleAsyncLoadValueItem}
                 />
               )}

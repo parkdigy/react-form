@@ -218,7 +218,7 @@ const PFormDateRangePickerTooltipPicker = ({
   }, []);
 
   const handleRenderDay = useCallback(
-    (props: Omit<PickersDayProps<Dayjs>, 'ref'>) => {
+    (props: Omit<PickersDayProps, 'ref'>) => {
       const startDate = value[0];
       const endDate = value[1];
 
@@ -273,6 +273,7 @@ const PFormDateRangePickerTooltipPicker = ({
         previousIconButton: LeftArrowButton,
         nextIconButton: RightArrowButton,
         day: handleRenderDay,
+        actionBar: () => <></>,
       }}
       value={activeMonthValue}
       referenceDate={month}

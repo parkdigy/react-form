@@ -1,5 +1,6 @@
 import React from 'react';
 import { PFormRating, PFormCol, PFormRow } from '../../../../../../src';
+import { getName } from '@common';
 
 const Rating = () => {
   return (

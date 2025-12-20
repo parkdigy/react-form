@@ -10,7 +10,7 @@ export interface PrivateInputDatePickerProps
   extends
     PCommonSxProps,
     Pick<
-      DesktopDatePickerProps<Dayjs>,
+      DesktopDatePickerProps,
       'name' | 'disablePast' | 'disableFuture' | 'shouldDisableYear' | 'shouldDisableMonth' | 'shouldDisableDate'
     >,
     Pick<

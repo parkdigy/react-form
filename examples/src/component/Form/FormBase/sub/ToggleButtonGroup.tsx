@@ -1,6 +1,7 @@
 import React from 'react';
 import { PFormCol, PFormRow, PFormToggleButtonGroup, PFormToggleButtonGroupItems } from '../../../../../../src';
 import { lv } from '@pdg/data';
+import { getName } from '@common';
 
 const DEFAULT_ITEMS: PFormToggleButtonGroupItems<number> = [
   lv('Btn1', 1),

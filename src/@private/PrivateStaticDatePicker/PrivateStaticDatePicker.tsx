@@ -152,7 +152,7 @@ const PrivateStaticDatePicker = ({
   );
 
   const handleRenderDay = useCallback(
-    (props: Omit<PickersDayProps<Dayjs>, 'ref'>) => {
+    (props: Omit<PickersDayProps, 'ref'>) => {
       return <PickersDay {...props} selected={props.day.isSame(value, 'date')} />;
     },
     [value]
@@ -271,6 +271,7 @@ const PrivateStaticDatePicker = ({
                   previousIconButton: LeftArrowButton,
                   nextIconButton: RightArrowButton,
                   day: handleRenderDay,
+                  actionBar: () => <></>,
                 }}
                 minDate={minDate}
                 maxDate={maxDate}

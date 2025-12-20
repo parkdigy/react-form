@@ -28,12 +28,12 @@ import {
 } from '../../@util.private';
 import { PrivateStaticDateTimePickerCommands, PrivateStaticDateTimePickerUnit } from '../PrivateStaticDateTimePicker';
 import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
-import { Dayjs } from 'dayjs';
 import PrivateStaticDateTimePicker from '../PrivateStaticDateTimePicker';
 import { empty, notEmpty } from '@pdg/compare';
 import { getFinalValue } from './PrivateDateTimePicker.function.private';
 import { PrivateDatePickerValue } from '../PrivateDatePicker';
 import './PrivateDateTimePicker.scss';
+import dayjs from 'dayjs';
 
 const PrivateDateTimePicker = ({
   ref,
@@ -252,6 +252,7 @@ const PrivateDateTimePicker = ({
 
       if (error) validate(finalValue);
       if (onChange) onChange(finalValue);
+
       onValueChange(name, finalValue);
 
       if (type !== 'time' && time && finalValue && (availableDate[0] || availableDate[1])) {
@@ -265,7 +266,6 @@ const PrivateDateTimePicker = ({
         if (timeError == null && availableDateVal[1] && valueVal > availableDateVal[1]) {
           timeError = 'maxDate';
         }
-
         setTimeError(timeError);
       } else {
         setTimeError(null);
@@ -513,7 +513,7 @@ const PrivateDateTimePicker = ({
   }, [endAdornment, icon, startAdornment]);
 
   /** slotProps */
-  const slotProps = useMemo<DesktopDateTimePickerProps<Dayjs>['slotProps']>(() => {
+  const slotProps = useMemo<DesktopDateTimePickerProps['slotProps']>(() => {
     const readOnly = !enableKeyboardInput;
 
     return {
@@ -630,10 +630,31 @@ const PrivateDateTimePicker = ({
                 readOnly={readOnly}
                 minDate={minDate}
                 maxDate={maxDate}
+                view={'minutes'}
                 disablePast={disablePast}
                 disableFuture={disableFuture}
                 onClose={() => setOpen(false)}
-                onError={(reason) => setDatePickerError(reason)}
+                onError={(reason, v) => {
+                  if (disablePast) {
+                    let formatStr: string;
+                    switch (time) {
+                      case 'hour':
+                        formatStr = 'YYYY-MM-DD HH';
+                        break;
+                      case 'minute':
+                        formatStr = 'YYYY-MM-DD HH:mm';
+                        break;
+                      case 'second':
+                        formatStr = 'YYYY-MM-DD HH:mm:ss';
+                        break;
+                    }
+                    if (dayjs(v).format(formatStr) !== inputValue?.format(formatStr)) {
+                      setDatePickerError(reason);
+                    }
+                  } else {
+                    setDatePickerError(reason);
+                  }
+                }}
                 onChange={(newValue) => handleChange('date', newValue)}
                 slotProps={slotProps}
                 showDaysOutsideCurrentMonth={showDaysOutsideCurrentMonth}

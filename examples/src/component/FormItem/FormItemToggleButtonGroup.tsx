@@ -15,6 +15,7 @@ import {
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
 import { lv } from '@pdg/data';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const DEFAULT_ITEMS: PFormToggleButtonGroupItem<number>[] = [
   lv('Item 1', 1),
@@ -39,15 +40,6 @@ const FormItemToggleButtonGroup = () => {
   const [notAllowEmptyValue, setNowAllowEmptyValue] = useState(false);
 
   /********************************************************************************************************************
-   * Effect
-   * ******************************************************************************************************************/
-
-  useEffect(() => {
-    loadList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  /********************************************************************************************************************
    * Function
    * ******************************************************************************************************************/
 
@@ -55,13 +47,23 @@ const FormItemToggleButtonGroup = () => {
     if (asyncLoadToggleButtonGroupRef.current) {
       const { setLoading, setItems } = asyncLoadToggleButtonGroupRef.current;
 
-      if (setLoading) setLoading(true);
+      setLoading(true);
+
       setTimeout(() => {
-        if (setItems) setItems(DEFAULT_ITEMS);
-        if (setLoading) setLoading(false);
+        setItems(DEFAULT_ITEMS);
+        setLoading(false);
       }, 5000);
     }
   }, []);
+  const loadListRef = useAutoUpdateRef(loadList);
+
+  /********************************************************************************************************************
+   * Effect
+   * ******************************************************************************************************************/
+
+  useEffect(() => {
+    loadListRef.current();
+  }, [loadListRef]);
 
   /********************************************************************************************************************
    * Event Handler
@@ -210,6 +212,7 @@ const FormItemToggleButtonGroup = () => {
                 name='asyncLoadItems'
                 label='PFormToggleButtonGroup'
                 helperText='Async Load Items'
+                onLoadItems={handleLoadItems}
               />
             </PFormCol>
           </PFormRow>

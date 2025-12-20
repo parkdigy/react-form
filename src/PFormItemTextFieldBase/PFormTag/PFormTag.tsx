@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, ReactNode, useRef } from 'react';
 import classNames from 'classnames';
 import { Autocomplete, AutocompleteRenderInputParams, Chip, InputLabelProps } from '@mui/material';
-import { PFormTagProps as Props, PFormTagExtraCommands, PFormTagValue } from './PFormTag.types';
+import { PFormTagProps as Props, PFormTagExtraCommands, PFormTagValue, PFormTagCommands } from './PFormTag.types';
 import { PFormTextCommands } from '../PFormText';
 import { empty, equal, notEmpty } from '@pdg/compare';
 import { useFormState } from '../../PFormContext';
@@ -154,7 +154,7 @@ const PFormTag = ({
   useChanged(initValue) && setValue(getFinalValue(initValue));
 
   const valueRef = useAutoUpdateRef(value);
-  const [valueSet, setValueSet] = useState(new Set(value));
+  const [valueSet] = useState(new Set(value));
 
   /** value 변경 함수 */
   const updateValue = useCallback(
@@ -171,24 +171,6 @@ const PFormTag = ({
     },
     [error, getFinalValue, name, onChange, onValueChange, validate, valueRef]
   );
-
-  /** valueSet에 아이템 추가 */
-  const appendValueSet = useCallback((v: string) => {
-    setValueSet((prev) => {
-      const newValueSet = new Set(prev);
-      newValueSet.add(v);
-      return newValueSet;
-    });
-  }, []);
-
-  /** valueSet에 아이템 제거 */
-  const removeValueSet = useCallback((v: string) => {
-    setValueSet((prev) => {
-      const newValueSet = new Set(prev);
-      newValueSet.delete(v);
-      return newValueSet;
-    });
-  }, []);
 
   /********************************************************************************************************************
    * Effect
@@ -222,7 +204,7 @@ const PFormTag = ({
    * ******************************************************************************************************************/
 
   const getCommands = useCallback(
-    (baseCommands: PFormTextCommands) => {
+    (baseCommands: PFormTextCommands): PFormTagCommands => {
       return {
         ...baseCommands,
         getReset: () => getFinalValue(initValue),
@@ -248,7 +230,7 @@ const PFormTag = ({
       if (notEmpty(finalTag) && !valueSet.has(finalTag)) {
         if (onAppendTag && !onAppendTag(finalTag)) return;
 
-        appendValueSet(finalTag);
+        valueSet.add(finalTag);
 
         const finalValue = updateValue(valueSet);
         setTimeout(() => {
@@ -257,7 +239,7 @@ const PFormTag = ({
         });
       }
     },
-    [valueSet, onAppendTag, appendValueSet, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]
+    [valueSet, onAppendTag, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]
   );
 
   const removeTag = useCallback(
@@ -265,7 +247,7 @@ const PFormTag = ({
       if (valueSet.has(tag)) {
         if (onRemoveTag && !onRemoveTag(tag)) return;
 
-        removeValueSet(tag);
+        valueSet.delete(tag);
 
         const finalValue = updateValue(valueSet);
         setTimeout(() => {
@@ -274,7 +256,7 @@ const PFormTag = ({
         });
       }
     },
-    [valueSet, onRemoveTag, removeValueSet, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]
+    [valueSet, onRemoveTag, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]
   );
 
   /********************************************************************************************************************
@@ -283,9 +265,9 @@ const PFormTag = ({
 
   const handleAddValueItem = useCallback(
     (id: string, commands: PFormValueItemCommands<PFormTagValue, false>) => {
-      onAddValueItem(id, commands);
+      onAddValueItem(id, getCommands(commands as unknown as PFormTextCommands));
     },
-    [onAddValueItem]
+    [getCommands, onAddValueItem]
   );
 
   const handleRef = useCallback(
@@ -338,7 +320,7 @@ const PFormTag = ({
       delete htmlInputProps.onChange;
       delete htmlInputProps.value;
 
-      const renderProps: PFormTagTextProps = {
+      const tagTextProps: PFormTagTextProps = {
         name,
         clear,
         size,
@@ -346,7 +328,6 @@ const PFormTag = ({
         error,
         disabled,
         fullWidth,
-        required,
         exceptValue,
         slotProps: {
           ...slotProps,
@@ -383,7 +364,7 @@ const PFormTag = ({
         ...props,
       };
 
-      return <PFormTagText ref={handleRef} {...renderProps} />;
+      return <PFormTagText ref={handleRef} {...tagTextProps} />;
     },
     [
       allowSpace,
@@ -401,7 +382,6 @@ const PFormTag = ({
       name,
       props,
       readOnly,
-      required,
       size,
       slotProps,
       variant,

@@ -1,0 +1,5 @@
+import React from 'react';
+import { PFormToggleButtonGroupProps, PFormToggleButtonGroupSingleValue, PFormToggleButtonGroupItems } from './PFormToggleButtonGroup.types';
+import './PFormToggleButtonGroup.scss';
+declare function PFormToggleButtonGroup<T extends PFormToggleButtonGroupSingleValue, Multiple extends boolean | undefined = undefined, Items extends PFormToggleButtonGroupItems<T> = PFormToggleButtonGroupItems<T>>({ ref, variant: initVariant, size: initSize, color: initColor, focused: initFocused, fullWidth: initFullWidth, name, labelIcon, label, type, loading: initLoading, items: initItems, value: initValue, data: initData, error: initError, helperText, disabled: initDisabled, readOnly, required, notAllowEmptyValue, exceptValue, width: initWidth, multiple, formValueSeparator, formValueSort, hidden: initHidden, itemWidth, onLoadItems, startAdornment, endAdornment, onChange, onValue, onValidate, className, style: initStyle, sx, }: PFormToggleButtonGroupProps<T, Multiple, Items>): React.JSX.Element;
+export default PFormToggleButtonGroup;

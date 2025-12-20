@@ -80,7 +80,7 @@ const Search = () => {
               startIconMarginLeft={-5}
               variant='contained'
               onClick={() => {
-                ll(searchRef.current?.getItem('search_date_from'));
+                ll('click');
               }}
             >
               새 항목

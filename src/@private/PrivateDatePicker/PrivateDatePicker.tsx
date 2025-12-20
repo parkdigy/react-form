@@ -1,18 +1,17 @@
-import React, { ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
-  DateValidationError,
-  DesktopDatePicker,
-  DesktopDatePickerProps,
   LocalizationProvider,
+  DesktopDatePicker,
+  DateValidationError,
+  DesktopDatePickerProps,
 } from '@mui/x-date-pickers';
-import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
-import { ClickAwayListener, FormHelperText, InputAdornment, InputLabelProps, InputProps } from '@mui/material';
+import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, InputLabelProps } from '@mui/material';
 import { PIcon, PIconText } from '@pdg/react-component';
 import {
-  PrivateDatePickerCommands,
   PrivateDatePickerProps as Props,
+  PrivateDatePickerCommands,
   PrivateDatePickerValue,
 } from './PrivateDatePicker.types';
 import { useFormState } from '../../PFormContext';
@@ -32,8 +31,10 @@ import {
   PrivateStaticDatePickerUnit,
 } from '../PrivateStaticDatePicker';
 import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
-import { empty, notEmpty } from '@pdg/compare';
+import { InputBaseProps } from '@mui/material/InputBase';
 import './PrivateDatePicker.scss';
+import { empty, ifUndefined, notEmpty } from '@pdg/compare';
+import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
 
 const PrivateDatePicker = ({
   ref,
@@ -77,7 +78,7 @@ const PrivateDatePicker = ({
   hidden: initHidden,
   showDaysOutsideCurrentMonth = true,
   onChange,
-  onValidate,
+  onValidate: initOnValidate,
   //--------------------------------------------------------------------------------------------------------------------
   className,
   style: initStyle,
@@ -95,9 +96,12 @@ const PrivateDatePicker = ({
    * ******************************************************************************************************************/
 
   const privateStaticDatePickerRef = useRef<PrivateStaticDatePickerCommands>(null);
-  const textFieldInputRef = useRef<HTMLInputElement>(null);
+  const textFieldInputRef = useRef<HTMLInputElement>(undefined);
   const closeTimeoutRef = useRef<NodeJS.Timeout>(undefined);
   const mouseDownTimeRef = useRef<number>(undefined);
+  const datePickerErrorRef = useRef<DateValidationError>(null);
+
+  const onValidateRef = useAutoUpdateRef(initOnValidate);
 
   /********************************************************************************************************************
    * FormState
@@ -123,19 +127,18 @@ const PrivateDatePicker = ({
    * Value
    * ******************************************************************************************************************/
 
-  const variant = initVariant ?? formVariant;
-  const size = initSize ?? formSize;
-  const color = initColor ?? formColor;
-  const focused = initFocused ?? formFocused;
-  const labelShrink = initLabelShrink ?? formLabelShrink;
-  const fullWidth = initFullWidth ?? formFullWidth;
+  const variant = ifUndefined(initVariant, formVariant);
+  const size = ifUndefined(initSize, formSize);
+  const color = ifUndefined(initColor, formColor);
+  const focused = ifUndefined(initFocused, formFocused);
+  const labelShrink = ifUndefined(initLabelShrink, formLabelShrink);
+  const fullWidth = ifUndefined(initFullWidth, formFullWidth);
 
   /********************************************************************************************************************
-   * State - open
+   * State - isOpen
    * ******************************************************************************************************************/
 
-  const [open, setOpen] = useState(false);
-  const [openValue, setOpenValue] = useState<PrivateDatePickerValue | undefined>(undefined);
+  const [isOpen, setIsOpen] = useState(false);
 
   /********************************************************************************************************************
    * State - error
@@ -175,13 +178,15 @@ const PrivateDatePicker = ({
 
   const [timeError, setTimeError] = useState<DateValidationError>(null);
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-  const [datePickerError, setDatePickerError] = useState<DateValidationError>(null);
 
   /********************************************************************************************************************
    * Memo
    * ******************************************************************************************************************/
 
-  const availableDate = makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture);
+  const availableDate = useMemo(
+    () => makeAvailableDate(minDate, maxDate, !!disablePast, !!disableFuture),
+    [disableFuture, disablePast, maxDate, minDate]
+  );
 
   /********************************************************************************************************************
    * Function - setErrorErrorHelperText
@@ -209,16 +214,16 @@ const PrivateDatePicker = ({
         setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
         return false;
       }
-      if (datePickerError) {
-        setErrorErrorHelperText(true, getDateValidationErrorText(datePickerError));
+      if (datePickerErrorRef.current) {
+        setErrorErrorHelperText(true, getDateValidationErrorText(datePickerErrorRef.current));
         return false;
       }
       if (timeError) {
         setErrorErrorHelperText(true, getDateValidationErrorText(timeError));
         return false;
       }
-      if (onValidate) {
-        const onValidateResult = onValidate(value);
+      if (onValidateRef.current) {
+        const onValidateResult = onValidateRef.current(value);
         if (onValidateResult != null && onValidateResult !== true) {
           setErrorErrorHelperText(true, onValidateResult);
           return false;
@@ -229,8 +234,9 @@ const PrivateDatePicker = ({
 
       return true;
     },
-    [datePickerError, onValidate, required, setErrorErrorHelperText, timeError]
+    [required, timeError, onValidateRef, setErrorErrorHelperText]
   );
+  const validateRef = useAutoUpdateRef(validate);
 
   /********************************************************************************************************************
    * value
@@ -241,19 +247,26 @@ const PrivateDatePicker = ({
 
   const valueRef = useAutoUpdateRef(value);
 
+  const [inputValue, setInputValue] = useState<PrivateDatePickerValue>(value);
+  useChanged(value) && setInputValue(value);
+
+  const [openValue, setOpenValue] = useState<PrivateDatePickerValue>(null);
+
   /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: PrivateDatePickerValue) => {
-      setValue(newValue);
-      valueRef.current = newValue;
+      const finalValue = newValue;
+      setValue(finalValue);
 
-      if (error) validate(newValue);
-      if (onChange) onChange(newValue);
-      onValueChange(name, newValue);
+      valueRef.current = finalValue;
 
-      if (type !== 'time' && time && newValue && (availableDate[0] || availableDate[1])) {
+      if (error) validate(finalValue);
+      if (onChange) onChange(finalValue);
+      onValueChange(name, finalValue);
+
+      if (type !== 'time' && time && finalValue && (availableDate[0] || availableDate[1])) {
         const availableDateVal = getAvailableDateVal(availableDate, type, time);
-        const valueVal = getDateValForAvailableDate(newValue, type, time);
+        const valueVal = getDateValForAvailableDate(finalValue, type, time);
         let timeError: DateValidationError = null;
 
         if (availableDateVal[0] && valueVal < availableDateVal[0]) {
@@ -268,30 +281,30 @@ const PrivateDatePicker = ({
         setTimeError(null);
       }
 
-      return newValue;
+      return finalValue;
     },
     [availableDate, error, name, onChange, onValueChange, time, type, validate, valueRef]
   );
 
   /********************************************************************************************************************
-   * inputValue
-   * ******************************************************************************************************************/
-
-  const [inputValue, setInputValue] = useState(value);
-  useChanged(value) && setInputValue(value);
-
-  /********************************************************************************************************************
    * Effect
    * ******************************************************************************************************************/
 
-  if (useChanged(timeError)) {
-    if (error && !timeError) {
-      validate(value);
-    }
+  {
+    const firstSkipRef = useRef(true);
+    useEffect(() => {
+      if (firstSkipRef) {
+        firstSkipRef.current = false;
+      } else {
+        if (error && !timeError) {
+          validateRef.current(valueRef.current);
+        }
+      }
+    }, [error, timeError, validateRef, valueRef]);
   }
 
-  if (useChanged(open)) {
-    if (open) {
+  if (useChanged(isOpen)) {
+    if (isOpen) {
       setOpenValue(value);
     } else {
       if (openValue !== value) {
@@ -313,16 +326,16 @@ const PrivateDatePicker = ({
    * Function - focus
    * ******************************************************************************************************************/
 
-  const focus = () => {
+  const focus = useCallback(() => {
     textFieldInputRef.current?.focus();
-  };
+  }, [textFieldInputRef]);
 
   /********************************************************************************************************************
    * Commands
    * ******************************************************************************************************************/
 
-  const commands = useMemo(
-    (): PrivateDatePickerCommands => ({
+  const commands = useMemo<PrivateDatePickerCommands>(
+    () => ({
       getType: () => 'default',
       getName: () => name,
       getReset: () => initValue,
@@ -347,6 +360,7 @@ const PrivateDatePicker = ({
       dataRef,
       disabled,
       exceptValue,
+      focus,
       hidden,
       initFormValueFormat,
       initValue,
@@ -363,7 +377,7 @@ const PrivateDatePicker = ({
   useForwardRef(
     ref,
     commands,
-    (cmd) => onAddValueItem(id, cmd),
+    (commands: PrivateDatePickerCommands) => onAddValueItem(id, commands),
     () => onRemoveValueItem(id)
   );
 
@@ -371,7 +385,6 @@ const PrivateDatePicker = ({
    * Event Handler
    * ******************************************************************************************************************/
 
-  /** handleChange */
   const handleChange = useCallback(
     (unit: PrivateStaticDatePickerUnit, newValue: PrivateDatePickerValue, keyboardInputValue?: string) => {
       let isUpdateValue = true;
@@ -402,11 +415,13 @@ const PrivateDatePicker = ({
 
         if (notEmpty(keyboardInputValue)) {
           if (!time || unit !== 'action_date') {
-            runOnRequestSearchSubmit = !open; // 팝업창 열리지 않은 상태에서 날짜 키보드로 변경
-            setOpen(false);
+            runOnRequestSearchSubmit = !isOpen; // 팝업창 열리지 않은 상태에서 날짜 키보드로 변경
+            setIsOpen(false);
           }
         } else if (time) {
-          if (time === unit) setOpen(false);
+          if (time === unit) setIsOpen(false);
+        } else {
+          setIsOpen(false);
         }
         updateValue(finalValue);
 
@@ -437,10 +452,9 @@ const PrivateDatePicker = ({
 
       setInputValue(finalValue);
     },
-    [availableDate, name, onRequestSearchSubmit, onValueChangeByUser, open, time, type, updateValue]
+    [setInputValue, type, time, updateValue, availableDate, isOpen, onValueChangeByUser, name, onRequestSearchSubmit]
   );
 
-  /** handleContainerFocus */
   const handleContainerFocus = useCallback(() => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -448,7 +462,6 @@ const PrivateDatePicker = ({
     }
   }, []);
 
-  /** handleContainerBlur */
   const handleContainerBlur = useCallback(() => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -458,12 +471,11 @@ const PrivateDatePicker = ({
     if (!mouseDownTimeRef.current || new Date().getTime() - mouseDownTimeRef.current > 100) {
       closeTimeoutRef.current = setTimeout(() => {
         closeTimeoutRef.current = undefined;
-        setOpen(false);
+        setIsOpen(false);
       }, 10);
     }
   }, []);
 
-  /** handleContainerMouseDown */
   const handleContainerMouseDown = useCallback(() => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -473,15 +485,23 @@ const PrivateDatePicker = ({
   }, []);
 
   /********************************************************************************************************************
-   * slotProps
+   * Memo
    * ******************************************************************************************************************/
 
-  /** slotPropsInputRef */
-  const slotPropsInputRef = useCallback((ref: any) => {
-    textFieldInputRef.current = ref;
-  }, []);
+  const slotProps = useMemo<DesktopDatePickerProps['slotProps']>(() => {
+    const textFieldInputLabelProps: Partial<InputLabelProps> = {};
+    if (labelShrink) {
+      textFieldInputLabelProps.shrink = labelShrink;
+    }
 
-  const slotPropsMuiInputProps = useMemo(() => {
+    const readOnly = !enableKeyboardInput;
+    const inputProps: InputBaseProps['inputProps'] = {
+      readOnly,
+    };
+    if (readOnly) {
+      inputProps.tabIndex = -1;
+    }
+
     const muiInputProps: InputProps = { endAdornment: undefined };
     if (startAdornment || icon || muiInputProps.startAdornment) {
       muiInputProps.startAdornment = (
@@ -501,32 +521,18 @@ const PrivateDatePicker = ({
         <>{endAdornment && <InputAdornment position='end'>{endAdornment}</InputAdornment>}</>
       );
     }
-    return muiInputProps;
-  }, [endAdornment, icon, startAdornment]);
-
-  /** slotProps */
-  const slotProps: DesktopDatePickerProps['slotProps'] = useMemo(() => {
-    const textFieldInputLabelProps: Partial<InputLabelProps> = {};
-    if (labelShrink) {
-      textFieldInputLabelProps.shrink = labelShrink;
-    }
-
-    const readOnly = !enableKeyboardInput;
 
     return {
       textField: {
         className: classNames('input-text-field', `align-${align}`),
-        inputRef: slotPropsInputRef,
+        inputRef: textFieldInputRef,
         variant,
         size,
         color,
         focused,
         InputLabelProps: textFieldInputLabelProps,
-        InputProps: slotPropsMuiInputProps,
-        inputProps: {
-          readOnly,
-          tabIndex: readOnly ? -1 : undefined,
-        },
+        InputProps: muiInputProps,
+        inputProps,
         required,
         fullWidth,
         helperText: undefined,
@@ -534,46 +540,32 @@ const PrivateDatePicker = ({
         style: width != null ? { ...initStyle, width } : initStyle,
         sx,
         onFocus: () => {
-          setOpen(true);
+          setIsOpen(true);
         },
         onClick: () => {
-          setOpen(true);
+          setIsOpen(true);
         },
       },
     };
   }, [
     align,
     color,
-    enableKeyboardInput,
+    endAdornment,
     error,
     focused,
     fullWidth,
+    icon,
     initStyle,
     labelShrink,
+    enableKeyboardInput,
     required,
     size,
-    slotPropsInputRef,
-    slotPropsMuiInputProps,
+    startAdornment,
     sx,
     timeError,
     variant,
     width,
   ]);
-
-  /** popperProps */
-  const popperProps = useMemo(
-    () => ({
-      modifiers: [
-        {
-          name: 'offset',
-          options: {
-            offset: [0, error && errorHelperText ? 8 : -14],
-          },
-        },
-      ],
-    }),
-    [error, errorHelperText]
-  );
 
   /********************************************************************************************************************
    * Render
@@ -581,7 +573,7 @@ const PrivateDatePicker = ({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
+      <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setIsOpen(false)}>
         <div
           className={classNames(className, 'PrivateDatePicker')}
           style={{
@@ -593,8 +585,17 @@ const PrivateDatePicker = ({
           onBlur={handleContainerBlur}
         >
           <PrivateStyledTooltip
-            open={disabled || readOnly ? false : open}
-            PopperProps={popperProps}
+            open={disabled || readOnly ? false : isOpen}
+            PopperProps={{
+              modifiers: [
+                {
+                  name: 'offset',
+                  options: {
+                    offset: [0, error && errorHelperText ? 8 : -14],
+                  },
+                },
+              ],
+            }}
             title={
               <PrivateStaticDatePicker
                 {...otherProps}
@@ -614,8 +615,8 @@ const PrivateDatePicker = ({
                 secondInterval={secondInterval}
                 showDaysOutsideCurrentMonth={showDaysOutsideCurrentMonth}
                 onChange={handleChange}
-                onAccept={() => !time && setOpen(false)}
-                onClose={() => setOpen(false)}
+                onAccept={() => !time && setIsOpen(false)}
+                onClose={() => setIsOpen(false)}
               />
             }
           >
@@ -631,8 +632,8 @@ const PrivateDatePicker = ({
                 maxDate={maxDate}
                 disablePast={disablePast}
                 disableFuture={disableFuture}
-                onClose={() => setOpen(false)}
-                onError={(reason) => setDatePickerError(reason)}
+                onClose={() => setIsOpen(false)}
+                onError={(reason) => (datePickerErrorRef.current = reason)}
                 onChange={(newValue) => handleChange('date', newValue)}
                 slotProps={slotProps}
                 showDaysOutsideCurrentMonth={showDaysOutsideCurrentMonth}
@@ -650,5 +651,4 @@ const PrivateDatePicker = ({
     </LocalizationProvider>
   );
 };
-
 export default PrivateDatePicker;

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { FormHelperText, Grid } from '@mui/material';
 import { PFormRowProps as Props, PFormColsInRowMap } from './PFormRow.types';
@@ -64,7 +64,7 @@ const PFormRow = ({
    * State
    * ******************************************************************************************************************/
 
-  const [formCols, setFormCols] = useState<PFormColsInRowMap>({});
+  const formColsRef = useRef<PFormColsInRowMap>({});
   const [formColAutoXs, setFormColAutoXs] = useState<number>(12);
 
   /********************************************************************************************************************
@@ -87,13 +87,13 @@ const PFormRow = ({
    * ******************************************************************************************************************/
 
   const makeFormColXs = useCallback(() => {
-    const formColKeys = Object.keys(formCols);
+    const formColKeys = Object.keys(formColsRef.current);
 
     let autoXs = 12;
     let autoXsCount = formColKeys.length;
 
     formColKeys.forEach((id) => {
-      const xs = formCols[id];
+      const xs = formColsRef.current[id];
       if (xs != null) {
         autoXs -= xs;
         autoXsCount -= 1;
@@ -101,7 +101,7 @@ const PFormRow = ({
     });
 
     setFormColAutoXs(autoXsCount === 0 ? autoXs : autoXs / autoXsCount);
-  }, [formCols]);
+  }, []);
 
   /********************************************************************************************************************
    * Event Handler
@@ -109,7 +109,7 @@ const PFormRow = ({
 
   const handleAddFormCol = useCallback(
     (id: string, xs: number | undefined) => {
-      setFormCols((prev) => ({ ...prev, [id]: xs }));
+      formColsRef.current = { ...formColsRef.current, [id]: xs };
       makeFormColXs();
     },
     [makeFormColXs]
@@ -117,11 +117,7 @@ const PFormRow = ({
 
   const handleRemoveFormCol = useCallback(
     (id: string) => {
-      setFormCols((prev) => {
-        const newFormCols = { ...prev };
-        delete newFormCols[id];
-        return newFormCols;
-      });
+      delete formColsRef.current[id];
       makeFormColXs();
     },
     [makeFormColXs]

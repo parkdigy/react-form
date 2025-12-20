@@ -73,12 +73,12 @@ const PSearch = ({
   }, []);
 
   const handleRequestSubmit = useCallback(() => {
-    formRef.current?.submit();
+    setTimeout(() => formRef.current?.submit());
   }, []);
 
   const handleRequestSearchSubmit = useCallback(() => {
     if (autoSubmit) {
-      formRef.current?.submit();
+      setTimeout(() => formRef.current?.submit());
     }
   }, [autoSubmit]);
 

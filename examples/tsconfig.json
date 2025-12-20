@@ -15,7 +15,7 @@
     "paths": {
       "@comp": ["src/component"],
       "@ccomp": ["src/component/Common"],
-      "@common": ["src/common"]
+      "@common": ["src/@common"]
     },
     "typeRoots": ["node_modules/@types", "src/@types"]
   },

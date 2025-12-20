@@ -45,7 +45,7 @@ const FormItemNumber = () => {
       allowDecimal,
     };
     if (notEmpty(decimalScale) && Number(decimalScale)) {
-      numberProps.decimalScale = Number(decimalScale);
+      newNumberProps.decimalScale = Number(decimalScale);
     }
     return newNumberProps;
   }, [allowDecimal, allowNegative, decimalScale, thousandSeparator]);
@@ -102,19 +102,13 @@ const FormItemNumber = () => {
         <PFormBody>
           <PFormRow>
             <PFormCol>
-              <PFormNumber
-                {...numberProps}
-                name='required'
-                label={PFormNumber.displayName}
-                required
-                helperText='required=true'
-              />
+              <PFormNumber {...numberProps} name='required' label='PFormNumber' required helperText='required=true' />
             </PFormCol>
             <PFormCol>
               <PFormNumber
                 {...numberProps}
                 name='readOnly'
-                label={PFormNumber.displayName}
+                label='PFormNumber'
                 value={VALUE}
                 readOnly
                 helperText='readOnly=true'
@@ -124,7 +118,7 @@ const FormItemNumber = () => {
               <PFormNumber
                 {...numberProps}
                 name='disabled'
-                label={PFormNumber.displayName}
+                label='PFormNumber'
                 value={VALUE}
                 disabled
                 helperText='disabled=true'

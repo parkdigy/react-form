@@ -8,7 +8,7 @@ export type PFormTagExtraCommands = PFormArrayValueItemCommands;
 
 export type PFormTagCommands = PFormTextFieldCommands<PFormTagValue, false> & PFormTagExtraCommands;
 
-export type PFormTagProps = Omit<PFormTextFieldProps<PFormTagValue, false>, 'type'> & {
+export type PFormTagProps = Omit<PFormTextFieldProps<PFormTagValue, false>, 'ref' | 'type'> & {
   ref?: React.Ref<PFormTagCommands>;
   formValueSeparator?: string;
   formValueSort?: boolean;

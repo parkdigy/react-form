@@ -5,7 +5,7 @@ export type PFormDatePickerValue = PrivateDatePickerValue;
 
 export interface PFormDatePickerProps extends Omit<
   PrivateDatePickerProps,
-  'type' | 'time' | 'hours' | 'minutes' | 'seconds' | 'minuteInterval' | 'secondInterval'
+  'ref' | 'type' | 'time' | 'hours' | 'minutes' | 'seconds' | 'minuteInterval' | 'secondInterval'
 > {
   ref?: React.Ref<PFormDatePickerCommands>;
 }

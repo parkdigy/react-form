@@ -5,7 +5,7 @@ export type PFormDateTimePickerValue = PrivateDateTimePickerValue;
 
 export interface PFormDateTimePickerProps extends Omit<PrivateDateTimePickerProps, 'type' | 'time'> {
   ref?: React.Ref<PFormDateTimePickerCommands>;
-  time: Required<PrivateDateTimePickerProps['time']>;
+  time: Exclude<PrivateDateTimePickerProps['time'], undefined>;
 }
 
 export interface PFormDateTimePickerCommands extends PrivateDateTimePickerCommands {}

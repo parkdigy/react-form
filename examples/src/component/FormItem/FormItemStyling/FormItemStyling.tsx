@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { Box } from '@mui/material';
 import {
   PForm,
@@ -46,8 +46,9 @@ import { OutlinedPaper } from '@ccomp';
 import { BasicBlock, IconAdornmentBlock, NumberBlock, TextareaBlock, WidthBlock, ColorBlock, RatingBlock } from './sub';
 import { contains } from '@pdg/compare';
 import { lv } from '@pdg/data';
+import { useChanged } from '@pdg/react-hook';
 
-const _components: React.ForwardRefExoticComponent<any>[] = [
+const _components: React.ElementType[] = [
   PFormText,
   PFormEmail,
   PFormPassword,
@@ -80,7 +81,7 @@ const _components: React.ForwardRefExoticComponent<any>[] = [
 ];
 
 const _componentsItems = _components.map((component) =>
-  lv(component.displayName?.substring(5), component.displayName || '')
+  lv((component as any).name?.substring(5), (component as any).name || '')
 );
 
 function makeLabelValueItems<T>(count: number, leadText: string): T[] {
@@ -104,13 +105,13 @@ const FormItemStyling = () => {
    * State
    * ******************************************************************************************************************/
 
-  const [componentName, setComponentName] = useState(PFormText.displayName);
+  const [componentName, setComponentName] = useState(PFormText.name);
   const [componentProps, setComponentProps] = useState<any>();
   const [Component, setComponent] = useState<any>();
   const [variant, setVariant] = useState<PFormProps['variant']>('outlined');
   const [size, setSize] = useState<PFormProps['size']>('medium');
   const [color, setColor] = useState<PFormProps['color']>('primary');
-  const [spacing, setSpacing] = useState<0|1|2|3|4|5>(2);
+  const [spacing, setSpacing] = useState<0 | 1 | 2 | 3 | 4 | 5>(2);
   const [labelShrink, setLabelShrink] = useState(false);
   const [focused, setFocused] = useState(false);
 
@@ -118,42 +119,46 @@ const FormItemStyling = () => {
    * Effect
    * ******************************************************************************************************************/
 
-  useEffect(() => {
-    setComponent(_components.find((component) => component.displayName === componentName));
+  const isChangedComponentName = useChanged(componentName, true);
+  const isChangedVariant = useChanged(variant, true);
+  const isChangedSize = useChanged(size, true);
+  const isChangedColor = useChanged(color, true);
+  if (isChangedComponentName || isChangedVariant || isChangedSize || isChangedColor) {
+    setComponent(() => _components.find((component) => (component as any).name === componentName));
 
     const componentPros: any = {};
 
     switch (componentName) {
-      case PFormSelect.displayName:
-      case PFormAutocomplete.displayName:
+      case PFormSelect.name:
+      case PFormAutocomplete.name:
         componentPros.items = [...DefaultSelectItems];
         break;
-      case PFormCheckbox.displayName:
+      case PFormCheckbox.name:
         componentPros.checked = true;
         break;
-      case PFormRadioGroup.displayName:
+      case PFormRadioGroup.name:
         componentPros.items = [...DefaultRadioGroupItems];
         componentPros.value = 1;
         break;
-      case PFormToggleButtonGroup.displayName:
+      case PFormToggleButtonGroup.name:
         componentPros.items = [...DefaultToggleGroupItems];
         componentPros.value = 1;
         break;
     }
     switch (componentName) {
-      case PFormCheckbox.displayName:
+      case PFormCheckbox.name:
         componentPros.text = componentName;
         componentPros.label = componentName;
 
         break;
-      case PFormDateRangePicker.displayName:
-      case PFormMonthRangePicker.displayName:
-      case PFormYearRangePicker.displayName:
+      case PFormDateRangePicker.name:
+      case PFormMonthRangePicker.name:
+      case PFormYearRangePicker.name:
         componentPros.fromLabel = componentName;
         componentPros.toLabel = componentName;
         break;
-      case PFormTimePicker.displayName:
-      case PFormDateTimePicker.displayName:
+      case PFormTimePicker.name:
+      case PFormDateTimePicker.name:
         componentPros.time = 'minute';
         break;
       default:
@@ -162,7 +167,7 @@ const FormItemStyling = () => {
     }
 
     setComponentProps(componentPros);
-  }, [componentName, variant, size, color]);
+  }
 
   /********************************************************************************************************************
    * Event Handler

@@ -23,7 +23,7 @@ export type PFormDateRangePickerCalendarCount = PFormDateRangePickerTooltipPicke
 export interface PFormDateRangePickerProps
   extends
     PCommonSxProps,
-    Omit<PFormValueItemProps<PFormDateRangePickerValue, false>, 'label' | 'labelIcon' | 'width'>,
+    Omit<PFormValueItemProps<PFormDateRangePickerValue, false>, 'ref' | 'label' | 'labelIcon' | 'width'>,
     Pick<PrivateInputDatePickerProps, 'align'> {
   ref?: React.Ref<PFormDateRangePickerCommands>;
   fromLabel?: ReactNode;

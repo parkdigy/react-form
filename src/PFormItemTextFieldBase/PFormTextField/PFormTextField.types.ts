@@ -9,36 +9,38 @@ export interface PFormTextFieldCommands<
   AllowUndefinedValue extends boolean = true,
 > extends PFormValueItemBaseCommands<T, AllowUndefinedValue> {}
 
-export type PFormTextFieldProps<
+export interface PFormTextFieldProps<
   T = PFormTextFieldValue,
   AllowUndefinedValue extends boolean = true,
   V = AllowUndefinedValue extends true ? T | undefined : T,
-> = Omit<
-  TextFieldProps,
-  | 'ref'
-  | 'name'
-  | 'value'
-  | 'onChange'
-  | 'InputProps'
-  | 'InputLabelProps'
-  | 'inputProps'
-  | 'SelectProps'
-  | 'FormHelperTextProps'
-  | 'aria-dropeffect'
-  | 'aria-grabbed'
-> &
-  Omit<PFormValueItemProps<T, AllowUndefinedValue>, 'label' | 'fullWidth' | 'disabled' | 'error'> & {
-    ref?: React.Ref<PFormTextFieldCommands<T, AllowUndefinedValue>>;
-    icon?: string;
-    clear?: boolean;
-    maxLength?: number;
-    labelShrink?: boolean;
-    validPattern?: RegExp;
-    invalidPattern?: RegExp;
-    startAdornment?: ReactNode;
-    endAdornment?: ReactNode;
-    noFormValueItem?: boolean;
-    disableReturnKey?: boolean;
-    submitWhenReturnKey?: boolean;
-    onValue?: (value: V) => V;
-  };
+>
+  extends
+    Omit<
+      TextFieldProps,
+      | 'ref'
+      | 'name'
+      | 'value'
+      | 'onChange'
+      | 'InputProps'
+      | 'InputLabelProps'
+      | 'inputProps'
+      | 'SelectProps'
+      | 'FormHelperTextProps'
+      | 'aria-dropeffect'
+      | 'aria-grabbed'
+    >,
+    Omit<PFormValueItemProps<T, AllowUndefinedValue>, 'label' | 'fullWidth' | 'disabled' | 'error'> {
+  ref?: React.Ref<PFormTextFieldCommands<T, AllowUndefinedValue>>;
+  icon?: string;
+  clear?: boolean;
+  maxLength?: number;
+  labelShrink?: boolean;
+  validPattern?: RegExp;
+  invalidPattern?: RegExp;
+  startAdornment?: ReactNode;
+  endAdornment?: ReactNode;
+  noFormValueItem?: boolean;
+  disableReturnKey?: boolean;
+  submitWhenReturnKey?: boolean;
+  onValue?: (value: V) => V;
+}

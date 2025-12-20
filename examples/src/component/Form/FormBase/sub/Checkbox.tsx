@@ -1,5 +1,6 @@
 import React from 'react';
 import { PFormCheckbox, PFormCol, PFormRow } from '../../../../../../src';
+import { getName } from '@common';
 
 const Checkbox = () => {
   return (

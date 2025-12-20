@@ -1,5 +1,6 @@
 import React from 'react';
 import { PFormSwitch, PFormCol, PFormRow } from '../../../../../../src';
+import { getName } from '@common';
 
 const Switch = () => {
   return (

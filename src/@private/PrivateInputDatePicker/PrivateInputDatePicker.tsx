@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { PrivateInputDatePickerProps as Props } from './PrivateInputDatePicker.types';
 import { InputProps, InputAdornment } from '@mui/material';
 import { DesktopDatePicker, DesktopDatePickerProps } from '@mui/x-date-pickers';
-import { Dayjs } from 'dayjs';
 import './PrivateInputDatePicker.scss';
 import { PIcon } from '@pdg/react-component';
 import { useAutoUpdateRef } from '@pdg/react-hook';
@@ -122,7 +121,7 @@ const PrivateInputDatePicker = ({
   );
 
   /** slotProps */
-  const slotProps = useMemo<DesktopDatePickerProps<Dayjs>['slotProps']>(() => {
+  const slotProps = useMemo<DesktopDatePickerProps['slotProps']>(() => {
     return {
       textField: {
         variant,

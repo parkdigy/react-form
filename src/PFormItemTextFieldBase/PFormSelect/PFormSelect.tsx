@@ -120,15 +120,17 @@ function PFormSelect<
   const [items, setItems] = useState(initItems);
   if (useChanged(initItems)) {
     setItems(initItems);
+  }
 
-    if (initItems) {
+  if (useChanged(items, true)) {
+    if (items) {
       setItemValueLabels(
-        initItems.reduce<ItemValueLabelMap>((res, item) => {
+        items.reduce<ItemValueLabelMap>((res, item) => {
           res[`${item.value}`] = item.label;
           return res;
         }, {})
       );
-      setHasEmptyValue(!!initItems.find(({ value }) => value === ''));
+      setHasEmptyValue(!!items.find(({ value }) => value === ''));
     } else {
       setItemValueLabels({});
       setHasEmptyValue(false);
@@ -428,6 +430,7 @@ function PFormSelect<
       value={{
         ...otherFormState,
         fullWidth: formFullWidth,
+        labelShrink: true,
         onAddValueItem: handleAddValueItem,
         onValueChange: () => {},
       }}

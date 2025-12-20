@@ -420,12 +420,14 @@ function PFormAutocomplete<
   }, [value, multiple, items, valueItem, itemsInfos]);
 
   /** componentValue */
-  const [componentValue, setComponentValue] = useState(computedComponentValue);
-  if (useChanged(computedComponentValue)) {
-    if (componentValue && computedComponentValue && equal(componentValue, computedComponentValue)) {
+  const [stateComponentValue, setStateComponentValue] = useState(computedComponentValue);
+  let componentValue = stateComponentValue;
+  if (useChanged(computedComponentValue, true)) {
+    if (stateComponentValue && computedComponentValue && equal(stateComponentValue, computedComponentValue)) {
       // do nothing
     } else {
-      setComponentValue(computedComponentValue);
+      setStateComponentValue(computedComponentValue);
+      componentValue = computedComponentValue;
     }
   }
 
@@ -519,7 +521,6 @@ function PFormAutocomplete<
             setItems([]);
           }
         }
-        hideOnGetItemLoading();
       }
     }
   }
@@ -566,10 +567,13 @@ function PFormAutocomplete<
       reloadItems: () => {
         if (!async && onLoadItems) {
           showOnGetItemLoading();
-          onLoadItems().then((items) => {
-            setItems(items);
-            hideOnGetItemLoading();
-          });
+          onLoadItems()
+            .then((items) => {
+              setItems(items);
+            })
+            .finally(() => {
+              hideOnGetItemLoading();
+            });
         }
       },
       setInputValue,

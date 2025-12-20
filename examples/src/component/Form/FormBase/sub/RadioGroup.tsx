@@ -1,6 +1,7 @@
 import { lv } from '@pdg/data';
 import React from 'react';
 import { PFormCol, PFormRadioGroup, PFormRadioGroupItem, PFormRow } from '../../../../../../src';
+import { getName } from '@common';
 
 const DEFAULT_ITEMS: PFormRadioGroupItem<number>[] = new Array(3)
   .fill(0)

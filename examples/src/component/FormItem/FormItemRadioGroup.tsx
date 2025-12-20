@@ -12,6 +12,7 @@ import {
   PFormFooter,
 } from '../../../../src';
 import { lv } from '@pdg/data';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const DEFAULT_ITEMS = [lv('전체', ''), ...new Array(3).fill(0).map((v, idx) => lv(`Item ${idx + 1}`, idx + 1))];
 
@@ -27,15 +28,6 @@ const FormItemRadioGroup = () => {
   const asyncLoadRadioGroupRef = useRef<PFormRadioGroupCommands<'' | number>>(null);
 
   /********************************************************************************************************************
-   * Ref
-   * ******************************************************************************************************************/
-
-  useEffect(() => {
-    loadList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  /********************************************************************************************************************
    * Function
    * ******************************************************************************************************************/
 
@@ -43,13 +35,23 @@ const FormItemRadioGroup = () => {
     if (asyncLoadRadioGroupRef.current) {
       const { setLoading, setItems } = asyncLoadRadioGroupRef.current;
 
-      if (setLoading) setLoading(true);
+      setLoading(true);
+
       setTimeout(() => {
-        if (setItems) setItems(DEFAULT_ITEMS);
-        if (setLoading) setLoading(false);
+        setItems(DEFAULT_ITEMS);
+        setLoading(false);
       }, 5000);
     }
   }, []);
+  const loadListRef = useAutoUpdateRef(loadList);
+
+  /********************************************************************************************************************
+   * Effect
+   * ******************************************************************************************************************/
+
+  useEffect(() => {
+    loadListRef.current();
+  }, [loadListRef]);
 
   /********************************************************************************************************************
    * Event Handler
@@ -123,6 +125,10 @@ const FormItemRadioGroup = () => {
               name='asyncLoadItems'
               label='PFormRadioGroup'
               helperText='Async Load Items'
+              onLoadItems={async () => {
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+                return DEFAULT_ITEMS;
+              }}
             />
           </PFormCol>
         </PFormRow>

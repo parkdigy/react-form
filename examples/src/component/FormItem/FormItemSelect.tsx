@@ -14,14 +14,15 @@ import {
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
 import { lv } from '@pdg/data';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const FormItemSelect = () => {
   /********************************************************************************************************************
    * Ref
    * ******************************************************************************************************************/
 
-  const asyncLoadSelectRef = useRef<PFormSelectCommands<number>>(null);
-  const selectRef = useRef<PFormSelectCommands<number>>(null);
+  const asyncLoadSelectRef = useRef<PFormSelectCommands<number | ''>>(null);
+  const selectRef = useRef<PFormSelectCommands<number | ''>>(null);
 
   /********************************************************************************************************************
    * State
@@ -34,15 +35,6 @@ const FormItemSelect = () => {
   const [isCheckbox, setIsCheckbox] = useState(false);
 
   /********************************************************************************************************************
-   * Effect
-   * ******************************************************************************************************************/
-
-  useEffect(() => {
-    loadList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  /********************************************************************************************************************
    * Function
    * ******************************************************************************************************************/
 
@@ -50,13 +42,23 @@ const FormItemSelect = () => {
     if (asyncLoadSelectRef.current) {
       const { setLoading, setItems } = asyncLoadSelectRef.current;
 
-      if (setLoading) setLoading(true);
+      setLoading(true);
+
       setTimeout(() => {
-        if (setItems) setItems(items);
-        if (setLoading) setLoading(false);
+        setItems(items);
+        setLoading(false);
       }, 5000);
     }
   }, [items]);
+  const loadListRef = useAutoUpdateRef(loadList);
+
+  /********************************************************************************************************************
+   * Initialize
+   * ******************************************************************************************************************/
+
+  useEffect(() => {
+    loadListRef.current();
+  }, [loadList, loadListRef]);
 
   /********************************************************************************************************************
    * Event Handler
@@ -194,6 +196,7 @@ const FormItemSelect = () => {
                 helperText='Async Load Items'
                 multiple={isMultiple}
                 checkbox={isCheckbox}
+                onLoadItems={handleLoadItems}
               />
             </PFormCol>
           </PFormRow>

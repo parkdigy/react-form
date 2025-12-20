@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import {
   PForm,
   PFormButton,
@@ -21,8 +21,9 @@ import {
 } from '../../../../src';
 import { OutlinedPaper } from '@ccomp';
 import { lv } from '@pdg/data';
+import { useChanged } from '@pdg/react-hook';
 
-const _components: React.ForwardRefExoticComponent<any>[] = [
+const _components: React.ElementType[] = [
   PFormText,
   PFormEmail,
   PFormPassword,
@@ -35,7 +36,7 @@ const _components: React.ForwardRefExoticComponent<any>[] = [
 ];
 
 const _componentsItems = _components.map<PFormToggleButtonGroupItem<string>>((component) =>
-  lv(component.displayName?.substring(4), component.displayName || '')
+  lv((component as any).name?.substring(5), (component as any).name || '')
 );
 
 const FormItemText = () => {
@@ -49,46 +50,47 @@ const FormItemText = () => {
    * State
    * ******************************************************************************************************************/
 
-  const [componentName, setComponentName] = useState<string | undefined>(PFormText.displayName);
-  const [Component, setComponent] = useState<React.ForwardRefExoticComponent<any>>();
+  const [componentName, setComponentName] = useState<string | undefined>(PFormText.name);
+  const [Component, setComponent] = useState<React.ElementType>();
   const [value, setValue] = useState<string>('asdf');
 
   /********************************************************************************************************************
    * Effect
    * ******************************************************************************************************************/
 
-  useEffect(() => {
-    setComponent(_components.find((component) => component.displayName === componentName));
+  if (useChanged(componentName, true)) {
+    setComponent(() => _components.find((component) => (component as any).name === componentName));
+
     switch (componentName) {
-      case PFormText.displayName:
+      case PFormText.name:
         setValue('텍스트');
         break;
-      case PFormEmail.displayName:
+      case PFormEmail.name:
         setValue('test@gmail.com');
         break;
-      case PFormTel.displayName:
+      case PFormTel.name:
         setValue('0200000000');
         break;
-      case PFormMobile.displayName:
+      case PFormMobile.name:
         setValue('01000000000');
         break;
-      case PFormUrl.displayName:
+      case PFormUrl.name:
         setValue('https://www.google.com');
         break;
-      case PFormSearch.displayName:
+      case PFormSearch.name:
         setValue('검색어');
         break;
-      case PFormBusinessNo.displayName:
+      case PFormBusinessNo.name:
         setValue('1234567890');
         break;
-      case PFormPersonalNo.displayName:
+      case PFormPersonalNo.name:
         setValue('1234567890123');
         break;
       default:
         setValue(componentName || '');
         break;
     }
-  }, [componentName]);
+  }
 
   /********************************************************************************************************************
    * Event Handler

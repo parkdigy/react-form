@@ -36,13 +36,13 @@ export interface PFormSelectItem<T extends PFormSelectSingleValue> {
 
 export type PFormSelectItems<T extends PFormSelectSingleValue> = readonly PFormSelectItem<T>[];
 
-export type PFormSelectProps<
+export interface PFormSelectProps<
   T extends PFormSelectSingleValue,
   Multiple extends boolean | undefined = undefined,
   Items extends PFormSelectItems<T> = PFormSelectItems<T>,
   SingleValue extends Items[number]['value'] = Items[number]['value'],
   Value extends PFormSelectValue<SingleValue, Multiple> = PFormSelectValue<SingleValue, Multiple>,
-> = Omit<PFormTextFieldProps<Value, false>, 'type' | 'clear'> & {
+> extends Omit<PFormTextFieldProps<Value, false>, 'ref' | 'type' | 'clear'> {
   ref?: React.Ref<PFormSelectCommands<SingleValue, Multiple>>;
   items?: Items;
   multiple?: Multiple;
@@ -52,4 +52,4 @@ export type PFormSelectProps<
   minWidth?: string | number;
   loading?: boolean;
   onLoadItems?: () => Promise<Items>;
-};
+}
