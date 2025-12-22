@@ -1,9 +1,9 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useMemo } from 'react';
 import { InputLabel, useTheme } from '@mui/material';
 import { PFormLabelProps as Props } from './PFormLabel.types';
 import { ChildrenSpan, IconPIcon } from './PFormLabel.style.private';
 
-const PFormLabel = ({ ref, children, icon, size, style, error, warning, ...props }: Props) => {
+const PFormLabel = ({ ref, children, icon, size, style: initStyle, error, warning, ...props }: Props) => {
   /********************************************************************************************************************
    * Use
    * ******************************************************************************************************************/
@@ -14,14 +14,17 @@ const PFormLabel = ({ ref, children, icon, size, style, error, warning, ...props
    * Memo
    * ******************************************************************************************************************/
 
-  const newStyle: CSSProperties = {
-    height: 20,
-    transform: size === 'small' ? 'translate(0, -1.5px) scale(0.7)' : undefined,
-    ...style,
-  };
-  if (!error) {
-    newStyle.color = warning ? theme.palette.warning.main : style?.color;
-  }
+  const style = useMemo((): CSSProperties => {
+    const newStyle: CSSProperties = {
+      height: 20,
+      transform: size === 'small' ? 'translate(0, -1.5px) scale(0.7)' : undefined,
+      ...initStyle,
+    };
+    if (!error) {
+      newStyle.color = warning ? theme.palette.warning.main : initStyle?.color;
+    }
+    return newStyle;
+  }, [error, initStyle, size, theme, warning]);
 
   /********************************************************************************************************************
    * Render
@@ -34,7 +37,7 @@ const PFormLabel = ({ ref, children, icon, size, style, error, warning, ...props
       className='PFormItemBase-InputLabel'
       size={size}
       error={error}
-      style={newStyle}
+      style={style}
       {...props}
     >
       {icon ? (

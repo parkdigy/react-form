@@ -3,6 +3,10 @@ import { PFormDateType, PFormTimeType } from '../@types';
 import { PFormAvailableDate, PFormAvailableDateItem, PFormAvailableDateType } from '../@private/@types';
 import dayjs, { Dayjs } from 'dayjs';
 
+/********************************************************************************************************************
+ * getDateValidationErrorText
+ * ******************************************************************************************************************/
+
 export function getDateValidationErrorText(error: DateValidationError | DateTimeValidationError) {
   switch (error) {
     case 'invalidDate':
@@ -18,7 +22,9 @@ export function getDateValidationErrorText(error: DateValidationError | DateTime
   }
 }
 
-//--------------------------------------------------------------------------------------------------------------------
+/********************************************************************************************************************
+ * Const
+ * ******************************************************************************************************************/
 
 const DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
 const DEFAULT_DATE_FORM_VALUE_FORMAT = 'YYYY-MM-DD';
@@ -34,6 +40,10 @@ const DEFAULT_TIME_MINUTE_FORMAT = 'HH:mm';
 const DEFAULT_TIME_MINUTE_FORM_VALUE_FORMAT = 'HH:mm:00';
 const DEFAULT_TIME_SECOND_FORMAT = 'HH:mm:ss';
 const DEFAULT_TIME_SECOND_FORM_VALUE_FORMAT = 'HH:mm:ss';
+
+/********************************************************************************************************************
+ * getDateTimeFormat
+ * ******************************************************************************************************************/
 
 export function getDateTimeFormat(type: PFormDateType, time?: PFormTimeType): string {
   switch (type) {
@@ -69,6 +79,10 @@ export function getDateTimeFormat(type: PFormDateType, time?: PFormTimeType): st
       break;
   }
 }
+
+/********************************************************************************************************************
+ * getDateTimeFormValueFormat
+ * ******************************************************************************************************************/
 
 export function getDateTimeFormValueFormat(type: PFormDateType, time?: PFormTimeType): string {
   switch (type) {
@@ -348,6 +362,7 @@ export function getAvailableDateVal(
 /********************************************************************************************************************
  * getDateVal
  * ******************************************************************************************************************/
+
 export function getDateValForAvailableDate(date: Dayjs, type: PFormDateType, time?: PFormTimeType): number {
   const format = getAvailableDateValFormat(type, time);
   return Number(date.format(format));

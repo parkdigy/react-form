@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useId, ReactNode, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useId, ReactNode, useMemo, useRef, useEffectEvent } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
@@ -23,12 +23,13 @@ function PFormToggleButtonGroup<
   Items extends PFormToggleButtonGroupItems<T> = PFormToggleButtonGroupItems<T>,
 >({
   ref,
+  /********************************************************************************************************************/
   variant: initVariant,
   size: initSize,
   color: initColor,
   focused: initFocused,
   fullWidth: initFullWidth,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   name,
   labelIcon,
   label,
@@ -53,11 +54,11 @@ function PFormToggleButtonGroup<
   onLoadItems,
   startAdornment,
   endAdornment,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   onChange,
   onValue,
   onValidate,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   className,
   style: initStyle,
   sx,
@@ -69,13 +70,6 @@ function PFormToggleButtonGroup<
   type Props = PFormToggleButtonGroupProps<T, Multiple, Items>;
   type Commands = PFormToggleButtonGroupCommands<T, Multiple>;
   type Value = PFormToggleButtonGroupValue<T, Multiple>;
-
-  /********************************************************************************************************************
-   * Props Changed
-   * ******************************************************************************************************************/
-
-  const isMultipleChanged = useChanged(multiple);
-  const isNotAllowEmptyValueChanged = useChanged(notAllowEmptyValue);
 
   /********************************************************************************************************************
    * ID
@@ -113,9 +107,19 @@ function PFormToggleButtonGroup<
   const fullWidth = type === 'checkbox' || type === 'radio' ? true : (initFullWidth ?? formFullWidth);
 
   /********************************************************************************************************************
-   * State - FormState
+   * Ref
    * ******************************************************************************************************************/
 
+  const initValueRef = useAutoUpdateRef(initValue);
+  const onLoadItemsRef = useAutoUpdateRef(onLoadItems);
+  const onChangeRef = useAutoUpdateRef(onChange);
+  const onValidateRef = useAutoUpdateRef(onValidate);
+
+  /********************************************************************************************************************
+   * State
+   * ******************************************************************************************************************/
+
+  /** focused */
   const [focused, setFocused] = useState(initFocused ?? formFocused);
   if ((initFocused ?? formFocused) !== focused) {
     setFocused(initFocused ?? formFocused);
@@ -128,15 +132,10 @@ function PFormToggleButtonGroup<
   const theme = useTheme();
 
   /********************************************************************************************************************
-   * State - width (ResizeDetector)
+   * SResizeDetector
    * ******************************************************************************************************************/
 
   const { ref: refForResizeWidthDetect, width } = useResizeDetector({ handleHeight: false });
-
-  /********************************************************************************************************************
-   * State - height (ResizeDetector)
-   * ******************************************************************************************************************/
-
   const { ref: refForButtonResizeHeightDetect, height: buttonHeight } = useResizeDetector({ handleWidth: false });
   const { ref: refForButtonsResizeHeightDetect, height: realHeight } = useResizeDetector({ handleWidth: false });
   const { ref: refForLoadingResizeHeightDetect, height: loadingHeight } = useResizeDetector({ handleWidth: false });
@@ -144,50 +143,67 @@ function PFormToggleButtonGroup<
   const height = buttonHeight ?? loadingHeight;
 
   /********************************************************************************************************************
-   * State - error
+   * State
    * ******************************************************************************************************************/
 
-  const [error, setError] = useState(initError);
-  useChanged(initError) && setError(initError);
+  const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(!!onLoadItems);
+  const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
 
-  /********************************************************************************************************************
-   * State - data
-   * ******************************************************************************************************************/
+  /** error */
+  const [error, _setError] = useState(initError);
+  useChanged(initError) && _setError(initError);
+  const errorRef = useAutoUpdateRef(error);
+  const setError = useCallback(
+    (value: React.SetStateAction<typeof error>) => {
+      _setError((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        errorRef.current = newValue;
+        return newValue;
+      });
+    },
+    [errorRef]
+  );
 
-  const [data, setData] = useState(initData);
-  useChanged(initData) && setData(initData);
-
+  /** data */
+  const [data, _setData] = useState(initData);
+  useChanged(initData) && _setData(initData);
   const dataRef = useAutoUpdateRef(data);
+  const setData = useCallback(
+    (value: React.SetStateAction<typeof data>) => {
+      _setData((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        dataRef.current = newValue;
+        return newValue;
+      });
+    },
+    [dataRef]
+  );
 
-  /********************************************************************************************************************
-   * State - disabled
-   * ******************************************************************************************************************/
-
+  /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
-
   const [disabled, setDisabled] = useState(finalInitDisabled);
   useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
 
-  /********************************************************************************************************************
-   * State - hidden
-   * ******************************************************************************************************************/
-
+  /** hidden */
   const [hidden, setHidden] = useState(initHidden);
   useChanged(initHidden) && setHidden(initHidden);
 
-  /********************************************************************************************************************
-   * State - loading
-   * ******************************************************************************************************************/
-
-  const [loading, setLoading] = useState(initLoading);
-  useChanged(initLoading) && setLoading(initLoading);
-
+  /** loading */
+  const [loading, _setLoading] = useState(initLoading);
+  useChanged(initLoading) && _setLoading(initLoading);
   const loadingRef = useAutoUpdateRef(loading);
+  const setLoading = useCallback(
+    (value: React.SetStateAction<typeof loading>) => {
+      _setLoading((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        loadingRef.current = newValue;
+        return newValue;
+      });
+    },
+    [loadingRef]
+  );
 
-  /********************************************************************************************************************
-   * State - items
-   * ******************************************************************************************************************/
-
+  /** items */
   const [items, _setItems] = useState(initItems);
   useChanged(initItems) && _setItems(initItems);
 
@@ -196,20 +212,6 @@ function PFormToggleButtonGroup<
   const setItems = useCallback((newItems: PFormToggleButtonGroupItems<T> | undefined) => {
     _setItems(newItems as Props['items']);
   }, []);
-
-  /********************************************************************************************************************
-   * State
-   * ******************************************************************************************************************/
-
-  const [isOnGetItemLoading, setIsOnGetItemLoading] = useState<boolean>(!!onLoadItems);
-
-  const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
-
-  useEffect(() => {}, [initData]);
-
-  /********************************************************************************************************************
-   * State Function
-   * ******************************************************************************************************************/
 
   /********************************************************************************************************************
    * Memo
@@ -249,29 +251,27 @@ function PFormToggleButtonGroup<
   }, [formColWidth, fullWidth, initStyle, initWidth, isOnGetItemLoading, width]);
 
   /********************************************************************************************************************
-   * Function - setErrorErrorHelperText
+   * Function
    * ******************************************************************************************************************/
 
+  /** setErrorErrorHelperText */
   const setErrorErrorHelperText = useCallback(
     (error: boolean, errorHelperText: ReactNode) => {
       setError(error);
-      setErrorHelperText(errorHelperText);
+      setErrorHelperText(error ? errorHelperText : undefined);
     },
     [setError]
   );
 
-  /********************************************************************************************************************
-   * Function - validate
-   * ******************************************************************************************************************/
-
+  /** validate */
   const validate = useCallback(
     (value: Props['value']) => {
       if (required && empty(value)) {
         setErrorErrorHelperText(true, '필수 선택 항목입니다.');
         return false;
       }
-      if (onValidate) {
-        const onValidateResult = onValidate(value);
+      if (onValidateRef.current) {
+        const onValidateResult = onValidateRef.current(value);
         if (onValidateResult != null && onValidateResult !== true) {
           setErrorErrorHelperText(true, onValidateResult);
           return false;
@@ -282,8 +282,13 @@ function PFormToggleButtonGroup<
 
       return true;
     },
-    [required, onValidate, setErrorErrorHelperText]
+    [required, onValidateRef, setErrorErrorHelperText]
   );
+
+  /** focus */
+  const focus = useCallback(() => {
+    refForButtonResizeHeightDetect.current?.focus();
+  }, [refForButtonResizeHeightDetect]);
 
   /********************************************************************************************************************
    * State - value
@@ -338,81 +343,90 @@ function PFormToggleButtonGroup<
     },
     [multiple, formValueSeparator, itemsValues, onValue]
   );
+  const getFinalValueRef = useAutoUpdateRef(getFinalValue);
 
-  const [value, setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && setValue(getFinalValue(initValue));
-
+  const [value, _setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && _setValue(getFinalValue(initValue));
   const valueRef = useAutoUpdateRef(value);
+  const setValue = useCallback(
+    (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
+      _setValue((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        valueRef.current = newValue;
+        return newValue;
+      });
+    },
+    [valueRef]
+  );
 
   const updateValue = useCallback(
     (newValue: Props['value'], skipGetFinalValue = false) => {
-      const finalValue = skipGetFinalValue ? newValue : getFinalValue(newValue);
+      const finalValue = skipGetFinalValue ? newValue : getFinalValueRef.current(newValue);
       setValue(finalValue);
 
       if (error) validate(finalValue);
-      if (onChange) onChange(finalValue);
+      onChangeRef.current?.(finalValue);
       onValueChange(name, finalValue);
 
       return finalValue;
     },
-    [error, getFinalValue, name, onChange, onValueChange, validate]
+    [error, getFinalValueRef, name, onChangeRef, onValueChange, setValue, validate]
   );
-  const updateValueRef = useAutoUpdateRef(updateValue);
-
-  /********************************************************************************************************************
-   * multiple 변경 시 value 업데이트
-   * ******************************************************************************************************************/
-
-  useEffect(() => {
-    updateValueRef.current(valueRef.current);
-  }, [multiple, updateValueRef, valueRef]);
 
   /********************************************************************************************************************
    * Effect
    * ******************************************************************************************************************/
 
-  const firstOnLoadItems = useRef(onLoadItems);
-  const firstSetItems = useRef(setItems);
-  useEffect(() => {
-    if (firstOnLoadItems.current) {
-      firstOnLoadItems.current().then((items) => {
-        firstSetItems.current(items);
-        setIsOnGetItemLoading(false);
-      });
-    }
-  }, []);
-
-  const isItemsChanged = useChanged(items);
-  const isValueChanged = useChanged(value);
-  if (isMultipleChanged || isItemsChanged || isValueChanged || isNotAllowEmptyValueChanged) {
-    if (notAllowEmptyValue) {
-      if (items && notEmpty(items)) {
-        let setFirstItem = false;
-
-        if (Array.isArray(value)) {
-          if (empty(value)) {
-            setFirstItem = true;
-          }
-        } else {
-          if (value == null) {
-            setFirstItem = true;
-          }
-        }
-
-        if (setFirstItem) {
-          updateValue((multiple ? [items[0].value] : items[0].value) as Props['value']);
-        }
+  {
+    const effectEvent = useEffectEvent(() => updateValue(valueRef.current));
+    const firstSkip = useRef(true);
+    useEffect(() => {
+      if (firstSkip.current) {
+        firstSkip.current = false;
+      } else {
+        effectEvent();
       }
-    }
+    }, [multiple]);
   }
 
-  /********************************************************************************************************************
-   * Function - focus
-   * ******************************************************************************************************************/
+  {
+    const effectEvent = useEffectEvent(() => {
+      if (onLoadItemsRef.current) {
+        onLoadItemsRef.current().then((items) => {
+          setItems(items);
+          setIsOnGetItemLoading(false);
+        });
+      }
+    });
+    useEffect(() => effectEvent(), []);
+  }
 
-  const focus = useCallback(() => {
-    refForButtonResizeHeightDetect.current?.focus();
-  }, [refForButtonResizeHeightDetect]);
+  {
+    const effectEvent = useEffectEvent(() => {
+      if (notAllowEmptyValue) {
+        if (items && notEmpty(items)) {
+          let setFirstItem = false;
+
+          if (Array.isArray(value)) {
+            if (empty(value)) {
+              setFirstItem = true;
+            }
+          } else {
+            if (value == null) {
+              setFirstItem = true;
+            }
+          }
+
+          if (setFirstItem) {
+            updateValue((multiple ? [items[0].value] : items[0].value) as Props['value']);
+          }
+        }
+      }
+    });
+    useEffect(() => {
+      effectEvent();
+    }, [multiple, items, value, notAllowEmptyValue]);
+  }
 
   /********************************************************************************************************************
    * Commands
@@ -422,8 +436,8 @@ function PFormToggleButtonGroup<
     return {
       getType: () => 'PFormToggleButtonGroup',
       getName: () => name,
-      getReset: () => getFinalValue(initValue),
-      reset: () => updateValue(initValue),
+      getReset: () => getFinalValueRef.current(initValueRef.current),
+      reset: () => updateValue(initValueRef.current),
       getValue: () => valueRef.current,
       setValue: (v) => {
         valueRef.current = updateValue(v);
@@ -438,8 +452,7 @@ function PFormToggleButtonGroup<
       focus,
       focusValidate: focus,
       validate: () => validate(valueRef.current),
-      setError: (error: boolean, errorText: ReactNode | undefined) =>
-        setErrorErrorHelperText(error, error ? errorText : undefined),
+      setError: setErrorErrorHelperText,
       getFormValueSeparator: () => formValueSeparator,
       isFormValueSort: () => !!formValueSort,
       getItems: () => itemsRef.current,
@@ -448,9 +461,9 @@ function PFormToggleButtonGroup<
       getLoading: () => !!loadingRef.current,
       setLoading,
       reloadItems: () => {
-        if (onLoadItems) {
+        if (onLoadItemsRef.current) {
           setIsOnGetItemLoading(true);
-          onLoadItems().then((items) => {
+          onLoadItemsRef.current().then((items) => {
             setItems(items);
             setIsOnGetItemLoading(false);
           });
@@ -464,16 +477,18 @@ function PFormToggleButtonGroup<
     focus,
     formValueSeparator,
     formValueSort,
-    getFinalValue,
+    getFinalValueRef,
     hidden,
-    initValue,
+    initValueRef,
     itemsRef,
     loadingRef,
     multiple,
     name,
-    onLoadItems,
+    onLoadItemsRef,
+    setData,
     setErrorErrorHelperText,
     setItems,
+    setLoading,
     updateValue,
     validate,
     valueRef,
@@ -499,18 +514,18 @@ function PFormToggleButtonGroup<
         if (notAllowEmptyValue) {
           if (multiple) {
             if (empty(finalValue)) {
-              if (Array.isArray(value) && value.length > 0) {
-                finalValue = [value[0]] as Props['value'];
+              if (Array.isArray(valueRef.current) && valueRef.current.length > 0) {
+                finalValue = [valueRef.current[0]] as Props['value'];
               }
             }
           } else {
             if (finalValue == null) {
-              finalValue = value;
+              finalValue = valueRef.current;
             }
           }
         }
-        finalValue = getFinalValue(finalValue);
-        if (!equal(value, finalValue)) {
+        finalValue = getFinalValueRef.current(finalValue);
+        if (!equal(valueRef.current, finalValue)) {
           valueRef.current = updateValue(finalValue, true);
           setTimeout(() => {
             onValueChangeByUser(name, finalValue);
@@ -522,10 +537,9 @@ function PFormToggleButtonGroup<
     [
       readOnly,
       notAllowEmptyValue,
-      getFinalValue,
-      value,
-      multiple,
+      getFinalValueRef,
       valueRef,
+      multiple,
       updateValue,
       onValueChangeByUser,
       name,

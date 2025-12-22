@@ -1,9 +1,11 @@
 import React from 'react';
 import { PFormBlock, PFormCol, PFormNumber, PFormNumberProps, PFormRow } from '../../../../../../src';
 
-const NumberBlock: React.FC<{
+interface Props {
   componentProps?: PFormNumberProps;
-}> = ({ componentProps }) => {
+}
+
+const NumberBlock = ({ componentProps }: Props) => {
   return (
     <PFormBlock label='Number' line>
       <PFormRow>

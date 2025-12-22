@@ -9,6 +9,7 @@ import PFormContextProvider from '../../PFormContextProvider';
 
 const PFormRow = ({
   ref,
+  /********************************************************************************************************************/
   variant: initVariant,
   size: initSize,
   color: initColor,
@@ -16,18 +17,18 @@ const PFormRow = ({
   focused: initFocused,
   labelShrink: initLabelShrink,
   fullWidth: initFullWidth,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   icon,
   label,
   line,
   lineVerticalMargin,
   fullHeight,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   hidden,
   error,
   warning,
   helperText,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   children,
   className,
   style: initStyle,
@@ -83,9 +84,10 @@ const PFormRow = ({
   }, [fullHeight, hidden, initStyle]);
 
   /********************************************************************************************************************
-   * Function - makeFormColXs
+   * Function
    * ******************************************************************************************************************/
 
+  /** makeFormColXs */
   const makeFormColXs = useCallback(() => {
     const formColKeys = Object.keys(formColsRef.current);
 
@@ -107,6 +109,7 @@ const PFormRow = ({
    * Event Handler
    * ******************************************************************************************************************/
 
+  /** handleAddFormCol */
   const handleAddFormCol = useCallback(
     (id: string, xs: number | undefined) => {
       formColsRef.current = { ...formColsRef.current, [id]: xs };
@@ -115,6 +118,7 @@ const PFormRow = ({
     [makeFormColXs]
   );
 
+  /** handleRemoveFormCol */
   const handleRemoveFormCol = useCallback(
     (id: string) => {
       delete formColsRef.current[id];

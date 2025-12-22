@@ -19,13 +19,14 @@ const FILE_VALUE = '';
 
 const PFormFile = ({
   ref,
+  /********************************************************************************************************************/
   variant: initVariant,
   size: initSize,
   color: initColor,
   focused: initFocused,
   labelShrink: initLabelShrink,
   fullWidth: initFullWidth,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   accept,
   hideUrl,
   tabIndex,
@@ -46,7 +47,7 @@ const PFormFile = ({
   hidden: initHidden,
   onFile,
   onLink,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   name,
   labelIcon,
   label: initLabel,
@@ -60,7 +61,7 @@ const PFormFile = ({
   exceptValue,
   onChange,
   onValidate,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   className,
 }: Props) => {
   /********************************************************************************************************************
@@ -106,38 +107,8 @@ const PFormFile = ({
   const fileUploadBtnRef = useRef<HTMLButtonElement>(null);
   const linkBtnRef = useRef<HTMLButtonElement>(null);
   const initValueRef = useAutoUpdateRef(initValue);
-
-  /********************************************************************************************************************
-   * State - error
-   * ******************************************************************************************************************/
-
-  const [error, setError] = useState(initError);
-  useChanged(initError) && setError(initError);
-
-  /********************************************************************************************************************
-   * State - data
-   * ******************************************************************************************************************/
-
-  const [data, setData] = useState(initData);
-  useChanged(initData) && setData(initData);
-
-  const dataRef = useAutoUpdateRef(data);
-
-  /********************************************************************************************************************
-   * State - disabled
-   * ******************************************************************************************************************/
-
-  const finalInitDisabled = initDisabled ?? formDisabled;
-
-  const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
-
-  /********************************************************************************************************************
-   * State - hidden
-   * ******************************************************************************************************************/
-
-  const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  const onChangeRef = useAutoUpdateRef(onChange);
+  const onValidateRef = useAutoUpdateRef(onValidate);
 
   /********************************************************************************************************************
    * State
@@ -152,28 +123,65 @@ const PFormFile = ({
     content?: ReactNode;
   }>({ open: false });
 
+  /** error */
+  const [error, _setError] = useState(initError);
+  useChanged(initError) && _setError(initError);
+  const errorRef = useAutoUpdateRef(error);
+  const setError = useCallback(
+    (value: React.SetStateAction<typeof error>) => {
+      _setError((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        errorRef.current = newValue;
+        return newValue;
+      });
+    },
+    [errorRef]
+  );
+
+  /** data */
+  const [data, _setData] = useState(initData);
+  useChanged(initData) && _setData(initData);
+  const dataRef = useAutoUpdateRef(data);
+  const setData = useCallback(
+    (value: React.SetStateAction<typeof data>) => {
+      _setData((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        dataRef.current = newValue;
+        return newValue;
+      });
+    },
+    [dataRef]
+  );
+
+  /** disabled */
+  const finalInitDisabled = initDisabled ?? formDisabled;
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /** hidden */
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
+
   /********************************************************************************************************************
-   * State - width, height
+   * ResizeDetector
    * ******************************************************************************************************************/
 
   const { ref: innerRef, height } = useResizeDetector({ handleWidth: false });
 
   /********************************************************************************************************************
-   * Function - setErrorErrorHelperText
+   * Function
    * ******************************************************************************************************************/
 
+  /** setErrorErrorHelperText */
   const setErrorErrorHelperText = useCallback(
     function (error: Props['error'], errorHelperText: Props['helperText']) {
       setError(error);
-      setErrorHelperText(errorHelperText);
+      setErrorHelperText(error ? errorHelperText : undefined);
     },
     [setError]
   );
 
-  /********************************************************************************************************************
-   * Function - validate
-   * ******************************************************************************************************************/
-
+  /** validate */
   const validate = useCallback(
     function (value: PFormFileValue) {
       let isEmptyValue = false;
@@ -188,8 +196,8 @@ const PFormFile = ({
         return false;
       }
 
-      if (onValidate) {
-        const onValidateResult = onValidate(value);
+      if (onValidateRef.current) {
+        const onValidateResult = onValidateRef.current(value);
         if (onValidateResult != null && onValidateResult !== true) {
           setErrorErrorHelperText(true, onValidateResult);
           return false;
@@ -200,38 +208,10 @@ const PFormFile = ({
 
       return true;
     },
-    [required, onValidate, setErrorErrorHelperText]
+    [required, onValidateRef, setErrorErrorHelperText]
   );
 
-  /********************************************************************************************************************
-   * State - value
-   * ******************************************************************************************************************/
-
-  const [value, setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && setValue(getFinalValue(initValue));
-
-  const valueRef = useAutoUpdateRef(value);
-
-  /** value 변경 함수 */
-  const updateValue = useCallback(
-    (newValue: Props['value']) => {
-      const finalValue = getFinalValue(newValue);
-      setValue(finalValue);
-      valueRef.current = finalValue;
-
-      if (error) validate(finalValue);
-      if (onChange) onChange(finalValue);
-      onValueChange(name, finalValue);
-
-      return finalValue;
-    },
-    [error, name, onChange, onValueChange, validate, valueRef]
-  );
-
-  /********************************************************************************************************************
-   * Function - focus
-   * ******************************************************************************************************************/
-
+  /** focus */
   const focus = useCallback(() => {
     if (hideUrl) {
       if (hideUpload) {
@@ -244,56 +224,7 @@ const PFormFile = ({
     }
   }, [hideUpload, hideUrl]);
 
-  /********************************************************************************************************************
-   * Commands
-   * ******************************************************************************************************************/
-
-  const commands = useMemo<PFormFileCommands>(
-    () => ({
-      getType: () => 'PFormFile',
-      getName: () => name,
-      getReset: () => getFinalValue(initValueRef.current),
-      reset: () => updateValue(initValueRef.current),
-      getValue: () => valueRef.current,
-      setValue: updateValue,
-      getData: () => dataRef.current,
-      setData,
-      isExceptValue: () => !!exceptValue,
-      isDisabled: () => !!disabled,
-      setDisabled,
-      isHidden: () => !!hidden,
-      setHidden,
-      focus,
-      focusValidate: focus,
-      validate: () => validate(valueRef.current),
-      setError: (error, errorHelperText) => setErrorErrorHelperText(error, error ? errorHelperText : undefined),
-    }),
-    [
-      dataRef,
-      disabled,
-      exceptValue,
-      focus,
-      hidden,
-      initValueRef,
-      name,
-      setErrorErrorHelperText,
-      updateValue,
-      validate,
-      valueRef,
-    ]
-  );
-
-  useForwardRef(
-    ref,
-    commands,
-    useCallback((commands: PFormFileCommands) => onAddValueItem(id, commands), [id, onAddValueItem]),
-    useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
-  );
-
-  /********************************************************************************************************************
-   * Function
-   * ******************************************************************************************************************/
-
+  /** fileSizeCheck */
   const fileSizeCheck = useCallback(
     (file: File | string) => {
       if (maxFileSize) {
@@ -331,9 +262,90 @@ const PFormFile = ({
   );
 
   /********************************************************************************************************************
+   * value
+   * ******************************************************************************************************************/
+
+  const [value, _setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && _setValue(getFinalValue(initValue));
+  const valueRef = useAutoUpdateRef(value);
+  const setValue = useCallback(
+    (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
+      _setValue((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        valueRef.current = newValue;
+        return newValue;
+      });
+    },
+    [valueRef]
+  );
+
+  /** value 변경 함수 */
+  const updateValue = useCallback(
+    (newValue: Props['value']) => {
+      const finalValue = getFinalValue(newValue);
+      setValue(finalValue);
+
+      if (error) validate(finalValue);
+      onChangeRef.current?.(finalValue);
+      onValueChange(name, finalValue);
+
+      return finalValue;
+    },
+    [error, name, onChangeRef, onValueChange, setValue, validate]
+  );
+
+  /********************************************************************************************************************
+   * Commands
+   * ******************************************************************************************************************/
+
+  const commands = useMemo<PFormFileCommands>(
+    () => ({
+      getType: () => 'PFormFile',
+      getName: () => name,
+      getReset: () => getFinalValue(initValueRef.current),
+      reset: () => updateValue(initValueRef.current),
+      getValue: () => valueRef.current,
+      setValue: updateValue,
+      getData: () => dataRef.current,
+      setData,
+      isExceptValue: () => !!exceptValue,
+      isDisabled: () => !!disabled,
+      setDisabled,
+      isHidden: () => !!hidden,
+      setHidden,
+      focus,
+      focusValidate: focus,
+      validate: () => validate(valueRef.current),
+      setError: setErrorErrorHelperText,
+    }),
+    [
+      dataRef,
+      disabled,
+      exceptValue,
+      focus,
+      hidden,
+      initValueRef,
+      name,
+      setData,
+      setErrorErrorHelperText,
+      updateValue,
+      validate,
+      valueRef,
+    ]
+  );
+
+  useForwardRef(
+    ref,
+    commands,
+    useCallback((commands: PFormFileCommands) => onAddValueItem(id, commands), [id, onAddValueItem]),
+    useCallback(() => onRemoveValueItem(id), [id, onRemoveValueItem])
+  );
+
+  /********************************************************************************************************************
    * Event Handler
    * ******************************************************************************************************************/
 
+  /** handleFileChange */
   const handleFileChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       if (onFile) {
@@ -352,10 +364,12 @@ const PFormFile = ({
     [fileSizeCheck, name, onFile, onValueChangeByUser, updateValue]
   );
 
+  /** handleLinkClick */
   const handleLinkClick = useCallback(() => {
     setIsOpenLinkDialog(true);
   }, []);
 
+  /** handleRemoveClick */
   const handleRemoveClick = useCallback(() => {
     updateValue('');
     setTimeout(() => {
@@ -363,6 +377,7 @@ const PFormFile = ({
     });
   }, [name, onValueChangeByUser, updateValue]);
 
+  /** handleLinkDialogConfirm */
   const handleLinkDialogConfirm = useCallback(
     (url: string) => {
       if (onLink) {

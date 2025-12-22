@@ -1,11 +1,13 @@
 import React from 'react';
 import { PFormBlock, PFormCol, PFormRow } from '../../../../../../src';
 
-const ColorBlock: React.FC<{
+interface Props {
   component: React.ForwardRefExoticComponent<any>;
   componentProps?: any;
   focused?: boolean;
-}> = ({ component: Component, componentProps, focused }) => {
+}
+
+const ColorBlock = ({ component: Component, componentProps, focused }: Props) => {
   return (
     <PFormBlock label={focused ? 'Focused Color' : 'Color'} line>
       <PFormRow>

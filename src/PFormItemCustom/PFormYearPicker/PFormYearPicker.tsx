@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useEffectEvent, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
 import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
@@ -27,13 +27,14 @@ const DEFAULT_FORMAT = 'YYYY년';
 
 const PFormYearPicker = ({
   ref,
+  /********************************************************************************************************************/
   variant: initVariant,
   size: initSize,
   color: initColor,
   focused: initFocused,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   hidden: initHidden,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   name,
   labelIcon,
   label,
@@ -48,7 +49,7 @@ const PFormYearPicker = ({
   exceptValue,
   onChange,
   onValidate,
-  // -------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   icon,
   format = DEFAULT_FORMAT,
   labelShrink: initLabelShrink,
@@ -60,7 +61,7 @@ const PFormYearPicker = ({
   enableKeyboardInput,
   startAdornment,
   endAdornment,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   className,
   style: initStyle,
   sx,
@@ -106,42 +107,55 @@ const PFormYearPicker = ({
    * Ref
    * ******************************************************************************************************************/
 
-  const ratingRef = useRef<HTMLSpanElement>(null);
+  const initValueRef = useAutoUpdateRef(initValue);
   const inputRef = useRef<HTMLInputElement>(undefined);
   const closeTimeoutRef = useRef<NodeJS.Timeout>(undefined);
   const mouseDownTimeRef = useRef<number>(undefined);
   const inputDatePickerErrorRef = useRef<DateValidationError>(null);
   const openValueRef = useRef<PFormYearPickerValue>(undefined);
+  const onChangeRef = useAutoUpdateRef(onChange);
+  const onValidateRef = useAutoUpdateRef(onValidate);
 
   /********************************************************************************************************************
-   * State - error
+   * State
    * ******************************************************************************************************************/
 
-  const [error, setError] = useState(initError);
-  useChanged(initError) && setError(initError);
+  /** error */
+  const [error, _setError] = useState(initError);
+  useChanged(initError) && _setError(initError);
+  const errorRef = useAutoUpdateRef(error);
+  const setError = useCallback(
+    (value: React.SetStateAction<typeof error>) => {
+      _setError((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        errorRef.current = newValue;
+        return newValue;
+      });
+    },
+    [errorRef]
+  );
 
-  /********************************************************************************************************************
-   * State - data
-   * ******************************************************************************************************************/
-
-  const [data, setData] = useState(initData);
-  useChanged(initData) && setData(initData);
-
+  /** data */
+  const [data, _setData] = useState(initData);
+  useChanged(initData) && _setData(initData);
   const dataRef = useAutoUpdateRef(data);
+  const setData = useCallback(
+    (value: React.SetStateAction<typeof data>) => {
+      _setData((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        dataRef.current = newValue;
+        return newValue;
+      });
+    },
+    [dataRef]
+  );
 
-  /********************************************************************************************************************
-   * State - disabled
-   * ******************************************************************************************************************/
-
+  /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
-
   const [disabled, setDisabled] = useState(finalInitDisabled);
   useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
 
-  /********************************************************************************************************************
-   * State - hidden
-   * ******************************************************************************************************************/
-
+  /** hidden */
   const [hidden, setHidden] = useState(initHidden);
   useChanged(initHidden) && setHidden(initHidden);
 
@@ -156,14 +170,16 @@ const PFormYearPicker = ({
    * Function - getFinalValue
    * ******************************************************************************************************************/
 
+  /** setErrorErrorHelperText */
   const setErrorErrorHelperText = useCallback(
     function (error: Props['error'], errorHelperText: Props['helperText']) {
       setError(error);
-      setErrorHelperText(errorHelperText);
+      setErrorHelperText(error ? errorHelperText : undefined);
     },
     [setError]
   );
 
+  /** validate */
   const validate = useCallback(
     function (value: PFormYearPickerValue) {
       if (required && empty(value)) {
@@ -176,8 +192,8 @@ const PFormYearPicker = ({
         return false;
       }
 
-      if (onValidate) {
-        const onValidateResult = onValidate(value);
+      if (onValidateRef.current) {
+        const onValidateResult = onValidateRef.current(value);
         if (onValidateResult != null && onValidateResult !== true) {
           setErrorErrorHelperText(true, onValidateResult);
           return false;
@@ -188,32 +204,48 @@ const PFormYearPicker = ({
 
       return true;
     },
-    [onValidate, required, setErrorErrorHelperText]
+    [onValidateRef, required, setErrorErrorHelperText]
   );
+
+  /** focus */
+  const focus = useCallback(function () {
+    inputRef.current?.focus();
+    setTimeout(() => {
+      inputRef.current?.blur();
+    });
+  }, []);
 
   /********************************************************************************************************************
    * value
    * ******************************************************************************************************************/
 
-  const [value, setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && setValue(getFinalValue(initValue));
-
+  const [value, _setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && _setValue(getFinalValue(initValue));
   const valueRef = useAutoUpdateRef(value);
+  const setValue = useCallback(
+    (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
+      _setValue((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        valueRef.current = newValue;
+        return newValue;
+      });
+    },
+    [valueRef]
+  );
 
   /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: Props['value']) => {
       const finalValue = getFinalValue(newValue);
       setValue(finalValue);
-      valueRef.current = finalValue;
 
       if (error) validate(finalValue);
-      if (onChange) onChange(finalValue);
+      onChangeRef.current?.(finalValue);
       onValueChange(name, finalValue);
 
       return finalValue;
     },
-    [error, name, onChange, onValueChange, validate, valueRef]
+    [error, name, onChangeRef, onValueChange, setValue, validate]
   );
 
   /********************************************************************************************************************
@@ -228,26 +260,11 @@ const PFormYearPicker = ({
   }, [maxYear, minYear]);
 
   /********************************************************************************************************************
-   * Effect
-   * ******************************************************************************************************************/
-
-  useEffect(() => {
-    if (ratingRef.current) {
-      inputRef.current = ratingRef.current.querySelector('input') || undefined;
-    }
-  }, []);
-
-  /********************************************************************************************************************
    * Change
    * ******************************************************************************************************************/
 
-  const firstSkipRef = useRef(true);
-  const nameRef = useAutoUpdateRef(name);
-  const onRequestSearchSubmitRef = useAutoUpdateRef(onRequestSearchSubmit);
-  useEffect(() => {
-    if (firstSkipRef.current) {
-      firstSkipRef.current = false;
-    } else {
+  {
+    const effectEvent = useEffectEvent(() => {
       if (open) {
         openValueRef.current = valueRef.current;
       } else {
@@ -260,23 +277,20 @@ const PFormYearPicker = ({
           }
 
           if (runOnRequestSearchSubmit) {
-            onRequestSearchSubmitRef.current(nameRef.current, valueRef.current);
+            onRequestSearchSubmit(name, valueRef.current);
           }
         }
       }
-    }
-  }, [nameRef, onRequestSearchSubmitRef, open, valueRef]);
-
-  /********************************************************************************************************************
-   * Function
-   * ******************************************************************************************************************/
-
-  const focus = useCallback(function () {
-    inputRef.current?.focus();
-    setTimeout(() => {
-      inputRef.current?.blur();
     });
-  }, []);
+    const firstSkipRef = useRef(true);
+    useEffect(() => {
+      if (firstSkipRef.current) {
+        firstSkipRef.current = false;
+      } else {
+        effectEvent();
+      }
+    }, [open]);
+  }
 
   /********************************************************************************************************************
    * Commands
@@ -286,8 +300,8 @@ const PFormYearPicker = ({
     () => ({
       getType: () => 'PFormYearPicker',
       getName: () => name,
-      getReset: () => getFinalValue(initValue),
-      reset: () => updateValue(initValue),
+      getReset: () => getFinalValue(initValueRef.current),
+      reset: () => updateValue(initValueRef.current),
       getValue: () => valueRef.current,
       setValue: updateValue,
       getData: () => dataRef.current,
@@ -300,8 +314,7 @@ const PFormYearPicker = ({
       focus,
       focusValidate: focus,
       validate: () => validate(valueRef.current),
-      setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
-        setErrorErrorHelperText(error, error ? errorHelperText : undefined),
+      setError: setErrorErrorHelperText,
     }),
     [
       dataRef,
@@ -309,8 +322,9 @@ const PFormYearPicker = ({
       exceptValue,
       focus,
       hidden,
-      initValue,
+      initValueRef,
       name,
+      setData,
       setErrorErrorHelperText,
       updateValue,
       validate,
@@ -329,6 +343,7 @@ const PFormYearPicker = ({
    * Event Handler
    * ******************************************************************************************************************/
 
+  /** handleContainerMouseDown */
   const handleContainerMouseDown = useCallback(() => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -337,6 +352,7 @@ const PFormYearPicker = ({
     mouseDownTimeRef.current = new Date().getTime();
   }, []);
 
+  /** handleContainerFocus */
   const handleContainerFocus = useCallback(() => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -344,6 +360,7 @@ const PFormYearPicker = ({
     }
   }, []);
 
+  /** handleContainerBlur */
   const handleContainerBlur = useCallback(() => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -358,6 +375,7 @@ const PFormYearPicker = ({
     }
   }, []);
 
+  /** handleContainerChange */
   const handleContainerChange = useCallback(
     (newValue: PFormYearPickerBaseValue, isClick: boolean) => {
       updateValue(newValue);
@@ -370,6 +388,7 @@ const PFormYearPicker = ({
     [name, onValueChangeByUser, updateValue]
   );
 
+  /** handleInputDatePickerChange */
   const handleInputDatePickerChange = useCallback(
     (v: PrivateDatePickerValue) => {
       const newValue = v ? dateToValue(v) : v;
@@ -381,12 +400,14 @@ const PFormYearPicker = ({
     [name, onValueChangeByUser, updateValue]
   );
 
+  /** handleInputDatePickerFocus */
   const handleInputDatePickerFocus = useCallback(() => {
     if (readOnly || disabled) return;
 
     setOpen(true);
   }, [readOnly, disabled]);
 
+  /** handleInputDatePickerShouldDisableYear */
   const handleInputDatePickerShouldDisableYear = useCallback(
     (year: Dayjs) => {
       return (!!disablePast && year.year() < dateInfo.nowYear) || (!!disableFuture && year.year() > dateInfo.nowYear);
@@ -419,15 +440,17 @@ const PFormYearPicker = ({
         >
           <PrivateStyledTooltip
             open={open}
-            PopperProps={{
-              modifiers: [
-                {
-                  name: 'offset',
-                  options: {
-                    offset: [0, error && errorHelperText ? 8 : -14],
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: 'offset',
+                    options: {
+                      offset: [0, error && errorHelperText ? 8 : -14],
+                    },
                   },
-                },
-              ],
+                ],
+              },
             }}
             title={
               <div style={{ display: 'flex' }}>

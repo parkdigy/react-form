@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, ReactNode, useCallback, useMemo, useEffectEvent } from 'react';
 import classNames from 'classnames';
 import { Box, Checkbox, Chip, CircularProgress, MenuItem, SelectProps } from '@mui/material';
 import { empty, notEmpty, equal } from '@pdg/compare';
@@ -61,7 +61,9 @@ function PFormSelect<
    * Ref
    * ******************************************************************************************************************/
 
+  const initValueRef = useAutoUpdateRef(initValue);
   const onLoadItemsRef = useAutoUpdateRef(onLoadItems);
+  const onChangeRef = useAutoUpdateRef(onChange);
 
   /********************************************************************************************************************
    * FormState
@@ -113,14 +115,9 @@ function PFormSelect<
     }
   }, [initStartAdornment, isOnGetItemLoading, loading]);
 
-  /********************************************************************************************************************
-   * State - items
-   * ******************************************************************************************************************/
-
+  /** items */
   const [items, setItems] = useState(initItems);
-  if (useChanged(initItems)) {
-    setItems(initItems);
-  }
+  useChanged(initItems) && setItems(initItems);
 
   if (useChanged(items, true)) {
     if (items) {
@@ -206,10 +203,19 @@ function PFormSelect<
     [multiple, formValueSeparator, itemsValues, onValue]
   );
 
-  const [value, setValue] = useState<Props['value']>(getFinalValue(initValue));
-  useChanged(initValue) && setValue(getFinalValue(initValue));
-
+  const [value, _setValue] = useState<Props['value']>(getFinalValue(initValue));
+  useChanged(initValue) && _setValue(getFinalValue(initValue));
   const valueRef = useAutoUpdateRef(value);
+  const setValue = useCallback(
+    (value: React.SetStateAction<Props['value']>) => {
+      _setValue((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        valueRef.current = newValue;
+        return newValue;
+      });
+    },
+    [valueRef]
+  );
 
   /** value 변경 함수 */
   const updateValue = useCallback(
@@ -217,25 +223,28 @@ function PFormSelect<
       const finalValue = skipGetFinalValue ? newValue : getFinalValue(newValue);
       setValue(finalValue);
 
-      if (onChange) onChange(finalValue as any);
+      onChangeRef.current?.(finalValue as any);
       onValueChange(name, finalValue as any);
 
       return finalValue;
     },
-    [getFinalValue, name, onChange, onValueChange]
+    [getFinalValue, name, onChangeRef, onValueChange, setValue]
   );
-
-  /********************************************************************************************************************
-   * multiple 변경 시 updateValue 호출
-   * ******************************************************************************************************************/
-
-  if (useChanged(multiple)) {
-    updateValue(value);
-  }
 
   /********************************************************************************************************************
    * Effect
    * ******************************************************************************************************************/
+  {
+    const effectEvent = useEffectEvent(() => updateValue(valueRef.current));
+    const firstSkipRef = React.useRef(true);
+    useEffect(() => {
+      if (firstSkipRef.current) {
+        firstSkipRef.current = false;
+      } else {
+        effectEvent();
+      }
+    }, []);
+  }
 
   useEffect(() => {
     if (onLoadItemsRef.current) {
@@ -253,18 +262,20 @@ function PFormSelect<
   const isSelectedPlaceholder = notEmpty(items) && empty(value) && !!placeholder && !hasEmptyValue;
 
   /********************************************************************************************************************
-   * Function - getExtraCommands
+   * Function
    * ******************************************************************************************************************/
 
+  /** getBaseCommands */
   const getBaseCommands = useCallback((): Partial<Commands> => {
     return {
-      getReset: () => getFinalValue(initValue),
-      reset: () => updateValue(initValue),
+      getReset: () => getFinalValue(initValueRef.current),
+      reset: () => updateValue(initValueRef.current),
       getValue: () => valueRef.current as any,
       setValue: (value: Props['value']) => updateValue(value),
     };
-  }, [getFinalValue, initValue, updateValue, valueRef]);
+  }, [getFinalValue, initValueRef, updateValue, valueRef]);
 
+  /** getExtraCommands */
   const getExtraCommands = useCallback((): PFormSelectExtraCommands<T> => {
     let lastItems = items;
     let lastLoading = loading;
@@ -299,6 +310,7 @@ function PFormSelect<
    * Event Handler
    * ******************************************************************************************************************/
 
+  /** handleRef */
   const handleRef = useCallback(
     (commands: PFormTextFieldCommands<Value, false> | null) => {
       if (ref) {
@@ -320,6 +332,7 @@ function PFormSelect<
     [ref, getBaseCommands, getExtraCommands]
   );
 
+  /** handleAddValueItem */
   const handleAddValueItem = useCallback(
     (id: string, commands: PFormValueItemCommands<Value, false, T>) => {
       onAddValueItem(id, {
@@ -331,21 +344,11 @@ function PFormSelect<
     [onAddValueItem, getBaseCommands, getExtraCommands]
   );
 
-  const handleChange = (newValue: Value) => {
-    updateValue(newValue);
-  };
-
-  const handleValue = useCallback(
-    (value: Value) => {
-      return getFinalValue(value);
-    },
-    [getFinalValue]
-  );
-
   /********************************************************************************************************************
    * Render Variable
    * ******************************************************************************************************************/
 
+  /** finalValue */
   const finalValue = useMemo(() => {
     let newFinalValue;
     if (notEmpty(items)) {
@@ -368,6 +371,7 @@ function PFormSelect<
     return newFinalValue;
   }, [emptyValue, items, multiple, value]);
 
+  /** selectProps */
   const selectProps = useMemo(() => {
     const finalSelectProps: SelectProps = {
       displayEmpty: true,
@@ -403,6 +407,7 @@ function PFormSelect<
     return finalSelectProps;
   }, [finalValue, isSelectedPlaceholder, itemValueLabels, minWidth, multiple, placeholder, width]);
 
+  /** slotProps */
   const slotProps = useMemo(() => {
     const inputLabelAdditionalProps: { shrink?: boolean } = {};
     if (hasEmptyValue || (!hasEmptyValue && placeholder)) {
@@ -447,8 +452,8 @@ function PFormSelect<
         clear={false}
         readOnly={readOnly || empty(items)}
         slotProps={slotProps}
-        onChange={handleChange}
-        onValue={handleValue}
+        onChange={updateValue}
+        onValue={getFinalValue}
       >
         {isSelectedPlaceholder && (
           <MenuItem key={'$$$EmptyValuePlaceholder$$$'} value='' disabled sx={{ display: 'none' }}>

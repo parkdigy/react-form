@@ -5,6 +5,9 @@ import { Grid } from '@mui/material';
 import { PFormHidden } from '../../PFormItemTextFieldBase';
 import { StyledItem } from './PSearchGroup.style.private';
 
+/********************************************************************************************************************
+ * isReactFragment
+ * ******************************************************************************************************************/
 const isReactFragment = (child: ReactElement) => {
   try {
     return child.type.toString() === React.Fragment.toString();
@@ -13,6 +16,9 @@ const isReactFragment = (child: ReactElement) => {
   }
 };
 
+/********************************************************************************************************************
+ * removeReactFragment
+ * ******************************************************************************************************************/
 const removeReactFragment = (el: ReactElement, key?: string | number): any => {
   if (isReactFragment(el)) {
     const children: ReactElement | ReactElement[] = (el.props as any).children;
@@ -48,17 +54,20 @@ const removeReactFragment = (el: ReactElement, key?: string | number): any => {
   }
 };
 
-const PSearchGroup: React.FC<PSearchGroupProps> = ({
+/********************************************************************************************************************
+ * PSearchGroup
+ * ******************************************************************************************************************/
+const PSearchGroup = ({
   children,
   className,
   style,
   sx,
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   max,
   align,
   hidden,
   spacing = 1,
-}) => {
+}: PSearchGroupProps) => {
   return (
     <Grid
       className={classNames(className, 'PSearchGroup')}

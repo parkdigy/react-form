@@ -1,4 +1,14 @@
-import React, { useEffect, useState, useCallback, useId, ReactNode, useRef, useMemo, FocusEvent } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useId,
+  ReactNode,
+  useRef,
+  useMemo,
+  FocusEvent,
+  useEffectEvent,
+} from 'react';
 import classNames from 'classnames';
 import {
   Autocomplete,
@@ -27,13 +37,14 @@ function PFormAutocomplete<
   Items extends PFormAutocompleteItems<T> = PFormAutocompleteItems<T>,
 >({
   ref,
+  /********************************************************************************************************************/
   variant: initVariant,
   size: initSize,
   color: initColor,
   focused: initFocused,
   labelShrink: initLabelShrink,
   fullWidth: initFullWidth,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   name,
   labelIcon,
   label,
@@ -68,13 +79,13 @@ function PFormAutocomplete<
   onRenderTag,
   onAddItem,
   getOptionDisabled,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   onChange,
   onValue,
   onValidate,
   onFocus,
   onBlur,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   className,
   style: initStyle,
   sx,
@@ -86,12 +97,6 @@ function PFormAutocomplete<
   type Props = PFormAutocompleteProps<T, Multiple, Items>;
   type Commands = PFormAutocompleteCommands<T, Multiple>;
   type ComponentValue = PFormAutocompleteComponentValue<T, Multiple>;
-
-  /********************************************************************************************************************
-   * Props Changed
-   * ******************************************************************************************************************/
-
-  const isAsyncChanged = useChanged(async);
 
   /********************************************************************************************************************
    * ID
@@ -109,10 +114,12 @@ function PFormAutocomplete<
    * Ref
    * ******************************************************************************************************************/
 
+  const initValueRef = useAutoUpdateRef(initValue);
   const textFieldRef = useRef<PFormTextFieldCommands>(null);
-  // const oldComponentValue = useRef<ComponentValue>(null);
   const onChangeRef = useAutoUpdateRef(onChange);
   const onValidateRef = useAutoUpdateRef(onValidate);
+  const onLoadItemsRef = useAutoUpdateRef(onLoadItems);
+  const onAsyncLoadValueItemRef = useAutoUpdateRef(onAsyncLoadValueItem);
   const onFocusRef = useAutoUpdateRef(onFocus);
   const onBlurRef = useAutoUpdateRef(onBlur);
 
@@ -146,60 +153,71 @@ function PFormAutocomplete<
   const labelShrink = initLabelShrink ?? formLabelShrink;
   const fullWidth = initFullWidth ?? formFullWidth;
 
-  /********************************************************************************************************************
-   * State - error
-   * ******************************************************************************************************************/
+  /** error */
+  const [error, _setError] = useState(initError);
+  useChanged(initError) && _setError(initError);
+  const errorRef = useAutoUpdateRef(error);
+  const setError = useCallback(
+    (value: React.SetStateAction<typeof error>) => {
+      _setError((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        errorRef.current = newValue;
+        return newValue;
+      });
+    },
+    [errorRef]
+  );
 
-  const [error, setError] = useState(initError);
-  useChanged(initError) && setError(initError);
-
-  /********************************************************************************************************************
-   * State - data
-   * ******************************************************************************************************************/
-
-  const [data, setData] = useState(initData);
-  useChanged(initData) && setData(initData);
-
+  /** data */
+  const [data, _setData] = useState(initData);
+  useChanged(initData) && _setData(initData);
   const dataRef = useAutoUpdateRef(data);
+  const setData = useCallback(
+    (value: React.SetStateAction<typeof data>) => {
+      _setData((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        dataRef.current = newValue;
+        return newValue;
+      });
+    },
+    [dataRef]
+  );
 
-  /********************************************************************************************************************
-   * State - disabled
-   * ******************************************************************************************************************/
-
+  /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
-
   const [disabled, setDisabled] = useState(finalInitDisabled);
   useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
 
-  /********************************************************************************************************************
-   * State - hidden
-   * ******************************************************************************************************************/
-
+  /** hidden */
   const [hidden, setHidden] = useState(initHidden);
   useChanged(initHidden) && setHidden(initHidden);
 
-  /********************************************************************************************************************
-   * State - loading
-   * ******************************************************************************************************************/
-
-  const [loading, setLoading] = useState(initLoading);
-  useChanged(initLoading) && setLoading(initLoading);
-
+  /** loading */
+  const [loading, _setLoading] = useState(initLoading);
+  useChanged(initLoading) && _setLoading(initLoading);
   const loadingRef = useAutoUpdateRef(loading);
+  const setLoading = useCallback(
+    (value: React.SetStateAction<typeof loading>) => {
+      _setLoading((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        loadingRef.current = newValue;
+        return newValue;
+      });
+    },
+    [loadingRef]
+  );
 
-  /********************************************************************************************************************
-   * State - items
-   * ******************************************************************************************************************/
-
+  /** items */
   const [items, _setItems] = useState(initItems);
   useChanged(initItems) && _setItems(initItems);
-
   const itemsRef = useAutoUpdateRef(items);
-
-  /** items 변경 함수 */
-  const setItems = useCallback((newItems: PFormAutocompleteItems<T> | undefined) => {
-    _setItems(newItems as Props['items']);
-  }, []);
+  const setItems = useCallback(
+    (newItems: PFormAutocompleteItems<T> | undefined) => {
+      _setItems(newItems as Props['items']);
+      itemsRef.current = newItems as Props['items'];
+    },
+    [itemsRef]
+  );
 
   /********************************************************************************************************************
    * State
@@ -245,7 +263,7 @@ function PFormAutocomplete<
   const setErrorErrorHelperText = useCallback(
     (error: boolean, errorHelperText: ReactNode) => {
       setError(error);
-      setErrorHelperText(errorHelperText);
+      setErrorHelperText(error ? errorHelperText : undefined);
     },
     [setError]
   );
@@ -330,17 +348,25 @@ function PFormAutocomplete<
 
   const [valueItem, setValueItem] = useState<ComponentValue | null>(null);
 
-  const [value, setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && setValue(getFinalValue(initValue));
-
+  const [value, _setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && _setValue(getFinalValue(initValue));
   const valueRef = useAutoUpdateRef(value);
+  const setValue = useCallback(
+    (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
+      _setValue((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        valueRef.current = newValue;
+        return newValue;
+      });
+    },
+    [valueRef]
+  );
 
   /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: Props['value'], skipGetFinalValue = false) => {
-      const finalValue = skipGetFinalValue ? newValue : getFinalValue(newValue);
+      const finalValue = skipGetFinalValue ? newValue : getFinalValueRef.current(newValue);
       setValue(finalValue);
-      valueRef.current = finalValue;
 
       if (error) validate(finalValue);
       onChangeRef.current?.(finalValue);
@@ -348,22 +374,24 @@ function PFormAutocomplete<
 
       return finalValue;
     },
-    [error, getFinalValue, name, onChangeRef, onValueChange, validate, valueRef]
+    [error, getFinalValueRef, name, onChangeRef, onValueChange, setValue, validate]
   );
-  const updateValueRef = useAutoUpdateRef(updateValue);
 
   /********************************************************************************************************************
    * Change
    * ******************************************************************************************************************/
 
-  const firstSkipRef = useRef(true);
-  useEffect(() => {
-    if (firstSkipRef.current) {
-      firstSkipRef.current = false;
-    } else {
-      updateValueRef.current(getFinalValueRef.current(valueRef.current));
-    }
-  }, [getFinalValueRef, multiple, updateValueRef, valueRef]);
+  {
+    const effectEvent = useEffectEvent(() => updateValue(getFinalValueRef.current(valueRef.current)));
+    const firstSkipRef = useRef(true);
+    useEffect(() => {
+      if (firstSkipRef.current) {
+        firstSkipRef.current = false;
+      } else {
+        effectEvent();
+      }
+    }, [multiple]);
+  }
 
   /********************************************************************************************************************
    * Memo
@@ -431,30 +459,6 @@ function PFormAutocomplete<
     }
   }
 
-  /** async value, valueItem 변경 시 처리 */
-  const isValueChanged = useChanged(value);
-  const isValueItemChanged = useChanged(valueItem);
-  if (isAsyncChanged || isValueChanged || isValueItemChanged) {
-    if (async && onAsyncLoadValueItem) {
-      if (value != null) {
-        if (!valueItem) {
-          onAsyncLoadValueItem(value).then((valueItem) => {
-            setValueItem(valueItem);
-            if (valueItem) {
-              if (Array.isArray(valueItem)) {
-                setItems(valueItem);
-              } else {
-                setItems([valueItem]);
-              }
-            }
-          });
-        }
-      } else {
-        setValueItem(null);
-      }
-    }
-  }
-
   /********************************************************************************************************************
    * Function
    * ******************************************************************************************************************/
@@ -471,58 +475,84 @@ function PFormAutocomplete<
    * Effect
    * ******************************************************************************************************************/
 
-  const [initialized, setInitialized] = useState(false);
-  if (!initialized) {
-    setInitialized(true);
-
-    if (!async && onLoadItems) {
-      showOnGetItemLoading();
-      onLoadItems().then((items) => {
-        setItems(items);
-        hideOnGetItemLoading();
-      });
-    }
+  {
+    const effectEvent = useEffectEvent(() => {
+      if (!async && onLoadItemsRef.current) {
+        showOnGetItemLoading();
+        onLoadItemsRef.current().then((items) => {
+          setItems(items);
+          hideOnGetItemLoading();
+        });
+      }
+    });
+    useEffect(() => effectEvent(), []);
   }
 
-  const isInputValueChanged = useChanged(inputValue);
-  if (isAsyncChanged || isInputValueChanged) {
-    if (async && onLoadItems) {
-      clearTimeoutRef(asyncTimeoutRef);
-
-      if (inputValue != null) {
-        showOnGetItemLoading();
-
-        setAsyncTimeout(() => {
-          onLoadItems?.(inputValue)
-            .then((items) => {
-              if (componentValue) {
-                if (Array.isArray(componentValue)) {
-                  const exceptValues = componentValue.map((info) => info.value);
-                  setItems([...componentValue, ...items.filter((info) => !exceptValues.includes(info.value))]);
+  {
+    const effectEvent = useEffectEvent(() => {
+      if (async && onAsyncLoadValueItemRef.current) {
+        if (value != null) {
+          if (!valueItem) {
+            onAsyncLoadValueItemRef.current(value).then((valueItem) => {
+              setValueItem(valueItem);
+              if (valueItem) {
+                if (Array.isArray(valueItem)) {
+                  setItems(valueItem);
                 } else {
-                  const exceptValue = componentValue.value;
-                  setItems([componentValue, ...items.filter((info) => info.value !== exceptValue)]);
+                  setItems([valueItem]);
                 }
-              } else {
-                setItems(items);
               }
-            })
-            .finally(() => {
-              hideOnGetItemLoading();
             });
-        }, 300);
-      } else {
-        if (Array.isArray(componentValue)) {
-          setItems(componentValue);
+          }
         } else {
-          if (componentValue) {
-            setItems([componentValue]);
+          setValueItem(null);
+        }
+      }
+    });
+    useEffect(() => effectEvent(), [async, value, valueItem]);
+  }
+
+  {
+    const effectEvent = useEffectEvent(() => {
+      if (async && onLoadItems) {
+        clearTimeoutRef(asyncTimeoutRef);
+
+        if (inputValue != null) {
+          showOnGetItemLoading();
+
+          setAsyncTimeout(() => {
+            onLoadItems?.(inputValue)
+              .then((items) => {
+                if (componentValue) {
+                  if (Array.isArray(componentValue)) {
+                    const exceptValues = componentValue.map((info) => info.value);
+                    setItems([...componentValue, ...items.filter((info) => !exceptValues.includes(info.value))]);
+                  } else {
+                    const exceptValue = componentValue.value;
+                    setItems([componentValue, ...items.filter((info) => info.value !== exceptValue)]);
+                  }
+                } else {
+                  setItems(items);
+                }
+              })
+              .finally(() => {
+                hideOnGetItemLoading();
+              });
+          }, 300);
+        } else {
+          if (Array.isArray(componentValue)) {
+            setItems(componentValue);
           } else {
-            setItems([]);
+            if (componentValue) {
+              setItems([componentValue]);
+            } else {
+              setItems([]);
+            }
           }
         }
       }
-    }
+    });
+    useEffect(() => effectEvent(), [async, inputValue]);
   }
 
   /********************************************************************************************************************
@@ -541,8 +571,8 @@ function PFormAutocomplete<
     () => ({
       getType: () => 'PFormAutocomplete',
       getName: () => name,
-      getReset: () => getFinalValue(initValue),
-      reset: () => updateValue(initValue),
+      getReset: () => getFinalValueRef.current(initValueRef.current),
+      reset: () => updateValue(initValueRef.current),
       getValue: () => valueRef.current,
       setValue: (newValue) => updateValue(newValue),
       getData: () => dataRef.current,
@@ -555,8 +585,7 @@ function PFormAutocomplete<
       focus,
       focusValidate: focus,
       validate: () => validate(valueRef.current),
-      setError: (error: boolean, errorText: ReactNode | undefined) =>
-        setErrorErrorHelperText(error, error ? errorText : undefined),
+      setError: setErrorErrorHelperText,
       getFormValueSeparator: () => formValueSeparator,
       isFormValueSort: () => !!formValueSort,
       getItems: () => itemsRef.current,
@@ -565,9 +594,10 @@ function PFormAutocomplete<
       getLoading: () => !!loadingRef.current,
       setLoading: (loading) => setLoading(loading),
       reloadItems: () => {
-        if (!async && onLoadItems) {
+        if (!async && onLoadItemsRef.current) {
           showOnGetItemLoading();
-          onLoadItems()
+          onLoadItemsRef
+            .current()
             .then((items) => {
               setItems(items);
             })
@@ -586,17 +616,19 @@ function PFormAutocomplete<
       focus,
       formValueSeparator,
       formValueSort,
-      getFinalValue,
+      getFinalValueRef,
       hidden,
       hideOnGetItemLoading,
-      initValue,
+      initValueRef,
       itemsRef,
       loadingRef,
       multiple,
       name,
-      onLoadItems,
+      onLoadItemsRef,
+      setData,
       setErrorErrorHelperText,
       setItems,
+      setLoading,
       showOnGetItemLoading,
       updateValue,
       validate,
@@ -634,7 +666,7 @@ function PFormAutocomplete<
           }
         }
 
-        const finalValue = getFinalValue(newValue);
+        const finalValue = getFinalValueRef.current(newValue);
         if (!equal(valueRef.current, finalValue)) {
           updateValue(finalValue, true);
           setValueItem(componentValue);
@@ -662,7 +694,7 @@ function PFormAutocomplete<
         go();
       }
     },
-    [multiple, getFinalValue, valueRef, updateValue, onValueChangeByUser, name, onRequestSearchSubmit, onAddItem]
+    [multiple, getFinalValueRef, valueRef, updateValue, onValueChangeByUser, name, onRequestSearchSubmit, onAddItem]
   );
 
   const handleGetOptionDisabled = useCallback(

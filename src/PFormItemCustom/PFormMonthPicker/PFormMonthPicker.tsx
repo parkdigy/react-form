@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useEffectEvent, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
 import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
@@ -29,13 +29,14 @@ const DEFAULT_MAX_VALUE = {
 
 const PFormMonthPicker = ({
   ref,
+  /********************************************************************************************************************/
   variant: initVariant,
   size: initSize,
   color: initColor,
   focused: initFocused,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   hidden: initHidden,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   name,
   labelIcon,
   label,
@@ -50,7 +51,7 @@ const PFormMonthPicker = ({
   exceptValue,
   onChange,
   onValidate,
-  // -------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   icon,
   format = 'YYYY년 MM월',
   labelShrink: initLabelShrink,
@@ -64,7 +65,7 @@ const PFormMonthPicker = ({
   endAdornment,
   formValueYearNameSuffix = '_year',
   formValueMonthNameSuffix = '_month',
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   className,
   style: initStyle,
   sx,
@@ -110,44 +111,15 @@ const PFormMonthPicker = ({
    * Ref
    * ******************************************************************************************************************/
 
+  const initValueRef = useAutoUpdateRef(initValue);
   const ratingRef = useRef<HTMLSpanElement>(null);
   const inputRef = useRef<HTMLInputElement>(undefined);
   const closeTimeoutRef = useRef<NodeJS.Timeout>(undefined);
   const mouseDownTimeRef = useRef<number>(undefined);
   const inputDatePickerErrorRef = useRef<DateValidationError>(null);
   const openValueRef = useRef<PFormMonthPickerValue>(undefined);
-
-  /********************************************************************************************************************
-   * State - error
-   * ******************************************************************************************************************/
-
-  const [error, setError] = useState(initError);
-  useChanged(initError) && setError(initError);
-
-  /********************************************************************************************************************
-   * State - data
-   * ******************************************************************************************************************/
-
-  const [data, setData] = useState(initData);
-  useChanged(initData) && setData(initData);
-
-  const dataRef = useAutoUpdateRef(data);
-
-  /********************************************************************************************************************
-   * State - disabled
-   * ******************************************************************************************************************/
-
-  const finalInitDisabled = initDisabled ?? formDisabled;
-
-  const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
-
-  /********************************************************************************************************************
-   * State - hidden
-   * ******************************************************************************************************************/
-
-  const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  const onChangeRef = useAutoUpdateRef(onChange);
+  const onValidateRef = useAutoUpdateRef(onValidate);
 
   /********************************************************************************************************************
    * State
@@ -156,18 +128,59 @@ const PFormMonthPicker = ({
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
   const [open, setOpen] = useState(false);
 
+  /** error */
+  const [error, _setError] = useState(initError);
+  useChanged(initError) && _setError(initError);
+  const errorRef = useAutoUpdateRef(error);
+  const setError = useCallback(
+    (value: React.SetStateAction<typeof error>) => {
+      _setError((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        errorRef.current = newValue;
+        return newValue;
+      });
+    },
+    [errorRef]
+  );
+
+  /** data */
+  const [data, _setData] = useState(initData);
+  useChanged(initData) && _setData(initData);
+  const dataRef = useAutoUpdateRef(data);
+  const setData = useCallback(
+    (value: React.SetStateAction<typeof data>) => {
+      _setData((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        dataRef.current = newValue;
+        return newValue;
+      });
+    },
+    [dataRef]
+  );
+
+  /** disabled */
+  const finalInitDisabled = initDisabled ?? formDisabled;
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /** hidden */
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
+
   /********************************************************************************************************************
    * Function
    * ******************************************************************************************************************/
 
+  /** setErrorErrorHelperText */
   const setErrorErrorHelperText = useCallback(
     function (error: Props['error'], errorHelperText: Props['helperText']) {
       setError(error);
-      setErrorHelperText(errorHelperText);
+      setErrorHelperText(error ? errorHelperText : undefined);
     },
     [setError]
   );
 
+  /** validate */
   const validate = useCallback(
     function (value: PFormMonthPickerValue) {
       if (required && empty(value)) {
@@ -180,8 +193,8 @@ const PFormMonthPicker = ({
         return false;
       }
 
-      if (onValidate) {
-        const onValidateResult = onValidate(value);
+      if (onValidateRef.current) {
+        const onValidateResult = onValidateRef.current(value);
         if (onValidateResult != null && onValidateResult !== true) {
           setErrorErrorHelperText(true, onValidateResult);
           return false;
@@ -192,34 +205,40 @@ const PFormMonthPicker = ({
 
       return true;
     },
-    [onValidate, required, setErrorErrorHelperText]
+    [onValidateRef, required, setErrorErrorHelperText]
   );
 
   /********************************************************************************************************************
    * value
    * ******************************************************************************************************************/
 
-  // const [valueRef, value, _setValue] = useAutoUpdateRefState(initValue, getFinalValue);
-
-  const [value, setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && setValue(getFinalValue(initValue));
-
+  const [value, _setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && _setValue(getFinalValue(initValue));
   const valueRef = useAutoUpdateRef(value);
+  const setValue = useCallback(
+    (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
+      _setValue((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        valueRef.current = newValue;
+        return newValue;
+      });
+    },
+    [valueRef]
+  );
 
   /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: Props['value']) => {
       const finalValue = getFinalValue(newValue);
       setValue(finalValue);
-      valueRef.current = finalValue;
 
       if (error) validate(finalValue);
-      if (onChange) onChange(finalValue);
+      onChangeRef.current?.(finalValue);
       onValueChange(name, finalValue);
 
       return finalValue;
     },
-    [error, name, onChange, onValueChange, validate, valueRef]
+    [error, name, onChangeRef, onValueChange, setValue, validate]
   );
 
   /********************************************************************************************************************
@@ -270,17 +289,8 @@ const PFormMonthPicker = ({
     }
   }, []);
 
-  /********************************************************************************************************************
-   * Change
-   * ******************************************************************************************************************/
-
-  const firstSkipRef = useRef(true);
-  const nameRef = useAutoUpdateRef(name);
-  const onRequestSearchSubmitRef = useAutoUpdateRef(onRequestSearchSubmit);
-  useEffect(() => {
-    if (firstSkipRef.current) {
-      firstSkipRef.current = false;
-    } else {
+  {
+    const effectEvent = useEffectEvent(() => {
       if (open) {
         openValueRef.current = valueRef.current;
       } else {
@@ -295,12 +305,20 @@ const PFormMonthPicker = ({
           }
 
           if (runOnRequestSearchSubmit) {
-            onRequestSearchSubmitRef.current(nameRef.current, valueRef.current);
+            onRequestSearchSubmit(name, valueRef.current);
           }
         }
       }
-    }
-  }, [nameRef, onRequestSearchSubmit, onRequestSearchSubmitRef, open, valueRef]);
+    });
+    const firstSkipRef = useRef(true);
+    useEffect(() => {
+      if (firstSkipRef.current) {
+        firstSkipRef.current = false;
+      } else {
+        effectEvent();
+      }
+    }, [open]);
+  }
 
   /********************************************************************************************************************
    * Function
@@ -321,8 +339,8 @@ const PFormMonthPicker = ({
     () => ({
       getType: () => 'PFormMonthPicker',
       getName: () => name,
-      getReset: () => getFinalValue(initValue),
-      reset: () => updateValue(initValue),
+      getReset: () => getFinalValue(initValueRef.current),
+      reset: () => updateValue(initValueRef.current),
       getValue: () => valueRef.current,
       setValue: updateValue,
       getData: () => dataRef.current,
@@ -355,8 +373,7 @@ const PFormMonthPicker = ({
       focus,
       focusValidate: focus,
       validate: () => validate(valueRef.current),
-      setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
-        setErrorErrorHelperText(error, error ? errorHelperText : undefined),
+      setError: setErrorErrorHelperText,
       getFormValueYearNameSuffix: () => formValueYearNameSuffix,
       getFormValueMonthNameSuffix: () => formValueMonthNameSuffix,
       getFormValueYearName: () => {
@@ -374,8 +391,9 @@ const PFormMonthPicker = ({
       formValueMonthNameSuffix,
       formValueYearNameSuffix,
       hidden,
-      initValue,
+      initValueRef,
       name,
+      setData,
       setErrorErrorHelperText,
       updateValue,
       validate,
@@ -394,6 +412,7 @@ const PFormMonthPicker = ({
    * Event Handler
    * ******************************************************************************************************************/
 
+  /** handleContainerMouseDown */
   const handleContainerMouseDown = useCallback(() => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -402,6 +421,7 @@ const PFormMonthPicker = ({
     mouseDownTimeRef.current = new Date().getTime();
   }, []);
 
+  /** handleContainerFocus */
   const handleContainerFocus = useCallback(() => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -409,6 +429,7 @@ const PFormMonthPicker = ({
     }
   }, []);
 
+  /** handleContainerBlur */
   const handleContainerBlur = useCallback(() => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -423,6 +444,7 @@ const PFormMonthPicker = ({
     }
   }, []);
 
+  /** handleContainerChange */
   const handleContainerChange = useCallback(
     (newValue: PFormMonthPickerBaseValue, isMonthSelect: boolean) => {
       updateValue(newValue);
@@ -435,12 +457,14 @@ const PFormMonthPicker = ({
     [name, onValueChangeByUser, updateValue]
   );
 
+  /** handleInputDatePickerFocus */
   const handleInputDatePickerFocus = useCallback(() => {
     if (readOnly || disabled) return;
 
     setOpen(true);
   }, [readOnly, disabled]);
 
+  /** handleInputDatePickerShouldDisableYear */
   const handleInputDatePickerShouldDisableYear = useCallback(
     (date: Dayjs) => {
       const dateYm = Number(date.format('YYYYMM'));
@@ -453,19 +477,22 @@ const PFormMonthPicker = ({
    * Variables
    * ******************************************************************************************************************/
 
-  const valueDate = value ? valueToDate(value) : null;
+  const valueDate = useMemo(() => (value ? valueToDate(value) : null), [value]);
 
-  const inputDatePickerProps = {
-    variant,
-    size,
-    color,
-    labelShrink,
-    fullWidth,
-    disabled,
-    format,
-    minDate: dateInfo.minDate,
-    maxDate: dateInfo.maxDate,
-  };
+  const inputDatePickerProps = useMemo(
+    () => ({
+      variant,
+      size,
+      color,
+      labelShrink,
+      fullWidth,
+      disabled,
+      format,
+      minDate: dateInfo.minDate,
+      maxDate: dateInfo.maxDate,
+    }),
+    [color, dateInfo.maxDate, dateInfo.minDate, disabled, format, fullWidth, labelShrink, size, variant]
+  );
 
   /********************************************************************************************************************
    * Render
@@ -486,15 +513,17 @@ const PFormMonthPicker = ({
         >
           <PrivateStyledTooltip
             open={open}
-            PopperProps={{
-              modifiers: [
-                {
-                  name: 'offset',
-                  options: {
-                    offset: [0, error && errorHelperText ? 8 : -14],
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: 'offset',
+                    options: {
+                      offset: [0, error && errorHelperText ? 8 : -14],
+                    },
                   },
-                },
-              ],
+                ],
+              },
             }}
             title={
               <div style={{ display: 'flex' }}>

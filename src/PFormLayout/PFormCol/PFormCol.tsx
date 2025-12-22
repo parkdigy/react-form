@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useId, useMemo } from 'react';
+import React, { useEffect, useLayoutEffect, useId, useMemo, useEffectEvent } from 'react';
 import classNames from 'classnames';
 import { FormHelperText, Grid } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
@@ -6,10 +6,10 @@ import { PFormColProps as Props } from './PFormCol.types';
 import { useFormState } from '../../PFormContext';
 import PFormContextProvider from '../../PFormContextProvider';
 import { StyledContentContainerBox, StyledFormLabel, StyledFormLabelContainerDiv } from './PFormCol.style.private';
-import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const PFormCol = ({
   ref,
+  /********************************************************************************************************************/
   variant: initVariant,
   size: initSize,
   color: initColor,
@@ -18,7 +18,7 @@ const PFormCol = ({
   labelShrink: initLabelShrink,
   fullWidth: initFullWidth,
   fullHeight,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   gap: initGap,
   icon,
   label,
@@ -27,7 +27,7 @@ const PFormCol = ({
   warning,
   helperText,
   helperTextShift,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   xs,
   className,
   children,
@@ -95,32 +95,31 @@ const PFormCol = ({
   const formColWidth = resizedFormColWidth ?? 0;
 
   /********************************************************************************************************************
-   * LayoutEffect
-   * ******************************************************************************************************************/
-
-  const onAddFormColRef = useAutoUpdateRef(onAddFormCol);
-  const onRemoveFormColRef = useAutoUpdateRef(onRemoveFormCol);
-  useLayoutEffect(() => {
-    onAddFormColRef.current?.(id, xs);
-    return () => {
-      onRemoveFormColRef.current?.(id);
-      onRemoveFormColRef.current = undefined;
-    };
-  }, [id, onAddFormColRef, onRemoveFormColRef, xs]);
-
-  /********************************************************************************************************************
    * Effect
    * ******************************************************************************************************************/
 
-  useEffect(() => {
-    if (ref) {
-      if (typeof ref === 'function') {
-        ref(gridRef.current);
-      } else {
-        ref.current = gridRef.current;
+  {
+    const effectEvent = useEffectEvent(() => {
+      if (onAddFormCol) onAddFormCol(id, xs);
+      return () => {
+        if (onRemoveFormCol) onRemoveFormCol(id);
+      };
+    });
+    useLayoutEffect(() => effectEvent(), [xs]);
+  }
+
+  {
+    const effectEvent = useEffectEvent(() => {
+      if (ref) {
+        if (typeof ref === 'function') {
+          ref(gridRef.current);
+        } else {
+          ref.current = gridRef.current;
+        }
       }
-    }
-  }, [gridRef, ref]);
+    });
+    useEffect(() => effectEvent(), [ref]);
+  }
 
   /********************************************************************************************************************
    * Render

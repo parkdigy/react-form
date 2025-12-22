@@ -9,11 +9,12 @@ import { PIcon } from '@pdg/react-component';
 
 const PFormItemBase = ({
   ref,
+  /********************************************************************************************************************/
   variant: initVariant,
   size: initSize,
   color: initColor,
   fullWidth: initFullWidth,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   control,
   controlHeight,
   controlSingleHeight,
@@ -29,7 +30,7 @@ const PFormItemBase = ({
   hideLabel,
   hidden,
   autoSize,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   className,
   style,
   sx,
@@ -113,14 +114,16 @@ const PFormItemBase = ({
    * Variable
    * ******************************************************************************************************************/
 
-  // wrapStyle
-  const wrapStyle: CSSProperties = {
-    display: hidden ? 'none' : fullWidth ? 'block' : 'inline-flex',
-    width: fullWidth ? '100%' : undefined,
-  };
-  if (formColWithLabel) {
-    wrapStyle.marginTop = -20;
-  }
+  const wrapStyle = useMemo((): CSSProperties => {
+    const newWrapStyle: CSSProperties = {
+      display: hidden ? 'none' : fullWidth ? 'block' : 'inline-flex',
+      width: fullWidth ? '100%' : undefined,
+    };
+    if (formColWithLabel) {
+      newWrapStyle.marginTop = -20;
+    }
+    return newWrapStyle;
+  }, [formColWithLabel, fullWidth, hidden]);
 
   /********************************************************************************************************************
    * Render

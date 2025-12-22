@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { notEmpty } from '@pdg/compare';
 import { formatPersonalNo } from '@pdg/formatting';
 import { PFormPersonalNoProps as Props, PFormPersonalNoValue } from './PFormPersonalNo.types';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const PFormPersonalNo = ({
   className,
@@ -14,15 +15,22 @@ const PFormPersonalNo = ({
   ...props
 }: Props) => {
   /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
+
+  const onValueRef = useAutoUpdateRef(onValue);
+  const onValidateRef = useAutoUpdateRef(onValidate);
+
+  /********************************************************************************************************************
    * Event Handler
    * ******************************************************************************************************************/
 
   const handleValue = useCallback(
     (value: PFormPersonalNoValue) => {
       const newValue = formatPersonalNo(value.replace(/[^0-9]/gi, ''));
-      return onValue ? onValue(newValue) : newValue;
+      return onValueRef.current ? onValueRef.current(newValue) : newValue;
     },
-    [onValue]
+    [onValueRef]
   );
 
   const handleValidate = useCallback(
@@ -56,15 +64,15 @@ const PFormPersonalNo = ({
           if (sum != juminlast && juminlast != undefined) {
             return '유효하지 않은 값입니다.';
           }
-          return onValidate ? onValidate(value) : true;
+          return onValidateRef.current ? onValidateRef.current(value) : true;
         } else {
           return '유효하지 않은 값입니다.';
         }
       } else {
-        return onValidate ? onValidate(value) : true;
+        return onValidateRef.current ? onValidateRef.current(value) : true;
       }
     },
-    [onValidate, skipPersonalNumberValidateCheck]
+    [onValidateRef, skipPersonalNumberValidateCheck]
   );
 
   /********************************************************************************************************************

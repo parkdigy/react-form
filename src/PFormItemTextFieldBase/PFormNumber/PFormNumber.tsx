@@ -35,11 +35,30 @@ const PFormNumber = ({
   type Commands = PFormNumberCommands;
 
   /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
+
+  const initValueRef = useAutoUpdateRef(initValue);
+  const onChangeRef = useAutoUpdateRef(onChange);
+  const onValueRef = useAutoUpdateRef(onValue);
+  const onValidateRef = useAutoUpdateRef(onValidate);
+
+  /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
 
-  const [strValue, setStrValue] = useState<string | undefined>(initValue !== undefined ? `${initValue}` : '');
+  const [strValue, _setStrValue] = useState<string | undefined>(initValue !== undefined ? `${initValue}` : '');
   const strValueRef = useAutoUpdateRef(strValue);
+  const setStrValue = useCallback(
+    (value: React.SetStateAction<typeof strValue>) => {
+      _setStrValue((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        strValueRef.current = newValue;
+        return newValue;
+      });
+    },
+    [strValueRef]
+  );
 
   /********************************************************************************************************************
    * Memo
@@ -87,74 +106,78 @@ const PFormNumber = ({
    * Event Handler
    * ******************************************************************************************************************/
 
+  /** handleChange */
   const handleChange = useCallback(
     (value: string | undefined) => {
       if (Number(value) > Number.MAX_SAFE_INTEGER) {
         const newValue = Number.MAX_SAFE_INTEGER;
         const newStrValue = `${newValue}`;
-        if (strValue === newStrValue) {
+        if (strValueRef.current === newStrValue) {
           setStrValue(`${newValue} `);
         } else {
           setStrValue(`${newValue}`);
         }
-        onChange && onChange(newValue);
+        onChangeRef.current?.(newValue);
       } else if (Number(value) < Number.MIN_SAFE_INTEGER) {
         const newValue = Number.MIN_SAFE_INTEGER;
         const newStrValue = `${newValue}`;
-        if (strValue === newStrValue) {
+        if (strValueRef.current === newStrValue) {
           setStrValue(`${newValue} `);
         } else {
           setStrValue(`${newValue}`);
         }
-        onChange && onChange(newValue);
+        onChangeRef.current?.(newValue);
       } else {
         const newValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
-        onChange && onChange(newValue);
+        onChangeRef.current?.(newValue);
         setStrValue(value);
       }
     },
-    [onChange, strValue]
+    [onChangeRef, setStrValue, strValueRef]
   );
 
+  /** handleValue */
   const handleValue = useCallback(
     (value: string | undefined) => {
       let finalValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
-      if (onValue) {
-        finalValue = onValue(finalValue);
+      if (onValueRef.current) {
+        finalValue = onValueRef.current(finalValue);
       }
       return finalValue !== undefined ? finalValue.toString() : '';
     },
-    [onValue]
+    [onValueRef]
   );
 
+  /** handleValidate */
   const handleValidate = useCallback(
     (value: string | undefined) => {
-      if (onValidate) {
+      if (onValidateRef.current) {
         const finalValue = empty(value) || value === '-' || value === '.' ? undefined : Number(value);
-        return onValidate(finalValue);
+        return onValidateRef.current(finalValue);
       } else {
         return true;
       }
     },
-    [onValidate]
+    [onValidateRef]
   );
 
+  /** handleRef */
   const handleRef = useCallback(
     (commands: PFormTextFieldCommands<string> | null) => {
       if (ref) {
         const finalCommands: Commands | null = commands
           ? {
               ...commands,
-              getReset: () => initValue,
+              getReset: () => initValueRef.current,
               getValue: () => getFinalValue(strValueRef.current),
               setValue: (value: number | undefined) => {
-                const strValue = value !== undefined ? `${value}` : '';
-                if (strValue === strValue) {
-                  setStrValue(`${strValue} `);
+                const newStrValue = value !== undefined ? `${value}` : '';
+                if (strValueRef.current === newStrValue) {
+                  setStrValue(`${newStrValue} `);
                 } else {
-                  setStrValue(strValue);
+                  setStrValue(newStrValue);
                 }
-                onChange && onChange(value);
+                onChangeRef.current?.(value);
               },
             }
           : null;
@@ -166,7 +189,7 @@ const PFormNumber = ({
         }
       }
     },
-    [getFinalValue, initValue, onChange, ref, strValueRef]
+    [getFinalValue, initValueRef, onChangeRef, ref, setStrValue, strValueRef]
   );
 
   /********************************************************************************************************************

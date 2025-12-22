@@ -25,7 +25,7 @@ const PForm = ({
   children,
   style: initStyle,
   sx,
-  //--------------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   variant: initVariant = 'outlined',
   size: initSize = 'medium',
   color: initColor = 'primary',
@@ -37,7 +37,7 @@ const PForm = ({
   fullHeight: initFullHeight,
   disabled: initDisabled,
   submitWhenReturnKey: initSubmitWhenReturnKey,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   onSubmit: initOnSubmit,
   onInvalid: initOnValid,
   onValueChange: initOnValueChange,
@@ -89,7 +89,6 @@ const PForm = ({
   const fullWidth = initFullWidth ?? formFullWidth ?? true;
   const fullHeight = initFullHeight ?? formFullHeight ?? false;
   const submitWhenReturnKey = initSubmitWhenReturnKey ?? formSubmitWhenReturnKey ?? false;
-
   const disabled = initDisabled ?? formDisabled ?? false;
   const disabledRef = useAutoUpdateRef(disabled);
 
@@ -105,9 +104,10 @@ const PForm = ({
   const onValueChangeByUserRef = useAutoUpdateRef(initOnValueChangeByUser);
 
   /********************************************************************************************************************
-   * Function - submit
+   * Function
    * ******************************************************************************************************************/
 
+  /** submit */
   const submit = useCallback(() => {
     let isAllValid = true;
     let firstInvalidItemId: string;
@@ -252,6 +252,10 @@ const PForm = ({
     [findValueItem]
   );
 
+  /********************************************************************************************************************
+   * Commands
+   * ******************************************************************************************************************/
+
   const commands = useMemo((): PFormCommands => {
     return {
       submit,
@@ -370,6 +374,7 @@ const PForm = ({
    * FormContextValue
    * ******************************************************************************************************************/
 
+  /** handleAddValueItem */
   const handleAddValueItem = useCallback(
     (id: string, item: any) => {
       valueItems.current[id] = item;
@@ -378,6 +383,7 @@ const PForm = ({
     [formAddValueItem]
   );
 
+  /** handleRemoveValueItem */
   const handleRemoveValueItem = useCallback(
     (id: string) => {
       valueItems.current[id] = undefined;
@@ -386,6 +392,7 @@ const PForm = ({
     [formRemoveValueItem]
   );
 
+  /** handleValueChange */
   const handleValueChange = useCallback(
     (name: string, value: PFormValue) => {
       if (onValueChangeRef.current) onValueChangeRef.current(name, value);
@@ -394,6 +401,7 @@ const PForm = ({
     [formValueChange, onValueChangeRef]
   );
 
+  /** handleValueChangeByUser */
   const handleValueChangeByUser = useCallback(
     (name: string, value: any) => {
       if (onValueChangeByUserRef.current) onValueChangeByUserRef.current(name, value);
@@ -402,6 +410,7 @@ const PForm = ({
     [formValueChangeByUser, onValueChangeByUserRef]
   );
 
+  /** handleRequestSubmit */
   const handleRequestSubmit = useCallback(
     (name: string, value: any) => {
       if (!disabledRef.current) submit();
@@ -410,6 +419,7 @@ const PForm = ({
     [disabledRef, formRequestSubmit, submit]
   );
 
+  /** formContextValue */
   const formContextValue = useMemo(
     () =>
       ({

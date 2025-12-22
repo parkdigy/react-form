@@ -1,9 +1,11 @@
 import React from 'react';
 import { PFormBlock, PFormCol, PFormRating, PFormRow, PFormRatingProps } from '../../../../../../src';
 
-const RatingBlock: React.FC<{
+interface Props {
   componentProps?: PFormRatingProps;
-}> = ({ componentProps }) => {
+}
+
+const RatingBlock = ({ componentProps }: Props) => {
   return (
     <PFormBlock label='Rating' line>
       <PFormRow>

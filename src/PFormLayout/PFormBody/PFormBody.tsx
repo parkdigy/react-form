@@ -31,8 +31,8 @@ const PFormBody = ({ children, hidden, fullHeight: initFullHeight, style: initSt
     return newStyle;
   }, [hidden, initStyle]);
 
-  const contentStyle: CSSProperties | undefined = useMemo(
-    () =>
+  const contentStyle = useMemo(
+    (): CSSProperties | undefined =>
       fullHeight
         ? {
             height,
@@ -44,6 +44,10 @@ const PFormBody = ({ children, hidden, fullHeight: initFullHeight, style: initSt
         : undefined,
     [fullHeight, height]
   );
+
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <StyledContainerDiv

@@ -1,9 +1,11 @@
 import React from 'react';
 import { PFormBlock, PFormCol, PFormTextarea, PFormRow, PFormTextareaProps } from '../../../../../../src';
 
-const TextareaBlock: React.FC<{
+interface Props {
   componentProps?: PFormTextareaProps;
-}> = ({ componentProps }) => {
+}
+
+const TextareaBlock = ({ componentProps }: Props) => {
   return (
     <PFormBlock label='Textarea' line>
       <PFormRow>

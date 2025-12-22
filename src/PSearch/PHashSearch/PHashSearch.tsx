@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useEffectEvent, useRef, useState } from 'react';
 import { PHashSearchProps as Props } from './PHashSearch.types';
 import { PSearch, PSearchCommands } from '../PSearch';
 import {
@@ -35,6 +35,7 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
   const searchRef = useRef<PSearchCommands>(null);
   const initPathRef = useRef(window.location.pathname);
   const onSubmitRef = useAutoUpdateRef(onSubmit);
+  const onRequestHashChangeRef = useAutoUpdateRef(onRequestHashChange);
 
   /********************************************************************************************************************
    * State
@@ -174,16 +175,24 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
    * hash
    * ******************************************************************************************************************/
 
-  useEffect(() => {
-    if (location.pathname === initPathRef.current) {
-      const data = hashToSearchValue();
-      if (data) onSubmitRef.current?.(data);
-    }
-  }, [hashToSearchValue, location.hash, location.pathname, onSubmitRef]);
+  {
+    const effectEvent = useEffectEvent(() => {
+      if (location.pathname === initPathRef.current) {
+        const data = hashToSearchValue();
+        if (data) onSubmitRef.current?.(data);
+      }
+    });
+    useEffect(() => effectEvent(), [location.hash]);
+  }
 
+  /********************************************************************************************************************
+   * Function
+   * ******************************************************************************************************************/
+
+  /** hashChange */
   const hashChange = useCallback(
     (params: PFormValueMap) => {
-      if (onRequestHashChange) {
+      if (onRequestHashChangeRef.current) {
         const hashes: string[] = [];
         Object.keys(params).forEach((name) => {
           const value = params[name];
@@ -264,19 +273,20 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
         });
         const finalHash = hashes.join('&');
         if (window.location.hash.substring(1) === finalHash) {
-          onSubmit?.(params);
+          onSubmitRef.current?.(params);
         } else {
-          onRequestHashChange(hashes.join('&'));
+          onRequestHashChangeRef.current(hashes.join('&'));
         }
       }
     },
-    [onRequestHashChange, onSubmit]
+    [onRequestHashChangeRef, onSubmitRef]
   );
 
   /********************************************************************************************************************
    * Event Handler
    * ******************************************************************************************************************/
 
+  /** handleSubmit */
   const handleSubmit = useCallback(
     (data: PFormValueMap) => {
       if (isFirstSearchSubmit) {

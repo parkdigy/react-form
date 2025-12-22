@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import PFormText from '../PFormText';
 import { PFormEmailProps as Props, PFormEmailValue } from './PFormEmail.types';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const PFormEmail = ({
   className,
@@ -10,15 +11,21 @@ const PFormEmail = ({
   ...props
 }: Props) => {
   /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
+
+  const onValueRef = useAutoUpdateRef(onValue);
+
+  /********************************************************************************************************************
    * Event Handler
    * ******************************************************************************************************************/
 
   const handleValue = useCallback(
     (value: PFormEmailValue) => {
       const newValue = value.replace(/ /gi, '');
-      return onValue ? onValue(newValue) : newValue;
+      return onValueRef.current ? onValueRef.current(newValue) : newValue;
     },
-    [onValue]
+    [onValueRef]
   );
 
   /********************************************************************************************************************

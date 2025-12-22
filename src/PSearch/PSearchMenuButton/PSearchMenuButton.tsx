@@ -1,4 +1,4 @@
-import React, { useCallback, useId, useState } from 'react';
+import React, { useCallback, useId, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { PSearchMenuButtonProps as Props } from './PSearchMenuButton.types';
 import { PFormButton } from '../../PFormCommon';
@@ -37,61 +37,65 @@ const PSearchMenuButton = ({ children, className, sx: initSx, menuList, placemen
    * Memo
    * ******************************************************************************************************************/
 
-  const open = !!anchorEl;
+  const { open, anchorOrigin, transformOrigin } = useMemo(() => {
+    const _open = !!anchorEl;
 
-  const anchorOrigin: PopoverOrigin =
-    placement || 'bottom' === 'bottom'
-      ? { vertical: 'bottom', horizontal: 'center' }
-      : placement === 'bottom-left'
-        ? { vertical: 'bottom', horizontal: 'left' }
-        : placement === 'bottom-right'
-          ? { vertical: 'bottom', horizontal: 'right' }
-          : placement === 'top'
-            ? { vertical: 'top', horizontal: 'center' }
-            : placement === 'top-left'
-              ? { vertical: 'top', horizontal: 'left' }
-              : placement === 'top-right'
-                ? { vertical: 'top', horizontal: 'right' }
-                : placement === 'left'
-                  ? { vertical: 'center', horizontal: 'left' }
-                  : placement === 'left-top'
-                    ? { vertical: 'top', horizontal: 'left' }
-                    : placement === 'left-bottom'
-                      ? { vertical: 'bottom', horizontal: 'left' }
-                      : placement === 'right'
-                        ? { vertical: 'center', horizontal: 'right' }
-                        : placement === 'right-top'
-                          ? { vertical: 'top', horizontal: 'right' }
-                          : placement === 'right-bottom'
-                            ? { vertical: 'bottom', horizontal: 'right' }
-                            : { vertical: 'bottom', horizontal: 'center' };
+    const _anchorOrigin: PopoverOrigin =
+      placement || 'bottom' === 'bottom'
+        ? { vertical: 'bottom', horizontal: 'center' }
+        : placement === 'bottom-left'
+          ? { vertical: 'bottom', horizontal: 'left' }
+          : placement === 'bottom-right'
+            ? { vertical: 'bottom', horizontal: 'right' }
+            : placement === 'top'
+              ? { vertical: 'top', horizontal: 'center' }
+              : placement === 'top-left'
+                ? { vertical: 'top', horizontal: 'left' }
+                : placement === 'top-right'
+                  ? { vertical: 'top', horizontal: 'right' }
+                  : placement === 'left'
+                    ? { vertical: 'center', horizontal: 'left' }
+                    : placement === 'left-top'
+                      ? { vertical: 'top', horizontal: 'left' }
+                      : placement === 'left-bottom'
+                        ? { vertical: 'bottom', horizontal: 'left' }
+                        : placement === 'right'
+                          ? { vertical: 'center', horizontal: 'right' }
+                          : placement === 'right-top'
+                            ? { vertical: 'top', horizontal: 'right' }
+                            : placement === 'right-bottom'
+                              ? { vertical: 'bottom', horizontal: 'right' }
+                              : { vertical: 'bottom', horizontal: 'center' };
 
-  const transformOrigin: PopoverOrigin =
-    placement || 'bottom' === 'bottom'
-      ? { vertical: 'top', horizontal: 'center' }
-      : placement === 'bottom-left'
-        ? { vertical: 'top', horizontal: 'left' }
-        : placement === 'bottom-right'
-          ? { vertical: 'top', horizontal: 'right' }
-          : placement === 'top'
-            ? { vertical: 'bottom', horizontal: 'center' }
-            : placement === 'top-left'
-              ? { vertical: 'bottom', horizontal: 'left' }
-              : placement === 'top-right'
-                ? { vertical: 'bottom', horizontal: 'right' }
-                : placement === 'left'
-                  ? { vertical: 'center', horizontal: 'right' }
-                  : placement === 'left-top'
-                    ? { vertical: 'top', horizontal: 'right' }
-                    : placement === 'left-bottom'
-                      ? { vertical: 'bottom', horizontal: 'right' }
-                      : placement === 'right'
-                        ? { vertical: 'center', horizontal: 'left' }
-                        : placement === 'right-top'
-                          ? { vertical: 'top', horizontal: 'left' }
-                          : placement === 'right-bottom'
-                            ? { vertical: 'bottom', horizontal: 'left' }
-                            : { vertical: 'top', horizontal: 'center' };
+    const _transformOrigin: PopoverOrigin =
+      placement || 'bottom' === 'bottom'
+        ? { vertical: 'top', horizontal: 'center' }
+        : placement === 'bottom-left'
+          ? { vertical: 'top', horizontal: 'left' }
+          : placement === 'bottom-right'
+            ? { vertical: 'top', horizontal: 'right' }
+            : placement === 'top'
+              ? { vertical: 'bottom', horizontal: 'center' }
+              : placement === 'top-left'
+                ? { vertical: 'bottom', horizontal: 'left' }
+                : placement === 'top-right'
+                  ? { vertical: 'bottom', horizontal: 'right' }
+                  : placement === 'left'
+                    ? { vertical: 'center', horizontal: 'right' }
+                    : placement === 'left-top'
+                      ? { vertical: 'top', horizontal: 'right' }
+                      : placement === 'left-bottom'
+                        ? { vertical: 'bottom', horizontal: 'right' }
+                        : placement === 'right'
+                          ? { vertical: 'center', horizontal: 'left' }
+                          : placement === 'right-top'
+                            ? { vertical: 'top', horizontal: 'left' }
+                            : placement === 'right-bottom'
+                              ? { vertical: 'bottom', horizontal: 'left' }
+                              : { vertical: 'top', horizontal: 'center' };
+
+    return { open: _open, anchorOrigin: _anchorOrigin, transformOrigin: _transformOrigin };
+  }, [anchorEl, placement]);
 
   /********************************************************************************************************************
    * Render

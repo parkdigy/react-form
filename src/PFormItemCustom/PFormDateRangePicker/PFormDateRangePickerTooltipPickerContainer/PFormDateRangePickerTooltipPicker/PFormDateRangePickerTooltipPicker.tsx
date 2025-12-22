@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   PFormDateRangePickerTooltipPickerProps as Props,
@@ -10,7 +10,7 @@ import { PickersDay, PickersDayProps, StaticDatePicker } from '@mui/x-date-picke
 import { IconButton, IconButtonProps } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import './PFormDateRangePickerTooltipPicker.scss';
-import { useChanged, useForwardRef } from '@pdg/react-hook';
+import { useForwardRef } from '@pdg/react-hook';
 
 interface ClassNameMap {
   [key: number]: string;
@@ -43,7 +43,7 @@ const PFormDateRangePickerTooltipPicker = ({
 
   const [activeMonthValue, setActiveMonthValue] = useState<PFormDateRangePickerTooltipPickerDateValue>(null);
   const [LeftArrowButton] = useState(() => {
-    const ArrowButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
+    const ArrowButton = (props: IconButtonProps) => {
       leftArrowOnClickRef.current = props.onClick;
       return <IconButton {...props} />;
     };
@@ -51,7 +51,7 @@ const PFormDateRangePickerTooltipPicker = ({
   });
 
   const [RightArrowButton] = useState(() => {
-    const ArrowButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
+    const ArrowButton = (props: IconButtonProps) => {
       rightArrowOnClickRef.current = props.onClick;
       return <IconButton {...props} />;
     };
@@ -59,20 +59,12 @@ const PFormDateRangePickerTooltipPicker = ({
   });
 
   /********************************************************************************************************************
-   * Memo
+   * Effect
    * ******************************************************************************************************************/
 
-  const value = useMemo<PFormDateRangePickerTooltipPickerValue>(
-    () => (initValue ? initValue : [null, null]),
-    [initValue]
-  );
-
-  /********************************************************************************************************************
-   * selectType 변경 시 처리
-   * ******************************************************************************************************************/
-
-  if (useChanged(selectType, true)) {
-    setActiveMonthValue(null);
+  {
+    const effectEvent = useEffectEvent(() => setActiveMonthValue(null));
+    useEffect(() => effectEvent(), [selectType]);
   }
 
   /********************************************************************************************************************
@@ -87,6 +79,13 @@ const PFormDateRangePickerTooltipPicker = ({
    * Memo
    * ******************************************************************************************************************/
 
+  /** value */
+  const value = useMemo<PFormDateRangePickerTooltipPickerValue>(
+    () => (initValue ? initValue : [null, null]),
+    [initValue]
+  );
+
+  /** baseClassNames */
   const baseClassNames = useMemo(() => {
     const newValue: ClassNameMap = {};
 
@@ -110,6 +109,7 @@ const PFormDateRangePickerTooltipPicker = ({
     return newValue;
   }, [getDateVal, month]);
 
+  /** selectedClassNames */
   const selectedClassNames = useMemo(() => {
     const newValue: ClassNameMap = {};
 
@@ -144,6 +144,7 @@ const PFormDateRangePickerTooltipPicker = ({
     return newValue;
   }, [getDateVal, month, value]);
 
+  /** focusedClassNames */
   const focusedClassNames = useMemo(() => {
     const newValue: ClassNameMap = {};
 
@@ -217,6 +218,25 @@ const PFormDateRangePickerTooltipPicker = ({
     setActiveMonthValue(month);
   }, []);
 
+  /********************************************************************************************************************
+   * Commands
+   * ******************************************************************************************************************/
+
+  const commands = useMemo<PFormDateRangePickerTooltipPickerCommands>(
+    () => ({
+      previousMonth,
+      nextMonth,
+      activeMonth,
+    }),
+    [activeMonth, nextMonth, previousMonth]
+  );
+
+  useForwardRef(ref, commands);
+
+  /********************************************************************************************************************
+   * Event Handler
+   * ******************************************************************************************************************/
+
   const handleRenderDay = useCallback(
     (props: Omit<PickersDayProps, 'ref'>) => {
       const startDate = value[0];
@@ -245,21 +265,6 @@ const PFormDateRangePickerTooltipPicker = ({
     },
     [value, getDateVal, baseClassNames, selectedClassNames, focusedClassNames, onMouseEnterPickersDay]
   );
-
-  /********************************************************************************************************************
-   * Commands
-   * ******************************************************************************************************************/
-
-  const commands = useMemo<PFormDateRangePickerTooltipPickerCommands>(
-    () => ({
-      previousMonth,
-      nextMonth,
-      activeMonth,
-    }),
-    [activeMonth, nextMonth, previousMonth]
-  );
-
-  useForwardRef(ref, commands);
 
   /********************************************************************************************************************
    * Render

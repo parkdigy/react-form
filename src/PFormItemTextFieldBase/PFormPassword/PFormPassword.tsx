@@ -6,6 +6,7 @@ import { notEmpty } from '@pdg/compare';
 import { PFormPasswordProps as Props, PFormPasswordValue } from './PFormPassword.types';
 import './PFormPassword.scss';
 import { InputBaseProps } from '@mui/material/InputBase/InputBase';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const StyledEyeInputAdornment = styled(InputAdornment)`
   visibility: hidden;
@@ -19,6 +20,12 @@ const PFormPassword = ({
   onChange,
   ...props
 }: Props) => {
+  /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
+
+  const onChangeRef = useAutoUpdateRef(onChange);
+
   /********************************************************************************************************************
    * State
    * ******************************************************************************************************************/
@@ -70,9 +77,9 @@ const PFormPassword = ({
   const handleChange = useCallback(
     (value: PFormPasswordValue) => {
       setShowEye(notEmpty(value));
-      onChange && onChange(value);
+      onChangeRef.current?.(value);
     },
-    [onChange]
+    [onChangeRef]
   );
 
   /********************************************************************************************************************

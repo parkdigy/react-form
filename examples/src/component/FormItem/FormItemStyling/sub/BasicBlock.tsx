@@ -1,10 +1,12 @@
 import React from 'react';
 import { PFormBlock, PFormCol, PFormRow, PFormSelect } from '../../../../../../src';
 
-const BasicBlock: React.FC<{
+interface Props {
   component: React.ForwardRefExoticComponent<any>;
   componentProps?: any;
-}> = ({ component: Component, componentProps }) => {
+}
+
+const BasicBlock = ({ component: Component, componentProps }: Props) => {
   return (
     <PFormBlock label='Basic' line>
       <PFormRow>

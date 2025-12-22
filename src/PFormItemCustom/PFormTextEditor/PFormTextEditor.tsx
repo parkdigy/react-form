@@ -10,6 +10,7 @@ import { useFormState } from '../../PFormContext';
 import { getFinalValue } from './PFormTextEditor.function.private';
 import type { Editor as TinyMCEEditor } from 'tinymce';
 import './PFormTextEditor.scss';
+import { InitOptions } from '@tinymce/tinymce-react/lib/es2015/main/ts/components/Editor';
 
 type PFormTextEditorType = typeof PFormTextEditor & {
   apiKey: string;
@@ -30,21 +31,22 @@ interface BlobInfo {
 
 const PFormTextEditor = ({
   ref,
+  /********************************************************************************************************************/
   variant: initVariant,
   size: initSize,
   color: initColor,
   focused: initFocused,
-  // ---------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   apiKey,
   toolbar,
   onOpenWindow,
   onCloseWindow,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   menubar = true,
   height = 500,
   hidden: initHidden,
   onImageUpload,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   name,
   labelIcon,
   label,
@@ -58,7 +60,7 @@ const PFormTextEditor = ({
   exceptValue,
   onChange,
   onValidate,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   className,
 }: Props) => {
   /********************************************************************************************************************
@@ -95,49 +97,11 @@ const PFormTextEditor = ({
    * Ref
    * ******************************************************************************************************************/
 
+  const initValueRef = useAutoUpdateRef(initValue);
   const editorRef = useRef<TinyMCEEditor>(null);
   const keyDownTime = useRef(0);
-
-  /********************************************************************************************************************
-   * State - focused
-   * ******************************************************************************************************************/
-
-  const finalInitFocused = initFocused ?? formFocused;
-
-  const [focused, setFocused] = useState(finalInitFocused);
-  useChanged(finalInitFocused) && setFocused(finalInitFocused);
-
-  /********************************************************************************************************************
-   * State - error
-   * ******************************************************************************************************************/
-
-  const [error, setError] = useState(initError);
-  useChanged(initError) && setError(initError);
-
-  /********************************************************************************************************************
-   * State - data
-   * ******************************************************************************************************************/
-
-  const [data, setData] = useState(initData);
-  useChanged(initData) && setData(initData);
-
-  const dataRef = useAutoUpdateRef(data);
-
-  /********************************************************************************************************************
-   * State - disabled
-   * ******************************************************************************************************************/
-
-  const finalInitDisabled = initDisabled ?? formDisabled;
-
-  const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
-
-  /********************************************************************************************************************
-   * State - hidden
-   * ******************************************************************************************************************/
-
-  const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  const onChangeRef = useAutoUpdateRef(onChange);
+  const onValidateRef = useAutoUpdateRef(onValidate);
 
   /********************************************************************************************************************
    * State
@@ -146,22 +110,64 @@ const PFormTextEditor = ({
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
   const [initialized, setInitialized] = useState(false);
 
+  /** focused */
+  const finalInitFocused = initFocused ?? formFocused;
+  const [focused, setFocused] = useState(finalInitFocused);
+  useChanged(finalInitFocused) && setFocused(finalInitFocused);
+
+  /** error */
+  const [error, _setError] = useState(initError);
+  useChanged(initError) && _setError(initError);
+  const errorRef = useAutoUpdateRef(error);
+  const setError = useCallback(
+    (value: React.SetStateAction<typeof error>) => {
+      _setError((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        errorRef.current = newValue;
+        return newValue;
+      });
+    },
+    [errorRef]
+  );
+
+  /** data */
+  const [data, _setData] = useState(initData);
+  useChanged(initData) && _setData(initData);
+  const dataRef = useAutoUpdateRef(data);
+  const setData = useCallback(
+    (value: React.SetStateAction<typeof data>) => {
+      _setData((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        dataRef.current = newValue;
+        return newValue;
+      });
+    },
+    [dataRef]
+  );
+
+  /** disabled */
+  const finalInitDisabled = initDisabled ?? formDisabled;
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /** hidden */
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
+
   /********************************************************************************************************************
-   * Function - setErrorErrorHelperText
+   * Function
    * ******************************************************************************************************************/
 
+  /** setErrorErrorHelperText */
   const setErrorErrorHelperText = useCallback(
     function (error: Props['error'], errorHelperText: Props['helperText']) {
       setError(error);
-      setErrorHelperText(errorHelperText);
+      setErrorHelperText(error ? errorHelperText : undefined);
     },
     [setError]
   );
 
-  /********************************************************************************************************************
-   * Function - validate
-   * ******************************************************************************************************************/
-
+  /** validate */
   const validate = useCallback(
     function (value: PFormTextEditorValue) {
       if (required && empty(editorRef.current?.getContent())) {
@@ -169,8 +175,8 @@ const PFormTextEditor = ({
         return false;
       }
 
-      if (onValidate) {
-        const onValidateResult = onValidate(value);
+      if (onValidateRef.current) {
+        const onValidateResult = onValidateRef.current(value);
         if (onValidateResult != null && onValidateResult !== true) {
           setErrorErrorHelperText(true, onValidateResult);
           return false;
@@ -181,43 +187,48 @@ const PFormTextEditor = ({
 
       return true;
     },
-    [required, onValidate, setErrorErrorHelperText]
+    [required, onValidateRef, setErrorErrorHelperText]
+  );
+
+  /** focus */
+  const focus = useCallback(
+    function () {
+      editorRef.current?.focus();
+    },
+    [editorRef]
   );
 
   /********************************************************************************************************************
    * State - value
    * ******************************************************************************************************************/
 
-  const [value, setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && setValue(getFinalValue(initValue));
-
+  const [value, _setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && _setValue(getFinalValue(initValue));
   const valueRef = useAutoUpdateRef(value);
+  const setValue = useCallback(
+    (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
+      _setValue((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        valueRef.current = newValue;
+        return newValue;
+      });
+    },
+    [valueRef]
+  );
 
   /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: string) => {
       const finalValue = newValue;
       setValue(finalValue);
-      valueRef.current = finalValue;
 
       if (error) validate(finalValue);
-      if (onChange) onChange(finalValue);
+      onChangeRef.current?.(finalValue);
       onValueChange(name, finalValue);
 
       return finalValue;
     },
-    [error, name, onChange, onValueChange, validate, valueRef]
-  );
-
-  /********************************************************************************************************************
-   * Function - focus
-   * ******************************************************************************************************************/
-
-  const focus = useCallback(
-    function () {
-      editorRef.current?.focus();
-    },
-    [editorRef]
+    [error, name, onChangeRef, onValueChange, setValue, validate]
   );
 
   /********************************************************************************************************************
@@ -228,8 +239,8 @@ const PFormTextEditor = ({
     () => ({
       getType: () => 'PFormTextEditor',
       getName: () => name,
-      getReset: () => getFinalValue(initValue),
-      reset: () => updateValue(initValue),
+      getReset: () => getFinalValue(initValueRef.current),
+      reset: () => updateValue(initValueRef.current),
       getValue: () => valueRef.current,
       setValue: updateValue,
       getData: () => dataRef.current,
@@ -242,8 +253,7 @@ const PFormTextEditor = ({
       focus,
       focusValidate: focus,
       validate: () => validate(valueRef.current),
-      setError: (error: Props['error'], errorText: Props['helperText']) =>
-        setErrorErrorHelperText(error, error ? errorText : undefined),
+      setError: setErrorErrorHelperText,
     }),
     [
       dataRef,
@@ -251,8 +261,9 @@ const PFormTextEditor = ({
       exceptValue,
       focus,
       hidden,
-      initValue,
+      initValueRef,
       name,
+      setData,
       setErrorErrorHelperText,
       updateValue,
       validate,
@@ -271,6 +282,7 @@ const PFormTextEditor = ({
    * Event Handler
    * ******************************************************************************************************************/
 
+  /** handleEditorChange */
   const handleEditorChange = useCallback(
     (value: string) => {
       updateValue(value);
@@ -283,10 +295,12 @@ const PFormTextEditor = ({
     [name, onValueChangeByUser, updateValue]
   );
 
+  /** handleKeyDown */
   const handleKeyDown = useCallback(() => {
     keyDownTime.current = new Date().getTime();
   }, []);
 
+  /** handleImageUpload */
   const handleImageUpload = useCallback(
     (blobInfo: BlobInfo, progress: (percent: number) => void) => {
       return new Promise<string>((resolve, reject) => {
@@ -306,6 +320,66 @@ const PFormTextEditor = ({
       });
     },
     [onImageUpload]
+  );
+
+  /** handleEditorInit */
+  const handleEditorInit = useCallback(
+    (evt: any, editor: TinyMCEEditor) => {
+      editorRef.current = editor;
+
+      editor.on('OpenWindow', () => {
+        onOpenWindow?.();
+        (PFormTextEditor as PFormTextEditorType).onOpenWindow?.();
+      });
+
+      editor.on('CloseWindow', () => {
+        onCloseWindow?.();
+        (PFormTextEditor as PFormTextEditorType).onCloseWindow?.();
+      });
+
+      setTimeout(() => setInitialized(true), 10);
+    },
+    [onCloseWindow, onOpenWindow]
+  );
+
+  /********************************************************************************************************************
+   * Render - Variable
+   * ******************************************************************************************************************/
+
+  const editInit = useMemo(
+    (): InitOptions => ({
+      height,
+      menubar,
+      language: 'ko_KR',
+      contextmenu: false,
+      content_style:
+        'body {font-size: 0.875rem; font-weight: 400; line-height: 1.5; color: hsl(0,0%,20%);} p {padding:0; margin:0}',
+      plugins: [
+        'lists',
+        'advlist',
+        'image',
+        'autolink',
+        'link',
+        'charmap',
+        'preview',
+        'anchor',
+        'searchreplace',
+        'visualblocks',
+        'code',
+        'insertdatetime',
+        'media',
+        'table',
+        'wordcount',
+      ],
+      toolbar:
+        toolbar ||
+        'undo redo | \
+         formatselect bullist numlist outdent indent | \
+         bold italic | align | forecolor backcolor | \
+         link image media | advtable | code',
+      images_upload_handler: handleImageUpload,
+    }),
+    [handleImageUpload, height, menubar, toolbar]
   );
 
   /********************************************************************************************************************
@@ -336,53 +410,8 @@ const PFormTextEditor = ({
             apiKey={ifEmpty(apiKey, (PFormTextEditor as PFormTextEditorType).apiKey)}
             value={value}
             disabled={readOnly || disabled}
-            init={{
-              height,
-              menubar,
-              language: 'ko_KR',
-              contextmenu: false,
-              content_style:
-                'body {font-size: 0.875rem; font-weight: 400; line-height: 1.5; color: hsl(0,0%,20%);} p {padding:0; margin:0}',
-              plugins: [
-                'lists',
-                'advlist',
-                'image',
-                'autolink',
-                'link',
-                'charmap',
-                'preview',
-                'anchor',
-                'searchreplace',
-                'visualblocks',
-                'code',
-                'insertdatetime',
-                'media',
-                'table',
-                'wordcount',
-              ],
-              toolbar:
-                toolbar ||
-                'undo redo | \
-                   formatselect bullist numlist outdent indent | \
-                   bold italic | align | forecolor backcolor | \
-                   link image media | advtable | code',
-              images_upload_handler: handleImageUpload,
-            }}
-            onInit={(evt, editor) => {
-              editorRef.current = editor;
-
-              editor.on('OpenWindow', () => {
-                onOpenWindow?.();
-                (PFormTextEditor as PFormTextEditorType).onOpenWindow?.();
-              });
-
-              editor.on('CloseWindow', () => {
-                onCloseWindow?.();
-                (PFormTextEditor as PFormTextEditorType).onCloseWindow?.();
-              });
-
-              setTimeout(() => setInitialized(true), 10);
-            }}
+            init={editInit}
+            onInit={handleEditorInit}
             onEditorChange={handleEditorChange}
             onKeyDown={handleKeyDown}
             onFocus={() => setFocused(initFocused || true)}

@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import PFormText from '../PFormText';
 import { PFormUrlProps as Props, PFormUrlValue } from './PFormUrl.types';
 import classNames from 'classnames';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const PFormUrl = ({
   className,
@@ -10,15 +11,21 @@ const PFormUrl = ({
   ...props
 }: Props) => {
   /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
+
+  const onValueRef = useAutoUpdateRef(onValue);
+
+  /********************************************************************************************************************
    * Event Handler
    * ******************************************************************************************************************/
 
   const handleValue = useCallback(
     (value: PFormUrlValue) => {
       const newValue = value.replace(/ /gi, '');
-      return onValue ? onValue(newValue) : newValue;
+      return onValueRef.current ? onValueRef.current(newValue) : newValue;
     },
-    [onValue]
+    [onValueRef]
   );
 
   /********************************************************************************************************************

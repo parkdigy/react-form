@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, ReactNode, useRef } from 'react';
+import React, { useEffect, useState, useCallback, ReactNode, useEffectEvent } from 'react';
 import classNames from 'classnames';
 import { Autocomplete, AutocompleteRenderInputParams, Chip, InputLabelProps } from '@mui/material';
 import { PFormTagProps as Props, PFormTagExtraCommands, PFormTagValue, PFormTagCommands } from './PFormTag.types';
@@ -14,9 +14,11 @@ const _emptyValue: string[] = [];
 
 const PFormTag = ({
   ref,
+  /********************************************************************************************************************/
+
   variant: initVariant,
   size: initSize,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   className,
   name,
   value: initValue = _emptyValue,
@@ -68,20 +70,12 @@ const PFormTag = ({
   const fullWidth = initFullWidth ?? formFullWidth;
 
   /********************************************************************************************************************
-   * State - error
+   * Ref
    * ******************************************************************************************************************/
 
-  const [error, setError] = useState(initError);
-  useChanged(initError) && setError(initError);
-
-  /********************************************************************************************************************
-   * State - disabled
-   * ******************************************************************************************************************/
-
-  const finalInitDisabled = initDisabled ?? formDisabled;
-
-  const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+  const initValueRef = useAutoUpdateRef(initValue);
+  const onChangeRef = useAutoUpdateRef(onChange);
+  const onValidateRef = useAutoUpdateRef(onValidate);
 
   /********************************************************************************************************************
    * State
@@ -89,22 +83,29 @@ const PFormTag = ({
 
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
 
+  /** error */
+  const [error, setError] = useState(initError);
+  useChanged(initError) && setError(initError);
+
+  /** disabled */
+  const finalInitDisabled = initDisabled ?? formDisabled;
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
   /********************************************************************************************************************
-   * Function - setErrorErrorHelperText
+   * Function
    * ******************************************************************************************************************/
 
+  /** setErrorErrorHelperText */
   const setErrorErrorHelperText = useCallback(
     function (error: boolean, errorHelperText: ReactNode) {
       setError(error);
-      setErrorHelperText(errorHelperText);
+      setErrorHelperText(error ? errorHelperText : undefined);
     },
     [setError]
   );
 
-  /********************************************************************************************************************
-   * Function - validate
-   * ******************************************************************************************************************/
-
+  /** validate */
   const validate = useCallback(
     (value: PFormTagValue) => {
       if (required && empty(value)) {
@@ -112,8 +113,8 @@ const PFormTag = ({
         return false;
       }
 
-      if (onValidate) {
-        const onValidateResult = onValidate(value);
+      if (onValidateRef.current) {
+        const onValidateResult = onValidateRef.current(value);
         if (onValidateResult != null && onValidateResult !== true) {
           setErrorErrorHelperText(true, onValidateResult);
           return false;
@@ -124,7 +125,7 @@ const PFormTag = ({
 
       return true;
     },
-    [required, onValidate, setErrorErrorHelperText]
+    [required, onValidateRef, setErrorErrorHelperText]
   );
 
   /********************************************************************************************************************
@@ -150,10 +151,20 @@ const PFormTag = ({
     [onValue]
   );
 
-  const [value, setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && setValue(getFinalValue(initValue));
-
+  const [value, _setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && _setValue(getFinalValue(initValue));
   const valueRef = useAutoUpdateRef(value);
+  const setValue = useCallback(
+    (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
+      _setValue((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        valueRef.current = newValue;
+        return newValue;
+      });
+    },
+    [valueRef]
+  );
+
   const [valueSet] = useState(new Set(value));
 
   /** value 변경 함수 */
@@ -161,37 +172,35 @@ const PFormTag = ({
     (newValue: GetFinalValueParam) => {
       const finalValue = getFinalValue(newValue);
       setValue(finalValue);
-      valueRef.current = finalValue;
 
       if (error) validate(finalValue);
-      if (onChange) onChange(finalValue);
+      onChangeRef.current?.(finalValue);
       onValueChange(name, finalValue);
 
       return finalValue;
     },
-    [error, getFinalValue, name, onChange, onValueChange, validate, valueRef]
+    [error, getFinalValue, name, onChangeRef, onValueChange, setValue, validate]
   );
 
   /********************************************************************************************************************
    * Effect
    * ******************************************************************************************************************/
 
-  const firstValueRef = useRef(value);
-  const firstNameRef = useRef(name);
-  const firstInitValueRef = useRef(initValue);
-  const firstOnChangeRef = useRef(onChange);
-  const firstOnValueChangeRef = useRef(onValueChange);
-  useEffect(() => {
-    if (!equal(firstValueRef.current, firstInitValueRef.current)) {
-      firstOnChangeRef.current?.(firstValueRef.current);
-      firstOnValueChangeRef.current(firstNameRef.current, firstValueRef.current);
-    }
-  }, []);
+  {
+    const effectEvent = useEffectEvent(() => {
+      if (!equal(valueRef.current, initValueRef.current)) {
+        onChangeRef.current?.(valueRef.current);
+        onValueChange(name, valueRef.current);
+      }
+    });
+    useEffect(() => effectEvent(), []);
+  }
 
   /********************************************************************************************************************
-   * Function - getExtraCommands
+   * Function
    * ******************************************************************************************************************/
 
+  /** getExtraCommands */
   const getExtraCommands = useCallback((): PFormTagExtraCommands => {
     return {
       isFormValueSort: () => !!formValueSort,
@@ -199,16 +208,13 @@ const PFormTag = ({
     };
   }, [formValueSort, formValueSeparator]);
 
-  /********************************************************************************************************************
-   * Function - getCommands
-   * ******************************************************************************************************************/
-
+  /** getCommands */
   const getCommands = useCallback(
     (baseCommands: PFormTextCommands): PFormTagCommands => {
       return {
         ...baseCommands,
-        getReset: () => getFinalValue(initValue),
-        reset: () => updateValue(initValue),
+        getReset: () => getFinalValue(initValueRef.current),
+        reset: () => updateValue(initValueRef.current),
         getValue: () => valueRef.current,
         setValue: (newValue: PFormTagValue) => {
           updateValue(newValue);
@@ -217,13 +223,10 @@ const PFormTag = ({
         ...getExtraCommands(),
       };
     },
-    [getExtraCommands, getFinalValue, initValue, updateValue, valueRef, validate]
+    [getExtraCommands, getFinalValue, initValueRef, updateValue, valueRef, validate]
   );
 
-  /********************************************************************************************************************
-   * Function - appendTag, removeTag
-   * ******************************************************************************************************************/
-
+  /** appendTag */
   const appendTag = useCallback(
     (tag: string) => {
       const finalTag = tag.trim();
@@ -242,6 +245,7 @@ const PFormTag = ({
     [valueSet, onAppendTag, updateValue, onValueChangeByUser, name, onRequestSearchSubmit]
   );
 
+  /** removeTag */
   const removeTag = useCallback(
     (tag: string) => {
       if (valueSet.has(tag)) {
@@ -263,6 +267,7 @@ const PFormTag = ({
    * Event Handler
    * ******************************************************************************************************************/
 
+  /** handleAddValueItem */
   const handleAddValueItem = useCallback(
     (id: string, commands: PFormValueItemCommands<PFormTagValue, false>) => {
       onAddValueItem(id, getCommands(commands as unknown as PFormTextCommands));
@@ -270,6 +275,7 @@ const PFormTag = ({
     [getCommands, onAddValueItem]
   );
 
+  /** handleRef */
   const handleRef = useCallback(
     (commands: PFormTextCommands) => {
       if (ref) {
@@ -285,6 +291,7 @@ const PFormTag = ({
     [ref, getCommands]
   );
 
+  /** handleRenderValue */
   const handleRenderValue = useCallback(
     (tags: string[]) => {
       return tags.map((tag) => (
@@ -303,10 +310,7 @@ const PFormTag = ({
     [disabled, onTagClick, readOnly, removeTag, size, variant]
   );
 
-  /********************************************************************************************************************
-   * Render
-   * ******************************************************************************************************************/
-
+  /** handleRenderInput */
   const handleRenderInput = useCallback(
     (params: AutocompleteRenderInputParams) => {
       const htmlInputProps = {
@@ -387,6 +391,10 @@ const PFormTag = ({
       variant,
     ]
   );
+
+  /********************************************************************************************************************
+   * Render
+   * ******************************************************************************************************************/
 
   return (
     <PFormContextProvider

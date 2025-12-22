@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useEffectEvent, useRef } from 'react';
 import { PrivateYearSelectProps as Props } from './PrivateYearSelect.types';
 import { Grid } from '@mui/material';
 import dayjs from 'dayjs';
@@ -25,28 +25,28 @@ const PrivateYearSelect = ({ selectYear, activeYear, availableDate, onSelect: in
    * Effect
    * ******************************************************************************************************************/
 
-  const activeYearRef = useAutoUpdateRef(activeYear);
-  useEffect(() => {
-    const activeEls = containerRef.current?.getElementsByClassName(
-      `private-year-select-value-${activeYearRef.current}`
-    );
-    if (activeEls && activeEls.length > 0) {
-      const activeEl = activeEls[0];
+  {
+    const effectEvent = useEffectEvent(() => {
+      const activeEls = containerRef.current?.getElementsByClassName(`private-year-select-value-${activeYear}`);
+      if (activeEls && activeEls.length > 0) {
+        const activeEl = activeEls[0];
 
-      const activeRect = activeEl.getBoundingClientRect();
-      const containerRect = containerRef.current?.getBoundingClientRect();
-      const simpleBarRect = simpleBarRef.current?.getBoundingClientRect();
+        const activeRect = activeEl.getBoundingClientRect();
+        const containerRect = containerRef.current?.getBoundingClientRect();
+        const simpleBarRect = simpleBarRef.current?.getBoundingClientRect();
 
-      if (containerRect && simpleBarRect && activeRect) {
-        const scrollTop = simpleBarRef.current?.scrollTop || 0;
+        if (containerRect && simpleBarRect && activeRect) {
+          const scrollTop = simpleBarRef.current?.scrollTop || 0;
 
-        simpleBarRef.current?.scrollTo({
-          left: 0,
-          top: activeRect.top - containerRect.top - containerRect.height / 2 + activeRect.height / 2 + scrollTop,
-        });
+          simpleBarRef.current?.scrollTo({
+            left: 0,
+            top: activeRect.top - containerRect.top - containerRect.height / 2 + activeRect.height / 2 + scrollTop,
+          });
+        }
       }
-    }
-  }, [activeYearRef]);
+    });
+    useEffect(() => effectEvent(), []);
+  }
 
   /********************************************************************************************************************
    * Event Handler

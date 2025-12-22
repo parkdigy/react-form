@@ -127,13 +127,7 @@ const PFormImageFile = ({
    * Event Handler
    * ******************************************************************************************************************/
 
-  const handleChange = useCallback(
-    (value: string) => {
-      updateValue(value);
-    },
-    [updateValue]
-  );
-
+  /** handleFile */
   const handleFile = useCallback(
     (file: File) => {
       return new Promise<string>((resolve, reject) => {
@@ -157,6 +151,7 @@ const PFormImageFile = ({
     [onFile, imageSizeCheck]
   );
 
+  /** handleLink */
   const handleLink = useCallback(
     (url: string) => {
       return new Promise<string>((resolve, reject) => {
@@ -204,7 +199,7 @@ const PFormImageFile = ({
             </a>
           ) : undefined
         }
-        onChange={handleChange}
+        onChange={updateValue}
         onFile={handleFile}
         onLink={handleLink}
         {...props}

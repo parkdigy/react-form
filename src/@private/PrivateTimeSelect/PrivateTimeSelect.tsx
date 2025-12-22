@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useEffectEvent, useMemo, useRef } from 'react';
 import { PrivateTimeSelectProps as Props, PrivateTimeSelectCommands } from './PrivateTimeSelect.types';
 import SimpleBar from 'simplebar-react';
 import PrivateToggleButton from '../PrivateToggleButton';
@@ -83,22 +83,23 @@ const PrivateTimeSelect = ({
    * Effect
    * ******************************************************************************************************************/
 
-  useEffect(() => {
-    return () => {
-      if (scrollTimerRef.current) {
-        clearInterval(scrollTimerRef.current);
-        scrollTimerRef.current = undefined;
+  {
+    const effectEvent = useEffectEvent(() => {
+      if (value != null) {
+        scrollToValue(value);
       }
-    };
-  }, []);
+    });
+    useEffect(() => {
+      effectEvent();
 
-  const valueRef = useAutoUpdateRef(value);
-  const scrollToValueRef = useAutoUpdateRef(scrollToValue);
-  useEffect(() => {
-    if (valueRef.current != null) {
-      scrollToValueRef.current(valueRef.current);
-    }
-  }, [scrollToValueRef, valueRef]);
+      return () => {
+        if (scrollTimerRef.current) {
+          clearInterval(scrollTimerRef.current);
+          scrollTimerRef.current = undefined;
+        }
+      };
+    }, []);
+  }
 
   /********************************************************************************************************************
    * Commands

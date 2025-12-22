@@ -11,18 +11,19 @@ import { PIcon } from '@pdg/react-component';
 
 const PFormRating = ({
   ref,
+  /********************************************************************************************************************/
   variant: initVariant,
   size: initSize,
   color: initColor,
   focused: initFocused,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   precision = 1,
   highlightSelectedOnly,
   icon,
   emptyIcon,
   max,
   hidden: initHidden,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   name,
   labelIcon,
   label,
@@ -37,7 +38,7 @@ const PFormRating = ({
   onChange,
   onValidate,
   onValue,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   className,
   style: initStyle,
   sx,
@@ -77,48 +78,10 @@ const PFormRating = ({
    * Ref
    * ******************************************************************************************************************/
 
+  const initValueRef = useAutoUpdateRef(initValue);
   const inputRef = useRef<HTMLInputElement>(undefined);
-
-  /********************************************************************************************************************
-   * State - focused
-   * ******************************************************************************************************************/
-
-  const finalInitFocused = initFocused ?? formFocused;
-
-  const [focused, setFocused] = useState(finalInitFocused);
-  useChanged(finalInitFocused) && setFocused(finalInitFocused);
-
-  /********************************************************************************************************************
-   * State - error
-   * ******************************************************************************************************************/
-
-  const [error, setError] = useState(initError);
-  useChanged(initError) && setError(initError);
-
-  /********************************************************************************************************************
-   * State - data
-   * ******************************************************************************************************************/
-
-  const [data, setData] = useState(initData);
-  useChanged(initData) && setData(initData);
-
-  const dataRef = useAutoUpdateRef(data);
-
-  /********************************************************************************************************************
-   * State - disabled
-   * ******************************************************************************************************************/
-
-  const finalInitDisabled = initDisabled ?? formDisabled;
-
-  const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
-
-  /********************************************************************************************************************
-   * State - hidden
-   * ******************************************************************************************************************/
-
-  const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  const onChangeRef = useAutoUpdateRef(onChange);
+  const onValidateRef = useAutoUpdateRef(onValidate);
 
   /********************************************************************************************************************
    * State
@@ -126,8 +89,52 @@ const PFormRating = ({
 
   const [errorHelperText, setErrorHelperText] = useState<Props['helperText']>();
 
+  /** focused */
+  const finalInitFocused = initFocused ?? formFocused;
+  const [focused, setFocused] = useState(finalInitFocused);
+  useChanged(finalInitFocused) && setFocused(finalInitFocused);
+
+  /** error */
+  const [error, _setError] = useState(initError);
+  useChanged(initError) && _setError(initError);
+  const errorRef = useAutoUpdateRef(error);
+  const setError = useCallback(
+    (value: React.SetStateAction<typeof error>) => {
+      _setError((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        errorRef.current = newValue;
+        return newValue;
+      });
+    },
+    [errorRef]
+  );
+
+  /** data */
+  const [data, _setData] = useState(initData);
+  useChanged(initData) && _setData(initData);
+  const dataRef = useAutoUpdateRef(data);
+  const setData = useCallback(
+    (value: React.SetStateAction<typeof data>) => {
+      _setData((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        dataRef.current = newValue;
+        return newValue;
+      });
+    },
+    [dataRef]
+  );
+
+  /** disabled */
+  const finalInitDisabled = initDisabled ?? formDisabled;
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /** hidden */
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
+
   /********************************************************************************************************************
-   * State - width, height
+   * ResizeDetector
    * ******************************************************************************************************************/
 
   const { ref: ratingRef, width, height } = useResizeDetector();
@@ -136,14 +143,16 @@ const PFormRating = ({
    * Function
    * ******************************************************************************************************************/
 
+  /** setErrorErrorHelperText */
   const setErrorErrorHelperText = useCallback(
     function (error: Props['error'], errorHelperText: Props['helperText']) {
       setError(error);
-      setErrorHelperText(errorHelperText);
+      setErrorHelperText(error ? errorHelperText : undefined);
     },
     [setError]
   );
 
+  /** validate */
   const validate = useCallback(
     function (value: PFormRatingValue) {
       if (required && (empty(value) || value === 0)) {
@@ -151,8 +160,8 @@ const PFormRating = ({
         return false;
       }
 
-      if (onValidate) {
-        const onValidateResult = onValidate(value);
+      if (onValidateRef.current) {
+        const onValidateResult = onValidateRef.current(value);
         if (onValidateResult != null && onValidateResult !== true) {
           setErrorErrorHelperText(true, onValidateResult);
           return false;
@@ -163,11 +172,19 @@ const PFormRating = ({
 
       return true;
     },
-    [required, onValidate, setErrorErrorHelperText]
+    [required, onValidateRef, setErrorErrorHelperText]
   );
 
+  /** focus */
+  const focus = useCallback(function () {
+    inputRef.current?.focus();
+    setTimeout(() => {
+      inputRef.current?.blur();
+    });
+  }, []);
+
   /********************************************************************************************************************
-   * State - value
+   * value
    * ******************************************************************************************************************/
 
   const getFinalValue = useCallback(
@@ -177,38 +194,36 @@ const PFormRating = ({
     },
     [onValue]
   );
+  const getFinalValueRef = useAutoUpdateRef(getFinalValue);
 
-  const [value, setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && setValue(getFinalValue(initValue));
-
+  const [value, _setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && _setValue(getFinalValue(initValue));
   const valueRef = useAutoUpdateRef(value);
+  const setValue = useCallback(
+    (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
+      _setValue((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        valueRef.current = newValue;
+        return newValue;
+      });
+    },
+    [valueRef]
+  );
 
   /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: Props['value'] | null) => {
       const finalValue = getFinalValue(newValue);
       setValue(finalValue);
-      valueRef.current = finalValue;
 
       if (error) validate(finalValue);
-      if (onChange) onChange(finalValue);
+      onChangeRef.current?.(finalValue);
       onValueChange(name, finalValue);
 
       return finalValue;
     },
-    [error, getFinalValue, name, onChange, onValueChange, validate, valueRef]
+    [error, getFinalValue, name, onChangeRef, onValueChange, setValue, validate]
   );
-
-  /********************************************************************************************************************
-   * Function
-   * ******************************************************************************************************************/
-
-  const focus = useCallback(function () {
-    inputRef.current?.focus();
-    setTimeout(() => {
-      inputRef.current?.blur();
-    });
-  }, []);
 
   /********************************************************************************************************************
    * Commands
@@ -218,8 +233,8 @@ const PFormRating = ({
     () => ({
       getType: () => 'PFormRating',
       getName: () => name,
-      getReset: () => getFinalValue(initValue),
-      reset: () => updateValue(initValue),
+      getReset: () => getFinalValueRef.current(initValueRef.current),
+      reset: () => updateValue(initValueRef.current),
       getValue: () => valueRef.current,
       setValue: updateValue,
       getData: () => dataRef.current,
@@ -232,18 +247,18 @@ const PFormRating = ({
       focus,
       focusValidate: focus,
       validate: () => validate(valueRef.current),
-      setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
-        setErrorErrorHelperText(error, error ? errorHelperText : undefined),
+      setError: setErrorErrorHelperText,
     }),
     [
       dataRef,
       disabled,
       exceptValue,
       focus,
-      getFinalValue,
+      getFinalValueRef,
       hidden,
-      initValue,
+      initValueRef,
       name,
+      setData,
       setErrorErrorHelperText,
       updateValue,
       validate,

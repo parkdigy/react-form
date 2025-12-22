@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { ReactNode, useCallback, useEffect, useEffectEvent, useMemo, useRef } from 'react';
 import { Paper } from '@mui/material';
 import { PSearchProps as Props } from './PSearch.types';
 import { PForm, PFormCommands } from '../../PForm';
@@ -6,15 +6,15 @@ import { PFormBody } from '../../PFormLayout';
 import PFormContextProvider from '../../PFormContextProvider';
 import { PFormContextValue } from '../../PFormContext';
 import PSearchGroupRow from '../PSearchGroupRow';
-import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const PSearch = ({
   ref,
+  /********************************************************************************************************************/
   children,
   className,
   style,
   sx,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   color = 'primary',
   spacing,
   focused,
@@ -32,12 +32,14 @@ const PSearch = ({
    * Effect
    * ******************************************************************************************************************/
 
-  const autoSubmitRef = useAutoUpdateRef(autoSubmit);
-  useEffect(() => {
-    if (autoSubmitRef.current) {
-      formRef.current?.submit();
-    }
-  }, [autoSubmitRef]);
+  {
+    const effectEvent = useEffectEvent(() => {
+      if (autoSubmit) {
+        formRef.current?.submit();
+      }
+    });
+    useEffect(() => effectEvent(), [autoSubmit]);
+  }
 
   /********************************************************************************************************************
    * Memo
@@ -68,20 +70,24 @@ const PSearch = ({
    * FormContextValue
    * ******************************************************************************************************************/
 
+  /** emptyHandler */
   const emptyHandler = useCallback(() => {
     //
   }, []);
 
+  /** handleRequestSubmit */
   const handleRequestSubmit = useCallback(() => {
     setTimeout(() => formRef.current?.submit());
   }, []);
 
+  /** handleRequestSearchSubmit */
   const handleRequestSearchSubmit = useCallback(() => {
     if (autoSubmit) {
       setTimeout(() => formRef.current?.submit());
     }
   }, [autoSubmit]);
 
+  /** formContextValue */
   const formContextValue = useMemo(
     () =>
       ({
@@ -107,6 +113,7 @@ const PSearch = ({
    * Event Handler
    * ******************************************************************************************************************/
 
+  /** handleRef */
   const handleRef = useCallback(
     (commands: PFormCommands | null) => {
       if (ref) {

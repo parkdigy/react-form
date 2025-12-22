@@ -3,10 +3,12 @@ import { CircularProgress } from '@mui/material';
 import { PFormBlock, PFormCol, PFormRow } from '../../../../../../src';
 import { getName } from '@common';
 
-const IconAdornmentBlock: React.FC<{
+interface Props {
   component: React.ForwardRefExoticComponent<any>;
   componentProps?: any;
-}> = ({ component: Component, componentProps }) => {
+}
+
+const IconAdornmentBlock = ({ component: Component, componentProps }: Props) => {
   return (
     <PFormBlock label='Icon / Adornment' line>
       <PFormRow>

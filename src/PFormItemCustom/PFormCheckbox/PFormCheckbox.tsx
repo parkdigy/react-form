@@ -10,12 +10,13 @@ import { useFormState } from '../../PFormContext';
 
 const PFormCheckbox = ({
   ref,
+  /********************************************************************************************************************/
   variant: initVariant,
   size: initSize,
   color: initColor,
   focused: initFocused,
   fullWidth: initFullWidth,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   name,
   labelIcon,
   label,
@@ -34,7 +35,7 @@ const PFormCheckbox = ({
   exceptValue,
   onChange,
   onValidate,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   className,
   style: initStyle,
   sx,
@@ -84,8 +85,11 @@ const PFormCheckbox = ({
    * Ref
    * ******************************************************************************************************************/
 
+  const initCheckedRef = useAutoUpdateRef(initChecked);
   const inputRef = useRef<HTMLInputElement>(null);
   const actionRef = useRef<ButtonBaseActions>(null);
+  const onChangeRef = useAutoUpdateRef(onChange);
+  const onValidateRef = useAutoUpdateRef(onValidate);
 
   /********************************************************************************************************************
    * ResizeDetector
@@ -93,35 +97,42 @@ const PFormCheckbox = ({
 
   const { ref: labelRef, width, height } = useResizeDetector();
 
-  /********************************************************************************************************************
-   * State - error
-   * ******************************************************************************************************************/
+  /** error */
+  const [error, _setError] = useState(initError);
+  useChanged(initError) && _setError(initError);
+  const errorRef = useAutoUpdateRef(error);
+  const setError = useCallback(
+    (value: React.SetStateAction<typeof error>) => {
+      _setError((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        errorRef.current = newValue;
+        return newValue;
+      });
+    },
+    [errorRef]
+  );
 
-  const [error, setError] = useState(initError);
-  useChanged(initError) && setError(initError);
-
-  /********************************************************************************************************************
-   * State - data
-   * ******************************************************************************************************************/
-
-  const [data, setData] = useState(initData);
-  useChanged(initData) && setData(initData);
-
+  /** data */
+  const [data, _setData] = useState(initData);
+  useChanged(initData) && _setData(initData);
   const dataRef = useAutoUpdateRef(data);
+  const setData = useCallback(
+    (value: React.SetStateAction<typeof data>) => {
+      _setData((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        dataRef.current = newValue;
+        return newValue;
+      });
+    },
+    [dataRef]
+  );
 
-  /********************************************************************************************************************
-   * State - disabled
-   * ******************************************************************************************************************/
-
+  /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
-
   const [disabled, setDisabled] = useState(finalInitDisabled);
   useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
 
-  /********************************************************************************************************************
-   * State - hidden
-   * ******************************************************************************************************************/
-
+  /** hidden */
   const [hidden, setHidden] = useState(initHidden);
   useChanged(initHidden) && setHidden(initHidden);
 
@@ -131,10 +142,19 @@ const PFormCheckbox = ({
 
   const finalInitUncheckedValue = initUncheckedValue ?? 0;
 
-  const [uncheckedValue, setUncheckedValue] = useState(finalInitUncheckedValue);
-  useChanged(finalInitUncheckedValue) && setUncheckedValue(finalInitUncheckedValue);
-
+  const [uncheckedValue, _setUncheckedValue] = useState(finalInitUncheckedValue);
+  useChanged(finalInitUncheckedValue) && _setUncheckedValue(finalInitUncheckedValue);
   const uncheckedValueRef = useAutoUpdateRef(uncheckedValue);
+  const setUncheckedValue = useCallback(
+    (value: React.SetStateAction<typeof uncheckedValue>) => {
+      _setUncheckedValue((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        uncheckedValueRef.current = newValue;
+        return newValue;
+      });
+    },
+    [uncheckedValueRef]
+  );
 
   /********************************************************************************************************************
    * State - value
@@ -144,7 +164,6 @@ const PFormCheckbox = ({
 
   const [value, setValue] = useState(finalInitValue);
   useChanged(finalInitValue) && setValue(finalInitValue);
-
   const valueRef = useAutoUpdateRef(value);
 
   /********************************************************************************************************************
@@ -160,7 +179,7 @@ const PFormCheckbox = ({
   const setErrorErrorHelperText = useCallback(
     function (error: Props['error'], errorHelperText: Props['helperText']) {
       setError(error);
-      setErrorHelperText(errorHelperText);
+      setErrorHelperText(error ? errorHelperText : undefined);
     },
     [setError]
   );
@@ -171,8 +190,8 @@ const PFormCheckbox = ({
 
   const validate = useCallback(
     function (checked: boolean) {
-      if (onValidate) {
-        const onValidateResult = onValidate(checked);
+      if (onValidateRef.current) {
+        const onValidateResult = onValidateRef.current(checked);
         if (onValidateResult != null && onValidateResult !== true) {
           setErrorErrorHelperText(true, onValidateResult);
           return false;
@@ -183,7 +202,7 @@ const PFormCheckbox = ({
 
       return true;
     },
-    [onValidate, setErrorErrorHelperText]
+    [onValidateRef, setErrorErrorHelperText]
   );
 
   /********************************************************************************************************************
@@ -202,12 +221,12 @@ const PFormCheckbox = ({
       checkedRef.current = newChecked;
 
       if (error) validate(newChecked);
-      if (!notFireOnChange && onChange) onChange(newChecked);
+      if (!notFireOnChange && onChangeRef.current) onChangeRef.current(newChecked);
       onValueChange(name, newChecked);
 
       return newChecked;
     },
-    [checkedRef, error, name, onChange, onValueChange, validate]
+    [checkedRef, error, name, onChangeRef, onValueChange, validate]
   );
 
   /********************************************************************************************************************
@@ -238,8 +257,8 @@ const PFormCheckbox = ({
     () => ({
       getType: () => 'PFormCheckbox',
       getName: () => name,
-      getReset: () => initChecked,
-      reset: () => updateChecked(initChecked),
+      getReset: () => initCheckedRef.current,
+      reset: () => updateChecked(initCheckedRef.current),
       getValue: () => valueRef.current,
       setValue,
       getData: () => dataRef.current,
@@ -256,8 +275,7 @@ const PFormCheckbox = ({
       focus,
       focusValidate: focus,
       validate: () => validate(checkedRef.current),
-      setError: (error: Props['error'], errorHelperText: Props['helperText']) =>
-        setErrorErrorHelperText(error, error ? errorHelperText : undefined),
+      setError: setErrorErrorHelperText,
     }),
     [
       checkedRef,
@@ -266,9 +284,11 @@ const PFormCheckbox = ({
       exceptValue,
       focus,
       hidden,
-      initChecked,
+      initCheckedRef,
       name,
+      setData,
       setErrorErrorHelperText,
+      setUncheckedValue,
       uncheckedValueRef,
       updateChecked,
       validate,

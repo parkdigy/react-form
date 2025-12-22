@@ -118,9 +118,22 @@ const PFormDateRangePickerTooltipPickerContainer = ({
   }, []);
 
   /********************************************************************************************************************
+   * Commands
+   * ******************************************************************************************************************/
+
+  useForwardRef(
+    ref,
+    useMemo<PFormDateRangePickerTooltipPickerContainerCommands>(
+      () => ({ previousMonth, nextMonth, activeMonth }),
+      [activeMonth, nextMonth, previousMonth]
+    )
+  );
+
+  /********************************************************************************************************************
    * Event Handler
    * ******************************************************************************************************************/
 
+  /** handleFirstDatePickerMonthChange */
   const handleFirstDatePickerMonthChange = useCallback(
     (date: Dayjs) => {
       if (onMonthsChange) {
@@ -130,6 +143,7 @@ const PFormDateRangePickerTooltipPickerContainer = ({
     [onMonthsChange]
   );
 
+  /** handleYearSelectClick */
   const handleYearSelectClick = useCallback(
     (index: number) => {
       if (yearSelectOpen) {
@@ -150,6 +164,7 @@ const PFormDateRangePickerTooltipPickerContainer = ({
     [yearSelectOpen, yearMonthSelectIndex]
   );
 
+  /** handleMonthSelectClick */
   const handleMonthSelectClick = useCallback(
     (index: number) => {
       if (monthSelectOpen) {
@@ -168,6 +183,7 @@ const PFormDateRangePickerTooltipPickerContainer = ({
     [monthSelectOpen, yearMonthSelectIndex]
   );
 
+  /** handleYearSelect */
   const handleYearSelect = useCallback(
     (year: number) => {
       activeMonth(months[yearMonthSelectIndex].set('year', year).subtract(yearMonthSelectIndex, 'month'));
@@ -177,6 +193,7 @@ const PFormDateRangePickerTooltipPickerContainer = ({
     [activeMonth, months, yearMonthSelectIndex]
   );
 
+  /** handleMonthSelect */
   const handleMonthSelect = useCallback(
     (m: number) => {
       activeMonth(months[yearMonthSelectIndex].set('month', m).subtract(yearMonthSelectIndex, 'month'));
@@ -186,21 +203,10 @@ const PFormDateRangePickerTooltipPickerContainer = ({
   );
 
   /********************************************************************************************************************
-   * Commands
-   * ******************************************************************************************************************/
-
-  useForwardRef(
-    ref,
-    useMemo<PFormDateRangePickerTooltipPickerContainerCommands>(
-      () => ({ previousMonth, nextMonth, activeMonth }),
-      [activeMonth, nextMonth, previousMonth]
-    )
-  );
-
-  /********************************************************************************************************************
    * Render Function
    * ******************************************************************************************************************/
 
+  /** getMonthTitle */
   const getMonthTitle = useCallback(
     (index: number): ReactNode => {
       return (
@@ -227,10 +233,7 @@ const PFormDateRangePickerTooltipPickerContainer = ({
     [yearSelectOpen, yearMonthSelectIndex, months, monthSelectOpen, handleYearSelectClick, handleMonthSelectClick]
   );
 
-  /********************************************************************************************************************
-   * Render - Function
-   * ******************************************************************************************************************/
-
+  /** getActionButton */
   const getActionButton = useCallback(
     (startDate: Dayjs, endDate: Dayjs, label: string) => {
       const availableDateDate = getAvailableDate(availableDate, 'date');

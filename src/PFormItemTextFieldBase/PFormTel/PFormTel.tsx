@@ -3,6 +3,7 @@ import PFormText from '../PFormText';
 import classNames from 'classnames';
 import { PFormTelProps as Props, PFormTelValue } from './PFormTel.types';
 import { formatTelNo } from '@pdg/formatting';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const PFormTel = ({
   ref,
@@ -12,15 +13,21 @@ const PFormTel = ({
   ...props
 }: Props) => {
   /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
+
+  const onValueRef = useAutoUpdateRef(onValue);
+
+  /********************************************************************************************************************
    * Event Handler
    * ******************************************************************************************************************/
 
   const handleValue = useCallback(
     (value: PFormTelValue) => {
       const newValue = formatTelNo(value.replace(/[^0-9]/gi, ''));
-      return onValue ? onValue(newValue) : newValue;
+      return onValueRef.current ? onValueRef.current(newValue) : newValue;
     },
-    [onValue]
+    [onValueRef]
   );
 
   /********************************************************************************************************************

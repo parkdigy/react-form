@@ -1,4 +1,4 @@
-import React, { useId, useRef, useState, useCallback, ReactNode, useMemo } from 'react';
+import React, { useId, useRef, useState, useCallback, ReactNode, useMemo, CSSProperties } from 'react';
 import classNames from 'classnames';
 import { Box, IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
@@ -13,6 +13,7 @@ type InputSlotProps = StandardInputProps;
 
 function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boolean = true>({
   ref,
+  /********************************************************************************************************************/
   variant: initVariant,
   size: initSize,
   color: initColor,
@@ -20,7 +21,7 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
   labelShrink: initLabelShrink,
   fullWidth: initFullWidth,
   submitWhenReturnKey: initSubmitWhenReturnKey,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   name,
   required,
   value: initValue,
@@ -49,16 +50,16 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
   noFormValueItem,
   hidden: initHidden,
   disableReturnKey,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   onChange,
   onValue,
   onValidate,
   onBlur,
   onKeyDown,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   className,
   style: initStyle,
-  //----------------------------------------------------------------------------------------------------------------
+  /********************************************************************************************************************/
   ...props
 }: PFormTextFieldProps<T, AllowUndefinedValue>) {
   /********************************************************************************************************************
@@ -72,12 +73,6 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
    * ******************************************************************************************************************/
 
   const id = useId();
-
-  /********************************************************************************************************************
-   * Ref
-   * ******************************************************************************************************************/
-
-  const inputRef = useRef<HTMLInputElement>(null);
 
   /********************************************************************************************************************
    * FormState
@@ -114,36 +109,15 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
   const submitWhenReturnKey = initSubmitWhenReturnKey ?? formSubmitWhenReturnKey;
 
   /********************************************************************************************************************
-   * State - error
+   * Ref
    * ******************************************************************************************************************/
 
-  const [error, setError] = useState(initError);
-  useChanged(initError) && setError(initError);
-
-  /********************************************************************************************************************
-   * State - data
-   * ******************************************************************************************************************/
-
-  const [data, setData] = useState(initData);
-  useChanged(initData) && setData(initData);
-
-  const dataRef = useAutoUpdateRef(data);
-
-  /********************************************************************************************************************
-   * State - disabled
-   * ******************************************************************************************************************/
-
-  const finalInitDisabled = initDisabled ?? formDisabled;
-
-  const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
-
-  /********************************************************************************************************************
-   * State - hidden
-   * ******************************************************************************************************************/
-
-  const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  const initValueRef = useAutoUpdateRef(initValue);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const onChangeRef = useAutoUpdateRef(onChange);
+  const onValidateRef = useAutoUpdateRef(onValidate);
+  const onBlurRef = useAutoUpdateRef(onBlur);
+  const onKeyDownRef = useAutoUpdateRef(onKeyDown);
 
   /********************************************************************************************************************
    * State
@@ -151,22 +125,59 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
 
   const [errorHelperText, setErrorHelperText] = useState<PFormTextFieldProps['helperText']>();
 
+  /** error */
+  const [error, _setError] = useState(initError);
+  useChanged(initError) && _setError(initError);
+  const errorRef = useAutoUpdateRef(error);
+  const setError = useCallback(
+    (value: React.SetStateAction<typeof error>) => {
+      _setError((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        errorRef.current = newValue;
+        return newValue;
+      });
+    },
+    [errorRef]
+  );
+
+  /** data */
+  const [data, _setData] = useState(initData);
+  useChanged(initData) && _setData(initData);
+  const dataRef = useAutoUpdateRef(data);
+  const setData = useCallback(
+    (value: React.SetStateAction<typeof data>) => {
+      _setData((prev) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        dataRef.current = newValue;
+        return newValue;
+      });
+    },
+    [dataRef]
+  );
+
+  /** disabled */
+  const finalInitDisabled = initDisabled ?? formDisabled;
+  const [disabled, setDisabled] = useState(finalInitDisabled);
+  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+
+  /** hidden */
+  const [hidden, setHidden] = useState(initHidden);
+  useChanged(initHidden) && setHidden(initHidden);
+
   /********************************************************************************************************************
-   * Function - setErrorErrorHelperText
+   * Function
    * ******************************************************************************************************************/
 
+  /** setErrorErrorHelperText */
   const setErrorErrorHelperText = useCallback(
     function (error: boolean, errorHelperText: ReactNode) {
       setError(error);
-      setErrorHelperText(errorHelperText);
+      setErrorHelperText(error ? errorHelperText : undefined);
     },
     [setError]
   );
 
-  /********************************************************************************************************************
-   * Function - validate
-   * ******************************************************************************************************************/
-
+  /** validate */
   const validate = useCallback(
     (value: PFormTextFieldValue) => {
       if (required && empty(value)) {
@@ -186,8 +197,8 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
           return false;
         }
       }
-      if (onValidate) {
-        const validateResult = onValidate(value);
+      if (onValidateRef.current) {
+        const validateResult = onValidateRef.current(value);
         if (validateResult != null && validateResult !== true) {
           setErrorErrorHelperText(true, validateResult);
           return false;
@@ -198,7 +209,19 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
 
       return true;
     },
-    [required, validPattern, invalidPattern, onValidate, setErrorErrorHelperText]
+    [required, validPattern, invalidPattern, onValidateRef, setErrorErrorHelperText]
+  );
+
+  /** focus */
+  const focus = useCallback(
+    function () {
+      if (initInputRef) {
+        (initInputRef as React.RefObject<HTMLInputElement>).current?.focus();
+      } else {
+        inputRef.current?.focus();
+      }
+    },
+    [initInputRef, inputRef]
   );
 
   /********************************************************************************************************************
@@ -212,27 +235,35 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
     [onValue]
   );
 
-  const [value, setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && setValue(getFinalValue(initValue));
-
+  const [value, _setValue] = useState(getFinalValue(initValue));
+  useChanged(initValue) && _setValue(getFinalValue(initValue));
   const valueRef = useAutoUpdateRef(value);
+  const setValue = useCallback(
+    (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
+      _setValue((prev: any) => {
+        const newValue = typeof value === 'function' ? value(prev) : value;
+        valueRef.current = newValue;
+        return newValue;
+      });
+    },
+    [valueRef]
+  );
 
   /** value 변경 함수 */
   const updateValue = useCallback(
     (newValue: PFormTextFieldProps['value']) => {
       const finalValue = getFinalValue(newValue);
       setValue(finalValue);
-      valueRef.current = finalValue;
 
       if (error) validate(finalValue);
-      if (onChange) onChange(finalValue);
+      onChangeRef.current?.(finalValue);
       if (!noFormValueItem) {
         onValueChange(name, finalValue);
       }
 
       return finalValue;
     },
-    [error, getFinalValue, name, noFormValueItem, onChange, onValueChange, validate, valueRef]
+    [error, getFinalValue, name, noFormValueItem, onChangeRef, onValueChange, setValue, validate]
   );
 
   /********************************************************************************************************************
@@ -242,21 +273,6 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
   const showClear = clear ? notEmpty(value) : false;
 
   /********************************************************************************************************************
-   * Function - focus
-   * ******************************************************************************************************************/
-
-  const focus = useCallback(
-    function () {
-      if (initInputRef) {
-        (initInputRef as React.RefObject<HTMLInputElement>).current?.focus();
-      } else {
-        inputRef.current?.focus();
-      }
-    },
-    [initInputRef, inputRef]
-  );
-
-  /********************************************************************************************************************
    * Commands
    * ******************************************************************************************************************/
 
@@ -264,8 +280,8 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
     (): Commands => ({
       getType: () => 'default',
       getName: () => name,
-      getReset: () => getFinalValue(initValue),
-      reset: () => updateValue(initValue),
+      getReset: () => getFinalValue(initValueRef.current),
+      reset: () => updateValue(initValueRef.current),
       getValue: () => valueRef.current,
       setValue: updateValue,
       getData: () => dataRef.current,
@@ -278,8 +294,7 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
       focus,
       focusValidate: focus,
       validate: () => validate(valueRef.current),
-      setError: (error: boolean, errorText: ReactNode | undefined) =>
-        setErrorErrorHelperText(error, error ? errorText : undefined),
+      setError: setErrorErrorHelperText,
     }),
     [
       dataRef,
@@ -288,8 +303,9 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
       focus,
       getFinalValue,
       hidden,
-      initValue,
+      initValueRef,
       name,
+      setData,
       setErrorErrorHelperText,
       updateValue,
       validate,
@@ -312,6 +328,7 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
    * Event Handler
    * ******************************************************************************************************************/
 
+  /** handleChange */
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const finalValue = updateValue(e.target.value);
@@ -327,14 +344,16 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
     [updateValue, noFormValueItem, onValueChangeByUser, name, select, onRequestSearchSubmit]
   );
 
+  /** handleBlur */
   const handleBlur = useCallback(
     (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       if (error) validate(valueRef.current);
-      if (onBlur) onBlur(e);
+      onBlurRef.current?.(e);
     },
-    [error, validate, valueRef, onBlur]
+    [error, validate, valueRef, onBlurRef]
   );
 
+  /** handleKeyDown */
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (['Enter'].includes(e.key) && !select && (!multiline || (multiline && disableReturnKey)) && !noFormValueItem) {
@@ -345,14 +364,14 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
         }
         onRequestSearchSubmit(name, valueRef.current);
       }
-      if (onKeyDown) onKeyDown(e);
+      onKeyDownRef.current?.(e);
     },
     [
       select,
       multiline,
       disableReturnKey,
       noFormValueItem,
-      onKeyDown,
+      onKeyDownRef,
       submitWhenReturnKey,
       onRequestSearchSubmit,
       name,
@@ -362,22 +381,22 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
   );
 
   /********************************************************************************************************************
-   * Variable
+   * Memo
    * ******************************************************************************************************************/
 
-  // style
-  const style = { ...initStyle };
-  if (width != null) {
-    style.width = width;
-  }
-  if (hidden) {
-    style.display = 'none';
-  }
+  /** style */
+  const style = useMemo(() => {
+    const newStyle: CSSProperties = { ...initStyle };
+    if (width != null) {
+      newStyle.width = width;
+    }
+    if (hidden) {
+      newStyle.display = 'none';
+    }
+    return newStyle;
+  }, [hidden, initStyle, width]);
 
-  /********************************************************************************************************************
-   * Memo - slotProps
-   * ******************************************************************************************************************/
-
+  /** inputSlotProps */
   const inputSlotProps: InputSlotProps = useMemo(() => {
     const newProps: InputSlotProps = { ...initSlotProps?.input };
 
@@ -442,6 +461,7 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
     updateValue,
   ]);
 
+  /** slotProps */
   const slotProps = useMemo(() => {
     const newSlotProps: TextFieldProps['slotProps'] = {
       ...initSlotProps,

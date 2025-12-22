@@ -3,6 +3,7 @@ import PFormText from '../PFormText';
 import classNames from 'classnames';
 import { PFormBusinessNoProps as Props, PFormBusinessNoValue } from './PFormBusinessNo.types';
 import { formatBusinessNo } from '@pdg/formatting';
+import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const PFormBusinessNo = ({
   className,
@@ -11,15 +12,21 @@ const PFormBusinessNo = ({
   ...props
 }: Props) => {
   /********************************************************************************************************************
+   * Ref
+   * ******************************************************************************************************************/
+
+  const onValueRef = useAutoUpdateRef(onValue);
+
+  /********************************************************************************************************************
    * Event Handler
    * ******************************************************************************************************************/
 
   const handleValue = useCallback(
     (value: PFormBusinessNoValue) => {
       const newValue = formatBusinessNo(value.replace(/[^0-9]/gi, ''));
-      return onValue ? onValue(newValue) : newValue;
+      return onValueRef.current ? onValueRef.current(newValue) : newValue;
     },
-    [onValue]
+    [onValueRef]
   );
 
   /********************************************************************************************************************
