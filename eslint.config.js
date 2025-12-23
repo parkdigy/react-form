@@ -82,6 +82,24 @@ export default defineConfig([
           defaultProps: 'static public field',
         },
       ],
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector:
+            "TSTypeReference[typeName.left.name='React'][typeName.right.name='FC'], TSTypeReference[typeName.name='FC']",
+          message: 'React.FC 사용이 금지되었습니다.',
+        },
+        {
+          selector:
+            "CallExpression[callee.object.name='React'][callee.property.name='memo'], CallExpression[callee.name='memo']",
+          message: 'React.memo 사용이 금지되었습니다.',
+        },
+        {
+          selector:
+            "CallExpression[callee.object.name='React'][callee.property.name='forwardRef'], CallExpression[callee.name='forwardRef']",
+          message: 'React.forwardRef 사용이 금지되었습니다.',
+        },
+      ],
     },
   },
 ]);
