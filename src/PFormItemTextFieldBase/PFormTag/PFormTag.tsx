@@ -155,12 +155,9 @@ const PFormTag = ({
   useFirstSkipChanged(() => _setValue(getFinalValue(initValue)), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
-    (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
-      _setValue((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        valueRef.current = newValue;
-        return newValue;
-      });
+    (newValue: ReturnType<typeof getFinalValue>) => {
+      _setValue(newValue);
+      valueRef.current = newValue;
     },
     [valueRef]
   );

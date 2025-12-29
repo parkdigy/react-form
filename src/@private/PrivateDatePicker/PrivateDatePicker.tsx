@@ -149,12 +149,9 @@ const PrivateDatePicker = ({
   const [timeError, _setTimeError] = useState<DateValidationError>(null);
   const timeErrorRef = useAutoUpdateRef(timeError);
   const setTimeError = useCallback(
-    (value: React.SetStateAction<typeof timeError>) => {
-      _setTimeError((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        timeErrorRef.current = newValue;
-        return newValue;
-      });
+    (newValue: typeof timeError) => {
+      _setTimeError(newValue);
+      timeErrorRef.current = newValue;
     },
     [timeErrorRef]
   );
@@ -164,12 +161,9 @@ const PrivateDatePicker = ({
   useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
-    (value: React.SetStateAction<typeof error>) => {
-      _setError((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        errorRef.current = newValue;
-        return newValue;
-      });
+    (newValue: typeof error) => {
+      _setError(newValue);
+      errorRef.current = newValue;
     },
     [errorRef]
   );
@@ -179,12 +173,9 @@ const PrivateDatePicker = ({
   useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
-    (value: React.SetStateAction<typeof data>) => {
-      _setData((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        dataRef.current = newValue;
-        return newValue;
-      });
+    (newValue: typeof data) => {
+      _setData(newValue);
+      dataRef.current = newValue;
     },
     [dataRef]
   );
@@ -268,12 +259,9 @@ const PrivateDatePicker = ({
   useFirstSkipChanged(() => _setValue(initValue), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
-    (value: React.SetStateAction<Dayjs | null>) => {
-      _setValue((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        valueRef.current = newValue;
-        return newValue;
-      });
+    (newValue: Dayjs | null) => {
+      _setValue(newValue);
+      valueRef.current = newValue;
     },
     [valueRef]
   );

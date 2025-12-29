@@ -99,12 +99,9 @@ const PFormRating = ({
   useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
-    (value: React.SetStateAction<typeof error>) => {
-      _setError((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        errorRef.current = newValue;
-        return newValue;
-      });
+    (newValue: typeof error) => {
+      _setError(newValue);
+      errorRef.current = newValue;
     },
     [errorRef]
   );
@@ -114,12 +111,9 @@ const PFormRating = ({
   useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
-    (value: React.SetStateAction<typeof data>) => {
-      _setData((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        dataRef.current = newValue;
-        return newValue;
-      });
+    (newValue: typeof data) => {
+      _setData(newValue);
+      dataRef.current = newValue;
     },
     [dataRef]
   );
@@ -200,12 +194,9 @@ const PFormRating = ({
   useFirstSkipChanged(() => _setValue(getFinalValue(initValue)), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
-    (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
-      _setValue((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        valueRef.current = newValue;
-        return newValue;
-      });
+    (newValue: ReturnType<typeof getFinalValue>) => {
+      _setValue(newValue);
+      valueRef.current = newValue;
     },
     [valueRef]
   );

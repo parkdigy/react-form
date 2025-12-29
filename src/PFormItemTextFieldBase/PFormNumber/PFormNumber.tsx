@@ -50,12 +50,9 @@ const PFormNumber = ({
   const [strValue, _setStrValue] = useState<string | undefined>(initValue !== undefined ? `${initValue}` : '');
   const strValueRef = useAutoUpdateRef(strValue);
   const setStrValue = useCallback(
-    (value: React.SetStateAction<typeof strValue>) => {
-      _setStrValue((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        strValueRef.current = newValue;
-        return newValue;
-      });
+    (newValue: typeof strValue) => {
+      _setStrValue(newValue);
+      strValueRef.current = newValue;
     },
     [strValueRef]
   );

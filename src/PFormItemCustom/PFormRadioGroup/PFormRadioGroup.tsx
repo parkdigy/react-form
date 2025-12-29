@@ -142,12 +142,9 @@ function PFormRadioGroup<
   useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
-    (value: React.SetStateAction<typeof error>) => {
-      _setError((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        errorRef.current = newValue;
-        return newValue;
-      });
+    (newValue: typeof error) => {
+      _setError(newValue);
+      errorRef.current = newValue;
     },
     [errorRef]
   );
@@ -157,12 +154,9 @@ function PFormRadioGroup<
   useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
-    (value: React.SetStateAction<typeof data>) => {
-      _setData((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        dataRef.current = newValue;
-        return newValue;
-      });
+    (newValue: typeof data) => {
+      _setData(newValue);
+      dataRef.current = newValue;
     },
     [dataRef]
   );
@@ -186,12 +180,9 @@ function PFormRadioGroup<
   useFirstSkipChanged(() => _setLoading(initLoading), [initLoading]);
   const loadingRef = useAutoUpdateRef(loading);
   const setLoading = useCallback(
-    (value: React.SetStateAction<typeof loading>) => {
-      _setLoading((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        loadingRef.current = newValue;
-        return newValue;
-      });
+    (newValue: typeof loading) => {
+      _setLoading(newValue);
+      loadingRef.current = newValue;
     },
     [loadingRef]
   );
@@ -201,12 +192,9 @@ function PFormRadioGroup<
   useFirstSkipChanged(() => _setItems(initItems), [initItems]);
   const itemsRef = useAutoUpdateRef(items);
   const setItems = useCallback(
-    (value: React.SetStateAction<typeof items>) => {
-      _setItems((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        itemsRef.current = newValue;
-        return newValue;
-      });
+    (newValue: typeof items) => {
+      _setItems(newValue);
+      itemsRef.current = newValue;
     },
     [itemsRef]
   );
@@ -278,12 +266,9 @@ function PFormRadioGroup<
   useFirstSkipChanged(() => _setValue(getFinalValue(initValue)), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
-    (value: React.SetStateAction<Props['value']>) => {
-      _setValue((prev) => {
-        const newValue = typeof value === 'function' ? value(prev) : value;
-        valueRef.current = newValue;
-        return newValue;
-      });
+    (newValue: Props['value']) => {
+      _setValue(newValue);
+      valueRef.current = newValue;
     },
     [valueRef]
   );
