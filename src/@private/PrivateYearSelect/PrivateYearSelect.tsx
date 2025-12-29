@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useEffectEvent, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { PrivateYearSelectProps as Props } from './PrivateYearSelect.types';
 import { Grid } from '@mui/material';
 import dayjs from 'dayjs';
 import './PrivateYearSelect.scss';
 import PrivateToggleButton from '../PrivateToggleButton';
 import SimpleBar from 'simplebar-react';
-import { useAutoUpdateRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useEventEffect } from '@pdg/react-hook';
 
 const YEARS = new Array(200).fill(0);
 for (let i = 0; i < 200; i += 1) {
@@ -25,28 +25,25 @@ const PrivateYearSelect = ({ selectYear, activeYear, availableDate, onSelect: in
    * Effect
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      const activeEls = containerRef.current?.getElementsByClassName(`private-year-select-value-${activeYear}`);
-      if (activeEls && activeEls.length > 0) {
-        const activeEl = activeEls[0];
+  useEventEffect(() => {
+    const activeEls = containerRef.current?.getElementsByClassName(`private-year-select-value-${activeYear}`);
+    if (activeEls && activeEls.length > 0) {
+      const activeEl = activeEls[0];
 
-        const activeRect = activeEl.getBoundingClientRect();
-        const containerRect = containerRef.current?.getBoundingClientRect();
-        const simpleBarRect = simpleBarRef.current?.getBoundingClientRect();
+      const activeRect = activeEl.getBoundingClientRect();
+      const containerRect = containerRef.current?.getBoundingClientRect();
+      const simpleBarRect = simpleBarRef.current?.getBoundingClientRect();
 
-        if (containerRect && simpleBarRect && activeRect) {
-          const scrollTop = simpleBarRef.current?.scrollTop || 0;
+      if (containerRect && simpleBarRect && activeRect) {
+        const scrollTop = simpleBarRef.current?.scrollTop || 0;
 
-          simpleBarRef.current?.scrollTo({
-            left: 0,
-            top: activeRect.top - containerRect.top - containerRect.height / 2 + activeRect.height / 2 + scrollTop,
-          });
-        }
+        simpleBarRef.current?.scrollTo({
+          left: 0,
+          top: activeRect.top - containerRect.top - containerRect.height / 2 + activeRect.height / 2 + scrollTop,
+        });
       }
-    });
-    useEffect(() => effectEvent(), []);
-  }
+    }
+  }, []);
 
   /********************************************************************************************************************
    * Event Handler

@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useCallback, useId, useMemo, useRef, useState, useEffectEvent } from 'react';
+import React, { ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
@@ -34,7 +34,7 @@ import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
 import { InputBaseProps } from '@mui/material/InputBase';
 import './PrivateDatePicker.scss';
 import { empty, notEmpty } from '@pdg/compare';
-import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useEventEffect, useFirstSkipChanged, useForwardRef } from '@pdg/react-hook';
 import { Dayjs } from 'dayjs';
 
 const PrivateDatePicker = ({
@@ -161,7 +161,7 @@ const PrivateDatePicker = ({
 
   /** error */
   const [error, _setError] = useState(initError);
-  useChanged(initError) && _setError(initError);
+  useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
     (value: React.SetStateAction<typeof error>) => {
@@ -176,7 +176,7 @@ const PrivateDatePicker = ({
 
   /** data */
   const [data, _setData] = useState(initData);
-  useChanged(initData) && _setData(initData);
+  useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
     (value: React.SetStateAction<typeof data>) => {
@@ -192,11 +192,11 @@ const PrivateDatePicker = ({
   /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
   const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+  useFirstSkipChanged(() => setDisabled(finalInitDisabled), [finalInitDisabled]);
 
   /** hidden */
   const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  useFirstSkipChanged(() => setHidden(initHidden), [initHidden]);
 
   /********************************************************************************************************************
    * Memo
@@ -265,7 +265,7 @@ const PrivateDatePicker = ({
    * ******************************************************************************************************************/
 
   const [value, _setValue] = useState(initValue);
-  useChanged(initValue) && _setValue(initValue);
+  useFirstSkipChanged(() => _setValue(initValue), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
     (value: React.SetStateAction<Dayjs | null>) => {
@@ -279,7 +279,7 @@ const PrivateDatePicker = ({
   );
 
   const [inputValue, setInputValue] = useState<PrivateDatePickerValue>(value);
-  useChanged(value) && setInputValue(value);
+  useFirstSkipChanged(() => setInputValue(value), [value]);
 
   /** value 변경 함수 */
   const updateValue = useCallback(
@@ -317,38 +317,30 @@ const PrivateDatePicker = ({
    * Effect
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => validateRef.current(valueRef.current));
+  useEventEffect(() => {
+    if (error && !timeError) {
+      validateRef.current(valueRef.current);
+    }
+  }, [error, timeError]);
 
-    useEffect(() => {
-      if (error && !timeError) {
-        effectEvent();
-      }
-    }, [error, timeError]);
-  }
+  useEventEffect(() => {
+    if (isOpen) {
+      openValueRef.current = value;
+    } else {
+      if (openValueRef.current !== value) {
+        let runOnRequestSearchSubmit;
+        if (openValueRef.current && value) {
+          runOnRequestSearchSubmit = !openValueRef.current.isSame(value, 'second');
+        } else {
+          runOnRequestSearchSubmit = true;
+        }
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (isOpen) {
-        openValueRef.current = value;
-      } else {
-        if (openValueRef.current !== value) {
-          let runOnRequestSearchSubmit;
-          if (openValueRef.current && value) {
-            runOnRequestSearchSubmit = !openValueRef.current.isSame(value, 'second');
-          } else {
-            runOnRequestSearchSubmit = true;
-          }
-
-          if (runOnRequestSearchSubmit) {
-            onRequestSearchSubmit(name, value);
-          }
+        if (runOnRequestSearchSubmit) {
+          onRequestSearchSubmit(name, value);
         }
       }
-    });
-
-    useEffect(() => effectEvent(), [isOpen]);
-  }
+    }
+  }, [isOpen]);
 
   /********************************************************************************************************************
    * Commands

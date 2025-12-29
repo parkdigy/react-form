@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, ReactNode, useEffectEvent } from 'react';
+import React, { useState, useCallback, ReactNode } from 'react';
 import classNames from 'classnames';
 import { Autocomplete, AutocompleteRenderInputParams, Chip, InputLabelProps } from '@mui/material';
 import { PFormTagProps as Props, PFormTagExtraCommands, PFormTagValue, PFormTagCommands } from './PFormTag.types';
@@ -8,7 +8,7 @@ import { useFormState } from '../../PFormContext';
 import PFormContextProvider from '../../PFormContextProvider';
 import { PFormTagText, PFormTagTextProps } from './PFormTagText';
 import { PFormValueItemCommands } from '../../@types';
-import { useAutoUpdateRef, useChanged } from '@pdg/react-hook';
+import { useAutoUpdateRef, useEventEffect, useFirstSkipChanged } from '@pdg/react-hook';
 
 const _emptyValue: string[] = [];
 
@@ -85,12 +85,12 @@ const PFormTag = ({
 
   /** error */
   const [error, setError] = useState(initError);
-  useChanged(initError) && setError(initError);
+  useFirstSkipChanged(() => setError(initError), [initError]);
 
   /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
   const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+  useFirstSkipChanged(() => setDisabled(finalInitDisabled), [finalInitDisabled]);
 
   /********************************************************************************************************************
    * Function
@@ -152,7 +152,7 @@ const PFormTag = ({
   );
 
   const [value, _setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && _setValue(getFinalValue(initValue));
+  useFirstSkipChanged(() => _setValue(getFinalValue(initValue)), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
     (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
@@ -186,15 +186,12 @@ const PFormTag = ({
    * Effect
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (!equal(valueRef.current, initValueRef.current)) {
-        onChangeRef.current?.(valueRef.current);
-        onValueChange(name, valueRef.current);
-      }
-    });
-    useEffect(() => effectEvent(), []);
-  }
+  useEventEffect(() => {
+    if (!equal(valueRef.current, initValueRef.current)) {
+      onChangeRef.current?.(valueRef.current);
+      onValueChange(name, valueRef.current);
+    }
+  }, []);
 
   /********************************************************************************************************************
    * Function

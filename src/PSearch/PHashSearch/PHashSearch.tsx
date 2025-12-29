@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useEffectEvent, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { PHashSearchProps as Props } from './PHashSearch.types';
 import { PSearch, PSearchCommands } from '../PSearch';
 import {
@@ -19,7 +19,7 @@ import { equal, notEmpty } from '@pdg/compare';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
 import { useLocation } from 'react-router';
-import { useAutoUpdateRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useEventEffect } from '@pdg/react-hook';
 
 export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestHashChange, ...props }: Props) => {
   /********************************************************************************************************************
@@ -175,15 +175,12 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
    * hash
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (location.pathname === initPathRef.current) {
-        const data = hashToSearchValue();
-        if (data) onSubmitRef.current?.(data);
-      }
-    });
-    useEffect(() => effectEvent(), [location.hash]);
-  }
+  useEventEffect(() => {
+    if (location.pathname === initPathRef.current) {
+      const data = hashToSearchValue();
+      if (data) onSubmitRef.current?.(data);
+    }
+  }, [location.hash]);
 
   /********************************************************************************************************************
    * Function

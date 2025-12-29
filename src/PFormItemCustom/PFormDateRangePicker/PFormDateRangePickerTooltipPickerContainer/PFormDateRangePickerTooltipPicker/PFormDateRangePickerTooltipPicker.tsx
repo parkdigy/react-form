@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   PFormDateRangePickerTooltipPickerProps as Props,
@@ -9,8 +9,8 @@ import {
 import { PickersDay, PickersDayProps, StaticDatePicker } from '@mui/x-date-pickers';
 import { IconButton, IconButtonProps } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
+import { useFirstSkipChanged, useForwardRef } from '@pdg/react-hook';
 import './PFormDateRangePickerTooltipPicker.scss';
-import { useForwardRef } from '@pdg/react-hook';
 
 interface ClassNameMap {
   [key: number]: string;
@@ -42,6 +42,8 @@ const PFormDateRangePickerTooltipPicker = ({
    * ******************************************************************************************************************/
 
   const [activeMonthValue, setActiveMonthValue] = useState<PFormDateRangePickerTooltipPickerDateValue>(null);
+  useFirstSkipChanged(() => setActiveMonthValue(null), [selectType]);
+
   const [LeftArrowButton] = useState(() => {
     const ArrowButton = (props: IconButtonProps) => {
       leftArrowOnClickRef.current = props.onClick;
@@ -57,15 +59,6 @@ const PFormDateRangePickerTooltipPicker = ({
     };
     return ArrowButton;
   });
-
-  /********************************************************************************************************************
-   * Effect
-   * ******************************************************************************************************************/
-
-  {
-    const effectEvent = useEffectEvent(() => setActiveMonthValue(null));
-    useEffect(() => effectEvent(), [selectType]);
-  }
 
   /********************************************************************************************************************
    * Function

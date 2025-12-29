@@ -5,8 +5,8 @@ import PFormFile from '../PFormFile';
 import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
 import { Tooltip, Typography } from '@mui/material';
 import { getFinalValue } from './PFormImageFile.function.private';
+import { useFirstSkipChanged } from '@pdg/react-hook';
 import './PFormImageFile.scss';
-import { useChanged } from '@pdg/react-hook';
 
 const PFormImageFile = ({
   ref,
@@ -39,7 +39,7 @@ const PFormImageFile = ({
    * ******************************************************************************************************************/
 
   const [value, setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && setValue(getFinalValue(initValue));
+  useFirstSkipChanged(() => setValue(getFinalValue(initValue)), [initValue]);
 
   /** value 변경 함수 */
   const updateValue = useCallback(

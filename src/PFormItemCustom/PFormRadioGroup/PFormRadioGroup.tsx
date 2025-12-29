@@ -1,19 +1,15 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useRef,
-  ReactNode,
-  useId,
-  ChangeEvent,
-  useMemo,
-  useEffectEvent,
-} from 'react';
+import React, { useState, useCallback, useRef, ReactNode, useId, ChangeEvent, useMemo } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from '@mui/material';
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
-import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
+import {
+  useAutoUpdateRef,
+  useEventEffect,
+  useFirstSkipChanged,
+  useFirstSkipEffect,
+  useForwardRef,
+} from '@pdg/react-hook';
 import { empty, notEmpty } from '@pdg/compare';
 import {
   PFormRadioGroupProps,
@@ -139,11 +135,11 @@ function PFormRadioGroup<
   /** fullWidth */
   const finalInitFullWidth = initFullWidth ?? formFullWidth;
   const [fullWidth, setFullWidth] = useState(finalInitFullWidth);
-  useChanged(finalInitFullWidth) && setFullWidth(finalInitFullWidth);
+  useFirstSkipChanged(() => setFullWidth(finalInitFullWidth), [finalInitFullWidth]);
 
   /** error */
   const [error, _setError] = useState(initError);
-  useChanged(initError) && _setError(initError);
+  useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
     (value: React.SetStateAction<typeof error>) => {
@@ -158,7 +154,7 @@ function PFormRadioGroup<
 
   /** data */
   const [data, _setData] = useState(initData);
-  useChanged(initData) && _setData(initData);
+  useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
     (value: React.SetStateAction<typeof data>) => {
@@ -174,20 +170,20 @@ function PFormRadioGroup<
   /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
   const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+  useFirstSkipChanged(() => setDisabled(finalInitDisabled), [finalInitDisabled]);
 
   /** hidden */
   const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  useFirstSkipChanged(() => setHidden(initHidden), [initHidden]);
 
   /** width */
   const finalInitWidth = initWidth || '100%';
   const [width, setWidth] = useState<Props['width']>(finalInitWidth);
-  useChanged(finalInitWidth) && setWidth(finalInitWidth);
+  useFirstSkipChanged(() => setWidth(finalInitWidth), [finalInitWidth]);
 
   /** loading */
   const [loading, _setLoading] = useState(initLoading);
-  useChanged(initLoading) && _setLoading(initLoading);
+  useFirstSkipChanged(() => _setLoading(initLoading), [initLoading]);
   const loadingRef = useAutoUpdateRef(loading);
   const setLoading = useCallback(
     (value: React.SetStateAction<typeof loading>) => {
@@ -202,7 +198,7 @@ function PFormRadioGroup<
 
   /** items */
   const [items, _setItems] = useState(initItems);
-  useChanged(initItems) && _setItems(initItems);
+  useFirstSkipChanged(() => _setItems(initItems), [initItems]);
   const itemsRef = useAutoUpdateRef(items);
   const setItems = useCallback(
     (value: React.SetStateAction<typeof items>) => {
@@ -279,7 +275,7 @@ function PFormRadioGroup<
   const getFinalValueRef = useAutoUpdateRef(getFinalValue);
 
   const [value, _setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && _setValue(getFinalValue(initValue));
+  useFirstSkipChanged(() => _setValue(getFinalValue(initValue)), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
     (value: React.SetStateAction<Props['value']>) => {
@@ -316,90 +312,74 @@ function PFormRadioGroup<
    * Effect
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (onLoadItemsRef.current) {
-        onLoadItemsRef.current().then((items) => {
-          setItems(items);
-          setIsOnGetItemLoading(false);
-        });
-      }
-    });
-    useEffect(() => effectEvent(), []);
-  }
+  useEventEffect(() => {
+    if (onLoadItemsRef.current) {
+      onLoadItemsRef.current().then((items) => {
+        setItems(items);
+        setIsOnGetItemLoading(false);
+      });
+    }
+  }, []);
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (!fullWidth || initWidth) {
-        const findParentByClassName = (element: HTMLElement, className: string): HTMLElement | undefined | null => {
-          const parent = element.parentElement;
-          if (parent) {
-            if ((parent.className || '').includes(className)) {
-              return parent;
-            } else {
-              return findParentByClassName(parent, className);
-            }
+  useEventEffect(() => {
+    if (!fullWidth || initWidth) {
+      const findParentByClassName = (element: HTMLElement, className: string): HTMLElement | undefined | null => {
+        const parent = element.parentElement;
+        if (parent) {
+          if ((parent.className || '').includes(className)) {
+            return parent;
+          } else {
+            return findParentByClassName(parent, className);
           }
+        }
+      };
+
+      const wrap = baseRef.current && findParentByClassName(baseRef.current, 'FormCol-Children-Wrap');
+      if (wrap) {
+        const resize = () => {
+          if (resizeWidthDetectorRef.current) {
+            setRadioGroupNoWrapRect(resizeWidthDetectorRef.current.getBoundingClientRect());
+          }
+          setFormColWrapRect(wrap.getBoundingClientRect());
         };
+        window.addEventListener('resize', resize);
+        resize();
 
-        const wrap = baseRef.current && findParentByClassName(baseRef.current, 'FormCol-Children-Wrap');
-        if (wrap) {
-          const resize = () => {
-            if (resizeWidthDetectorRef.current) {
-              setRadioGroupNoWrapRect(resizeWidthDetectorRef.current.getBoundingClientRect());
-            }
-            setFormColWrapRect(wrap.getBoundingClientRect());
-          };
-          window.addEventListener('resize', resize);
-          resize();
-
-          return () => {
-            window.removeEventListener('resize', resize);
-          };
-        }
+        return () => {
+          window.removeEventListener('resize', resize);
+        };
       }
-    });
-    useEffect(() => effectEvent(), [fullWidth, initWidth]);
-  }
+    }
+  }, [fullWidth, initWidth]);
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      let width: number | string | undefined;
+  useFirstSkipEffect(() => {
+    let width: number | string | undefined;
 
-      let fullWidth = initFullWidth == null ? formFullWidth : initFullWidth;
+    let fullWidth = initFullWidth == null ? formFullWidth : initFullWidth;
 
-      if (initWidth) {
-        width = initWidth;
-      } else if (fullWidth) {
-        width = '100%';
-      } else {
-        if (radioGroupNoWrapRect?.width) {
-          width = radioGroupNoWrapRect.width + PADDING_LEFT;
-        }
+    if (initWidth) {
+      width = initWidth;
+    } else if (fullWidth) {
+      width = '100%';
+    } else {
+      if (radioGroupNoWrapRect?.width) {
+        width = radioGroupNoWrapRect.width + PADDING_LEFT;
       }
+    }
 
-      const formColWrapPaddingLeft =
-        radioGroupNoWrapRect && formColWrapRect ? radioGroupNoWrapRect.left - formColWrapRect.left : 0;
+    const formColWrapPaddingLeft =
+      radioGroupNoWrapRect && formColWrapRect ? radioGroupNoWrapRect.left - formColWrapRect.left : 0;
 
-      if ((!fullWidth || !!initWidth) && width && formColWrapRect?.width) {
-        if (typeof width === 'number' && width > formColWrapRect.width - formColWrapPaddingLeft) {
-          width = formColWrapRect.width - formColWrapPaddingLeft;
-          fullWidth = false;
-        }
+    if ((!fullWidth || !!initWidth) && width && formColWrapRect?.width) {
+      if (typeof width === 'number' && width > formColWrapRect.width - formColWrapPaddingLeft) {
+        width = formColWrapRect.width - formColWrapPaddingLeft;
+        fullWidth = false;
       }
+    }
 
-      setWidth(width);
-      setFullWidth(fullWidth);
-    });
-    const firstSkip = useRef(true);
-    useEffect(() => {
-      if (firstSkip.current) {
-        firstSkip.current = false;
-      } else {
-        effectEvent();
-      }
-    }, [initWidth, formFullWidth, initFullWidth, formColWrapRect, radioGroupNoWrapRect]);
-  }
+    setWidth(width);
+    setFullWidth(fullWidth);
+  }, [initWidth, formFullWidth, initFullWidth, formColWrapRect, radioGroupNoWrapRect]);
 
   /********************************************************************************************************************
    * Commands

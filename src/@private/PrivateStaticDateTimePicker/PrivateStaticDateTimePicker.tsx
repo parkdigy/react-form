@@ -84,11 +84,11 @@ const PrivateStaticDateTimePicker = ({
    * yearSelectOpen 변경 시 처리
    * ******************************************************************************************************************/
 
-  if (useChanged(yearSelectOpen, true)) {
+  useChanged(() => {
     if (!yearSelectOpen) {
       setActiveMonthValue(null);
     }
-  }
+  }, [yearSelectOpen]);
 
   /********************************************************************************************************************
    * ArrowButton

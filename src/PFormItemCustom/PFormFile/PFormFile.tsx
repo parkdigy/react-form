@@ -1,7 +1,7 @@
 import React, { ChangeEvent, ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { InputAdornment, TextField, Typography } from '@mui/material';
-import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useFirstSkipChanged, useForwardRef } from '@pdg/react-hook';
 import { getFileSizeText } from '../../@util.private';
 import { empty, notEmpty } from '@pdg/compare';
 import { PFormFileProps as Props, PFormFileCommands, PFormFileValue } from './PFormFile.types';
@@ -125,7 +125,7 @@ const PFormFile = ({
 
   /** error */
   const [error, _setError] = useState(initError);
-  useChanged(initError) && _setError(initError);
+  useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
     (value: React.SetStateAction<typeof error>) => {
@@ -140,7 +140,7 @@ const PFormFile = ({
 
   /** data */
   const [data, _setData] = useState(initData);
-  useChanged(initData) && _setData(initData);
+  useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
     (value: React.SetStateAction<typeof data>) => {
@@ -156,11 +156,11 @@ const PFormFile = ({
   /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
   const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+  useFirstSkipChanged(() => setDisabled(finalInitDisabled), [finalInitDisabled]);
 
   /** hidden */
   const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  useFirstSkipChanged(() => setHidden(initHidden), [initHidden]);
 
   /********************************************************************************************************************
    * ResizeDetector
@@ -266,7 +266,7 @@ const PFormFile = ({
    * ******************************************************************************************************************/
 
   const [value, _setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && _setValue(getFinalValue(initValue));
+  useFirstSkipChanged(() => _setValue(getFinalValue(initValue)), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
     (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {

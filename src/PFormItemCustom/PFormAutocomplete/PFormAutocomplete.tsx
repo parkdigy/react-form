@@ -1,14 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useId,
-  ReactNode,
-  useRef,
-  useMemo,
-  FocusEvent,
-  useEffectEvent,
-} from 'react';
+import React, { useState, useCallback, useId, ReactNode, useRef, useMemo, FocusEvent } from 'react';
 import classNames from 'classnames';
 import {
   Autocomplete,
@@ -17,7 +7,16 @@ import {
   AutocompleteChangeDetails,
   CircularProgress,
 } from '@mui/material';
-import { clearTimeoutRef, useAutoUpdateRef, useChanged, useForwardRef, useTimeoutRef } from '@pdg/react-hook';
+import {
+  clearTimeoutRef,
+  useAutoUpdateRef,
+  useChanged,
+  useEventEffect,
+  useFirstSkipChanged,
+  useFirstSkipEffect,
+  useForwardRef,
+  useTimeoutRef,
+} from '@pdg/react-hook';
 import { Dict } from '@pdg/types';
 import { empty, notEmpty, equal } from '@pdg/compare';
 import {
@@ -155,7 +154,7 @@ function PFormAutocomplete<
 
   /** error */
   const [error, _setError] = useState(initError);
-  useChanged(initError) && _setError(initError);
+  useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
     (value: React.SetStateAction<typeof error>) => {
@@ -170,7 +169,7 @@ function PFormAutocomplete<
 
   /** data */
   const [data, _setData] = useState(initData);
-  useChanged(initData) && _setData(initData);
+  useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
     (value: React.SetStateAction<typeof data>) => {
@@ -186,15 +185,15 @@ function PFormAutocomplete<
   /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
   const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+  useFirstSkipChanged(() => setDisabled(finalInitDisabled), [finalInitDisabled]);
 
   /** hidden */
   const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  useFirstSkipChanged(() => setHidden(initHidden), [initHidden]);
 
   /** loading */
   const [loading, _setLoading] = useState(initLoading);
-  useChanged(initLoading) && _setLoading(initLoading);
+  useFirstSkipChanged(() => _setLoading(initLoading), [initLoading]);
   const loadingRef = useAutoUpdateRef(loading);
   const setLoading = useCallback(
     (value: React.SetStateAction<typeof loading>) => {
@@ -209,7 +208,7 @@ function PFormAutocomplete<
 
   /** items */
   const [items, _setItems] = useState(initItems);
-  useChanged(initItems) && _setItems(initItems);
+  useFirstSkipChanged(() => _setItems(initItems), [initItems]);
   const itemsRef = useAutoUpdateRef(items);
   const setItems = useCallback(
     (newItems: PFormAutocompleteItems<T> | undefined) => {
@@ -349,7 +348,7 @@ function PFormAutocomplete<
   const [valueItem, setValueItem] = useState<ComponentValue | null>(null);
 
   const [value, _setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && _setValue(getFinalValue(initValue));
+  useFirstSkipChanged(() => _setValue(getFinalValue(initValue)), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
     (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
@@ -376,22 +375,6 @@ function PFormAutocomplete<
     },
     [error, getFinalValueRef, name, onChangeRef, onValueChange, setValue, validate]
   );
-
-  /********************************************************************************************************************
-   * Change
-   * ******************************************************************************************************************/
-
-  {
-    const effectEvent = useEffectEvent(() => updateValue(getFinalValueRef.current(valueRef.current)));
-    const firstSkipRef = useRef(true);
-    useEffect(() => {
-      if (firstSkipRef.current) {
-        firstSkipRef.current = false;
-      } else {
-        effectEvent();
-      }
-    }, [multiple]);
-  }
 
   /********************************************************************************************************************
    * Memo
@@ -448,16 +431,14 @@ function PFormAutocomplete<
   }, [value, multiple, items, valueItem, itemsInfos]);
 
   /** componentValue */
-  const [stateComponentValue, setStateComponentValue] = useState(computedComponentValue);
-  let componentValue = stateComponentValue;
-  if (useChanged(computedComponentValue, true)) {
-    if (stateComponentValue && computedComponentValue && equal(stateComponentValue, computedComponentValue)) {
+  const [componentValue, setComponentValue] = useState(computedComponentValue);
+  useChanged(() => {
+    if (componentValue && computedComponentValue && equal(componentValue, computedComponentValue)) {
       // do nothing
     } else {
-      setStateComponentValue(computedComponentValue);
-      componentValue = computedComponentValue;
+      setComponentValue(computedComponentValue);
     }
-  }
+  }, [computedComponentValue]);
 
   /********************************************************************************************************************
    * Function
@@ -475,85 +456,80 @@ function PFormAutocomplete<
    * Effect
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (!async && onLoadItemsRef.current) {
-        showOnGetItemLoading();
-        onLoadItemsRef.current().then((items) => {
-          setItems(items);
-          hideOnGetItemLoading();
-        });
-      }
-    });
-    useEffect(() => effectEvent(), []);
-  }
+  useEventEffect(() => {
+    if (!async && onLoadItemsRef.current) {
+      showOnGetItemLoading();
+      onLoadItemsRef.current().then((items) => {
+        setItems(items);
+        hideOnGetItemLoading();
+      });
+    }
+  }, []);
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (async && onAsyncLoadValueItemRef.current) {
-        if (value != null) {
-          if (!valueItem) {
-            onAsyncLoadValueItemRef.current(value).then((valueItem) => {
-              setValueItem(valueItem);
-              if (valueItem) {
-                if (Array.isArray(valueItem)) {
-                  setItems(valueItem);
-                } else {
-                  setItems([valueItem]);
-                }
+  useFirstSkipEffect(() => {
+    updateValue(getFinalValueRef.current(valueRef.current));
+  }, [multiple]);
+
+  useEventEffect(() => {
+    if (async && onAsyncLoadValueItemRef.current) {
+      if (value != null) {
+        if (!valueItem) {
+          onAsyncLoadValueItemRef.current(value).then((valueItem) => {
+            setValueItem(valueItem);
+            if (valueItem) {
+              if (Array.isArray(valueItem)) {
+                setItems(valueItem);
+              } else {
+                setItems([valueItem]);
               }
-            });
-          }
-        } else {
-          setValueItem(null);
-        }
-      }
-    });
-    useEffect(() => effectEvent(), [async, value, valueItem]);
-  }
-
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (async && onLoadItems) {
-        clearTimeoutRef(asyncTimeoutRef);
-
-        if (inputValue != null) {
-          showOnGetItemLoading();
-
-          setAsyncTimeout(() => {
-            onLoadItems?.(inputValue)
-              .then((items) => {
-                if (componentValue) {
-                  if (Array.isArray(componentValue)) {
-                    const exceptValues = componentValue.map((info) => info.value);
-                    setItems([...componentValue, ...items.filter((info) => !exceptValues.includes(info.value))]);
-                  } else {
-                    const exceptValue = componentValue.value;
-                    setItems([componentValue, ...items.filter((info) => info.value !== exceptValue)]);
-                  }
-                } else {
-                  setItems(items);
-                }
-              })
-              .finally(() => {
-                hideOnGetItemLoading();
-              });
-          }, 300);
-        } else {
-          if (Array.isArray(componentValue)) {
-            setItems(componentValue);
-          } else {
-            if (componentValue) {
-              setItems([componentValue]);
-            } else {
-              setItems([]);
             }
+          });
+        }
+      } else {
+        setValueItem(null);
+      }
+    }
+  }, [async, value, valueItem]);
+
+  useEventEffect(() => {
+    if (async && onLoadItems) {
+      clearTimeoutRef(asyncTimeoutRef);
+
+      if (inputValue != null) {
+        showOnGetItemLoading();
+
+        setAsyncTimeout(() => {
+          onLoadItems?.(inputValue)
+            .then((items) => {
+              if (componentValue) {
+                if (Array.isArray(componentValue)) {
+                  const exceptValues = componentValue.map((info) => info.value);
+                  setItems([...componentValue, ...items.filter((info) => !exceptValues.includes(info.value))]);
+                } else {
+                  const exceptValue = componentValue.value;
+                  setItems([componentValue, ...items.filter((info) => info.value !== exceptValue)]);
+                }
+              } else {
+                setItems(items);
+              }
+            })
+            .finally(() => {
+              hideOnGetItemLoading();
+            });
+        }, 300);
+      } else {
+        if (Array.isArray(componentValue)) {
+          setItems(componentValue);
+        } else {
+          if (componentValue) {
+            setItems([componentValue]);
+          } else {
+            setItems([]);
           }
         }
       }
-    });
-    useEffect(() => effectEvent(), [async, inputValue]);
-  }
+    }
+  }, [async, inputValue]);
 
   /********************************************************************************************************************
    * Function - focus

@@ -1,8 +1,14 @@
-import React, { useEffect, useState, useCallback, useId, ReactNode, useMemo, useRef, useEffectEvent } from 'react';
+import React, { useState, useCallback, useId, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
-import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
+import {
+  useAutoUpdateRef,
+  useEventEffect,
+  useFirstSkipChanged,
+  useFirstSkipEffect,
+  useForwardRef,
+} from '@pdg/react-hook';
 import { empty, notEmpty, equal } from '@pdg/compare';
 import { PartialPick } from '../../@types';
 import {
@@ -151,7 +157,7 @@ function PFormToggleButtonGroup<
 
   /** error */
   const [error, _setError] = useState(initError);
-  useChanged(initError) && _setError(initError);
+  useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
     (value: React.SetStateAction<typeof error>) => {
@@ -166,7 +172,7 @@ function PFormToggleButtonGroup<
 
   /** data */
   const [data, _setData] = useState(initData);
-  useChanged(initData) && _setData(initData);
+  useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
     (value: React.SetStateAction<typeof data>) => {
@@ -182,15 +188,15 @@ function PFormToggleButtonGroup<
   /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
   const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+  useFirstSkipChanged(() => setDisabled(finalInitDisabled), [finalInitDisabled]);
 
   /** hidden */
   const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  useFirstSkipChanged(() => setHidden(initHidden), [initHidden]);
 
   /** loading */
   const [loading, _setLoading] = useState(initLoading);
-  useChanged(initLoading) && _setLoading(initLoading);
+  useFirstSkipChanged(() => _setLoading(initLoading), [initLoading]);
   const loadingRef = useAutoUpdateRef(loading);
   const setLoading = useCallback(
     (value: React.SetStateAction<typeof loading>) => {
@@ -205,7 +211,7 @@ function PFormToggleButtonGroup<
 
   /** items */
   const [items, _setItems] = useState(initItems);
-  useChanged(initItems) && _setItems(initItems);
+  useFirstSkipChanged(() => _setItems(initItems), [initItems]);
 
   const itemsRef = useAutoUpdateRef(items);
 
@@ -346,7 +352,7 @@ function PFormToggleButtonGroup<
   const getFinalValueRef = useAutoUpdateRef(getFinalValue);
 
   const [value, _setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && _setValue(getFinalValue(initValue));
+  useFirstSkipChanged(() => _setValue(getFinalValue(initValue)), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
     (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
@@ -377,56 +383,40 @@ function PFormToggleButtonGroup<
    * Effect
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => updateValue(valueRef.current));
-    const firstSkip = useRef(true);
-    useEffect(() => {
-      if (firstSkip.current) {
-        firstSkip.current = false;
-      } else {
-        effectEvent();
-      }
-    }, [multiple]);
-  }
+  useEventEffect(() => {
+    if (onLoadItemsRef.current) {
+      onLoadItemsRef.current().then((items) => {
+        setItems(items);
+        setIsOnGetItemLoading(false);
+      });
+    }
+  }, []);
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (onLoadItemsRef.current) {
-        onLoadItemsRef.current().then((items) => {
-          setItems(items);
-          setIsOnGetItemLoading(false);
-        });
-      }
-    });
-    useEffect(() => effectEvent(), []);
-  }
+  useFirstSkipEffect(() => {
+    updateValue(valueRef.current);
+  }, [multiple]);
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (notAllowEmptyValue) {
-        if (items && notEmpty(items)) {
-          let setFirstItem = false;
+  useEventEffect(() => {
+    if (notAllowEmptyValue) {
+      if (items && notEmpty(items)) {
+        let setFirstItem = false;
 
-          if (Array.isArray(value)) {
-            if (empty(value)) {
-              setFirstItem = true;
-            }
-          } else {
-            if (value == null) {
-              setFirstItem = true;
-            }
+        if (Array.isArray(value)) {
+          if (empty(value)) {
+            setFirstItem = true;
           }
-
-          if (setFirstItem) {
-            updateValue((multiple ? [items[0].value] : items[0].value) as Props['value']);
+        } else {
+          if (value == null) {
+            setFirstItem = true;
           }
         }
+
+        if (setFirstItem) {
+          updateValue((multiple ? [items[0].value] : items[0].value) as Props['value']);
+        }
       }
-    });
-    useEffect(() => {
-      effectEvent();
-    }, [multiple, items, value, notAllowEmptyValue]);
-  }
+    }
+  }, [multiple, items, value, notAllowEmptyValue]);
 
   /********************************************************************************************************************
    * Commands

@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useEffectEvent, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { PrivateTimeSelectProps as Props, PrivateTimeSelectCommands } from './PrivateTimeSelect.types';
 import SimpleBar from 'simplebar-react';
 import PrivateToggleButton from '../PrivateToggleButton';
 import './PrivateTimeSelect.scss';
 import { Grid } from '@mui/material';
-import { useAutoUpdateRef, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useEventEffect, useForwardRef } from '@pdg/react-hook';
 
 const DEFAULT_MINUTES = new Array(60).fill(0);
 for (let i = 0; i < DEFAULT_MINUTES.length; i += 1) {
@@ -83,23 +83,18 @@ const PrivateTimeSelect = ({
    * Effect
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (value != null) {
-        scrollToValue(value);
-      }
-    });
-    useEffect(() => {
-      effectEvent();
+  useEventEffect(() => {
+    if (value != null) {
+      scrollToValue(value);
+    }
 
-      return () => {
-        if (scrollTimerRef.current) {
-          clearInterval(scrollTimerRef.current);
-          scrollTimerRef.current = undefined;
-        }
-      };
-    }, []);
-  }
+    return () => {
+      if (scrollTimerRef.current) {
+        clearInterval(scrollTimerRef.current);
+        scrollTimerRef.current = undefined;
+      }
+    };
+  }, []);
 
   /********************************************************************************************************************
    * Commands

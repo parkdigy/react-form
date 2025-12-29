@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useId, useMemo, useEffectEvent } from 'react';
+import React, { useId, useMemo } from 'react';
 import classNames from 'classnames';
 import { FormHelperText, Grid } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
@@ -6,6 +6,7 @@ import { PFormColProps as Props } from './PFormCol.types';
 import { useFormState } from '../../PFormContext';
 import PFormContextProvider from '../../PFormContextProvider';
 import { StyledContentContainerBox, StyledFormLabel, StyledFormLabelContainerDiv } from './PFormCol.style.private';
+import { useEventEffect, useEventLayoutEffect } from '@pdg/react-hook';
 
 const PFormCol = ({
   ref,
@@ -98,28 +99,22 @@ const PFormCol = ({
    * Effect
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (onAddFormCol) onAddFormCol(id, xs);
-      return () => {
-        if (onRemoveFormCol) onRemoveFormCol(id);
-      };
-    });
-    useLayoutEffect(() => effectEvent(), [xs]);
-  }
+  useEventLayoutEffect(() => {
+    if (onAddFormCol) onAddFormCol(id, xs);
+    return () => {
+      if (onRemoveFormCol) onRemoveFormCol(id);
+    };
+  }, [xs]);
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (ref) {
-        if (typeof ref === 'function') {
-          ref(gridRef.current);
-        } else {
-          ref.current = gridRef.current;
-        }
+  useEventEffect(() => {
+    if (ref) {
+      if (typeof ref === 'function') {
+        ref(gridRef.current);
+      } else {
+        ref.current = gridRef.current;
       }
-    });
-    useEffect(() => effectEvent(), [ref]);
-  }
+    }
+  }, [ref]);
 
   /********************************************************************************************************************
    * Render

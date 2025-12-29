@@ -9,7 +9,7 @@ import {
   StyledYear,
   StyledYearError,
 } from './PrivateYearRangePicker.style.private';
-import { useChanged } from '@pdg/react-hook';
+import { useFirstSkipChanged } from '@pdg/react-hook';
 
 const DEFAULT_MIN_YEAR = 2020;
 const DEFAULT_MAX_YEAR = 2050;
@@ -30,7 +30,7 @@ const PrivateYearRangePicker = ({
    * ******************************************************************************************************************/
 
   const [value, setValue] = useState(initValue);
-  useChanged(initValue) && setValue(initValue);
+  useFirstSkipChanged(() => setValue(initValue), [initValue]);
 
   /********************************************************************************************************************
    * Memo

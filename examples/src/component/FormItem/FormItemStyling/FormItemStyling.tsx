@@ -119,11 +119,7 @@ const FormItemStyling = () => {
    * Effect
    * ******************************************************************************************************************/
 
-  const isChangedComponentName = useChanged(componentName, true);
-  const isChangedVariant = useChanged(variant, true);
-  const isChangedSize = useChanged(size, true);
-  const isChangedColor = useChanged(color, true);
-  if (isChangedComponentName || isChangedVariant || isChangedSize || isChangedColor) {
+  useChanged(() => {
     setComponent(() => _components.find((component) => (component as any).name === componentName));
 
     const componentPros: any = {};
@@ -167,7 +163,7 @@ const FormItemStyling = () => {
     }
 
     setComponentProps(componentPros);
-  }
+  }, [componentName, variant, size, color]);
 
   /********************************************************************************************************************
    * Event Handler

@@ -58,7 +58,7 @@ const FormItemText = () => {
    * Effect
    * ******************************************************************************************************************/
 
-  if (useChanged(componentName, true)) {
+  useChanged(() => {
     setComponent(() => _components.find((component) => (component as any).name === componentName));
 
     switch (componentName) {
@@ -90,7 +90,7 @@ const FormItemText = () => {
         setValue(componentName || '');
         break;
     }
-  }
+  }, [componentName]);
 
   /********************************************************************************************************************
    * Event Handler

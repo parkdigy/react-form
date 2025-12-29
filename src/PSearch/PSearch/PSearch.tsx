@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useEffectEvent, useMemo, useRef } from 'react';
+import React, { ReactNode, useCallback, useMemo, useRef } from 'react';
 import { Paper } from '@mui/material';
 import { PSearchProps as Props } from './PSearch.types';
 import { PForm, PFormCommands } from '../../PForm';
@@ -6,6 +6,7 @@ import { PFormBody } from '../../PFormLayout';
 import PFormContextProvider from '../../PFormContextProvider';
 import { PFormContextValue } from '../../PFormContext';
 import PSearchGroupRow from '../PSearchGroupRow';
+import { useEventEffect } from '@pdg/react-hook';
 
 const PSearch = ({
   ref,
@@ -32,14 +33,11 @@ const PSearch = ({
    * Effect
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (autoSubmit) {
-        formRef.current?.submit();
-      }
-    });
-    useEffect(() => effectEvent(), [autoSubmit]);
-  }
+  useEventEffect(() => {
+    if (autoSubmit) {
+      formRef.current?.submit();
+    }
+  }, [autoSubmit]);
 
   /********************************************************************************************************************
    * Memo

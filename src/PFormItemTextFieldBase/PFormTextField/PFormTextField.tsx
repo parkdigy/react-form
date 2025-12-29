@@ -1,7 +1,7 @@
 import React, { useId, useRef, useState, useCallback, ReactNode, useMemo, CSSProperties } from 'react';
 import classNames from 'classnames';
 import { Box, IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
-import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useFirstSkipChanged, useForwardRef } from '@pdg/react-hook';
 import { empty, notEmpty } from '@pdg/compare';
 import { PFormTextFieldProps, PFormTextFieldCommands, PFormTextFieldValue } from './PFormTextField.types';
 import { useFormState } from '../../PFormContext';
@@ -127,7 +127,7 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
 
   /** error */
   const [error, _setError] = useState(initError);
-  useChanged(initError) && _setError(initError);
+  useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
     (value: React.SetStateAction<typeof error>) => {
@@ -142,7 +142,7 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
 
   /** data */
   const [data, _setData] = useState(initData);
-  useChanged(initData) && _setData(initData);
+  useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
     (value: React.SetStateAction<typeof data>) => {
@@ -158,11 +158,11 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
   /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
   const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+  useFirstSkipChanged(() => setDisabled(finalInitDisabled), [finalInitDisabled]);
 
   /** hidden */
   const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  useFirstSkipChanged(() => setHidden(initHidden), [initHidden]);
 
   /********************************************************************************************************************
    * Function
@@ -236,7 +236,7 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
   );
 
   const [value, _setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && _setValue(getFinalValue(initValue));
+  useFirstSkipChanged(() => _setValue(initValue), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
     (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {

@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useEffectEvent, useId, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
-import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useFirstSkipChanged, useFirstSkipEffect, useForwardRef } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
 import { empty } from '@pdg/compare';
 import {
@@ -122,7 +122,7 @@ const PFormYearPicker = ({
 
   /** error */
   const [error, _setError] = useState(initError);
-  useChanged(initError) && _setError(initError);
+  useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
     (value: React.SetStateAction<typeof error>) => {
@@ -137,7 +137,7 @@ const PFormYearPicker = ({
 
   /** data */
   const [data, _setData] = useState(initData);
-  useChanged(initData) && _setData(initData);
+  useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
     (value: React.SetStateAction<typeof data>) => {
@@ -153,11 +153,11 @@ const PFormYearPicker = ({
   /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
   const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+  useFirstSkipChanged(() => setDisabled(finalInitDisabled), [finalInitDisabled]);
 
   /** hidden */
   const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  useFirstSkipChanged(() => setHidden(initHidden), [initHidden]);
 
   /********************************************************************************************************************
    * State
@@ -220,7 +220,7 @@ const PFormYearPicker = ({
    * ******************************************************************************************************************/
 
   const [value, _setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && _setValue(getFinalValue(initValue));
+  useFirstSkipChanged(() => _setValue(getFinalValue(initValue)), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
     (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
@@ -263,34 +263,24 @@ const PFormYearPicker = ({
    * Change
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (open) {
-        openValueRef.current = valueRef.current;
-      } else {
-        if (openValueRef.current !== valueRef.current) {
-          let runOnRequestSearchSubmit;
-          if (openValueRef.current && valueRef.current) {
-            runOnRequestSearchSubmit = openValueRef.current !== valueRef.current;
-          } else {
-            runOnRequestSearchSubmit = true;
-          }
+  useFirstSkipEffect(() => {
+    if (open) {
+      openValueRef.current = valueRef.current;
+    } else {
+      if (openValueRef.current !== valueRef.current) {
+        let runOnRequestSearchSubmit;
+        if (openValueRef.current && valueRef.current) {
+          runOnRequestSearchSubmit = openValueRef.current !== valueRef.current;
+        } else {
+          runOnRequestSearchSubmit = true;
+        }
 
-          if (runOnRequestSearchSubmit) {
-            onRequestSearchSubmit(name, valueRef.current);
-          }
+        if (runOnRequestSearchSubmit) {
+          onRequestSearchSubmit(name, valueRef.current);
         }
       }
-    });
-    const firstSkipRef = useRef(true);
-    useEffect(() => {
-      if (firstSkipRef.current) {
-        firstSkipRef.current = false;
-      } else {
-        effectEvent();
-      }
-    }, [open]);
-  }
+    }
+  }, [open]);
 
   /********************************************************************************************************************
    * Commands

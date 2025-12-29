@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useEffectEvent, useId, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
@@ -7,7 +7,7 @@ import {
   DesktopDateTimePicker,
   DesktopDateTimePickerProps,
 } from '@mui/x-date-pickers';
-import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useEventEffect, useFirstSkipChanged, useForwardRef } from '@pdg/react-hook';
 import { ClickAwayListener, InputAdornment, InputProps, FormHelperText, TooltipSlotsAndSlotProps } from '@mui/material';
 import { PIcon, PIconText } from '@pdg/react-component';
 import {
@@ -146,7 +146,7 @@ const PrivateDateTimePicker = ({
 
   /** error */
   const [error, _setError] = useState(initError);
-  useChanged(initError) && _setError(initError);
+  useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
     (value: React.SetStateAction<typeof error>) => {
@@ -161,7 +161,7 @@ const PrivateDateTimePicker = ({
 
   /** data */
   const [data, _setData] = useState(initData);
-  useChanged(initData) && _setData(initData);
+  useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
     (value: React.SetStateAction<typeof data>) => {
@@ -177,11 +177,11 @@ const PrivateDateTimePicker = ({
   /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
   const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+  useFirstSkipChanged(() => setDisabled(finalInitDisabled), [finalInitDisabled]);
 
   /** hidden */
   const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  useFirstSkipChanged(() => setHidden(initHidden), [initHidden]);
 
   /********************************************************************************************************************
    * Variable
@@ -244,7 +244,7 @@ const PrivateDateTimePicker = ({
    * ******************************************************************************************************************/
 
   const [value, _setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && _setValue(getFinalValue(initValue));
+  useFirstSkipChanged(() => _setValue(getFinalValue(initValue)), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
     (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
@@ -294,44 +294,36 @@ const PrivateDateTimePicker = ({
    * ******************************************************************************************************************/
 
   const [inputValue, setInputValue] = useState(value);
-  useChanged(value) && setInputValue(value);
+  useFirstSkipChanged(() => setInputValue(value), [value]);
 
   /********************************************************************************************************************
    * Effect
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => validateRef.current(valueRef.current));
-    useEffect(() => {
-      if (error && !timeError) {
-        effectEvent();
-      }
-    }, [error, timeError]);
-  }
+  useEventEffect(() => {
+    if (error && !timeError) {
+      validateRef.current(valueRef.current);
+    }
+  }, [error, timeError]);
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (isOpen) {
-        openValueRef.current = valueRef.current;
-      } else {
-        if (openValueRef.current !== valueRef.current) {
-          let runOnRequestSearchSubmit;
-          if (openValueRef.current && valueRef.current) {
-            runOnRequestSearchSubmit = !openValueRef.current.isSame(valueRef.current, 'second');
-          } else {
-            runOnRequestSearchSubmit = true;
-          }
+  useEventEffect(() => {
+    if (isOpen) {
+      openValueRef.current = valueRef.current;
+    } else {
+      if (openValueRef.current !== valueRef.current) {
+        let runOnRequestSearchSubmit;
+        if (openValueRef.current && valueRef.current) {
+          runOnRequestSearchSubmit = !openValueRef.current.isSame(valueRef.current, 'second');
+        } else {
+          runOnRequestSearchSubmit = true;
+        }
 
-          if (runOnRequestSearchSubmit) {
-            onRequestSearchSubmit(name, valueRef.current);
-          }
+        if (runOnRequestSearchSubmit) {
+          onRequestSearchSubmit(name, valueRef.current);
         }
       }
-    });
-    useEffect(() => {
-      effectEvent();
-    }, [isOpen]);
-  }
+    }
+  }, [isOpen]);
 
   /********************************************************************************************************************
    * Function - focus

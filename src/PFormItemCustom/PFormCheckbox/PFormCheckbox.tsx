@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { FormControlLabel, Checkbox, Typography, ButtonBaseActions, useTheme } from '@mui/material';
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material';
-import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useFirstSkipChanged, useForwardRef } from '@pdg/react-hook';
 import { PFormCheckboxProps as Props, PFormCheckboxCommands, PFormCheckboxValue } from './PFormCheckbox.types';
 import PFormItemBase from '../PFormItemBase';
 import { useFormState } from '../../PFormContext';
@@ -99,7 +99,7 @@ const PFormCheckbox = ({
 
   /** error */
   const [error, _setError] = useState(initError);
-  useChanged(initError) && _setError(initError);
+  useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
     (value: React.SetStateAction<typeof error>) => {
@@ -114,7 +114,7 @@ const PFormCheckbox = ({
 
   /** data */
   const [data, _setData] = useState(initData);
-  useChanged(initData) && _setData(initData);
+  useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
     (value: React.SetStateAction<typeof data>) => {
@@ -130,20 +130,19 @@ const PFormCheckbox = ({
   /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
   const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+  useFirstSkipChanged(() => setDisabled(finalInitDisabled), [finalInitDisabled]);
 
   /** hidden */
   const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  useFirstSkipChanged(() => setHidden(initHidden), [initHidden]);
 
   /********************************************************************************************************************
    * State - uncheckedValue
    * ******************************************************************************************************************/
 
   const finalInitUncheckedValue = initUncheckedValue ?? 0;
-
   const [uncheckedValue, _setUncheckedValue] = useState(finalInitUncheckedValue);
-  useChanged(finalInitUncheckedValue) && _setUncheckedValue(finalInitUncheckedValue);
+  useFirstSkipChanged(() => _setUncheckedValue(finalInitUncheckedValue), [finalInitUncheckedValue]);
   const uncheckedValueRef = useAutoUpdateRef(uncheckedValue);
   const setUncheckedValue = useCallback(
     (value: React.SetStateAction<typeof uncheckedValue>) => {
@@ -161,9 +160,8 @@ const PFormCheckbox = ({
    * ******************************************************************************************************************/
 
   const finalInitValue = initValue ?? 0;
-
   const [value, setValue] = useState(finalInitValue);
-  useChanged(finalInitValue) && setValue(finalInitValue);
+  useFirstSkipChanged(() => setValue(finalInitValue), [finalInitValue]);
   const valueRef = useAutoUpdateRef(value);
 
   /********************************************************************************************************************
@@ -210,7 +208,7 @@ const PFormCheckbox = ({
    * ******************************************************************************************************************/
 
   const [checked, setChecked] = useState(initChecked);
-  useChanged(initChecked) && setChecked(initChecked);
+  useFirstSkipChanged(() => setChecked(initChecked), [initChecked]);
 
   const checkedRef = useAutoUpdateRef(checked);
 

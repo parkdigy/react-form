@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode, useCallback, useMemo, useEffectEvent } from 'react';
+import React, { useState, ReactNode, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { Box, Checkbox, Chip, CircularProgress, MenuItem, SelectProps } from '@mui/material';
 import { empty, notEmpty, equal } from '@pdg/compare';
@@ -16,7 +16,7 @@ import PFormContextProvider from '../../PFormContextProvider';
 import PFormTextField, { PFormTextFieldCommands } from '../PFormTextField';
 import './PFormSelect.scss';
 import { PFormValueItemCommands } from '../../@types';
-import { useAutoUpdateRef, useChanged } from '@pdg/react-hook';
+import { useAutoUpdateRef, useChanged, useEventEffect, useFirstSkipChanged, useFirstSkipEffect } from '@pdg/react-hook';
 
 interface ItemValueLabelMap {
   [key: string]: ReactNode;
@@ -62,7 +62,6 @@ function PFormSelect<
    * ******************************************************************************************************************/
 
   const initValueRef = useAutoUpdateRef(initValue);
-  const onLoadItemsRef = useAutoUpdateRef(onLoadItems);
   const onChangeRef = useAutoUpdateRef(onChange);
 
   /********************************************************************************************************************
@@ -117,9 +116,13 @@ function PFormSelect<
 
   /** items */
   const [items, setItems] = useState(initItems);
-  useChanged(initItems) && setItems(initItems);
+  useFirstSkipChanged(() => setItems(initItems), [initItems]);
 
-  if (useChanged(items, true)) {
+  /********************************************************************************************************************
+   * Changed
+   * ******************************************************************************************************************/
+
+  useChanged(() => {
     if (items) {
       setItemValueLabels(
         items.reduce<ItemValueLabelMap>((res, item) => {
@@ -132,7 +135,7 @@ function PFormSelect<
       setItemValueLabels({});
       setHasEmptyValue(false);
     }
-  }
+  }, [items]);
 
   /********************************************************************************************************************
    * Memo
@@ -204,7 +207,7 @@ function PFormSelect<
   );
 
   const [value, _setValue] = useState<Props['value']>(getFinalValue(initValue));
-  useChanged(initValue) && _setValue(getFinalValue(initValue));
+  useFirstSkipChanged(() => _setValue(getFinalValue(initValue)), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
     (value: React.SetStateAction<Props['value']>) => {
@@ -234,26 +237,17 @@ function PFormSelect<
   /********************************************************************************************************************
    * Effect
    * ******************************************************************************************************************/
-  {
-    const effectEvent = useEffectEvent(() => updateValue(valueRef.current));
-    const firstSkipRef = React.useRef(true);
-    useEffect(() => {
-      if (firstSkipRef.current) {
-        firstSkipRef.current = false;
-      } else {
-        effectEvent();
-      }
-    }, []);
-  }
 
-  useEffect(() => {
-    if (onLoadItemsRef.current) {
-      onLoadItemsRef.current().then((items) => {
-        setItems(items);
-        setIsOnGetItemLoading(false);
-      });
-    }
-  }, [onLoadItemsRef]);
+  useEventEffect(() => {
+    onLoadItems?.().then((items) => {
+      setItems(items);
+      setIsOnGetItemLoading(false);
+    });
+  }, []);
+
+  useFirstSkipEffect(() => {
+    updateValue(valueRef.current);
+  }, [multiple]);
 
   /********************************************************************************************************************
    * Variable

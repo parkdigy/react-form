@@ -2,7 +2,7 @@ import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Editor } from '@tinymce/tinymce-react';
 import { Skeleton } from '@mui/material';
-import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useFirstSkipChanged, useForwardRef } from '@pdg/react-hook';
 import { empty, ifEmpty } from '@pdg/compare';
 import { PFormTextEditorProps as Props, PFormTextEditorCommands, PFormTextEditorValue } from './PFormTextEditor.types';
 import PFormItemBase from '../PFormItemBase';
@@ -113,11 +113,11 @@ const PFormTextEditor = ({
   /** focused */
   const finalInitFocused = initFocused ?? formFocused;
   const [focused, setFocused] = useState(finalInitFocused);
-  useChanged(finalInitFocused) && setFocused(finalInitFocused);
+  useFirstSkipChanged(() => setFocused(finalInitFocused), [finalInitFocused]);
 
   /** error */
   const [error, _setError] = useState(initError);
-  useChanged(initError) && _setError(initError);
+  useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
     (value: React.SetStateAction<typeof error>) => {
@@ -132,7 +132,7 @@ const PFormTextEditor = ({
 
   /** data */
   const [data, _setData] = useState(initData);
-  useChanged(initData) && _setData(initData);
+  useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
     (value: React.SetStateAction<typeof data>) => {
@@ -148,11 +148,11 @@ const PFormTextEditor = ({
   /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
   const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+  useFirstSkipChanged(() => setDisabled(finalInitDisabled), [finalInitDisabled]);
 
   /** hidden */
   const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  useFirstSkipChanged(() => setHidden(initHidden), [initHidden]);
 
   /********************************************************************************************************************
    * Function
@@ -203,7 +203,7 @@ const PFormTextEditor = ({
    * ******************************************************************************************************************/
 
   const [value, _setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && _setValue(getFinalValue(initValue));
+  useFirstSkipChanged(() => _setValue(getFinalValue(initValue)), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
     (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {

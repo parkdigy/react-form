@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   PrivateStaticDatePickerCommands,
@@ -13,7 +13,7 @@ import { PrivateTimeSelectCommands } from '../PrivateTimeSelect';
 import { checkDateAvailable, getAvailableDate, isDateAvailable, makeAvailableDate } from '../../@util.private';
 import { PrivateTimeSection } from '../PrivateTimeSection';
 import './PrivateStaticDatePicker.scss';
-import { useForwardRef } from '@pdg/react-hook';
+import { useChanged, useForwardRef } from '@pdg/react-hook';
 
 const DEFAULT_HOURS: number[] = new Array(24).fill(0);
 for (let i = 0; i < DEFAULT_HOURS.length; i += 1) {
@@ -83,16 +83,11 @@ const PrivateStaticDatePicker = ({
    * Effect
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => {
+  useChanged(() => {
+    if (!yearSelectOpen) {
       setActiveMonthValue(null);
-    });
-    useEffect(() => {
-      if (!yearSelectOpen) {
-        effectEvent();
-      }
-    }, [yearSelectOpen]);
-  }
+    }
+  }, [yearSelectOpen]);
 
   /********************************************************************************************************************
    * Arrow

@@ -5,7 +5,7 @@ import { PFormBlockProps as Props } from './PFormBlock.types';
 import { PFormContext, useFormState } from '../../PFormContext';
 import PFormDivider from '../PFormDivider';
 import { StyledWrapGrid } from './PFormBlock.style.private';
-import { useChanged } from '@pdg/react-hook';
+import { useFirstSkipChanged } from '@pdg/react-hook';
 
 const PFormBlock = ({
   ref,
@@ -67,7 +67,7 @@ const PFormBlock = ({
    * ******************************************************************************************************************/
 
   const [collapseIn, setCollapseIn] = useState(initCollapseIn);
-  useChanged(initCollapseIn) && setCollapseIn(initCollapseIn);
+  useFirstSkipChanged(() => setCollapseIn(initCollapseIn), [initCollapseIn]);
 
   /********************************************************************************************************************
    * Memo

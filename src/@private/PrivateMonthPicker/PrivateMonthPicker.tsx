@@ -12,7 +12,7 @@ import {
 } from './PrivateMonthPicker.style.private';
 import { PIcon } from '@pdg/react-component';
 import { dateToValue, valueToDate, valueToYm } from './PrivateMonthPicker.function.private';
-import { useChanged } from '@pdg/react-hook';
+import { useFirstSkipChanged } from '@pdg/react-hook';
 
 const DEFAULT_MIN_VALUE = {
   year: 2020,
@@ -38,7 +38,7 @@ const PrivateMonthPicker = ({
    * ******************************************************************************************************************/
 
   const [value, setValue] = useState(initValue);
-  useChanged(initValue) && setValue(initValue);
+  useFirstSkipChanged(() => setValue(initValue), [initValue]);
 
   /********************************************************************************************************************
    * Memo

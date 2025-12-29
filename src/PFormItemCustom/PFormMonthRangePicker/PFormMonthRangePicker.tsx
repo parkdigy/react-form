@@ -1,17 +1,7 @@
-import React, {
-  CSSProperties,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useEffectEvent,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { CSSProperties, ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
-import { useAutoUpdateRef, useChanged, useForwardRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useFirstSkipChanged, useFirstSkipEffect, useForwardRef } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
 import {
   PFormMonthRangePickerProps as Props,
@@ -155,7 +145,7 @@ const PFormMonthRangePicker = ({
 
   /** error */
   const [error, _setError] = useState(initError);
-  useChanged(initError) && _setError(initError);
+  useFirstSkipChanged(() => _setError(initError), [initError]);
   const errorRef = useAutoUpdateRef(error);
   const setError = useCallback(
     (value: React.SetStateAction<typeof error>) => {
@@ -170,7 +160,7 @@ const PFormMonthRangePicker = ({
 
   /** data */
   const [data, _setData] = useState(initData);
-  useChanged(initData) && _setData(initData);
+  useFirstSkipChanged(() => _setData(initData), [initData]);
   const dataRef = useAutoUpdateRef(data);
   const setData = useCallback(
     (value: React.SetStateAction<typeof data>) => {
@@ -186,11 +176,11 @@ const PFormMonthRangePicker = ({
   /** disabled */
   const finalInitDisabled = initDisabled ?? formDisabled;
   const [disabled, setDisabled] = useState(finalInitDisabled);
-  useChanged(finalInitDisabled) && setDisabled(finalInitDisabled);
+  useFirstSkipChanged(() => setDisabled(finalInitDisabled), [finalInitDisabled]);
 
   /** hidden */
   const [hidden, setHidden] = useState(initHidden);
-  useChanged(initHidden) && setHidden(initHidden);
+  useFirstSkipChanged(() => setHidden(initHidden), [initHidden]);
 
   /********************************************************************************************************************
    * Function
@@ -265,7 +255,7 @@ const PFormMonthRangePicker = ({
    * ******************************************************************************************************************/
 
   const [value, _setValue] = useState(getFinalValue(initValue));
-  useChanged(initValue) && _setValue(getFinalValue(initValue));
+  useFirstSkipChanged(() => _setValue(getFinalValue(initValue)), [initValue]);
   const valueRef = useAutoUpdateRef(value);
   const setValue = useCallback(
     (value: React.SetStateAction<ReturnType<typeof getFinalValue>>) => {
@@ -335,34 +325,24 @@ const PFormMonthRangePicker = ({
    * Effect
    * ******************************************************************************************************************/
 
-  {
-    const effectEvent = useEffectEvent(() => {
-      if (open) {
-        openValueRef.current = valueRef.current;
-      } else {
-        if (openValueRef.current !== valueRef.current) {
-          let runOnRequestSearchSubmit;
-          if (openValueRef.current && valueRef.current) {
-            runOnRequestSearchSubmit = openValueRef.current !== valueRef.current;
-          } else {
-            runOnRequestSearchSubmit = true;
-          }
+  useFirstSkipEffect(() => {
+    if (open) {
+      openValueRef.current = valueRef.current;
+    } else {
+      if (openValueRef.current !== valueRef.current) {
+        let runOnRequestSearchSubmit;
+        if (openValueRef.current && valueRef.current) {
+          runOnRequestSearchSubmit = openValueRef.current !== valueRef.current;
+        } else {
+          runOnRequestSearchSubmit = true;
+        }
 
-          if (runOnRequestSearchSubmit) {
-            onRequestSearchSubmit(name, valueRef.current);
-          }
+        if (runOnRequestSearchSubmit) {
+          onRequestSearchSubmit(name, valueRef.current);
         }
       }
-    });
-    const firstSkipRef = useRef(true);
-    useEffect(() => {
-      if (firstSkipRef.current) {
-        firstSkipRef.current = false;
-      } else {
-        effectEvent();
-      }
-    }, [open]);
-  }
+    }
+  }, [open]);
 
   /********************************************************************************************************************
    * Function
