@@ -2,7 +2,7 @@
   min-width: 200px;
 
   .clear-icon-button-wrap {
-    visibility: hidden;
+    display: none;
   }
 
   &.variant-filled {
@@ -15,7 +15,7 @@
   &:hover,
   .MuiInputBase-root.Mui-focused {
     .clear-icon-button-wrap.show {
-      visibility: visible;
+      display: block;
     }
   }
 }
