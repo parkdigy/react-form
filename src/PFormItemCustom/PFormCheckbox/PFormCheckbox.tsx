@@ -200,7 +200,6 @@ const PFormCheckbox = ({
 
   const [checked, setChecked] = useState(initChecked);
   useFirstSkipChanged(() => setChecked(initChecked), [initChecked]);
-
   const checkedRef = useAutoUpdateRef(checked);
 
   /** checked 변경 함수 */

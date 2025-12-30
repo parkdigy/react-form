@@ -6,7 +6,7 @@ import { PFormNumberProps as Props, PFormNumberCommands } from './PFormNumber.ty
 import PFormTextField, { PFormTextFieldCommands } from '../PFormTextField';
 import { empty } from '@pdg/compare';
 import { InputBaseProps } from '@mui/material/InputBase';
-import { useAutoUpdateRef } from '@pdg/react-hook';
+import { useAutoUpdateRef, useFirstSkipChanged } from '@pdg/react-hook';
 
 const PFormNumber = ({
   ref,
@@ -49,6 +49,7 @@ const PFormNumber = ({
 
   const [strValue, _setStrValue] = useState<string | undefined>(initValue !== undefined ? `${initValue}` : '');
   const strValueRef = useAutoUpdateRef(strValue);
+  useFirstSkipChanged(() => _setStrValue(initValue !== undefined ? `${initValue}` : ''), [initValue]);
   const setStrValue = useCallback(
     (newValue: typeof strValue) => {
       _setStrValue(newValue);

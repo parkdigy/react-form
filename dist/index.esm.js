@@ -4725,7 +4725,7 @@ var NumberFormatCustom = function NumberFormatCustom(t0) {
   return t2;
 };var _excluded$o = ["ref", "className", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "labelShrink", "clear", "slotProps", "value", "onChange", "onValue", "onValidate"];
 var PFormNumber = function PFormNumber(t0) {
-  var $ = c(69);
+  var $ = c(72);
   var allowDecimal;
   var allowNegative;
   var className;
@@ -4814,19 +4814,34 @@ var PFormNumber = function PFormNumber(t0) {
     _setStrValue = _useState2[1];
   var strValueRef = useAutoUpdateRef(strValue);
   var t2;
-  if ($[19] !== strValueRef) {
-    t2 = function t2(newValue) {
+  var t3;
+  if ($[19] !== initValue) {
+    t2 = function t2() {
+      return _setStrValue(initValue !== undefined ? "".concat(initValue) : "");
+    };
+    t3 = [initValue];
+    $[19] = initValue;
+    $[20] = t2;
+    $[21] = t3;
+  } else {
+    t2 = $[20];
+    t3 = $[21];
+  }
+  useFirstSkipChanged(t2, t3);
+  var t4;
+  if ($[22] !== strValueRef) {
+    t4 = function t4(newValue) {
       _setStrValue(newValue);
       strValueRef.current = newValue;
     };
-    $[19] = strValueRef;
-    $[20] = t2;
+    $[22] = strValueRef;
+    $[23] = t4;
   } else {
-    t2 = $[20];
+    t4 = $[23];
   }
-  var setStrValue = t2;
+  var setStrValue = t4;
   var newSlotProps;
-  if ($[21] !== allowDecimal || $[22] !== allowNegative || $[23] !== decimalScale || $[24] !== initSlotProps || $[25] !== prefix || $[26] !== readOnly || $[27] !== suffix || $[28] !== tabIndex || $[29] !== thousandSeparator) {
+  if ($[24] !== allowDecimal || $[25] !== allowNegative || $[26] !== decimalScale || $[27] !== initSlotProps || $[28] !== prefix || $[29] !== readOnly || $[30] !== suffix || $[31] !== tabIndex || $[32] !== thousandSeparator) {
     var _newSlotProps$input;
     newSlotProps = _objectSpread2({}, initSlotProps);
     var _t2 = readOnly ? "Mui-disabled" : undefined;
@@ -4834,7 +4849,7 @@ var PFormNumber = function PFormNumber(t0) {
     var _t4 = !!readOnly;
     var _t5 = readOnly ? -1 : tabIndex;
     var inputProps;
-    if ($[31] !== allowDecimal || $[32] !== decimalScale || $[33] !== prefix || $[34] !== suffix || $[35] !== _t2 || $[36] !== _t3 || $[37] !== _t4 || $[38] !== _t5 || $[39] !== thousandSeparator) {
+    if ($[34] !== allowDecimal || $[35] !== decimalScale || $[36] !== prefix || $[37] !== suffix || $[38] !== _t2 || $[39] !== _t3 || $[40] !== _t4 || $[41] !== _t5 || $[42] !== thousandSeparator) {
       inputProps = {
         className: _t2,
         allowNegative: _t3,
@@ -4851,41 +4866,41 @@ var PFormNumber = function PFormNumber(t0) {
       } else {
         inputProps.decimalScale = 0;
       }
-      $[31] = allowDecimal;
-      $[32] = decimalScale;
-      $[33] = prefix;
-      $[34] = suffix;
-      $[35] = _t2;
-      $[36] = _t3;
-      $[37] = _t4;
-      $[38] = _t5;
-      $[39] = thousandSeparator;
-      $[40] = inputProps;
+      $[34] = allowDecimal;
+      $[35] = decimalScale;
+      $[36] = prefix;
+      $[37] = suffix;
+      $[38] = _t2;
+      $[39] = _t3;
+      $[40] = _t4;
+      $[41] = _t5;
+      $[42] = thousandSeparator;
+      $[43] = inputProps;
     } else {
-      inputProps = $[40];
+      inputProps = $[43];
     }
     newSlotProps.input = _objectSpread2(_objectSpread2({}, newSlotProps.input), {}, {
       inputComponent: NumberFormatCustom,
       inputProps: _objectSpread2(_objectSpread2({}, (_newSlotProps$input = newSlotProps.input) === null || _newSlotProps$input === void 0 ? void 0 : _newSlotProps$input.inputProps), inputProps)
     });
-    $[21] = allowDecimal;
-    $[22] = allowNegative;
-    $[23] = decimalScale;
-    $[24] = initSlotProps;
-    $[25] = prefix;
-    $[26] = readOnly;
-    $[27] = suffix;
-    $[28] = tabIndex;
-    $[29] = thousandSeparator;
-    $[30] = newSlotProps;
+    $[24] = allowDecimal;
+    $[25] = allowNegative;
+    $[26] = decimalScale;
+    $[27] = initSlotProps;
+    $[28] = prefix;
+    $[29] = readOnly;
+    $[30] = suffix;
+    $[31] = tabIndex;
+    $[32] = thousandSeparator;
+    $[33] = newSlotProps;
   } else {
-    newSlotProps = $[30];
+    newSlotProps = $[33];
   }
   var slotProps = newSlotProps;
   var getFinalValue = _temp$t;
-  var t3;
-  if ($[41] !== onChangeRef || $[42] !== setStrValue || $[43] !== strValueRef) {
-    t3 = function t3(value_0) {
+  var t5;
+  if ($[44] !== onChangeRef || $[45] !== setStrValue || $[46] !== strValueRef) {
+    t5 = function t5(value_0) {
       if (Number(value_0) > Number.MAX_SAFE_INTEGER) {
         var _onChangeRef$current;
         var newValue_0 = Number.MAX_SAFE_INTEGER;
@@ -4915,32 +4930,32 @@ var PFormNumber = function PFormNumber(t0) {
         }
       }
     };
-    $[41] = onChangeRef;
-    $[42] = setStrValue;
-    $[43] = strValueRef;
-    $[44] = t3;
+    $[44] = onChangeRef;
+    $[45] = setStrValue;
+    $[46] = strValueRef;
+    $[47] = t5;
   } else {
-    t3 = $[44];
+    t5 = $[47];
   }
-  var handleChange = t3;
-  var t4;
-  if ($[45] !== onValueRef) {
-    t4 = function t4(value_1) {
+  var handleChange = t5;
+  var t6;
+  if ($[48] !== onValueRef) {
+    t6 = function t6(value_1) {
       var finalValue = empty(value_1) || value_1 === "-" || value_1 === "." ? undefined : Number(value_1);
       if (onValueRef.current) {
         finalValue = onValueRef.current(finalValue);
       }
       return finalValue !== undefined ? finalValue.toString() : "";
     };
-    $[45] = onValueRef;
-    $[46] = t4;
+    $[48] = onValueRef;
+    $[49] = t6;
   } else {
-    t4 = $[46];
+    t6 = $[49];
   }
-  var handleValue = t4;
-  var t5;
-  if ($[47] !== onValidateRef) {
-    t5 = function t5(value_2) {
+  var handleValue = t6;
+  var t7;
+  if ($[50] !== onValidateRef) {
+    t7 = function t7(value_2) {
       if (onValidateRef.current) {
         var finalValue_0 = empty(value_2) || value_2 === "-" || value_2 === "." ? undefined : Number(value_2);
         return onValidateRef.current(finalValue_0);
@@ -4948,15 +4963,15 @@ var PFormNumber = function PFormNumber(t0) {
         return true;
       }
     };
-    $[47] = onValidateRef;
-    $[48] = t5;
+    $[50] = onValidateRef;
+    $[51] = t7;
   } else {
-    t5 = $[48];
+    t7 = $[51];
   }
-  var handleValidate = t5;
-  var t6;
-  if ($[49] !== initValueRef || $[50] !== onChangeRef || $[51] !== ref || $[52] !== setStrValue || $[53] !== strValueRef) {
-    t6 = function t6(commands) {
+  var handleValidate = t7;
+  var t8;
+  if ($[52] !== initValueRef || $[53] !== onChangeRef || $[54] !== ref || $[55] !== setStrValue || $[56] !== strValueRef) {
+    t8 = function t8(commands) {
       if (ref) {
         var finalCommands = commands ? _objectSpread2(_objectSpread2({}, commands), {}, {
           getReset: function getReset() {
@@ -4983,32 +4998,32 @@ var PFormNumber = function PFormNumber(t0) {
         }
       }
     };
-    $[49] = initValueRef;
-    $[50] = onChangeRef;
-    $[51] = ref;
-    $[52] = setStrValue;
-    $[53] = strValueRef;
-    $[54] = t6;
+    $[52] = initValueRef;
+    $[53] = onChangeRef;
+    $[54] = ref;
+    $[55] = setStrValue;
+    $[56] = strValueRef;
+    $[57] = t8;
   } else {
-    t6 = $[54];
+    t8 = $[57];
   }
-  var handleRef = t6;
-  var t7;
-  if ($[55] !== className) {
-    t7 = classNames(className, "PFormNumber");
-    $[55] = className;
-    $[56] = t7;
-  } else {
-    t7 = $[56];
-  }
-  var t8 = strValue === "" || strValue === undefined ? labelShrink : true;
+  var handleRef = t8;
   var t9;
-  if ($[57] !== clear || $[58] !== handleChange || $[59] !== handleRef || $[60] !== handleValidate || $[61] !== handleValue || $[62] !== props || $[63] !== readOnly || $[64] !== slotProps || $[65] !== strValue || $[66] !== t7 || $[67] !== t8) {
-    t9 = /*#__PURE__*/React.createElement(PFormTextField, _extends({
+  if ($[58] !== className) {
+    t9 = classNames(className, "PFormNumber");
+    $[58] = className;
+    $[59] = t9;
+  } else {
+    t9 = $[59];
+  }
+  var t10 = strValue === "" || strValue === undefined ? labelShrink : true;
+  var t11;
+  if ($[60] !== clear || $[61] !== handleChange || $[62] !== handleRef || $[63] !== handleValidate || $[64] !== handleValue || $[65] !== props || $[66] !== readOnly || $[67] !== slotProps || $[68] !== strValue || $[69] !== t10 || $[70] !== t9) {
+    t11 = /*#__PURE__*/React.createElement(PFormTextField, _extends({
       ref: handleRef,
-      className: t7,
+      className: t9,
       disableReturnKey: true,
-      labelShrink: t8,
+      labelShrink: t10,
       slotProps: slotProps,
       readOnly: readOnly,
       clear: clear,
@@ -5017,22 +5032,22 @@ var PFormNumber = function PFormNumber(t0) {
       onValue: handleValue,
       onValidate: handleValidate
     }, props));
-    $[57] = clear;
-    $[58] = handleChange;
-    $[59] = handleRef;
-    $[60] = handleValidate;
-    $[61] = handleValue;
-    $[62] = props;
-    $[63] = readOnly;
-    $[64] = slotProps;
-    $[65] = strValue;
-    $[66] = t7;
-    $[67] = t8;
-    $[68] = t9;
+    $[60] = clear;
+    $[61] = handleChange;
+    $[62] = handleRef;
+    $[63] = handleValidate;
+    $[64] = handleValue;
+    $[65] = props;
+    $[66] = readOnly;
+    $[67] = slotProps;
+    $[68] = strValue;
+    $[69] = t10;
+    $[70] = t9;
+    $[71] = t11;
   } else {
-    t9 = $[68];
+    t11 = $[71];
   }
-  return t9;
+  return t11;
 };
 function _temp$t(value) {
   return empty(value) || value === "-" || value === "." ? undefined : Number(value);
