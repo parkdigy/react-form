@@ -67,7 +67,7 @@ const PFormDivider = ({
 
   const handleClick = useCallback(() => {
     if (collapse) {
-      onCollapseChange && onCollapseChange(!collapseIn);
+      onCollapseChange?.(!collapseIn);
     }
   }, [collapse, collapseIn, onCollapseChange]);
 

@@ -136,9 +136,9 @@ const PForm = ({
     });
 
     if (isAllValid) {
-      onSubmitRef.current && onSubmitRef.current(data);
+      onSubmitRef.current?.(data);
     } else {
-      onInvalidRef.current && onInvalidRef.current(invalidItems);
+      onInvalidRef.current?.(invalidItems);
       setTimeout(() => {
         valueItems.current[firstInvalidItemId]?.focusValidate();
       });

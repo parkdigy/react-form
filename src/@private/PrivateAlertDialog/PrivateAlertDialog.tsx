@@ -15,7 +15,7 @@ const PrivateAlertDialog = ({ color = 'primary', open, title, content, onClose: 
    * ******************************************************************************************************************/
 
   const handleClose = useCallback(() => {
-    onCloseRef.current && onCloseRef.current();
+    onCloseRef.current?.();
   }, [onCloseRef]);
 
   /********************************************************************************************************************

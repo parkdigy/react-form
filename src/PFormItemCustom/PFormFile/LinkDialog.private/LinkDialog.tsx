@@ -29,16 +29,16 @@ const LinkDialog = ({ open, onConfirm, onCancel, onClose }: Props) => {
 
   const handleSubmit = useCallback(() => {
     if (inputRef.current?.validate()) {
-      onConfirm && onConfirm(value);
-      onClose && onClose();
+      onConfirm?.(value);
+      onClose?.();
     } else {
       inputRef.current?.focus();
     }
   }, [value, onConfirm, onClose]);
 
   const handleCancel = useCallback(() => {
-    onCancel && onCancel();
-    onClose && onClose();
+    onCancel?.();
+    onClose?.();
   }, [onCancel, onClose]);
 
   /********************************************************************************************************************
@@ -54,7 +54,7 @@ const LinkDialog = ({ open, onConfirm, onCancel, onClose }: Props) => {
       onClose={(e, reason) => {
         if (reason === 'backdropClick') {
           if (empty(value)) {
-            onClose && onClose();
+            onClose?.();
           }
         }
       }}

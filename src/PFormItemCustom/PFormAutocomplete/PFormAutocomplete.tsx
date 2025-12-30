@@ -392,7 +392,7 @@ function PFormAutocomplete<
           finalValue.forEach((v) => {
             const key = v.toString();
             if (itemsInfos[key]) {
-              computedComponentValue && computedComponentValue.push(itemsInfos[key]);
+              computedComponentValue?.push(itemsInfos[key]);
             }
           });
         } else {

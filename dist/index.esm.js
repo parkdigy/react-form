@@ -423,9 +423,11 @@ var appendFormValueData = function appendFormValueData(data, itemCommands) {
         }
       });
       if (isAllValid) {
-        onSubmitRef.current && onSubmitRef.current(data);
+        var _onSubmitRef$current;
+        (_onSubmitRef$current = onSubmitRef.current) === null || _onSubmitRef$current === void 0 || _onSubmitRef$current.call(onSubmitRef, data);
       } else {
-        onInvalidRef.current && onInvalidRef.current(invalidItems);
+        var _onInvalidRef$current;
+        (_onInvalidRef$current = onInvalidRef.current) === null || _onInvalidRef$current === void 0 || _onInvalidRef$current.call(onInvalidRef, invalidItems);
         setTimeout(function () {
           var _valueItems$current$f;
           (_valueItems$current$f = valueItems.current[firstInvalidItemId]) === null || _valueItems$current$f === void 0 || _valueItems$current$f.focusValidate();
@@ -1186,7 +1188,7 @@ var PFormDivider = function PFormDivider(t0) {
   if ($[4] !== collapse || $[5] !== collapseIn || $[6] !== onCollapseChange) {
     t4 = function t4() {
       if (collapse) {
-        onCollapseChange && onCollapseChange(!collapseIn);
+        onCollapseChange === null || onCollapseChange === void 0 || onCollapseChange(!collapseIn);
       }
     };
     $[4] = collapse;
@@ -11669,7 +11671,8 @@ function _temp$m() {
           finalValue_1.forEach(function (v_0) {
             var key = v_0.toString();
             if (itemsInfos[key]) {
-              computedComponentValue && computedComponentValue.push(itemsInfos[key]);
+              var _computedComponentVal;
+              (_computedComponentVal = computedComponentValue) === null || _computedComponentVal === void 0 || _computedComponentVal.push(itemsInfos[key]);
             }
           });
         } else {
@@ -13031,7 +13034,8 @@ var PrivateYearSelect = function PrivateYearSelect(t0) {
   var t3;
   if ($[3] !== onSelectRef) {
     t3 = function t3(e) {
-      onSelectRef.current && onSelectRef.current(Number(e.target.getAttribute("data-id")));
+      var _onSelectRef$current;
+      (_onSelectRef$current = onSelectRef.current) === null || _onSelectRef$current === void 0 || _onSelectRef$current.call(onSelectRef, Number(e.target.getAttribute("data-id")));
     };
     $[3] = onSelectRef;
     $[4] = t3;
@@ -13379,7 +13383,8 @@ var PrivateTimeSelect = function PrivateTimeSelect(t0) {
   var t6;
   if ($[5] !== onSelectRef) {
     t6 = function t6(e) {
-      onSelectRef.current && onSelectRef.current(Number(e.target.getAttribute("data-id")));
+      var _onSelectRef$current;
+      (_onSelectRef$current = onSelectRef.current) === null || _onSelectRef$current === void 0 || _onSelectRef$current.call(onSelectRef, Number(e.target.getAttribute("data-id")));
     };
     $[5] = onSelectRef;
     $[6] = t6;
@@ -17472,7 +17477,8 @@ function _temp$h() {
   var t2;
   if ($[0] !== onCloseRef) {
     t2 = function t2() {
-      onCloseRef.current && onCloseRef.current();
+      var _onCloseRef$current;
+      (_onCloseRef$current = onCloseRef.current) === null || _onCloseRef$current === void 0 || _onCloseRef$current.call(onCloseRef);
     };
     $[0] = onCloseRef;
     $[1] = t2;
@@ -22917,8 +22923,8 @@ function _temp2() {
     t3 = function t3() {
       var _inputRef$current;
       if ((_inputRef$current = inputRef.current) !== null && _inputRef$current !== void 0 && _inputRef$current.validate()) {
-        onConfirm && onConfirm(value);
-        onClose && onClose();
+        onConfirm === null || onConfirm === void 0 || onConfirm(value);
+        onClose === null || onClose === void 0 || onClose();
       } else {
         var _inputRef$current2;
         (_inputRef$current2 = inputRef.current) === null || _inputRef$current2 === void 0 || _inputRef$current2.focus();
@@ -22935,8 +22941,8 @@ function _temp2() {
   var t4;
   if ($[7] !== onCancel || $[8] !== onClose) {
     t4 = function t4() {
-      onCancel && onCancel();
-      onClose && onClose();
+      onCancel === null || onCancel === void 0 || onCancel();
+      onClose === null || onClose === void 0 || onClose();
     };
     $[7] = onCancel;
     $[8] = onClose;
@@ -22951,7 +22957,7 @@ function _temp2() {
     t6 = function t6(e, reason) {
       if (reason === "backdropClick") {
         if (empty(value)) {
-          onClose && onClose();
+          onClose === null || onClose === void 0 || onClose();
         }
       }
     };

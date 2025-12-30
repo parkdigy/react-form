@@ -51,7 +51,7 @@ const PrivateYearSelect = ({ selectYear, activeYear, availableDate, onSelect: in
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
-      onSelectRef.current && onSelectRef.current(Number((e.target as HTMLButtonElement).getAttribute('data-id')));
+      onSelectRef.current?.(Number((e.target as HTMLButtonElement).getAttribute('data-id')));
     },
     [onSelectRef]
   );
