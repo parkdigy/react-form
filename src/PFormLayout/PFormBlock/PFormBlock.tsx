@@ -25,6 +25,7 @@ const PFormBlock = ({
   lineVerticalMargin,
   error,
   warning,
+  endAdornment,
   /********************************************************************************************************************/
   hidden,
   collapse,
@@ -116,6 +117,7 @@ const PFormBlock = ({
               warning={warning}
               lineVerticalMargin={lineVerticalMargin}
               hidden={hidden}
+              endAdornment={endAdornment}
               onCollapseChange={collapse ? (newCollapseIn) => setCollapseIn(newCollapseIn) : undefined}
             />
           )}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { PartialPick, PCommonSxProps } from '../../@types';
 import { PFormDividerProps } from '../PFormDivider';
 import { PFormContextValue } from '../../PFormContext';
@@ -13,4 +13,5 @@ export interface PFormBlockProps
   collapseIn?: boolean;
   error?: boolean;
   warning?: boolean;
+  endAdornment?: ReactNode;
 }

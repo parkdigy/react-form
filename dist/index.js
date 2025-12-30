@@ -1126,7 +1126,7 @@ var StyledWarningLineBox = material.styled(material.Box)(function (_ref2) {
   position: 'relative'
 };
 var PFormDivider = function PFormDivider(t0) {
-  var $ = compilerRuntime.c(47);
+  var $ = compilerRuntime.c(48);
   var ref = t0.ref,
     initSize = t0.size,
     icon = t0.icon,
@@ -1138,6 +1138,7 @@ var PFormDivider = function PFormDivider(t0) {
     collapseIn = t0.collapseIn,
     error = t0.error,
     warning = t0.warning,
+    endAdornment = t0.endAdornment,
     onCollapseChange = t0.onCollapseChange,
     className = t0.className,
     initStyle = t0.style,
@@ -1280,40 +1281,51 @@ var PFormDivider = function PFormDivider(t0) {
     t11 = $[28];
   }
   var t12;
-  if ($[29] !== collapse || $[30] !== collapseIn || $[31] !== error || $[32] !== warning) {
-    t12 = collapse && /*#__PURE__*/React.createElement(reactComponent.PIcon, {
+  if ($[29] !== collapse || $[30] !== collapseIn || $[31] !== endAdornment || $[32] !== error || $[33] !== warning) {
+    t12 = (endAdornment || collapse) && /*#__PURE__*/React.createElement(reactComponent.PStack, {
+      row: true,
+      center: true,
       sx: {
-        opacity: 0.6,
-        ml: 1
+        ml: endAdornment && collapse ? 2 : 1
+      }
+    }, endAdornment && /*#__PURE__*/React.createElement(material.Box, {
+      sx: {
+        my: -2
+      },
+      onClick: _temp$x
+    }, endAdornment), collapse && /*#__PURE__*/React.createElement(reactComponent.PIconButton, {
+      sx: {
+        my: -2
       },
       color: error ? "error" : warning ? "warning" : undefined
-    }, collapseIn ? "KeyboardDoubleArrowUp" : "KeyboardDoubleArrowDown");
+    }, collapseIn ? "KeyboardDoubleArrowUp" : "KeyboardDoubleArrowDown"));
     $[29] = collapse;
     $[30] = collapseIn;
-    $[31] = error;
-    $[32] = warning;
-    $[33] = t12;
+    $[31] = endAdornment;
+    $[32] = error;
+    $[33] = warning;
+    $[34] = t12;
   } else {
-    t12 = $[33];
+    t12 = $[34];
   }
   var t13;
-  if ($[34] !== handleClick || $[35] !== t10 || $[36] !== t11 || $[37] !== t12 || $[38] !== t8 || $[39] !== t9) {
+  if ($[35] !== handleClick || $[36] !== t10 || $[37] !== t11 || $[38] !== t12 || $[39] !== t8 || $[40] !== t9) {
     t13 = /*#__PURE__*/React.createElement(material.Box, {
       sx: t8,
       onClick: handleClick
     }, t9, t10, t11, t12);
-    $[34] = handleClick;
-    $[35] = t10;
-    $[36] = t11;
-    $[37] = t12;
-    $[38] = t8;
-    $[39] = t9;
-    $[40] = t13;
+    $[35] = handleClick;
+    $[36] = t10;
+    $[37] = t11;
+    $[38] = t12;
+    $[39] = t8;
+    $[40] = t9;
+    $[41] = t13;
   } else {
-    t13 = $[40];
+    t13 = $[41];
   }
   var t14;
-  if ($[41] !== ref || $[42] !== style || $[43] !== sx || $[44] !== t13 || $[45] !== t6) {
+  if ($[42] !== ref || $[43] !== style || $[44] !== sx || $[45] !== t13 || $[46] !== t6) {
     t14 = /*#__PURE__*/React.createElement(material.Grid, {
       ref: ref,
       size: t5,
@@ -1321,20 +1333,23 @@ var PFormDivider = function PFormDivider(t0) {
       className: t6,
       sx: sx
     }, t13);
-    $[41] = ref;
-    $[42] = style;
-    $[43] = sx;
-    $[44] = t13;
-    $[45] = t6;
-    $[46] = t14;
+    $[42] = ref;
+    $[43] = style;
+    $[44] = sx;
+    $[45] = t13;
+    $[46] = t6;
+    $[47] = t14;
   } else {
-    t14 = $[46];
+    t14 = $[47];
   }
   return t14;
-};var _templateObject$h;
+};
+function _temp$x(e) {
+  e.stopPropagation();
+}var _templateObject$h;
 var StyledWrapGrid$1 = material.styled(material.Grid)(_templateObject$h || (_templateObject$h = _taggedTemplateLiteral(["\n  width: 100%;\n"])));var _excluded$B = ["variant", "size", "color", "spacing", "focused", "labelShrink", "fullWidth"];
 var PFormBlock = function PFormBlock(t0) {
-  var $ = compilerRuntime.c(66);
+  var $ = compilerRuntime.c(67);
   var ref = t0.ref,
     initVariant = t0.variant,
     initSize = t0.size,
@@ -1349,6 +1364,7 @@ var PFormBlock = function PFormBlock(t0) {
     lineVerticalMargin = t0.lineVerticalMargin,
     error = t0.error,
     warning = t0.warning,
+    endAdornment = t0.endAdornment,
     hidden = t0.hidden,
     collapse = t0.collapse,
     initCollapseIn = t0.collapseIn,
@@ -1491,7 +1507,7 @@ var PFormBlock = function PFormBlock(t0) {
     t8 = $[28];
   }
   var t9;
-  if ($[29] !== collapse || $[30] !== collapseIn || $[31] !== color || $[32] !== error || $[33] !== hidden || $[34] !== icon || $[35] !== label || $[36] !== line || $[37] !== lineVerticalMargin || $[38] !== size || $[39] !== warning) {
+  if ($[29] !== collapse || $[30] !== collapseIn || $[31] !== color || $[32] !== endAdornment || $[33] !== error || $[34] !== hidden || $[35] !== icon || $[36] !== label || $[37] !== line || $[38] !== lineVerticalMargin || $[39] !== size || $[40] !== warning) {
     t9 = (icon || label || line || collapse) && /*#__PURE__*/React.createElement(PFormDivider, {
       className: "PFormBlock-header",
       collapse: collapse,
@@ -1505,6 +1521,7 @@ var PFormBlock = function PFormBlock(t0) {
       warning: warning,
       lineVerticalMargin: lineVerticalMargin,
       hidden: hidden,
+      endAdornment: endAdornment,
       onCollapseChange: collapse ? function (newCollapseIn) {
         return setCollapseIn(newCollapseIn);
       } : undefined
@@ -1512,38 +1529,39 @@ var PFormBlock = function PFormBlock(t0) {
     $[29] = collapse;
     $[30] = collapseIn;
     $[31] = color;
-    $[32] = error;
-    $[33] = hidden;
-    $[34] = icon;
-    $[35] = label;
-    $[36] = line;
-    $[37] = lineVerticalMargin;
-    $[38] = size;
-    $[39] = warning;
-    $[40] = t9;
+    $[32] = endAdornment;
+    $[33] = error;
+    $[34] = hidden;
+    $[35] = icon;
+    $[36] = label;
+    $[37] = line;
+    $[38] = lineVerticalMargin;
+    $[39] = size;
+    $[40] = warning;
+    $[41] = t9;
   } else {
-    t9 = $[40];
+    t9 = $[41];
   }
   var t10;
-  if ($[41] === Symbol["for"]("react.memo_cache_sentinel")) {
+  if ($[42] === Symbol["for"]("react.memo_cache_sentinel")) {
     t10 = {
       xs: 12
     };
-    $[41] = t10;
+    $[42] = t10;
   } else {
-    t10 = $[41];
+    t10 = $[42];
   }
   var t11;
-  if ($[42] === Symbol["for"]("react.memo_cache_sentinel")) {
+  if ($[43] === Symbol["for"]("react.memo_cache_sentinel")) {
     t11 = {
       xs: 12
     };
-    $[42] = t11;
+    $[43] = t11;
   } else {
-    t11 = $[42];
+    t11 = $[43];
   }
   var t12;
-  if ($[43] !== children || $[44] !== spacing) {
+  if ($[44] !== children || $[45] !== spacing) {
     t12 = /*#__PURE__*/React.createElement(StyledWrapGrid$1, {
       size: t11,
       className: "PFormBlock-body"
@@ -1552,51 +1570,51 @@ var PFormBlock = function PFormBlock(t0) {
       container: true,
       spacing: spacing
     }, children));
-    $[43] = children;
-    $[44] = spacing;
-    $[45] = t12;
+    $[44] = children;
+    $[45] = spacing;
+    $[46] = t12;
   } else {
-    t12 = $[45];
+    t12 = $[46];
   }
   var t13;
-  if ($[46] !== spacing || $[47] !== t12) {
+  if ($[47] !== spacing || $[48] !== t12) {
     t13 = /*#__PURE__*/React.createElement(material.Grid, {
       container: true,
       spacing: spacing
     }, t12);
-    $[46] = spacing;
-    $[47] = t12;
-    $[48] = t13;
+    $[47] = spacing;
+    $[48] = t12;
+    $[49] = t13;
   } else {
-    t13 = $[48];
+    t13 = $[49];
   }
   var t14;
-  if ($[49] !== Container || $[50] !== containerProps || $[51] !== t13) {
+  if ($[50] !== Container || $[51] !== containerProps || $[52] !== t13) {
     t14 = /*#__PURE__*/React.createElement(StyledWrapGrid$1, {
       size: t10
     }, /*#__PURE__*/React.createElement(Container, containerProps, t13));
-    $[49] = Container;
-    $[50] = containerProps;
-    $[51] = t13;
-    $[52] = t14;
+    $[50] = Container;
+    $[51] = containerProps;
+    $[52] = t13;
+    $[53] = t14;
   } else {
-    t14 = $[52];
+    t14 = $[53];
   }
   var t15;
-  if ($[53] !== spacing || $[54] !== t14 || $[55] !== t9) {
+  if ($[54] !== spacing || $[55] !== t14 || $[56] !== t9) {
     t15 = /*#__PURE__*/React.createElement(material.Grid, {
       container: true,
       spacing: spacing
     }, t9, t14);
-    $[53] = spacing;
-    $[54] = t14;
-    $[55] = t9;
-    $[56] = t15;
+    $[54] = spacing;
+    $[55] = t14;
+    $[56] = t9;
+    $[57] = t15;
   } else {
-    t15 = $[56];
+    t15 = $[57];
   }
   var t16;
-  if ($[57] !== ref || $[58] !== style || $[59] !== sx || $[60] !== t15 || $[61] !== t8) {
+  if ($[58] !== ref || $[59] !== style || $[60] !== sx || $[61] !== t15 || $[62] !== t8) {
     t16 = /*#__PURE__*/React.createElement(material.Grid, {
       ref: ref,
       size: t7,
@@ -1604,25 +1622,25 @@ var PFormBlock = function PFormBlock(t0) {
       style: style,
       sx: sx
     }, t15);
-    $[57] = ref;
-    $[58] = style;
-    $[59] = sx;
-    $[60] = t15;
-    $[61] = t8;
-    $[62] = t16;
+    $[58] = ref;
+    $[59] = style;
+    $[60] = sx;
+    $[61] = t15;
+    $[62] = t8;
+    $[63] = t16;
   } else {
-    t16 = $[62];
+    t16 = $[63];
   }
   var t17;
-  if ($[63] !== t16 || $[64] !== t6) {
+  if ($[64] !== t16 || $[65] !== t6) {
     t17 = /*#__PURE__*/React.createElement(PFormContext.Provider, {
       value: t6
     }, t16);
-    $[63] = t16;
-    $[64] = t6;
-    $[65] = t17;
+    $[64] = t16;
+    $[65] = t6;
+    $[66] = t17;
   } else {
-    t17 = $[65];
+    t17 = $[66];
   }
   return t17;
 };var _templateObject$g;

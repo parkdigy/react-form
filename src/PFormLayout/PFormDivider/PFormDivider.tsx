@@ -4,7 +4,7 @@ import { Grid, Box } from '@mui/material';
 import { PFormDividerProps as Props } from './PFormDivider.types';
 import { useFormState } from '../../PFormContext';
 import { StyledErrorLineBox, StyledLineBox, StyledWarningLineBox } from './PFormDivider.style.private';
-import { PIcon } from '@pdg/react-component';
+import { PIcon, PIconButton, PStack } from '@pdg/react-component';
 
 const DEFAULT_LINE_STYLE: CSSProperties = { flex: 1, position: 'relative' };
 
@@ -22,6 +22,7 @@ const PFormDivider = ({
   collapseIn,
   error,
   warning,
+  endAdornment,
   onCollapseChange,
   /********************************************************************************************************************/
   className,
@@ -113,10 +114,24 @@ const PFormDivider = ({
             {error ? <StyledErrorLineBox /> : warning ? <StyledWarningLineBox /> : <StyledLineBox />}
           </div>
         )}
-        {collapse && (
-          <PIcon sx={{ opacity: 0.6, ml: 1 }} color={error ? 'error' : warning ? 'warning' : undefined}>
-            {collapseIn ? 'KeyboardDoubleArrowUp' : 'KeyboardDoubleArrowDown'}
-          </PIcon>
+        {(endAdornment || collapse) && (
+          <PStack row center sx={{ ml: endAdornment && collapse ? 2 : 1 }}>
+            {endAdornment && (
+              <Box
+                sx={{ my: -2 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                {endAdornment}
+              </Box>
+            )}
+            {collapse && (
+              <PIconButton sx={{ my: -2 }} color={error ? 'error' : warning ? 'warning' : undefined}>
+                {collapseIn ? 'KeyboardDoubleArrowUp' : 'KeyboardDoubleArrowDown'}
+              </PIconButton>
+            )}
+          </PStack>
         )}
       </Box>
     </Grid>

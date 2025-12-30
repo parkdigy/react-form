@@ -15,5 +15,6 @@ export interface PFormDividerProps extends PCommonSxProps {
     collapseIn?: boolean;
     error?: boolean;
     warning?: boolean;
+    endAdornment?: ReactNode;
     onCollapseChange?: (collapseIn: boolean) => void;
 }

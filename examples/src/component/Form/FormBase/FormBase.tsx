@@ -36,6 +36,7 @@ import {
 import { ToggleButtonGroup, Checkbox, RadioGroup, Rating, FileUpload, Switch } from './sub';
 import { lv } from '@pdg/data';
 import { Box } from '@mui/material';
+import { PIconButton } from '@pdg/react-component';
 
 const FormBase = () => {
   /********************************************************************************************************************
@@ -51,8 +52,8 @@ const FormBase = () => {
 
   const [variant, setVariant] = useState<PFormProps['variant']>('outlined');
   const [size, setSize] = useState<PFormProps['size']>('medium');
-  const [spacing, setSpacing] = useState<0|1|2|3|4|5>(2);
-  const [formColGap, setFormColGap] = useState<0|1|1.5|2|3|4>(1.5);
+  const [spacing, setSpacing] = useState<0 | 1 | 2 | 3 | 4 | 5>(2);
+  const [formColGap, setFormColGap] = useState<0 | 1 | 1.5 | 2 | 3 | 4>(1.5);
   const [color, setColor] = useState<PFormProps['color']>('primary');
   const [focused, setFocused] = useState<PFormProps['focused']>(false);
   const [labelShrink, setLabelShrink] = useState<PFormProps['labelShrink']>(false);
@@ -237,7 +238,14 @@ const FormBase = () => {
         onSubmit={handleSubmit}
       >
         <PFormBody>
-          <PFormBlock icon='TextFields' label='PFormBlock 1' hidden={isPFormBlock1Hidden} collapse collapseIn>
+          <PFormBlock
+            icon='TextFields'
+            label='PFormBlock 1'
+            hidden={isPFormBlock1Hidden}
+            collapse
+            collapseIn
+            endAdornment={<PIconButton onClick={() => ll('click')}>Info</PIconButton>}
+          >
             <PFormRow>
               <PFormCol>
                 <PFormHidden name='asdf' />
