@@ -78,6 +78,7 @@ function PFormAutocomplete<
   onRenderItem,
   onRenderTag,
   onRenderValue,
+  onGetComponentValue,
   onAddItem,
   getOptionDisabled,
   /********************************************************************************************************************/
@@ -426,7 +427,7 @@ function PFormAutocomplete<
     if (componentValue && computedComponentValue && equal(componentValue, computedComponentValue)) {
       // do nothing
     } else {
-      setComponentValue(computedComponentValue);
+      setComponentValue(onGetComponentValue ? onGetComponentValue(computedComponentValue) : computedComponentValue);
     }
   }, [computedComponentValue]);
 

@@ -64,6 +64,7 @@ export interface PFormAutocompleteProps<
   onRenderItem?: (item: Item) => ReactNode;
   onRenderTag?: (item: Item) => ReactNode;
   onRenderValue?: (item: Item) => ReactNode;
+  onGetComponentValue?: (value: ComponentValue) => ComponentValue;
   onValue?: (value: Value | undefined) => Value | undefined;
   onAddItem?: (item: Item) => boolean | Promise<boolean>;
   getOptionDisabled?: (item: Item) => boolean;
