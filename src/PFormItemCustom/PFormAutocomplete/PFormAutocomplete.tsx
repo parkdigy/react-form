@@ -77,7 +77,7 @@ function PFormAutocomplete<
   onAsyncLoadValueItem,
   onRenderItem,
   onRenderTag,
-  onRednerValue,
+  onRenderValue,
   onAddItem,
   getOptionDisabled,
   /********************************************************************************************************************/
@@ -751,11 +751,11 @@ function PFormAutocomplete<
                 );
               }
             }
-          : onRednerValue
+          : onRenderValue
             ? (value, getItemProps) => {
                 return Array.isArray(value) ? null : (
                   <Box lineHeight={0} {...getItemProps({ index: 0 })}>
-                    {onRednerValue(value)}
+                    {onRenderValue(value)}
                   </Box>
                 );
               }

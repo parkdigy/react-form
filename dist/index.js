@@ -11214,7 +11214,7 @@ function _temp$m() {
     onAsyncLoadValueItem = t0.onAsyncLoadValueItem,
     onRenderItem = t0.onRenderItem,
     onRenderTag = t0.onRenderTag,
-    onRednerValue = t0.onRednerValue,
+    onRenderValue = t0.onRenderValue,
     onAddItem = t0.onAddItem,
     getOptionDisabled = t0.getOptionDisabled,
     onChange = t0.onChange,
@@ -12350,7 +12350,7 @@ function _temp$m() {
     t74 = $[200];
   }
   var t75;
-  if ($[201] !== multiple || $[202] !== onRednerValue || $[203] !== onRenderTag || $[204] !== size || $[205] !== variant) {
+  if ($[201] !== multiple || $[202] !== onRenderTag || $[203] !== onRenderValue || $[204] !== size || $[205] !== variant) {
     t75 = multiple ? function (value_5, getItemProps) {
       if (Array.isArray(value_5)) {
         return value_5.map(function (option_2, index) {
@@ -12378,16 +12378,16 @@ function _temp$m() {
           index: 0
         })));
       }
-    } : onRednerValue ? function (value_6, getItemProps_0) {
+    } : onRenderValue ? function (value_6, getItemProps_0) {
       return Array.isArray(value_6) ? null : /*#__PURE__*/React.createElement(material.Box, _extends({
         lineHeight: 0
       }, getItemProps_0({
         index: 0
-      })), onRednerValue(value_6));
+      })), onRenderValue(value_6));
     } : undefined;
     $[201] = multiple;
-    $[202] = onRednerValue;
-    $[203] = onRenderTag;
+    $[202] = onRenderTag;
+    $[203] = onRenderValue;
     $[204] = size;
     $[205] = variant;
     $[206] = t75;

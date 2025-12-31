@@ -12,7 +12,7 @@ import { PFormTextFieldProps } from '../../PFormItemTextFieldBase';
 export type PFormAutocompleteSingleValue = string | number | boolean;
 
 export interface PFormAutocompleteItem<T extends PFormAutocompleteSingleValue> {
-  label: ReactNode;
+  label: string;
   value: T;
   disabled?: boolean;
   [key: string]: any;
@@ -63,7 +63,7 @@ export interface PFormAutocompleteProps<
   onAsyncLoadValueItem?: (value: Value) => Promise<ComponentValue>;
   onRenderItem?: (item: Item) => ReactNode;
   onRenderTag?: (item: Item) => ReactNode;
-  onRednerValue?: (item: Item) => ReactNode;
+  onRenderValue?: (item: Item) => ReactNode;
   onValue?: (value: Value | undefined) => Value | undefined;
   onAddItem?: (item: Item) => boolean | Promise<boolean>;
   getOptionDisabled?: (item: Item) => boolean;
