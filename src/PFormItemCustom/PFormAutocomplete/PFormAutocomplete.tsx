@@ -78,7 +78,7 @@ function PFormAutocomplete<
   onRenderItem,
   onRenderTag,
   onRenderValue,
-  onGetComponentValue,
+  onGetDisplayValue,
   onAddItem,
   getOptionDisabled,
   /********************************************************************************************************************/
@@ -427,7 +427,7 @@ function PFormAutocomplete<
     if (componentValue && computedComponentValue && equal(componentValue, computedComponentValue)) {
       // do nothing
     } else {
-      setComponentValue(onGetComponentValue ? onGetComponentValue(computedComponentValue) : computedComponentValue);
+      setComponentValue(computedComponentValue);
     }
   }, [computedComponentValue]);
 
@@ -676,19 +676,27 @@ function PFormAutocomplete<
   );
 
   /********************************************************************************************************************
-   * Render - Variables
+   * Memo
    * ******************************************************************************************************************/
 
-  const style: Props['style'] = {
-    minWidth: 120,
-    ...initStyle,
-  };
-  if (hidden) {
-    style.display = 'none';
-  }
-  if (width != null) {
-    style.width = width;
-  }
+  const style = useMemo(() => {
+    const _style: Props['style'] = {
+      minWidth: 120,
+      ...initStyle,
+    };
+    if (hidden) {
+      _style.display = 'none';
+    }
+    if (width != null) {
+      _style.width = width;
+    }
+    return _style;
+  }, [hidden, initStyle, width]);
+
+  const displayValue = useMemo(
+    () => (onGetDisplayValue ? onGetDisplayValue(componentValue) : componentValue),
+    [componentValue, onGetDisplayValue]
+  );
 
   /********************************************************************************************************************
    * Render
@@ -705,7 +713,7 @@ function PFormAutocomplete<
       disableClearable={disableClearable}
       disablePortal={disablePortal}
       noOptionsText={noOptionsText}
-      value={componentValue as any}
+      value={displayValue as any}
       style={style}
       isOptionEqualToValue={(option, value) => option.value === value.value}
       getOptionDisabled={handleGetOptionDisabled}
