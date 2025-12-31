@@ -6,6 +6,7 @@ import {
   AutocompleteChangeReason,
   AutocompleteChangeDetails,
   CircularProgress,
+  Box,
 } from '@mui/material';
 import {
   clearTimeoutRef,
@@ -76,6 +77,7 @@ function PFormAutocomplete<
   onAsyncLoadValueItem,
   onRenderItem,
   onRenderTag,
+  onRednerValue,
   onAddItem,
   getOptionDisabled,
   /********************************************************************************************************************/
@@ -749,7 +751,15 @@ function PFormAutocomplete<
                 );
               }
             }
-          : undefined
+          : onRednerValue
+            ? (value, getItemProps) => {
+                return Array.isArray(value) ? null : (
+                  <Box lineHeight={0} {...getItemProps({ index: 0 })}>
+                    {onRednerValue(value)}
+                  </Box>
+                );
+              }
+            : undefined
       }
       renderInput={(params) => {
         const slotProps = {

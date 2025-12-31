@@ -297,8 +297,8 @@ const FormBase = () => {
                 <PFormAutocomplete
                   name='PFormAutocomplete'
                   label='PFormAutocomplete'
-                  multiple
-                  items={[
+                  // multiple
+                  onLoadItems={async () => [
                     lv('Item', 1),
                     lv('Item', 2, { disabled: true }),
                     lv('Item 3', 3),

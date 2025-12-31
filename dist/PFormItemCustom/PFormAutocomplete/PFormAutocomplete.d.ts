@@ -4,7 +4,7 @@ declare function PFormAutocomplete<T extends PFormAutocompleteSingleValue, Multi
 /********************************************************************************************************************/
 variant: initVariant, size: initSize, color: initColor, focused: initFocused, labelShrink: initLabelShrink, fullWidth: initFullWidth, 
 /********************************************************************************************************************/
-name, labelIcon, label, loading: initLoading, items: initItems, value: initValue, data: initData, error: initError, helperText, disabled: initDisabled, readOnly, required, exceptValue, width, placeholder, multiple, formValueSeparator, formValueSort, disablePortal, noOptionsText, loadingText, limitTags, getLimitTagsText, openOnFocus, disableClearable, async, autoFocus, hidden: initHidden, onLoadItems, onAsyncLoadValueItem, onRenderItem, onRenderTag, onAddItem, getOptionDisabled, 
+name, labelIcon, label, loading: initLoading, items: initItems, value: initValue, data: initData, error: initError, helperText, disabled: initDisabled, readOnly, required, exceptValue, width, placeholder, multiple, formValueSeparator, formValueSort, disablePortal, noOptionsText, loadingText, limitTags, getLimitTagsText, openOnFocus, disableClearable, async, autoFocus, hidden: initHidden, onLoadItems, onAsyncLoadValueItem, onRenderItem, onRenderTag, onRednerValue, onAddItem, getOptionDisabled, 
 /********************************************************************************************************************/
 onChange, onValue, onValidate, onFocus, onBlur, 
 /********************************************************************************************************************/

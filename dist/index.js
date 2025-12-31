@@ -11174,7 +11174,7 @@ _PFormTextEditor.apiKey = '';
 function _temp$m() {
   return "PFormTextEditor";
 }function PFormAutocomplete(t0) {
-  var $ = compilerRuntime.c(250);
+  var $ = compilerRuntime.c(251);
   var ref = t0.ref,
     initVariant = t0.variant,
     initSize = t0.size,
@@ -11214,6 +11214,7 @@ function _temp$m() {
     onAsyncLoadValueItem = t0.onAsyncLoadValueItem,
     onRenderItem = t0.onRenderItem,
     onRenderTag = t0.onRenderTag,
+    onRednerValue = t0.onRednerValue,
     onAddItem = t0.onAddItem,
     getOptionDisabled = t0.getOptionDisabled,
     onChange = t0.onChange,
@@ -12349,7 +12350,7 @@ function _temp$m() {
     t74 = $[200];
   }
   var t75;
-  if ($[201] !== multiple || $[202] !== onRenderTag || $[203] !== size || $[204] !== variant) {
+  if ($[201] !== multiple || $[202] !== onRednerValue || $[203] !== onRenderTag || $[204] !== size || $[205] !== variant) {
     t75 = multiple ? function (value_5, getItemProps) {
       if (Array.isArray(value_5)) {
         return value_5.map(function (option_2, index) {
@@ -12377,17 +12378,24 @@ function _temp$m() {
           index: 0
         })));
       }
+    } : onRednerValue ? function (value_6, getItemProps_0) {
+      return Array.isArray(value_6) ? null : /*#__PURE__*/React.createElement(material.Box, _extends({
+        lineHeight: 0
+      }, getItemProps_0({
+        index: 0
+      })), onRednerValue(value_6));
     } : undefined;
     $[201] = multiple;
-    $[202] = onRenderTag;
-    $[203] = size;
-    $[204] = variant;
-    $[205] = t75;
+    $[202] = onRednerValue;
+    $[203] = onRenderTag;
+    $[204] = size;
+    $[205] = variant;
+    $[206] = t75;
   } else {
-    t75 = $[205];
+    t75 = $[206];
   }
   var t76;
-  if ($[206] !== autoFocus || $[207] !== color || $[208] !== disabled || $[209] !== error || $[210] !== errorHelperText || $[211] !== focused || $[212] !== helperText || $[213] !== isOnGetItemLoading || $[214] !== label || $[215] !== labelIcon || $[216] !== labelShrink || $[217] !== loading || $[218] !== name || $[219] !== onBlurRef || $[220] !== onFocusRef || $[221] !== placeholder || $[222] !== readOnly || $[223] !== required || $[224] !== size || $[225] !== variant) {
+  if ($[207] !== autoFocus || $[208] !== color || $[209] !== disabled || $[210] !== error || $[211] !== errorHelperText || $[212] !== focused || $[213] !== helperText || $[214] !== isOnGetItemLoading || $[215] !== label || $[216] !== labelIcon || $[217] !== labelShrink || $[218] !== loading || $[219] !== name || $[220] !== onBlurRef || $[221] !== onFocusRef || $[222] !== placeholder || $[223] !== readOnly || $[224] !== required || $[225] !== size || $[226] !== variant) {
     t76 = function t76(params) {
       var _params$inputProps;
       var slotProps = {
@@ -12439,32 +12447,32 @@ function _temp$m() {
         noFormValueItem: true
       }));
     };
-    $[206] = autoFocus;
-    $[207] = color;
-    $[208] = disabled;
-    $[209] = error;
-    $[210] = errorHelperText;
-    $[211] = focused;
-    $[212] = helperText;
-    $[213] = isOnGetItemLoading;
-    $[214] = label;
-    $[215] = labelIcon;
-    $[216] = labelShrink;
-    $[217] = loading;
-    $[218] = name;
-    $[219] = onBlurRef;
-    $[220] = onFocusRef;
-    $[221] = placeholder;
-    $[222] = readOnly;
-    $[223] = required;
-    $[224] = size;
-    $[225] = variant;
-    $[226] = t76;
+    $[207] = autoFocus;
+    $[208] = color;
+    $[209] = disabled;
+    $[210] = error;
+    $[211] = errorHelperText;
+    $[212] = focused;
+    $[213] = helperText;
+    $[214] = isOnGetItemLoading;
+    $[215] = label;
+    $[216] = labelIcon;
+    $[217] = labelShrink;
+    $[218] = loading;
+    $[219] = name;
+    $[220] = onBlurRef;
+    $[221] = onFocusRef;
+    $[222] = placeholder;
+    $[223] = readOnly;
+    $[224] = required;
+    $[225] = size;
+    $[226] = variant;
+    $[227] = t76;
   } else {
-    t76 = $[226];
+    t76 = $[227];
   }
   var t77;
-  if ($[227] !== disableClearable || $[228] !== disablePortal || $[229] !== disabled || $[230] !== getLimitTagsText || $[231] !== handleGetOptionDisabled || $[232] !== limitTags || $[233] !== loadingText || $[234] !== multiple || $[235] !== noOptionsText || $[236] !== openOnFocus || $[237] !== readOnly || $[238] !== style || $[239] !== sx || $[240] !== t67 || $[241] !== t68 || $[242] !== t69 || $[243] !== t70 || $[244] !== t71 || $[245] !== t72 || $[246] !== t73 || $[247] !== t75 || $[248] !== t76) {
+  if ($[228] !== disableClearable || $[229] !== disablePortal || $[230] !== disabled || $[231] !== getLimitTagsText || $[232] !== handleGetOptionDisabled || $[233] !== limitTags || $[234] !== loadingText || $[235] !== multiple || $[236] !== noOptionsText || $[237] !== openOnFocus || $[238] !== readOnly || $[239] !== style || $[240] !== sx || $[241] !== t67 || $[242] !== t68 || $[243] !== t69 || $[244] !== t70 || $[245] !== t71 || $[246] !== t72 || $[247] !== t73 || $[248] !== t75 || $[249] !== t76) {
     t77 = /*#__PURE__*/React.createElement(material.Autocomplete, {
       options: t67,
       className: t68,
@@ -12491,31 +12499,31 @@ function _temp$m() {
       renderValue: t75,
       renderInput: t76
     });
-    $[227] = disableClearable;
-    $[228] = disablePortal;
-    $[229] = disabled;
-    $[230] = getLimitTagsText;
-    $[231] = handleGetOptionDisabled;
-    $[232] = limitTags;
-    $[233] = loadingText;
-    $[234] = multiple;
-    $[235] = noOptionsText;
-    $[236] = openOnFocus;
-    $[237] = readOnly;
-    $[238] = style;
-    $[239] = sx;
-    $[240] = t67;
-    $[241] = t68;
-    $[242] = t69;
-    $[243] = t70;
-    $[244] = t71;
-    $[245] = t72;
-    $[246] = t73;
-    $[247] = t75;
-    $[248] = t76;
-    $[249] = t77;
+    $[228] = disableClearable;
+    $[229] = disablePortal;
+    $[230] = disabled;
+    $[231] = getLimitTagsText;
+    $[232] = handleGetOptionDisabled;
+    $[233] = limitTags;
+    $[234] = loadingText;
+    $[235] = multiple;
+    $[236] = noOptionsText;
+    $[237] = openOnFocus;
+    $[238] = readOnly;
+    $[239] = style;
+    $[240] = sx;
+    $[241] = t67;
+    $[242] = t68;
+    $[243] = t69;
+    $[244] = t70;
+    $[245] = t71;
+    $[246] = t72;
+    $[247] = t73;
+    $[248] = t75;
+    $[249] = t76;
+    $[250] = t77;
   } else {
-    t77 = $[249];
+    t77 = $[250];
   }
   return t77;
 }
