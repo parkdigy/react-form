@@ -1,5 +1,6 @@
 import React from 'react';
 import { PFormRadioGroupProps, PFormRadioGroupSingleValue, PFormRadioGroupItems } from './PFormRadioGroup.types';
+import './PFormRadioGroup.scss';
 declare function PFormRadioGroup<BaseValue extends PFormRadioGroupSingleValue, Items extends PFormRadioGroupItems<BaseValue> = PFormRadioGroupItems<BaseValue>>({ ref, 
 /********************************************************************************************************************/
 variant: initVariant, size: initSize, color: initColor, focused: initFocused, fullWidth: initFullWidth, hidden: initHidden, startAdornment, endAdornment, 

@@ -1,0 +1,7 @@
+.PFormRadioGroup {
+  .PFormRadioGroup-Item.PFormRadioGroup-Item--error {
+    .MuiTypography-root {
+      color: var(--error-color) !important;
+    }
+  }
+}

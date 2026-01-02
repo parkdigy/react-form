@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, ReactNode, useId, ChangeEvent, useMemo } from 'react';
+import React, { useState, useCallback, useRef, ReactNode, useId, ChangeEvent, useMemo, CSSProperties } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from '@mui/material';
@@ -21,6 +21,7 @@ import {
 } from './PFormRadioGroup.types';
 import { useFormState } from '../../PFormContext';
 import PFormItemBase from '../PFormItemBase';
+import './PFormRadioGroup.scss';
 
 const PADDING_LEFT = 3;
 
@@ -80,6 +81,12 @@ function PFormRadioGroup<
   const id = useId();
 
   /********************************************************************************************************************
+   * Use
+   * ******************************************************************************************************************/
+
+  const theme = useTheme();
+
+  /********************************************************************************************************************
    * FormState
    * ******************************************************************************************************************/
 
@@ -105,12 +112,6 @@ function PFormRadioGroup<
   const size = initSize ?? formSize;
   const color = initColor ?? formColor;
   const focused = initFocused ?? formFocused;
-
-  /********************************************************************************************************************
-   * Theme
-   * ******************************************************************************************************************/
-
-  const theme = useTheme();
 
   /********************************************************************************************************************
    * Ref
@@ -507,6 +508,7 @@ function PFormRadioGroup<
       items?.map(({ value, label, disabled: itemDisabled }, idx) => (
         <FormControlLabel
           key={idx}
+          className={classNames('PFormRadioGroup-Item', error && 'PFormRadioGroup-Item--error')}
           control={
             <Radio
               icon={<RadioButtonUnchecked color={error ? 'error' : undefined} />}
@@ -517,12 +519,15 @@ function PFormRadioGroup<
             />
           }
           label={label}
-          style={{
-            color: error ? theme.palette.error.main : '',
-            whiteSpace: 'nowrap',
-            marginTop: -5,
-            marginBottom: -5,
-          }}
+          style={
+            {
+              whiteSpace: 'nowrap',
+              marginTop: -5,
+              marginBottom: -5,
+              color: error ? theme.palette.error.main : undefined,
+              opacity: error && (disabled || readOnly || itemDisabled) ? 0.5 : 1,
+            } as CSSProperties
+          }
           value={value}
           disabled={disabled || readOnly || itemDisabled}
         />

@@ -545,8 +545,7 @@ function PFormToggleButtonGroup<
     }
 
     const buttonStyle = {
-      borderColor: error ? theme.palette.error.main : '',
-      color: error ? theme.palette.error.main : '',
+      borderColor: error ? theme.palette.error.main : undefined,
       width: finalItemWidth,
     };
 
@@ -566,7 +565,17 @@ function PFormToggleButtonGroup<
             value={value}
             color={itemColor || color}
             disabled={disabled || readOnly || itemDisabled}
-            style={buttonStyle}
+            style={{
+              ...buttonStyle,
+              color:
+                disabled || readOnly || itemDisabled
+                  ? error
+                    ? theme.alpha(theme.palette.error.main, 0.5)
+                    : undefined
+                  : error
+                    ? theme.palette.error.main
+                    : undefined,
+            }}
             onFocus={() => setFocused(initFocused || true)}
             onBlur={() => setFocused(initFocused || false)}
           >
@@ -600,9 +609,8 @@ function PFormToggleButtonGroup<
     items,
     readOnly,
     refForButtonResizeHeightDetect,
-    setFocused,
     size,
-    theme.palette.error.main,
+    theme,
     type,
   ]);
 

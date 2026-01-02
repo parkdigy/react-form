@@ -19,7 +19,7 @@ import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const DEFAULT_ITEMS: PFormToggleButtonGroupItem<number>[] = [
   lv('Item 1', 1),
-  lv('Item 2', 2),
+  lv('Item 2', 2, { disabled: true }),
   lv('Item 3', 3),
   lv('Item 4', 4),
 ];

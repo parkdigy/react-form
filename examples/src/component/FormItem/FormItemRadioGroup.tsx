@@ -18,7 +18,7 @@ const DEFAULT_ITEMS = [lv('전체', ''), ...new Array(3).fill(0).map((v, idx) =>
 
 const DEFAULT_ITEMS_2: PFormRadioGroupItem<number>[] = new Array(10)
   .fill(0)
-  .map((v, idx) => lv(`Item ${idx + 1}`, idx + 1));
+  .map((v, idx) => lv(`Item ${idx + 1}`, idx + 1, { disabled: idx === 1 }));
 
 const FormItemRadioGroup = () => {
   /********************************************************************************************************************
