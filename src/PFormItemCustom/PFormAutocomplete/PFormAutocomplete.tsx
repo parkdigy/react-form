@@ -820,10 +820,12 @@ function PFormAutocomplete<
             focused={focused}
             error={error}
             readOnly={readOnly}
-            helperText={error ? errorHelperText : helperText}
+            helperText={helperText}
+            errorHelperText={errorHelperText}
             slotProps={slotProps}
             placeholder={placeholder}
             noFormValueItem
+            noValidationCheck
           />
         );
       }}

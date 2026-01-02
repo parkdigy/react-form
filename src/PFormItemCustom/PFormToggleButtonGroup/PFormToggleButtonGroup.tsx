@@ -743,6 +743,8 @@ function PFormToggleButtonGroup<
       error={error}
       helperText={error ? errorHelperText : helperText}
       helperTextProps={{ style: { marginLeft: 2 } }}
+      errorHelperText={errorHelperText}
+      errorHelperTextProps={{ style: { marginLeft: 2 } }}
       style={style}
       sx={sx}
       hidden={hidden}

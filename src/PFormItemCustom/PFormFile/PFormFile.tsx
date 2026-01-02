@@ -422,7 +422,13 @@ const PFormFile = ({
       helperText={
         <div>
           {preview}
-          <div>{error ? errorHelperText : helperText}</div>
+          <div>{helperText}</div>
+        </div>
+      }
+      errorHelperText={
+        <div>
+          {preview}
+          <div>{errorHelperText}</div>
         </div>
       }
       hideLabel={!hideUrl}

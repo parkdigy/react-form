@@ -40,7 +40,11 @@ export interface PFormTextFieldProps<
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
   noFormValueItem?: boolean;
+  noValidationCheck?: boolean;
   disableReturnKey?: boolean;
   submitWhenReturnKey?: boolean;
+  errorHelperText?: ReactNode;
+  defaultRequiredErrorHelperText?: ReactNode;
+  defaultPatternErrorHelperText?: ReactNode;
   onValue?: (value: V) => V;
 }

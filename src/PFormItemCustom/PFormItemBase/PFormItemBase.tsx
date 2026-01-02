@@ -27,6 +27,8 @@ const PFormItemBase = ({
   helperText,
   helperTextProps,
   error,
+  errorHelperText,
+  errorHelperTextProps,
   hideLabel,
   hidden,
   autoSize,
@@ -228,10 +230,18 @@ const PFormItemBase = ({
             </div>
           )}
         </div>
-        {!formColWithHelperText && helperText && (
-          <FormHelperText component='div' {...helperTextProps}>
-            {helperText}
-          </FormHelperText>
+        {!formColWithHelperText && (helperText || errorHelperText) && (
+          <>
+            {error && errorHelperText ? (
+              <FormHelperText component='div' {...errorHelperTextProps}>
+                {errorHelperText}
+              </FormHelperText>
+            ) : (
+              <FormHelperText component='div' {...helperTextProps}>
+                {helperText}
+              </FormHelperText>
+            )}
+          </>
         )}
       </FormControl>
     </div>

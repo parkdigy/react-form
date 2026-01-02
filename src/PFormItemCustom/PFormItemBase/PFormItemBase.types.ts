@@ -19,6 +19,8 @@ export interface PFormItemBaseProps
   focused?: boolean;
   helperText?: ReactNode;
   helperTextProps?: FormHelperTextProps;
+  errorHelperText?: ReactNode;
+  errorHelperTextProps?: FormHelperTextProps;
   error?: boolean;
   hideLabel?: boolean;
   hidden?: boolean;

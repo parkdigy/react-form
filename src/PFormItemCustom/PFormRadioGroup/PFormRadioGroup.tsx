@@ -639,8 +639,10 @@ function PFormRadioGroup<
       fullWidth={fullWidth}
       required={required}
       error={error}
-      helperText={error ? errorHelperText : helperText}
+      helperText={helperText}
       helperTextProps={{ style: { marginLeft: 2, marginTop: isMultiline && notEmpty(label) ? 20 : 0 } }}
+      errorHelperText={errorHelperText}
+      errorHelperTextProps={{ style: { marginLeft: 2, marginTop: isMultiline && notEmpty(label) ? 20 : 0 } }}
       style={{ width, paddingLeft: PADDING_LEFT, ...initStyle }}
       sx={sx}
       hidden={hidden}

@@ -31,6 +31,7 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
   label: initLabel,
   error: initError,
   helperText,
+  errorHelperText: initErrorHelperText,
   exceptValue,
   readOnly,
   tabIndex,
@@ -48,8 +49,11 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
   startAdornment,
   endAdornment,
   noFormValueItem,
+  noValidationCheck,
   hidden: initHidden,
   disableReturnKey,
+  defaultRequiredErrorHelperText = '필수 입력 항목입니다.',
+  defaultPatternErrorHelperText = '형식이 일치하지 않습니다.',
   /********************************************************************************************************************/
   onChange,
   onValue,
@@ -123,7 +127,8 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
    * State
    * ******************************************************************************************************************/
 
-  const [errorHelperText, setErrorHelperText] = useState<PFormTextFieldProps['helperText']>();
+  const [errorHelperText, setErrorHelperText] = useState<PFormTextFieldProps['helperText']>(initErrorHelperText);
+  useFirstSkipChanged(() => setErrorHelperText(initErrorHelperText), [initErrorHelperText]);
 
   /** error */
   const [error, _setError] = useState(initError);
@@ -174,20 +179,24 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
   /** validate */
   const validate = useCallback(
     (value: PFormTextFieldValue) => {
+      if (noValidationCheck) {
+        return true;
+      }
+
       if (required && empty(value)) {
-        setErrorErrorHelperText(true, '필수 입력 항목입니다.');
+        setErrorErrorHelperText(true, defaultRequiredErrorHelperText);
         return false;
       }
 
       if (notEmpty(value) && validPattern) {
         if (!new RegExp(validPattern).test(value)) {
-          setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
+          setErrorErrorHelperText(true, defaultPatternErrorHelperText);
           return false;
         }
       }
       if (notEmpty(value) && invalidPattern) {
         if (new RegExp(invalidPattern).test(value)) {
-          setErrorErrorHelperText(true, '형식이 일치하지 않습니다.');
+          setErrorErrorHelperText(true, defaultPatternErrorHelperText);
           return false;
         }
       }
@@ -203,7 +212,16 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
 
       return true;
     },
-    [required, validPattern, invalidPattern, onValidateRef, setErrorErrorHelperText]
+    [
+      noValidationCheck,
+      required,
+      validPattern,
+      invalidPattern,
+      onValidateRef,
+      setErrorErrorHelperText,
+      defaultRequiredErrorHelperText,
+      defaultPatternErrorHelperText,
+    ]
   );
 
   /** focus */
@@ -246,7 +264,7 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
       const finalValue = getFinalValue(newValue);
       setValue(finalValue);
 
-      if (error) validate(finalValue);
+      if (!noValidationCheck && error) validate(finalValue);
       onChangeRef.current?.(finalValue);
       if (!noFormValueItem) {
         onValueChange(name, finalValue);
@@ -254,7 +272,7 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
 
       return finalValue;
     },
-    [error, getFinalValue, name, noFormValueItem, onChangeRef, onValueChange, setValue, validate]
+    [error, getFinalValue, name, noFormValueItem, noValidationCheck, onChangeRef, onValueChange, setValue, validate]
   );
 
   /********************************************************************************************************************
@@ -338,10 +356,10 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
   /** handleBlur */
   const handleBlur = useCallback(
     (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      if (error) validate(valueRef.current);
+      if (!noValidationCheck && error) validate(valueRef.current);
       onBlurRef.current?.(e);
     },
-    [error, validate, valueRef, onBlurRef]
+    [noValidationCheck, error, validate, valueRef, onBlurRef]
   );
 
   /** handleKeyDown */
