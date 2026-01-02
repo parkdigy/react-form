@@ -23,6 +23,7 @@ const PFormRow = ({
   line,
   lineVerticalMargin,
   fullHeight,
+  endAdornment,
   /********************************************************************************************************************/
   hidden,
   error,
@@ -161,6 +162,7 @@ const PFormRow = ({
               warning={warning}
               lineVerticalMargin={lineVerticalMargin}
               hidden={hidden}
+              endAdornment={endAdornment}
             />
           )}
           <StyledWrapGrid

@@ -7,6 +7,7 @@ export interface PFormRowProps extends PCommonSxProps, PartialPick<PFormContextV
     ref?: React.Ref<HTMLDivElement>;
     fullHeight?: boolean;
     helperText?: ReactNode;
+    endAdornment?: ReactNode;
 }
 export interface PFormColsInRowMap {
     [key: string]: number | undefined;

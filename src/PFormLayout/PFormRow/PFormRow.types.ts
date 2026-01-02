@@ -13,6 +13,7 @@ export interface PFormRowProps
   ref?: React.Ref<HTMLDivElement>;
   fullHeight?: boolean;
   helperText?: ReactNode;
+  endAdornment?: ReactNode;
 }
 
 export interface PFormColsInRowMap {

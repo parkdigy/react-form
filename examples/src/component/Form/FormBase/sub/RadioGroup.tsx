@@ -9,7 +9,7 @@ const DEFAULT_ITEMS: PFormRadioGroupItem<number>[] = new Array(3)
 
 const RadioGroup = () => {
   return (
-    <PFormRow>
+    <PFormRow line>
       <PFormCol>
         <PFormRadioGroup
           name={getName('PFormRadioGroup', true)}

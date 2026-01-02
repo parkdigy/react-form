@@ -4,7 +4,7 @@ import { getName } from '@common';
 
 const Checkbox = () => {
   return (
-    <PFormRow>
+    <PFormRow line>
       <PFormCol>
         <PFormCheckbox
           name={getName('PFormCheckbox', true)}

@@ -4,7 +4,7 @@ import { getName } from '@common';
 
 const Switch = () => {
   return (
-    <PFormRow>
+    <PFormRow line>
       <PFormCol>
         <PFormSwitch name={getName('PFormSwitch', true)} label='PFormSwitch' />
       </PFormCol>

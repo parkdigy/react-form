@@ -1648,7 +1648,7 @@ var PFormBlock = function PFormBlock(t0) {
 };var _templateObject$g;
 var StyledWrapGrid = styled(Grid)(_templateObject$g || (_templateObject$g = _taggedTemplateLiteral(["\n  width: 100%;\n"])));var _excluded$A = ["variant", "size", "color", "spacing", "focused", "labelShrink", "fullWidth"];
 var PFormRow = function PFormRow(t0) {
-  var $ = c(73);
+  var $ = c(74);
   var ref = t0.ref,
     initVariant = t0.variant,
     initSize = t0.size,
@@ -1662,6 +1662,7 @@ var PFormRow = function PFormRow(t0) {
     line = t0.line,
     lineVerticalMargin = t0.lineVerticalMargin,
     fullHeight = t0.fullHeight,
+    endAdornment = t0.endAdornment,
     hidden = t0.hidden,
     error = t0.error,
     warning = t0.warning,
@@ -1843,7 +1844,7 @@ var PFormRow = function PFormRow(t0) {
     t9 = $[31];
   }
   var t10;
-  if ($[32] !== className || $[33] !== color || $[34] !== error || $[35] !== hidden || $[36] !== icon || $[37] !== label || $[38] !== line || $[39] !== lineVerticalMargin || $[40] !== size || $[41] !== warning) {
+  if ($[32] !== className || $[33] !== color || $[34] !== endAdornment || $[35] !== error || $[36] !== hidden || $[37] !== icon || $[38] !== label || $[39] !== line || $[40] !== lineVerticalMargin || $[41] !== size || $[42] !== warning) {
     t10 = (icon || label || line) && /*#__PURE__*/React.createElement(PFormDivider, {
       className: classNames(className, "PFormRow-header"),
       size: size,
@@ -1854,55 +1855,57 @@ var PFormRow = function PFormRow(t0) {
       error: error,
       warning: warning,
       lineVerticalMargin: lineVerticalMargin,
-      hidden: hidden
+      hidden: hidden,
+      endAdornment: endAdornment
     });
     $[32] = className;
     $[33] = color;
-    $[34] = error;
-    $[35] = hidden;
-    $[36] = icon;
-    $[37] = label;
-    $[38] = line;
-    $[39] = lineVerticalMargin;
-    $[40] = size;
-    $[41] = warning;
-    $[42] = t10;
+    $[34] = endAdornment;
+    $[35] = error;
+    $[36] = hidden;
+    $[37] = icon;
+    $[38] = label;
+    $[39] = line;
+    $[40] = lineVerticalMargin;
+    $[41] = size;
+    $[42] = warning;
+    $[43] = t10;
   } else {
-    t10 = $[42];
+    t10 = $[43];
   }
   var t11;
-  if ($[43] === Symbol["for"]("react.memo_cache_sentinel")) {
+  if ($[44] === Symbol["for"]("react.memo_cache_sentinel")) {
     t11 = {
       xs: 12
     };
-    $[43] = t11;
+    $[44] = t11;
   } else {
-    t11 = $[43];
+    t11 = $[44];
   }
   var t12;
-  if ($[44] !== fullHeight) {
+  if ($[45] !== fullHeight) {
     t12 = fullHeight ? {
       height: "100%"
     } : undefined;
-    $[44] = fullHeight;
-    $[45] = t12;
+    $[45] = fullHeight;
+    $[46] = t12;
   } else {
-    t12 = $[45];
+    t12 = $[46];
   }
   var t13 = fullHeight ? "100%" : undefined;
   var t14;
-  if ($[46] !== t13) {
+  if ($[47] !== t13) {
     t14 = {
       flexWrap: "nowrap",
       height: t13
     };
-    $[46] = t13;
-    $[47] = t14;
+    $[47] = t13;
+    $[48] = t14;
   } else {
-    t14 = $[47];
+    t14 = $[48];
   }
   var t15;
-  if ($[48] !== children || $[49] !== spacing || $[50] !== t14) {
+  if ($[49] !== children || $[50] !== spacing || $[51] !== t14) {
     t15 = /*#__PURE__*/React.createElement(Grid, {
       className: "PFormRow-content",
       container: true,
@@ -1910,57 +1913,57 @@ var PFormRow = function PFormRow(t0) {
       direction: "row",
       style: t14
     }, children);
-    $[48] = children;
-    $[49] = spacing;
-    $[50] = t14;
-    $[51] = t15;
+    $[49] = children;
+    $[50] = spacing;
+    $[51] = t14;
+    $[52] = t15;
   } else {
-    t15 = $[51];
+    t15 = $[52];
   }
   var t16;
-  if ($[52] !== error || $[53] !== helperText) {
+  if ($[53] !== error || $[54] !== helperText) {
     t16 = helperText && /*#__PURE__*/React.createElement(FormHelperText, {
       className: "PFormRow-helper-text",
       component: "div",
       error: error
     }, helperText);
-    $[52] = error;
-    $[53] = helperText;
-    $[54] = t16;
+    $[53] = error;
+    $[54] = helperText;
+    $[55] = t16;
   } else {
-    t16 = $[54];
+    t16 = $[55];
   }
   var t17;
-  if ($[55] !== t12 || $[56] !== t15 || $[57] !== t16) {
+  if ($[56] !== t12 || $[57] !== t15 || $[58] !== t16) {
     t17 = /*#__PURE__*/React.createElement(StyledWrapGrid, {
       size: t11,
       className: "PFormRow-body",
       style: t12
     }, t15, t16);
-    $[55] = t12;
-    $[56] = t15;
-    $[57] = t16;
-    $[58] = t17;
+    $[56] = t12;
+    $[57] = t15;
+    $[58] = t16;
+    $[59] = t17;
   } else {
-    t17 = $[58];
+    t17 = $[59];
   }
   var t18;
-  if ($[59] !== spacing || $[60] !== t10 || $[61] !== t17 || $[62] !== t9) {
+  if ($[60] !== spacing || $[61] !== t10 || $[62] !== t17 || $[63] !== t9) {
     t18 = /*#__PURE__*/React.createElement(Grid, {
       container: true,
       spacing: spacing,
       style: t9
     }, t10, t17);
-    $[59] = spacing;
-    $[60] = t10;
-    $[61] = t17;
-    $[62] = t9;
-    $[63] = t18;
+    $[60] = spacing;
+    $[61] = t10;
+    $[62] = t17;
+    $[63] = t9;
+    $[64] = t18;
   } else {
-    t18 = $[63];
+    t18 = $[64];
   }
   var t19;
-  if ($[64] !== ref || $[65] !== style_0 || $[66] !== sx || $[67] !== t18 || $[68] !== t8) {
+  if ($[65] !== ref || $[66] !== style_0 || $[67] !== sx || $[68] !== t18 || $[69] !== t8) {
     t19 = /*#__PURE__*/React.createElement(Grid, {
       ref: ref,
       size: t7,
@@ -1968,25 +1971,25 @@ var PFormRow = function PFormRow(t0) {
       style: style_0,
       sx: sx
     }, t18);
-    $[64] = ref;
-    $[65] = style_0;
-    $[66] = sx;
-    $[67] = t18;
-    $[68] = t8;
-    $[69] = t19;
+    $[65] = ref;
+    $[66] = style_0;
+    $[67] = sx;
+    $[68] = t18;
+    $[69] = t8;
+    $[70] = t19;
   } else {
-    t19 = $[69];
+    t19 = $[70];
   }
   var t20;
-  if ($[70] !== t19 || $[71] !== t6) {
+  if ($[71] !== t19 || $[72] !== t6) {
     t20 = /*#__PURE__*/React.createElement(PFormContextProvider, {
       value: t6
     }, t19);
-    $[70] = t19;
-    $[71] = t6;
-    $[72] = t20;
+    $[71] = t19;
+    $[72] = t6;
+    $[73] = t20;
   } else {
-    t20 = $[72];
+    t20 = $[73];
   }
   return t20;
 };var _templateObject$f, _templateObject2$8, _templateObject3$4;

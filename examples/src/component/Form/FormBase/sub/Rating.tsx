@@ -4,7 +4,7 @@ import { getName } from '@common';
 
 const Rating = () => {
   return (
-    <PFormRow>
+    <PFormRow line>
       <PFormCol>
         <PFormRating name={getName('PFormRating', true)} label='PFormRating' />
       </PFormCol>
