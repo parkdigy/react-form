@@ -17,6 +17,8 @@ export interface PFormItemBaseProps extends PCommonSxProps, PartialPick<PFormCon
     focused?: boolean;
     helperText?: ReactNode;
     helperTextProps?: FormHelperTextProps;
+    errorHelperText?: ReactNode;
+    errorHelperTextProps?: FormHelperTextProps;
     error?: boolean;
     hideLabel?: boolean;
     hidden?: boolean;

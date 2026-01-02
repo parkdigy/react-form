@@ -5,7 +5,7 @@ declare function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue ext
 /********************************************************************************************************************/
 variant: initVariant, size: initSize, color: initColor, focused: initFocused, labelShrink: initLabelShrink, fullWidth: initFullWidth, submitWhenReturnKey: initSubmitWhenReturnKey, 
 /********************************************************************************************************************/
-name, required, value: initValue, data: initData, icon, labelIcon, label: initLabel, error: initError, helperText, exceptValue, readOnly, tabIndex, disabled: initDisabled, placeholder, maxLength, clear, width, slotProps: initSlotProps, inputRef: initInputRef, select, multiline, validPattern, invalidPattern, startAdornment, endAdornment, noFormValueItem, hidden: initHidden, disableReturnKey, 
+name, required, value: initValue, data: initData, icon, labelIcon, label: initLabel, error: initError, helperText, errorHelperText: initErrorHelperText, exceptValue, readOnly, tabIndex, disabled: initDisabled, placeholder, maxLength, clear, width, slotProps: initSlotProps, inputRef: initInputRef, select, multiline, validPattern, invalidPattern, startAdornment, endAdornment, noFormValueItem, noValidationCheck, hidden: initHidden, disableReturnKey, defaultRequiredErrorHelperText, defaultPatternErrorHelperText, 
 /********************************************************************************************************************/
 onChange, onValue, onValidate, onBlur, onKeyDown, 
 /********************************************************************************************************************/
