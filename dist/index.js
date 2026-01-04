@@ -4743,24 +4743,28 @@ var PFormMobile = function PFormMobile(t0) {
     t4 = $[11];
   }
   return t4;
-};var _excluded$p = ["onChange"];
+};var _excluded$p = ["ref", "onChange"];
 var NumberFormatCustom = function NumberFormatCustom(t0) {
-  var $ = compilerRuntime.c(8);
+  var $ = compilerRuntime.c(10);
   var onChange;
   var props;
+  var ref;
   if ($[0] !== t0) {
     var _t = t0;
+    ref = _t.ref;
     onChange = _t.onChange;
     props = _objectWithoutProperties(_t, _excluded$p);
     $[0] = t0;
     $[1] = onChange;
     $[2] = props;
+    $[3] = ref;
   } else {
     onChange = $[1];
     props = $[2];
+    ref = $[3];
   }
   var t1;
-  if ($[3] !== onChange) {
+  if ($[4] !== onChange) {
     t1 = function t1(values) {
       if (onChange) {
         onChange({
@@ -4770,21 +4774,23 @@ var NumberFormatCustom = function NumberFormatCustom(t0) {
         });
       }
     };
-    $[3] = onChange;
-    $[4] = t1;
+    $[4] = onChange;
+    $[5] = t1;
   } else {
-    t1 = $[4];
+    t1 = $[5];
   }
   var t2;
-  if ($[5] !== props || $[6] !== t1) {
+  if ($[6] !== props || $[7] !== ref || $[8] !== t1) {
     t2 = /*#__PURE__*/React.createElement(reactNumberFormat.NumericFormat, _extends({}, props, {
+      getInputRef: ref,
       onValueChange: t1
     }));
-    $[5] = props;
-    $[6] = t1;
-    $[7] = t2;
+    $[6] = props;
+    $[7] = ref;
+    $[8] = t1;
+    $[9] = t2;
   } else {
-    t2 = $[7];
+    t2 = $[9];
   }
   return t2;
 };var _excluded$o = ["ref", "className", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "labelShrink", "clear", "slotProps", "value", "onChange", "onValue", "onValidate"];

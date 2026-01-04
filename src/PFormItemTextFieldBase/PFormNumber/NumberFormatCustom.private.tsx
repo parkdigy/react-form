@@ -6,10 +6,11 @@ interface Props extends Omit<NumericFormatProps, 'onChange'> {
   onChange: (value: any) => void;
 }
 
-const NumberFormatCustom = ({ onChange, ...props }: Props) => {
+const NumberFormatCustom = ({ ref, onChange, ...props }: Props) => {
   return (
     <NumericFormat
       {...props}
+      getInputRef={ref}
       onValueChange={(values) => {
         if (onChange) onChange({ target: { value: values.value } });
       }}
