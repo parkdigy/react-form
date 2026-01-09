@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import PFormText from '../PFormText';
-import { PFormUrlProps as Props, PFormUrlValue } from './PFormUrl.types';
+import { type PFormUrlProps as Props, type PFormUrlValue } from './PFormUrl.types';
 import classNames from 'classnames';
 import { useAutoUpdateRef } from '@pdg/react-hook';
 

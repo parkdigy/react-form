@@ -1,6 +1,6 @@
-import { DateTimeValidationError, DateValidationError } from '@mui/x-date-pickers';
-import { PFormDateType, PFormTimeType } from '../@types';
-import { PFormAvailableDate, PFormAvailableDateItem, PFormAvailableDateType } from '../@private/@types';
+import { type DateTimeValidationError, type DateValidationError } from '@mui/x-date-pickers';
+import { type PFormDateType, type PFormTimeType } from '../@types';
+import { type PFormAvailableDate, type PFormAvailableDateItem, type PFormAvailableDateType } from '../@private/@types';
 import dayjs, { Dayjs } from 'dayjs';
 
 /********************************************************************************************************************

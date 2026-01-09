@@ -1,5 +1,5 @@
 import React from 'react';
-import { PFormTextFieldCommands, PFormTextFieldProps } from '../PFormTextField';
+import { type PFormTextFieldCommands, type PFormTextFieldProps } from '../PFormTextField';
 
 export type PFormHiddenValue = any;
 

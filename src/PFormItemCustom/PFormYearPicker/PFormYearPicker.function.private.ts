@@ -1,4 +1,4 @@
-import { PFormYearPickerBaseValue, PFormYearPickerValue } from './PFormYearPicker.types';
+import { type PFormYearPickerBaseValue, type PFormYearPickerValue } from './PFormYearPicker.types';
 import dayjs, { Dayjs } from 'dayjs';
 
 export const valueToDate = (v: PFormYearPickerBaseValue) => dayjs(`${v}-01-01`);

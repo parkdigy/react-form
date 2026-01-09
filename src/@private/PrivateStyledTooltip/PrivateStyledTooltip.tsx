@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
+import { styled, Tooltip, tooltipClasses, type TooltipProps } from '@mui/material';
 
 const PrivateStyledTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />

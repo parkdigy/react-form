@@ -1,7 +1,7 @@
 import {
-  PrivateYearRangePickerBaseValue,
-  PrivateYearRangePickerProps,
-  PrivateYearRangePickerSelectType,
+  type PrivateYearRangePickerBaseValue,
+  type PrivateYearRangePickerProps,
+  type PrivateYearRangePickerSelectType,
 } from '../PrivateYearRangePicker.types';
 
 export interface PrivateYearRangePickerYearListProps

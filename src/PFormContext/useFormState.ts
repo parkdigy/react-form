@@ -1,5 +1,5 @@
 import PFormContext from './PFormContext';
-import { PFormContextValue } from './PFormContext.types';
+import { type PFormContextValue } from './PFormContext.types';
 import { useContext } from 'react';
 
 export default function useFormState<

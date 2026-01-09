@@ -1,6 +1,6 @@
 import React from 'react';
-import { PCommonSxProps, PFormValueItemCommands, PFormValueItemProps } from '../../@types';
-import { IAllProps } from '@tinymce/tinymce-react';
+import { type PCommonSxProps, type PFormValueItemCommands, type PFormValueItemProps } from '../../@types';
+import { type IAllProps } from '@tinymce/tinymce-react';
 
 export type PFormTextEditorValue = string;
 export type PFormTextEditorCommands = PFormValueItemCommands<PFormTextEditorValue, false>;

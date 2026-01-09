@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { PFormButtonProps as Props } from './PFormButton.types';
+import { type PFormButtonProps as Props } from './PFormButton.types';
 import { useFormState } from '../../PFormContext';
 import { PButton } from '@pdg/react-component';
 

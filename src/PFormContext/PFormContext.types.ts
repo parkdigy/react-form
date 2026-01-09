@@ -1,5 +1,5 @@
-import { PartialPick, PFormValueItemCommands } from '../@types';
-import { PFormProps } from '../PForm';
+import { type PartialPick, type PFormValueItemCommands } from '../@types';
+import { type PFormProps } from '../PForm';
 
 export interface PFormContextValue<
   T = any,

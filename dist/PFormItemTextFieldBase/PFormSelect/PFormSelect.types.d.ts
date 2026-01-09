@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
-import { PFormArrayValueItemCommands, PFormItemsValueItemCommands, PFormLoadingValueItemCommands, PFormValueItemBaseCommands, PFormMultipleValueItemCommands } from '../../@types';
-import { PFormTextFieldProps } from '../PFormTextField';
+import React, { type ReactNode } from 'react';
+import { type PFormArrayValueItemCommands, type PFormItemsValueItemCommands, type PFormLoadingValueItemCommands, type PFormValueItemBaseCommands, type PFormMultipleValueItemCommands } from '../../@types';
+import { type PFormTextFieldProps } from '../PFormTextField';
 export type PFormSelectSingleValue = string | number | boolean;
 export type PFormSelectValue<T extends PFormSelectSingleValue, Multiple extends boolean | undefined = undefined> = Multiple extends true ? T[] : '' | T;
 export interface PFormSelectExtraCommands<T extends PFormSelectSingleValue> extends PFormArrayValueItemCommands, PFormItemsValueItemCommands<PFormSelectItem<T>>, PFormMultipleValueItemCommands, PFormLoadingValueItemCommands {

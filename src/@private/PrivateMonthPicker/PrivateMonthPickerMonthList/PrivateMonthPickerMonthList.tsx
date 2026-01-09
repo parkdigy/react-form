@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
-import { PrivateMonthPickerMonthListProps as Props } from './PrivateMonthPickerMonthList.types';
+import { type PrivateMonthPickerMonthListProps as Props } from './PrivateMonthPickerMonthList.types';
 import PrivateMonthPickerMonth from '../PrivateMonthPickerMonth';
-import { PFormMonthPickerBaseValue } from '../../../PFormItemCustom';
+import { type PFormMonthPickerBaseValue } from '../../../PFormItemCustom';
 import dayjs, { Dayjs } from 'dayjs';
 import { StyledContainer } from './PrivateMonthPickerMonthList.style.private';
 

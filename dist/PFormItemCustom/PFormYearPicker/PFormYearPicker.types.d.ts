@@ -1,7 +1,7 @@
-import { PFormValueItemProps, PFormValueItemBaseCommands } from '../../@types';
-import { PCommonSxProps } from '../../@types';
-import React, { ReactNode } from 'react';
-import { PrivateYearPickerBaseValue, PrivateYearPickerValue } from '../../@private';
+import { type PFormValueItemProps, type PFormValueItemBaseCommands } from '../../@types';
+import { type PCommonSxProps } from '../../@types';
+import React, { type ReactNode } from 'react';
+import { type PrivateYearPickerBaseValue, type PrivateYearPickerValue } from '../../@private';
 export type PFormYearPickerBaseValue = PrivateYearPickerBaseValue;
 export type PFormYearPickerValue = PrivateYearPickerValue;
 export interface PFormYearPickerCommands extends PFormValueItemBaseCommands<PFormYearPickerValue, false> {

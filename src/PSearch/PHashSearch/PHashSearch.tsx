@@ -1,20 +1,20 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { PHashSearchProps as Props } from './PHashSearch.types';
-import { PSearch, PSearchCommands } from '../PSearch';
+import { type PHashSearchProps as Props } from './PHashSearch.types';
+import { PSearch, type PSearchCommands } from '../PSearch';
 import {
-  PFormCheckValueItemCommands,
-  PFormDateValueItemCommands,
-  PFormRangeValueItemNameCommands,
-  PFormValue,
-  PFormValueMap,
+  type PFormCheckValueItemCommands,
+  type PFormDateValueItemCommands,
+  type PFormRangeValueItemNameCommands,
+  type PFormValue,
+  type PFormValueMap,
 } from '../../@types';
 import {
-  PFormDateRangePickerCommands,
-  PFormMonthPickerCommands,
-  PFormMonthRangePickerCommands,
-  PFormYearRangePickerCommands,
+  type PFormDateRangePickerCommands,
+  type PFormMonthPickerCommands,
+  type PFormMonthRangePickerCommands,
+  type PFormYearRangePickerCommands,
 } from '../../PFormItemCustom';
-import { Dict } from '@pdg/types';
+import { type Dict } from '@pdg/types';
 import { equal, notEmpty } from '@pdg/compare';
 import dayjs from 'dayjs';
 import classNames from 'classnames';

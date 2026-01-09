@@ -4,13 +4,13 @@ import { Editor } from '@tinymce/tinymce-react';
 import { Skeleton } from '@mui/material';
 import { useAutoUpdateRef, useFirstSkipChanged, useForwardRef } from '@pdg/react-hook';
 import { empty, ifEmpty } from '@pdg/compare';
-import { PFormTextEditorProps as Props, PFormTextEditorCommands, PFormTextEditorValue } from './PFormTextEditor.types';
+import { type PFormTextEditorProps as Props, type PFormTextEditorCommands, type PFormTextEditorValue } from './PFormTextEditor.types';
 import PFormItemBase from '../PFormItemBase';
 import { useFormState } from '../../PFormContext';
 import { getFinalValue } from './PFormTextEditor.function.private';
 import type { Editor as TinyMCEEditor } from 'tinymce';
 import './PFormTextEditor.scss';
-import { InitOptions } from '@tinymce/tinymce-react/lib/es2015/main/ts/components/Editor';
+import { type InitOptions } from '@tinymce/tinymce-react/lib/es2015/main/ts/components/Editor';
 
 type PFormTextEditorType = typeof PFormTextEditor & {
   apiKey: string;

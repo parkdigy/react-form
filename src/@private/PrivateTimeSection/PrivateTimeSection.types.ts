@@ -1,9 +1,9 @@
 import React from 'react';
-import { PrivateTimeSelectCommands } from '../PrivateTimeSelect';
+import { type PrivateTimeSelectCommands } from '../PrivateTimeSelect';
 import { Dayjs } from 'dayjs';
-import { PFormTimeType } from '../../@types';
-import { PrivateStaticDateTimePickerUnit } from '../PrivateStaticDateTimePicker';
-import { PFormAvailableDate } from '../@types';
+import { type PFormTimeType } from '../../@types';
+import { type PrivateStaticDateTimePickerUnit } from '../PrivateStaticDateTimePicker';
+import { type PFormAvailableDate } from '../@types';
 
 export interface PrivateTimeSectionProps {
   time: PFormTimeType;

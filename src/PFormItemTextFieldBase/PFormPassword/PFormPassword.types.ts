@@ -1,5 +1,5 @@
 import React from 'react';
-import { PFormTextCommands, PFormTextProps, PFormTextValue } from '../PFormText';
+import { type PFormTextCommands, type PFormTextProps, type PFormTextValue } from '../PFormText';
 
 export type PFormPasswordValue = PFormTextValue;
 

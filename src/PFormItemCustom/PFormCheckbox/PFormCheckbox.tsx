@@ -1,10 +1,10 @@
 import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
-import { FormControlLabel, Checkbox, Typography, ButtonBaseActions, useTheme } from '@mui/material';
+import { FormControlLabel, Checkbox, Typography, type ButtonBaseActions, useTheme } from '@mui/material';
 import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material';
 import { useAutoUpdateRef, useFirstSkipChanged, useForwardRef } from '@pdg/react-hook';
-import { PFormCheckboxProps as Props, PFormCheckboxCommands, PFormCheckboxValue } from './PFormCheckbox.types';
+import { type PFormCheckboxProps as Props, type PFormCheckboxCommands, type PFormCheckboxValue } from './PFormCheckbox.types';
 import PFormItemBase from '../PFormItemBase';
 import { useFormState } from '../../PFormContext';
 

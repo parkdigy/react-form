@@ -1,5 +1,5 @@
 import React from 'react';
-import { PFormTextProps, PFormTextCommands } from '../PFormText';
+import { type PFormTextProps, type PFormTextCommands } from '../PFormText';
 
 export type PFormPersonalNoValue = string;
 

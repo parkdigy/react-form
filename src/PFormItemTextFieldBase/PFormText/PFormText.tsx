@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PFormTextField from '../PFormTextField';
-import { PFormTextProps as Props, PFormTextValue } from './PFormText.types';
+import { type PFormTextProps as Props, type PFormTextValue } from './PFormText.types';
 
 const PFormText = ({ ref, className, clear = true, value = '', ...props }: Props) => {
   return (

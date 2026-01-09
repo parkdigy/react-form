@@ -1,5 +1,5 @@
 import React from 'react';
-import { PFormTextEditorProps as Props } from './PFormTextEditor.types';
+import { type PFormTextEditorProps as Props } from './PFormTextEditor.types';
 import './PFormTextEditor.scss';
 type PFormTextEditorType = typeof PFormTextEditor & {
     apiKey: string;

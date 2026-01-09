@@ -1,8 +1,8 @@
-import React, { CSSProperties, useMemo } from 'react';
+import React, { type CSSProperties, useMemo } from 'react';
 import classNames from 'classnames';
 import { FormControl, FormHelperText, Input, InputLabel, OutlinedInput, FilledInput } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
-import { PFormItemBaseProps as Props } from './PFormItemBase.types';
+import { type PFormItemBaseProps as Props } from './PFormItemBase.types';
 import { useFormState } from '../../PFormContext';
 import './PFormItemBase.scss';
 import { PIcon } from '@pdg/react-component';

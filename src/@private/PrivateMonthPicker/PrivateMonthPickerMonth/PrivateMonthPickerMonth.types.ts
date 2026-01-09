@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonProps } from '@mui/material';
+import { type ButtonProps } from '@mui/material';
 
 export interface PrivateMonthPickerMonthProps extends Pick<ButtonProps, 'onMouseEnter' | 'onMouseLeave'> {
   ref?: React.Ref<HTMLDivElement>;

@@ -1,7 +1,7 @@
-import { CSSProperties, ReactNode } from 'react';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material/styles';
-import { PFormContextValue } from '../PFormContext';
+import { type CSSProperties, type ReactNode } from 'react';
+import { type SxProps } from '@mui/system';
+import { type Theme } from '@mui/material/styles';
+import { type PFormContextValue } from '../PFormContext';
 
 //--------------------------------------------------------------------------------------------------------------------
 

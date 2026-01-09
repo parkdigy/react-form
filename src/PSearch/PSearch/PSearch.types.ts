@@ -1,6 +1,6 @@
 import React from 'react';
-import { PFormCommands, PFormProps } from '../../PForm';
-import { PCommonSxProps } from '../../@types';
+import { type PFormCommands, type PFormProps } from '../../PForm';
+import { type PCommonSxProps } from '../../@types';
 
 export interface PSearchCommands extends PFormCommands {}
 

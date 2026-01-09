@@ -1,7 +1,7 @@
 import {
-  PrivateMonthPickerBaseValue,
-  PrivateMonthPickerProps,
-  PrivateMonthPickerValue,
+  type PrivateMonthPickerBaseValue,
+  type PrivateMonthPickerProps,
+  type PrivateMonthPickerValue,
 } from '../PrivateMonthPicker.types';
 
 export interface PrivateMonthPickerMonthListProps

@@ -1,5 +1,5 @@
 import React from 'react';
-import { PrivateDateTimePickerProps, PrivateDateTimePickerCommands, PrivateDateTimePickerValue } from '../../@private';
+import { type PrivateDateTimePickerProps, type PrivateDateTimePickerCommands, type PrivateDateTimePickerValue } from '../../@private';
 export type PFormDateTimePickerValue = PrivateDateTimePickerValue;
 export interface PFormDateTimePickerProps extends Omit<PrivateDateTimePickerProps, 'type' | 'time'> {
     ref?: React.Ref<PFormDateTimePickerCommands>;

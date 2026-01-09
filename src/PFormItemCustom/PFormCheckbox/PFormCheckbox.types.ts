@@ -1,10 +1,10 @@
-import React, { ReactNode, RefObject } from 'react';
-import { ButtonBaseActions, CheckboxProps } from '@mui/material';
+import React, { type ReactNode, type RefObject } from 'react';
+import { type ButtonBaseActions, type CheckboxProps } from '@mui/material';
 import {
-  PCommonSxProps,
-  PFormCheckValueItemCommands,
-  PFormValueItemBaseCommands,
-  PFormValueItemProps,
+  type PCommonSxProps,
+  type PFormCheckValueItemCommands,
+  type PFormValueItemBaseCommands,
+  type PFormValueItemProps,
 } from '../../@types';
 
 export type PFormCheckboxValue = string | number | boolean;

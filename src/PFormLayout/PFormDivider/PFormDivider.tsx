@@ -1,7 +1,7 @@
-import React, { CSSProperties, useCallback, useMemo } from 'react';
+import React, { type CSSProperties, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { Grid, Box } from '@mui/material';
-import { PFormDividerProps as Props } from './PFormDivider.types';
+import { type PFormDividerProps as Props } from './PFormDivider.types';
 import { useFormState } from '../../PFormContext';
 import { StyledErrorLineBox, StyledLineBox, StyledWarningLineBox } from './PFormDivider.style.private';
 import { PIcon, PIconButton, PStack } from '@pdg/react-component';

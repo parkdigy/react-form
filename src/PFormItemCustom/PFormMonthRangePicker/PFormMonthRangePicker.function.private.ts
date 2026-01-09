@@ -1,5 +1,5 @@
-import { PFormMonthRangePickerValue } from './PFormMonthRangePicker.types';
-import { PFormMonthPickerBaseValue } from '../PFormMonthPicker';
+import { type PFormMonthRangePickerValue } from './PFormMonthRangePicker.types';
+import { type PFormMonthPickerBaseValue } from '../PFormMonthPicker';
 import dayjs, { Dayjs } from 'dayjs';
 
 const DEFAULT_VALUE: PFormMonthRangePickerValue = [null, null];

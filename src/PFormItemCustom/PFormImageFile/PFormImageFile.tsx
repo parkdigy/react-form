@@ -1,8 +1,8 @@
-import React, { ReactNode, useCallback, useState } from 'react';
+import React, { type ReactNode, useCallback, useState } from 'react';
 import classNames from 'classnames';
-import { PFormImageFileProps as Props } from './PFormImageFile.types';
+import { type PFormImageFileProps as Props } from './PFormImageFile.types';
 import PFormFile from '../PFormFile';
-import { PrivateAlertDialog, PrivateAlertDialogProps } from '../../@private';
+import { PrivateAlertDialog, type PrivateAlertDialogProps } from '../../@private';
 import { Tooltip, Typography } from '@mui/material';
 import { getFinalValue } from './PFormImageFile.function.private';
 import { useFirstSkipChanged } from '@pdg/react-hook';

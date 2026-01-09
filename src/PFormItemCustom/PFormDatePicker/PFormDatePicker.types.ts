@@ -1,5 +1,5 @@
 import React from 'react';
-import { PrivateDatePickerValue, PrivateDatePickerProps, PrivateDatePickerCommands } from '../../@private';
+import { type PrivateDatePickerValue, type PrivateDatePickerProps, type PrivateDatePickerCommands } from '../../@private';
 
 export type PFormDatePickerValue = PrivateDatePickerValue;
 

@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
-import { PCommonSxProps, PFormMultipleValueItemCommands } from '../../@types';
-import { PFormArrayValueItemCommands, PFormItemsValueItemCommands, PFormLoadingValueItemCommands, PFormValueItemBaseCommands, PFormValueItemProps } from '../../@types';
-import { PFormTextFieldProps } from '../../PFormItemTextFieldBase';
+import React, { type ReactNode } from 'react';
+import { type PCommonSxProps, type PFormMultipleValueItemCommands } from '../../@types';
+import { type PFormArrayValueItemCommands, type PFormItemsValueItemCommands, type PFormLoadingValueItemCommands, type PFormValueItemBaseCommands, type PFormValueItemProps } from '../../@types';
+import { type PFormTextFieldProps } from '../../PFormItemTextFieldBase';
 export type PFormAutocompleteSingleValue = string | number | boolean;
 export interface PFormAutocompleteItem<T extends PFormAutocompleteSingleValue> {
     label: string;

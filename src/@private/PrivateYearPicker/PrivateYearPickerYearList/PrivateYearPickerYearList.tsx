@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { PrivateYearPickerYearListProps as Props } from './PrivateYearPickerYearList.types';
+import { type PrivateYearPickerYearListProps as Props } from './PrivateYearPickerYearList.types';
 import PrivateYearPickerYear from '../PrivateYearPickerYear';
 import { StyledContainer } from './PrivateYearPickerYearList.style.private';
 

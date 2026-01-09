@@ -1,5 +1,5 @@
 import React from 'react';
-import { PrivateYearRangePickerYearProps as Props } from './PrivateYearRangePickerYear.types';
+import { type PrivateYearRangePickerYearProps as Props } from './PrivateYearRangePickerYear.types';
 import classNames from 'classnames';
 import { StyledContainer, StyledButton } from './PrivateYearRangePickerYear.style.private';
 

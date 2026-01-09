@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import PFormText from '../PFormText';
 import classNames from 'classnames';
-import { PFormTelProps as Props, PFormTelValue } from './PFormTel.types';
+import { type PFormTelProps as Props, type PFormTelValue } from './PFormTel.types';
 import { formatTelNo } from '@pdg/formatting';
 import { useAutoUpdateRef } from '@pdg/react-hook';
 

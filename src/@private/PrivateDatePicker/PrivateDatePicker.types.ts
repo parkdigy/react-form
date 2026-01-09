@@ -1,12 +1,12 @@
-import React, { ReactNode } from 'react';
-import { DesktopDatePickerProps } from '@mui/x-date-pickers';
+import React, { type ReactNode } from 'react';
+import { type DesktopDatePickerProps } from '@mui/x-date-pickers';
 import {
-  PCommonSxProps,
-  PFormDateType,
-  PFormDateValueItemCommands,
-  PFormTimeType,
-  PFormValueItemBaseCommands,
-  PFormValueItemProps,
+  type PCommonSxProps,
+  type PFormDateType,
+  type PFormDateValueItemCommands,
+  type PFormTimeType,
+  type PFormValueItemBaseCommands,
+  type PFormValueItemProps,
 } from '../../@types';
 import { Dayjs } from 'dayjs';
 

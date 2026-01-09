@@ -3,9 +3,9 @@ import classNames from 'classnames';
 import { InputAdornment, IconButton, Icon, styled } from '@mui/material';
 import PFormText from '../PFormText';
 import { notEmpty } from '@pdg/compare';
-import { PFormPasswordProps as Props, PFormPasswordValue } from './PFormPassword.types';
+import { type PFormPasswordProps as Props, type PFormPasswordValue } from './PFormPassword.types';
 import './PFormPassword.scss';
-import { InputBaseProps } from '@mui/material/InputBase/InputBase';
+import { type InputBaseProps } from '@mui/material/InputBase/InputBase';
 import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const StyledEyeInputAdornment = styled(InputAdornment)`

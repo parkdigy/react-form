@@ -1,5 +1,5 @@
 import React from 'react';
-import { PrivateMonthSelectProps as Props } from './PrivateMonthSelect.types';
+import { type PrivateMonthSelectProps as Props } from './PrivateMonthSelect.types';
 import { Grid } from '@mui/material';
 import dayjs from 'dayjs';
 import PrivateToggleButton from '../PrivateToggleButton';

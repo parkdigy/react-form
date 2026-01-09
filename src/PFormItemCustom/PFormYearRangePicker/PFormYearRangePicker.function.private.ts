@@ -1,4 +1,4 @@
-import { PFormYearRangePickerBaseValue, PFormYearRangePickerValue } from './PFormYearRangePicker.types';
+import { type PFormYearRangePickerBaseValue, type PFormYearRangePickerValue } from './PFormYearRangePicker.types';
 import dayjs, { Dayjs } from 'dayjs';
 
 const DEFAULT_VALUE: PFormYearRangePickerValue = [null, null];

@@ -1,5 +1,5 @@
 import React from 'react';
-import { PSearchGroupRowProps as Props } from './PSearchGroupRow.types';
+import { type PSearchGroupRowProps as Props } from './PSearchGroupRow.types';
 import { PFormCol, PFormRow } from '../../PFormLayout';
 import { Grid } from '@mui/material';
 import classNames from 'classnames';

@@ -1,8 +1,8 @@
 import React, { useCallback, useId, useMemo } from 'react';
 import classNames from 'classnames';
-import { PrivateInputDatePickerProps as Props } from './PrivateInputDatePicker.types';
-import { InputProps, InputAdornment } from '@mui/material';
-import { DesktopDatePicker, DesktopDatePickerProps } from '@mui/x-date-pickers';
+import { type PrivateInputDatePickerProps as Props } from './PrivateInputDatePicker.types';
+import { type InputProps, InputAdornment } from '@mui/material';
+import { DesktopDatePicker, type DesktopDatePickerProps } from '@mui/x-date-pickers';
 import './PrivateInputDatePicker.scss';
 import { PIcon } from '@pdg/react-component';
 import { useAutoUpdateRef } from '@pdg/react-hook';

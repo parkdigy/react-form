@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { PCommonSxProps, PFormItemsValueItemCommands, PFormLoadingValueItemCommands, PFormValueItemBaseCommands, PFormValueItemProps } from '../../@types';
+import React, { type ReactNode } from 'react';
+import { type PCommonSxProps, type PFormItemsValueItemCommands, type PFormLoadingValueItemCommands, type PFormValueItemBaseCommands, type PFormValueItemProps } from '../../@types';
 export type PFormRadioGroupSingleValue = string | number | boolean;
 export interface PFormRadioGroupItem<T extends PFormRadioGroupSingleValue> {
     label: ReactNode;

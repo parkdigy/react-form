@@ -1,12 +1,12 @@
-import React, { ReactNode } from 'react';
-import { FormControlProps, GridProps, InputLabelProps } from '@mui/material';
+import React, { type ReactNode } from 'react';
+import { type FormControlProps, type GridProps, type InputLabelProps } from '@mui/material';
 import {
-  PartialPick,
-  PCommonSxProps,
-  PFormValue,
-  PFormValueMap,
-  PFormValueItemCommands,
-  PFormValueItemBaseCommands,
+  type PartialPick,
+  type PCommonSxProps,
+  type PFormValue,
+  type PFormValueMap,
+  type PFormValueItemCommands,
+  type PFormValueItemBaseCommands,
 } from '../@types';
 
 export interface PFormInvalidItemInfo {

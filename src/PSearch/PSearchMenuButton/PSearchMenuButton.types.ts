@@ -1,5 +1,5 @@
-import { PFormButtonProps } from '../../PFormCommon';
-import { ReactNode } from 'react';
+import { type PFormButtonProps } from '../../PFormCommon';
+import { type ReactNode } from 'react';
 
 export interface PSearchMenuButtonProps
   extends Omit<PFormButtonProps, 'fullWidth' | 'endIcon' | 'endIconProps' | 'onClick'> {

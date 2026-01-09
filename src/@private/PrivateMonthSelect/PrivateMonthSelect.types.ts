@@ -1,4 +1,4 @@
-import { PFormAvailableDate } from '../@types';
+import { type PFormAvailableDate } from '../@types';
 
 export interface PrivateMonthSelectProps {
   year: number;

@@ -1,10 +1,10 @@
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import {
-  PCommonSxProps,
-  PFormItemsValueItemCommands,
-  PFormLoadingValueItemCommands,
-  PFormValueItemBaseCommands,
-  PFormValueItemProps,
+  type PCommonSxProps,
+  type PFormItemsValueItemCommands,
+  type PFormLoadingValueItemCommands,
+  type PFormValueItemBaseCommands,
+  type PFormValueItemProps,
 } from '../../@types';
 
 export type PFormRadioGroupSingleValue = string | number | boolean;

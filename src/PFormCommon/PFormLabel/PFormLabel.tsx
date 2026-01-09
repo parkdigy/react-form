@@ -1,6 +1,6 @@
-import React, { CSSProperties, useMemo } from 'react';
+import React, { type CSSProperties, useMemo } from 'react';
 import { InputLabel, useTheme } from '@mui/material';
-import { PFormLabelProps as Props } from './PFormLabel.types';
+import { type PFormLabelProps as Props } from './PFormLabel.types';
 import { ChildrenSpan, IconPIcon } from './PFormLabel.style.private';
 
 const PFormLabel = ({ ref, children, icon, size, style: initStyle, error, warning, ...props }: Props) => {

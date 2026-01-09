@@ -1,12 +1,12 @@
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import {
-  PFormValueItemProps,
-  PFormValueItemBaseCommands,
-  PFormYearMonthValueItemNameCommands,
-  PFormYearMonthValueItemCommands,
+  type PFormValueItemProps,
+  type PFormValueItemBaseCommands,
+  type PFormYearMonthValueItemNameCommands,
+  type PFormYearMonthValueItemCommands,
 } from '../../@types';
-import { PCommonSxProps } from '../../@types';
-import { PrivateMonthPickerBaseValue, PrivateMonthPickerValue } from '../../@private';
+import { type PCommonSxProps } from '../../@types';
+import { type PrivateMonthPickerBaseValue, type PrivateMonthPickerValue } from '../../@private';
 
 export type PFormMonthPickerBaseValue = PrivateMonthPickerBaseValue;
 

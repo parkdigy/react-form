@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { FormHelperText, Grid } from '@mui/material';
-import { PFormRowProps as Props, PFormColsInRowMap } from './PFormRow.types';
+import { type PFormRowProps as Props, type PFormColsInRowMap } from './PFormRow.types';
 import { useFormState } from '../../PFormContext';
 import PFormDivider from '../PFormDivider';
 import { StyledWrapGrid } from './PFormRow.style.private';

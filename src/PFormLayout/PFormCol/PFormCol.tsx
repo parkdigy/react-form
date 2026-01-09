@@ -2,7 +2,7 @@ import React, { useId, useMemo } from 'react';
 import classNames from 'classnames';
 import { FormHelperText, Grid } from '@mui/material';
 import { useResizeDetector } from 'react-resize-detector';
-import { PFormColProps as Props } from './PFormCol.types';
+import { type PFormColProps as Props } from './PFormCol.types';
 import { useFormState } from '../../PFormContext';
 import PFormContextProvider from '../../PFormContextProvider';
 import { StyledContentContainerBox, StyledFormLabel, StyledFormLabelContainerDiv } from './PFormCol.style.private';

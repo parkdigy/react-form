@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
-import { PCommonSxProps } from '../../@types';
-import { PFormProps } from '../../PForm';
-import { PIconProps } from '@pdg/react-component';
+import React, { type ReactNode } from 'react';
+import { type PCommonSxProps } from '../../@types';
+import { type PFormProps } from '../../PForm';
+import { type PIconProps } from '@pdg/react-component';
 
 export interface PFormDividerProps extends PCommonSxProps {
   ref?: React.Ref<HTMLDivElement>;

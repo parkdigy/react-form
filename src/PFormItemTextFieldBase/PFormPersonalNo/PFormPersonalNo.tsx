@@ -3,7 +3,7 @@ import PFormText from '../PFormText';
 import classNames from 'classnames';
 import { notEmpty } from '@pdg/compare';
 import { formatPersonalNo } from '@pdg/formatting';
-import { PFormPersonalNoProps as Props, PFormPersonalNoValue } from './PFormPersonalNo.types';
+import { type PFormPersonalNoProps as Props, type PFormPersonalNoValue } from './PFormPersonalNo.types';
 import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const PFormPersonalNo = ({

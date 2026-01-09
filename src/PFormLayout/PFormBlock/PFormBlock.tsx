@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { Collapse, Grid } from '@mui/material';
-import { PFormBlockProps as Props } from './PFormBlock.types';
+import { type PFormBlockProps as Props } from './PFormBlock.types';
 import { PFormContext, useFormState } from '../../PFormContext';
 import PFormDivider from '../PFormDivider';
 import { StyledWrapGrid } from './PFormBlock.style.private';

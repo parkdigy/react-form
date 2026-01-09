@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { PrivateAlertDialogProps as Props } from './PrivateAlertDialog.types';
+import { type PrivateAlertDialogProps as Props } from './PrivateAlertDialog.types';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { useAutoUpdateRef } from '@pdg/react-hook';
 

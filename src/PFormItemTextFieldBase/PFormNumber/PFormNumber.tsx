@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { NumericFormatProps } from 'react-number-format';
+import { type NumericFormatProps } from 'react-number-format';
 import NumberFormatCustom from './NumberFormatCustom.private';
-import { PFormNumberProps as Props, PFormNumberCommands } from './PFormNumber.types';
-import PFormTextField, { PFormTextFieldCommands } from '../PFormTextField';
+import { type PFormNumberProps as Props, type PFormNumberCommands } from './PFormNumber.types';
+import PFormTextField, { type PFormTextFieldCommands } from '../PFormTextField';
 import { empty } from '@pdg/compare';
-import { InputBaseProps } from '@mui/material/InputBase';
+import { type InputBaseProps } from '@mui/material/InputBase';
 import { useAutoUpdateRef, useFirstSkipChanged } from '@pdg/react-hook';
 
 const PFormNumber = ({

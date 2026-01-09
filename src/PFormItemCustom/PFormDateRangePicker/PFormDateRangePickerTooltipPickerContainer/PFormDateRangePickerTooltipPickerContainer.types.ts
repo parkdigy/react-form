@@ -1,9 +1,9 @@
 import React from 'react';
 import { Dayjs } from 'dayjs';
 import {
-  PFormDateRangePickerTooltipPickerDateValue,
-  PFormDateRangePickerTooltipPickerSelectType,
-  PFormDateRangePickerTooltipPickerValue,
+  type PFormDateRangePickerTooltipPickerDateValue,
+  type PFormDateRangePickerTooltipPickerSelectType,
+  type PFormDateRangePickerTooltipPickerValue,
 } from './PFormDateRangePickerTooltipPicker';
 
 export type PFormDateRangePickerTooltipPickerContainerMonths = [Dayjs, Dayjs, Dayjs];

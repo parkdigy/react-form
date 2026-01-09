@@ -1,4 +1,4 @@
-import { PFormDateRangePickerValue } from './PFormDateRangePicker.types';
+import { type PFormDateRangePickerValue } from './PFormDateRangePicker.types';
 
 const DEFAULT_VALUE: PFormDateRangePickerValue = [null, null];
 

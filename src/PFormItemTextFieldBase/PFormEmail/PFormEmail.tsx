@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import PFormText from '../PFormText';
-import { PFormEmailProps as Props, PFormEmailValue } from './PFormEmail.types';
+import { type PFormEmailProps as Props, type PFormEmailValue } from './PFormEmail.types';
 import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const PFormEmail = ({

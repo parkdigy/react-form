@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { PrivateTimeSectionProps as Props } from './PrivateTimeSection.types';
+import { type PrivateTimeSectionProps as Props } from './PrivateTimeSection.types';
 import { Button, Grid } from '@mui/material';
 import dayjs from 'dayjs';
 import PrivateTimeSelect from '../PrivateTimeSelect';

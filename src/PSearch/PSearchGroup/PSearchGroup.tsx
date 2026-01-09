@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import classNames from 'classnames';
-import { PSearchGroupProps } from './PSearchGroup.types';
+import { type PSearchGroupProps } from './PSearchGroup.types';
 import { Grid } from '@mui/material';
 import { PFormHidden } from '../../PFormItemTextFieldBase';
 import { StyledItem } from './PSearchGroup.style.private';

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { PrivateMonthPickerProps as Props, PrivateMonthPickerBaseValue } from './PrivateMonthPicker.types';
+import { type PrivateMonthPickerProps as Props, type PrivateMonthPickerBaseValue } from './PrivateMonthPicker.types';
 import dayjs from 'dayjs';
 import PrivateYearPicker from '../PrivateYearPicker';
 import PrivateMonthPickerMonthList from './PrivateMonthPickerMonthList';

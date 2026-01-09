@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { PCommonSxProps, PFormValueItemCommands, PFormValueItemProps } from '../../@types';
+import React, { type ReactNode } from 'react';
+import { type PCommonSxProps, type PFormValueItemCommands, type PFormValueItemProps } from '../../@types';
 
 export type PFormFileValue = string;
 

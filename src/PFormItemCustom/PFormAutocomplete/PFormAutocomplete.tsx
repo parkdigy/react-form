@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useId, ReactNode, useRef, useMemo, FocusEvent } from 'react';
+import React, { useState, useCallback, useId, type ReactNode, useRef, useMemo, type FocusEvent } from 'react';
 import classNames from 'classnames';
 import {
   Autocomplete,
   Chip,
-  AutocompleteChangeReason,
-  AutocompleteChangeDetails,
+  type AutocompleteChangeReason,
+  type AutocompleteChangeDetails,
   CircularProgress,
   Box,
 } from '@mui/material';
@@ -18,18 +18,18 @@ import {
   useForwardRef,
   useTimeoutRef,
 } from '@pdg/react-hook';
-import { Dict } from '@pdg/types';
+import { type Dict } from '@pdg/types';
 import { empty, notEmpty, equal } from '@pdg/compare';
 import {
-  PFormAutocompleteProps,
-  PFormAutocompleteCommands,
-  PFormAutocompleteItem,
-  PFormAutocompleteComponentValue,
-  PFormAutocompleteSingleValue,
-  PFormAutocompleteItems,
+  type PFormAutocompleteProps,
+  type PFormAutocompleteCommands,
+  type PFormAutocompleteItem,
+  type PFormAutocompleteComponentValue,
+  type PFormAutocompleteSingleValue,
+  type PFormAutocompleteItems,
 } from './PFormAutocomplete.types';
 import { useFormState } from '../../PFormContext';
-import { PFormTextField, PFormTextFieldCommands } from '../../PFormItemTextFieldBase';
+import { PFormTextField, type PFormTextFieldCommands } from '../../PFormItemTextFieldBase';
 
 function PFormAutocomplete<
   T extends PFormAutocompleteSingleValue,

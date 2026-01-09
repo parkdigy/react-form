@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PFormTel from '../PFormTel';
-import { PFormMobileProps as Props } from './PFormMobile.types';
+import { type PFormMobileProps as Props } from './PFormMobile.types';
 
 const PFormMobile = ({
   className,

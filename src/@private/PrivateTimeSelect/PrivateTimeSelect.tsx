@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { PrivateTimeSelectProps as Props, PrivateTimeSelectCommands } from './PrivateTimeSelect.types';
+import { type PrivateTimeSelectProps as Props, type PrivateTimeSelectCommands } from './PrivateTimeSelect.types';
 import SimpleBar from 'simplebar-react';
 import PrivateToggleButton from '../PrivateToggleButton';
 import './PrivateTimeSelect.scss';

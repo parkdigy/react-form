@@ -1,15 +1,15 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
-  PrivateStaticDatePickerCommands,
-  PrivateStaticDatePickerProps as Props,
+  type PrivateStaticDatePickerCommands,
+  type PrivateStaticDatePickerProps as Props,
 } from './PrivateStaticDatePicker.types';
-import { PickersDay, PickersDayProps, StaticDatePicker } from '@mui/x-date-pickers';
-import { Button, Grid, Icon, IconButton, IconButtonProps } from '@mui/material';
+import { PickersDay, type PickersDayProps, StaticDatePicker } from '@mui/x-date-pickers';
+import { Button, Grid, Icon, IconButton, type IconButtonProps } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { PrivateYearSelect } from '../PrivateYearSelect';
 import { PrivateMonthSelect } from '../PrivateMonthSelect';
-import { PrivateTimeSelectCommands } from '../PrivateTimeSelect';
+import { type PrivateTimeSelectCommands } from '../PrivateTimeSelect';
 import { checkDateAvailable, getAvailableDate, isDateAvailable, makeAvailableDate } from '../../@util.private';
 import { PrivateTimeSection } from '../PrivateTimeSection';
 import './PrivateStaticDatePicker.scss';

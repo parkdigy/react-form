@@ -1,5 +1,5 @@
-import { PartialPick, PFormValueItemCommands } from '../@types';
-import { PFormProps } from '../PForm';
+import { type PartialPick, type PFormValueItemCommands } from '../@types';
+import { type PFormProps } from '../PForm';
 export interface PFormContextValue<T = any, AllowUndefinedValue extends boolean = true, ItemValue = any, RangeItemValue = any, TV = T | (AllowUndefinedValue extends true ? undefined : never)> extends PartialPick<PFormProps, 'variant' | 'size' | 'color' | 'spacing' | 'formColGap' | 'focused' | 'labelShrink' | 'fullWidth'> {
     id: string;
     fullHeight?: boolean;

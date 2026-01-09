@@ -1,4 +1,4 @@
-import { NumericFormat, NumericFormatProps } from 'react-number-format';
+import { NumericFormat, type NumericFormatProps } from 'react-number-format';
 import React from 'react';
 
 interface Props extends Omit<NumericFormatProps, 'onChange'> {

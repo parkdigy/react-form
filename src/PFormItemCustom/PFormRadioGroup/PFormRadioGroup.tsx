@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, ReactNode, useId, ChangeEvent, useMemo, CSSProperties } from 'react';
+import React, { useState, useCallback, useRef, type ReactNode, useId, type ChangeEvent, useMemo, type CSSProperties } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { RadioGroup, FormControlLabel, Radio, useTheme, CircularProgress } from '@mui/material';
@@ -12,12 +12,12 @@ import {
 } from '@pdg/react-hook';
 import { empty, notEmpty } from '@pdg/compare';
 import {
-  PFormRadioGroupProps,
-  PFormRadioGroupCommands,
-  PFormRadioGroupValue,
-  PFormRadioGroupSingleValue,
-  PFormRadioGroupItem,
-  PFormRadioGroupItems,
+  type PFormRadioGroupProps,
+  type PFormRadioGroupCommands,
+  type PFormRadioGroupValue,
+  type PFormRadioGroupSingleValue,
+  type PFormRadioGroupItem,
+  type PFormRadioGroupItems,
 } from './PFormRadioGroup.types';
 import { useFormState } from '../../PFormContext';
 import PFormItemBase from '../PFormItemBase';

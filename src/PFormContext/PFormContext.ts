@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { PFormContextDefaultValue, PFormContextValue } from './PFormContext.types';
+import { PFormContextDefaultValue, type PFormContextValue } from './PFormContext.types';
 
 const PFormContext = createContext<PFormContextValue>(PFormContextDefaultValue);
 

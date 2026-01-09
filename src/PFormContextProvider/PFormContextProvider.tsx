@@ -1,5 +1,5 @@
 import React from 'react';
-import { PFormContextProviderProps as Props } from './PFormContextProvider.types';
+import { type PFormContextProviderProps as Props } from './PFormContextProvider.types';
 import PFormContext from '../PFormContext';
 
 function PFormContextProvider<T = any, AllowUndefinedValue extends boolean = true>({

@@ -1,7 +1,7 @@
 import React from 'react';
-import { RatingProps } from '@mui/material';
-import { PartialPick, PFormValueItemProps, PFormValueItemBaseCommands } from '../../@types';
-import { PCommonSxProps } from '../../@types';
+import { type RatingProps } from '@mui/material';
+import { type PartialPick, type PFormValueItemProps, type PFormValueItemBaseCommands } from '../../@types';
+import { type PCommonSxProps } from '../../@types';
 
 export type PFormRatingValue = number;
 

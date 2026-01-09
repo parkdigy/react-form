@@ -1,4 +1,4 @@
-import { PrivateMonthPickerBaseValue, PrivateMonthPickerProps, PrivateMonthPickerValue } from '../PrivateMonthPicker.types';
+import { type PrivateMonthPickerBaseValue, type PrivateMonthPickerProps, type PrivateMonthPickerValue } from '../PrivateMonthPicker.types';
 export interface PrivateMonthPickerMonthListProps extends Pick<PrivateMonthPickerProps, 'value' | 'disablePast' | 'disableFuture' | 'selectFromValue' | 'selectToValue'> {
     defaultValue?: PrivateMonthPickerValue;
     minAvailableValue: PrivateMonthPickerBaseValue;

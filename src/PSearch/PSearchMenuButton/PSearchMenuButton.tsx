@@ -1,8 +1,8 @@
 import React, { useCallback, useId, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { PSearchMenuButtonProps as Props } from './PSearchMenuButton.types';
+import { type PSearchMenuButtonProps as Props } from './PSearchMenuButton.types';
 import { PFormButton } from '../../PFormCommon';
-import { Menu, PopoverOrigin } from '@mui/material';
+import { Menu, type PopoverOrigin } from '@mui/material';
 
 const PSearchMenuButton = ({ children, className, sx: initSx, menuList, placement, ...props }: Props) => {
   /********************************************************************************************************************

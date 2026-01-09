@@ -1,12 +1,12 @@
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import {
-  PFormArrayValueItemCommands,
-  PFormItemsValueItemCommands,
-  PFormLoadingValueItemCommands,
-  PFormValueItemBaseCommands,
-  PFormMultipleValueItemCommands,
+  type PFormArrayValueItemCommands,
+  type PFormItemsValueItemCommands,
+  type PFormLoadingValueItemCommands,
+  type PFormValueItemBaseCommands,
+  type PFormMultipleValueItemCommands,
 } from '../../@types';
-import { PFormTextFieldProps } from '../PFormTextField';
+import { type PFormTextFieldProps } from '../PFormTextField';
 
 export type PFormSelectSingleValue = string | number | boolean;
 

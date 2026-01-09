@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
-import { PFormArrayValueItemCommands } from '../../@types';
-import { PFormTextFieldCommands, PFormTextFieldProps } from '../PFormTextField';
+import React, { type ReactNode } from 'react';
+import { type PFormArrayValueItemCommands } from '../../@types';
+import { type PFormTextFieldCommands, type PFormTextFieldProps } from '../PFormTextField';
 
 export type PFormTagValue = string[];
 

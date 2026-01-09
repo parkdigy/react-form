@@ -1,5 +1,5 @@
 import React from 'react';
-import { PFormTextFieldProps, PFormTextFieldValue } from './PFormTextField.types';
+import { type PFormTextFieldProps, type PFormTextFieldValue } from './PFormTextField.types';
 import './PFormTextField.scss';
 declare function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boolean = true>({ ref, 
 /********************************************************************************************************************/

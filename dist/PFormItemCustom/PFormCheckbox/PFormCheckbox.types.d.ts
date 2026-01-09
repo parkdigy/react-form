@@ -1,6 +1,6 @@
-import React, { ReactNode, RefObject } from 'react';
-import { ButtonBaseActions, CheckboxProps } from '@mui/material';
-import { PCommonSxProps, PFormCheckValueItemCommands, PFormValueItemBaseCommands, PFormValueItemProps } from '../../@types';
+import React, { type ReactNode, type RefObject } from 'react';
+import { type ButtonBaseActions, type CheckboxProps } from '@mui/material';
+import { type PCommonSxProps, type PFormCheckValueItemCommands, type PFormValueItemBaseCommands, type PFormValueItemProps } from '../../@types';
 export type PFormCheckboxValue = string | number | boolean;
 export interface PFormCheckboxCommands extends Omit<PFormValueItemBaseCommands<PFormCheckboxValue, false>, 'getReset'>, PFormCheckValueItemCommands<PFormCheckboxValue> {
     getReset: () => boolean;

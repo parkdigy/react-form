@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
-import { PFormDateTimePickerProps as Props, PFormDateTimePickerValue } from './PFormDateTimePicker.types';
+import { type PFormDateTimePickerProps as Props, type PFormDateTimePickerValue } from './PFormDateTimePicker.types';
 import { PrivateDateTimePicker } from '../../@private';
 import PFormContextProvider from '../../PFormContextProvider';
 import { useFormState } from '../../PFormContext';
-import { PFormValueItemCommands } from '../../@types';
+import { type PFormValueItemCommands } from '../../@types';
 import dayjs, { Dayjs } from 'dayjs';
 
 const PFormDateTimePicker = ({

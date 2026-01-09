@@ -1,5 +1,5 @@
 import React from 'react';
-import { PFormTextFieldProps, PFormTextFieldCommands } from '../PFormTextField';
+import { type PFormTextFieldProps, type PFormTextFieldCommands } from '../PFormTextField';
 
 export type PFormTextValue = string;
 

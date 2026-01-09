@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useId, ReactNode, useMemo } from 'react';
+import React, { useState, useCallback, useId, type ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
 import { useResizeDetector } from 'react-resize-detector';
 import { ToggleButtonGroup, ToggleButton, useTheme, CircularProgress, Icon } from '@mui/material';
@@ -10,17 +10,17 @@ import {
   useForwardRef,
 } from '@pdg/react-hook';
 import { empty, notEmpty, equal } from '@pdg/compare';
-import { PartialPick } from '../../@types';
+import { type PartialPick } from '../../@types';
 import {
-  PFormToggleButtonGroupProps,
-  PFormToggleButtonGroupCommands,
-  PFormToggleButtonGroupSingleValue,
-  PFormToggleButtonGroupValue,
-  PFormToggleButtonGroupItem,
-  PFormToggleButtonGroupItems,
+  type PFormToggleButtonGroupProps,
+  type PFormToggleButtonGroupCommands,
+  type PFormToggleButtonGroupSingleValue,
+  type PFormToggleButtonGroupValue,
+  type PFormToggleButtonGroupItem,
+  type PFormToggleButtonGroupItems,
 } from './PFormToggleButtonGroup.types';
 import { useFormState } from '../../PFormContext';
-import PFormItemBase, { PFormItemBaseProps } from '../PFormItemBase';
+import PFormItemBase, { type PFormItemBaseProps } from '../PFormItemBase';
 import './PFormToggleButtonGroup.scss';
 
 function PFormToggleButtonGroup<

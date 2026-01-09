@@ -1,5 +1,5 @@
 import React from 'react';
-import { PFormAutocompleteProps, PFormAutocompleteSingleValue, PFormAutocompleteItems } from './PFormAutocomplete.types';
+import { type PFormAutocompleteProps, type PFormAutocompleteSingleValue, type PFormAutocompleteItems } from './PFormAutocomplete.types';
 declare function PFormAutocomplete<T extends PFormAutocompleteSingleValue, Multiple extends boolean | undefined = undefined, Items extends PFormAutocompleteItems<T> = PFormAutocompleteItems<T>>({ ref, 
 /********************************************************************************************************************/
 variant: initVariant, size: initSize, color: initColor, focused: initFocused, labelShrink: initLabelShrink, fullWidth: initFullWidth, 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { PrivateMonthPickerMonthProps as Props } from './PrivateMonthPickerMonth.types';
+import { type PrivateMonthPickerMonthProps as Props } from './PrivateMonthPickerMonth.types';
 import classNames from 'classnames';
 import { StyledButton, StyledContainer } from './PrivateMonthPickerMonth.style.private';
 

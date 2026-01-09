@@ -1,5 +1,5 @@
 import React from 'react';
-import { PFormFileCommands, PFormFileProps } from '../PFormFile';
+import { type PFormFileCommands, type PFormFileProps } from '../PFormFile';
 export interface PFormImageFileImageSize {
     width: number;
     height: number;

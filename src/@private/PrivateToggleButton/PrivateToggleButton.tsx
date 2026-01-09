@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { PrivateToggleButtonProps as Props } from './PrivateToggleButton.types';
+import { type PrivateToggleButtonProps as Props } from './PrivateToggleButton.types';
 import { Button, useTheme, darken } from '@mui/material';
-import { PCommonSxProps } from '../../@types';
+import { type PCommonSxProps } from '../../@types';
 
 const PrivateToggleButton = ({ ref, children, className, selected, activated, outlined, ...props }: Props) => {
   /********************************************************************************************************************

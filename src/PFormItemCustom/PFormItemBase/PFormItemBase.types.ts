@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
-import { FormHelperTextProps } from '@mui/material';
-import { PartialPick, PCommonSxProps, PCommonProps } from '../../@types';
-import { PFormContextValue } from '../../PFormContext';
+import React, { type ReactNode } from 'react';
+import { type FormHelperTextProps } from '@mui/material';
+import { type PartialPick, type PCommonSxProps, type PCommonProps } from '../../@types';
+import { type PFormContextValue } from '../../PFormContext';
 
 export interface PFormItemBaseProps
   extends PCommonSxProps, PartialPick<PFormContextValue, 'variant' | 'size' | 'color'> {

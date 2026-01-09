@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { PrivateYearPickerProps as Props, PrivateYearPickerBaseValue } from './PrivateYearPicker.types';
+import { type PrivateYearPickerProps as Props, type PrivateYearPickerBaseValue } from './PrivateYearPicker.types';
 import { useAutoUpdateRef, useFirstSkipChanged } from '@pdg/react-hook';
 import PrivateYearPickerYearList from './PrivateYearPickerYearList';
 import {

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { PFormFooterProps as Props } from './PFormFooter.types';
+import { type PFormFooterProps as Props } from './PFormFooter.types';
 import { Grid } from '@mui/material';
 import { useFormState } from '../../PFormContext';
 import PFormDivider from '../PFormDivider';

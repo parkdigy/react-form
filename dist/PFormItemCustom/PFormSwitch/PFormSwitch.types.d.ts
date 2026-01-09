@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
-import { FormControlLabelProps } from '@mui/material';
-import { PFormValueItemProps, PFormValueItemBaseCommands } from '../../@types';
-import { PCommonSxProps } from '../../@types';
+import React, { type ReactNode } from 'react';
+import { type FormControlLabelProps } from '@mui/material';
+import { type PFormValueItemProps, type PFormValueItemBaseCommands } from '../../@types';
+import { type PCommonSxProps } from '../../@types';
 export interface PFormSwitchProps extends PCommonSxProps, Omit<PFormValueItemProps<boolean, false>, 'fullWidth'> {
     ref?: React.Ref<PFormSwitchCommands>;
     switchLabel?: ReactNode;

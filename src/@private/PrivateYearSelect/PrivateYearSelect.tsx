@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { PrivateYearSelectProps as Props } from './PrivateYearSelect.types';
+import { type PrivateYearSelectProps as Props } from './PrivateYearSelect.types';
 import { Grid } from '@mui/material';
 import dayjs from 'dayjs';
 import './PrivateYearSelect.scss';

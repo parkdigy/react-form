@@ -4,7 +4,7 @@ import { useResizeDetector } from 'react-resize-detector';
 import { Rating } from '@mui/material';
 import { useAutoUpdateRef, useFirstSkipChanged, useForwardRef } from '@pdg/react-hook';
 import { empty } from '@pdg/compare';
-import { PFormRatingProps as Props, PFormRatingCommands, PFormRatingValue } from './PFormRating.types';
+import { type PFormRatingProps as Props, type PFormRatingCommands, type PFormRatingValue } from './PFormRating.types';
 import PFormItemBase from '../PFormItemBase';
 import { useFormState } from '../../PFormContext';
 import { PIcon } from '@pdg/react-component';

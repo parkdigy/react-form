@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { PFormTagTextProps as Props } from './PFormTagText.types';
+import { type PFormTagTextProps as Props } from './PFormTagText.types';
 import PFormText from '../../PFormText';
 import { notEmpty } from '@pdg/compare';
 import { styled } from '@mui/material';

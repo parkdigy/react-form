@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
-import { ToggleButtonProps } from '@mui/material';
-import { PartialPick, PCommonSxProps, PFormMultipleValueItemCommands, PFormArrayValueItemCommands, PFormItemsValueItemCommands, PFormLoadingValueItemCommands, PFormValueItemBaseCommands, PFormValueItemProps } from '../../@types';
-import { PFormItemBaseProps } from '../PFormItemBase';
+import React, { type ReactNode } from 'react';
+import { type ToggleButtonProps } from '@mui/material';
+import { type PartialPick, type PCommonSxProps, type PFormMultipleValueItemCommands, type PFormArrayValueItemCommands, type PFormItemsValueItemCommands, type PFormLoadingValueItemCommands, type PFormValueItemBaseCommands, type PFormValueItemProps } from '../../@types';
+import { type PFormItemBaseProps } from '../PFormItemBase';
 export type PFormToggleButtonGroupSingleValue = string | number | boolean;
 export interface PFormToggleButtonGroupItem<T extends PFormToggleButtonGroupSingleValue> {
     label: ReactNode;

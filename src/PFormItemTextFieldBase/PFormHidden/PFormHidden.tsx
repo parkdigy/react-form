@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { PFormHiddenProps as Props, PFormHiddenValue } from './PFormHidden.types';
+import { type PFormHiddenProps as Props, type PFormHiddenValue } from './PFormHidden.types';
 import PFormTextField from '../PFormTextField';
 import './PFormHidden.scss';
 

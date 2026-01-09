@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { LinkDialogProps as Props } from './LinkDialog.types';
-import { PFormUrl, PFormUrlCommands } from '../../../PFormItemTextFieldBase';
+import { type LinkDialogProps as Props } from './LinkDialog.types';
+import { PFormUrl, type PFormUrlCommands } from '../../../PFormItemTextFieldBase';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { empty } from '@pdg/compare';
 import { useFirstSkipChanged } from '@pdg/react-hook';

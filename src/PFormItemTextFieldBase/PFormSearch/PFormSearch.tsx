@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PFormText from '../PFormText';
-import { PFormSearchProps as Props } from './PFormSearch.types';
+import { type PFormSearchProps as Props } from './PFormSearch.types';
 import './PFormSearch.scss';
 
 const PFormSearch = ({ className, ...props }: Props) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { PFormTelProps, PFormTelCommands, PFormTelValue } from '../PFormTel';
+import { type PFormTelProps, type PFormTelCommands, type PFormTelValue } from '../PFormTel';
 export type PFormMobileValue = PFormTelValue;
 export type PFormMobileCommands = PFormTelCommands;
 export interface PFormMobileProps extends PFormTelProps {

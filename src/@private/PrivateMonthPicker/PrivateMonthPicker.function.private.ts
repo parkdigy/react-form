@@ -1,6 +1,6 @@
-import { PrivateMonthPickerBaseValue } from './PrivateMonthPicker.types';
+import { type PrivateMonthPickerBaseValue } from './PrivateMonthPicker.types';
 import dayjs, { Dayjs } from 'dayjs';
-import { PFormMonthPickerBaseValue } from '../../PFormItemCustom';
+import { type PFormMonthPickerBaseValue } from '../../PFormItemCustom';
 
 export const valueToDate = (v: PrivateMonthPickerBaseValue) => dayjs(`${v.year}-${v.month}-01`);
 

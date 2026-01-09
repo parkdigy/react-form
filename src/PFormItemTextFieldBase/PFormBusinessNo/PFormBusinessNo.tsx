@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import PFormText from '../PFormText';
 import classNames from 'classnames';
-import { PFormBusinessNoProps as Props, PFormBusinessNoValue } from './PFormBusinessNo.types';
+import { type PFormBusinessNoProps as Props, type PFormBusinessNoValue } from './PFormBusinessNo.types';
 import { formatBusinessNo } from '@pdg/formatting';
 import { useAutoUpdateRef } from '@pdg/react-hook';
 

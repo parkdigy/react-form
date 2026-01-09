@@ -1,13 +1,13 @@
-import React, { useState, useCallback, ReactNode } from 'react';
+import React, { useState, useCallback, type ReactNode } from 'react';
 import classNames from 'classnames';
-import { Autocomplete, AutocompleteRenderInputParams, Chip, InputLabelProps } from '@mui/material';
-import { PFormTagProps as Props, PFormTagExtraCommands, PFormTagValue, PFormTagCommands } from './PFormTag.types';
-import { PFormTextCommands } from '../PFormText';
+import { Autocomplete, type AutocompleteRenderInputParams, Chip, type InputLabelProps } from '@mui/material';
+import { type PFormTagProps as Props, type PFormTagExtraCommands, type PFormTagValue, type PFormTagCommands } from './PFormTag.types';
+import { type PFormTextCommands } from '../PFormText';
 import { empty, equal, notEmpty } from '@pdg/compare';
 import { useFormState } from '../../PFormContext';
 import PFormContextProvider from '../../PFormContextProvider';
-import { PFormTagText, PFormTagTextProps } from './PFormTagText';
-import { PFormValueItemCommands } from '../../@types';
+import { PFormTagText, type PFormTagTextProps } from './PFormTagText';
+import { type PFormValueItemCommands } from '../../@types';
 import { useAutoUpdateRef, useEventEffect, useFirstSkipChanged } from '@pdg/react-hook';
 
 const _emptyValue: string[] = [];

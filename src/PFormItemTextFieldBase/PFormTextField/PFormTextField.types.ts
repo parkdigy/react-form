@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
-import { TextFieldProps } from '@mui/material';
-import { PFormValueItemBaseCommands, PFormValueItemProps } from '../../@types';
+import React, { type ReactNode } from 'react';
+import { type TextFieldProps } from '@mui/material';
+import { type PFormValueItemBaseCommands, type PFormValueItemProps } from '../../@types';
 
 export type PFormTextFieldValue = any;
 

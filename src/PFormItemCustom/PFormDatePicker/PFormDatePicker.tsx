@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import { PFormDatePickerProps as Props, PFormDatePickerValue } from './PFormDatePicker.types';
-import { PrivateDatePicker, PrivateDatePickerValue } from '../../@private';
+import { type PFormDatePickerProps as Props, type PFormDatePickerValue } from './PFormDatePicker.types';
+import { PrivateDatePicker, type PrivateDatePickerValue } from '../../@private';
 import PFormContextProvider from '../../PFormContextProvider';
 import { useFormState } from '../../PFormContext';
-import { PFormValueItemCommands } from '../../@types';
+import { type PFormValueItemCommands } from '../../@types';
 
 const PFormDatePicker = ({ ref, className, ...props }: Props) => {
   /********************************************************************************************************************

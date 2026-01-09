@@ -1,7 +1,7 @@
 import {
-  PFormMonthPickerBaseValue,
-  PFormMonthPickerProps as Props,
-  PFormMonthPickerValue,
+  type PFormMonthPickerBaseValue,
+  type PFormMonthPickerProps as Props,
+  type PFormMonthPickerValue,
 } from './PFormMonthPicker.types';
 import dayjs, { Dayjs } from 'dayjs';
 

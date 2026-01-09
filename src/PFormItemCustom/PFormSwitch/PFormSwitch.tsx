@@ -2,7 +2,7 @@ import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { FormControlLabel, Switch } from '@mui/material';
 import { useAutoUpdateRef, useFirstSkipChanged, useForwardRef } from '@pdg/react-hook';
-import { PFormSwitchProps as Props, PFormSwitchCommands } from './PFormSwitch.types';
+import { type PFormSwitchProps as Props, type PFormSwitchCommands } from './PFormSwitch.types';
 import PFormItemBase from '../PFormItemBase';
 import { useFormState } from '../../PFormContext';
 

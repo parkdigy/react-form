@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { PSearchButtonProps as Props } from './PSearchButton.types';
+import { type PSearchButtonProps as Props } from './PSearchButton.types';
 import { PButton } from '@pdg/react-component';
 
 const PSearchButton = ({ children, className, size = 'medium', sx: initSx, ...props }: Props) => {

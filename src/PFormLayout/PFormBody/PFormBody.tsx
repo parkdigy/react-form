@@ -1,5 +1,5 @@
-import React, { CSSProperties, useMemo } from 'react';
-import { PFormBodyProps as Props } from './PFormBody.types';
+import React, { type CSSProperties, useMemo } from 'react';
+import { type PFormBodyProps as Props } from './PFormBody.types';
 import { useResizeDetector } from 'react-resize-detector';
 import { useFormState } from '../../PFormContext';
 import { Grid } from '@mui/material';

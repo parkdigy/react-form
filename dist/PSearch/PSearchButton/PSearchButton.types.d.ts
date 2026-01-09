@@ -1,3 +1,3 @@
-import { PButtonProps } from '@pdg/react-component';
+import { type PButtonProps } from '@pdg/react-component';
 export interface PSearchButtonProps extends Omit<PButtonProps, 'fullWidth'> {
 }

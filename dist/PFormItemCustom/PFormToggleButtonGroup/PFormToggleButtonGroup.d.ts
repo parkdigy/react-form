@@ -1,5 +1,5 @@
 import React from 'react';
-import { PFormToggleButtonGroupProps, PFormToggleButtonGroupSingleValue, PFormToggleButtonGroupItems } from './PFormToggleButtonGroup.types';
+import { type PFormToggleButtonGroupProps, type PFormToggleButtonGroupSingleValue, type PFormToggleButtonGroupItems } from './PFormToggleButtonGroup.types';
 import './PFormToggleButtonGroup.scss';
 declare function PFormToggleButtonGroup<T extends PFormToggleButtonGroupSingleValue, Multiple extends boolean | undefined = undefined, Items extends PFormToggleButtonGroupItems<T> = PFormToggleButtonGroupItems<T>>({ ref, 
 /********************************************************************************************************************/

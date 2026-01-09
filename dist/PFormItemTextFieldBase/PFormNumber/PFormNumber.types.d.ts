@@ -1,5 +1,5 @@
 import React from 'react';
-import { PFormTextFieldCommands, PFormTextFieldProps } from '../PFormTextField';
+import { type PFormTextFieldCommands, type PFormTextFieldProps } from '../PFormTextField';
 export type PFormNumberCommands = PFormTextFieldCommands<number>;
 export type PFormNumberProps = Omit<PFormTextFieldProps<number>, 'type'> & {
     ref?: React.Ref<PFormNumberCommands>;
