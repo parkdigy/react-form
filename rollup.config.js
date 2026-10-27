@@ -60,6 +60,20 @@ const getConfig = () => ({
           'babel-plugin-react-compiler',
           {
             panicThreshold: 'all_errors',
+            logger: {
+              logEvent(filename, event) {
+                switch (event.kind) {
+                  case 'CompileSuccess': {
+                    // console.log(`✅ Compiled: ${filename}`);
+                    break;
+                  }
+                  case 'CompileError': {
+                    console.log(`❌ Skipped: ${filename}`);
+                    break;
+                  }
+                }
+              },
+            },
           },
         ],
       ].filter(Boolean),
