@@ -15,3 +15,12 @@ export * from './PFormMonthRangePicker';
 export * from './PFormYearPicker';
 export * from './PFormYearRangePicker';
 export * from './PFormSwitch';
+
+export * from './PFormEmbedMonthPicker';
+export * from './PFormEmbedDatePicker';
+export * from './PFormEmbedDateRangePicker';
+export * from './PFormEmbedDateTimePicker';
+export * from './PFormEmbedMonthRangePicker';
+export * from './PFormEmbedTimePicker';
+export * from './PFormEmbedYearPicker';
+export * from './PFormEmbedYearRangePicker';

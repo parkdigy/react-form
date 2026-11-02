@@ -1,3 +1,4 @@
+import PrivateEmbedPicker from '../PrivateEmbedPicker/PrivateEmbedPicker';
 import React, { type ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -8,7 +9,13 @@ import {
   type DesktopDateTimePickerProps,
 } from '@mui/x-date-pickers';
 import { useAutoUpdateRef, useEventEffect, useFirstSkipChanged, useForwardRef } from '@pdg/react-hook';
-import { ClickAwayListener, InputAdornment, type InputProps, FormHelperText, type TooltipSlotsAndSlotProps } from '@mui/material';
+import {
+  ClickAwayListener,
+  InputAdornment,
+  type InputProps,
+  FormHelperText,
+  type TooltipSlotsAndSlotProps,
+} from '@mui/material';
 import { PIcon, PIconText } from '@pdg/react-component';
 import {
   type PrivateDateTimePickerProps as Props,
@@ -26,7 +33,10 @@ import {
   getDateValidationErrorText,
   makeAvailableDate,
 } from '../../@util.private';
-import { type PrivateStaticDateTimePickerCommands, type PrivateStaticDateTimePickerUnit } from '../PrivateStaticDateTimePicker';
+import {
+  type PrivateStaticDateTimePickerCommands,
+  type PrivateStaticDateTimePickerUnit,
+} from '../PrivateStaticDateTimePicker';
 import { PrivateStyledTooltip } from '../PrivateStyledTooltip';
 import PrivateStaticDateTimePicker from '../PrivateStaticDateTimePicker';
 import { empty, notEmpty } from '@pdg/compare';
@@ -35,7 +45,8 @@ import { type PrivateDatePickerValue } from '../PrivateDatePicker';
 import './PrivateDateTimePicker.scss';
 import dayjs from 'dayjs';
 
-const PrivateDateTimePicker = ({
+export const PrivateDateTimePickerInternal = ({
+  embedded = false,
   ref,
   /********************************************************************************************************************/
   variant: initVariant,
@@ -84,12 +95,13 @@ const PrivateDateTimePicker = ({
   style: initStyle,
   sx,
   ...otherProps
-}: Props) => {
+}: Props & { embedded?: boolean }) => {
   /********************************************************************************************************************
    * ID
    * ******************************************************************************************************************/
 
   const id = useId();
+  const embeddedRef = useRef<HTMLFieldSetElement>(null);
 
   /********************************************************************************************************************
    * Ref
@@ -321,8 +333,9 @@ const PrivateDateTimePicker = ({
    * ******************************************************************************************************************/
 
   const focus = useCallback(() => {
-    textFieldInputRef.current?.focus();
-  }, [textFieldInputRef]);
+    if (embedded) embeddedRef.current?.focus();
+    else textFieldInputRef.current?.focus();
+  }, [embedded, textFieldInputRef]);
 
   /********************************************************************************************************************
    * Commands
@@ -421,6 +434,7 @@ const PrivateDateTimePicker = ({
 
         setTimeout(() => {
           onValueChangeByUser(name, finalValue);
+          if (embedded && (time ? unit === time : unit === 'date')) onRequestSearchSubmit(name, finalValue);
           if (runOnRequestSearchSubmit) {
             onRequestSearchSubmit(name, finalValue);
           }
@@ -446,7 +460,18 @@ const PrivateDateTimePicker = ({
 
       setInputValue(finalValue);
     },
-    [setInputValue, type, time, updateValue, availableDate, isOpen, onValueChangeByUser, name, onRequestSearchSubmit]
+    [
+      setInputValue,
+      type,
+      time,
+      updateValue,
+      availableDate,
+      isOpen,
+      onValueChangeByUser,
+      name,
+      onRequestSearchSubmit,
+      embedded,
+    ]
   );
 
   /** handleContainerFocus */
@@ -581,6 +606,50 @@ const PrivateDateTimePicker = ({
    * Render
    * ******************************************************************************************************************/
 
+  if (embedded) {
+    return (
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <PrivateEmbedPicker
+          name={name}
+          label={initLabel}
+          required={required}
+          disabled={disabled}
+          readOnly={readOnly}
+          hidden={hidden}
+          fullWidth={fullWidth}
+          error={error}
+          helperText={!formColWithHelperText ? (error ? errorHelperText : helperText) : undefined}
+          pickerRef={embeddedRef}
+          className={className}
+          style={initStyle}
+          sx={sx}
+        >
+          <PrivateStaticDateTimePicker
+            {...otherProps}
+            ref={privateStaticDateTimePickerRef}
+            type={type}
+            time={time}
+            value={value}
+            availableDate={availableDate}
+            minDate={minDate}
+            maxDate={maxDate}
+            disablePast={disablePast}
+            disableFuture={disableFuture}
+            hours={hours}
+            minutes={minutes}
+            seconds={seconds}
+            minuteInterval={minuteInterval}
+            secondInterval={secondInterval}
+            showDaysOutsideCurrentMonth={showDaysOutsideCurrentMonth}
+            onChange={handleChange}
+            onAccept={() => !time && setIsOpen(false)}
+            onClose={undefined}
+          />
+        </PrivateEmbedPicker>
+      </LocalizationProvider>
+    );
+  }
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setIsOpen(false)}>
@@ -673,5 +742,7 @@ const PrivateDateTimePicker = ({
     </LocalizationProvider>
   );
 };
+
+const PrivateDateTimePicker = (props: Props) => <PrivateDateTimePickerInternal {...props} />;
 
 export default PrivateDateTimePicker;

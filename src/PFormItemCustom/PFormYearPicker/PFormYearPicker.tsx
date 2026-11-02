@@ -1,3 +1,4 @@
+import PrivateEmbedPicker from '../../@private/PrivateEmbedPicker/PrivateEmbedPicker';
 import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText } from '@mui/material';
@@ -25,7 +26,8 @@ import { dateToValue, getFinalValue, valueToDate } from './PFormYearPicker.funct
 
 const DEFAULT_FORMAT = 'YYYY년';
 
-const PFormYearPicker = ({
+export const PFormYearPickerInternal = ({
+  embedded = false,
   ref,
   /********************************************************************************************************************/
   variant: initVariant,
@@ -65,12 +67,13 @@ const PFormYearPicker = ({
   className,
   style: initStyle,
   sx,
-}: Props) => {
+}: Props & { embedded?: boolean }) => {
   /********************************************************************************************************************
    * ID
    * ******************************************************************************************************************/
 
   const id = useId();
+  const embeddedRef = useRef<HTMLFieldSetElement>(null);
 
   /********************************************************************************************************************
    * FormState
@@ -202,12 +205,19 @@ const PFormYearPicker = ({
   );
 
   /** focus */
-  const focus = useCallback(function () {
-    inputRef.current?.focus();
-    setTimeout(() => {
-      inputRef.current?.blur();
-    });
-  }, []);
+  const focus = useCallback(
+    function () {
+      if (embedded) {
+        embeddedRef.current?.focus();
+        return;
+      }
+      inputRef.current?.focus();
+      setTimeout(() => {
+        inputRef.current?.blur();
+      });
+    },
+    [embedded]
+  );
 
   /********************************************************************************************************************
    * value
@@ -279,7 +289,7 @@ const PFormYearPicker = ({
 
   const commands = useMemo<PFormYearPickerCommands>(
     () => ({
-      getType: () => 'PFormYearPicker',
+      getType: () => (embedded ? 'PFormEmbedYearPicker' : 'PFormYearPicker'),
       getName: () => name,
       getReset: () => getFinalValue(initValueRef.current),
       reset: () => updateValue(initValueRef.current),
@@ -298,6 +308,7 @@ const PFormYearPicker = ({
       setError: setErrorErrorHelperText,
     }),
     [
+      embedded,
       dataRef,
       disabled,
       exceptValue,
@@ -364,9 +375,10 @@ const PFormYearPicker = ({
 
       setTimeout(() => {
         onValueChangeByUser(name, newValue);
+        if (embedded && isClick) onRequestSearchSubmit(name, newValue);
       });
     },
-    [name, onValueChangeByUser, updateValue]
+    [name, onValueChangeByUser, updateValue, embedded, onRequestSearchSubmit]
   );
 
   /** handleInputDatePickerChange */
@@ -405,6 +417,39 @@ const PFormYearPicker = ({
   /********************************************************************************************************************
    * Render
    * ******************************************************************************************************************/
+
+  if (embedded) {
+    return (
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <PrivateEmbedPicker
+          name={name}
+          label={label}
+          required={required}
+          disabled={disabled}
+          readOnly={readOnly}
+          hidden={hidden}
+          fullWidth={fullWidth}
+          error={error}
+          helperText={!formColWithHelperText ? (error ? errorHelperText : helperText) : undefined}
+          pickerRef={embeddedRef}
+          className={className}
+          style={initStyle}
+          sx={sx}
+        >
+          <div style={{ display: 'flex' }}>
+            <PrivateYearPicker
+              minYear={minYear}
+              maxYear={maxYear}
+              disablePast={disablePast}
+              disableFuture={disableFuture}
+              value={value}
+              onChange={handleContainerChange}
+            />
+          </div>
+        </PrivateEmbedPicker>
+      </LocalizationProvider>
+    );
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -492,5 +537,7 @@ const PFormYearPicker = ({
     </LocalizationProvider>
   );
 };
+
+const PFormYearPicker = (props: Props) => <PFormYearPickerInternal {...props} />;
 
 export default PFormYearPicker;

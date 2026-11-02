@@ -22,7 +22,7 @@ export interface PFormValueMap {
 }
 export type PFormValueItemData = Record<string, any>;
 export interface PFormValueItemBaseCommands<T, AllowUndefinedValue extends boolean, V = AllowUndefinedValue extends true ? T | undefined : T> {
-    getType: () => 'default' | 'PFormCheckbox' | 'PFormToggleButtonGroup' | 'PFormRadioGroup' | 'PFormRating' | 'PFormTextEditor' | 'PFormAutocomplete' | 'PFormDatePicker' | 'PFormDateTimePicker' | 'PFormTimePicker' | 'PFormDateRangePicker' | 'PFormMonthPicker' | 'PFormMonthRangePicker' | 'PFormYearPicker' | 'PFormYearRangePicker' | 'PFormFile' | 'PFormSwitch';
+    getType: () => 'default' | 'PFormCheckbox' | 'PFormToggleButtonGroup' | 'PFormRadioGroup' | 'PFormRating' | 'PFormTextEditor' | 'PFormAutocomplete' | 'PFormDatePicker' | 'PFormEmbedDatePicker' | 'PFormDateTimePicker' | 'PFormEmbedDateTimePicker' | 'PFormTimePicker' | 'PFormEmbedTimePicker' | 'PFormDateRangePicker' | 'PFormEmbedDateRangePicker' | 'PFormMonthPicker' | 'PFormEmbedMonthPicker' | 'PFormMonthRangePicker' | 'PFormEmbedMonthRangePicker' | 'PFormYearPicker' | 'PFormEmbedYearPicker' | 'PFormYearRangePicker' | 'PFormEmbedYearRangePicker' | 'PFormFile' | 'PFormSwitch';
     getName: () => string;
     getReset: () => V;
     reset: () => void;

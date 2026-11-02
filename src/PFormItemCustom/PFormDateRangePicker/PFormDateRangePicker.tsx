@@ -1,3 +1,4 @@
+import PrivateEmbedPicker from '../../@private/PrivateEmbedPicker/PrivateEmbedPicker';
 import React, { type ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
@@ -28,7 +29,8 @@ import { getFinalValue } from './PFormDateRangePicker.function.private';
 
 const DEFAULT_FORMAT = 'YYYY-MM-DD';
 
-const PFormDateRangePicker = ({
+export const PFormDateRangePickerInternal = ({
+  embedded = false,
   ref,
   /********************************************************************************************************************/
   variant: initVariant,
@@ -83,12 +85,15 @@ const PFormDateRangePicker = ({
   onValidate,
   /********************************************************************************************************************/
   className,
-}: Props) => {
+  style: initStyle,
+  sx,
+}: Props & { embedded?: boolean }) => {
   /********************************************************************************************************************
    * ID
    * ******************************************************************************************************************/
 
   const id = useId();
+  const embeddedRef = useRef<HTMLFieldSetElement>(null);
 
   /********************************************************************************************************************
    * FormState
@@ -147,7 +152,9 @@ const PFormDateRangePicker = ({
   const [toError, setToError] = useState(false);
   const [toErrorHelperText, setToErrorHelperText] = useState<Props['helperText']>();
   const [open, setopen] = useState(false);
-  const [selectType, setSelectType] = useState<PFormDateRangePickerTooltipPickerSelectType>('start');
+  const [selectType, setSelectType] = useState<PFormDateRangePickerTooltipPickerSelectType>(
+    readOnlyStart ? 'end' : 'start'
+  );
   const [months, setMonths] = useState<PFormDateRangePickerTooltipPickerContainerMonths>(() => {
     const now = dayjs();
     return [now, now.add(1, 'month'), now.add(2, 'month')];
@@ -191,16 +198,19 @@ const PFormDateRangePicker = ({
    * ******************************************************************************************************************/
 
   const focus = useCallback(() => {
-    startDateTextFieldRef.current?.focus();
-  }, [startDateTextFieldRef]);
+    if (embedded) embeddedRef.current?.focus();
+    else startDateTextFieldRef.current?.focus();
+  }, [embedded, startDateTextFieldRef]);
 
   const focusValidate = useCallback(() => {
-    if (toError) {
+    if (embedded) {
+      embeddedRef.current?.focus();
+    } else if (toError) {
       endDateTextFieldRef.current?.focus();
     } else {
       startDateTextFieldRef.current?.focus();
     }
-  }, [toError, startDateTextFieldRef, endDateTextFieldRef]);
+  }, [embedded, toError, startDateTextFieldRef, endDateTextFieldRef]);
 
   /********************************************************************************************************************
    * Function
@@ -389,12 +399,30 @@ const PFormDateRangePicker = ({
   /** handleChange */
   const handleChange = useCallback(
     (newValue: PFormDateRangePickerTooltipPickerValue) => {
+      if (embedded && (readOnlyStart || readOnlyEnd)) return;
       updateValue(newValue);
+      if (embedded) {
+        setSelectType(readOnlyStart ? 'end' : 'start');
+        setTimeout(() => {
+          onValueChangeByUser(name, newValue);
+          onRequestSearchSubmit(name, newValue);
+        });
+      }
       setopen(false);
       setFromErrorErrorHelperText(false, undefined);
       setToErrorErrorHelperText(false, undefined);
     },
-    [setFromErrorErrorHelperText, setToErrorErrorHelperText, updateValue]
+    [
+      embedded,
+      name,
+      onRequestSearchSubmit,
+      onValueChangeByUser,
+      readOnlyStart,
+      readOnlyEnd,
+      setFromErrorErrorHelperText,
+      setToErrorErrorHelperText,
+      updateValue,
+    ]
   );
 
   /** handleValueChange */
@@ -404,6 +432,7 @@ const PFormDateRangePicker = ({
       newValue: PFormDateRangePickerTooltipPickerDateValue,
       fromInput?: boolean
     ) => {
+      if (embedded && ((selectType === 'start' && readOnlyStart) || (selectType === 'end' && readOnlyEnd))) return;
       let finalValue: Props['value'];
       switch (selectType) {
         case 'start':
@@ -462,13 +491,23 @@ const PFormDateRangePicker = ({
       }
 
       updateValue(finalValue);
+      if (embedded)
+        setSelectType(
+          readOnlyStart ? 'end' : readOnlyEnd ? 'start' : selectType === 'start' || !finalValue?.[1] ? 'end' : 'start'
+        );
 
       setTimeout(() => {
         onValueChangeByUser(name, finalValue!);
+        if (embedded && ((selectType === 'end' && finalValue?.[1]) || readOnlyEnd)) {
+          onRequestSearchSubmit(name, finalValue!);
+        }
       });
     },
     [
       updateValue,
+      embedded,
+      readOnlyStart,
+      readOnlyEnd,
       value,
       setFromErrorErrorHelperText,
       activeMonth,
@@ -584,7 +623,7 @@ const PFormDateRangePicker = ({
 
   const commands = useMemo<PFormDateRangePickerCommands>(
     () => ({
-      getType: () => 'PFormDateRangePicker',
+      getType: () => (embedded ? 'PFormEmbedDateRangePicker' : 'PFormDateRangePicker'),
       getName: () => name,
       getReset: () => getFinalValue(initValueRef.current),
       reset: () => updateValue(initValueRef.current),
@@ -616,6 +655,7 @@ const PFormDateRangePicker = ({
       },
     }),
     [
+      embedded,
       dataRef,
       disabled,
       exceptValue,
@@ -666,6 +706,46 @@ const PFormDateRangePicker = ({
   /********************************************************************************************************************
    * Render
    * ******************************************************************************************************************/
+
+  if (embedded) {
+    return (
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <PrivateEmbedPicker
+          name={name}
+          label={fromLabel}
+          required={required}
+          disabled={disabled}
+          readOnly={readOnly}
+          hidden={hidden}
+          fullWidth={fullWidth}
+          error={error}
+          helperText={!formColWithHelperText ? (error ? errorHelperText : helperText) : undefined}
+          pickerRef={embeddedRef}
+          className={className}
+          style={initStyle}
+          sx={sx}
+        >
+          <div style={{ display: 'flex' }}>
+            <PFormDateRangePickerTooltipPickerContainer
+              ref={containerRef}
+              calendarCount={calendarCount}
+              selectType={selectType}
+              value={value}
+              months={months}
+              disablePast={disablePast}
+              disableFuture={disableFuture}
+              minDate={minDate}
+              maxDate={maxDate}
+              onGetActionButtons={onGetActionButtons}
+              onChange={handleChange}
+              onValueChange={handleValueChange}
+              onMonthsChange={setMonths}
+            />
+          </div>
+        </PrivateEmbedPicker>
+      </LocalizationProvider>
+    );
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -784,5 +864,7 @@ const PFormDateRangePicker = ({
     </LocalizationProvider>
   );
 };
+
+const PFormDateRangePicker = (props: Props) => <PFormDateRangePickerInternal {...props} />;
 
 export default PFormDateRangePicker;

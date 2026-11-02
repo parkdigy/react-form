@@ -1,3 +1,4 @@
+import PrivateEmbedPicker from '../../@private/PrivateEmbedPicker/PrivateEmbedPicker';
 import React, { type CSSProperties, type ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
@@ -34,7 +35,8 @@ const DEFAULT_MAX_VALUE = {
   month: 12,
 };
 
-const PFormMonthRangePicker = ({
+export const PFormMonthRangePickerInternal = ({
+  embedded = false,
   ref,
   /********************************************************************************************************************/
   variant: initVariant,
@@ -81,12 +83,13 @@ const PFormMonthRangePicker = ({
   className,
   style: initStyle,
   sx,
-}: Props) => {
+}: Props & { embedded?: boolean }) => {
   /********************************************************************************************************************
    * ID
    * ******************************************************************************************************************/
 
   const id = useId();
+  const embeddedRef = useRef<HTMLFieldSetElement>(null);
 
   /********************************************************************************************************************
    * FormState
@@ -339,9 +342,16 @@ const PFormMonthRangePicker = ({
    * Function
    * ******************************************************************************************************************/
 
-  const focus = useCallback(function () {
-    startInputRef.current?.focus();
-  }, []);
+  const focus = useCallback(
+    function () {
+      if (embedded) {
+        embeddedRef.current?.focus();
+        return;
+      }
+      startInputRef.current?.focus();
+    },
+    [embedded]
+  );
 
   /********************************************************************************************************************
    * Commands
@@ -349,7 +359,7 @@ const PFormMonthRangePicker = ({
 
   const commands = useMemo<PFormMonthRangePickerCommands>(
     () => ({
-      getType: () => 'PFormMonthRangePicker',
+      getType: () => (embedded ? 'PFormEmbedMonthRangePicker' : 'PFormMonthRangePicker'),
       getName: () => name,
       getReset: () => getFinalValue(initValueRef.current),
       reset: () => updateValue(initValueRef.current),
@@ -432,6 +442,7 @@ const PFormMonthRangePicker = ({
       },
     }),
     [
+      embedded,
       dataRef,
       disabled,
       exceptValue,
@@ -476,9 +487,10 @@ const PFormMonthRangePicker = ({
 
       setTimeout(() => {
         onValueChangeByUser(name, newValue);
+        if (embedded && selectType === 'end' && isMonthSelect) onRequestSearchSubmit(name, newValue);
       });
     },
-    [name, onValueChangeByUser, updateValue]
+    [name, onValueChangeByUser, updateValue, embedded, onRequestSearchSubmit]
   );
 
   /** handleInputDatePickerChange */
@@ -586,6 +598,39 @@ const PFormMonthRangePicker = ({
    * Render
    * ******************************************************************************************************************/
 
+  if (embedded) {
+    return (
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <PrivateEmbedPicker
+          name={name}
+          label={fromLabel}
+          required={required}
+          disabled={disabled}
+          readOnly={readOnly}
+          hidden={hidden}
+          fullWidth={fullWidth}
+          error={error}
+          helperText={!formColWithHelperText ? (error ? errorHelperText : helperText) : undefined}
+          pickerRef={embeddedRef}
+          className={className}
+          style={initStyle}
+          sx={sx}
+        >
+          <div style={{ display: 'flex' }}>
+            <PrivateMonthRangePicker
+              minValue={minValue}
+              maxValue={maxValue}
+              disablePast={disablePast}
+              disableFuture={disableFuture}
+              value={value}
+              onChange={handleContainerChange}
+            />
+          </div>
+        </PrivateEmbedPicker>
+      </LocalizationProvider>
+    );
+  }
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ko'>
       <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
@@ -690,5 +735,7 @@ const PFormMonthRangePicker = ({
     </LocalizationProvider>
   );
 };
+
+const PFormMonthRangePicker = (props: Props) => <PFormMonthRangePickerInternal {...props} />;
 
 export default PFormMonthRangePicker;

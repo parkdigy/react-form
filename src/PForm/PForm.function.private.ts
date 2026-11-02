@@ -27,8 +27,11 @@ export const getItemFormValue = (commands: PFormValueItemCommands<any>, reset?: 
         value = checked ? itemCommands.getValue() : itemCommands.getUncheckedValue();
       }
       break;
+    case 'PFormEmbedDatePicker':
     case 'PFormDatePicker':
+    case 'PFormEmbedDateTimePicker':
     case 'PFormDateTimePicker':
+    case 'PFormEmbedTimePicker':
     case 'PFormTimePicker':
       {
         value = reset ? commands.getReset() : commands.getValue();
@@ -42,6 +45,7 @@ export const getItemFormValue = (commands: PFormValueItemCommands<any>, reset?: 
   }
 
   switch (type) {
+    case 'PFormEmbedDateRangePicker':
     case 'PFormDateRangePicker':
       {
         const startValue = value[0];
@@ -50,6 +54,7 @@ export const getItemFormValue = (commands: PFormValueItemCommands<any>, reset?: 
         value = [startValue ? startValue.format(format) : '', endValue ? endValue.format(format) : ''];
       }
       break;
+    case 'PFormEmbedYearRangePicker':
     case 'PFormYearRangePicker':
       {
         const startValue = value[0];
@@ -57,9 +62,11 @@ export const getItemFormValue = (commands: PFormValueItemCommands<any>, reset?: 
         value = [startValue ? startValue : '', endValue ? endValue : ''];
       }
       break;
+    case 'PFormEmbedMonthPicker':
     case 'PFormMonthPicker':
       value = { year: value ? value.year : '', month: value ? value.month : '' };
       break;
+    case 'PFormEmbedMonthRangePicker':
     case 'PFormMonthRangePicker':
       {
         const startValue = value[0];
@@ -90,6 +97,7 @@ export const getItemFormValue = (commands: PFormValueItemCommands<any>, reset?: 
  * ******************************************************************************************************************/
 export const appendFormValueData = (data: PFormValueMap, itemCommands: PFormValueItemCommands<any>) => {
   switch (itemCommands.getType()) {
+    case 'PFormEmbedDateRangePicker':
     case 'PFormDateRangePicker':
       {
         const commands = itemCommands as PFormRangeValueItemNameCommands;
@@ -98,6 +106,7 @@ export const appendFormValueData = (data: PFormValueMap, itemCommands: PFormValu
         data[commands.getFormValueToName()] = value[1];
       }
       break;
+    case 'PFormEmbedMonthPicker':
     case 'PFormMonthPicker':
       {
         const commands = itemCommands as PFormYearMonthValueItemNameCommands;
@@ -106,6 +115,7 @@ export const appendFormValueData = (data: PFormValueMap, itemCommands: PFormValu
         data[commands.getFormValueMonthName()] = value.month;
       }
       break;
+    case 'PFormEmbedYearRangePicker':
     case 'PFormYearRangePicker':
       {
         const commands = itemCommands as PFormRangeValueItemNameCommands;
@@ -114,6 +124,7 @@ export const appendFormValueData = (data: PFormValueMap, itemCommands: PFormValu
         data[commands.getFormValueToName()] = value[1];
       }
       break;
+    case 'PFormEmbedMonthRangePicker':
     case 'PFormMonthRangePicker':
       {
         const commands = itemCommands as PFormYearMonthRangeValueItemNameCommands;

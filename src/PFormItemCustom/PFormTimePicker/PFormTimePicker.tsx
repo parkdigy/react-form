@@ -1,12 +1,12 @@
+import { PrivateDateTimePickerInternal } from '../../@private/PrivateDateTimePicker/PrivateDateTimePicker';
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import { type PFormTimePickerProps as Props, type PFormTimePickerValue } from './PFormTimePicker.types';
-import { PrivateDateTimePicker } from '../../@private';
 import PFormContextProvider from '../../PFormContextProvider';
 import { useFormState } from '../../PFormContext';
 import { type PFormValueItemCommands } from '../../@types';
 
-const PFormTimePicker = ({ className, ...props }: Props) => {
+export const PFormTimePickerInternal = ({ embedded = false, className, ...props }: Props & { embedded?: boolean }) => {
   /********************************************************************************************************************
    * FormState
    * ******************************************************************************************************************/
@@ -19,10 +19,10 @@ const PFormTimePicker = ({ className, ...props }: Props) => {
 
   const handleAddValueItem = useCallback(
     (id: string, commands: PFormValueItemCommands<PFormTimePickerValue, false>) => {
-      commands.getType = () => 'PFormTimePicker';
+      commands.getType = () => (embedded ? 'PFormEmbedTimePicker' : 'PFormTimePicker');
       onAddValueItem(id, commands);
     },
-    [onAddValueItem]
+    [embedded, onAddValueItem]
   );
 
   /********************************************************************************************************************
@@ -36,9 +36,16 @@ const PFormTimePicker = ({ className, ...props }: Props) => {
         onAddValueItem: handleAddValueItem,
       }}
     >
-      <PrivateDateTimePicker className={classNames(className, 'PFormTimePicker')} {...props} type='time' />
+      <PrivateDateTimePickerInternal
+        embedded={embedded}
+        className={classNames(className, 'PFormTimePicker')}
+        {...props}
+        type='time'
+      />
     </PFormContextProvider>
   );
 };
+
+const PFormTimePicker = (props: Props) => <PFormTimePickerInternal {...props} />;
 
 export default PFormTimePicker;

@@ -46,13 +46,21 @@ export interface PFormValueItemBaseCommands<
     | 'PFormTextEditor'
     | 'PFormAutocomplete'
     | 'PFormDatePicker'
+    | 'PFormEmbedDatePicker'
     | 'PFormDateTimePicker'
+    | 'PFormEmbedDateTimePicker'
     | 'PFormTimePicker'
+    | 'PFormEmbedTimePicker'
     | 'PFormDateRangePicker'
+    | 'PFormEmbedDateRangePicker'
     | 'PFormMonthPicker'
+    | 'PFormEmbedMonthPicker'
     | 'PFormMonthRangePicker'
+    | 'PFormEmbedMonthRangePicker'
     | 'PFormYearPicker'
+    | 'PFormEmbedYearPicker'
     | 'PFormYearRangePicker'
+    | 'PFormEmbedYearRangePicker'
     | 'PFormFile'
     | 'PFormSwitch';
   getName: () => string;
@@ -158,7 +166,9 @@ export interface PFormValueItemCommands<
   AllowUndefinedValue extends boolean = true,
   ItemType = any,
   RangeItemValue = any,
-> extends PFormValueItemBaseCommands<T, AllowUndefinedValue>,
+>
+  extends
+    PFormValueItemBaseCommands<T, AllowUndefinedValue>,
     Partial<PFormArrayValueItemCommands>,
     Partial<PFormItemsValueItemCommands<ItemType>>,
     Partial<PFormCheckValueItemCommands<T>>,

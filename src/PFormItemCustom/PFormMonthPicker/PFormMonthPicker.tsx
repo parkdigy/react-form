@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { ClickAwayListener, FormHelperText } from '@mui/material';
+import { Box, ClickAwayListener, FormHelperText } from '@mui/material';
 import { useAutoUpdateRef, useFirstSkipChanged, useFirstSkipEffect, useForwardRef } from '@pdg/react-hook';
 import { getDateValidationErrorText } from '../../@util.private';
 import { empty } from '@pdg/compare';
@@ -27,7 +27,8 @@ const DEFAULT_MAX_VALUE = {
   month: 12,
 };
 
-const PFormMonthPicker = ({
+export const PFormMonthPickerInternal = ({
+  embedded = false,
   ref,
   /********************************************************************************************************************/
   variant: initVariant,
@@ -69,7 +70,7 @@ const PFormMonthPicker = ({
   className,
   style: initStyle,
   sx,
-}: Props) => {
+}: Props & { embedded?: boolean }) => {
   /********************************************************************************************************************
    * ID
    * ******************************************************************************************************************/
@@ -113,6 +114,7 @@ const PFormMonthPicker = ({
 
   const initValueRef = useAutoUpdateRef(initValue);
   const ratingRef = useRef<HTMLSpanElement>(null);
+  const embeddedRef = useRef<HTMLFieldSetElement>(null);
   const inputRef = useRef<HTMLInputElement>(undefined);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const mouseDownTimeRef = useRef<number>(undefined);
@@ -305,12 +307,19 @@ const PFormMonthPicker = ({
    * Function
    * ******************************************************************************************************************/
 
-  const focus = useCallback(function () {
-    inputRef.current?.focus();
-    setTimeout(() => {
-      inputRef.current?.blur();
-    });
-  }, []);
+  const focus = useCallback(
+    function () {
+      if (embedded) {
+        embeddedRef.current?.focus();
+        return;
+      }
+      inputRef.current?.focus();
+      setTimeout(() => {
+        inputRef.current?.blur();
+      });
+    },
+    [embedded]
+  );
 
   /********************************************************************************************************************
    * Commands
@@ -318,7 +327,7 @@ const PFormMonthPicker = ({
 
   const commands = useMemo<PFormMonthPickerCommands>(
     () => ({
-      getType: () => 'PFormMonthPicker',
+      getType: () => (embedded ? 'PFormEmbedMonthPicker' : 'PFormMonthPicker'),
       getName: () => name,
       getReset: () => getFinalValue(initValueRef.current),
       reset: () => updateValue(initValueRef.current),
@@ -368,6 +377,7 @@ const PFormMonthPicker = ({
       dataRef,
       disabled,
       exceptValue,
+      embedded,
       focus,
       formValueMonthNameSuffix,
       formValueYearNameSuffix,
@@ -433,9 +443,10 @@ const PFormMonthPicker = ({
 
       setTimeout(() => {
         onValueChangeByUser(name, newValue);
+        if (embedded && isMonthSelect) onRequestSearchSubmit(name, newValue);
       });
     },
-    [name, onValueChangeByUser, updateValue]
+    [embedded, name, onRequestSearchSubmit, onValueChangeByUser, updateValue]
   );
 
   /** handleInputDatePickerFocus */
@@ -478,6 +489,46 @@ const PFormMonthPicker = ({
   /********************************************************************************************************************
    * Render
    * ******************************************************************************************************************/
+
+  if (embedded) {
+    return (
+      <Box
+        className={classNames(className, 'PFormEmbedMonthPicker')}
+        style={{
+          ...initStyle,
+          display: hidden ? 'none' : (initStyle?.display ?? (fullWidth ? 'block' : 'inline-block')),
+        }}
+        sx={sx}
+      >
+        <fieldset
+          ref={embeddedRef}
+          tabIndex={-1}
+          disabled={disabled || readOnly}
+          aria-label={typeof label === 'string' ? label : name}
+          aria-invalid={!!error}
+          style={{ border: 0, margin: 0, padding: 0, minWidth: 0 }}
+        >
+          {label && (
+            <legend>
+              {label}
+              {required && ' *'}
+            </legend>
+          )}
+          <PrivateMonthPicker
+            minValue={minValue}
+            maxValue={maxValue}
+            disablePast={disablePast}
+            disableFuture={disableFuture}
+            value={value}
+            onChange={handleContainerChange}
+          />
+        </fieldset>
+        {!formColWithHelperText && (!!helperText || (error && !!errorHelperText)) && (
+          <FormHelperText error={error}>{error ? errorHelperText : helperText}</FormHelperText>
+        )}
+      </Box>
+    );
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ko'>
@@ -557,5 +608,7 @@ const PFormMonthPicker = ({
     </LocalizationProvider>
   );
 };
+
+const PFormMonthPicker = (props: Props) => <PFormMonthPickerInternal {...props} />;
 
 export default PFormMonthPicker;

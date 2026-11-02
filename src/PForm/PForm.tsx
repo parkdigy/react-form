@@ -159,17 +159,21 @@ const PForm = ({
           return true;
         }
         switch (itemCommands.getType()) {
+          case 'PFormEmbedDateRangePicker':
           case 'PFormDateRangePicker':
+          case 'PFormEmbedYearRangePicker':
           case 'PFormYearRangePicker':
             return (
               name === (itemCommands as PFormRangeValueItemNameCommands).getFormValueFromName() ||
               name === (itemCommands as PFormRangeValueItemNameCommands).getFormValueToName()
             );
+          case 'PFormEmbedMonthPicker':
           case 'PFormMonthPicker':
             return (
               name === (itemCommands as PFormYearMonthValueItemNameCommands).getFormValueYearName() ||
               name === (itemCommands as PFormYearMonthValueItemNameCommands).getFormValueMonthName()
             );
+          case 'PFormEmbedMonthRangePicker':
           case 'PFormMonthRangePicker':
             return (
               name === (itemCommands as PFormYearMonthRangeValueItemNameCommands).getFormValueFromYearName() ||
@@ -188,7 +192,9 @@ const PForm = ({
       const valueItem = findValueItem(name);
       if (valueItem) {
         switch (valueItem.getType()) {
+          case 'PFormEmbedDateRangePicker':
           case 'PFormDateRangePicker':
+          case 'PFormEmbedYearRangePicker':
           case 'PFormYearRangePicker': {
             const commands = valueItem as PFormRangeValueItemNameCommands;
             const value = getItemFormValue(valueItem, !!isReset) as PFormValue[];
@@ -206,6 +212,7 @@ const PForm = ({
               );
             }
           }
+          case 'PFormEmbedMonthPicker':
           case 'PFormMonthPicker': {
             const commands = valueItem as PFormYearMonthValueItemNameCommands;
             const value = getItemFormValue(valueItem, !!isReset) as PFormYearMonthValue;
@@ -223,6 +230,7 @@ const PForm = ({
               );
             }
           }
+          case 'PFormEmbedMonthRangePicker':
           case 'PFormMonthRangePicker': {
             const commands = valueItem as PFormYearMonthRangeValueItemNameCommands;
             const value = getItemFormValue(valueItem, !!isReset) as { year: number | ''; month: number | '' }[];

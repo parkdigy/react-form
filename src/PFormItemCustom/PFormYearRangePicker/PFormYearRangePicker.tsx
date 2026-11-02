@@ -1,3 +1,4 @@
+import PrivateEmbedPicker from '../../@private/PrivateEmbedPicker/PrivateEmbedPicker';
 import React, { type ReactNode, useCallback, useId, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { ClickAwayListener, FormHelperText, Grid } from '@mui/material';
@@ -22,7 +23,8 @@ import {
 import { Dayjs } from 'dayjs';
 import { dateToValue, getFinalValue, valueToDate } from './PFormYearRangePicker.function.private';
 
-const PFormYearRangePicker = ({
+export const PFormYearRangePickerInternal = ({
+  embedded = false,
   ref,
   /********************************************************************************************************************/
   variant: initVariant,
@@ -67,12 +69,13 @@ const PFormYearRangePicker = ({
   className,
   style: initStyle,
   sx,
-}: Props) => {
+}: Props & { embedded?: boolean }) => {
   /********************************************************************************************************************
    * ID
    * ******************************************************************************************************************/
 
   const id = useId();
+  const embeddedRef = useRef<HTMLFieldSetElement>(null);
 
   /********************************************************************************************************************
    * FormState
@@ -232,9 +235,16 @@ const PFormYearRangePicker = ({
   );
 
   /** focus */
-  const focus = useCallback(function () {
-    startInputRef.current?.focus();
-  }, []);
+  const focus = useCallback(
+    function () {
+      if (embedded) {
+        embeddedRef.current?.focus();
+        return;
+      }
+      startInputRef.current?.focus();
+    },
+    [embedded]
+  );
 
   /********************************************************************************************************************
    * value
@@ -306,7 +316,7 @@ const PFormYearRangePicker = ({
 
   const commands = useMemo<PFormYearRangePickerCommands>(
     () => ({
-      getType: () => 'PFormYearRangePicker',
+      getType: () => (embedded ? 'PFormEmbedYearRangePicker' : 'PFormYearRangePicker'),
       getName: () => name,
       getReset: () => getFinalValue(initValueRef.current),
       reset: () => updateValue(initValueRef.current),
@@ -337,6 +347,7 @@ const PFormYearRangePicker = ({
       },
     }),
     [
+      embedded,
       dataRef,
       disabled,
       exceptValue,
@@ -375,14 +386,16 @@ const PFormYearRangePicker = ({
           endInputRef.current?.focus();
         });
       } else if (selectType === 'end') {
+        if (embedded) setSelectType('start');
         setOpen(false);
       }
 
       setTimeout(() => {
         onValueChangeByUser(name, newValue);
+        if (embedded && selectType === 'end') onRequestSearchSubmit(name, newValue);
       });
     },
-    [updateValue, name, onValueChangeByUser]
+    [updateValue, name, onValueChangeByUser, embedded, onRequestSearchSubmit]
   );
 
   /** handleInputDatePickerChange */
@@ -509,6 +522,40 @@ const PFormYearRangePicker = ({
    * Render
    * ******************************************************************************************************************/
 
+  if (embedded) {
+    return (
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <PrivateEmbedPicker
+          name={name}
+          label={fromLabel}
+          required={required}
+          disabled={disabled}
+          readOnly={readOnly}
+          hidden={hidden}
+          fullWidth={fullWidth}
+          error={error}
+          helperText={!formColWithHelperText ? (error ? errorHelperText : helperText) : undefined}
+          pickerRef={embeddedRef}
+          className={className}
+          style={initStyle}
+          sx={sx}
+        >
+          <div style={{ display: 'flex' }}>
+            <PrivateYearRangePicker
+              selectType={selectType}
+              minYear={minYear}
+              maxYear={maxYear}
+              disablePast={disablePast}
+              disableFuture={disableFuture}
+              value={value}
+              onChange={handleContainerChange}
+            />
+          </div>
+        </PrivateEmbedPicker>
+      </LocalizationProvider>
+    );
+  }
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <ClickAwayListener mouseEvent='onMouseDown' touchEvent='onTouchStart' onClickAway={() => setOpen(false)}>
@@ -598,5 +645,7 @@ const PFormYearRangePicker = ({
     </LocalizationProvider>
   );
 };
+
+const PFormYearRangePicker = (props: Props) => <PFormYearRangePickerInternal {...props} />;
 
 export default PFormYearRangePicker;

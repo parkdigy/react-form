@@ -205,8 +205,11 @@ var getItemFormValue = function getItemFormValue(commands, reset) {
         value = checked ? itemCommands.getValue() : itemCommands.getUncheckedValue();
       }
       break;
+    case 'PFormEmbedDatePicker':
     case 'PFormDatePicker':
+    case 'PFormEmbedDateTimePicker':
     case 'PFormDateTimePicker':
+    case 'PFormEmbedTimePicker':
     case 'PFormTimePicker':
       {
         value = reset ? commands.getReset() : commands.getValue();
@@ -219,6 +222,7 @@ var getItemFormValue = function getItemFormValue(commands, reset) {
       value = reset ? commands.getReset() : commands.getValue();
   }
   switch (type) {
+    case 'PFormEmbedDateRangePicker':
     case 'PFormDateRangePicker':
       {
         var startValue = value[0];
@@ -227,6 +231,7 @@ var getItemFormValue = function getItemFormValue(commands, reset) {
         value = [startValue ? startValue.format(format) : '', endValue ? endValue.format(format) : ''];
       }
       break;
+    case 'PFormEmbedYearRangePicker':
     case 'PFormYearRangePicker':
       {
         var _startValue = value[0];
@@ -234,12 +239,14 @@ var getItemFormValue = function getItemFormValue(commands, reset) {
         value = [_startValue ? _startValue : '', _endValue ? _endValue : ''];
       }
       break;
+    case 'PFormEmbedMonthPicker':
     case 'PFormMonthPicker':
       value = {
         year: value ? value.year : '',
         month: value ? value.month : ''
       };
       break;
+    case 'PFormEmbedMonthRangePicker':
     case 'PFormMonthRangePicker':
       {
         var _startValue2 = value[0];
@@ -273,6 +280,7 @@ var getItemFormValue = function getItemFormValue(commands, reset) {
  * ******************************************************************************************************************/
 var appendFormValueData = function appendFormValueData(data, itemCommands) {
   switch (itemCommands.getType()) {
+    case 'PFormEmbedDateRangePicker':
     case 'PFormDateRangePicker':
       {
         var commands = itemCommands;
@@ -281,6 +289,7 @@ var appendFormValueData = function appendFormValueData(data, itemCommands) {
         data[commands.getFormValueToName()] = value[1];
       }
       break;
+    case 'PFormEmbedMonthPicker':
     case 'PFormMonthPicker':
       {
         var _commands = itemCommands;
@@ -289,6 +298,7 @@ var appendFormValueData = function appendFormValueData(data, itemCommands) {
         data[_commands.getFormValueMonthName()] = _value.month;
       }
       break;
+    case 'PFormEmbedYearRangePicker':
     case 'PFormYearRangePicker':
       {
         var _commands2 = itemCommands;
@@ -297,6 +307,7 @@ var appendFormValueData = function appendFormValueData(data, itemCommands) {
         data[_commands2.getFormValueToName()] = _value2[1];
       }
       break;
+    case 'PFormEmbedMonthRangePicker':
     case 'PFormMonthRangePicker':
       {
         var _commands3 = itemCommands;
@@ -450,15 +461,19 @@ var appendFormValueData = function appendFormValueData(data, itemCommands) {
             return true;
           }
           switch (itemCommands_0.getType()) {
+            case "PFormEmbedDateRangePicker":
             case "PFormDateRangePicker":
+            case "PFormEmbedYearRangePicker":
             case "PFormYearRangePicker":
               {
                 return name === itemCommands_0.getFormValueFromName() || name === itemCommands_0.getFormValueToName();
               }
+            case "PFormEmbedMonthPicker":
             case "PFormMonthPicker":
               {
                 return name === itemCommands_0.getFormValueYearName() || name === itemCommands_0.getFormValueMonthName();
               }
+            case "PFormEmbedMonthRangePicker":
             case "PFormMonthRangePicker":
               {
                 return name === itemCommands_0.getFormValueFromYearName() || name === itemCommands_0.getFormValueFromMonthName() || name === itemCommands_0.getFormValueToYearName() || name === itemCommands_0.getFormValueToMonthName();
@@ -478,7 +493,9 @@ var appendFormValueData = function appendFormValueData(data, itemCommands) {
       var valueItem = findValueItem(name_0);
       if (valueItem) {
         switch (valueItem.getType()) {
+          case "PFormEmbedDateRangePicker":
           case "PFormDateRangePicker":
+          case "PFormEmbedYearRangePicker":
           case "PFormYearRangePicker":
             {
               var commands_1 = valueItem;
@@ -497,6 +514,7 @@ var appendFormValueData = function appendFormValueData(data, itemCommands) {
                 throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 \uAC12\uC744 \uAC00\uC838\uC624\uB824\uBA74 subKey \uB97C \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
               }
             }
+          case "PFormEmbedMonthPicker":
           case "PFormMonthPicker":
             {
               var commands_0 = valueItem;
@@ -515,6 +533,7 @@ var appendFormValueData = function appendFormValueData(data, itemCommands) {
                 throw new Error("Form::getFormReset - ".concat(valueItem.getType(), " \uC758 \uAC12\uC744 \uAC00\uC838\uC624\uB824\uBA74 subKey \uB97C \uC9C0\uC815\uD574\uC57C \uD569\uB2C8\uB2E4."));
               }
             }
+          case "PFormEmbedMonthRangePicker":
           case "PFormMonthRangePicker":
             {
               var commands = valueItem;
@@ -919,7 +938,7 @@ var appendFormValueData = function appendFormValueData(data, itemCommands) {
     t27 = $[71];
   }
   return t27;
-};var _excluded$D = ["ref", "size", "color", "variant", "fullWidth", "className", "type", "onClick"];
+};var _excluded$K = ["ref", "size", "color", "variant", "fullWidth", "className", "type", "onClick"];
 var PFormButton = function PFormButton(t0) {
   var $ = compilerRuntime.c(22);
   var className;
@@ -941,7 +960,7 @@ var PFormButton = function PFormButton(t0) {
     className = _t.className;
     t1 = _t.type;
     onClick = _t.onClick;
-    props = _objectWithoutProperties(_t, _excluded$D);
+    props = _objectWithoutProperties(_t, _excluded$K);
     $[0] = t0;
     $[1] = className;
     $[2] = initColor;
@@ -1008,7 +1027,7 @@ var PFormButton = function PFormButton(t0) {
   return t4;
 };var _templateObject$j, _templateObject2$9;
 var IconPIcon = material.styled(reactComponent.PIcon)(_templateObject$j || (_templateObject$j = _taggedTemplateLiteral(["\n  vertical-align: middle;\n  margin-right: 3px;\n  margin-top: -4px;\n  margin-bottom: -2px;\n"])));
-var ChildrenSpan = material.styled('span')(_templateObject2$9 || (_templateObject2$9 = _taggedTemplateLiteral(["\n  vertical-align: middle;\n"])));var _excluded$C = ["ref", "children", "icon", "size", "style", "error", "warning"];
+var ChildrenSpan = material.styled('span')(_templateObject2$9 || (_templateObject2$9 = _taggedTemplateLiteral(["\n  vertical-align: middle;\n"])));var _excluded$J = ["ref", "children", "icon", "size", "style", "error", "warning"];
 var PFormLabel = function PFormLabel(t0) {
   var $ = compilerRuntime.c(25);
   var children;
@@ -1028,7 +1047,7 @@ var PFormLabel = function PFormLabel(t0) {
     initStyle = _t.style;
     error = _t.error;
     warning = _t.warning;
-    props = _objectWithoutProperties(_t, _excluded$C);
+    props = _objectWithoutProperties(_t, _excluded$J);
     $[0] = t0;
     $[1] = children;
     $[2] = error;
@@ -1294,7 +1313,7 @@ var PFormDivider = function PFormDivider(t0) {
       sx: {
         my: -2
       },
-      onClick: _temp$x
+      onClick: _temp$q
     }, endAdornment), collapse && /*#__PURE__*/React.createElement(reactComponent.PIconButton, {
       sx: {
         my: -2
@@ -1346,10 +1365,10 @@ var PFormDivider = function PFormDivider(t0) {
   }
   return t14;
 };
-function _temp$x(e) {
+function _temp$q(e) {
   e.stopPropagation();
 }var _templateObject$h;
-var StyledWrapGrid$1 = material.styled(material.Grid)(_templateObject$h || (_templateObject$h = _taggedTemplateLiteral(["\n  width: 100%;\n"])));var _excluded$B = ["variant", "size", "color", "spacing", "focused", "labelShrink", "fullWidth"];
+var StyledWrapGrid$1 = material.styled(material.Grid)(_templateObject$h || (_templateObject$h = _taggedTemplateLiteral(["\n  width: 100%;\n"])));var _excluded$I = ["variant", "size", "color", "spacing", "focused", "labelShrink", "fullWidth"];
 var PFormBlock = function PFormBlock(t0) {
   var $ = compilerRuntime.c(67);
   var ref = t0.ref,
@@ -1392,7 +1411,7 @@ var PFormBlock = function PFormBlock(t0) {
     formFocused = _t.focused;
     formLabelShrink = _t.labelShrink;
     formFullWidth = _t.fullWidth;
-    otherFormState = _objectWithoutProperties(_t, _excluded$B);
+    otherFormState = _objectWithoutProperties(_t, _excluded$I);
     $[0] = t1;
     $[1] = formColor;
     $[2] = formFocused;
@@ -1646,7 +1665,7 @@ var PFormBlock = function PFormBlock(t0) {
   }
   return t17;
 };var _templateObject$g;
-var StyledWrapGrid = material.styled(material.Grid)(_templateObject$g || (_templateObject$g = _taggedTemplateLiteral(["\n  width: 100%;\n"])));var _excluded$A = ["variant", "size", "color", "spacing", "focused", "labelShrink", "fullWidth"];
+var StyledWrapGrid = material.styled(material.Grid)(_templateObject$g || (_templateObject$g = _taggedTemplateLiteral(["\n  width: 100%;\n"])));var _excluded$H = ["variant", "size", "color", "spacing", "focused", "labelShrink", "fullWidth"];
 var PFormRow = function PFormRow(t0) {
   var $ = compilerRuntime.c(74);
   var ref = t0.ref,
@@ -1689,7 +1708,7 @@ var PFormRow = function PFormRow(t0) {
     formFocused = _t.focused;
     formLabelShrink = _t.labelShrink;
     formFullWidth = _t.fullWidth;
-    otherFormState = _objectWithoutProperties(_t, _excluded$A);
+    otherFormState = _objectWithoutProperties(_t, _excluded$H);
     $[0] = t1;
     $[1] = formColor;
     $[2] = formFocused;
@@ -1995,7 +2014,7 @@ var PFormRow = function PFormRow(t0) {
 };var _templateObject$f, _templateObject2$8, _templateObject3$4;
 var StyledFormLabelContainerDiv = material.styled('div')(_templateObject$f || (_templateObject$f = _taggedTemplateLiteral(["\n  position: relative;\n  height: 20px;\n"])));
 var StyledFormLabel = material.styled(PFormLabel)(_templateObject2$8 || (_templateObject2$8 = _taggedTemplateLiteral(["\n  position: absolute;\n  left: 5px;\n  top: 0;\n"])));
-var StyledContentContainerBox = material.styled(material.Box)(_templateObject3$4 || (_templateObject3$4 = _taggedTemplateLiteral(["\n  display: flex;\n  flex-wrap: wrap;\n"])));var _excluded$z = ["variant", "size", "color", "spacing", "formColGap", "focused", "labelShrink", "fullWidth", "formColAutoXs", "onAddFormCol", "onRemoveFormCol"];
+var StyledContentContainerBox = material.styled(material.Box)(_templateObject3$4 || (_templateObject3$4 = _taggedTemplateLiteral(["\n  display: flex;\n  flex-wrap: wrap;\n"])));var _excluded$G = ["variant", "size", "color", "spacing", "formColGap", "focused", "labelShrink", "fullWidth", "formColAutoXs", "onAddFormCol", "onRemoveFormCol"];
 var PFormCol = function PFormCol(t0) {
   var $ = compilerRuntime.c(81);
   var ref = t0.ref,
@@ -2047,7 +2066,7 @@ var PFormCol = function PFormCol(t0) {
     formColAutoXs = _t.formColAutoXs;
     onAddFormCol = _t.onAddFormCol;
     onRemoveFormCol = _t.onRemoveFormCol;
-    otherFormState = _objectWithoutProperties(_t, _excluded$z);
+    otherFormState = _objectWithoutProperties(_t, _excluded$G);
     $[0] = t1;
     $[1] = formColAutoXs;
     $[2] = formColor;
@@ -2521,7 +2540,7 @@ var StyledContentDiv = material.styled('div')(_templateObject2$7 || (_templateOb
     t5 = $[12];
   }
   return t5;
-};insertStyle(".PFormTextField{min-width:200px}.PFormTextField .clear-icon-button-wrap{display:none}.PFormTextField.variant-filled .clear-icon-button-wrap{margin-top:9px;margin-bottom:-9px}.PFormTextField:hover .clear-icon-button-wrap.show,.PFormTextField .MuiInputBase-root.Mui-focused .clear-icon-button-wrap.show{display:block}");var _excluded$y = ["ref", "variant", "size", "color", "focused", "labelShrink", "fullWidth", "submitWhenReturnKey", "name", "required", "value", "data", "icon", "labelIcon", "label", "error", "helperText", "errorHelperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "slotProps", "inputRef", "select", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "noValidationCheck", "hidden", "disableReturnKey", "defaultRequiredErrorHelperText", "defaultPatternErrorHelperText", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"];
+};insertStyle(".PFormTextField{min-width:200px}.PFormTextField .clear-icon-button-wrap{display:none}.PFormTextField.variant-filled .clear-icon-button-wrap{margin-top:9px;margin-bottom:-9px}.PFormTextField:hover .clear-icon-button-wrap.show,.PFormTextField .MuiInputBase-root.Mui-focused .clear-icon-button-wrap.show{display:block}");var _excluded$F = ["ref", "variant", "size", "color", "focused", "labelShrink", "fullWidth", "submitWhenReturnKey", "name", "required", "value", "data", "icon", "labelIcon", "label", "error", "helperText", "errorHelperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "slotProps", "inputRef", "select", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "noValidationCheck", "hidden", "disableReturnKey", "defaultRequiredErrorHelperText", "defaultPatternErrorHelperText", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"];
 function PFormTextField(t0) {
   var _initSlotProps, _initSlotProps4;
   var $ = compilerRuntime.c(230);
@@ -2622,7 +2641,7 @@ function PFormTextField(t0) {
     onKeyDown = _t.onKeyDown;
     className = _t.className;
     initStyle = _t.style;
-    props = _objectWithoutProperties(_t, _excluded$y);
+    props = _objectWithoutProperties(_t, _excluded$F);
     $[0] = t0;
     $[1] = className;
     $[2] = clear;
@@ -3137,7 +3156,7 @@ function PFormTextField(t0) {
   var t34;
   if ($[125] !== focus || $[126] !== setData || $[127] !== setErrorErrorHelperText || $[128] !== t25 || $[129] !== t26 || $[130] !== t27 || $[131] !== t28 || $[132] !== t29 || $[133] !== t30 || $[134] !== t31 || $[135] !== t32 || $[136] !== t33 || $[137] !== updateValue) {
     t34 = {
-      getType: _temp$w,
+      getType: _temp$p,
       getName: t25,
       getReset: t26,
       reset: t27,
@@ -3490,9 +3509,9 @@ function PFormTextField(t0) {
   }
   return t50;
 }
-function _temp$w() {
+function _temp$p() {
   return "default";
-}insertStyle(".PFormHidden{display:none !important}");var _excluded$x = ["className"];
+}insertStyle(".PFormHidden{display:none !important}");var _excluded$E = ["className"];
 var PFormHidden = function PFormHidden(t0) {
   var $ = compilerRuntime.c(8);
   var className;
@@ -3500,7 +3519,7 @@ var PFormHidden = function PFormHidden(t0) {
   if ($[0] !== t0) {
     var _t = t0;
     className = _t.className;
-    props = _objectWithoutProperties(_t, _excluded$x);
+    props = _objectWithoutProperties(_t, _excluded$E);
     $[0] = t0;
     $[1] = className;
     $[2] = props;
@@ -3530,7 +3549,7 @@ var PFormHidden = function PFormHidden(t0) {
     t2 = $[7];
   }
   return t2;
-};var _excluded$w = ["ref", "className", "clear", "value"];
+};var _excluded$D = ["ref", "className", "clear", "value"];
 var PFormText = function PFormText(t0) {
   var $ = compilerRuntime.c(14);
   var className;
@@ -3544,7 +3563,7 @@ var PFormText = function PFormText(t0) {
     className = _t.className;
     t1 = _t.clear;
     t2 = _t.value;
-    props = _objectWithoutProperties(_t, _excluded$w);
+    props = _objectWithoutProperties(_t, _excluded$D);
     $[0] = t0;
     $[1] = className;
     $[2] = props;
@@ -3588,7 +3607,7 @@ var PFormText = function PFormText(t0) {
   }
   return t4;
 };var _templateObject$d;
-var _excluded$v = ["ref", "allowSpace", "onKeyDown", "onBlur", "onAppendTag"];
+var _excluded$C = ["ref", "allowSpace", "onKeyDown", "onBlur", "onAppendTag"];
 var PFormTagText = function PFormTagText(t0) {
   var $ = compilerRuntime.c(28);
   var allowSpace;
@@ -3604,7 +3623,7 @@ var PFormTagText = function PFormTagText(t0) {
     onKeyDown = _t.onKeyDown;
     onBlur = _t.onBlur;
     onAppendTag = _t.onAppendTag;
-    props = _objectWithoutProperties(_t, _excluded$v);
+    props = _objectWithoutProperties(_t, _excluded$C);
     $[0] = t0;
     $[1] = allowSpace;
     $[2] = onAppendTag;
@@ -3722,7 +3741,7 @@ var PFormTagText = function PFormTagText(t0) {
  * Styled Components
  * ******************************************************************************************************************/
 
-var StyledFormText = material.styled(PFormText)(_templateObject$d || (_templateObject$d = _taggedTemplateLiteral(["\n  .PFormTag-Input {\n    flex: 1;\n    min-width: 50px;\n    padding-left: 5px;\n  }\n  &.variant-outlined {\n    .MuiInputBase-root {\n      .PFormTag-Input {\n        padding-top: 7px;\n        padding-bottom: 8px;\n      }\n\n      &.MuiInputBase-sizeSmall {\n        .PFormTag-Input {\n          padding-top: 0;\n          padding-bottom: 0;\n        }\n      }\n    }\n  }\n"])));var _excluded$u = ["ref", "variant", "size", "className", "name", "value", "exceptValue", "clear", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "limitTags", "getLimitTagsText", "allowSpace", "slotProps", "onAppendTag", "onRemoveTag", "onTagClick", "onValidate", "onChange", "onValue"],
+var StyledFormText = material.styled(PFormText)(_templateObject$d || (_templateObject$d = _taggedTemplateLiteral(["\n  .PFormTag-Input {\n    flex: 1;\n    min-width: 50px;\n    padding-left: 5px;\n  }\n  &.variant-outlined {\n    .MuiInputBase-root {\n      .PFormTag-Input {\n        padding-top: 7px;\n        padding-bottom: 8px;\n      }\n\n      &.MuiInputBase-sizeSmall {\n        .PFormTag-Input {\n          padding-top: 0;\n          padding-bottom: 0;\n        }\n      }\n    }\n  }\n"])));var _excluded$B = ["ref", "variant", "size", "className", "name", "value", "exceptValue", "clear", "required", "readOnly", "maxLength", "disabled", "fullWidth", "error", "helperText", "formValueSeparator", "formValueSort", "limitTags", "getLimitTagsText", "allowSpace", "slotProps", "onAppendTag", "onRemoveTag", "onTagClick", "onValidate", "onChange", "onValue"],
   _excluded2$4 = ["variant", "size", "fullWidth", "disabled", "onAddValueItem", "onValueChange", "onValueChangeByUser", "onRequestSearchSubmit"];
 var _emptyValue = [];
 var PFormTag = function PFormTag(t0) {
@@ -3784,7 +3803,7 @@ var PFormTag = function PFormTag(t0) {
     onValidate = _t.onValidate;
     onChange = _t.onChange;
     onValue = _t.onValue;
-    props = _objectWithoutProperties(_t, _excluded$u);
+    props = _objectWithoutProperties(_t, _excluded$B);
     $[0] = t0;
     $[1] = allowSpace;
     $[2] = className;
@@ -4353,8 +4372,8 @@ var PFormTag = function PFormTag(t0) {
       size: formSize,
       fullWidth: formFullWidth,
       onAddValueItem: handleAddValueItem,
-      onValueChange: _temp$v,
-      onValueChangeByUser: _temp2$5,
+      onValueChange: _temp$o,
+      onValueChangeByUser: _temp2$4,
       onRequestSearchSubmit: _temp3$3
     });
     $[134] = formFullWidth;
@@ -4428,9 +4447,9 @@ var PFormTag = function PFormTag(t0) {
   }
   return t34;
 };
-function _temp$v() {}
-function _temp2$5() {}
-function _temp3$3() {}var _excluded$t = ["className", "validPattern", "onValue"];
+function _temp$o() {}
+function _temp2$4() {}
+function _temp3$3() {}var _excluded$A = ["className", "validPattern", "onValue"];
 var PFormEmail = function PFormEmail(t0) {
   var $ = compilerRuntime.c(16);
   var className;
@@ -4442,7 +4461,7 @@ var PFormEmail = function PFormEmail(t0) {
     className = _t.className;
     t1 = _t.validPattern;
     onValue = _t.onValue;
-    props = _objectWithoutProperties(_t, _excluded$t);
+    props = _objectWithoutProperties(_t, _excluded$A);
     $[0] = t0;
     $[1] = className;
     $[2] = onValue;
@@ -4501,7 +4520,7 @@ var PFormEmail = function PFormEmail(t0) {
     t5 = $[15];
   }
   return t5;
-};insertStyle(".PFormPassword .eye-icon-button-wrap{visibility:hidden}.PFormPassword.variant-filled .eye-icon-button-wrap{margin-top:9px;margin-bottom:-9px}.PFormPassword:hover .eye-icon-button-wrap.show,.PFormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show{visibility:visible}");var _excluded$s = ["className", "slotProps", "clear", "eye", "onChange"];
+};insertStyle(".PFormPassword .eye-icon-button-wrap{visibility:hidden}.PFormPassword.variant-filled .eye-icon-button-wrap{margin-top:9px;margin-bottom:-9px}.PFormPassword:hover .eye-icon-button-wrap.show,.PFormPassword .MuiInputBase-root.Mui-focused .eye-icon-button-wrap.show{visibility:visible}");var _excluded$z = ["className", "slotProps", "clear", "eye", "onChange"];
 var _templateObject$c;
 var StyledEyeInputAdornment = material.styled(material.InputAdornment)(_templateObject$c || (_templateObject$c = _taggedTemplateLiteral(["\n  visibility: hidden;\n"])));
 var PFormPassword = function PFormPassword(t0) {
@@ -4512,7 +4531,7 @@ var PFormPassword = function PFormPassword(t0) {
     t1 = t0.clear,
     t2 = t0.eye,
     onChange = t0.onChange,
-    props = _objectWithoutProperties(t0, _excluded$s);
+    props = _objectWithoutProperties(t0, _excluded$z);
   var clear = t1 === undefined ? false : t1;
   var eye = t2 === undefined ? true : t2;
   var onChangeRef = reactHook.useAutoUpdateRef(onChange);
@@ -4533,7 +4552,7 @@ var PFormPassword = function PFormPassword(t0) {
       size: "small",
       tabIndex: -1,
       onClick: function onClick() {
-        setType(_temp$u);
+        setType(_temp$n);
       }
     }, /*#__PURE__*/React.createElement(material.Icon, {
       fontSize: "inherit"
@@ -4622,9 +4641,9 @@ var PFormPassword = function PFormPassword(t0) {
   }
   return t11;
 };
-function _temp$u(prev) {
+function _temp$n(prev) {
   return prev === "password" ? "text" : "password";
-}var _excluded$r = ["ref", "className", "onValue", "validPattern"];
+}var _excluded$y = ["ref", "className", "onValue", "validPattern"];
 var PFormTel = function PFormTel(t0) {
   var $ = compilerRuntime.c(18);
   var className;
@@ -4638,7 +4657,7 @@ var PFormTel = function PFormTel(t0) {
     className = _t.className;
     onValue = _t.onValue;
     t1 = _t.validPattern;
-    props = _objectWithoutProperties(_t, _excluded$r);
+    props = _objectWithoutProperties(_t, _excluded$y);
     $[0] = t0;
     $[1] = className;
     $[2] = onValue;
@@ -4701,7 +4720,7 @@ var PFormTel = function PFormTel(t0) {
     t5 = $[17];
   }
   return t5;
-};var _excluded$q = ["className", "validPattern"];
+};var _excluded$x = ["className", "validPattern"];
 var PFormMobile = function PFormMobile(t0) {
   var $ = compilerRuntime.c(12);
   var className;
@@ -4711,7 +4730,7 @@ var PFormMobile = function PFormMobile(t0) {
     var _t = t0;
     className = _t.className;
     t1 = _t.validPattern;
-    props = _objectWithoutProperties(_t, _excluded$q);
+    props = _objectWithoutProperties(_t, _excluded$x);
     $[0] = t0;
     $[1] = className;
     $[2] = props;
@@ -4752,7 +4771,7 @@ var PFormMobile = function PFormMobile(t0) {
     t4 = $[11];
   }
   return t4;
-};var _excluded$p = ["ref", "onChange"];
+};var _excluded$w = ["ref", "onChange"];
 var NumberFormatCustom = function NumberFormatCustom(t0) {
   var $ = compilerRuntime.c(10);
   var onChange;
@@ -4762,7 +4781,7 @@ var NumberFormatCustom = function NumberFormatCustom(t0) {
     var _t = t0;
     ref = _t.ref;
     onChange = _t.onChange;
-    props = _objectWithoutProperties(_t, _excluded$p);
+    props = _objectWithoutProperties(_t, _excluded$w);
     $[0] = t0;
     $[1] = onChange;
     $[2] = props;
@@ -4802,7 +4821,7 @@ var NumberFormatCustom = function NumberFormatCustom(t0) {
     t2 = $[9];
   }
   return t2;
-};var _excluded$o = ["ref", "className", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "labelShrink", "clear", "slotProps", "value", "onChange", "onValue", "onValidate"];
+};var _excluded$v = ["ref", "className", "allowNegative", "thousandSeparator", "allowDecimal", "decimalScale", "prefix", "suffix", "readOnly", "tabIndex", "labelShrink", "clear", "slotProps", "value", "onChange", "onValue", "onValidate"];
 var PFormNumber = function PFormNumber(t0) {
   var $ = compilerRuntime.c(72);
   var allowDecimal;
@@ -4842,7 +4861,7 @@ var PFormNumber = function PFormNumber(t0) {
     onChange = _t.onChange;
     onValue = _t.onValue;
     onValidate = _t.onValidate;
-    props = _objectWithoutProperties(_t, _excluded$o);
+    props = _objectWithoutProperties(_t, _excluded$v);
     $[0] = t0;
     $[1] = allowDecimal;
     $[2] = allowNegative;
@@ -4976,7 +4995,7 @@ var PFormNumber = function PFormNumber(t0) {
     newSlotProps = $[33];
   }
   var slotProps = newSlotProps;
-  var getFinalValue = _temp$t;
+  var getFinalValue = _temp$m;
   var t5;
   if ($[44] !== onChangeRef || $[45] !== setStrValue || $[46] !== strValueRef) {
     t5 = function t5(value_0) {
@@ -5128,9 +5147,9 @@ var PFormNumber = function PFormNumber(t0) {
   }
   return t11;
 };
-function _temp$t(value) {
+function _temp$m(value) {
   return compare.empty(value) || value === "-" || value === "." ? undefined : Number(value);
-}insertStyle(".PFormSearch input[type=search]::-webkit-search-decoration,.PFormSearch input[type=search]::-webkit-search-cancel-button,.PFormSearch input[type=search]::-webkit-search-results-button,.PFormSearch input[type=search]::-webkit-search-results-decoration{-webkit-appearance:none}");var _excluded$n = ["className"];
+}insertStyle(".PFormSearch input[type=search]::-webkit-search-decoration,.PFormSearch input[type=search]::-webkit-search-cancel-button,.PFormSearch input[type=search]::-webkit-search-results-button,.PFormSearch input[type=search]::-webkit-search-results-decoration{-webkit-appearance:none}");var _excluded$u = ["className"];
 var PFormSearch = function PFormSearch(t0) {
   var $ = compilerRuntime.c(8);
   var className;
@@ -5138,7 +5157,7 @@ var PFormSearch = function PFormSearch(t0) {
   if ($[0] !== t0) {
     var _t = t0;
     className = _t.className;
-    props = _objectWithoutProperties(_t, _excluded$n);
+    props = _objectWithoutProperties(_t, _excluded$u);
     $[0] = t0;
     $[1] = className;
     $[2] = props;
@@ -5167,7 +5186,7 @@ var PFormSearch = function PFormSearch(t0) {
     t2 = $[7];
   }
   return t2;
-};insertStyle(".PFormTextarea .MuiInputBase-root .MuiInputBase-input{overflow-y:scroll}.PFormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar{width:8px}.PFormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar-thumb{background-color:rgba(0,0,0,.1882352941);background-clip:padding-box;border-left:4px rgba(0,0,0,0) solid}");var _excluded$m = ["className", "clear", "rows", "value"];
+};insertStyle(".PFormTextarea .MuiInputBase-root .MuiInputBase-input{overflow-y:scroll}.PFormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar{width:8px}.PFormTextarea .MuiInputBase-root .MuiInputBase-input::-webkit-scrollbar-thumb{background-color:rgba(0,0,0,.1882352941);background-clip:padding-box;border-left:4px rgba(0,0,0,0) solid}");var _excluded$t = ["className", "clear", "rows", "value"];
 var PFormTextarea = function PFormTextarea(t0) {
   var $ = compilerRuntime.c(14);
   var className;
@@ -5181,7 +5200,7 @@ var PFormTextarea = function PFormTextarea(t0) {
     t1 = _t.clear;
     t2 = _t.rows;
     t3 = _t.value;
-    props = _objectWithoutProperties(_t, _excluded$m);
+    props = _objectWithoutProperties(_t, _excluded$t);
     $[0] = t0;
     $[1] = className;
     $[2] = props;
@@ -5226,7 +5245,7 @@ var PFormTextarea = function PFormTextarea(t0) {
     t5 = $[13];
   }
   return t5;
-};var _excluded$l = ["className", "validPattern", "onValue"];
+};var _excluded$s = ["className", "validPattern", "onValue"];
 var PFormUrl = function PFormUrl(t0) {
   var $ = compilerRuntime.c(16);
   var className;
@@ -5238,7 +5257,7 @@ var PFormUrl = function PFormUrl(t0) {
     className = _t.className;
     t1 = _t.validPattern;
     onValue = _t.onValue;
-    props = _objectWithoutProperties(_t, _excluded$l);
+    props = _objectWithoutProperties(_t, _excluded$s);
     $[0] = t0;
     $[1] = className;
     $[2] = onValue;
@@ -5297,7 +5316,7 @@ var PFormUrl = function PFormUrl(t0) {
     t5 = $[15];
   }
   return t5;
-};insertStyle(".PFormSelect.is-selected-placeholder .MuiSelect-select{opacity:.38}.PFormSelect .MuiInputBase-root.MuiInputBase-adornedEnd{padding-right:25px}.PFormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty){margin-top:-3px;margin-bottom:-3px}.PFormSelect-Menu-Popover>.MuiPaper-root::-webkit-scrollbar{width:12px}.PFormSelect-Menu-Popover>.MuiPaper-root::-webkit-scrollbar-thumb{background-color:rgba(0,0,0,.1882352941);background-clip:padding-box;border-left:4px rgba(0,0,0,0) solid;border-right:4px rgba(0,0,0,0) solid}.PFormSelect-Menu-Popover>.MuiPaper-root::-webkit-scrollbar-button:start:decrement,.PFormSelect-Menu-Popover>.MuiPaper-root::-webkit-scrollbar-button:end:increment{display:block;height:4px;background-color:rgba(0,0,0,0)}");var _excluded$k = ["ref", "className", "name", "items", "fullWidth", "onLoadItems", "readOnly", "multiple", "checkbox", "placeholder", "startAdornment", "value", "slotProps", "formValueSeparator", "formValueSort", "width", "minWidth", "loading", "onChange", "onValue"],
+};insertStyle(".PFormSelect.is-selected-placeholder .MuiSelect-select{opacity:.38}.PFormSelect .MuiInputBase-root.MuiInputBase-adornedEnd{padding-right:25px}.PFormSelect .MuiSelect-select.MuiSelect-multiple .selected-list:not(:empty){margin-top:-3px;margin-bottom:-3px}.PFormSelect-Menu-Popover>.MuiPaper-root::-webkit-scrollbar{width:12px}.PFormSelect-Menu-Popover>.MuiPaper-root::-webkit-scrollbar-thumb{background-color:rgba(0,0,0,.1882352941);background-clip:padding-box;border-left:4px rgba(0,0,0,0) solid;border-right:4px rgba(0,0,0,0) solid}.PFormSelect-Menu-Popover>.MuiPaper-root::-webkit-scrollbar-button:start:decrement,.PFormSelect-Menu-Popover>.MuiPaper-root::-webkit-scrollbar-button:end:increment{display:block;height:4px;background-color:rgba(0,0,0,0)}");var _excluded$r = ["ref", "className", "name", "items", "fullWidth", "onLoadItems", "readOnly", "multiple", "checkbox", "placeholder", "startAdornment", "value", "slotProps", "formValueSeparator", "formValueSort", "width", "minWidth", "loading", "onChange", "onValue"],
   _excluded2$3 = ["fullWidth", "onAddValueItem", "onValueChange"];
 function PFormSelect(t0) {
   var _initSlotProps, _initSlotProps2, _initSlotProps7, _initSlotProps8;
@@ -5345,7 +5364,7 @@ function PFormSelect(t0) {
     initLoading = _t.loading;
     onChange = _t.onChange;
     onValue = _t.onValue;
-    props = _objectWithoutProperties(_t, _excluded$k);
+    props = _objectWithoutProperties(_t, _excluded$r);
     $[0] = t0;
     $[1] = checkbox;
     $[2] = className;
@@ -5508,8 +5527,8 @@ function PFormSelect(t0) {
   if ($[39] !== items) {
     t9 = function t9() {
       if (items) {
-        setItemValueLabels(items.reduce(_temp$s, {}));
-        setHasEmptyValue(!!items.find(_temp2$4));
+        setItemValueLabels(items.reduce(_temp$l, {}));
+        setHasEmptyValue(!!items.find(_temp2$3));
       } else {
         setItemValueLabels({});
         setHasEmptyValue(false);
@@ -6087,14 +6106,14 @@ function _temp3$2(res_0, t0) {
   res_0["".concat(value_0)] = value_0;
   return res_0;
 }
-function _temp2$4(t0) {
+function _temp2$3(t0) {
   var value = t0.value;
   return value === "";
 }
-function _temp$s(res, item) {
+function _temp$l(res, item) {
   res["".concat(item.value)] = item.label;
   return res;
-}var _excluded$j = ["className", "validPattern", "onValue"];
+}var _excluded$q = ["className", "validPattern", "onValue"];
 var PFormBusinessNo = function PFormBusinessNo(t0) {
   var $ = compilerRuntime.c(16);
   var className;
@@ -6106,7 +6125,7 @@ var PFormBusinessNo = function PFormBusinessNo(t0) {
     className = _t.className;
     t1 = _t.validPattern;
     onValue = _t.onValue;
-    props = _objectWithoutProperties(_t, _excluded$j);
+    props = _objectWithoutProperties(_t, _excluded$q);
     $[0] = t0;
     $[1] = className;
     $[2] = onValue;
@@ -6165,7 +6184,7 @@ var PFormBusinessNo = function PFormBusinessNo(t0) {
     t5 = $[15];
   }
   return t5;
-};var _excluded$i = ["className", "skipPersonalNumberValidateCheck", "validPattern", "onValue", "onValidate"];
+};var _excluded$p = ["className", "skipPersonalNumberValidateCheck", "validPattern", "onValue", "onValidate"];
 var PFormPersonalNo = function PFormPersonalNo(t0) {
   var $ = compilerRuntime.c(22);
   var className;
@@ -6181,7 +6200,7 @@ var PFormPersonalNo = function PFormPersonalNo(t0) {
     t1 = _t.validPattern;
     onValue = _t.onValue;
     onValidate = _t.onValidate;
-    props = _objectWithoutProperties(_t, _excluded$i);
+    props = _objectWithoutProperties(_t, _excluded$p);
     $[0] = t0;
     $[1] = className;
     $[2] = onValidate;
@@ -6225,7 +6244,7 @@ var PFormPersonalNo = function PFormPersonalNo(t0) {
     t4 = function t4(value_0) {
       if (compare.notEmpty(value_0) && !skipPersonalNumberValidateCheck) {
         if (value_0.length === 14 && value_0.includes("-")) {
-          var jumin = value_0.replace(/-/g, "").split("").map(_temp$r);
+          var jumin = value_0.replace(/-/g, "").split("").map(_temp$k);
           var ckarr = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5];
           for (var i = 0; i < jumin.length - 1; i = i + 1, i) {
             jumin[i] = jumin[i] * ckarr[i];
@@ -6286,7 +6305,7 @@ var PFormPersonalNo = function PFormPersonalNo(t0) {
   }
   return t6;
 };
-function _temp$r(v) {
+function _temp$k(v) {
   return Number(v);
 }insertStyle(".PFormItemBase .PFormItemBase-InputLabel{overflow:visible;padding-left:5px}.PFormItemBase .PFormItemBase-InputLabel.MuiInputLabel-sizeSmall{transform:translate(0, -1.5px) scale(0.7)}.PFormItemBase.variant-standard .PFormItemBase-Control-wrap{margin-top:16px}");var PFormItemBase = function PFormItemBase(t0) {
   var $ = compilerRuntime.c(54);
@@ -6586,7 +6605,7 @@ function _temp$r(v) {
     t16 = $[53];
   }
   return t16;
-};var _excluded$h = ["ref", "variant", "size", "color", "focused", "fullWidth", "name", "labelIcon", "label", "checked", "inputRef", "action", "readOnly", "disabled", "hidden", "text", "error", "helperText", "value", "data", "uncheckedValue", "exceptValue", "onChange", "onValidate", "className", "style", "sx"];
+};var _excluded$o = ["ref", "variant", "size", "color", "focused", "fullWidth", "name", "labelIcon", "label", "checked", "inputRef", "action", "readOnly", "disabled", "hidden", "text", "error", "helperText", "value", "data", "uncheckedValue", "exceptValue", "onChange", "onValidate", "className", "style", "sx"];
 var PFormCheckbox = function PFormCheckbox(t0) {
   var $ = compilerRuntime.c(175);
   var className;
@@ -6646,7 +6665,7 @@ var PFormCheckbox = function PFormCheckbox(t0) {
     className = _t.className;
     initStyle = _t.style;
     sx = _t.sx;
-    props = _objectWithoutProperties(_t, _excluded$h);
+    props = _objectWithoutProperties(_t, _excluded$o);
     $[0] = t0;
     $[1] = className;
     $[2] = exceptValue;
@@ -7116,7 +7135,7 @@ var PFormCheckbox = function PFormCheckbox(t0) {
   var t36;
   if ($[95] !== focus || $[96] !== setData || $[97] !== setErrorErrorHelperText || $[98] !== setUncheckedValue || $[99] !== t25 || $[100] !== t26 || $[101] !== t27 || $[102] !== t28 || $[103] !== t29 || $[104] !== t30 || $[105] !== t31 || $[106] !== t32 || $[107] !== t33 || $[108] !== t34 || $[109] !== t35 || $[110] !== updateChecked) {
     t36 = {
-      getType: _temp$q,
+      getType: _temp$j,
       getName: t25,
       getReset: t26,
       reset: t27,
@@ -7398,9 +7417,9 @@ var PFormCheckbox = function PFormCheckbox(t0) {
   }
   return t59;
 };
-function _temp$q() {
+function _temp$j() {
   return "PFormCheckbox";
-}insertStyle(".PFormRadioGroup .PFormRadioGroup-Item.PFormRadioGroup-Item--error .MuiTypography-root{color:var(--error-color) !important}");var _excluded$g = ["ref", "variant", "size", "color", "focused", "fullWidth", "hidden", "startAdornment", "endAdornment", "name", "width", "labelIcon", "label", "inline", "loading", "nowrap", "items", "value", "data", "error", "helperText", "disabled", "readOnly", "required", "exceptValue", "onLoadItems", "onChange", "onValue", "onValidate", "className", "style", "sx"];
+}insertStyle(".PFormRadioGroup .PFormRadioGroup-Item.PFormRadioGroup-Item--error .MuiTypography-root{color:var(--error-color) !important}");var _excluded$n = ["ref", "variant", "size", "color", "focused", "fullWidth", "hidden", "startAdornment", "endAdornment", "name", "width", "labelIcon", "label", "inline", "loading", "nowrap", "items", "value", "data", "error", "helperText", "disabled", "readOnly", "required", "exceptValue", "onLoadItems", "onChange", "onValue", "onValidate", "className", "style", "sx"];
 var PADDING_LEFT = 3;
 function PFormRadioGroup(t0) {
   var $ = compilerRuntime.c(272);
@@ -7471,7 +7490,7 @@ function PFormRadioGroup(t0) {
     className = _t.className;
     initStyle = _t.style;
     sx = _t.sx;
-    props = _objectWithoutProperties(_t, _excluded$g);
+    props = _objectWithoutProperties(_t, _excluded$n);
     $[0] = t0;
     $[1] = className;
     $[2] = endAdornment;
@@ -8191,7 +8210,7 @@ function PFormRadioGroup(t0) {
   var t51;
   if ($[141] !== setData || $[142] !== setErrorErrorHelperText || $[143] !== setLoading || $[144] !== t38 || $[145] !== t39 || $[146] !== t40 || $[147] !== t41 || $[148] !== t42 || $[149] !== t43 || $[150] !== t44 || $[151] !== t45 || $[152] !== t46 || $[153] !== t47 || $[154] !== t48 || $[155] !== t49 || $[156] !== t50 || $[157] !== updateValue) {
     t51 = {
-      getType: _temp$p,
+      getType: _temp$i,
       getName: t38,
       getReset: t39,
       reset: t40,
@@ -8693,7 +8712,7 @@ function PFormRadioGroup(t0) {
   }
   return t83;
 }
-function _temp$p() {
+function _temp$i() {
   return "PFormRadioGroup";
 }insertStyle(".PFormToggleButtonGroup.loading .PFormItemBase-Control-wrap .PFormItemBase-Control{align-items:center !important}.PFormToggleButtonGroup .ToggleButton{display:inline-flex;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;align-items:center}.PFormToggleButtonGroup .ToggleButton .__label__{height:0;line-height:0 !important;overflow:visible !important}.PFormToggleButtonGroup.type-checkbox .ToggleButton,.PFormToggleButtonGroup.type-radio .ToggleButton{padding-left:3px;padding-right:5px;border:0 !important;margin-left:0 !important;justify-content:flex-start;display:flex;background-color:rgba(0,0,0,0) !important}.PFormToggleButtonGroup.type-checkbox .ToggleButton:not(:last-child),.PFormToggleButtonGroup.type-radio .ToggleButton:not(:last-child){margin-right:5px}.PFormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__,.PFormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-unchecked__,.PFormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__,.PFormToggleButtonGroup.type-radio .ToggleButton .__checkbox-unchecked__{margin-right:3px}.PFormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__,.PFormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__{display:none}.PFormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected.Mui-disabled,.PFormToggleButtonGroup.type-radio .ToggleButton.Mui-selected.Mui-disabled{opacity:.5}.PFormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-checked__,.PFormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-checked__{display:block}.PFormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-unchecked__,.PFormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-unchecked__{display:none}.PFormToggleButtonGroup:not(.with-label).variant-outlined .PFormItemBase-Control-wrap{margin-top:15px;margin-bottom:-15px}.PFormToggleButtonGroup:not(.with-label).variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PFormToggleButtonGroup:not(.with-label).variant-filled .PFormItemBase-Control-wrap{margin-top:15px;margin-bottom:-15px}.PFormToggleButtonGroup:not(.with-label).variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PFormToggleButtonGroup:not(.with-label).variant-standard .PFormItemBase-Control-wrap{margin-top:0px;margin-bottom:-0px}.PFormToggleButtonGroup:not(.with-label).variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:28px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-outlined .PFormItemBase-Control-wrap{margin-top:13px;margin-bottom:-13px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:24px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-filled .PFormItemBase-Control-wrap{margin-top:13px;margin-bottom:-13px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:31px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-standard .PFormItemBase-Control-wrap{margin-top:0px;margin-bottom:-0px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:26px}.PFormToggleButtonGroup.with-label.variant-outlined .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PFormToggleButtonGroup.with-label.variant-filled .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PFormToggleButtonGroup.with-label.variant-standard .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:28px}.PFormToggleButtonGroup.with-label.size-small.variant-outlined .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.size-small.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:24px}.PFormToggleButtonGroup.with-label.size-small.variant-filled .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.size-small.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:31px}.PFormToggleButtonGroup.with-label.size-small.variant-standard .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.size-small.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:26px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-outlined .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-filled .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-standard .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:28px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-outlined .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:24px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-filled .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:31px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-standard .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:26px}");function PFormToggleButtonGroup(t0) {
   var $ = compilerRuntime.c(236);
@@ -8992,7 +9011,7 @@ function _temp$p() {
   if (items) {
     var _t;
     if ($[29] !== items) {
-      _t = items.reduce(_temp$o, {});
+      _t = items.reduce(_temp$h, {});
       $[29] = items;
       $[30] = _t;
     } else {
@@ -9475,7 +9494,7 @@ function _temp$p() {
   var t56;
   if ($[121] !== focus || $[122] !== setData || $[123] !== setErrorErrorHelperText || $[124] !== setLoading || $[125] !== t40 || $[126] !== t41 || $[127] !== t42 || $[128] !== t43 || $[129] !== t44 || $[130] !== t45 || $[131] !== t46 || $[132] !== t47 || $[133] !== t48 || $[134] !== t49 || $[135] !== t50 || $[136] !== t51 || $[137] !== t52 || $[138] !== t53 || $[139] !== t54 || $[140] !== t55) {
     t56 = {
-      getType: _temp2$3,
+      getType: _temp2$2,
       getName: t40,
       getReset: t41,
       reset: t42,
@@ -9912,10 +9931,10 @@ function _temp4$1(v_3) {
 function _temp3$1(v_1) {
   return v_1.toString();
 }
-function _temp2$3() {
+function _temp2$2() {
   return "PFormToggleButtonGroup";
 }
-function _temp$o(res, t0) {
+function _temp$h(res, t0) {
   var value = t0.value;
   res["".concat(value)] = value;
   return res;
@@ -10333,7 +10352,7 @@ function _temp$o(res, t0) {
   var t33;
   if ($[67] !== setData || $[68] !== setErrorErrorHelperText || $[69] !== t24 || $[70] !== t25 || $[71] !== t26 || $[72] !== t27 || $[73] !== t28 || $[74] !== t29 || $[75] !== t30 || $[76] !== t31 || $[77] !== t32 || $[78] !== updateValue) {
     t33 = {
-      getType: _temp$n,
+      getType: _temp$g,
       getName: t24,
       getReset: t25,
       reset: t26,
@@ -10591,7 +10610,7 @@ function _temp$o(res, t0) {
   }
   return t53;
 };
-function _temp$n() {
+function _temp$g() {
   return "PFormRating";
 }var getFinalValue$8 = function getFinalValue(value) {
   return value || '';
@@ -10985,7 +11004,7 @@ function _temp$n() {
   var t33;
   if ($[60] !== setData || $[61] !== setErrorErrorHelperText || $[62] !== t24 || $[63] !== t25 || $[64] !== t26 || $[65] !== t27 || $[66] !== t28 || $[67] !== t29 || $[68] !== t30 || $[69] !== t31 || $[70] !== t32 || $[71] !== updateValue) {
     t33 = {
-      getType: _temp$m,
+      getType: _temp$f,
       getName: t24,
       getReset: t25,
       reset: t26,
@@ -11302,7 +11321,7 @@ function _temp$n() {
   return t55;
 };
 _PFormTextEditor.apiKey = '';
-function _temp$m() {
+function _temp$f() {
   return "PFormTextEditor";
 }function PFormAutocomplete(t0) {
   var $ = compilerRuntime.c(254);
@@ -11574,7 +11593,7 @@ function _temp$m() {
   if (items) {
     var _t;
     if ($[26] !== items) {
-      _t = items.reduce(_temp$l, {});
+      _t = items.reduce(_temp$e, {});
       $[26] = items;
       $[27] = _t;
     } else {
@@ -11596,7 +11615,7 @@ function _temp$m() {
   if (items) {
     var _t3;
     if ($[29] !== items) {
-      _t3 = items.reduce(_temp2$2, {});
+      _t3 = items.reduce(_temp2$1, {});
       $[29] = items;
       $[30] = _t3;
     } else {
@@ -12684,15 +12703,116 @@ function _temp4() {
 function _temp3(info_2) {
   return info_2.value;
 }
-function _temp2$2(res_0, info) {
+function _temp2$1(res_0, info) {
   res_0[info.value.toString()] = info;
   return res_0;
 }
-function _temp$l(res, t0) {
+function _temp$e(res, t0) {
   var value = t0.value;
   res[value.toString()] = value;
   return res;
-}/********************************************************************************************************************
+}var PrivateEmbedPicker = function PrivateEmbedPicker(t0) {
+  var _style$display;
+  var $ = compilerRuntime.c(23);
+  var name = t0.name,
+    label = t0.label,
+    required = t0.required,
+    disabled = t0.disabled,
+    readOnly = t0.readOnly,
+    hidden = t0.hidden,
+    fullWidth = t0.fullWidth,
+    error = t0.error,
+    helperText = t0.helperText,
+    pickerRef = t0.pickerRef,
+    className = t0.className,
+    style = t0.style,
+    sx = t0.sx,
+    children = t0.children;
+  var t1 = hidden ? "none" : (_style$display = style === null || style === void 0 ? void 0 : style.display) !== null && _style$display !== void 0 ? _style$display : fullWidth ? "block" : "inline-block";
+  var t2;
+  if ($[0] !== style || $[1] !== t1) {
+    t2 = _objectSpread2(_objectSpread2({}, style), {}, {
+      display: t1
+    });
+    $[0] = style;
+    $[1] = t1;
+    $[2] = t2;
+  } else {
+    t2 = $[2];
+  }
+  var t3 = disabled || readOnly;
+  var t4 = typeof label === "string" ? label : name;
+  var t5 = !!error;
+  var t6;
+  if ($[3] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t6 = {
+      border: 0,
+      margin: 0,
+      padding: 0,
+      minWidth: 0
+    };
+    $[3] = t6;
+  } else {
+    t6 = $[3];
+  }
+  var t7;
+  if ($[4] !== label || $[5] !== required) {
+    t7 = label && /*#__PURE__*/React.createElement("legend", null, label, required && " *");
+    $[4] = label;
+    $[5] = required;
+    $[6] = t7;
+  } else {
+    t7 = $[6];
+  }
+  var t8;
+  if ($[7] !== children || $[8] !== pickerRef || $[9] !== t3 || $[10] !== t4 || $[11] !== t5 || $[12] !== t7) {
+    t8 = /*#__PURE__*/React.createElement("fieldset", {
+      ref: pickerRef,
+      tabIndex: -1,
+      disabled: t3,
+      "aria-label": t4,
+      "aria-invalid": t5,
+      style: t6
+    }, t7, children);
+    $[7] = children;
+    $[8] = pickerRef;
+    $[9] = t3;
+    $[10] = t4;
+    $[11] = t5;
+    $[12] = t7;
+    $[13] = t8;
+  } else {
+    t8 = $[13];
+  }
+  var t9;
+  if ($[14] !== error || $[15] !== helperText) {
+    t9 = helperText && /*#__PURE__*/React.createElement(material.FormHelperText, {
+      error: error
+    }, helperText);
+    $[14] = error;
+    $[15] = helperText;
+    $[16] = t9;
+  } else {
+    t9 = $[16];
+  }
+  var t10;
+  if ($[17] !== className || $[18] !== sx || $[19] !== t2 || $[20] !== t8 || $[21] !== t9) {
+    t10 = /*#__PURE__*/React.createElement(material.Box, {
+      className: className,
+      style: t2,
+      sx: sx
+    }, t8, t9);
+    $[17] = className;
+    $[18] = sx;
+    $[19] = t2;
+    $[20] = t8;
+    $[21] = t9;
+    $[22] = t10;
+  } else {
+    t10 = $[22];
+  }
+  return t10;
+};/********************************************************************************************************************
  * getDateValidationErrorText
  * ******************************************************************************************************************/
 
@@ -13012,7 +13132,7 @@ function getFileSizeText(bytes) {
     u += 1;
   } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
   return "".concat(bytes.toFixed(dp), " ").concat(units[u]);
-}insertStyle(".PrivateYearSelect{position:absolute;left:0;right:0;top:0;bottom:0;background-color:#fff}.PrivateYearSelect button{font-size:14px;font-weight:400;border-radius:18px}");var _excluded$f = ["ref", "children", "className", "selected", "activated", "outlined"];
+}insertStyle(".PrivateYearSelect{position:absolute;left:0;right:0;top:0;bottom:0;background-color:#fff}.PrivateYearSelect button{font-size:14px;font-weight:400;border-radius:18px}");var _excluded$m = ["ref", "children", "className", "selected", "activated", "outlined"];
 var PrivateToggleButton = function PrivateToggleButton(t0) {
   var $ = compilerRuntime.c(30);
   var activated;
@@ -13030,7 +13150,7 @@ var PrivateToggleButton = function PrivateToggleButton(t0) {
     selected = _t.selected;
     activated = _t.activated;
     outlined = _t.outlined;
-    props = _objectWithoutProperties(_t, _excluded$f);
+    props = _objectWithoutProperties(_t, _excluded$m);
     $[0] = t0;
     $[1] = activated;
     $[2] = children;
@@ -13941,7 +14061,7 @@ var PrivateTimeSection = function PrivateTimeSection(t0) {
     t18 = $[75];
   }
   return t18;
-};insertStyle(".PrivateStaticDatePicker.time{height:400px}.PrivateStaticDatePicker .MuiPickersCalendarHeader-root{display:none}.PrivateStaticDatePicker .month-title-container{display:flex;align-items:center;margin-left:5px}.PrivateStaticDatePicker .month-title-container .month-title-wrap{display:flex;align-items:center;cursor:pointer}.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button{font-size:15px;padding-left:8px;padding-right:0;min-width:0}.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button:not(.active){color:unset}.PrivateStaticDatePicker .action-buttons{border-top:1px solid #efefef;padding:10px;text-align:right}.PrivateStaticDatePicker .action-buttons button{min-width:0;color:inherit}.PrivateStaticDatePicker .action-buttons button:not(:first-of-type){margin-left:5px}.PrivateStaticDatePicker .action-buttons button.disabled{color:rgba(0,0,0,.5)}.PrivateStaticDatePicker .time{border-left:2px solid #bfbfbf}.PrivateStaticDatePicker .time .time-container{height:100%}.PrivateStaticDatePicker .time .time-container .time-title{text-align:center;padding:22px 0;font-size:15px}.PrivateStaticDatePicker .time .time-container .time-select-wrap{flex:1;border-top:1px solid #efefef}.PrivateStaticDatePicker.time .time .time-container .time-select-wrap>div>div:not(:first-of-type){border-left:1px solid #efefef}");var _excluded$e = ["ref", "value", "availableDate", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"];
+};insertStyle(".PrivateStaticDatePicker.time{height:400px}.PrivateStaticDatePicker .MuiPickersCalendarHeader-root{display:none}.PrivateStaticDatePicker .month-title-container{display:flex;align-items:center;margin-left:5px}.PrivateStaticDatePicker .month-title-container .month-title-wrap{display:flex;align-items:center;cursor:pointer}.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button{font-size:15px;padding-left:8px;padding-right:0;min-width:0}.PrivateStaticDatePicker .month-title-container .month-title-wrap .month-title button:not(.active){color:unset}.PrivateStaticDatePicker .action-buttons{border-top:1px solid #efefef;padding:10px;text-align:right}.PrivateStaticDatePicker .action-buttons button{min-width:0;color:inherit}.PrivateStaticDatePicker .action-buttons button:not(:first-of-type){margin-left:5px}.PrivateStaticDatePicker .action-buttons button.disabled{color:rgba(0,0,0,.5)}.PrivateStaticDatePicker .time{border-left:2px solid #bfbfbf}.PrivateStaticDatePicker .time .time-container{height:100%}.PrivateStaticDatePicker .time .time-container .time-title{text-align:center;padding:22px 0;font-size:15px}.PrivateStaticDatePicker .time .time-container .time-select-wrap{flex:1;border-top:1px solid #efefef}.PrivateStaticDatePicker.time .time .time-container .time-select-wrap>div>div:not(:first-of-type){border-left:1px solid #efefef}");var _excluded$l = ["ref", "value", "availableDate", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"];
 var DEFAULT_HOURS$1 = new Array(24).fill(0);
 for (var i$2 = 0; i$2 < DEFAULT_HOURS$1.length; i$2 += 1) {
   DEFAULT_HOURS$1[i$2] = i$2;
@@ -13993,7 +14113,7 @@ var PrivateStaticDatePicker = function PrivateStaticDatePicker(t0) {
     _onChange = _t.onChange;
     _onMonthChange = _t.onMonthChange;
     onClose = _t.onClose;
-    props = _objectWithoutProperties(_t, _excluded$e);
+    props = _objectWithoutProperties(_t, _excluded$l);
     $[0] = t0;
     $[1] = disableFuture;
     $[2] = disablePast;
@@ -14307,7 +14427,7 @@ var PrivateStaticDatePicker = function PrivateStaticDatePicker(t0) {
         previousIconButton: LeftArrowButton,
         nextIconButton: RightArrowButton,
         day: handleRenderDay,
-        actionBar: _temp$k
+        actionBar: _temp$d
       },
       minDate: minDate,
       maxDate: maxDate,
@@ -14410,12 +14530,12 @@ var PrivateStaticDatePicker = function PrivateStaticDatePicker(t0) {
   }
   return t20;
 };
-function _temp$k() {
+function _temp$d() {
   return /*#__PURE__*/React.createElement(React.Fragment, null);
-}var _excluded$d = ["className"];
+}var _excluded$k = ["className"];
 var PrivateStyledTooltip = material.styled(function (_ref) {
   var className = _ref.className,
-    props = _objectWithoutProperties(_ref, _excluded$d);
+    props = _objectWithoutProperties(_ref, _excluded$k);
   return /*#__PURE__*/React.createElement(material.Tooltip, _extends({}, props, {
     classes: {
       popper: className
@@ -14434,9 +14554,9 @@ var PrivateStyledTooltip = material.styled(function (_ref) {
     maxWidth: 'inherit !important',
     boxShadow: theme.shadows[8]
   });
-});insertStyle(".PrivateDatePicker .input-text-field.align-left .MuiInputBase-input{text-align:left}.PrivateDatePicker .input-text-field.align-center .MuiInputBase-input{text-align:center}.PrivateDatePicker .input-text-field.align-right .MuiInputBase-input{text-align:right}");var _excluded$c = ["ref", "variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "enableKeyboardInput", "hidden", "showDaysOutsideCurrentMonth", "onChange", "onValidate", "className", "style", "sx"];
-var PrivateDatePicker = function PrivateDatePicker(t0) {
-  var $ = compilerRuntime.c(279);
+});insertStyle(".PrivateDatePicker .input-text-field.align-left .MuiInputBase-input{text-align:left}.PrivateDatePicker .input-text-field.align-center .MuiInputBase-input{text-align:center}.PrivateDatePicker .input-text-field.align-right .MuiInputBase-input{text-align:right}");var _excluded$j = ["embedded", "ref", "variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "enableKeyboardInput", "hidden", "showDaysOutsideCurrentMonth", "onChange", "onValidate", "className", "style", "sx"];
+var PrivateDatePickerInternal = function PrivateDatePickerInternal(t0) {
+  var $ = compilerRuntime.c(317);
   var className;
   var disableFuture;
   var disablePast;
@@ -14479,11 +14599,13 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
   var t1;
   var t2;
   var t3;
+  var t4;
   var time;
   var type;
   var width;
   if ($[0] !== t0) {
     var _t = t0;
+    t1 = _t.embedded;
     ref = _t.ref;
     initVariant = _t.variant;
     initSize = _t.size;
@@ -14494,7 +14616,7 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
     name = _t.name;
     type = _t.type;
     time = _t.time;
-    t1 = _t.value;
+    t2 = _t.value;
     initData = _t.data;
     initLabel = _t.label;
     labelIcon = _t.labelIcon;
@@ -14514,7 +14636,7 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
     icon = _t.icon;
     startAdornment = _t.startAdornment;
     endAdornment = _t.endAdornment;
-    t2 = _t.align;
+    t3 = _t.align;
     hours = _t.hours;
     minutes = _t.minutes;
     seconds = _t.seconds;
@@ -14522,13 +14644,13 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
     secondInterval = _t.secondInterval;
     enableKeyboardInput = _t.enableKeyboardInput;
     initHidden = _t.hidden;
-    t3 = _t.showDaysOutsideCurrentMonth;
+    t4 = _t.showDaysOutsideCurrentMonth;
     onChange = _t.onChange;
     initOnValidate = _t.onValidate;
     className = _t.className;
     initStyle = _t.style;
     sx = _t.sx;
-    otherProps = _objectWithoutProperties(_t, _excluded$c);
+    otherProps = _objectWithoutProperties(_t, _excluded$j);
     $[0] = t0;
     $[1] = className;
     $[2] = disableFuture;
@@ -14572,9 +14694,10 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
     $[40] = t1;
     $[41] = t2;
     $[42] = t3;
-    $[43] = time;
-    $[44] = type;
-    $[45] = width;
+    $[43] = t4;
+    $[44] = time;
+    $[45] = type;
+    $[46] = width;
   } else {
     className = $[1];
     disableFuture = $[2];
@@ -14618,14 +14741,17 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
     t1 = $[40];
     t2 = $[41];
     t3 = $[42];
-    time = $[43];
-    type = $[44];
-    width = $[45];
+    t4 = $[43];
+    time = $[44];
+    type = $[45];
+    width = $[46];
   }
-  var initValue = t1 === undefined ? null : t1;
-  var align = t2 === undefined ? "center" : t2;
-  var showDaysOutsideCurrentMonth = t3 === undefined ? true : t3;
+  var embedded = t1 === undefined ? false : t1;
+  var initValue = t2 === undefined ? null : t2;
+  var align = t3 === undefined ? "center" : t3;
+  var showDaysOutsideCurrentMonth = t4 === undefined ? true : t4;
   var id = React.useId();
+  var embeddedRef = React.useRef(null);
   var initValueRef = reactHook.useAutoUpdateRef(initValue);
   var privateStaticDatePickerRef = React.useRef(null);
   var textFieldInputRef = React.useRef(undefined);
@@ -14668,150 +14794,150 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
     timeError = _useState6[0],
     _setTimeError = _useState6[1];
   var timeErrorRef = reactHook.useAutoUpdateRef(timeError);
-  var t4;
-  if ($[46] !== timeErrorRef) {
-    t4 = function t4(newValue) {
+  var t5;
+  if ($[47] !== timeErrorRef) {
+    t5 = function t5(newValue) {
       _setTimeError(newValue);
       timeErrorRef.current = newValue;
     };
-    $[46] = timeErrorRef;
-    $[47] = t4;
+    $[47] = timeErrorRef;
+    $[48] = t5;
   } else {
-    t4 = $[47];
+    t5 = $[48];
   }
-  var setTimeError = t4;
+  var setTimeError = t5;
   var _useState7 = React.useState(initError),
     _useState8 = _slicedToArray(_useState7, 2),
     error = _useState8[0],
     _setError = _useState8[1];
-  var t5;
   var t6;
-  if ($[48] !== initError) {
-    t5 = function t5() {
+  var t7;
+  if ($[49] !== initError) {
+    t6 = function t6() {
       return _setError(initError);
     };
-    t6 = [initError];
-    $[48] = initError;
-    $[49] = t5;
+    t7 = [initError];
+    $[49] = initError;
     $[50] = t6;
+    $[51] = t7;
   } else {
-    t5 = $[49];
     t6 = $[50];
+    t7 = $[51];
   }
-  reactHook.useFirstSkipChanged(t5, t6);
+  reactHook.useFirstSkipChanged(t6, t7);
   var errorRef = reactHook.useAutoUpdateRef(error);
-  var t7;
-  if ($[51] !== errorRef) {
-    t7 = function t7(newValue_0) {
+  var t8;
+  if ($[52] !== errorRef) {
+    t8 = function t8(newValue_0) {
       _setError(newValue_0);
       errorRef.current = newValue_0;
     };
-    $[51] = errorRef;
-    $[52] = t7;
+    $[52] = errorRef;
+    $[53] = t8;
   } else {
-    t7 = $[52];
+    t8 = $[53];
   }
-  var setError = t7;
+  var setError = t8;
   var _useState9 = React.useState(initData),
     _useState0 = _slicedToArray(_useState9, 2),
     data = _useState0[0],
     _setData = _useState0[1];
-  var t8;
+  var t10;
   var t9;
-  if ($[53] !== initData) {
-    t8 = function t8() {
+  if ($[54] !== initData) {
+    t9 = function t9() {
       return _setData(initData);
     };
-    t9 = [initData];
-    $[53] = initData;
-    $[54] = t8;
-    $[55] = t9;
+    t10 = [initData];
+    $[54] = initData;
+    $[55] = t10;
+    $[56] = t9;
   } else {
-    t8 = $[54];
-    t9 = $[55];
+    t10 = $[55];
+    t9 = $[56];
   }
-  reactHook.useFirstSkipChanged(t8, t9);
+  reactHook.useFirstSkipChanged(t9, t10);
   var dataRef = reactHook.useAutoUpdateRef(data);
-  var t10;
-  if ($[56] !== dataRef) {
-    t10 = function t10(newValue_1) {
+  var t11;
+  if ($[57] !== dataRef) {
+    t11 = function t11(newValue_1) {
       _setData(newValue_1);
       dataRef.current = newValue_1;
     };
-    $[56] = dataRef;
-    $[57] = t10;
+    $[57] = dataRef;
+    $[58] = t11;
   } else {
-    t10 = $[57];
+    t11 = $[58];
   }
-  var setData = t10;
+  var setData = t11;
   var finalInitDisabled = initDisabled !== null && initDisabled !== void 0 ? initDisabled : formDisabled;
   var _useState1 = React.useState(finalInitDisabled),
     _useState10 = _slicedToArray(_useState1, 2),
     disabled = _useState10[0],
     setDisabled = _useState10[1];
-  var t11;
   var t12;
-  if ($[58] !== finalInitDisabled) {
-    t11 = function t11() {
+  var t13;
+  if ($[59] !== finalInitDisabled) {
+    t12 = function t12() {
       return setDisabled(finalInitDisabled);
     };
-    t12 = [finalInitDisabled];
-    $[58] = finalInitDisabled;
-    $[59] = t11;
+    t13 = [finalInitDisabled];
+    $[59] = finalInitDisabled;
     $[60] = t12;
+    $[61] = t13;
   } else {
-    t11 = $[59];
     t12 = $[60];
+    t13 = $[61];
   }
-  reactHook.useFirstSkipChanged(t11, t12);
+  reactHook.useFirstSkipChanged(t12, t13);
   var _useState11 = React.useState(initHidden),
     _useState12 = _slicedToArray(_useState11, 2),
     hidden = _useState12[0],
     setHidden = _useState12[1];
-  var t13;
   var t14;
-  if ($[61] !== initHidden) {
-    t13 = function t13() {
+  var t15;
+  if ($[62] !== initHidden) {
+    t14 = function t14() {
       return setHidden(initHidden);
     };
-    t14 = [initHidden];
-    $[61] = initHidden;
-    $[62] = t13;
+    t15 = [initHidden];
+    $[62] = initHidden;
     $[63] = t14;
+    $[64] = t15;
   } else {
-    t13 = $[62];
     t14 = $[63];
+    t15 = $[64];
   }
-  reactHook.useFirstSkipChanged(t13, t14);
-  var t15 = !!disablePast;
-  var t16 = !!disableFuture;
-  var t17;
-  if ($[64] !== maxDate || $[65] !== minDate || $[66] !== t15 || $[67] !== t16) {
-    t17 = makeAvailableDate(minDate, maxDate, t15, t16);
-    $[64] = maxDate;
-    $[65] = minDate;
-    $[66] = t15;
+  reactHook.useFirstSkipChanged(t14, t15);
+  var t16 = !!disablePast;
+  var t17 = !!disableFuture;
+  var t18;
+  if ($[65] !== maxDate || $[66] !== minDate || $[67] !== t16 || $[68] !== t17) {
+    t18 = makeAvailableDate(minDate, maxDate, t16, t17);
+    $[65] = maxDate;
+    $[66] = minDate;
     $[67] = t16;
     $[68] = t17;
+    $[69] = t18;
   } else {
-    t17 = $[68];
+    t18 = $[69];
   }
-  var availableDate = t17;
-  var t18;
-  if ($[69] !== setError) {
-    t18 = function t18(error_0, helperText_0) {
+  var availableDate = t18;
+  var t19;
+  if ($[70] !== setError) {
+    t19 = function t19(error_0, helperText_0) {
       setError(error_0);
       setErrorHelperText(error_0 ? helperText_0 : undefined);
     };
-    $[69] = setError;
-    $[70] = t18;
+    $[70] = setError;
+    $[71] = t19;
   } else {
-    t18 = $[70];
+    t19 = $[71];
   }
-  var setErrorErrorHelperText = t18;
-  var t19;
-  if ($[71] !== onValidateRef || $[72] !== required || $[73] !== setErrorErrorHelperText || $[74] !== timeErrorRef) {
-    t19 = function t19(value) {
+  var setErrorErrorHelperText = t19;
+  var t20;
+  if ($[72] !== onValidateRef || $[73] !== required || $[74] !== setErrorErrorHelperText || $[75] !== timeErrorRef) {
+    t20 = function t20(value) {
       if (required && compare.empty(value)) {
         setErrorErrorHelperText(true, "\uD544\uC218 \uC785\uB825 \uD56D\uBAA9\uC785\uB2C8\uB2E4.");
         return false;
@@ -14838,81 +14964,87 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
       setErrorErrorHelperText(false, undefined);
       return true;
     };
-    $[71] = onValidateRef;
-    $[72] = required;
-    $[73] = setErrorErrorHelperText;
-    $[74] = timeErrorRef;
-    $[75] = t19;
-  } else {
-    t19 = $[75];
-  }
-  var validate = t19;
-  var validateRef = reactHook.useAutoUpdateRef(validate);
-  var t20;
-  if ($[76] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t20 = function t20() {
-      var _textFieldInputRef$cu;
-      (_textFieldInputRef$cu = textFieldInputRef.current) === null || _textFieldInputRef$cu === void 0 || _textFieldInputRef$cu.focus();
-    };
+    $[72] = onValidateRef;
+    $[73] = required;
+    $[74] = setErrorErrorHelperText;
+    $[75] = timeErrorRef;
     $[76] = t20;
   } else {
     t20 = $[76];
   }
-  var focus = t20;
+  var validate = t20;
+  var validateRef = reactHook.useAutoUpdateRef(validate);
+  var t21;
+  if ($[77] !== embedded) {
+    t21 = function t21() {
+      if (embedded) {
+        var _embeddedRef$current;
+        (_embeddedRef$current = embeddedRef.current) === null || _embeddedRef$current === void 0 || _embeddedRef$current.focus();
+      } else {
+        var _textFieldInputRef$cu;
+        (_textFieldInputRef$cu = textFieldInputRef.current) === null || _textFieldInputRef$cu === void 0 || _textFieldInputRef$cu.focus();
+      }
+    };
+    $[77] = embedded;
+    $[78] = t21;
+  } else {
+    t21 = $[78];
+  }
+  var focus = t21;
   var _useState13 = React.useState(initValue),
     _useState14 = _slicedToArray(_useState13, 2),
     value_0 = _useState14[0],
     _setValue = _useState14[1];
-  var t21;
   var t22;
-  if ($[77] !== initValue) {
-    t21 = function t21() {
+  var t23;
+  if ($[79] !== initValue) {
+    t22 = function t22() {
       return _setValue(initValue);
     };
-    t22 = [initValue];
-    $[77] = initValue;
-    $[78] = t21;
-    $[79] = t22;
+    t23 = [initValue];
+    $[79] = initValue;
+    $[80] = t22;
+    $[81] = t23;
   } else {
-    t21 = $[78];
-    t22 = $[79];
+    t22 = $[80];
+    t23 = $[81];
   }
-  reactHook.useFirstSkipChanged(t21, t22);
+  reactHook.useFirstSkipChanged(t22, t23);
   var valueRef = reactHook.useAutoUpdateRef(value_0);
-  var t23;
-  if ($[80] !== valueRef) {
-    t23 = function t23(newValue_2) {
+  var t24;
+  if ($[82] !== valueRef) {
+    t24 = function t24(newValue_2) {
       _setValue(newValue_2);
       valueRef.current = newValue_2;
     };
-    $[80] = valueRef;
-    $[81] = t23;
+    $[82] = valueRef;
+    $[83] = t24;
   } else {
-    t23 = $[81];
+    t24 = $[83];
   }
-  var setValue = t23;
+  var setValue = t24;
   var _useState15 = React.useState(value_0),
     _useState16 = _slicedToArray(_useState15, 2),
     inputValue = _useState16[0],
     setInputValue = _useState16[1];
-  var t24;
   var t25;
-  if ($[82] !== value_0) {
-    t24 = function t24() {
+  var t26;
+  if ($[84] !== value_0) {
+    t25 = function t25() {
       return setInputValue(value_0);
     };
-    t25 = [value_0];
-    $[82] = value_0;
-    $[83] = t24;
-    $[84] = t25;
+    t26 = [value_0];
+    $[84] = value_0;
+    $[85] = t25;
+    $[86] = t26;
   } else {
-    t24 = $[83];
-    t25 = $[84];
+    t25 = $[85];
+    t26 = $[86];
   }
-  reactHook.useFirstSkipChanged(t24, t25);
-  var t26;
-  if ($[85] !== availableDate || $[86] !== errorRef || $[87] !== name || $[88] !== onChangeRef || $[89] !== onValueChange || $[90] !== setTimeError || $[91] !== setValue || $[92] !== time || $[93] !== type || $[94] !== validateRef) {
-    t26 = function t26(newValue_3) {
+  reactHook.useFirstSkipChanged(t25, t26);
+  var t27;
+  if ($[87] !== availableDate || $[88] !== errorRef || $[89] !== name || $[90] !== onChangeRef || $[91] !== onValueChange || $[92] !== setTimeError || $[93] !== setValue || $[94] !== time || $[95] !== type || $[96] !== validateRef) {
+    t27 = function t27(newValue_3) {
       var _onChangeRef$current;
       var finalValue = newValue_3;
       setValue(finalValue);
@@ -14937,49 +15069,49 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
       }
       return finalValue;
     };
-    $[85] = availableDate;
-    $[86] = errorRef;
-    $[87] = name;
-    $[88] = onChangeRef;
-    $[89] = onValueChange;
-    $[90] = setTimeError;
-    $[91] = setValue;
-    $[92] = time;
-    $[93] = type;
-    $[94] = validateRef;
-    $[95] = t26;
+    $[87] = availableDate;
+    $[88] = errorRef;
+    $[89] = name;
+    $[90] = onChangeRef;
+    $[91] = onValueChange;
+    $[92] = setTimeError;
+    $[93] = setValue;
+    $[94] = time;
+    $[95] = type;
+    $[96] = validateRef;
+    $[97] = t27;
   } else {
-    t26 = $[95];
+    t27 = $[97];
   }
-  var updateValue = t26;
-  var t27;
-  if ($[96] !== error || $[97] !== timeError || $[98] !== validateRef || $[99] !== valueRef) {
-    t27 = function t27() {
+  var updateValue = t27;
+  var t28;
+  if ($[98] !== error || $[99] !== timeError || $[100] !== validateRef || $[101] !== valueRef) {
+    t28 = function t28() {
       if (error && !timeError) {
         validateRef.current(valueRef.current);
       }
     };
-    $[96] = error;
-    $[97] = timeError;
-    $[98] = validateRef;
-    $[99] = valueRef;
-    $[100] = t27;
+    $[98] = error;
+    $[99] = timeError;
+    $[100] = validateRef;
+    $[101] = valueRef;
+    $[102] = t28;
   } else {
-    t27 = $[100];
+    t28 = $[102];
   }
-  var t28;
-  if ($[101] !== error || $[102] !== timeError) {
-    t28 = [error, timeError];
-    $[101] = error;
-    $[102] = timeError;
-    $[103] = t28;
-  } else {
-    t28 = $[103];
-  }
-  reactHook.useEventEffect(t27, t28);
   var t29;
-  if ($[104] !== isOpen || $[105] !== name || $[106] !== onRequestSearchSubmit || $[107] !== value_0) {
-    t29 = function t29() {
+  if ($[103] !== error || $[104] !== timeError) {
+    t29 = [error, timeError];
+    $[103] = error;
+    $[104] = timeError;
+    $[105] = t29;
+  } else {
+    t29 = $[105];
+  }
+  reactHook.useEventEffect(t28, t29);
+  var t30;
+  if ($[106] !== isOpen || $[107] !== name || $[108] !== onRequestSearchSubmit || $[109] !== value_0) {
+    t30 = function t30() {
       if (isOpen) {
         openValueRef.current = value_0;
       } else {
@@ -14996,193 +15128,194 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
         }
       }
     };
-    $[104] = isOpen;
-    $[105] = name;
-    $[106] = onRequestSearchSubmit;
-    $[107] = value_0;
-    $[108] = t29;
-  } else {
-    t29 = $[108];
-  }
-  var t30;
-  if ($[109] !== isOpen) {
-    t30 = [isOpen];
-    $[109] = isOpen;
+    $[106] = isOpen;
+    $[107] = name;
+    $[108] = onRequestSearchSubmit;
+    $[109] = value_0;
     $[110] = t30;
   } else {
     t30 = $[110];
   }
-  reactHook.useEventEffect(t29, t30);
   var t31;
-  if ($[111] !== name) {
-    t31 = function t31() {
-      return name;
-    };
-    $[111] = name;
+  if ($[111] !== isOpen) {
+    t31 = [isOpen];
+    $[111] = isOpen;
     $[112] = t31;
   } else {
     t31 = $[112];
   }
+  reactHook.useEventEffect(t30, t31);
   var t32;
-  if ($[113] !== initValueRef) {
+  if ($[113] !== name) {
     t32 = function t32() {
-      return initValueRef.current;
+      return name;
     };
-    $[113] = initValueRef;
+    $[113] = name;
     $[114] = t32;
   } else {
     t32 = $[114];
   }
   var t33;
-  if ($[115] !== initValueRef || $[116] !== updateValue) {
+  if ($[115] !== initValueRef) {
     t33 = function t33() {
-      return updateValue(initValueRef.current);
+      return initValueRef.current;
     };
     $[115] = initValueRef;
-    $[116] = updateValue;
-    $[117] = t33;
+    $[116] = t33;
   } else {
-    t33 = $[117];
+    t33 = $[116];
   }
   var t34;
-  if ($[118] !== valueRef) {
+  if ($[117] !== initValueRef || $[118] !== updateValue) {
     t34 = function t34() {
-      return valueRef.current;
+      return updateValue(initValueRef.current);
     };
-    $[118] = valueRef;
+    $[117] = initValueRef;
+    $[118] = updateValue;
     $[119] = t34;
   } else {
     t34 = $[119];
   }
   var t35;
-  if ($[120] !== dataRef) {
+  if ($[120] !== valueRef) {
     t35 = function t35() {
-      return dataRef.current;
+      return valueRef.current;
     };
-    $[120] = dataRef;
+    $[120] = valueRef;
     $[121] = t35;
   } else {
     t35 = $[121];
   }
   var t36;
-  if ($[122] !== exceptValue) {
+  if ($[122] !== dataRef) {
     t36 = function t36() {
-      return !!exceptValue;
+      return dataRef.current;
     };
-    $[122] = exceptValue;
+    $[122] = dataRef;
     $[123] = t36;
   } else {
     t36 = $[123];
   }
   var t37;
-  if ($[124] !== disabled) {
+  if ($[124] !== exceptValue) {
     t37 = function t37() {
-      return !!disabled;
+      return !!exceptValue;
     };
-    $[124] = disabled;
+    $[124] = exceptValue;
     $[125] = t37;
   } else {
     t37 = $[125];
   }
   var t38;
-  if ($[126] !== hidden) {
+  if ($[126] !== disabled) {
     t38 = function t38() {
-      return !!hidden;
+      return !!disabled;
     };
-    $[126] = hidden;
+    $[126] = disabled;
     $[127] = t38;
   } else {
     t38 = $[127];
   }
   var t39;
-  if ($[128] !== validateRef || $[129] !== valueRef) {
+  if ($[128] !== hidden) {
     t39 = function t39() {
-      return validateRef.current(valueRef.current);
+      return !!hidden;
     };
-    $[128] = validateRef;
-    $[129] = valueRef;
-    $[130] = t39;
+    $[128] = hidden;
+    $[129] = t39;
   } else {
-    t39 = $[130];
+    t39 = $[129];
   }
   var t40;
-  if ($[131] !== initFormValueFormat || $[132] !== time || $[133] !== type) {
+  if ($[130] !== validateRef || $[131] !== valueRef) {
     t40 = function t40() {
-      return initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time);
+      return validateRef.current(valueRef.current);
     };
-    $[131] = initFormValueFormat;
-    $[132] = time;
-    $[133] = type;
-    $[134] = t40;
+    $[130] = validateRef;
+    $[131] = valueRef;
+    $[132] = t40;
   } else {
-    t40 = $[134];
+    t40 = $[132];
   }
   var t41;
-  if ($[135] !== setData || $[136] !== setErrorErrorHelperText || $[137] !== t31 || $[138] !== t32 || $[139] !== t33 || $[140] !== t34 || $[141] !== t35 || $[142] !== t36 || $[143] !== t37 || $[144] !== t38 || $[145] !== t39 || $[146] !== t40 || $[147] !== updateValue) {
-    t41 = {
-      getType: _temp$j,
-      getName: t31,
-      getReset: t32,
-      reset: t33,
-      getValue: t34,
+  if ($[133] !== initFormValueFormat || $[134] !== time || $[135] !== type) {
+    t41 = function t41() {
+      return initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time);
+    };
+    $[133] = initFormValueFormat;
+    $[134] = time;
+    $[135] = type;
+    $[136] = t41;
+  } else {
+    t41 = $[136];
+  }
+  var t42;
+  if ($[137] !== focus || $[138] !== setData || $[139] !== setErrorErrorHelperText || $[140] !== t32 || $[141] !== t33 || $[142] !== t34 || $[143] !== t35 || $[144] !== t36 || $[145] !== t37 || $[146] !== t38 || $[147] !== t39 || $[148] !== t40 || $[149] !== t41 || $[150] !== updateValue) {
+    t42 = {
+      getType: _temp$c,
+      getName: t32,
+      getReset: t33,
+      reset: t34,
+      getValue: t35,
       setValue: updateValue,
-      getData: t35,
+      getData: t36,
       setData: setData,
-      isExceptValue: t36,
-      isDisabled: t37,
+      isExceptValue: t37,
+      isDisabled: t38,
       setDisabled: setDisabled,
-      isHidden: t38,
+      isHidden: t39,
       setHidden: setHidden,
       focus: focus,
       focusValidate: focus,
-      validate: t39,
+      validate: t40,
       setError: setErrorErrorHelperText,
-      getFormValueFormat: t40
+      getFormValueFormat: t41
     };
-    $[135] = setData;
-    $[136] = setErrorErrorHelperText;
-    $[137] = t31;
-    $[138] = t32;
-    $[139] = t33;
-    $[140] = t34;
-    $[141] = t35;
-    $[142] = t36;
-    $[143] = t37;
-    $[144] = t38;
-    $[145] = t39;
-    $[146] = t40;
-    $[147] = updateValue;
-    $[148] = t41;
-  } else {
-    t41 = $[148];
-  }
-  var commands = t41;
-  var t42;
-  if ($[149] !== id || $[150] !== onAddValueItem) {
-    t42 = function t42(commands_0) {
-      return onAddValueItem(id, commands_0);
-    };
-    $[149] = id;
-    $[150] = onAddValueItem;
+    $[137] = focus;
+    $[138] = setData;
+    $[139] = setErrorErrorHelperText;
+    $[140] = t32;
+    $[141] = t33;
+    $[142] = t34;
+    $[143] = t35;
+    $[144] = t36;
+    $[145] = t37;
+    $[146] = t38;
+    $[147] = t39;
+    $[148] = t40;
+    $[149] = t41;
+    $[150] = updateValue;
     $[151] = t42;
   } else {
     t42 = $[151];
   }
+  var commands = t42;
   var t43;
-  if ($[152] !== id || $[153] !== onRemoveValueItem) {
-    t43 = function t43() {
-      return onRemoveValueItem(id);
+  if ($[152] !== id || $[153] !== onAddValueItem) {
+    t43 = function t43(commands_0) {
+      return onAddValueItem(id, commands_0);
     };
     $[152] = id;
-    $[153] = onRemoveValueItem;
+    $[153] = onAddValueItem;
     $[154] = t43;
   } else {
     t43 = $[154];
   }
-  reactHook.useForwardRef(ref, commands, t42, t43);
   var t44;
-  if ($[155] !== availableDate || $[156] !== isOpen || $[157] !== name || $[158] !== onRequestSearchSubmit || $[159] !== onValueChangeByUser || $[160] !== time || $[161] !== type || $[162] !== updateValue) {
-    t44 = function t44(unit, newValue_4, keyboardInputValue) {
+  if ($[155] !== id || $[156] !== onRemoveValueItem) {
+    t44 = function t44() {
+      return onRemoveValueItem(id);
+    };
+    $[155] = id;
+    $[156] = onRemoveValueItem;
+    $[157] = t44;
+  } else {
+    t44 = $[157];
+  }
+  reactHook.useForwardRef(ref, commands, t43, t44);
+  var t45;
+  if ($[158] !== availableDate || $[159] !== embedded || $[160] !== isOpen || $[161] !== name || $[162] !== onRequestSearchSubmit || $[163] !== onValueChangeByUser || $[164] !== time || $[165] !== type || $[166] !== updateValue) {
+    t45 = function t45(unit, newValue_4, keyboardInputValue) {
       var isUpdateValue = true;
       if (compare.notEmpty(keyboardInputValue)) {
         if (newValue_4) {
@@ -15228,6 +15361,9 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
         updateValue(finalValue_0);
         setTimeout(function () {
           onValueChangeByUser(name, finalValue_0);
+          if (embedded && (time ? unit === time : unit === "date")) {
+            onRequestSearchSubmit(name, finalValue_0);
+          }
           if (runOnRequestSearchSubmit_0) {
             onRequestSearchSubmit(name, finalValue_0);
           }
@@ -15235,35 +15371,36 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
       }
       setInputValue(finalValue_0);
     };
-    $[155] = availableDate;
-    $[156] = isOpen;
-    $[157] = name;
-    $[158] = onRequestSearchSubmit;
-    $[159] = onValueChangeByUser;
-    $[160] = time;
-    $[161] = type;
-    $[162] = updateValue;
-    $[163] = t44;
+    $[158] = availableDate;
+    $[159] = embedded;
+    $[160] = isOpen;
+    $[161] = name;
+    $[162] = onRequestSearchSubmit;
+    $[163] = onValueChangeByUser;
+    $[164] = time;
+    $[165] = type;
+    $[166] = updateValue;
+    $[167] = t45;
   } else {
-    t44 = $[163];
+    t45 = $[167];
   }
-  var handleChange = t44;
-  var t45;
-  if ($[164] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t45 = function t45() {
+  var handleChange = t45;
+  var t46;
+  if ($[168] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t46 = function t46() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
       }
     };
-    $[164] = t45;
+    $[168] = t46;
   } else {
-    t45 = $[164];
+    t46 = $[168];
   }
-  var handleContainerFocus = t45;
-  var t46;
-  if ($[165] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t46 = function t46() {
+  var handleContainerFocus = t46;
+  var t47;
+  if ($[169] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t47 = function t47() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
@@ -15275,258 +15412,351 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
         }, 10);
       }
     };
-    $[165] = t46;
+    $[169] = t47;
   } else {
-    t46 = $[165];
+    t47 = $[169];
   }
-  var handleContainerBlur = t46;
-  var t47;
-  if ($[166] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t47 = function t47() {
+  var handleContainerBlur = t47;
+  var t48;
+  if ($[170] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t48 = function t48() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
       }
       mouseDownTimeRef.current = new Date().getTime();
     };
-    $[166] = t47;
+    $[170] = t48;
   } else {
-    t47 = $[166];
+    t48 = $[170];
   }
-  var handleContainerMouseDown = t47;
+  var handleContainerMouseDown = t48;
   var readOnly_0 = !enableKeyboardInput;
   var inputProps;
-  if ($[167] !== readOnly_0) {
+  if ($[171] !== readOnly_0) {
     inputProps = {
       readOnly: readOnly_0
     };
     if (readOnly_0) {
       inputProps.tabIndex = -1;
     }
-    $[167] = readOnly_0;
-    $[168] = inputProps;
+    $[171] = readOnly_0;
+    $[172] = inputProps;
   } else {
-    inputProps = $[168];
+    inputProps = $[172];
   }
   var slotInputProps = inputProps;
   var muiInputProps;
-  if ($[169] !== endAdornment || $[170] !== icon || $[171] !== startAdornment) {
+  if ($[173] !== endAdornment || $[174] !== icon || $[175] !== startAdornment) {
     muiInputProps = {
       endAdornment: undefined
     };
     if (startAdornment || icon || muiInputProps.startAdornment) {
       var _t2;
-      if ($[173] !== icon) {
+      if ($[177] !== icon) {
         _t2 = icon && /*#__PURE__*/React.createElement(material.InputAdornment, {
           position: "start"
         }, /*#__PURE__*/React.createElement(reactComponent.PIcon, {
           size: "small"
         }, icon));
-        $[173] = icon;
-        $[174] = _t2;
+        $[177] = icon;
+        $[178] = _t2;
       } else {
-        _t2 = $[174];
+        _t2 = $[178];
       }
       var _t3;
-      if ($[175] !== startAdornment) {
+      if ($[179] !== startAdornment) {
         _t3 = startAdornment && /*#__PURE__*/React.createElement(material.InputAdornment, {
           position: "start"
         }, startAdornment);
-        $[175] = startAdornment;
-        $[176] = _t3;
+        $[179] = startAdornment;
+        $[180] = _t3;
       } else {
-        _t3 = $[176];
+        _t3 = $[180];
       }
       muiInputProps.startAdornment = /*#__PURE__*/React.createElement(React.Fragment, null, _t2, _t3, muiInputProps.startAdornment);
     }
     if (endAdornment) {
       var _t4;
-      if ($[177] !== endAdornment) {
+      if ($[181] !== endAdornment) {
         _t4 = endAdornment && /*#__PURE__*/React.createElement(material.InputAdornment, {
           position: "end"
         }, endAdornment);
-        $[177] = endAdornment;
-        $[178] = _t4;
+        $[181] = endAdornment;
+        $[182] = _t4;
       } else {
-        _t4 = $[178];
+        _t4 = $[182];
       }
       var _t5;
-      if ($[179] !== _t4) {
+      if ($[183] !== _t4) {
         _t5 = /*#__PURE__*/React.createElement(React.Fragment, null, _t4);
-        $[179] = _t4;
-        $[180] = _t5;
+        $[183] = _t4;
+        $[184] = _t5;
       } else {
-        _t5 = $[180];
+        _t5 = $[184];
       }
       muiInputProps.endAdornment = _t5;
     }
-    $[169] = endAdornment;
-    $[170] = icon;
-    $[171] = startAdornment;
-    $[172] = muiInputProps;
+    $[173] = endAdornment;
+    $[174] = icon;
+    $[175] = startAdornment;
+    $[176] = muiInputProps;
   } else {
-    muiInputProps = $[172];
+    muiInputProps = $[176];
   }
   var slotMuiInputProps = muiInputProps;
-  var t48 = "align-".concat(align);
-  var t49;
-  if ($[181] !== t48) {
-    t49 = classNames("input-text-field", t48);
-    $[181] = t48;
-    $[182] = t49;
-  } else {
-    t49 = $[182];
-  }
+  var t49 = "align-".concat(align);
   var t50;
-  if ($[183] !== labelShrink) {
-    t50 = labelShrink ? {
+  if ($[185] !== t49) {
+    t50 = classNames("input-text-field", t49);
+    $[185] = t49;
+    $[186] = t50;
+  } else {
+    t50 = $[186];
+  }
+  var t51;
+  if ($[187] !== labelShrink) {
+    t51 = labelShrink ? {
       shrink: labelShrink
     } : undefined;
-    $[183] = labelShrink;
-    $[184] = t50;
+    $[187] = labelShrink;
+    $[188] = t51;
   } else {
-    t50 = $[184];
+    t51 = $[188];
   }
-  var t51 = !!error || !!timeError;
-  var t52;
-  if ($[185] !== initStyle || $[186] !== width) {
-    t52 = width != null ? _objectSpread2(_objectSpread2({}, initStyle), {}, {
+  var t52 = !!error || !!timeError;
+  var t53;
+  if ($[189] !== initStyle || $[190] !== width) {
+    t53 = width != null ? _objectSpread2(_objectSpread2({}, initStyle), {}, {
       width: width
     }) : initStyle;
-    $[185] = initStyle;
-    $[186] = width;
-    $[187] = t52;
+    $[189] = initStyle;
+    $[190] = width;
+    $[191] = t53;
   } else {
-    t52 = $[187];
+    t53 = $[191];
   }
-  var t53;
   var t54;
-  if ($[188] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t53 = function t53() {
-      setIsOpen(true);
-    };
+  var t55;
+  if ($[192] === Symbol["for"]("react.memo_cache_sentinel")) {
     t54 = function t54() {
       setIsOpen(true);
     };
-    $[188] = t53;
-    $[189] = t54;
+    t55 = function t55() {
+      setIsOpen(true);
+    };
+    $[192] = t54;
+    $[193] = t55;
   } else {
-    t53 = $[188];
-    t54 = $[189];
+    t54 = $[192];
+    t55 = $[193];
   }
-  var t55;
-  if ($[190] !== color || $[191] !== focused || $[192] !== fullWidth || $[193] !== required || $[194] !== size || $[195] !== slotInputProps || $[196] !== slotMuiInputProps || $[197] !== sx || $[198] !== t49 || $[199] !== t50 || $[200] !== t51 || $[201] !== t52 || $[202] !== variant) {
-    t55 = {
+  var t56;
+  if ($[194] !== color || $[195] !== focused || $[196] !== fullWidth || $[197] !== required || $[198] !== size || $[199] !== slotInputProps || $[200] !== slotMuiInputProps || $[201] !== sx || $[202] !== t50 || $[203] !== t51 || $[204] !== t52 || $[205] !== t53 || $[206] !== variant) {
+    t56 = {
       textField: {
-        className: t49,
+        className: t50,
         inputRef: textFieldInputRef,
         variant: variant,
         size: size,
         color: color,
         focused: focused,
-        InputLabelProps: t50,
+        InputLabelProps: t51,
         InputProps: slotMuiInputProps,
         inputProps: slotInputProps,
         required: required,
         fullWidth: fullWidth,
         helperText: undefined,
-        error: t51,
-        style: t52,
+        error: t52,
+        style: t53,
         sx: sx,
-        onFocus: t53,
-        onClick: t54
+        onFocus: t54,
+        onClick: t55
       }
     };
-    $[190] = color;
-    $[191] = focused;
-    $[192] = fullWidth;
-    $[193] = required;
-    $[194] = size;
-    $[195] = slotInputProps;
-    $[196] = slotMuiInputProps;
-    $[197] = sx;
-    $[198] = t49;
-    $[199] = t50;
-    $[200] = t51;
-    $[201] = t52;
-    $[202] = variant;
-    $[203] = t55;
+    $[194] = color;
+    $[195] = focused;
+    $[196] = fullWidth;
+    $[197] = required;
+    $[198] = size;
+    $[199] = slotInputProps;
+    $[200] = slotMuiInputProps;
+    $[201] = sx;
+    $[202] = t50;
+    $[203] = t51;
+    $[204] = t52;
+    $[205] = t53;
+    $[206] = variant;
+    $[207] = t56;
   } else {
-    t55 = $[203];
+    t56 = $[207];
   }
-  var slotProps = t55;
-  var t56;
-  if ($[204] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t56 = function t56() {
-      return setIsOpen(false);
-    };
-    $[204] = t56;
-  } else {
-    t56 = $[204];
+  var slotProps = t56;
+  if (embedded) {
+    var _t6 = !formColWithHelperText ? error ? errorHelperText : helperText : undefined;
+    var _t7;
+    if ($[208] !== time) {
+      _t7 = function _t7() {
+        return !time && setIsOpen(false);
+      };
+      $[208] = time;
+      $[209] = _t7;
+    } else {
+      _t7 = $[209];
+    }
+    var _t8;
+    if ($[210] !== availableDate || $[211] !== disableFuture || $[212] !== disablePast || $[213] !== handleChange || $[214] !== hours || $[215] !== maxDate || $[216] !== minDate || $[217] !== minuteInterval || $[218] !== minutes || $[219] !== otherProps || $[220] !== secondInterval || $[221] !== seconds || $[222] !== showDaysOutsideCurrentMonth || $[223] !== _t7 || $[224] !== time || $[225] !== type || $[226] !== value_0) {
+      _t8 = /*#__PURE__*/React.createElement(PrivateStaticDatePicker, _extends({}, otherProps, {
+        ref: privateStaticDatePickerRef,
+        type: type,
+        time: time,
+        value: value_0,
+        availableDate: availableDate,
+        minDate: minDate,
+        maxDate: maxDate,
+        disablePast: disablePast,
+        disableFuture: disableFuture,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+        minuteInterval: minuteInterval,
+        secondInterval: secondInterval,
+        showDaysOutsideCurrentMonth: showDaysOutsideCurrentMonth,
+        onChange: handleChange,
+        onAccept: _t7,
+        onClose: undefined
+      }));
+      $[210] = availableDate;
+      $[211] = disableFuture;
+      $[212] = disablePast;
+      $[213] = handleChange;
+      $[214] = hours;
+      $[215] = maxDate;
+      $[216] = minDate;
+      $[217] = minuteInterval;
+      $[218] = minutes;
+      $[219] = otherProps;
+      $[220] = secondInterval;
+      $[221] = seconds;
+      $[222] = showDaysOutsideCurrentMonth;
+      $[223] = _t7;
+      $[224] = time;
+      $[225] = type;
+      $[226] = value_0;
+      $[227] = _t8;
+    } else {
+      _t8 = $[227];
+    }
+    var _t9;
+    if ($[228] !== className || $[229] !== disabled || $[230] !== error || $[231] !== fullWidth || $[232] !== hidden || $[233] !== initLabel || $[234] !== initStyle || $[235] !== name || $[236] !== readOnly || $[237] !== required || $[238] !== sx || $[239] !== _t6 || $[240] !== _t8) {
+      _t9 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
+        dateAdapter: AdapterDayjs.AdapterDayjs
+      }, /*#__PURE__*/React.createElement(PrivateEmbedPicker, {
+        name: name,
+        label: initLabel,
+        required: required,
+        disabled: disabled,
+        readOnly: readOnly,
+        hidden: hidden,
+        fullWidth: fullWidth,
+        error: error,
+        helperText: _t6,
+        pickerRef: embeddedRef,
+        className: className,
+        style: initStyle,
+        sx: sx
+      }, _t8));
+      $[228] = className;
+      $[229] = disabled;
+      $[230] = error;
+      $[231] = fullWidth;
+      $[232] = hidden;
+      $[233] = initLabel;
+      $[234] = initStyle;
+      $[235] = name;
+      $[236] = readOnly;
+      $[237] = required;
+      $[238] = sx;
+      $[239] = _t6;
+      $[240] = _t8;
+      $[241] = _t9;
+    } else {
+      _t9 = $[241];
+    }
+    return _t9;
   }
   var t57;
-  if ($[205] !== className) {
-    t57 = classNames(className, "PrivateDatePicker");
-    $[205] = className;
-    $[206] = t57;
-  } else {
-    t57 = $[206];
-  }
-  var t58 = hidden ? "none" : fullWidth ? "block" : "inline-block";
-  var t59 = fullWidth ? 1 : undefined;
-  var t60;
-  if ($[207] !== t58 || $[208] !== t59) {
-    t60 = {
-      display: t58,
-      flex: t59
+  if ($[242] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t57 = function t57() {
+      return setIsOpen(false);
     };
-    $[207] = t58;
-    $[208] = t59;
-    $[209] = t60;
+    $[242] = t57;
   } else {
-    t60 = $[209];
+    t57 = $[242];
   }
-  var t61 = disabled || readOnly ? false : isOpen;
-  var t62 = error && errorHelperText ? 8 : -14;
-  var t63;
-  if ($[210] !== t62) {
-    t63 = {
+  var t58;
+  if ($[243] !== className) {
+    t58 = classNames(className, "PrivateDatePicker");
+    $[243] = className;
+    $[244] = t58;
+  } else {
+    t58 = $[244];
+  }
+  var t59 = hidden ? "none" : fullWidth ? "block" : "inline-block";
+  var t60 = fullWidth ? 1 : undefined;
+  var t61;
+  if ($[245] !== t59 || $[246] !== t60) {
+    t61 = {
+      display: t59,
+      flex: t60
+    };
+    $[245] = t59;
+    $[246] = t60;
+    $[247] = t61;
+  } else {
+    t61 = $[247];
+  }
+  var t62 = disabled || readOnly ? false : isOpen;
+  var t63 = error && errorHelperText ? 8 : -14;
+  var t64;
+  if ($[248] !== t63) {
+    t64 = {
       popper: {
         modifiers: [{
           name: "offset",
           options: {
-            offset: [0, t62]
+            offset: [0, t63]
           }
         }]
       }
     };
-    $[210] = t62;
-    $[211] = t63;
+    $[248] = t63;
+    $[249] = t64;
   } else {
-    t63 = $[211];
-  }
-  var t64;
-  if ($[212] !== time) {
-    t64 = function t64() {
-      return !time && setIsOpen(false);
-    };
-    $[212] = time;
-    $[213] = t64;
-  } else {
-    t64 = $[213];
+    t64 = $[249];
   }
   var t65;
-  if ($[214] === Symbol["for"]("react.memo_cache_sentinel")) {
+  if ($[250] !== time) {
     t65 = function t65() {
-      return setIsOpen(false);
+      return !time && setIsOpen(false);
     };
-    $[214] = t65;
+    $[250] = time;
+    $[251] = t65;
   } else {
-    t65 = $[214];
+    t65 = $[251];
   }
   var t66;
-  if ($[215] !== availableDate || $[216] !== disableFuture || $[217] !== disablePast || $[218] !== handleChange || $[219] !== hours || $[220] !== maxDate || $[221] !== minDate || $[222] !== minuteInterval || $[223] !== minutes || $[224] !== otherProps || $[225] !== secondInterval || $[226] !== seconds || $[227] !== showDaysOutsideCurrentMonth || $[228] !== t64 || $[229] !== time || $[230] !== type || $[231] !== value_0) {
-    t66 = /*#__PURE__*/React.createElement(PrivateStaticDatePicker, _extends({}, otherProps, {
+  if ($[252] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t66 = function t66() {
+      return setIsOpen(false);
+    };
+    $[252] = t66;
+  } else {
+    t66 = $[252];
+  }
+  var t67;
+  if ($[253] !== availableDate || $[254] !== disableFuture || $[255] !== disablePast || $[256] !== handleChange || $[257] !== hours || $[258] !== maxDate || $[259] !== minDate || $[260] !== minuteInterval || $[261] !== minutes || $[262] !== otherProps || $[263] !== secondInterval || $[264] !== seconds || $[265] !== showDaysOutsideCurrentMonth || $[266] !== t65 || $[267] !== time || $[268] !== type || $[269] !== value_0) {
+    t67 = /*#__PURE__*/React.createElement(PrivateStaticDatePicker, _extends({}, otherProps, {
       ref: privateStaticDatePickerRef,
       type: type,
       time: time,
@@ -15543,194 +15773,309 @@ var PrivateDatePicker = function PrivateDatePicker(t0) {
       secondInterval: secondInterval,
       showDaysOutsideCurrentMonth: showDaysOutsideCurrentMonth,
       onChange: handleChange,
-      onAccept: t64,
-      onClose: t65
+      onAccept: t65,
+      onClose: t66
     }));
-    $[215] = availableDate;
-    $[216] = disableFuture;
-    $[217] = disablePast;
-    $[218] = handleChange;
-    $[219] = hours;
-    $[220] = maxDate;
-    $[221] = minDate;
-    $[222] = minuteInterval;
-    $[223] = minutes;
-    $[224] = otherProps;
-    $[225] = secondInterval;
-    $[226] = seconds;
-    $[227] = showDaysOutsideCurrentMonth;
-    $[228] = t64;
-    $[229] = time;
-    $[230] = type;
-    $[231] = value_0;
-    $[232] = t66;
+    $[253] = availableDate;
+    $[254] = disableFuture;
+    $[255] = disablePast;
+    $[256] = handleChange;
+    $[257] = hours;
+    $[258] = maxDate;
+    $[259] = minDate;
+    $[260] = minuteInterval;
+    $[261] = minutes;
+    $[262] = otherProps;
+    $[263] = secondInterval;
+    $[264] = seconds;
+    $[265] = showDaysOutsideCurrentMonth;
+    $[266] = t65;
+    $[267] = time;
+    $[268] = type;
+    $[269] = value_0;
+    $[270] = t67;
   } else {
-    t66 = $[232];
+    t67 = $[270];
   }
-  var t67 = fullWidth ? "block" : "inline-block";
-  var t68;
-  if ($[233] !== t67) {
-    t68 = {
-      display: t67
-    };
-    $[233] = t67;
-    $[234] = t68;
-  } else {
-    t68 = $[234];
-  }
+  var t68 = fullWidth ? "block" : "inline-block";
   var t69;
-  if ($[235] !== initLabel || $[236] !== labelIcon) {
-    t69 = labelIcon ? /*#__PURE__*/React.createElement(reactComponent.PIconText, {
-      icon: labelIcon
-    }, initLabel) : initLabel;
-    $[235] = initLabel;
-    $[236] = labelIcon;
-    $[237] = t69;
+  if ($[271] !== t68) {
+    t69 = {
+      display: t68
+    };
+    $[271] = t68;
+    $[272] = t69;
   } else {
-    t69 = $[237];
+    t69 = $[272];
   }
   var t70;
-  if ($[238] !== format || $[239] !== time || $[240] !== type) {
-    t70 = format ? format : getDateTimeFormat(type, time);
-    $[238] = format;
-    $[239] = time;
-    $[240] = type;
-    $[241] = t70;
+  if ($[273] !== initLabel || $[274] !== labelIcon) {
+    t70 = labelIcon ? /*#__PURE__*/React.createElement(reactComponent.PIconText, {
+      icon: labelIcon
+    }, initLabel) : initLabel;
+    $[273] = initLabel;
+    $[274] = labelIcon;
+    $[275] = t70;
   } else {
-    t70 = $[241];
+    t70 = $[275];
   }
   var t71;
+  if ($[276] !== format || $[277] !== time || $[278] !== type) {
+    t71 = format ? format : getDateTimeFormat(type, time);
+    $[276] = format;
+    $[277] = time;
+    $[278] = type;
+    $[279] = t71;
+  } else {
+    t71 = $[279];
+  }
   var t72;
-  if ($[242] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t71 = function t71() {
+  var t73;
+  if ($[280] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t72 = function t72() {
       return setIsOpen(false);
     };
-    t72 = function t72(reason) {
+    t73 = function t73(reason) {
       return datePickerErrorRef.current = reason;
     };
-    $[242] = t71;
-    $[243] = t72;
+    $[280] = t72;
+    $[281] = t73;
   } else {
-    t71 = $[242];
-    t72 = $[243];
-  }
-  var t73;
-  if ($[244] !== handleChange) {
-    t73 = function t73(newValue_5) {
-      return handleChange("date", newValue_5);
-    };
-    $[244] = handleChange;
-    $[245] = t73;
-  } else {
-    t73 = $[245];
+    t72 = $[280];
+    t73 = $[281];
   }
   var t74;
-  if ($[246] !== disableFuture || $[247] !== disablePast || $[248] !== disabled || $[249] !== inputValue || $[250] !== maxDate || $[251] !== minDate || $[252] !== otherProps || $[253] !== readOnly || $[254] !== showDaysOutsideCurrentMonth || $[255] !== slotProps || $[256] !== t69 || $[257] !== t70 || $[258] !== t73) {
-    t74 = /*#__PURE__*/React.createElement(xDatePickers.DesktopDatePicker, _extends({
+  if ($[282] !== handleChange) {
+    t74 = function t74(newValue_5) {
+      return handleChange("date", newValue_5);
+    };
+    $[282] = handleChange;
+    $[283] = t74;
+  } else {
+    t74 = $[283];
+  }
+  var t75;
+  if ($[284] !== disableFuture || $[285] !== disablePast || $[286] !== disabled || $[287] !== inputValue || $[288] !== maxDate || $[289] !== minDate || $[290] !== otherProps || $[291] !== readOnly || $[292] !== showDaysOutsideCurrentMonth || $[293] !== slotProps || $[294] !== t70 || $[295] !== t71 || $[296] !== t74) {
+    t75 = /*#__PURE__*/React.createElement(xDatePickers.DesktopDatePicker, _extends({
       value: inputValue,
-      label: t69,
+      label: t70,
       open: false,
-      format: t70,
+      format: t71,
       disabled: disabled,
       readOnly: readOnly,
       minDate: minDate,
       maxDate: maxDate,
       disablePast: disablePast,
       disableFuture: disableFuture,
-      onClose: t71,
-      onError: t72,
-      onChange: t73,
+      onClose: t72,
+      onError: t73,
+      onChange: t74,
       slotProps: slotProps,
       showDaysOutsideCurrentMonth: showDaysOutsideCurrentMonth
     }, otherProps));
-    $[246] = disableFuture;
-    $[247] = disablePast;
-    $[248] = disabled;
-    $[249] = inputValue;
-    $[250] = maxDate;
-    $[251] = minDate;
-    $[252] = otherProps;
-    $[253] = readOnly;
-    $[254] = showDaysOutsideCurrentMonth;
-    $[255] = slotProps;
-    $[256] = t69;
-    $[257] = t70;
-    $[258] = t73;
-    $[259] = t74;
+    $[284] = disableFuture;
+    $[285] = disablePast;
+    $[286] = disabled;
+    $[287] = inputValue;
+    $[288] = maxDate;
+    $[289] = minDate;
+    $[290] = otherProps;
+    $[291] = readOnly;
+    $[292] = showDaysOutsideCurrentMonth;
+    $[293] = slotProps;
+    $[294] = t70;
+    $[295] = t71;
+    $[296] = t74;
+    $[297] = t75;
   } else {
-    t74 = $[259];
-  }
-  var t75;
-  if ($[260] !== t68 || $[261] !== t74) {
-    t75 = /*#__PURE__*/React.createElement("div", {
-      style: t68
-    }, t74);
-    $[260] = t68;
-    $[261] = t74;
-    $[262] = t75;
-  } else {
-    t75 = $[262];
+    t75 = $[297];
   }
   var t76;
-  if ($[263] !== t61 || $[264] !== t63 || $[265] !== t66 || $[266] !== t75) {
-    t76 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
-      open: t61,
-      slotProps: t63,
-      title: t66
+  if ($[298] !== t69 || $[299] !== t75) {
+    t76 = /*#__PURE__*/React.createElement("div", {
+      style: t69
     }, t75);
-    $[263] = t61;
-    $[264] = t63;
-    $[265] = t66;
-    $[266] = t75;
-    $[267] = t76;
+    $[298] = t69;
+    $[299] = t75;
+    $[300] = t76;
   } else {
-    t76 = $[267];
+    t76 = $[300];
   }
   var t77;
-  if ($[268] !== error || $[269] !== errorHelperText || $[270] !== formColWithHelperText || $[271] !== helperText || $[272] !== variant) {
-    t77 = !formColWithHelperText && (helperText || error && errorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
+  if ($[301] !== t62 || $[302] !== t64 || $[303] !== t67 || $[304] !== t76) {
+    t77 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
+      open: t62,
+      slotProps: t64,
+      title: t67
+    }, t76);
+    $[301] = t62;
+    $[302] = t64;
+    $[303] = t67;
+    $[304] = t76;
+    $[305] = t77;
+  } else {
+    t77 = $[305];
+  }
+  var t78;
+  if ($[306] !== error || $[307] !== errorHelperText || $[308] !== formColWithHelperText || $[309] !== helperText || $[310] !== variant) {
+    t78 = !formColWithHelperText && (helperText || error && errorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
       error: error,
       style: {
         marginLeft: variant === "standard" ? 0 : 14
       }
     }, error ? errorHelperText : helperText);
-    $[268] = error;
-    $[269] = errorHelperText;
-    $[270] = formColWithHelperText;
-    $[271] = helperText;
-    $[272] = variant;
-    $[273] = t77;
+    $[306] = error;
+    $[307] = errorHelperText;
+    $[308] = formColWithHelperText;
+    $[309] = helperText;
+    $[310] = variant;
+    $[311] = t78;
   } else {
-    t77 = $[273];
+    t78 = $[311];
   }
-  var t78;
-  if ($[274] !== t57 || $[275] !== t60 || $[276] !== t76 || $[277] !== t77) {
-    t78 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
+  var t79;
+  if ($[312] !== t58 || $[313] !== t61 || $[314] !== t77 || $[315] !== t78) {
+    t79 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
       dateAdapter: AdapterDayjs.AdapterDayjs
     }, /*#__PURE__*/React.createElement(material.ClickAwayListener, {
       mouseEvent: "onMouseDown",
       touchEvent: "onTouchStart",
-      onClickAway: t56
+      onClickAway: t57
     }, /*#__PURE__*/React.createElement("div", {
-      className: t57,
-      style: t60,
+      className: t58,
+      style: t61,
       onMouseDown: handleContainerMouseDown,
       onFocus: handleContainerFocus,
       onBlur: handleContainerBlur
-    }, t76, t77)));
-    $[274] = t57;
-    $[275] = t60;
-    $[276] = t76;
-    $[277] = t77;
-    $[278] = t78;
+    }, t77, t78)));
+    $[312] = t58;
+    $[313] = t61;
+    $[314] = t77;
+    $[315] = t78;
+    $[316] = t79;
   } else {
-    t78 = $[278];
+    t79 = $[316];
   }
-  return t78;
+  return t79;
 };
-function _temp$j() {
+function _temp$c() {
   return "default";
-}insertStyle(".PrivateStaticDateTimePicker.time{height:400px}.PrivateStaticDateTimePicker .MuiPickersCalendarHeader-root{display:none}.PrivateStaticDateTimePicker .month-title-container{display:flex;align-items:center;margin-left:5px}.PrivateStaticDateTimePicker .month-title-container .month-title-wrap{display:flex;align-items:center;cursor:pointer}.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button{font-size:15px;padding-left:8px;padding-right:0;min-width:0}.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button:not(.active){color:unset}.PrivateStaticDateTimePicker .action-buttons{border-top:1px solid #efefef;padding:10px;text-align:right}.PrivateStaticDateTimePicker .action-buttons button{min-width:0;color:inherit}.PrivateStaticDateTimePicker .action-buttons button:not(:first-of-type){margin-left:5px}.PrivateStaticDateTimePicker .action-buttons button.disabled{color:rgba(0,0,0,.5)}.PrivateStaticDateTimePicker .time{border-left:2px solid #bfbfbf}.PrivateStaticDateTimePicker .time .time-container{height:100%}.PrivateStaticDateTimePicker .time .time-container .time-title{text-align:center;padding:22px 0;font-size:15px}.PrivateStaticDateTimePicker .time .time-container .time-select-wrap{flex:1;border-top:1px solid #efefef}.PrivateStaticDateTimePicker.time .time .time-container .time-select-wrap>div>div:not(:first-of-type){border-left:1px solid #efefef}");var _excluded$b = ["ref", "value", "availableDate", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"];
+}var _excluded$i = ["embedded", "ref", "className"],
+  _excluded2$2 = ["onAddValueItem"];
+var PFormDatePickerInternal = function PFormDatePickerInternal(t0) {
+  var $ = compilerRuntime.c(24);
+  var className;
+  var props;
+  var ref;
+  var t1;
+  if ($[0] !== t0) {
+    var _t = t0;
+    t1 = _t.embedded;
+    ref = _t.ref;
+    className = _t.className;
+    props = _objectWithoutProperties(_t, _excluded$i);
+    $[0] = t0;
+    $[1] = className;
+    $[2] = props;
+    $[3] = ref;
+    $[4] = t1;
+  } else {
+    className = $[1];
+    props = $[2];
+    ref = $[3];
+    t1 = $[4];
+  }
+  var embedded = t1 === undefined ? false : t1;
+  var t2 = useFormState();
+  var onAddValueItem;
+  var otherFormState;
+  if ($[5] !== t2) {
+    var _t2 = t2;
+    onAddValueItem = _t2.onAddValueItem;
+    otherFormState = _objectWithoutProperties(_t2, _excluded2$2);
+    $[5] = t2;
+    $[6] = onAddValueItem;
+    $[7] = otherFormState;
+  } else {
+    onAddValueItem = $[6];
+    otherFormState = $[7];
+  }
+  var t3;
+  if ($[8] !== embedded || $[9] !== onAddValueItem) {
+    t3 = function t3(id, commands) {
+      commands.getType = function () {
+        return embedded ? "PFormEmbedDatePicker" : "PFormDatePicker";
+      };
+      onAddValueItem(id, commands);
+    };
+    $[8] = embedded;
+    $[9] = onAddValueItem;
+    $[10] = t3;
+  } else {
+    t3 = $[10];
+  }
+  var handleAddValueItem = t3;
+  var t4;
+  if ($[11] !== handleAddValueItem || $[12] !== otherFormState) {
+    t4 = _objectSpread2(_objectSpread2({}, otherFormState), {}, {
+      onAddValueItem: handleAddValueItem
+    });
+    $[11] = handleAddValueItem;
+    $[12] = otherFormState;
+    $[13] = t4;
+  } else {
+    t4 = $[13];
+  }
+  var t5;
+  if ($[14] !== className) {
+    t5 = classNames(className, "PFormDatePicker");
+    $[14] = className;
+    $[15] = t5;
+  } else {
+    t5 = $[15];
+  }
+  var t6;
+  if ($[16] !== embedded || $[17] !== props || $[18] !== ref || $[19] !== t5) {
+    t6 = /*#__PURE__*/React.createElement(PrivateDatePickerInternal, _extends({
+      embedded: embedded,
+      className: t5
+    }, props, {
+      ref: ref,
+      type: "date"
+    }));
+    $[16] = embedded;
+    $[17] = props;
+    $[18] = ref;
+    $[19] = t5;
+    $[20] = t6;
+  } else {
+    t6 = $[20];
+  }
+  var t7;
+  if ($[21] !== t4 || $[22] !== t6) {
+    t7 = /*#__PURE__*/React.createElement(PFormContextProvider, {
+      value: t4
+    }, t6);
+    $[21] = t4;
+    $[22] = t6;
+    $[23] = t7;
+  } else {
+    t7 = $[23];
+  }
+  return t7;
+};
+var PFormDatePicker = function PFormDatePicker(props) {
+  var $ = compilerRuntime.c(2);
+  var t0;
+  if ($[0] !== props) {
+    t0 = /*#__PURE__*/React.createElement(PFormDatePickerInternal, props);
+    $[0] = props;
+    $[1] = t0;
+  } else {
+    t0 = $[1];
+  }
+  return t0;
+};insertStyle(".PrivateStaticDateTimePicker.time{height:400px}.PrivateStaticDateTimePicker .MuiPickersCalendarHeader-root{display:none}.PrivateStaticDateTimePicker .month-title-container{display:flex;align-items:center;margin-left:5px}.PrivateStaticDateTimePicker .month-title-container .month-title-wrap{display:flex;align-items:center;cursor:pointer}.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button{font-size:15px;padding-left:8px;padding-right:0;min-width:0}.PrivateStaticDateTimePicker .month-title-container .month-title-wrap .month-title button:not(.active){color:unset}.PrivateStaticDateTimePicker .action-buttons{border-top:1px solid #efefef;padding:10px;text-align:right}.PrivateStaticDateTimePicker .action-buttons button{min-width:0;color:inherit}.PrivateStaticDateTimePicker .action-buttons button:not(:first-of-type){margin-left:5px}.PrivateStaticDateTimePicker .action-buttons button.disabled{color:rgba(0,0,0,.5)}.PrivateStaticDateTimePicker .time{border-left:2px solid #bfbfbf}.PrivateStaticDateTimePicker .time .time-container{height:100%}.PrivateStaticDateTimePicker .time .time-container .time-title{text-align:center;padding:22px 0;font-size:15px}.PrivateStaticDateTimePicker .time .time-container .time-select-wrap{flex:1;border-top:1px solid #efefef}.PrivateStaticDateTimePicker.time .time .time-container .time-select-wrap>div>div:not(:first-of-type){border-left:1px solid #efefef}.PFormEmbedTimePicker .PrivateStaticDateTimePicker>.time{border-left:0}");var _excluded$h = ["ref", "value", "availableDate", "type", "time", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "minDate", "maxDate", "disablePast", "disableFuture", "onChange", "onMonthChange", "onClose"];
 var DEFAULT_HOURS = new Array(24).fill(0);
 for (var i$1 = 0; i$1 < DEFAULT_HOURS.length; i$1 += 1) {
   DEFAULT_HOURS[i$1] = i$1;
@@ -15782,7 +16127,7 @@ var PrivateStaticDateTimePicker = function PrivateStaticDateTimePicker(t0) {
     _onChange = _t.onChange;
     _onMonthChange = _t.onMonthChange;
     onClose = _t.onClose;
-    props = _objectWithoutProperties(_t, _excluded$b);
+    props = _objectWithoutProperties(_t, _excluded$h);
     $[0] = t0;
     $[1] = disableFuture;
     $[2] = disablePast;
@@ -16127,7 +16472,7 @@ var PrivateStaticDateTimePicker = function PrivateStaticDateTimePicker(t0) {
         previousIconButton: LeftArrowButton,
         nextIconButton: RightArrowButton,
         day: handleRenderDay,
-        actionBar: _temp$i
+        actionBar: _temp$b
       },
       viewRenderers: {
         hours: null,
@@ -16237,13 +16582,13 @@ var PrivateStaticDateTimePicker = function PrivateStaticDateTimePicker(t0) {
   }
   return t21;
 };
-function _temp$i() {
+function _temp$b() {
   return /*#__PURE__*/React.createElement(React.Fragment, null);
 }var getFinalValue$7 = function getFinalValue(value) {
   return value || null;
-};insertStyle(".PrivateDateTimePicker .input-text-field.align-left .MuiInputBase-input{text-align:left}.PrivateDateTimePicker .input-text-field.align-center .MuiInputBase-input{text-align:center}.PrivateDateTimePicker .input-text-field.align-right .MuiInputBase-input{text-align:right}");var _excluded$a = ["ref", "variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "enableKeyboardInput", "hidden", "showDaysOutsideCurrentMonth", "onChange", "onValidate", "className", "style", "sx"];
-var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
-  var $ = compilerRuntime.c(290);
+};insertStyle(".PrivateDateTimePicker .input-text-field.align-left .MuiInputBase-input{text-align:left}.PrivateDateTimePicker .input-text-field.align-center .MuiInputBase-input{text-align:center}.PrivateDateTimePicker .input-text-field.align-right .MuiInputBase-input{text-align:right}");var _excluded$g = ["embedded", "ref", "variant", "size", "color", "focused", "labelShrink", "fullWidth", "name", "type", "time", "value", "data", "label", "labelIcon", "format", "formValueFormat", "required", "readOnly", "disabled", "width", "error", "helperText", "minDate", "maxDate", "disableFuture", "disablePast", "exceptValue", "icon", "startAdornment", "endAdornment", "align", "hours", "minutes", "seconds", "minuteInterval", "secondInterval", "enableKeyboardInput", "hidden", "showDaysOutsideCurrentMonth", "onChange", "onValidate", "className", "style", "sx"];
+var PrivateDateTimePickerInternal = function PrivateDateTimePickerInternal(t0) {
+  var $ = compilerRuntime.c(328);
   var className;
   var disableFuture;
   var disablePast;
@@ -16286,11 +16631,13 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
   var t1;
   var t2;
   var t3;
+  var t4;
   var time;
   var type;
   var width;
   if ($[0] !== t0) {
     var _t = t0;
+    t1 = _t.embedded;
     ref = _t.ref;
     initVariant = _t.variant;
     initSize = _t.size;
@@ -16301,7 +16648,7 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
     name = _t.name;
     type = _t.type;
     time = _t.time;
-    t1 = _t.value;
+    t2 = _t.value;
     initData = _t.data;
     initLabel = _t.label;
     labelIcon = _t.labelIcon;
@@ -16321,7 +16668,7 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
     icon = _t.icon;
     startAdornment = _t.startAdornment;
     endAdornment = _t.endAdornment;
-    t2 = _t.align;
+    t3 = _t.align;
     hours = _t.hours;
     minutes = _t.minutes;
     seconds = _t.seconds;
@@ -16329,13 +16676,13 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
     secondInterval = _t.secondInterval;
     enableKeyboardInput = _t.enableKeyboardInput;
     initHidden = _t.hidden;
-    t3 = _t.showDaysOutsideCurrentMonth;
+    t4 = _t.showDaysOutsideCurrentMonth;
     onChange = _t.onChange;
     onValidate = _t.onValidate;
     className = _t.className;
     initStyle = _t.style;
     sx = _t.sx;
-    otherProps = _objectWithoutProperties(_t, _excluded$a);
+    otherProps = _objectWithoutProperties(_t, _excluded$g);
     $[0] = t0;
     $[1] = className;
     $[2] = disableFuture;
@@ -16379,9 +16726,10 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
     $[40] = t1;
     $[41] = t2;
     $[42] = t3;
-    $[43] = time;
-    $[44] = type;
-    $[45] = width;
+    $[43] = t4;
+    $[44] = time;
+    $[45] = type;
+    $[46] = width;
   } else {
     className = $[1];
     disableFuture = $[2];
@@ -16425,14 +16773,17 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
     t1 = $[40];
     t2 = $[41];
     t3 = $[42];
-    time = $[43];
-    type = $[44];
-    width = $[45];
+    t4 = $[43];
+    time = $[44];
+    type = $[45];
+    width = $[46];
   }
-  var initValue = t1 === undefined ? null : t1;
-  var align = t2 === undefined ? "center" : t2;
-  var showDaysOutsideCurrentMonth = t3 === undefined ? true : t3;
+  var embedded = t1 === undefined ? false : t1;
+  var initValue = t2 === undefined ? null : t2;
+  var align = t3 === undefined ? "center" : t3;
+  var showDaysOutsideCurrentMonth = t4 === undefined ? true : t4;
   var id = React.useId();
+  var embeddedRef = React.useRef(null);
   var privateStaticDateTimePickerRef = React.useRef(null);
   var textFieldInputRef = React.useRef(undefined);
   var closeTimeoutRef = React.useRef(undefined);
@@ -16481,145 +16832,145 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
     _useState0 = _slicedToArray(_useState9, 2),
     error = _useState0[0],
     _setError = _useState0[1];
-  var t4;
   var t5;
-  if ($[46] !== initError) {
-    t4 = function t4() {
+  var t6;
+  if ($[47] !== initError) {
+    t5 = function t5() {
       return _setError(initError);
     };
-    t5 = [initError];
-    $[46] = initError;
-    $[47] = t4;
+    t6 = [initError];
+    $[47] = initError;
     $[48] = t5;
+    $[49] = t6;
   } else {
-    t4 = $[47];
     t5 = $[48];
+    t6 = $[49];
   }
-  reactHook.useFirstSkipChanged(t4, t5);
+  reactHook.useFirstSkipChanged(t5, t6);
   var errorRef = reactHook.useAutoUpdateRef(error);
-  var t6;
-  if ($[49] !== errorRef) {
-    t6 = function t6(newValue) {
+  var t7;
+  if ($[50] !== errorRef) {
+    t7 = function t7(newValue) {
       _setError(newValue);
       errorRef.current = newValue;
     };
-    $[49] = errorRef;
-    $[50] = t6;
+    $[50] = errorRef;
+    $[51] = t7;
   } else {
-    t6 = $[50];
+    t7 = $[51];
   }
-  var setError = t6;
+  var setError = t7;
   var _useState1 = React.useState(initData),
     _useState10 = _slicedToArray(_useState1, 2),
     data = _useState10[0],
     _setData = _useState10[1];
-  var t7;
   var t8;
-  if ($[51] !== initData) {
-    t7 = function t7() {
+  var t9;
+  if ($[52] !== initData) {
+    t8 = function t8() {
       return _setData(initData);
     };
-    t8 = [initData];
-    $[51] = initData;
-    $[52] = t7;
+    t9 = [initData];
+    $[52] = initData;
     $[53] = t8;
+    $[54] = t9;
   } else {
-    t7 = $[52];
     t8 = $[53];
+    t9 = $[54];
   }
-  reactHook.useFirstSkipChanged(t7, t8);
+  reactHook.useFirstSkipChanged(t8, t9);
   var dataRef = reactHook.useAutoUpdateRef(data);
-  var t9;
-  if ($[54] !== dataRef) {
-    t9 = function t9(newValue_0) {
+  var t10;
+  if ($[55] !== dataRef) {
+    t10 = function t10(newValue_0) {
       _setData(newValue_0);
       dataRef.current = newValue_0;
     };
-    $[54] = dataRef;
-    $[55] = t9;
+    $[55] = dataRef;
+    $[56] = t10;
   } else {
-    t9 = $[55];
+    t10 = $[56];
   }
-  var setData = t9;
+  var setData = t10;
   var finalInitDisabled = initDisabled !== null && initDisabled !== void 0 ? initDisabled : formDisabled;
   var _useState11 = React.useState(finalInitDisabled),
     _useState12 = _slicedToArray(_useState11, 2),
     disabled = _useState12[0],
     setDisabled = _useState12[1];
-  var t10;
   var t11;
-  if ($[56] !== finalInitDisabled) {
-    t10 = function t10() {
+  var t12;
+  if ($[57] !== finalInitDisabled) {
+    t11 = function t11() {
       return setDisabled(finalInitDisabled);
     };
-    t11 = [finalInitDisabled];
-    $[56] = finalInitDisabled;
-    $[57] = t10;
+    t12 = [finalInitDisabled];
+    $[57] = finalInitDisabled;
     $[58] = t11;
+    $[59] = t12;
   } else {
-    t10 = $[57];
     t11 = $[58];
+    t12 = $[59];
   }
-  reactHook.useFirstSkipChanged(t10, t11);
+  reactHook.useFirstSkipChanged(t11, t12);
   var _useState13 = React.useState(initHidden),
     _useState14 = _slicedToArray(_useState13, 2),
     hidden = _useState14[0],
     setHidden = _useState14[1];
-  var t12;
   var t13;
-  if ($[59] !== initHidden) {
-    t12 = function t12() {
+  var t14;
+  if ($[60] !== initHidden) {
+    t13 = function t13() {
       return setHidden(initHidden);
     };
-    t13 = [initHidden];
-    $[59] = initHidden;
-    $[60] = t12;
+    t14 = [initHidden];
+    $[60] = initHidden;
     $[61] = t13;
+    $[62] = t14;
   } else {
-    t12 = $[60];
     t13 = $[61];
+    t14 = $[62];
   }
-  reactHook.useFirstSkipChanged(t12, t13);
-  var t14;
-  if ($[62] !== initFormat || $[63] !== time || $[64] !== type) {
-    t14 = initFormat ? initFormat : getDateTimeFormat(type, time);
-    $[62] = initFormat;
-    $[63] = time;
-    $[64] = type;
-    $[65] = t14;
+  reactHook.useFirstSkipChanged(t13, t14);
+  var t15;
+  if ($[63] !== initFormat || $[64] !== time || $[65] !== type) {
+    t15 = initFormat ? initFormat : getDateTimeFormat(type, time);
+    $[63] = initFormat;
+    $[64] = time;
+    $[65] = type;
+    $[66] = t15;
   } else {
-    t14 = $[65];
+    t15 = $[66];
   }
-  var format = t14;
-  var t15 = !!disablePast;
-  var t16 = !!disableFuture;
-  var t17;
-  if ($[66] !== maxDate || $[67] !== minDate || $[68] !== t15 || $[69] !== t16) {
-    t17 = makeAvailableDate(minDate, maxDate, t15, t16);
-    $[66] = maxDate;
-    $[67] = minDate;
-    $[68] = t15;
+  var format = t15;
+  var t16 = !!disablePast;
+  var t17 = !!disableFuture;
+  var t18;
+  if ($[67] !== maxDate || $[68] !== minDate || $[69] !== t16 || $[70] !== t17) {
+    t18 = makeAvailableDate(minDate, maxDate, t16, t17);
+    $[67] = maxDate;
+    $[68] = minDate;
     $[69] = t16;
     $[70] = t17;
+    $[71] = t18;
   } else {
-    t17 = $[70];
+    t18 = $[71];
   }
-  var availableDate = t17;
-  var t18;
-  if ($[71] !== setError) {
-    t18 = function t18(error_0, errorHelperText_0) {
+  var availableDate = t18;
+  var t19;
+  if ($[72] !== setError) {
+    t19 = function t19(error_0, errorHelperText_0) {
       setError(error_0);
       setErrorHelperText(error_0 ? errorHelperText_0 : undefined);
     };
-    $[71] = setError;
-    $[72] = t18;
+    $[72] = setError;
+    $[73] = t19;
   } else {
-    t18 = $[72];
+    t19 = $[73];
   }
-  var setErrorErrorHelperText = t18;
-  var t19;
-  if ($[73] !== datePickerError || $[74] !== onValidateRef || $[75] !== required || $[76] !== setErrorErrorHelperText || $[77] !== timeError) {
-    t19 = function t19(value) {
+  var setErrorErrorHelperText = t19;
+  var t20;
+  if ($[74] !== datePickerError || $[75] !== onValidateRef || $[76] !== required || $[77] !== setErrorErrorHelperText || $[78] !== timeError) {
+    t20 = function t20(value) {
       if (required && compare.empty(value)) {
         setErrorErrorHelperText(true, "\uD544\uC218 \uC785\uB825 \uD56D\uBAA9\uC785\uB2C8\uB2E4.");
         return false;
@@ -16646,60 +16997,60 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
       setErrorErrorHelperText(false, undefined);
       return true;
     };
-    $[73] = datePickerError;
-    $[74] = onValidateRef;
-    $[75] = required;
-    $[76] = setErrorErrorHelperText;
-    $[77] = timeError;
-    $[78] = t19;
+    $[74] = datePickerError;
+    $[75] = onValidateRef;
+    $[76] = required;
+    $[77] = setErrorErrorHelperText;
+    $[78] = timeError;
+    $[79] = t20;
   } else {
-    t19 = $[78];
+    t20 = $[79];
   }
-  var validate = t19;
+  var validate = t20;
   var validateRef = reactHook.useAutoUpdateRef(validate);
-  var t20;
-  if ($[79] !== initValue) {
-    t20 = getFinalValue$7(initValue);
-    $[79] = initValue;
-    $[80] = t20;
+  var t21;
+  if ($[80] !== initValue) {
+    t21 = getFinalValue$7(initValue);
+    $[80] = initValue;
+    $[81] = t21;
   } else {
-    t20 = $[80];
+    t21 = $[81];
   }
-  var _useState15 = React.useState(t20),
+  var _useState15 = React.useState(t21),
     _useState16 = _slicedToArray(_useState15, 2),
     value_0 = _useState16[0],
     _setValue = _useState16[1];
-  var t21;
   var t22;
-  if ($[81] !== initValue) {
-    t21 = function t21() {
+  var t23;
+  if ($[82] !== initValue) {
+    t22 = function t22() {
       return _setValue(getFinalValue$7(initValue));
     };
-    t22 = [initValue];
-    $[81] = initValue;
-    $[82] = t21;
+    t23 = [initValue];
+    $[82] = initValue;
     $[83] = t22;
+    $[84] = t23;
   } else {
-    t21 = $[82];
     t22 = $[83];
+    t23 = $[84];
   }
-  reactHook.useFirstSkipChanged(t21, t22);
+  reactHook.useFirstSkipChanged(t22, t23);
   var valueRef = reactHook.useAutoUpdateRef(value_0);
-  var t23;
-  if ($[84] !== valueRef) {
-    t23 = function t23(newValue_1) {
+  var t24;
+  if ($[85] !== valueRef) {
+    t24 = function t24(newValue_1) {
       _setValue(newValue_1);
       valueRef.current = newValue_1;
     };
-    $[84] = valueRef;
-    $[85] = t23;
+    $[85] = valueRef;
+    $[86] = t24;
   } else {
-    t23 = $[85];
+    t24 = $[86];
   }
-  var setValue = t23;
-  var t24;
-  if ($[86] !== availableDate || $[87] !== error || $[88] !== name || $[89] !== onChangeRef || $[90] !== onValueChange || $[91] !== setValue || $[92] !== time || $[93] !== type || $[94] !== validateRef) {
-    t24 = function t24(newValue_2) {
+  var setValue = t24;
+  var t25;
+  if ($[87] !== availableDate || $[88] !== error || $[89] !== name || $[90] !== onChangeRef || $[91] !== onValueChange || $[92] !== setValue || $[93] !== time || $[94] !== type || $[95] !== validateRef) {
+    t25 = function t25(newValue_2) {
       var _onChangeRef$current;
       var finalValue = getFinalValue$7(newValue_2);
       setValue(finalValue);
@@ -16724,67 +17075,67 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
       }
       return finalValue;
     };
-    $[86] = availableDate;
-    $[87] = error;
-    $[88] = name;
-    $[89] = onChangeRef;
-    $[90] = onValueChange;
-    $[91] = setValue;
-    $[92] = time;
-    $[93] = type;
-    $[94] = validateRef;
-    $[95] = t24;
+    $[87] = availableDate;
+    $[88] = error;
+    $[89] = name;
+    $[90] = onChangeRef;
+    $[91] = onValueChange;
+    $[92] = setValue;
+    $[93] = time;
+    $[94] = type;
+    $[95] = validateRef;
+    $[96] = t25;
   } else {
-    t24 = $[95];
+    t25 = $[96];
   }
-  var updateValue = t24;
+  var updateValue = t25;
   var _useState17 = React.useState(value_0),
     _useState18 = _slicedToArray(_useState17, 2),
     inputValue = _useState18[0],
     setInputValue = _useState18[1];
-  var t25;
   var t26;
-  if ($[96] !== value_0) {
-    t25 = function t25() {
+  var t27;
+  if ($[97] !== value_0) {
+    t26 = function t26() {
       return setInputValue(value_0);
     };
-    t26 = [value_0];
-    $[96] = value_0;
-    $[97] = t25;
+    t27 = [value_0];
+    $[97] = value_0;
     $[98] = t26;
+    $[99] = t27;
   } else {
-    t25 = $[97];
     t26 = $[98];
+    t27 = $[99];
   }
-  reactHook.useFirstSkipChanged(t25, t26);
-  var t27;
-  if ($[99] !== error || $[100] !== timeError || $[101] !== validateRef || $[102] !== valueRef) {
-    t27 = function t27() {
+  reactHook.useFirstSkipChanged(t26, t27);
+  var t28;
+  if ($[100] !== error || $[101] !== timeError || $[102] !== validateRef || $[103] !== valueRef) {
+    t28 = function t28() {
       if (error && !timeError) {
         validateRef.current(valueRef.current);
       }
     };
-    $[99] = error;
-    $[100] = timeError;
-    $[101] = validateRef;
-    $[102] = valueRef;
-    $[103] = t27;
+    $[100] = error;
+    $[101] = timeError;
+    $[102] = validateRef;
+    $[103] = valueRef;
+    $[104] = t28;
   } else {
-    t27 = $[103];
+    t28 = $[104];
   }
-  var t28;
-  if ($[104] !== error || $[105] !== timeError) {
-    t28 = [error, timeError];
-    $[104] = error;
-    $[105] = timeError;
-    $[106] = t28;
-  } else {
-    t28 = $[106];
-  }
-  reactHook.useEventEffect(t27, t28);
   var t29;
-  if ($[107] !== isOpen || $[108] !== name || $[109] !== onRequestSearchSubmit || $[110] !== valueRef) {
-    t29 = function t29() {
+  if ($[105] !== error || $[106] !== timeError) {
+    t29 = [error, timeError];
+    $[105] = error;
+    $[106] = timeError;
+    $[107] = t29;
+  } else {
+    t29 = $[107];
+  }
+  reactHook.useEventEffect(t28, t29);
+  var t30;
+  if ($[108] !== isOpen || $[109] !== name || $[110] !== onRequestSearchSubmit || $[111] !== valueRef) {
+    t30 = function t30() {
       if (isOpen) {
         openValueRef.current = valueRef.current;
       } else {
@@ -16801,214 +17152,221 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
         }
       }
     };
-    $[107] = isOpen;
-    $[108] = name;
-    $[109] = onRequestSearchSubmit;
-    $[110] = valueRef;
-    $[111] = t29;
+    $[108] = isOpen;
+    $[109] = name;
+    $[110] = onRequestSearchSubmit;
+    $[111] = valueRef;
+    $[112] = t30;
   } else {
-    t29 = $[111];
+    t30 = $[112];
   }
-  var t30;
-  if ($[112] !== isOpen) {
-    t30 = [isOpen];
-    $[112] = isOpen;
-    $[113] = t30;
-  } else {
-    t30 = $[113];
-  }
-  reactHook.useEventEffect(t29, t30);
   var t31;
-  if ($[114] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t31 = function t31() {
-      var _textFieldInputRef$cu;
-      (_textFieldInputRef$cu = textFieldInputRef.current) === null || _textFieldInputRef$cu === void 0 || _textFieldInputRef$cu.focus();
-    };
+  if ($[113] !== isOpen) {
+    t31 = [isOpen];
+    $[113] = isOpen;
     $[114] = t31;
   } else {
     t31 = $[114];
   }
-  var focus = t31;
+  reactHook.useEventEffect(t30, t31);
   var t32;
-  if ($[115] !== name) {
+  if ($[115] !== embedded) {
     t32 = function t32() {
-      return name;
+      if (embedded) {
+        var _embeddedRef$current;
+        (_embeddedRef$current = embeddedRef.current) === null || _embeddedRef$current === void 0 || _embeddedRef$current.focus();
+      } else {
+        var _textFieldInputRef$cu;
+        (_textFieldInputRef$cu = textFieldInputRef.current) === null || _textFieldInputRef$cu === void 0 || _textFieldInputRef$cu.focus();
+      }
     };
-    $[115] = name;
+    $[115] = embedded;
     $[116] = t32;
   } else {
     t32 = $[116];
   }
+  var focus = t32;
   var t33;
-  if ($[117] !== initValueRef) {
+  if ($[117] !== name) {
     t33 = function t33() {
-      return getFinalValue$7(initValueRef.current);
+      return name;
     };
-    $[117] = initValueRef;
+    $[117] = name;
     $[118] = t33;
   } else {
     t33 = $[118];
   }
   var t34;
-  if ($[119] !== initValueRef || $[120] !== updateValue) {
+  if ($[119] !== initValueRef) {
     t34 = function t34() {
-      return updateValue(initValueRef.current);
+      return getFinalValue$7(initValueRef.current);
     };
     $[119] = initValueRef;
-    $[120] = updateValue;
-    $[121] = t34;
+    $[120] = t34;
   } else {
-    t34 = $[121];
+    t34 = $[120];
   }
   var t35;
-  if ($[122] !== valueRef) {
+  if ($[121] !== initValueRef || $[122] !== updateValue) {
     t35 = function t35() {
-      return valueRef.current;
+      return updateValue(initValueRef.current);
     };
-    $[122] = valueRef;
+    $[121] = initValueRef;
+    $[122] = updateValue;
     $[123] = t35;
   } else {
     t35 = $[123];
   }
   var t36;
-  if ($[124] !== dataRef) {
+  if ($[124] !== valueRef) {
     t36 = function t36() {
-      return dataRef.current;
+      return valueRef.current;
     };
-    $[124] = dataRef;
+    $[124] = valueRef;
     $[125] = t36;
   } else {
     t36 = $[125];
   }
   var t37;
-  if ($[126] !== exceptValue) {
+  if ($[126] !== dataRef) {
     t37 = function t37() {
-      return !!exceptValue;
+      return dataRef.current;
     };
-    $[126] = exceptValue;
+    $[126] = dataRef;
     $[127] = t37;
   } else {
     t37 = $[127];
   }
   var t38;
-  if ($[128] !== disabled) {
+  if ($[128] !== exceptValue) {
     t38 = function t38() {
-      return !!disabled;
+      return !!exceptValue;
     };
-    $[128] = disabled;
+    $[128] = exceptValue;
     $[129] = t38;
   } else {
     t38 = $[129];
   }
   var t39;
-  if ($[130] !== hidden) {
+  if ($[130] !== disabled) {
     t39 = function t39() {
-      return !!hidden;
+      return !!disabled;
     };
-    $[130] = hidden;
+    $[130] = disabled;
     $[131] = t39;
   } else {
     t39 = $[131];
   }
   var t40;
-  if ($[132] !== validateRef || $[133] !== valueRef) {
+  if ($[132] !== hidden) {
     t40 = function t40() {
-      return validateRef.current(valueRef.current);
+      return !!hidden;
     };
-    $[132] = validateRef;
-    $[133] = valueRef;
-    $[134] = t40;
+    $[132] = hidden;
+    $[133] = t40;
   } else {
-    t40 = $[134];
+    t40 = $[133];
   }
   var t41;
-  if ($[135] !== setErrorErrorHelperText) {
-    t41 = function t41(error_1, errorText) {
-      return setErrorErrorHelperText(error_1, error_1 ? errorText : undefined);
+  if ($[134] !== validateRef || $[135] !== valueRef) {
+    t41 = function t41() {
+      return validateRef.current(valueRef.current);
     };
-    $[135] = setErrorErrorHelperText;
+    $[134] = validateRef;
+    $[135] = valueRef;
     $[136] = t41;
   } else {
     t41 = $[136];
   }
   var t42;
-  if ($[137] !== initFormValueFormat || $[138] !== time || $[139] !== type) {
-    t42 = function t42() {
-      return initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time);
+  if ($[137] !== setErrorErrorHelperText) {
+    t42 = function t42(error_1, errorText) {
+      return setErrorErrorHelperText(error_1, error_1 ? errorText : undefined);
     };
-    $[137] = initFormValueFormat;
-    $[138] = time;
-    $[139] = type;
-    $[140] = t42;
+    $[137] = setErrorErrorHelperText;
+    $[138] = t42;
   } else {
-    t42 = $[140];
+    t42 = $[138];
   }
   var t43;
-  if ($[141] !== setData || $[142] !== t32 || $[143] !== t33 || $[144] !== t34 || $[145] !== t35 || $[146] !== t36 || $[147] !== t37 || $[148] !== t38 || $[149] !== t39 || $[150] !== t40 || $[151] !== t41 || $[152] !== t42 || $[153] !== updateValue) {
-    t43 = {
-      getType: _temp$h,
-      getName: t32,
-      getReset: t33,
-      reset: t34,
-      getValue: t35,
+  if ($[139] !== initFormValueFormat || $[140] !== time || $[141] !== type) {
+    t43 = function t43() {
+      return initFormValueFormat ? initFormValueFormat : getDateTimeFormValueFormat(type, time);
+    };
+    $[139] = initFormValueFormat;
+    $[140] = time;
+    $[141] = type;
+    $[142] = t43;
+  } else {
+    t43 = $[142];
+  }
+  var t44;
+  if ($[143] !== focus || $[144] !== setData || $[145] !== t33 || $[146] !== t34 || $[147] !== t35 || $[148] !== t36 || $[149] !== t37 || $[150] !== t38 || $[151] !== t39 || $[152] !== t40 || $[153] !== t41 || $[154] !== t42 || $[155] !== t43 || $[156] !== updateValue) {
+    t44 = {
+      getType: _temp$a,
+      getName: t33,
+      getReset: t34,
+      reset: t35,
+      getValue: t36,
       setValue: updateValue,
-      getData: t36,
+      getData: t37,
       setData: setData,
-      isExceptValue: t37,
-      isDisabled: t38,
+      isExceptValue: t38,
+      isDisabled: t39,
       setDisabled: setDisabled,
-      isHidden: t39,
+      isHidden: t40,
       setHidden: setHidden,
       focus: focus,
       focusValidate: focus,
-      validate: t40,
-      setError: t41,
-      getFormValueFormat: t42
+      validate: t41,
+      setError: t42,
+      getFormValueFormat: t43
     };
-    $[141] = setData;
-    $[142] = t32;
-    $[143] = t33;
-    $[144] = t34;
-    $[145] = t35;
-    $[146] = t36;
-    $[147] = t37;
-    $[148] = t38;
-    $[149] = t39;
-    $[150] = t40;
-    $[151] = t41;
-    $[152] = t42;
-    $[153] = updateValue;
-    $[154] = t43;
-  } else {
-    t43 = $[154];
-  }
-  var commands = t43;
-  var t44;
-  if ($[155] !== id || $[156] !== onAddValueItem) {
-    t44 = function t44(commands_0) {
-      return onAddValueItem(id, commands_0);
-    };
-    $[155] = id;
-    $[156] = onAddValueItem;
+    $[143] = focus;
+    $[144] = setData;
+    $[145] = t33;
+    $[146] = t34;
+    $[147] = t35;
+    $[148] = t36;
+    $[149] = t37;
+    $[150] = t38;
+    $[151] = t39;
+    $[152] = t40;
+    $[153] = t41;
+    $[154] = t42;
+    $[155] = t43;
+    $[156] = updateValue;
     $[157] = t44;
   } else {
     t44 = $[157];
   }
+  var commands = t44;
   var t45;
-  if ($[158] !== id || $[159] !== onRemoveValueItem) {
-    t45 = function t45() {
-      return onRemoveValueItem(id);
+  if ($[158] !== id || $[159] !== onAddValueItem) {
+    t45 = function t45(commands_0) {
+      return onAddValueItem(id, commands_0);
     };
     $[158] = id;
-    $[159] = onRemoveValueItem;
+    $[159] = onAddValueItem;
     $[160] = t45;
   } else {
     t45 = $[160];
   }
-  reactHook.useForwardRef(ref, commands, t44, t45);
   var t46;
-  if ($[161] !== availableDate || $[162] !== isOpen || $[163] !== name || $[164] !== onRequestSearchSubmit || $[165] !== onValueChangeByUser || $[166] !== time || $[167] !== type || $[168] !== updateValue) {
-    t46 = function t46(unit, newValue_3, keyboardInputValue) {
+  if ($[161] !== id || $[162] !== onRemoveValueItem) {
+    t46 = function t46() {
+      return onRemoveValueItem(id);
+    };
+    $[161] = id;
+    $[162] = onRemoveValueItem;
+    $[163] = t46;
+  } else {
+    t46 = $[163];
+  }
+  reactHook.useForwardRef(ref, commands, t45, t46);
+  var t47;
+  if ($[164] !== availableDate || $[165] !== embedded || $[166] !== isOpen || $[167] !== name || $[168] !== onRequestSearchSubmit || $[169] !== onValueChangeByUser || $[170] !== time || $[171] !== type || $[172] !== updateValue) {
+    t47 = function t47(unit, newValue_3, keyboardInputValue) {
       var isUpdateValue = true;
       if (compare.notEmpty(keyboardInputValue)) {
         if (newValue_3) {
@@ -17052,25 +17410,28 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
         updateValue(finalValue_0);
         setTimeout(function () {
           onValueChangeByUser(name, finalValue_0);
+          if (embedded && (time ? unit === time : unit === "date")) {
+            onRequestSearchSubmit(name, finalValue_0);
+          }
           if (runOnRequestSearchSubmit_0) {
             onRequestSearchSubmit(name, finalValue_0);
           }
         });
         if (time) {
           if (finalValue_0) {
-            bb257: switch (unit) {
+            bb281: switch (unit) {
               case "date":
               case "action_date":
                 {
                   var _privateStaticDateTim;
                   (_privateStaticDateTim = privateStaticDateTimePickerRef.current) === null || _privateStaticDateTim === void 0 || _privateStaticDateTim.timeSelectScrollToDate(finalValue_0);
-                  break bb257;
+                  break bb281;
                 }
               case "hour":
                 {
                   var _privateStaticDateTim2;
                   (_privateStaticDateTim2 = privateStaticDateTimePickerRef.current) === null || _privateStaticDateTim2 === void 0 || _privateStaticDateTim2.timeSelectScrollToDate(finalValue_0, ["minute", "second"]);
-                  break bb257;
+                  break bb281;
                 }
               case "minute":
                 {
@@ -17083,35 +17444,36 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
       }
       setInputValue(finalValue_0);
     };
-    $[161] = availableDate;
-    $[162] = isOpen;
-    $[163] = name;
-    $[164] = onRequestSearchSubmit;
-    $[165] = onValueChangeByUser;
-    $[166] = time;
-    $[167] = type;
-    $[168] = updateValue;
-    $[169] = t46;
+    $[164] = availableDate;
+    $[165] = embedded;
+    $[166] = isOpen;
+    $[167] = name;
+    $[168] = onRequestSearchSubmit;
+    $[169] = onValueChangeByUser;
+    $[170] = time;
+    $[171] = type;
+    $[172] = updateValue;
+    $[173] = t47;
   } else {
-    t46 = $[169];
+    t47 = $[173];
   }
-  var handleChange = t46;
-  var t47;
-  if ($[170] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t47 = function t47() {
+  var handleChange = t47;
+  var t48;
+  if ($[174] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t48 = function t48() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
       }
     };
-    $[170] = t47;
+    $[174] = t48;
   } else {
-    t47 = $[170];
+    t48 = $[174];
   }
-  var handleContainerFocus = t47;
-  var t48;
-  if ($[171] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t48 = function t48() {
+  var handleContainerFocus = t48;
+  var t49;
+  if ($[175] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t49 = function t49() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
@@ -17123,277 +17485,370 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
         }, 10);
       }
     };
-    $[171] = t48;
+    $[175] = t49;
   } else {
-    t48 = $[171];
+    t49 = $[175];
   }
-  var handleContainerBlur = t48;
-  var t49;
-  if ($[172] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t49 = function t49() {
+  var handleContainerBlur = t49;
+  var t50;
+  if ($[176] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t50 = function t50() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
       }
       mouseDownTimeRef.current = new Date().getTime();
     };
-    $[172] = t49;
+    $[176] = t50;
   } else {
-    t49 = $[172];
+    t50 = $[176];
   }
-  var handleContainerMouseDown = t49;
-  var t50;
-  if ($[173] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t50 = function t50(ref_0) {
+  var handleContainerMouseDown = t50;
+  var t51;
+  if ($[177] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t51 = function t51(ref_0) {
       textFieldInputRef.current = ref_0;
     };
-    $[173] = t50;
+    $[177] = t51;
   } else {
-    t50 = $[173];
+    t51 = $[177];
   }
-  var slotPropsInputRef = t50;
+  var slotPropsInputRef = t51;
   var muiInputProps;
-  if ($[174] !== endAdornment || $[175] !== icon || $[176] !== startAdornment) {
+  if ($[178] !== endAdornment || $[179] !== icon || $[180] !== startAdornment) {
     muiInputProps = {
       endAdornment: undefined
     };
     if (startAdornment || icon) {
       var _t2;
-      if ($[178] !== icon) {
+      if ($[182] !== icon) {
         _t2 = icon && /*#__PURE__*/React.createElement(material.InputAdornment, {
           position: "start"
         }, /*#__PURE__*/React.createElement(reactComponent.PIcon, {
           size: "small"
         }, icon));
-        $[178] = icon;
-        $[179] = _t2;
+        $[182] = icon;
+        $[183] = _t2;
       } else {
-        _t2 = $[179];
+        _t2 = $[183];
       }
       var _t3;
-      if ($[180] !== startAdornment) {
+      if ($[184] !== startAdornment) {
         _t3 = startAdornment && /*#__PURE__*/React.createElement(material.InputAdornment, {
           position: "start"
         }, startAdornment);
-        $[180] = startAdornment;
-        $[181] = _t3;
+        $[184] = startAdornment;
+        $[185] = _t3;
       } else {
-        _t3 = $[181];
+        _t3 = $[185];
       }
       var _t4;
-      if ($[182] !== _t2 || $[183] !== _t3) {
+      if ($[186] !== _t2 || $[187] !== _t3) {
         _t4 = /*#__PURE__*/React.createElement(React.Fragment, null, _t2, _t3);
-        $[182] = _t2;
-        $[183] = _t3;
-        $[184] = _t4;
+        $[186] = _t2;
+        $[187] = _t3;
+        $[188] = _t4;
       } else {
-        _t4 = $[184];
+        _t4 = $[188];
       }
       muiInputProps.startAdornment = _t4;
     }
     if (endAdornment) {
       var _t5;
-      if ($[185] !== endAdornment) {
+      if ($[189] !== endAdornment) {
         _t5 = endAdornment && /*#__PURE__*/React.createElement(material.InputAdornment, {
           position: "end"
         }, endAdornment);
-        $[185] = endAdornment;
-        $[186] = _t5;
+        $[189] = endAdornment;
+        $[190] = _t5;
       } else {
-        _t5 = $[186];
+        _t5 = $[190];
       }
       var _t6;
-      if ($[187] !== _t5) {
+      if ($[191] !== _t5) {
         _t6 = /*#__PURE__*/React.createElement(React.Fragment, null, _t5);
-        $[187] = _t5;
-        $[188] = _t6;
+        $[191] = _t5;
+        $[192] = _t6;
       } else {
-        _t6 = $[188];
+        _t6 = $[192];
       }
       muiInputProps.endAdornment = _t6;
     }
-    $[174] = endAdornment;
-    $[175] = icon;
-    $[176] = startAdornment;
-    $[177] = muiInputProps;
+    $[178] = endAdornment;
+    $[179] = icon;
+    $[180] = startAdornment;
+    $[181] = muiInputProps;
   } else {
-    muiInputProps = $[177];
+    muiInputProps = $[181];
   }
   var slotPropsMuiInputProps = muiInputProps;
   var readOnly_0 = !enableKeyboardInput;
-  var t51 = "align-".concat(align);
-  var t52;
-  if ($[189] !== t51) {
-    t52 = classNames("input-text-field", t51);
-    $[189] = t51;
-    $[190] = t52;
-  } else {
-    t52 = $[190];
-  }
+  var t52 = "align-".concat(align);
   var t53;
-  if ($[191] !== labelShrink) {
-    t53 = labelShrink ? {
+  if ($[193] !== t52) {
+    t53 = classNames("input-text-field", t52);
+    $[193] = t52;
+    $[194] = t53;
+  } else {
+    t53 = $[194];
+  }
+  var t54;
+  if ($[195] !== labelShrink) {
+    t54 = labelShrink ? {
       shrink: true
     } : undefined;
-    $[191] = labelShrink;
-    $[192] = t53;
+    $[195] = labelShrink;
+    $[196] = t54;
   } else {
-    t53 = $[192];
+    t54 = $[196];
   }
-  var t54 = readOnly_0 ? -1 : undefined;
-  var t55;
-  if ($[193] !== readOnly_0 || $[194] !== t54) {
-    t55 = {
+  var t55 = readOnly_0 ? -1 : undefined;
+  var t56;
+  if ($[197] !== readOnly_0 || $[198] !== t55) {
+    t56 = {
       readOnly: readOnly_0,
-      tabIndex: t54
+      tabIndex: t55
     };
-    $[193] = readOnly_0;
-    $[194] = t54;
-    $[195] = t55;
+    $[197] = readOnly_0;
+    $[198] = t55;
+    $[199] = t56;
   } else {
-    t55 = $[195];
+    t56 = $[199];
   }
-  var t56 = !!error || !!timeError;
-  var t57;
-  if ($[196] !== initStyle || $[197] !== width) {
-    t57 = width != null ? _objectSpread2(_objectSpread2({}, initStyle), {}, {
+  var t57 = !!error || !!timeError;
+  var t58;
+  if ($[200] !== initStyle || $[201] !== width) {
+    t58 = width != null ? _objectSpread2(_objectSpread2({}, initStyle), {}, {
       width: width
     }) : initStyle;
-    $[196] = initStyle;
-    $[197] = width;
-    $[198] = t57;
+    $[200] = initStyle;
+    $[201] = width;
+    $[202] = t58;
   } else {
-    t57 = $[198];
+    t58 = $[202];
   }
-  var t58;
   var t59;
-  if ($[199] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t58 = function t58() {
-      return setIsOpen(true);
-    };
+  var t60;
+  if ($[203] === Symbol["for"]("react.memo_cache_sentinel")) {
     t59 = function t59() {
       return setIsOpen(true);
     };
-    $[199] = t58;
-    $[200] = t59;
+    t60 = function t60() {
+      return setIsOpen(true);
+    };
+    $[203] = t59;
+    $[204] = t60;
   } else {
-    t58 = $[199];
-    t59 = $[200];
+    t59 = $[203];
+    t60 = $[204];
   }
-  var t60;
-  if ($[201] !== color || $[202] !== focused || $[203] !== fullWidth || $[204] !== required || $[205] !== size || $[206] !== slotPropsMuiInputProps || $[207] !== sx || $[208] !== t52 || $[209] !== t53 || $[210] !== t55 || $[211] !== t56 || $[212] !== t57 || $[213] !== variant) {
-    t60 = {
+  var t61;
+  if ($[205] !== color || $[206] !== focused || $[207] !== fullWidth || $[208] !== required || $[209] !== size || $[210] !== slotPropsMuiInputProps || $[211] !== sx || $[212] !== t53 || $[213] !== t54 || $[214] !== t56 || $[215] !== t57 || $[216] !== t58 || $[217] !== variant) {
+    t61 = {
       textField: {
-        className: t52,
+        className: t53,
         inputRef: slotPropsInputRef,
         variant: variant,
         size: size,
         color: color,
         focused: focused,
-        InputLabelProps: t53,
+        InputLabelProps: t54,
         InputProps: slotPropsMuiInputProps,
-        inputProps: t55,
+        inputProps: t56,
         required: required,
         fullWidth: fullWidth,
         helperText: undefined,
-        error: t56,
-        style: t57,
+        error: t57,
+        style: t58,
         sx: sx,
-        onFocus: t58,
-        onClick: t59
+        onFocus: t59,
+        onClick: t60
       }
     };
-    $[201] = color;
-    $[202] = focused;
-    $[203] = fullWidth;
-    $[204] = required;
-    $[205] = size;
-    $[206] = slotPropsMuiInputProps;
-    $[207] = sx;
-    $[208] = t52;
-    $[209] = t53;
-    $[210] = t55;
-    $[211] = t56;
-    $[212] = t57;
-    $[213] = variant;
-    $[214] = t60;
+    $[205] = color;
+    $[206] = focused;
+    $[207] = fullWidth;
+    $[208] = required;
+    $[209] = size;
+    $[210] = slotPropsMuiInputProps;
+    $[211] = sx;
+    $[212] = t53;
+    $[213] = t54;
+    $[214] = t56;
+    $[215] = t57;
+    $[216] = t58;
+    $[217] = variant;
+    $[218] = t61;
   } else {
-    t60 = $[214];
+    t61 = $[218];
   }
-  var slotProps = t60;
-  var t61 = error && helperText ? 8 : -14;
-  var t62;
-  if ($[215] !== t61) {
-    t62 = {
+  var slotProps = t61;
+  var t62 = error && helperText ? 8 : -14;
+  var t63;
+  if ($[219] !== t62) {
+    t63 = {
       popper: {
         modifiers: [{
           name: "offset",
           options: {
-            offset: [0, t61]
+            offset: [0, t62]
           }
         }]
       }
     };
-    $[215] = t61;
-    $[216] = t62;
+    $[219] = t62;
+    $[220] = t63;
   } else {
-    t62 = $[216];
+    t63 = $[220];
   }
-  var tooltipSlotProps = t62;
-  var t63;
-  if ($[217] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t63 = function t63() {
-      return setIsOpen(false);
-    };
-    $[217] = t63;
-  } else {
-    t63 = $[217];
+  var tooltipSlotProps = t63;
+  if (embedded) {
+    var _t7 = !formColWithHelperText ? error ? errorHelperText : helperText : undefined;
+    var _t8;
+    if ($[221] !== time) {
+      _t8 = function _t8() {
+        return !time && setIsOpen(false);
+      };
+      $[221] = time;
+      $[222] = _t8;
+    } else {
+      _t8 = $[222];
+    }
+    var _t9;
+    if ($[223] !== availableDate || $[224] !== disableFuture || $[225] !== disablePast || $[226] !== handleChange || $[227] !== hours || $[228] !== maxDate || $[229] !== minDate || $[230] !== minuteInterval || $[231] !== minutes || $[232] !== otherProps || $[233] !== secondInterval || $[234] !== seconds || $[235] !== showDaysOutsideCurrentMonth || $[236] !== _t8 || $[237] !== time || $[238] !== type || $[239] !== value_0) {
+      _t9 = /*#__PURE__*/React.createElement(PrivateStaticDateTimePicker, _extends({}, otherProps, {
+        ref: privateStaticDateTimePickerRef,
+        type: type,
+        time: time,
+        value: value_0,
+        availableDate: availableDate,
+        minDate: minDate,
+        maxDate: maxDate,
+        disablePast: disablePast,
+        disableFuture: disableFuture,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+        minuteInterval: minuteInterval,
+        secondInterval: secondInterval,
+        showDaysOutsideCurrentMonth: showDaysOutsideCurrentMonth,
+        onChange: handleChange,
+        onAccept: _t8,
+        onClose: undefined
+      }));
+      $[223] = availableDate;
+      $[224] = disableFuture;
+      $[225] = disablePast;
+      $[226] = handleChange;
+      $[227] = hours;
+      $[228] = maxDate;
+      $[229] = minDate;
+      $[230] = minuteInterval;
+      $[231] = minutes;
+      $[232] = otherProps;
+      $[233] = secondInterval;
+      $[234] = seconds;
+      $[235] = showDaysOutsideCurrentMonth;
+      $[236] = _t8;
+      $[237] = time;
+      $[238] = type;
+      $[239] = value_0;
+      $[240] = _t9;
+    } else {
+      _t9 = $[240];
+    }
+    var _t0;
+    if ($[241] !== className || $[242] !== disabled || $[243] !== error || $[244] !== fullWidth || $[245] !== hidden || $[246] !== initLabel || $[247] !== initStyle || $[248] !== name || $[249] !== readOnly || $[250] !== required || $[251] !== sx || $[252] !== _t7 || $[253] !== _t9) {
+      _t0 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
+        dateAdapter: AdapterDayjs.AdapterDayjs
+      }, /*#__PURE__*/React.createElement(PrivateEmbedPicker, {
+        name: name,
+        label: initLabel,
+        required: required,
+        disabled: disabled,
+        readOnly: readOnly,
+        hidden: hidden,
+        fullWidth: fullWidth,
+        error: error,
+        helperText: _t7,
+        pickerRef: embeddedRef,
+        className: className,
+        style: initStyle,
+        sx: sx
+      }, _t9));
+      $[241] = className;
+      $[242] = disabled;
+      $[243] = error;
+      $[244] = fullWidth;
+      $[245] = hidden;
+      $[246] = initLabel;
+      $[247] = initStyle;
+      $[248] = name;
+      $[249] = readOnly;
+      $[250] = required;
+      $[251] = sx;
+      $[252] = _t7;
+      $[253] = _t9;
+      $[254] = _t0;
+    } else {
+      _t0 = $[254];
+    }
+    return _t0;
   }
   var t64;
-  if ($[218] !== className) {
-    t64 = classNames(className, "PrivateDateTimePicker");
-    $[218] = className;
-    $[219] = t64;
-  } else {
-    t64 = $[219];
-  }
-  var t65 = hidden ? "none" : fullWidth ? "block" : "inline-block";
-  var t66 = fullWidth ? 1 : undefined;
-  var t67;
-  if ($[220] !== t65 || $[221] !== t66) {
-    t67 = {
-      display: t65,
-      flex: t66
-    };
-    $[220] = t65;
-    $[221] = t66;
-    $[222] = t67;
-  } else {
-    t67 = $[222];
-  }
-  var t68 = disabled || readOnly ? false : isOpen;
-  var t69;
-  if ($[223] !== time) {
-    t69 = function t69() {
-      return !time && setIsOpen(false);
-    };
-    $[223] = time;
-    $[224] = t69;
-  } else {
-    t69 = $[224];
-  }
-  var t70;
-  if ($[225] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t70 = function t70() {
+  if ($[255] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t64 = function t64() {
       return setIsOpen(false);
     };
-    $[225] = t70;
+    $[255] = t64;
   } else {
-    t70 = $[225];
+    t64 = $[255];
+  }
+  var t65;
+  if ($[256] !== className) {
+    t65 = classNames(className, "PrivateDateTimePicker");
+    $[256] = className;
+    $[257] = t65;
+  } else {
+    t65 = $[257];
+  }
+  var t66 = hidden ? "none" : fullWidth ? "block" : "inline-block";
+  var t67 = fullWidth ? 1 : undefined;
+  var t68;
+  if ($[258] !== t66 || $[259] !== t67) {
+    t68 = {
+      display: t66,
+      flex: t67
+    };
+    $[258] = t66;
+    $[259] = t67;
+    $[260] = t68;
+  } else {
+    t68 = $[260];
+  }
+  var t69 = disabled || readOnly ? false : isOpen;
+  var t70;
+  if ($[261] !== time) {
+    t70 = function t70() {
+      return !time && setIsOpen(false);
+    };
+    $[261] = time;
+    $[262] = t70;
+  } else {
+    t70 = $[262];
   }
   var t71;
-  if ($[226] !== availableDate || $[227] !== disableFuture || $[228] !== disablePast || $[229] !== handleChange || $[230] !== hours || $[231] !== maxDate || $[232] !== minDate || $[233] !== minuteInterval || $[234] !== minutes || $[235] !== otherProps || $[236] !== secondInterval || $[237] !== seconds || $[238] !== showDaysOutsideCurrentMonth || $[239] !== t69 || $[240] !== time || $[241] !== type || $[242] !== value_0) {
-    t71 = /*#__PURE__*/React.createElement(PrivateStaticDateTimePicker, _extends({}, otherProps, {
+  if ($[263] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t71 = function t71() {
+      return setIsOpen(false);
+    };
+    $[263] = t71;
+  } else {
+    t71 = $[263];
+  }
+  var t72;
+  if ($[264] !== availableDate || $[265] !== disableFuture || $[266] !== disablePast || $[267] !== handleChange || $[268] !== hours || $[269] !== maxDate || $[270] !== minDate || $[271] !== minuteInterval || $[272] !== minutes || $[273] !== otherProps || $[274] !== secondInterval || $[275] !== seconds || $[276] !== showDaysOutsideCurrentMonth || $[277] !== t70 || $[278] !== time || $[279] !== type || $[280] !== value_0) {
+    t72 = /*#__PURE__*/React.createElement(PrivateStaticDateTimePicker, _extends({}, otherProps, {
       ref: privateStaticDateTimePickerRef,
       type: type,
       time: time,
@@ -17410,76 +17865,76 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
       secondInterval: secondInterval,
       showDaysOutsideCurrentMonth: showDaysOutsideCurrentMonth,
       onChange: handleChange,
-      onAccept: t69,
-      onClose: t70
+      onAccept: t70,
+      onClose: t71
     }));
-    $[226] = availableDate;
-    $[227] = disableFuture;
-    $[228] = disablePast;
-    $[229] = handleChange;
-    $[230] = hours;
-    $[231] = maxDate;
-    $[232] = minDate;
-    $[233] = minuteInterval;
-    $[234] = minutes;
-    $[235] = otherProps;
-    $[236] = secondInterval;
-    $[237] = seconds;
-    $[238] = showDaysOutsideCurrentMonth;
-    $[239] = t69;
-    $[240] = time;
-    $[241] = type;
-    $[242] = value_0;
-    $[243] = t71;
+    $[264] = availableDate;
+    $[265] = disableFuture;
+    $[266] = disablePast;
+    $[267] = handleChange;
+    $[268] = hours;
+    $[269] = maxDate;
+    $[270] = minDate;
+    $[271] = minuteInterval;
+    $[272] = minutes;
+    $[273] = otherProps;
+    $[274] = secondInterval;
+    $[275] = seconds;
+    $[276] = showDaysOutsideCurrentMonth;
+    $[277] = t70;
+    $[278] = time;
+    $[279] = type;
+    $[280] = value_0;
+    $[281] = t72;
   } else {
-    t71 = $[243];
+    t72 = $[281];
   }
-  var t72 = fullWidth ? "block" : "inline-block";
-  var t73;
-  if ($[244] !== t72) {
-    t73 = {
-      display: t72
-    };
-    $[244] = t72;
-    $[245] = t73;
-  } else {
-    t73 = $[245];
-  }
+  var t73 = fullWidth ? "block" : "inline-block";
   var t74;
-  if ($[246] !== initLabel || $[247] !== labelIcon) {
-    t74 = labelIcon ? /*#__PURE__*/React.createElement(reactComponent.PIconText, {
-      icon: labelIcon
-    }, initLabel) : initLabel;
-    $[246] = initLabel;
-    $[247] = labelIcon;
-    $[248] = t74;
+  if ($[282] !== t73) {
+    t74 = {
+      display: t73
+    };
+    $[282] = t73;
+    $[283] = t74;
   } else {
-    t74 = $[248];
+    t74 = $[283];
   }
   var t75;
-  if ($[249] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t75 = function t75() {
-      return setIsOpen(false);
-    };
-    $[249] = t75;
+  if ($[284] !== initLabel || $[285] !== labelIcon) {
+    t75 = labelIcon ? /*#__PURE__*/React.createElement(reactComponent.PIconText, {
+      icon: labelIcon
+    }, initLabel) : initLabel;
+    $[284] = initLabel;
+    $[285] = labelIcon;
+    $[286] = t75;
   } else {
-    t75 = $[249];
+    t75 = $[286];
   }
   var t76;
-  if ($[250] !== disablePast || $[251] !== inputValue || $[252] !== time) {
-    t76 = function t76(reason, v) {
+  if ($[287] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t76 = function t76() {
+      return setIsOpen(false);
+    };
+    $[287] = t76;
+  } else {
+    t76 = $[287];
+  }
+  var t77;
+  if ($[288] !== disablePast || $[289] !== inputValue || $[290] !== time) {
+    t77 = function t77(reason, v) {
       if (disablePast) {
         var formatStr;
-        bb400: switch (time) {
+        bb441: switch (time) {
           case "hour":
             {
               formatStr = "YYYY-MM-DD HH";
-              break bb400;
+              break bb441;
             }
           case "minute":
             {
               formatStr = "YYYY-MM-DD HH:mm";
-              break bb400;
+              break bb441;
             }
           case "second":
             {
@@ -17493,28 +17948,28 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
         setDatePickerError(reason);
       }
     };
-    $[250] = disablePast;
-    $[251] = inputValue;
-    $[252] = time;
-    $[253] = t76;
+    $[288] = disablePast;
+    $[289] = inputValue;
+    $[290] = time;
+    $[291] = t77;
   } else {
-    t76 = $[253];
-  }
-  var t77;
-  if ($[254] !== handleChange) {
-    t77 = function t77(newValue_4) {
-      return handleChange("date", newValue_4);
-    };
-    $[254] = handleChange;
-    $[255] = t77;
-  } else {
-    t77 = $[255];
+    t77 = $[291];
   }
   var t78;
-  if ($[256] !== disableFuture || $[257] !== disablePast || $[258] !== disabled || $[259] !== format || $[260] !== inputValue || $[261] !== maxDate || $[262] !== minDate || $[263] !== otherProps || $[264] !== readOnly || $[265] !== showDaysOutsideCurrentMonth || $[266] !== slotProps || $[267] !== t74 || $[268] !== t76 || $[269] !== t77) {
-    t78 = /*#__PURE__*/React.createElement(xDatePickers.DesktopDateTimePicker, _extends({
+  if ($[292] !== handleChange) {
+    t78 = function t78(newValue_4) {
+      return handleChange("date", newValue_4);
+    };
+    $[292] = handleChange;
+    $[293] = t78;
+  } else {
+    t78 = $[293];
+  }
+  var t79;
+  if ($[294] !== disableFuture || $[295] !== disablePast || $[296] !== disabled || $[297] !== format || $[298] !== inputValue || $[299] !== maxDate || $[300] !== minDate || $[301] !== otherProps || $[302] !== readOnly || $[303] !== showDaysOutsideCurrentMonth || $[304] !== slotProps || $[305] !== t75 || $[306] !== t77 || $[307] !== t78) {
+    t79 = /*#__PURE__*/React.createElement(xDatePickers.DesktopDateTimePicker, _extends({
       value: inputValue,
-      label: t74,
+      label: t75,
       open: false,
       format: format,
       disabled: disabled,
@@ -17524,101 +17979,434 @@ var PrivateDateTimePicker = function PrivateDateTimePicker(t0) {
       view: "minutes",
       disablePast: disablePast,
       disableFuture: disableFuture,
-      onClose: t75,
-      onError: t76,
-      onChange: t77,
+      onClose: t76,
+      onError: t77,
+      onChange: t78,
       slotProps: slotProps,
       showDaysOutsideCurrentMonth: showDaysOutsideCurrentMonth
     }, otherProps));
-    $[256] = disableFuture;
-    $[257] = disablePast;
-    $[258] = disabled;
-    $[259] = format;
-    $[260] = inputValue;
-    $[261] = maxDate;
-    $[262] = minDate;
-    $[263] = otherProps;
-    $[264] = readOnly;
-    $[265] = showDaysOutsideCurrentMonth;
-    $[266] = slotProps;
-    $[267] = t74;
-    $[268] = t76;
-    $[269] = t77;
-    $[270] = t78;
+    $[294] = disableFuture;
+    $[295] = disablePast;
+    $[296] = disabled;
+    $[297] = format;
+    $[298] = inputValue;
+    $[299] = maxDate;
+    $[300] = minDate;
+    $[301] = otherProps;
+    $[302] = readOnly;
+    $[303] = showDaysOutsideCurrentMonth;
+    $[304] = slotProps;
+    $[305] = t75;
+    $[306] = t77;
+    $[307] = t78;
+    $[308] = t79;
   } else {
-    t78 = $[270];
-  }
-  var t79;
-  if ($[271] !== t73 || $[272] !== t78) {
-    t79 = /*#__PURE__*/React.createElement("div", {
-      style: t73
-    }, t78);
-    $[271] = t73;
-    $[272] = t78;
-    $[273] = t79;
-  } else {
-    t79 = $[273];
+    t79 = $[308];
   }
   var t80;
-  if ($[274] !== t68 || $[275] !== t71 || $[276] !== t79 || $[277] !== tooltipSlotProps) {
-    t80 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
-      open: t68,
-      slotProps: tooltipSlotProps,
-      title: t71
+  if ($[309] !== t74 || $[310] !== t79) {
+    t80 = /*#__PURE__*/React.createElement("div", {
+      style: t74
     }, t79);
-    $[274] = t68;
-    $[275] = t71;
-    $[276] = t79;
-    $[277] = tooltipSlotProps;
-    $[278] = t80;
+    $[309] = t74;
+    $[310] = t79;
+    $[311] = t80;
   } else {
-    t80 = $[278];
+    t80 = $[311];
   }
   var t81;
-  if ($[279] !== error || $[280] !== errorHelperText || $[281] !== formColWithHelperText || $[282] !== helperText || $[283] !== variant) {
-    t81 = !formColWithHelperText && (helperText || error && errorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
+  if ($[312] !== t69 || $[313] !== t72 || $[314] !== t80 || $[315] !== tooltipSlotProps) {
+    t81 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
+      open: t69,
+      slotProps: tooltipSlotProps,
+      title: t72
+    }, t80);
+    $[312] = t69;
+    $[313] = t72;
+    $[314] = t80;
+    $[315] = tooltipSlotProps;
+    $[316] = t81;
+  } else {
+    t81 = $[316];
+  }
+  var t82;
+  if ($[317] !== error || $[318] !== errorHelperText || $[319] !== formColWithHelperText || $[320] !== helperText || $[321] !== variant) {
+    t82 = !formColWithHelperText && (helperText || error && errorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
       error: error,
       style: {
         marginLeft: variant === "standard" ? 0 : 14
       }
     }, error ? errorHelperText : helperText);
-    $[279] = error;
-    $[280] = errorHelperText;
-    $[281] = formColWithHelperText;
-    $[282] = helperText;
-    $[283] = variant;
-    $[284] = t81;
+    $[317] = error;
+    $[318] = errorHelperText;
+    $[319] = formColWithHelperText;
+    $[320] = helperText;
+    $[321] = variant;
+    $[322] = t82;
   } else {
-    t81 = $[284];
+    t82 = $[322];
   }
-  var t82;
-  if ($[285] !== t64 || $[286] !== t67 || $[287] !== t80 || $[288] !== t81) {
-    t82 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
+  var t83;
+  if ($[323] !== t65 || $[324] !== t68 || $[325] !== t81 || $[326] !== t82) {
+    t83 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
       dateAdapter: AdapterDayjs.AdapterDayjs
     }, /*#__PURE__*/React.createElement(material.ClickAwayListener, {
       mouseEvent: "onMouseDown",
       touchEvent: "onTouchStart",
-      onClickAway: t63
+      onClickAway: t64
     }, /*#__PURE__*/React.createElement("div", {
-      className: t64,
-      style: t67,
+      className: t65,
+      style: t68,
       onMouseDown: handleContainerMouseDown,
       onFocus: handleContainerFocus,
       onBlur: handleContainerBlur
-    }, t80, t81)));
-    $[285] = t64;
-    $[286] = t67;
-    $[287] = t80;
-    $[288] = t81;
-    $[289] = t82;
+    }, t81, t82)));
+    $[323] = t65;
+    $[324] = t68;
+    $[325] = t81;
+    $[326] = t82;
+    $[327] = t83;
   } else {
-    t82 = $[289];
+    t83 = $[327];
   }
-  return t82;
+  return t83;
 };
-function _temp$h() {
+function _temp$a() {
   return "default";
-}var PrivateAlertDialog = function PrivateAlertDialog(t0) {
+}var _excluded$f = ["embedded", "ref", "className", "time", "minDate", "maxDate", "disablePast", "disableFuture"],
+  _excluded2$1 = ["onAddValueItem"];
+var PFormDateTimePickerInternal = function PFormDateTimePickerInternal(t0) {
+  var $ = compilerRuntime.c(42);
+  var className;
+  var disableFuture;
+  var disablePast;
+  var initMaxDate;
+  var initMinDate;
+  var props;
+  var ref;
+  var t1;
+  var time;
+  if ($[0] !== t0) {
+    var _t = t0;
+    t1 = _t.embedded;
+    ref = _t.ref;
+    className = _t.className;
+    time = _t.time;
+    initMinDate = _t.minDate;
+    initMaxDate = _t.maxDate;
+    disablePast = _t.disablePast;
+    disableFuture = _t.disableFuture;
+    props = _objectWithoutProperties(_t, _excluded$f);
+    $[0] = t0;
+    $[1] = className;
+    $[2] = disableFuture;
+    $[3] = disablePast;
+    $[4] = initMaxDate;
+    $[5] = initMinDate;
+    $[6] = props;
+    $[7] = ref;
+    $[8] = t1;
+    $[9] = time;
+  } else {
+    className = $[1];
+    disableFuture = $[2];
+    disablePast = $[3];
+    initMaxDate = $[4];
+    initMinDate = $[5];
+    props = $[6];
+    ref = $[7];
+    t1 = $[8];
+    time = $[9];
+  }
+  var embedded = t1 === undefined ? false : t1;
+  var t2 = useFormState();
+  var onAddValueItem;
+  var otherFormState;
+  if ($[10] !== t2) {
+    var _t2 = t2;
+    onAddValueItem = _t2.onAddValueItem;
+    otherFormState = _objectWithoutProperties(_t2, _excluded2$1);
+    $[10] = t2;
+    $[11] = onAddValueItem;
+    $[12] = otherFormState;
+  } else {
+    onAddValueItem = $[11];
+    otherFormState = $[12];
+  }
+  var t3;
+  if (initMinDate && !disablePast) {
+    var newMinDate;
+    bb0: switch (time) {
+      case "hour":
+        {
+          var _t3;
+          if ($[13] !== initMinDate) {
+            _t3 = dayjs(initMinDate).set("minute", 0).set("second", 0);
+            $[13] = initMinDate;
+            $[14] = _t3;
+          } else {
+            _t3 = $[14];
+          }
+          newMinDate = _t3;
+          break bb0;
+        }
+      case "minute":
+        {
+          var _t4;
+          if ($[15] !== initMinDate) {
+            _t4 = dayjs(initMinDate).set("second", 0);
+            $[15] = initMinDate;
+            $[16] = _t4;
+          } else {
+            _t4 = $[16];
+          }
+          newMinDate = _t4;
+          break bb0;
+        }
+      case "second":
+        {
+          newMinDate = initMinDate;
+        }
+    }
+    t3 = newMinDate;
+  } else {
+    t3 = initMinDate;
+  }
+  var minDate = t3;
+  var t4;
+  if (initMaxDate && !disableFuture) {
+    var newMaxDate;
+    bb1: switch (time) {
+      case "hour":
+        {
+          var _t5;
+          if ($[17] !== initMaxDate) {
+            _t5 = dayjs(initMaxDate).set("minute", 59).set("second", 59);
+            $[17] = initMaxDate;
+            $[18] = _t5;
+          } else {
+            _t5 = $[18];
+          }
+          newMaxDate = _t5;
+          break bb1;
+        }
+      case "minute":
+        {
+          var _t6;
+          if ($[19] !== initMaxDate) {
+            _t6 = dayjs(initMaxDate).set("second", 59);
+            $[19] = initMaxDate;
+            $[20] = _t6;
+          } else {
+            _t6 = $[20];
+          }
+          newMaxDate = _t6;
+          break bb1;
+        }
+      case "second":
+        {
+          newMaxDate = initMaxDate;
+        }
+    }
+    t4 = newMaxDate;
+  } else {
+    t4 = initMaxDate;
+  }
+  var maxDate = t4;
+  var t5;
+  if ($[21] !== embedded || $[22] !== onAddValueItem) {
+    t5 = function t5(id, commands) {
+      commands.getType = function () {
+        return embedded ? "PFormEmbedDateTimePicker" : "PFormDateTimePicker";
+      };
+      onAddValueItem(id, commands);
+    };
+    $[21] = embedded;
+    $[22] = onAddValueItem;
+    $[23] = t5;
+  } else {
+    t5 = $[23];
+  }
+  var handleAddValueItem = t5;
+  var t6;
+  if ($[24] !== handleAddValueItem || $[25] !== otherFormState) {
+    t6 = _objectSpread2(_objectSpread2({}, otherFormState), {}, {
+      onAddValueItem: handleAddValueItem
+    });
+    $[24] = handleAddValueItem;
+    $[25] = otherFormState;
+    $[26] = t6;
+  } else {
+    t6 = $[26];
+  }
+  var t7;
+  if ($[27] !== className) {
+    t7 = classNames(className, "PFormDateTimePicker");
+    $[27] = className;
+    $[28] = t7;
+  } else {
+    t7 = $[28];
+  }
+  var t8;
+  if ($[29] !== disableFuture || $[30] !== disablePast || $[31] !== embedded || $[32] !== maxDate || $[33] !== minDate || $[34] !== props || $[35] !== ref || $[36] !== t7 || $[37] !== time) {
+    t8 = /*#__PURE__*/React.createElement(PrivateDateTimePickerInternal, _extends({
+      embedded: embedded,
+      ref: ref,
+      className: t7,
+      type: "date_time",
+      time: time,
+      minDate: minDate,
+      maxDate: maxDate,
+      disablePast: disablePast,
+      disableFuture: disableFuture
+    }, props));
+    $[29] = disableFuture;
+    $[30] = disablePast;
+    $[31] = embedded;
+    $[32] = maxDate;
+    $[33] = minDate;
+    $[34] = props;
+    $[35] = ref;
+    $[36] = t7;
+    $[37] = time;
+    $[38] = t8;
+  } else {
+    t8 = $[38];
+  }
+  var t9;
+  if ($[39] !== t6 || $[40] !== t8) {
+    t9 = /*#__PURE__*/React.createElement(PFormContextProvider, {
+      value: t6
+    }, t8);
+    $[39] = t6;
+    $[40] = t8;
+    $[41] = t9;
+  } else {
+    t9 = $[41];
+  }
+  return t9;
+};
+var PFormDateTimePicker = function PFormDateTimePicker(props) {
+  var $ = compilerRuntime.c(2);
+  var t0;
+  if ($[0] !== props) {
+    t0 = /*#__PURE__*/React.createElement(PFormDateTimePickerInternal, props);
+    $[0] = props;
+    $[1] = t0;
+  } else {
+    t0 = $[1];
+  }
+  return t0;
+};var _excluded$e = ["embedded", "className"],
+  _excluded2 = ["onAddValueItem"];
+var PFormTimePickerInternal = function PFormTimePickerInternal(t0) {
+  var $ = compilerRuntime.c(22);
+  var className;
+  var props;
+  var t1;
+  if ($[0] !== t0) {
+    var _t = t0;
+    t1 = _t.embedded;
+    className = _t.className;
+    props = _objectWithoutProperties(_t, _excluded$e);
+    $[0] = t0;
+    $[1] = className;
+    $[2] = props;
+    $[3] = t1;
+  } else {
+    className = $[1];
+    props = $[2];
+    t1 = $[3];
+  }
+  var embedded = t1 === undefined ? false : t1;
+  var t2 = useFormState();
+  var onAddValueItem;
+  var otherFormState;
+  if ($[4] !== t2) {
+    var _t2 = t2;
+    onAddValueItem = _t2.onAddValueItem;
+    otherFormState = _objectWithoutProperties(_t2, _excluded2);
+    $[4] = t2;
+    $[5] = onAddValueItem;
+    $[6] = otherFormState;
+  } else {
+    onAddValueItem = $[5];
+    otherFormState = $[6];
+  }
+  var t3;
+  if ($[7] !== embedded || $[8] !== onAddValueItem) {
+    t3 = function t3(id, commands) {
+      commands.getType = function () {
+        return embedded ? "PFormEmbedTimePicker" : "PFormTimePicker";
+      };
+      onAddValueItem(id, commands);
+    };
+    $[7] = embedded;
+    $[8] = onAddValueItem;
+    $[9] = t3;
+  } else {
+    t3 = $[9];
+  }
+  var handleAddValueItem = t3;
+  var t4;
+  if ($[10] !== handleAddValueItem || $[11] !== otherFormState) {
+    t4 = _objectSpread2(_objectSpread2({}, otherFormState), {}, {
+      onAddValueItem: handleAddValueItem
+    });
+    $[10] = handleAddValueItem;
+    $[11] = otherFormState;
+    $[12] = t4;
+  } else {
+    t4 = $[12];
+  }
+  var t5;
+  if ($[13] !== className) {
+    t5 = classNames(className, "PFormTimePicker");
+    $[13] = className;
+    $[14] = t5;
+  } else {
+    t5 = $[14];
+  }
+  var t6;
+  if ($[15] !== embedded || $[16] !== props || $[17] !== t5) {
+    t6 = /*#__PURE__*/React.createElement(PrivateDateTimePickerInternal, _extends({
+      embedded: embedded,
+      className: t5
+    }, props, {
+      type: "time"
+    }));
+    $[15] = embedded;
+    $[16] = props;
+    $[17] = t5;
+    $[18] = t6;
+  } else {
+    t6 = $[18];
+  }
+  var t7;
+  if ($[19] !== t4 || $[20] !== t6) {
+    t7 = /*#__PURE__*/React.createElement(PFormContextProvider, {
+      value: t4
+    }, t6);
+    $[19] = t4;
+    $[20] = t6;
+    $[21] = t7;
+  } else {
+    t7 = $[21];
+  }
+  return t7;
+};
+var PFormTimePicker = function PFormTimePicker(props) {
+  var $ = compilerRuntime.c(2);
+  var t0;
+  if ($[0] !== props) {
+    t0 = /*#__PURE__*/React.createElement(PFormTimePickerInternal, props);
+    $[0] = props;
+    $[1] = t0;
+  } else {
+    t0 = $[1];
+  }
+  return t0;
+};var PrivateAlertDialog = function PrivateAlertDialog(t0) {
   var $ = compilerRuntime.c(15);
   var t1 = t0.color,
     open = t0.open,
@@ -17690,7 +18478,7 @@ function _temp$h() {
     t8 = $[14];
   }
   return t8;
-};insertStyle(".PrivateInputDatePicker.align-left .MuiInputBase-input{text-align:left}.PrivateInputDatePicker.align-center .MuiInputBase-input{text-align:center}.PrivateInputDatePicker.align-right .MuiInputBase-input{text-align:right}");var _excluded$9 = ["ref", "variant", "size", "color", "focused", "fullWidth", "disabled", "readOnly", "required", "labelShrink", "className", "style", "sx", "value", "label", "labelIcon", "inputRef", "format", "error", "icon", "startAdornment", "endAdornment", "align", "enableKeyboardInput", "onFocus", "onBlur"];
+};insertStyle(".PrivateInputDatePicker.align-left .MuiInputBase-input{text-align:left}.PrivateInputDatePicker.align-center .MuiInputBase-input{text-align:center}.PrivateInputDatePicker.align-right .MuiInputBase-input{text-align:right}");var _excluded$d = ["ref", "variant", "size", "color", "focused", "fullWidth", "disabled", "readOnly", "required", "labelShrink", "className", "style", "sx", "value", "label", "labelIcon", "inputRef", "format", "error", "icon", "startAdornment", "endAdornment", "align", "enableKeyboardInput", "onFocus", "onBlur"];
 var PrivateInputDatePicker = function PrivateInputDatePicker(t0) {
   var $ = compilerRuntime.c(83);
   var className;
@@ -17748,7 +18536,7 @@ var PrivateInputDatePicker = function PrivateInputDatePicker(t0) {
     enableKeyboardInput = _t.enableKeyboardInput;
     initOnFocus = _t.onFocus;
     initOnBlur = _t.onBlur;
-    props = _objectWithoutProperties(_t, _excluded$9);
+    props = _objectWithoutProperties(_t, _excluded$d);
     $[0] = t0;
     $[1] = className;
     $[2] = color;
@@ -18211,7 +18999,7 @@ var PrivateYearRangePickerYearList = function PrivateYearRangePickerYearList(t0)
           }
         }
       }
-      return _temp$g;
+      return _temp$9;
     };
     t6 = [selectType];
     $[8] = selectType;
@@ -18326,7 +19114,7 @@ var PrivateYearRangePickerYearList = function PrivateYearRangePickerYearList(t0)
   }
   return t9;
 };
-function _temp$g() {
+function _temp$9() {
   _lastCloseTime$1 = new Date().getTime();
 }var _templateObject$9, _templateObject2$5, _templateObject3$3, _templateObject4$2, _templateObject5$1, _templateObject6;
 var StyledTitleContainer$1 = material.styled('div')(_templateObject$9 || (_templateObject$9 = _taggedTemplateLiteral(["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"])));
@@ -18799,7 +19587,7 @@ var PrivateYearPickerYearList = function PrivateYearPickerYearList(t0) {
           }
         }
       }
-      return _temp$f;
+      return _temp$8;
     };
     t4 = [selectFromYear, selectToYear];
     $[2] = selectFromYear;
@@ -18938,7 +19726,7 @@ var PrivateYearPickerYearList = function PrivateYearPickerYearList(t0) {
   }
   return t8;
 };
-function _temp$f() {
+function _temp$8() {
   _lastCloseTime = new Date().getTime();
 }var _templateObject$6, _templateObject2$3, _templateObject3$2, _templateObject4$1;
 var StyledTitleContainer = material.styled('div')(_templateObject$6 || (_templateObject$6 = _taggedTemplateLiteral(["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-bottom: 1px solid #efefef;\n  padding: 10px;\n  font-size: 14px;\n"])));
@@ -20226,398 +21014,7 @@ var dateToValue$4 = function dateToValue(v) {
     year: v.year(),
     month: v.month() + 1
   };
-};var _excluded$8 = ["ref", "className"],
-  _excluded2$2 = ["onAddValueItem"];
-var PFormDatePicker = function PFormDatePicker(t0) {
-  var $ = compilerRuntime.c(21);
-  var className;
-  var props;
-  var ref;
-  if ($[0] !== t0) {
-    var _t = t0;
-    ref = _t.ref;
-    className = _t.className;
-    props = _objectWithoutProperties(_t, _excluded$8);
-    $[0] = t0;
-    $[1] = className;
-    $[2] = props;
-    $[3] = ref;
-  } else {
-    className = $[1];
-    props = $[2];
-    ref = $[3];
-  }
-  var t1 = useFormState();
-  var onAddValueItem;
-  var otherFormState;
-  if ($[4] !== t1) {
-    var _t2 = t1;
-    onAddValueItem = _t2.onAddValueItem;
-    otherFormState = _objectWithoutProperties(_t2, _excluded2$2);
-    $[4] = t1;
-    $[5] = onAddValueItem;
-    $[6] = otherFormState;
-  } else {
-    onAddValueItem = $[5];
-    otherFormState = $[6];
-  }
-  var t2;
-  if ($[7] !== onAddValueItem) {
-    t2 = function t2(id, commands) {
-      commands.getType = _temp$e;
-      onAddValueItem(id, commands);
-    };
-    $[7] = onAddValueItem;
-    $[8] = t2;
-  } else {
-    t2 = $[8];
-  }
-  var handleAddValueItem = t2;
-  var t3;
-  if ($[9] !== handleAddValueItem || $[10] !== otherFormState) {
-    t3 = _objectSpread2(_objectSpread2({}, otherFormState), {}, {
-      onAddValueItem: handleAddValueItem
-    });
-    $[9] = handleAddValueItem;
-    $[10] = otherFormState;
-    $[11] = t3;
-  } else {
-    t3 = $[11];
-  }
-  var t4;
-  if ($[12] !== className) {
-    t4 = classNames(className, "PFormDatePicker");
-    $[12] = className;
-    $[13] = t4;
-  } else {
-    t4 = $[13];
-  }
-  var t5;
-  if ($[14] !== props || $[15] !== ref || $[16] !== t4) {
-    t5 = /*#__PURE__*/React.createElement(PrivateDatePicker, _extends({
-      className: t4
-    }, props, {
-      ref: ref,
-      type: "date"
-    }));
-    $[14] = props;
-    $[15] = ref;
-    $[16] = t4;
-    $[17] = t5;
-  } else {
-    t5 = $[17];
-  }
-  var t6;
-  if ($[18] !== t3 || $[19] !== t5) {
-    t6 = /*#__PURE__*/React.createElement(PFormContextProvider, {
-      value: t3
-    }, t5);
-    $[18] = t3;
-    $[19] = t5;
-    $[20] = t6;
-  } else {
-    t6 = $[20];
-  }
-  return t6;
-};
-function _temp$e() {
-  return "PFormDatePicker";
-}var _excluded$7 = ["ref", "className", "time", "minDate", "maxDate", "disablePast", "disableFuture"],
-  _excluded2$1 = ["onAddValueItem"];
-var PFormDateTimePicker = function PFormDateTimePicker(t0) {
-  var $ = compilerRuntime.c(39);
-  var className;
-  var disableFuture;
-  var disablePast;
-  var initMaxDate;
-  var initMinDate;
-  var props;
-  var ref;
-  var time;
-  if ($[0] !== t0) {
-    var _t = t0;
-    ref = _t.ref;
-    className = _t.className;
-    time = _t.time;
-    initMinDate = _t.minDate;
-    initMaxDate = _t.maxDate;
-    disablePast = _t.disablePast;
-    disableFuture = _t.disableFuture;
-    props = _objectWithoutProperties(_t, _excluded$7);
-    $[0] = t0;
-    $[1] = className;
-    $[2] = disableFuture;
-    $[3] = disablePast;
-    $[4] = initMaxDate;
-    $[5] = initMinDate;
-    $[6] = props;
-    $[7] = ref;
-    $[8] = time;
-  } else {
-    className = $[1];
-    disableFuture = $[2];
-    disablePast = $[3];
-    initMaxDate = $[4];
-    initMinDate = $[5];
-    props = $[6];
-    ref = $[7];
-    time = $[8];
-  }
-  var t1 = useFormState();
-  var onAddValueItem;
-  var otherFormState;
-  if ($[9] !== t1) {
-    var _t2 = t1;
-    onAddValueItem = _t2.onAddValueItem;
-    otherFormState = _objectWithoutProperties(_t2, _excluded2$1);
-    $[9] = t1;
-    $[10] = onAddValueItem;
-    $[11] = otherFormState;
-  } else {
-    onAddValueItem = $[10];
-    otherFormState = $[11];
-  }
-  var t2;
-  if (initMinDate && !disablePast) {
-    var newMinDate;
-    bb0: switch (time) {
-      case "hour":
-        {
-          var _t3;
-          if ($[12] !== initMinDate) {
-            _t3 = dayjs(initMinDate).set("minute", 0).set("second", 0);
-            $[12] = initMinDate;
-            $[13] = _t3;
-          } else {
-            _t3 = $[13];
-          }
-          newMinDate = _t3;
-          break bb0;
-        }
-      case "minute":
-        {
-          var _t4;
-          if ($[14] !== initMinDate) {
-            _t4 = dayjs(initMinDate).set("second", 0);
-            $[14] = initMinDate;
-            $[15] = _t4;
-          } else {
-            _t4 = $[15];
-          }
-          newMinDate = _t4;
-          break bb0;
-        }
-      case "second":
-        {
-          newMinDate = initMinDate;
-        }
-    }
-    t2 = newMinDate;
-  } else {
-    t2 = initMinDate;
-  }
-  var minDate = t2;
-  var t3;
-  if (initMaxDate && !disableFuture) {
-    var newMaxDate;
-    bb1: switch (time) {
-      case "hour":
-        {
-          var _t5;
-          if ($[16] !== initMaxDate) {
-            _t5 = dayjs(initMaxDate).set("minute", 59).set("second", 59);
-            $[16] = initMaxDate;
-            $[17] = _t5;
-          } else {
-            _t5 = $[17];
-          }
-          newMaxDate = _t5;
-          break bb1;
-        }
-      case "minute":
-        {
-          var _t6;
-          if ($[18] !== initMaxDate) {
-            _t6 = dayjs(initMaxDate).set("second", 59);
-            $[18] = initMaxDate;
-            $[19] = _t6;
-          } else {
-            _t6 = $[19];
-          }
-          newMaxDate = _t6;
-          break bb1;
-        }
-      case "second":
-        {
-          newMaxDate = initMaxDate;
-        }
-    }
-    t3 = newMaxDate;
-  } else {
-    t3 = initMaxDate;
-  }
-  var maxDate = t3;
-  var t4;
-  if ($[20] !== onAddValueItem) {
-    t4 = function t4(id, commands) {
-      commands.getType = _temp$d;
-      onAddValueItem(id, commands);
-    };
-    $[20] = onAddValueItem;
-    $[21] = t4;
-  } else {
-    t4 = $[21];
-  }
-  var handleAddValueItem = t4;
-  var t5;
-  if ($[22] !== handleAddValueItem || $[23] !== otherFormState) {
-    t5 = _objectSpread2(_objectSpread2({}, otherFormState), {}, {
-      onAddValueItem: handleAddValueItem
-    });
-    $[22] = handleAddValueItem;
-    $[23] = otherFormState;
-    $[24] = t5;
-  } else {
-    t5 = $[24];
-  }
-  var t6;
-  if ($[25] !== className) {
-    t6 = classNames(className, "PFormDateTimePicker");
-    $[25] = className;
-    $[26] = t6;
-  } else {
-    t6 = $[26];
-  }
-  var t7;
-  if ($[27] !== disableFuture || $[28] !== disablePast || $[29] !== maxDate || $[30] !== minDate || $[31] !== props || $[32] !== ref || $[33] !== t6 || $[34] !== time) {
-    t7 = /*#__PURE__*/React.createElement(PrivateDateTimePicker, _extends({
-      ref: ref,
-      className: t6,
-      type: "date_time",
-      time: time,
-      minDate: minDate,
-      maxDate: maxDate,
-      disablePast: disablePast,
-      disableFuture: disableFuture
-    }, props));
-    $[27] = disableFuture;
-    $[28] = disablePast;
-    $[29] = maxDate;
-    $[30] = minDate;
-    $[31] = props;
-    $[32] = ref;
-    $[33] = t6;
-    $[34] = time;
-    $[35] = t7;
-  } else {
-    t7 = $[35];
-  }
-  var t8;
-  if ($[36] !== t5 || $[37] !== t7) {
-    t8 = /*#__PURE__*/React.createElement(PFormContextProvider, {
-      value: t5
-    }, t7);
-    $[36] = t5;
-    $[37] = t7;
-    $[38] = t8;
-  } else {
-    t8 = $[38];
-  }
-  return t8;
-};
-function _temp$d() {
-  return "PFormDateTimePicker";
-}var _excluded$6 = ["className"],
-  _excluded2 = ["onAddValueItem"];
-var PFormTimePicker = function PFormTimePicker(t0) {
-  var $ = compilerRuntime.c(19);
-  var className;
-  var props;
-  if ($[0] !== t0) {
-    var _t = t0;
-    className = _t.className;
-    props = _objectWithoutProperties(_t, _excluded$6);
-    $[0] = t0;
-    $[1] = className;
-    $[2] = props;
-  } else {
-    className = $[1];
-    props = $[2];
-  }
-  var t1 = useFormState();
-  var onAddValueItem;
-  var otherFormState;
-  if ($[3] !== t1) {
-    var _t2 = t1;
-    onAddValueItem = _t2.onAddValueItem;
-    otherFormState = _objectWithoutProperties(_t2, _excluded2);
-    $[3] = t1;
-    $[4] = onAddValueItem;
-    $[5] = otherFormState;
-  } else {
-    onAddValueItem = $[4];
-    otherFormState = $[5];
-  }
-  var t2;
-  if ($[6] !== onAddValueItem) {
-    t2 = function t2(id, commands) {
-      commands.getType = _temp$c;
-      onAddValueItem(id, commands);
-    };
-    $[6] = onAddValueItem;
-    $[7] = t2;
-  } else {
-    t2 = $[7];
-  }
-  var handleAddValueItem = t2;
-  var t3;
-  if ($[8] !== handleAddValueItem || $[9] !== otherFormState) {
-    t3 = _objectSpread2(_objectSpread2({}, otherFormState), {}, {
-      onAddValueItem: handleAddValueItem
-    });
-    $[8] = handleAddValueItem;
-    $[9] = otherFormState;
-    $[10] = t3;
-  } else {
-    t3 = $[10];
-  }
-  var t4;
-  if ($[11] !== className) {
-    t4 = classNames(className, "PFormTimePicker");
-    $[11] = className;
-    $[12] = t4;
-  } else {
-    t4 = $[12];
-  }
-  var t5;
-  if ($[13] !== props || $[14] !== t4) {
-    t5 = /*#__PURE__*/React.createElement(PrivateDateTimePicker, _extends({
-      className: t4
-    }, props, {
-      type: "time"
-    }));
-    $[13] = props;
-    $[14] = t4;
-    $[15] = t5;
-  } else {
-    t5 = $[15];
-  }
-  var t6;
-  if ($[16] !== t3 || $[17] !== t5) {
-    t6 = /*#__PURE__*/React.createElement(PFormContextProvider, {
-      value: t3
-    }, t5);
-    $[16] = t3;
-    $[17] = t5;
-    $[18] = t6;
-  } else {
-    t6 = $[18];
-  }
-  return t6;
-};
-function _temp$c() {
-  return "PFormTimePicker";
-}insertStyle(".PFormDateRangePickerTooltipPicker .MuiPickersCalendarHeader-root{display:none}.PFormDateRangePickerTooltipPicker .MuiDayPicker-header>span{margin:0}.PFormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content{min-width:292px}.PFormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root>div{width:292px}.PFormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root>div .MuiCalendarPicker-root{width:292px}.PFormDateRangePickerTooltipPicker .selected-bg{display:none;position:absolute}.PFormDateRangePickerTooltipPicker .selected-bg.sel{display:block;position:absolute;top:0;bottom:0;left:0;right:0;background-color:rgba(66,165,245,.6)}.PFormDateRangePickerTooltipPicker .selected-bg.sel.ui-start,.PFormDateRangePickerTooltipPicker .selected-bg.sel.s-start{border-top-left-radius:50%;border-bottom-left-radius:50%}.PFormDateRangePickerTooltipPicker .selected-bg.sel.ui-end,.PFormDateRangePickerTooltipPicker .selected-bg.sel.s-end{border-top-right-radius:50%;border-bottom-right-radius:50%}.PFormDateRangePickerTooltipPicker .selected-bg.sel~.MuiPickersDay-root{border:0}.PFormDateRangePickerTooltipPicker .selected-bg.sel~.MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected){background-color:rgba(0,0,0,0)}.PFormDateRangePickerTooltipPicker .focused-bg{display:none;position:absolute}.PFormDateRangePickerTooltipPicker .focused-bg.focused{display:block;position:absolute;top:0;bottom:0;left:0;right:0;border:2px solid #efefef;border-left:0;border-right:0}.PFormDateRangePickerTooltipPicker .focused-bg.focused.ui-start,.PFormDateRangePickerTooltipPicker .focused-bg.focused.f-start{border-left:2px solid #efefef;border-top-left-radius:50%;border-bottom-left-radius:50%}.PFormDateRangePickerTooltipPicker .focused-bg.focused.ui-end,.PFormDateRangePickerTooltipPicker .focused-bg.focused.f-end{border-right:2px solid #efefef;border-top-right-radius:50%;border-bottom-right-radius:50%}.PFormDateRangePickerTooltipPicker .focused-bg.focused~.MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected){background-color:rgba(0,0,0,0)}");var PFormDateRangePickerTooltipPicker = function PFormDateRangePickerTooltipPicker(t0) {
+};insertStyle(".PFormDateRangePickerTooltipPicker .MuiPickersCalendarHeader-root{display:none}.PFormDateRangePickerTooltipPicker .MuiDayPicker-header>span{margin:0}.PFormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content{min-width:292px}.PFormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root>div{width:292px}.PFormDateRangePickerTooltipPicker .MuiPickerStaticWrapper-content .MuiCalendarOrClockPicker-root>div .MuiCalendarPicker-root{width:292px}.PFormDateRangePickerTooltipPicker .selected-bg{display:none;position:absolute}.PFormDateRangePickerTooltipPicker .selected-bg.sel{display:block;position:absolute;top:0;bottom:0;left:0;right:0;background-color:rgba(66,165,245,.6)}.PFormDateRangePickerTooltipPicker .selected-bg.sel.ui-start,.PFormDateRangePickerTooltipPicker .selected-bg.sel.s-start{border-top-left-radius:50%;border-bottom-left-radius:50%}.PFormDateRangePickerTooltipPicker .selected-bg.sel.ui-end,.PFormDateRangePickerTooltipPicker .selected-bg.sel.s-end{border-top-right-radius:50%;border-bottom-right-radius:50%}.PFormDateRangePickerTooltipPicker .selected-bg.sel~.MuiPickersDay-root{border:0}.PFormDateRangePickerTooltipPicker .selected-bg.sel~.MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected){background-color:rgba(0,0,0,0)}.PFormDateRangePickerTooltipPicker .focused-bg{display:none;position:absolute}.PFormDateRangePickerTooltipPicker .focused-bg.focused{display:block;position:absolute;top:0;bottom:0;left:0;right:0;border:2px solid #efefef;border-left:0;border-right:0}.PFormDateRangePickerTooltipPicker .focused-bg.focused.ui-start,.PFormDateRangePickerTooltipPicker .focused-bg.focused.f-start{border-left:2px solid #efefef;border-top-left-radius:50%;border-bottom-left-radius:50%}.PFormDateRangePickerTooltipPicker .focused-bg.focused.ui-end,.PFormDateRangePickerTooltipPicker .focused-bg.focused.f-end{border-right:2px solid #efefef;border-top-right-radius:50%;border-bottom-right-radius:50%}.PFormDateRangePickerTooltipPicker .focused-bg.focused~.MuiPickersDay-root:not(:hover):not(:active):not(.Mui-selected){background-color:rgba(0,0,0,0)}");var PFormDateRangePickerTooltipPicker = function PFormDateRangePickerTooltipPicker(t0) {
   var $ = compilerRuntime.c(48);
   var ref = t0.ref,
     selectType = t0.selectType,
@@ -20687,7 +21084,7 @@ function _temp$c() {
   var _useState5 = React.useState(t4),
     _useState6 = _slicedToArray(_useState5, 1),
     RightArrowButton = _useState6[0];
-  var getDateVal = _temp$b;
+  var getDateVal = _temp$7;
   var t5;
   if ($[5] !== initValue) {
     t5 = initValue ? initValue : [null, null];
@@ -20899,7 +21296,7 @@ function _temp$c() {
       previousIconButton: LeftArrowButton,
       nextIconButton: RightArrowButton,
       day: handleRenderDay,
-      actionBar: _temp2$1
+      actionBar: _temp2
     };
     $[29] = LeftArrowButton;
     $[30] = RightArrowButton;
@@ -20962,10 +21359,10 @@ function _temp$c() {
   }
   return t14;
 };
-function _temp$b(date) {
+function _temp$7(date) {
   return Number(date.format("YYYYMMDD"));
 }
-function _temp2$1() {
+function _temp2() {
   return /*#__PURE__*/React.createElement(React.Fragment, null);
 }insertStyle(".PFormDateRangePickerTooltipPickerContainer{display:inline-block;position:relative}.PFormDateRangePickerTooltipPickerContainer .month-change-arrow-wrap{position:absolute;top:15px;left:0;right:0}.PFormDateRangePickerTooltipPickerContainer .month-change-arrow-wrap>div:first-of-type{padding-left:20px}.PFormDateRangePickerTooltipPickerContainer .month-change-arrow-wrap>div:last-child{padding-right:20px;text-align:right}.PFormDateRangePickerTooltipPickerContainer .month-title{text-align:center;padding-top:13px;padding-bottom:10px}.PFormDateRangePickerTooltipPickerContainer .month-title button{font-size:15px;padding-left:8px;padding-right:0;min-width:0}.PFormDateRangePickerTooltipPickerContainer .month-title button:not(.active){color:unset}.PFormDateRangePickerTooltipPickerContainer .date-picker-wrap{position:relative}.PFormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select,.PFormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select{position:absolute;left:0;right:0;top:0;bottom:0;border-top:1px solid #efefef;padding-top:15px;background-color:#fff}.PFormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button.today:not(.selected),.PFormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button.today:not(.selected){border:1px solid rgba(0,0,0,.1)}.PFormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button.active:not(.selected),.PFormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button.active:not(.selected){background-color:#f5f5f5}.PFormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button.active:not(.selected):hover,.PFormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button.active:not(.selected):hover{background-color:#e5e5e5}.PFormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select{overflow-y:scroll}.PFormDateRangePickerTooltipPickerContainer .date-picker-wrap .year-select button{font-size:14px;font-weight:400;border-radius:18px}.PFormDateRangePickerTooltipPickerContainer .date-picker-wrap .month-select button{font-size:15px;font-weight:400;border-radius:18px}.PFormDateRangePickerTooltipPickerContainer .action-buttons button{min-width:0;color:unset}.PFormDateRangePickerTooltipPickerContainer .action-buttons button:not(:first-of-type){margin-left:5px}.PFormDateRangePickerTooltipPickerContainer .action-buttons button.disabled{color:rgba(0,0,0,.5)}");var YEARS = new Array(200).fill(0);
 for (var i = 0; i < 200; i += 1) {
@@ -21679,9 +22076,10 @@ var PFormDateRangePickerTooltipPickerContainer = function PFormDateRangePickerTo
 var getFinalValue$6 = function getFinalValue(value) {
   return value || DEFAULT_VALUE$2;
 };var DEFAULT_FORMAT$2 = 'YYYY-MM-DD';
-var PFormDateRangePicker = function PFormDateRangePicker(t0) {
-  var $ = compilerRuntime.c(251);
-  var ref = t0.ref,
+var PFormDateRangePickerInternal = function PFormDateRangePickerInternal(t0) {
+  var $ = compilerRuntime.c(292);
+  var t1 = t0.embedded,
+    ref = t0.ref,
     initVariant = t0.variant,
     initSize = t0.size,
     initColor = t0.color,
@@ -21695,9 +22093,9 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
     fromLabelIcon = t0.fromLabelIcon,
     toLabel = t0.toLabel,
     toLabelIcon = t0.toLabelIcon,
-    t1 = t0.calendarCount,
-    t2 = t0.format,
-    t3 = t0.formValueFormat,
+    t2 = t0.calendarCount,
+    t3 = t0.format,
+    t4 = t0.formValueFormat,
     allowSingleSelect = t0.allowSingleSelect,
     required = t0.required,
     requiredStart = t0.requiredStart,
@@ -21711,8 +22109,8 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
     exceptValue = t0.exceptValue,
     initError = t0.error,
     helperText = t0.helperText,
-    t4 = t0.formValueFromNameSuffix,
-    t5 = t0.formValueToNameSuffix,
+    t5 = t0.formValueFromNameSuffix,
+    t6 = t0.formValueToNameSuffix,
     icon = t0.icon,
     startIcon = t0.startIcon,
     endIcon = t0.endIcon,
@@ -21727,18 +22125,22 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
     minDate = t0.minDate,
     maxDate = t0.maxDate,
     initHidden = t0.hidden,
-    t6 = t0.align,
+    t7 = t0.align,
     onGetActionButtons = t0.onGetActionButtons,
     onChange = t0.onChange,
     onValidate = t0.onValidate,
-    className = t0.className;
-  var calendarCount = t1 === undefined ? 2 : t1;
-  var format = t2 === undefined ? DEFAULT_FORMAT$2 : t2;
-  var formValueFormat = t3 === undefined ? DEFAULT_FORMAT$2 : t3;
-  var formValueFromNameSuffix = t4 === undefined ? "_from" : t4;
-  var formValueToNameSuffix = t5 === undefined ? "_to" : t5;
-  var align = t6 === undefined ? "center" : t6;
+    className = t0.className,
+    initStyle = t0.style,
+    sx = t0.sx;
+  var embedded = t1 === undefined ? false : t1;
+  var calendarCount = t2 === undefined ? 2 : t2;
+  var format = t3 === undefined ? DEFAULT_FORMAT$2 : t3;
+  var formValueFormat = t4 === undefined ? DEFAULT_FORMAT$2 : t4;
+  var formValueFromNameSuffix = t5 === undefined ? "_from" : t5;
+  var formValueToNameSuffix = t6 === undefined ? "_to" : t6;
+  var align = t7 === undefined ? "center" : t7;
   var id = React.useId();
+  var embeddedRef = React.useRef(null);
   var _useFormState = useFormState(),
     formVariant = _useFormState.variant,
     formSize = _useFormState.size,
@@ -21794,11 +22196,11 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
     _useState10 = _slicedToArray(_useState1, 2),
     open = _useState10[0],
     setopen = _useState10[1];
-  var _useState11 = React.useState("start"),
+  var _useState11 = React.useState(readOnlyStart ? "end" : "start"),
     _useState12 = _slicedToArray(_useState11, 2),
     selectType = _useState12[0],
     setSelectType = _useState12[1];
-  var _useState13 = React.useState(_temp$a),
+  var _useState13 = React.useState(_temp$6),
     _useState14 = _slicedToArray(_useState13, 2),
     months = _useState14[0],
     setMonths = _useState14[1];
@@ -21806,170 +22208,182 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
     _useState16 = _slicedToArray(_useState15, 2),
     error = _useState16[0],
     _setError = _useState16[1];
-  var t7;
   var t8;
+  var t9;
   if ($[0] !== initError) {
-    t7 = function t7() {
+    t8 = function t8() {
       return _setError(initError);
     };
-    t8 = [initError];
+    t9 = [initError];
     $[0] = initError;
-    $[1] = t7;
-    $[2] = t8;
+    $[1] = t8;
+    $[2] = t9;
   } else {
-    t7 = $[1];
-    t8 = $[2];
+    t8 = $[1];
+    t9 = $[2];
   }
-  reactHook.useFirstSkipChanged(t7, t8);
+  reactHook.useFirstSkipChanged(t8, t9);
   var errorRef = reactHook.useAutoUpdateRef(error);
-  var t9;
+  var t10;
   if ($[3] !== errorRef) {
-    t9 = function t9(newValue) {
+    t10 = function t10(newValue) {
       _setError(newValue);
       errorRef.current = newValue;
     };
     $[3] = errorRef;
-    $[4] = t9;
+    $[4] = t10;
   } else {
-    t9 = $[4];
+    t10 = $[4];
   }
-  var setError = t9;
+  var setError = t10;
   var _useState17 = React.useState(initData),
     _useState18 = _slicedToArray(_useState17, 2),
     data = _useState18[0],
     _setData = _useState18[1];
-  var t10;
   var t11;
+  var t12;
   if ($[5] !== initData) {
-    t10 = function t10() {
+    t11 = function t11() {
       return _setData(initData);
     };
-    t11 = [initData];
+    t12 = [initData];
     $[5] = initData;
-    $[6] = t10;
-    $[7] = t11;
+    $[6] = t11;
+    $[7] = t12;
   } else {
-    t10 = $[6];
-    t11 = $[7];
+    t11 = $[6];
+    t12 = $[7];
   }
-  reactHook.useFirstSkipChanged(t10, t11);
+  reactHook.useFirstSkipChanged(t11, t12);
   var dataRef = reactHook.useAutoUpdateRef(data);
-  var t12;
+  var t13;
   if ($[8] !== dataRef) {
-    t12 = function t12(newValue_0) {
+    t13 = function t13(newValue_0) {
       _setData(newValue_0);
       dataRef.current = newValue_0;
     };
     $[8] = dataRef;
-    $[9] = t12;
+    $[9] = t13;
   } else {
-    t12 = $[9];
+    t13 = $[9];
   }
-  var setData = t12;
+  var setData = t13;
   var finalInitDisabled = initDisabled !== null && initDisabled !== void 0 ? initDisabled : formDisabled;
   var _useState19 = React.useState(finalInitDisabled),
     _useState20 = _slicedToArray(_useState19, 2),
     disabled = _useState20[0],
     setDisabled = _useState20[1];
-  var t13;
   var t14;
+  var t15;
   if ($[10] !== finalInitDisabled) {
-    t13 = function t13() {
+    t14 = function t14() {
       return setDisabled(finalInitDisabled);
     };
-    t14 = [finalInitDisabled];
+    t15 = [finalInitDisabled];
     $[10] = finalInitDisabled;
-    $[11] = t13;
-    $[12] = t14;
+    $[11] = t14;
+    $[12] = t15;
   } else {
-    t13 = $[11];
-    t14 = $[12];
+    t14 = $[11];
+    t15 = $[12];
   }
-  reactHook.useFirstSkipChanged(t13, t14);
+  reactHook.useFirstSkipChanged(t14, t15);
   var _useState21 = React.useState(initHidden),
     _useState22 = _slicedToArray(_useState21, 2),
     hidden = _useState22[0],
     setHidden = _useState22[1];
-  var t15;
   var t16;
+  var t17;
   if ($[13] !== initHidden) {
-    t15 = function t15() {
+    t16 = function t16() {
       return setHidden(initHidden);
     };
-    t16 = [initHidden];
+    t17 = [initHidden];
     $[13] = initHidden;
-    $[14] = t15;
-    $[15] = t16;
+    $[14] = t16;
+    $[15] = t17;
   } else {
-    t15 = $[14];
-    t16 = $[15];
+    t16 = $[14];
+    t17 = $[15];
   }
-  reactHook.useFirstSkipChanged(t15, t16);
-  var t17;
-  if ($[16] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t17 = function t17() {
-      var _startDateTextFieldRe;
-      (_startDateTextFieldRe = startDateTextFieldRef.current) === null || _startDateTextFieldRe === void 0 || _startDateTextFieldRe.focus();
-    };
-    $[16] = t17;
-  } else {
-    t17 = $[16];
-  }
-  var focus = t17;
+  reactHook.useFirstSkipChanged(t16, t17);
   var t18;
-  if ($[17] !== toError) {
+  if ($[16] !== embedded) {
     t18 = function t18() {
-      if (toError) {
-        var _endDateTextFieldRef$;
-        (_endDateTextFieldRef$ = endDateTextFieldRef.current) === null || _endDateTextFieldRef$ === void 0 || _endDateTextFieldRef$.focus();
+      if (embedded) {
+        var _embeddedRef$current;
+        (_embeddedRef$current = embeddedRef.current) === null || _embeddedRef$current === void 0 || _embeddedRef$current.focus();
       } else {
-        var _startDateTextFieldRe2;
-        (_startDateTextFieldRe2 = startDateTextFieldRef.current) === null || _startDateTextFieldRe2 === void 0 || _startDateTextFieldRe2.focus();
+        var _startDateTextFieldRe;
+        (_startDateTextFieldRe = startDateTextFieldRef.current) === null || _startDateTextFieldRe === void 0 || _startDateTextFieldRe.focus();
       }
     };
-    $[17] = toError;
-    $[18] = t18;
+    $[16] = embedded;
+    $[17] = t18;
   } else {
-    t18 = $[18];
+    t18 = $[17];
   }
-  var focusValidate = t18;
+  var focus = t18;
   var t19;
-  if ($[19] !== setError) {
-    t19 = function t19(error_0, errorHelperText_0) {
-      setError(error_0);
-      setErrorHelperText(error_0 ? errorHelperText_0 : undefined);
+  if ($[18] !== embedded || $[19] !== toError) {
+    t19 = function t19() {
+      if (embedded) {
+        var _embeddedRef$current2;
+        (_embeddedRef$current2 = embeddedRef.current) === null || _embeddedRef$current2 === void 0 || _embeddedRef$current2.focus();
+      } else {
+        if (toError) {
+          var _endDateTextFieldRef$;
+          (_endDateTextFieldRef$ = endDateTextFieldRef.current) === null || _endDateTextFieldRef$ === void 0 || _endDateTextFieldRef$.focus();
+        } else {
+          var _startDateTextFieldRe2;
+          (_startDateTextFieldRe2 = startDateTextFieldRef.current) === null || _startDateTextFieldRe2 === void 0 || _startDateTextFieldRe2.focus();
+        }
+      }
     };
-    $[19] = setError;
+    $[18] = embedded;
+    $[19] = toError;
     $[20] = t19;
   } else {
     t19 = $[20];
   }
-  var setErrorErrorHelperText = t19;
+  var focusValidate = t19;
   var t20;
-  if ($[21] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t20 = function t20(error_1, fromErrorHelperText_0) {
+  if ($[21] !== setError) {
+    t20 = function t20(error_0, errorHelperText_0) {
+      setError(error_0);
+      setErrorHelperText(error_0 ? errorHelperText_0 : undefined);
+    };
+    $[21] = setError;
+    $[22] = t20;
+  } else {
+    t20 = $[22];
+  }
+  var setErrorErrorHelperText = t20;
+  var t21;
+  if ($[23] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t21 = function t21(error_1, fromErrorHelperText_0) {
       setFromError(error_1);
       setFromErrorHelperText(fromErrorHelperText_0);
     };
-    $[21] = t20;
+    $[23] = t21;
   } else {
-    t20 = $[21];
+    t21 = $[23];
   }
-  var setFromErrorErrorHelperText = t20;
-  var t21;
-  if ($[22] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t21 = function t21(error_2, toErrorHelperText_0) {
+  var setFromErrorErrorHelperText = t21;
+  var t22;
+  if ($[24] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t22 = function t22(error_2, toErrorHelperText_0) {
       setToError(error_2);
       setToErrorHelperText(toErrorHelperText_0);
     };
-    $[22] = t21;
+    $[24] = t22;
   } else {
-    t21 = $[22];
+    t22 = $[24];
   }
-  var setToErrorErrorHelperText = t21;
-  var t22;
-  if ($[23] !== allowSingleSelect || $[24] !== format || $[25] !== onValidateRef || $[26] !== required || $[27] !== requiredEnd || $[28] !== requiredStart || $[29] !== setErrorErrorHelperText) {
-    t22 = function t22(value) {
+  var setToErrorErrorHelperText = t22;
+  var t23;
+  if ($[25] !== allowSingleSelect || $[26] !== format || $[27] !== onValidateRef || $[28] !== required || $[29] !== requiredEnd || $[30] !== requiredStart || $[31] !== setErrorErrorHelperText) {
+    t23 = function t23(value) {
       var _startDateTextFieldRe3, _endDateTextFieldRef$2;
       if (required && (value[0] == null || value[1] == null)) {
         if (value[0] == null && value[1] == null) {
@@ -22029,73 +22443,73 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
       setToError(false);
       return true;
     };
-    $[23] = allowSingleSelect;
-    $[24] = format;
-    $[25] = onValidateRef;
-    $[26] = required;
-    $[27] = requiredEnd;
-    $[28] = requiredStart;
-    $[29] = setErrorErrorHelperText;
-    $[30] = t22;
+    $[25] = allowSingleSelect;
+    $[26] = format;
+    $[27] = onValidateRef;
+    $[28] = required;
+    $[29] = requiredEnd;
+    $[30] = requiredStart;
+    $[31] = setErrorErrorHelperText;
+    $[32] = t23;
   } else {
-    t22 = $[30];
+    t23 = $[32];
   }
-  var validate = t22;
-  var t23;
-  if ($[31] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t23 = function t23(month) {
+  var validate = t23;
+  var t24;
+  if ($[33] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t24 = function t24(month) {
       var _containerRef$current;
       setMonths([month, month.add(1, "month"), month.add(2, "month")]);
       (_containerRef$current = containerRef.current) === null || _containerRef$current === void 0 || _containerRef$current.activeMonth(month);
     };
-    $[31] = t23;
-  } else {
-    t23 = $[31];
-  }
-  var activeMonth = t23;
-  var t24;
-  if ($[32] !== initValue) {
-    t24 = getFinalValue$6(initValue);
-    $[32] = initValue;
     $[33] = t24;
   } else {
     t24 = $[33];
   }
-  var _useState23 = React.useState(t24),
+  var activeMonth = t24;
+  var t25;
+  if ($[34] !== initValue) {
+    t25 = getFinalValue$6(initValue);
+    $[34] = initValue;
+    $[35] = t25;
+  } else {
+    t25 = $[35];
+  }
+  var _useState23 = React.useState(t25),
     _useState24 = _slicedToArray(_useState23, 2),
     value_0 = _useState24[0],
     _setValue = _useState24[1];
-  var t25;
   var t26;
-  if ($[34] !== initValue) {
-    t25 = function t25() {
+  var t27;
+  if ($[36] !== initValue) {
+    t26 = function t26() {
       return _setValue(getFinalValue$6(initValue));
     };
-    t26 = [initValue];
-    $[34] = initValue;
-    $[35] = t25;
-    $[36] = t26;
+    t27 = [initValue];
+    $[36] = initValue;
+    $[37] = t26;
+    $[38] = t27;
   } else {
-    t25 = $[35];
-    t26 = $[36];
+    t26 = $[37];
+    t27 = $[38];
   }
-  reactHook.useFirstSkipChanged(t25, t26);
+  reactHook.useFirstSkipChanged(t26, t27);
   var valueRef = reactHook.useAutoUpdateRef(value_0);
-  var t27;
-  if ($[37] !== valueRef) {
-    t27 = function t27(newValue_1) {
+  var t28;
+  if ($[39] !== valueRef) {
+    t28 = function t28(newValue_1) {
       _setValue(newValue_1);
       valueRef.current = newValue_1;
     };
-    $[37] = valueRef;
-    $[38] = t27;
+    $[39] = valueRef;
+    $[40] = t28;
   } else {
-    t27 = $[38];
+    t28 = $[40];
   }
-  var setValue = t27;
-  var t28;
-  if ($[39] !== error || $[40] !== fromError || $[41] !== name || $[42] !== onChangeRef || $[43] !== onValueChange || $[44] !== setValue || $[45] !== toError || $[46] !== validate) {
-    t28 = function t28(newValue_2) {
+  var setValue = t28;
+  var t29;
+  if ($[41] !== error || $[42] !== fromError || $[43] !== name || $[44] !== onChangeRef || $[45] !== onValueChange || $[46] !== setValue || $[47] !== toError || $[48] !== validate) {
+    t29 = function t29(newValue_2) {
       var _onChangeRef$current;
       var finalValue = getFinalValue$6(newValue_2);
       setValue(finalValue);
@@ -22106,22 +22520,22 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
       onValueChange(name, finalValue);
       return finalValue;
     };
-    $[39] = error;
-    $[40] = fromError;
-    $[41] = name;
-    $[42] = onChangeRef;
-    $[43] = onValueChange;
-    $[44] = setValue;
-    $[45] = toError;
-    $[46] = validate;
-    $[47] = t28;
+    $[41] = error;
+    $[42] = fromError;
+    $[43] = name;
+    $[44] = onChangeRef;
+    $[45] = onValueChange;
+    $[46] = setValue;
+    $[47] = toError;
+    $[48] = validate;
+    $[49] = t29;
   } else {
-    t28 = $[47];
+    t29 = $[49];
   }
-  var updateValue = t28;
-  var t29;
-  if ($[48] !== allowSingleSelect || $[49] !== name || $[50] !== onRequestSearchSubmit || $[51] !== open || $[52] !== valueRef) {
-    t29 = function t29() {
+  var updateValue = t29;
+  var t30;
+  if ($[50] !== allowSingleSelect || $[51] !== name || $[52] !== onRequestSearchSubmit || $[53] !== open || $[54] !== valueRef) {
+    t30 = function t30() {
       if (open) {
         openValueRef.current = valueRef.current;
       } else {
@@ -22153,43 +22567,62 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
         }
       }
     };
-    $[48] = allowSingleSelect;
-    $[49] = name;
-    $[50] = onRequestSearchSubmit;
-    $[51] = open;
-    $[52] = valueRef;
-    $[53] = t29;
-  } else {
-    t29 = $[53];
-  }
-  var t30;
-  if ($[54] !== open) {
-    t30 = [open];
-    $[54] = open;
+    $[50] = allowSingleSelect;
+    $[51] = name;
+    $[52] = onRequestSearchSubmit;
+    $[53] = open;
+    $[54] = valueRef;
     $[55] = t30;
   } else {
     t30 = $[55];
   }
-  reactHook.useFirstSkipEffect(t29, t30);
   var t31;
-  if ($[56] !== updateValue) {
-    t31 = function t31(newValue_3) {
-      updateValue(newValue_3);
-      setopen(false);
-      setFromErrorErrorHelperText(false, undefined);
-      setToErrorErrorHelperText(false, undefined);
-    };
-    $[56] = updateValue;
+  if ($[56] !== open) {
+    t31 = [open];
+    $[56] = open;
     $[57] = t31;
   } else {
     t31 = $[57];
   }
-  var handleChange = t31;
+  reactHook.useFirstSkipEffect(t30, t31);
   var t32;
-  if ($[58] !== calendarCount || $[59] !== name || $[60] !== onRequestSearchSubmit || $[61] !== onValueChangeByUser || $[62] !== open || $[63] !== updateValue || $[64] !== value_0[0] || $[65] !== value_0[1]) {
-    t32 = function t32(selectType_0, newValue_4, fromInput) {
+  if ($[58] !== embedded || $[59] !== name || $[60] !== onRequestSearchSubmit || $[61] !== onValueChangeByUser || $[62] !== readOnlyEnd || $[63] !== readOnlyStart || $[64] !== updateValue) {
+    t32 = function t32(newValue_3) {
+      if (embedded && (readOnlyStart || readOnlyEnd)) {
+        return;
+      }
+      updateValue(newValue_3);
+      if (embedded) {
+        setSelectType(readOnlyStart ? "end" : "start");
+        setTimeout(function () {
+          onValueChangeByUser(name, newValue_3);
+          onRequestSearchSubmit(name, newValue_3);
+        });
+      }
+      setopen(false);
+      setFromErrorErrorHelperText(false, undefined);
+      setToErrorErrorHelperText(false, undefined);
+    };
+    $[58] = embedded;
+    $[59] = name;
+    $[60] = onRequestSearchSubmit;
+    $[61] = onValueChangeByUser;
+    $[62] = readOnlyEnd;
+    $[63] = readOnlyStart;
+    $[64] = updateValue;
+    $[65] = t32;
+  } else {
+    t32 = $[65];
+  }
+  var handleChange = t32;
+  var t33;
+  if ($[66] !== calendarCount || $[67] !== embedded || $[68] !== name || $[69] !== onRequestSearchSubmit || $[70] !== onValueChangeByUser || $[71] !== open || $[72] !== readOnlyEnd || $[73] !== readOnlyStart || $[74] !== updateValue || $[75] !== value_0) {
+    t33 = function t33(selectType_0, newValue_4, fromInput) {
+      if (embedded && (selectType_0 === "start" && readOnlyStart || selectType_0 === "end" && readOnlyEnd)) {
+        return;
+      }
       var finalValue_0;
-      bb271: switch (selectType_0) {
+      bb336: switch (selectType_0) {
         case "start":
           {
             var _value_0$;
@@ -22218,7 +22651,7 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
             if (fromInput && newValue_4) {
               activeMonth(newValue_4);
             }
-            break bb271;
+            break bb336;
           }
         case "end":
           {
@@ -22251,26 +22684,36 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
           }
       }
       updateValue(finalValue_0);
+      if (embedded) {
+        var _finalValue_;
+        setSelectType(readOnlyStart ? "end" : readOnlyEnd ? "start" : selectType_0 === "start" || !((_finalValue_ = finalValue_0) !== null && _finalValue_ !== void 0 && _finalValue_[1]) ? "end" : "start");
+      }
       setTimeout(function () {
+        var _finalValue_2;
         onValueChangeByUser(name, finalValue_0);
+        if (embedded && (selectType_0 === "end" && (_finalValue_2 = finalValue_0) !== null && _finalValue_2 !== void 0 && _finalValue_2[1] || readOnlyEnd)) {
+          onRequestSearchSubmit(name, finalValue_0);
+        }
       });
     };
-    $[58] = calendarCount;
-    $[59] = name;
-    $[60] = onRequestSearchSubmit;
-    $[61] = onValueChangeByUser;
-    $[62] = open;
-    $[63] = updateValue;
-    $[64] = value_0[0];
-    $[65] = value_0[1];
-    $[66] = t32;
+    $[66] = calendarCount;
+    $[67] = embedded;
+    $[68] = name;
+    $[69] = onRequestSearchSubmit;
+    $[70] = onValueChangeByUser;
+    $[71] = open;
+    $[72] = readOnlyEnd;
+    $[73] = readOnlyStart;
+    $[74] = updateValue;
+    $[75] = value_0;
+    $[76] = t33;
   } else {
-    t32 = $[66];
+    t33 = $[76];
   }
-  var handleValueChange = t32;
-  var t33;
-  if ($[67] !== handleValueChange) {
-    t33 = function t33(selectType_1, newValue_5) {
+  var handleValueChange = t33;
+  var t34;
+  if ($[77] !== handleValueChange) {
+    t34 = function t34(selectType_1, newValue_5) {
       var error_3 = false;
       if (newValue_5) {
         if (newValue_5.isValid()) {
@@ -22281,11 +22724,11 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
       } else {
         handleValueChange(selectType_1, newValue_5, true);
       }
-      bb371: switch (selectType_1) {
+      bb476: switch (selectType_1) {
         case "start":
           {
             setFromError(error_3);
-            break bb371;
+            break bb476;
           }
         case "end":
           {
@@ -22293,28 +22736,28 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
           }
       }
     };
-    $[67] = handleValueChange;
-    $[68] = t33;
+    $[77] = handleValueChange;
+    $[78] = t34;
   } else {
-    t33 = $[68];
+    t34 = $[78];
   }
-  var handleInputDatePickerChange = t33;
-  var t34;
-  if ($[69] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t34 = function t34() {
+  var handleInputDatePickerChange = t34;
+  var t35;
+  if ($[79] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t35 = function t35() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
       }
     };
-    $[69] = t34;
+    $[79] = t35;
   } else {
-    t34 = $[69];
+    t35 = $[79];
   }
-  var handleContainerFocus = t34;
-  var t35;
-  if ($[70] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t35 = function t35() {
+  var handleContainerFocus = t35;
+  var t36;
+  if ($[80] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t36 = function t36() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
@@ -22326,28 +22769,28 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
         }, 10);
       }
     };
-    $[70] = t35;
+    $[80] = t36;
   } else {
-    t35 = $[70];
+    t36 = $[80];
   }
-  var handleContainerBlur = t35;
-  var t36;
-  if ($[71] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t36 = function t36() {
+  var handleContainerBlur = t36;
+  var t37;
+  if ($[81] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t37 = function t37() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
       }
       mouseDownTimeRef.current = new Date().getTime();
     };
-    $[71] = t36;
+    $[81] = t37;
   } else {
-    t36 = $[71];
+    t37 = $[81];
   }
-  var handleContainerMouseDown = t36;
-  var t37;
-  if ($[72] !== calendarCount || $[73] !== disabled || $[74] !== readOnly || $[75] !== valueRef) {
-    t37 = function t37(selectType_2) {
+  var handleContainerMouseDown = t37;
+  var t38;
+  if ($[82] !== calendarCount || $[83] !== disabled || $[84] !== readOnly || $[85] !== valueRef) {
+    t38 = function t38(selectType_2) {
       if (readOnly || disabled) {
         return;
       }
@@ -22356,11 +22799,11 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
       setopen(true);
       setSelectType(selectType_2);
       if (startValue && endValue) {
-        bb402: switch (selectType_2) {
+        bb507: switch (selectType_2) {
           case "start":
             {
               activeMonth(startValue);
-              break bb402;
+              break bb507;
             }
           case "end":
             {
@@ -22385,284 +22828,296 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
         }
       }
     };
-    $[72] = calendarCount;
-    $[73] = disabled;
-    $[74] = readOnly;
-    $[75] = valueRef;
-    $[76] = t37;
+    $[82] = calendarCount;
+    $[83] = disabled;
+    $[84] = readOnly;
+    $[85] = valueRef;
+    $[86] = t38;
   } else {
-    t37 = $[76];
+    t38 = $[86];
   }
-  var handleInputDatePickerFocus = t37;
-  var t38;
-  if ($[77] !== name) {
-    t38 = function t38() {
-      return name;
-    };
-    $[77] = name;
-    $[78] = t38;
-  } else {
-    t38 = $[78];
-  }
+  var handleInputDatePickerFocus = t38;
   var t39;
-  if ($[79] !== initValueRef) {
+  if ($[87] !== embedded) {
     t39 = function t39() {
-      return getFinalValue$6(initValueRef.current);
+      return embedded ? "PFormEmbedDateRangePicker" : "PFormDateRangePicker";
     };
-    $[79] = initValueRef;
-    $[80] = t39;
+    $[87] = embedded;
+    $[88] = t39;
   } else {
-    t39 = $[80];
+    t39 = $[88];
   }
   var t40;
-  if ($[81] !== initValueRef || $[82] !== updateValue) {
+  if ($[89] !== name) {
     t40 = function t40() {
-      return updateValue(initValueRef.current);
+      return name;
     };
-    $[81] = initValueRef;
-    $[82] = updateValue;
-    $[83] = t40;
+    $[89] = name;
+    $[90] = t40;
   } else {
-    t40 = $[83];
+    t40 = $[90];
   }
   var t41;
-  if ($[84] !== valueRef) {
+  if ($[91] !== initValueRef) {
     t41 = function t41() {
-      return valueRef.current;
+      return getFinalValue$6(initValueRef.current);
     };
-    $[84] = valueRef;
-    $[85] = t41;
+    $[91] = initValueRef;
+    $[92] = t41;
   } else {
-    t41 = $[85];
+    t41 = $[92];
   }
   var t42;
-  if ($[86] !== dataRef) {
+  if ($[93] !== initValueRef || $[94] !== updateValue) {
     t42 = function t42() {
-      return dataRef.current;
+      return updateValue(initValueRef.current);
     };
-    $[86] = dataRef;
-    $[87] = t42;
+    $[93] = initValueRef;
+    $[94] = updateValue;
+    $[95] = t42;
   } else {
-    t42 = $[87];
+    t42 = $[95];
   }
   var t43;
-  if ($[88] !== valueRef) {
+  if ($[96] !== valueRef) {
     t43 = function t43() {
-      return valueRef.current[0];
+      return valueRef.current;
     };
-    $[88] = valueRef;
-    $[89] = t43;
+    $[96] = valueRef;
+    $[97] = t43;
   } else {
-    t43 = $[89];
+    t43 = $[97];
   }
   var t44;
-  if ($[90] !== updateValue || $[91] !== valueRef) {
-    t44 = function t44(value_1) {
-      return updateValue([value_1, valueRef.current[1]]);
+  if ($[98] !== dataRef) {
+    t44 = function t44() {
+      return dataRef.current;
     };
-    $[90] = updateValue;
-    $[91] = valueRef;
-    $[92] = t44;
+    $[98] = dataRef;
+    $[99] = t44;
   } else {
-    t44 = $[92];
+    t44 = $[99];
   }
   var t45;
-  if ($[93] !== valueRef) {
+  if ($[100] !== valueRef) {
     t45 = function t45() {
-      return valueRef.current[1];
+      return valueRef.current[0];
     };
-    $[93] = valueRef;
-    $[94] = t45;
+    $[100] = valueRef;
+    $[101] = t45;
   } else {
-    t45 = $[94];
+    t45 = $[101];
   }
   var t46;
-  if ($[95] !== updateValue || $[96] !== valueRef) {
-    t46 = function t46(value_2) {
-      return updateValue([valueRef.current[0], value_2]);
+  if ($[102] !== updateValue || $[103] !== valueRef) {
+    t46 = function t46(value_1) {
+      return updateValue([value_1, valueRef.current[1]]);
     };
-    $[95] = updateValue;
-    $[96] = valueRef;
-    $[97] = t46;
+    $[102] = updateValue;
+    $[103] = valueRef;
+    $[104] = t46;
   } else {
-    t46 = $[97];
+    t46 = $[104];
   }
   var t47;
-  if ($[98] !== exceptValue) {
+  if ($[105] !== valueRef) {
     t47 = function t47() {
-      return !!exceptValue;
+      return valueRef.current[1];
     };
-    $[98] = exceptValue;
-    $[99] = t47;
+    $[105] = valueRef;
+    $[106] = t47;
   } else {
-    t47 = $[99];
+    t47 = $[106];
   }
   var t48;
-  if ($[100] !== disabled) {
-    t48 = function t48() {
-      return !!disabled;
+  if ($[107] !== updateValue || $[108] !== valueRef) {
+    t48 = function t48(value_2) {
+      return updateValue([valueRef.current[0], value_2]);
     };
-    $[100] = disabled;
-    $[101] = t48;
+    $[107] = updateValue;
+    $[108] = valueRef;
+    $[109] = t48;
   } else {
-    t48 = $[101];
+    t48 = $[109];
   }
   var t49;
-  if ($[102] !== hidden) {
+  if ($[110] !== exceptValue) {
     t49 = function t49() {
-      return !!hidden;
+      return !!exceptValue;
     };
-    $[102] = hidden;
-    $[103] = t49;
+    $[110] = exceptValue;
+    $[111] = t49;
   } else {
-    t49 = $[103];
+    t49 = $[111];
   }
   var t50;
-  if ($[104] !== validate || $[105] !== valueRef) {
+  if ($[112] !== disabled) {
     t50 = function t50() {
-      return validate(valueRef.current);
+      return !!disabled;
     };
-    $[104] = validate;
-    $[105] = valueRef;
-    $[106] = t50;
+    $[112] = disabled;
+    $[113] = t50;
   } else {
-    t50 = $[106];
+    t50 = $[113];
   }
   var t51;
-  if ($[107] !== formValueFormat) {
+  if ($[114] !== hidden) {
     t51 = function t51() {
-      return formValueFormat;
+      return !!hidden;
     };
-    $[107] = formValueFormat;
-    $[108] = t51;
+    $[114] = hidden;
+    $[115] = t51;
   } else {
-    t51 = $[108];
+    t51 = $[115];
   }
   var t52;
-  if ($[109] !== formValueFromNameSuffix) {
+  if ($[116] !== validate || $[117] !== valueRef) {
     t52 = function t52() {
-      return formValueFromNameSuffix;
+      return validate(valueRef.current);
     };
-    $[109] = formValueFromNameSuffix;
-    $[110] = t52;
+    $[116] = validate;
+    $[117] = valueRef;
+    $[118] = t52;
   } else {
-    t52 = $[110];
+    t52 = $[118];
   }
   var t53;
-  if ($[111] !== formValueToNameSuffix) {
+  if ($[119] !== formValueFormat) {
     t53 = function t53() {
-      return formValueToNameSuffix;
+      return formValueFormat;
     };
-    $[111] = formValueToNameSuffix;
-    $[112] = t53;
+    $[119] = formValueFormat;
+    $[120] = t53;
   } else {
-    t53 = $[112];
+    t53 = $[120];
   }
   var t54;
-  if ($[113] !== formValueFromNameSuffix || $[114] !== name) {
+  if ($[121] !== formValueFromNameSuffix) {
     t54 = function t54() {
-      return "".concat(name).concat(formValueFromNameSuffix);
+      return formValueFromNameSuffix;
     };
-    $[113] = formValueFromNameSuffix;
-    $[114] = name;
-    $[115] = t54;
+    $[121] = formValueFromNameSuffix;
+    $[122] = t54;
   } else {
-    t54 = $[115];
+    t54 = $[122];
   }
   var t55;
-  if ($[116] !== formValueToNameSuffix || $[117] !== name) {
+  if ($[123] !== formValueToNameSuffix) {
     t55 = function t55() {
-      return "".concat(name).concat(formValueToNameSuffix);
+      return formValueToNameSuffix;
     };
-    $[116] = formValueToNameSuffix;
-    $[117] = name;
-    $[118] = t55;
+    $[123] = formValueToNameSuffix;
+    $[124] = t55;
   } else {
-    t55 = $[118];
+    t55 = $[124];
   }
   var t56;
-  if ($[119] !== focusValidate || $[120] !== setData || $[121] !== setErrorErrorHelperText || $[122] !== t38 || $[123] !== t39 || $[124] !== t40 || $[125] !== t41 || $[126] !== t42 || $[127] !== t43 || $[128] !== t44 || $[129] !== t45 || $[130] !== t46 || $[131] !== t47 || $[132] !== t48 || $[133] !== t49 || $[134] !== t50 || $[135] !== t51 || $[136] !== t52 || $[137] !== t53 || $[138] !== t54 || $[139] !== t55 || $[140] !== updateValue) {
-    t56 = {
-      getType: _temp2,
-      getName: t38,
-      getReset: t39,
-      reset: t40,
-      getValue: t41,
+  if ($[125] !== formValueFromNameSuffix || $[126] !== name) {
+    t56 = function t56() {
+      return "".concat(name).concat(formValueFromNameSuffix);
+    };
+    $[125] = formValueFromNameSuffix;
+    $[126] = name;
+    $[127] = t56;
+  } else {
+    t56 = $[127];
+  }
+  var t57;
+  if ($[128] !== formValueToNameSuffix || $[129] !== name) {
+    t57 = function t57() {
+      return "".concat(name).concat(formValueToNameSuffix);
+    };
+    $[128] = formValueToNameSuffix;
+    $[129] = name;
+    $[130] = t57;
+  } else {
+    t57 = $[130];
+  }
+  var t58;
+  if ($[131] !== focus || $[132] !== focusValidate || $[133] !== setData || $[134] !== setErrorErrorHelperText || $[135] !== t39 || $[136] !== t40 || $[137] !== t41 || $[138] !== t42 || $[139] !== t43 || $[140] !== t44 || $[141] !== t45 || $[142] !== t46 || $[143] !== t47 || $[144] !== t48 || $[145] !== t49 || $[146] !== t50 || $[147] !== t51 || $[148] !== t52 || $[149] !== t53 || $[150] !== t54 || $[151] !== t55 || $[152] !== t56 || $[153] !== t57 || $[154] !== updateValue) {
+    t58 = {
+      getType: t39,
+      getName: t40,
+      getReset: t41,
+      reset: t42,
+      getValue: t43,
       setValue: updateValue,
-      getData: t42,
+      getData: t44,
       setData: setData,
-      getFromValue: t43,
-      setFromValue: t44,
-      getToValue: t45,
-      setToValue: t46,
-      isExceptValue: t47,
-      isDisabled: t48,
+      getFromValue: t45,
+      setFromValue: t46,
+      getToValue: t47,
+      setToValue: t48,
+      isExceptValue: t49,
+      isDisabled: t50,
       setDisabled: setDisabled,
-      isHidden: t49,
+      isHidden: t51,
       setHidden: setHidden,
       focus: focus,
       focusValidate: focusValidate,
-      validate: t50,
+      validate: t52,
       setError: setErrorErrorHelperText,
-      getFormValueFormat: t51,
-      getFormValueFromNameSuffix: t52,
-      getFormValueToNameSuffix: t53,
-      getFormValueFromName: t54,
-      getFormValueToName: t55
+      getFormValueFormat: t53,
+      getFormValueFromNameSuffix: t54,
+      getFormValueToNameSuffix: t55,
+      getFormValueFromName: t56,
+      getFormValueToName: t57
     };
-    $[119] = focusValidate;
-    $[120] = setData;
-    $[121] = setErrorErrorHelperText;
-    $[122] = t38;
-    $[123] = t39;
-    $[124] = t40;
-    $[125] = t41;
-    $[126] = t42;
-    $[127] = t43;
-    $[128] = t44;
-    $[129] = t45;
-    $[130] = t46;
-    $[131] = t47;
-    $[132] = t48;
-    $[133] = t49;
-    $[134] = t50;
-    $[135] = t51;
-    $[136] = t52;
-    $[137] = t53;
-    $[138] = t54;
-    $[139] = t55;
-    $[140] = updateValue;
-    $[141] = t56;
+    $[131] = focus;
+    $[132] = focusValidate;
+    $[133] = setData;
+    $[134] = setErrorErrorHelperText;
+    $[135] = t39;
+    $[136] = t40;
+    $[137] = t41;
+    $[138] = t42;
+    $[139] = t43;
+    $[140] = t44;
+    $[141] = t45;
+    $[142] = t46;
+    $[143] = t47;
+    $[144] = t48;
+    $[145] = t49;
+    $[146] = t50;
+    $[147] = t51;
+    $[148] = t52;
+    $[149] = t53;
+    $[150] = t54;
+    $[151] = t55;
+    $[152] = t56;
+    $[153] = t57;
+    $[154] = updateValue;
+    $[155] = t58;
   } else {
-    t56 = $[141];
+    t58 = $[155];
   }
-  var commands = t56;
-  var t57;
-  if ($[142] !== id || $[143] !== onAddValueItem) {
-    t57 = function t57(commands_0) {
+  var commands = t58;
+  var t59;
+  if ($[156] !== id || $[157] !== onAddValueItem) {
+    t59 = function t59(commands_0) {
       return onAddValueItem(id, commands_0);
     };
-    $[142] = id;
-    $[143] = onAddValueItem;
-    $[144] = t57;
+    $[156] = id;
+    $[157] = onAddValueItem;
+    $[158] = t59;
   } else {
-    t57 = $[144];
+    t59 = $[158];
   }
-  var t58;
-  if ($[145] !== id || $[146] !== onRemoveValueItem) {
-    t58 = function t58() {
+  var t60;
+  if ($[159] !== id || $[160] !== onRemoveValueItem) {
+    t60 = function t60() {
       return onRemoveValueItem(id);
     };
-    $[145] = id;
-    $[146] = onRemoveValueItem;
-    $[147] = t58;
+    $[159] = id;
+    $[160] = onRemoveValueItem;
+    $[161] = t60;
   } else {
-    t58 = $[147];
+    t60 = $[161];
   }
-  reactHook.useForwardRef(ref, commands, t57, t58);
-  var t59;
-  if ($[148] !== align || $[149] !== color || $[150] !== disableFuture || $[151] !== disablePast || $[152] !== disabled || $[153] !== format || $[154] !== fullWidth || $[155] !== labelShrink || $[156] !== maxDate || $[157] !== minDate || $[158] !== size || $[159] !== variant) {
-    t59 = {
+  reactHook.useForwardRef(ref, commands, t59, t60);
+  var t61;
+  if ($[162] !== align || $[163] !== color || $[164] !== disableFuture || $[165] !== disablePast || $[166] !== disabled || $[167] !== format || $[168] !== fullWidth || $[169] !== labelShrink || $[170] !== maxDate || $[171] !== minDate || $[172] !== size || $[173] !== variant) {
+    t61 = {
       align: align,
       variant: variant,
       size: size,
@@ -22676,99 +23131,182 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
       minDate: minDate,
       maxDate: maxDate
     };
-    $[148] = align;
-    $[149] = color;
-    $[150] = disableFuture;
-    $[151] = disablePast;
-    $[152] = disabled;
-    $[153] = format;
-    $[154] = fullWidth;
-    $[155] = labelShrink;
-    $[156] = maxDate;
-    $[157] = minDate;
-    $[158] = size;
-    $[159] = variant;
-    $[160] = t59;
+    $[162] = align;
+    $[163] = color;
+    $[164] = disableFuture;
+    $[165] = disablePast;
+    $[166] = disabled;
+    $[167] = format;
+    $[168] = fullWidth;
+    $[169] = labelShrink;
+    $[170] = maxDate;
+    $[171] = minDate;
+    $[172] = size;
+    $[173] = variant;
+    $[174] = t61;
   } else {
-    t59 = $[160];
+    t61 = $[174];
   }
-  var inputDatePickerProps = t59;
-  var t60;
-  if ($[161] !== fullWidth || $[162] !== inputWidth) {
-    t60 = inputWidth != null ? {
+  var inputDatePickerProps = t61;
+  var t62;
+  if ($[175] !== fullWidth || $[176] !== inputWidth) {
+    t62 = inputWidth != null ? {
       width: inputWidth
     } : {
       width: fullWidth ? undefined : 150
     };
-    $[161] = fullWidth;
-    $[162] = inputWidth;
-    $[163] = t60;
+    $[175] = fullWidth;
+    $[176] = inputWidth;
+    $[177] = t62;
   } else {
-    t60 = $[163];
+    t62 = $[177];
   }
-  var inputStyle = t60;
-  var t61;
-  if ($[164] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t61 = function t61() {
+  var inputStyle = t62;
+  if (embedded) {
+    var _t = !formColWithHelperText ? error ? errorHelperText : helperText : undefined;
+    var _t2;
+    if ($[178] === Symbol["for"]("react.memo_cache_sentinel")) {
+      _t2 = {
+        display: "flex"
+      };
+      $[178] = _t2;
+    } else {
+      _t2 = $[178];
+    }
+    var _t3;
+    if ($[179] !== calendarCount || $[180] !== disableFuture || $[181] !== disablePast || $[182] !== handleChange || $[183] !== handleValueChange || $[184] !== maxDate || $[185] !== minDate || $[186] !== months || $[187] !== onGetActionButtons || $[188] !== selectType || $[189] !== value_0) {
+      _t3 = /*#__PURE__*/React.createElement("div", {
+        style: _t2
+      }, /*#__PURE__*/React.createElement(PFormDateRangePickerTooltipPickerContainer, {
+        ref: containerRef,
+        calendarCount: calendarCount,
+        selectType: selectType,
+        value: value_0,
+        months: months,
+        disablePast: disablePast,
+        disableFuture: disableFuture,
+        minDate: minDate,
+        maxDate: maxDate,
+        onGetActionButtons: onGetActionButtons,
+        onChange: handleChange,
+        onValueChange: handleValueChange,
+        onMonthsChange: setMonths
+      }));
+      $[179] = calendarCount;
+      $[180] = disableFuture;
+      $[181] = disablePast;
+      $[182] = handleChange;
+      $[183] = handleValueChange;
+      $[184] = maxDate;
+      $[185] = minDate;
+      $[186] = months;
+      $[187] = onGetActionButtons;
+      $[188] = selectType;
+      $[189] = value_0;
+      $[190] = _t3;
+    } else {
+      _t3 = $[190];
+    }
+    var _t4;
+    if ($[191] !== className || $[192] !== disabled || $[193] !== error || $[194] !== fromLabel || $[195] !== fullWidth || $[196] !== hidden || $[197] !== initStyle || $[198] !== name || $[199] !== readOnly || $[200] !== required || $[201] !== sx || $[202] !== _t || $[203] !== _t3) {
+      _t4 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
+        dateAdapter: AdapterDayjs.AdapterDayjs
+      }, /*#__PURE__*/React.createElement(PrivateEmbedPicker, {
+        name: name,
+        label: fromLabel,
+        required: required,
+        disabled: disabled,
+        readOnly: readOnly,
+        hidden: hidden,
+        fullWidth: fullWidth,
+        error: error,
+        helperText: _t,
+        pickerRef: embeddedRef,
+        className: className,
+        style: initStyle,
+        sx: sx
+      }, _t3));
+      $[191] = className;
+      $[192] = disabled;
+      $[193] = error;
+      $[194] = fromLabel;
+      $[195] = fullWidth;
+      $[196] = hidden;
+      $[197] = initStyle;
+      $[198] = name;
+      $[199] = readOnly;
+      $[200] = required;
+      $[201] = sx;
+      $[202] = _t;
+      $[203] = _t3;
+      $[204] = _t4;
+    } else {
+      _t4 = $[204];
+    }
+    return _t4;
+  }
+  var t63;
+  if ($[205] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t63 = function t63() {
       return setopen(false);
     };
-    $[164] = t61;
+    $[205] = t63;
   } else {
-    t61 = $[164];
+    t63 = $[205];
   }
-  var t62;
-  if ($[165] !== className) {
-    t62 = classNames(className, "PFormDateRangePicker");
-    $[165] = className;
-    $[166] = t62;
+  var t64;
+  if ($[206] !== className) {
+    t64 = classNames(className, "PFormDateRangePicker");
+    $[206] = className;
+    $[207] = t64;
   } else {
-    t62 = $[166];
+    t64 = $[207];
   }
-  var t63 = hidden ? "none" : fullWidth ? "block" : "inline-block";
-  var t64 = fullWidth ? 1 : undefined;
-  var t65;
-  if ($[167] !== t63 || $[168] !== t64) {
-    t65 = {
-      display: t63,
-      flex: t64
-    };
-    $[167] = t63;
-    $[168] = t64;
-    $[169] = t65;
-  } else {
-    t65 = $[169];
-  }
-  var t66 = error && errorHelperText || fromError && fromErrorHelperText || toError && toErrorHelperText ? 8 : -14;
+  var t65 = hidden ? "none" : fullWidth ? "block" : "inline-block";
+  var t66 = fullWidth ? 1 : undefined;
   var t67;
-  if ($[170] !== t66) {
+  if ($[208] !== t65 || $[209] !== t66) {
     t67 = {
+      display: t65,
+      flex: t66
+    };
+    $[208] = t65;
+    $[209] = t66;
+    $[210] = t67;
+  } else {
+    t67 = $[210];
+  }
+  var t68 = error && errorHelperText || fromError && fromErrorHelperText || toError && toErrorHelperText ? 8 : -14;
+  var t69;
+  if ($[211] !== t68) {
+    t69 = {
       popper: {
         modifiers: [{
           name: "offset",
           options: {
-            offset: [0, t66]
+            offset: [0, t68]
           }
         }]
       }
     };
-    $[170] = t66;
-    $[171] = t67;
+    $[211] = t68;
+    $[212] = t69;
   } else {
-    t67 = $[171];
+    t69 = $[212];
   }
-  var t68;
-  if ($[172] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t68 = {
+  var t70;
+  if ($[213] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t70 = {
       display: "flex"
     };
-    $[172] = t68;
+    $[213] = t70;
   } else {
-    t68 = $[172];
+    t70 = $[213];
   }
-  var t69;
-  if ($[173] !== calendarCount || $[174] !== disableFuture || $[175] !== disablePast || $[176] !== handleChange || $[177] !== handleValueChange || $[178] !== maxDate || $[179] !== minDate || $[180] !== months || $[181] !== onGetActionButtons || $[182] !== selectType || $[183] !== value_0) {
-    t69 = /*#__PURE__*/React.createElement("div", {
-      style: t68
+  var t71;
+  if ($[214] !== calendarCount || $[215] !== disableFuture || $[216] !== disablePast || $[217] !== handleChange || $[218] !== handleValueChange || $[219] !== maxDate || $[220] !== minDate || $[221] !== months || $[222] !== onGetActionButtons || $[223] !== selectType || $[224] !== value_0) {
+    t71 = /*#__PURE__*/React.createElement("div", {
+      style: t70
     }, /*#__PURE__*/React.createElement(PFormDateRangePickerTooltipPickerContainer, {
       ref: containerRef,
       calendarCount: calendarCount,
@@ -22784,265 +23322,274 @@ var PFormDateRangePicker = function PFormDateRangePicker(t0) {
       onValueChange: handleValueChange,
       onMonthsChange: setMonths
     }));
-    $[173] = calendarCount;
-    $[174] = disableFuture;
-    $[175] = disablePast;
-    $[176] = handleChange;
-    $[177] = handleValueChange;
-    $[178] = maxDate;
-    $[179] = minDate;
-    $[180] = months;
-    $[181] = onGetActionButtons;
-    $[182] = selectType;
-    $[183] = value_0;
-    $[184] = t69;
+    $[214] = calendarCount;
+    $[215] = disableFuture;
+    $[216] = disablePast;
+    $[217] = handleChange;
+    $[218] = handleValueChange;
+    $[219] = maxDate;
+    $[220] = minDate;
+    $[221] = months;
+    $[222] = onGetActionButtons;
+    $[223] = selectType;
+    $[224] = value_0;
+    $[225] = t71;
   } else {
-    t69 = $[184];
+    t71 = $[225];
   }
-  var t70 = error || fromError;
-  var t71 = focused || open && selectType === "start";
-  var t72 = required || requiredStart;
-  var t73 = readOnly || readOnlyStart;
-  var t74 = startIcon || icon;
-  var t75 = startStartAdornment || startAdornment;
-  var t76 = startEndAdornment || endAdornment;
-  var t77;
-  if ($[185] !== handleInputDatePickerChange) {
-    t77 = function t77(newValue_6) {
+  var t72 = error || fromError;
+  var t73 = focused || open && selectType === "start";
+  var t74 = required || requiredStart;
+  var t75 = readOnly || readOnlyStart;
+  var t76 = startIcon || icon;
+  var t77 = startStartAdornment || startAdornment;
+  var t78 = startEndAdornment || endAdornment;
+  var t79;
+  if ($[226] !== handleInputDatePickerChange) {
+    t79 = function t79(newValue_6) {
       return handleInputDatePickerChange("start", newValue_6);
     };
-    $[185] = handleInputDatePickerChange;
-    $[186] = t77;
+    $[226] = handleInputDatePickerChange;
+    $[227] = t79;
   } else {
-    t77 = $[186];
-  }
-  var t78;
-  if ($[187] !== handleInputDatePickerFocus) {
-    t78 = function t78() {
-      return handleInputDatePickerFocus("start");
-    };
-    $[187] = handleInputDatePickerFocus;
-    $[188] = t78;
-  } else {
-    t78 = $[188];
-  }
-  var t79;
-  if ($[189] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t79 = function t79(reason) {
-      return startInputDatePickerErrorRef.current = reason;
-    };
-    $[189] = t79;
-  } else {
-    t79 = $[189];
+    t79 = $[227];
   }
   var t80;
-  if ($[190] !== enableKeyboardInput || $[191] !== fromLabel || $[192] !== fromLabelIcon || $[193] !== inputDatePickerProps || $[194] !== inputStyle || $[195] !== t70 || $[196] !== t71 || $[197] !== t72 || $[198] !== t73 || $[199] !== t74 || $[200] !== t75 || $[201] !== t76 || $[202] !== t77 || $[203] !== t78 || $[204] !== value_0[0]) {
-    t80 = /*#__PURE__*/React.createElement(material.Grid, {
+  if ($[228] !== handleInputDatePickerFocus) {
+    t80 = function t80() {
+      return handleInputDatePickerFocus("start");
+    };
+    $[228] = handleInputDatePickerFocus;
+    $[229] = t80;
+  } else {
+    t80 = $[229];
+  }
+  var t81;
+  if ($[230] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t81 = function t81(reason) {
+      return startInputDatePickerErrorRef.current = reason;
+    };
+    $[230] = t81;
+  } else {
+    t81 = $[230];
+  }
+  var t82;
+  if ($[231] !== enableKeyboardInput || $[232] !== fromLabel || $[233] !== fromLabelIcon || $[234] !== inputDatePickerProps || $[235] !== inputStyle || $[236] !== t72 || $[237] !== t73 || $[238] !== t74 || $[239] !== t75 || $[240] !== t76 || $[241] !== t77 || $[242] !== t78 || $[243] !== t79 || $[244] !== t80 || $[245] !== value_0[0]) {
+    t82 = /*#__PURE__*/React.createElement(material.Grid, {
       flex: 1
     }, /*#__PURE__*/React.createElement(PrivateInputDatePicker, _extends({}, inputDatePickerProps, {
       style: inputStyle,
       value: value_0[0],
       label: fromLabel,
       labelIcon: fromLabelIcon,
-      error: t70,
-      focused: t71,
-      required: t72,
-      readOnly: t73,
+      error: t72,
+      focused: t73,
+      required: t74,
+      readOnly: t75,
       enableKeyboardInput: enableKeyboardInput,
-      icon: t74,
-      startAdornment: t75,
-      endAdornment: t76,
+      icon: t76,
+      startAdornment: t77,
+      endAdornment: t78,
       inputRef: startDateTextFieldRef,
-      onChange: t77,
-      onFocus: t78,
-      onError: t79
+      onChange: t79,
+      onFocus: t80,
+      onError: t81
     })));
-    $[190] = enableKeyboardInput;
-    $[191] = fromLabel;
-    $[192] = fromLabelIcon;
-    $[193] = inputDatePickerProps;
-    $[194] = inputStyle;
-    $[195] = t70;
-    $[196] = t71;
-    $[197] = t72;
-    $[198] = t73;
-    $[199] = t74;
-    $[200] = t75;
-    $[201] = t76;
-    $[202] = t77;
-    $[203] = t78;
-    $[204] = value_0[0];
-    $[205] = t80;
+    $[231] = enableKeyboardInput;
+    $[232] = fromLabel;
+    $[233] = fromLabelIcon;
+    $[234] = inputDatePickerProps;
+    $[235] = inputStyle;
+    $[236] = t72;
+    $[237] = t73;
+    $[238] = t74;
+    $[239] = t75;
+    $[240] = t76;
+    $[241] = t77;
+    $[242] = t78;
+    $[243] = t79;
+    $[244] = t80;
+    $[245] = value_0[0];
+    $[246] = t82;
   } else {
-    t80 = $[205];
+    t82 = $[246];
   }
-  var t81;
-  if ($[206] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t81 = /*#__PURE__*/React.createElement(material.Grid, {
+  var t83;
+  if ($[247] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t83 = /*#__PURE__*/React.createElement(material.Grid, {
       sx: {
         px: 1
       }
     }, "~");
-    $[206] = t81;
+    $[247] = t83;
   } else {
-    t81 = $[206];
+    t83 = $[247];
   }
-  var t82 = error || toError;
-  var t83 = focused || open && selectType === "end";
-  var t84 = required || requiredEnd;
-  var t85 = readOnly || readOnlyEnd;
-  var t86 = endIcon || icon;
-  var t87 = endStartAdornment || startAdornment;
-  var t88 = endEndAdornment || endAdornment;
-  var t89;
-  if ($[207] !== handleInputDatePickerChange) {
-    t89 = function t89(newValue_7) {
+  var t84 = error || toError;
+  var t85 = focused || open && selectType === "end";
+  var t86 = required || requiredEnd;
+  var t87 = readOnly || readOnlyEnd;
+  var t88 = endIcon || icon;
+  var t89 = endStartAdornment || startAdornment;
+  var t90 = endEndAdornment || endAdornment;
+  var t91;
+  if ($[248] !== handleInputDatePickerChange) {
+    t91 = function t91(newValue_7) {
       return handleInputDatePickerChange("end", newValue_7);
     };
-    $[207] = handleInputDatePickerChange;
-    $[208] = t89;
+    $[248] = handleInputDatePickerChange;
+    $[249] = t91;
   } else {
-    t89 = $[208];
-  }
-  var t90;
-  if ($[209] !== handleInputDatePickerFocus) {
-    t90 = function t90() {
-      return handleInputDatePickerFocus("end");
-    };
-    $[209] = handleInputDatePickerFocus;
-    $[210] = t90;
-  } else {
-    t90 = $[210];
-  }
-  var t91;
-  if ($[211] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t91 = function t91(reason_0) {
-      return endInputDatePickerErrorRef.current = reason_0;
-    };
-    $[211] = t91;
-  } else {
-    t91 = $[211];
+    t91 = $[249];
   }
   var t92;
-  if ($[212] !== enableKeyboardInput || $[213] !== inputDatePickerProps || $[214] !== inputStyle || $[215] !== t82 || $[216] !== t83 || $[217] !== t84 || $[218] !== t85 || $[219] !== t86 || $[220] !== t87 || $[221] !== t88 || $[222] !== t89 || $[223] !== t90 || $[224] !== toLabel || $[225] !== toLabelIcon || $[226] !== value_0[1]) {
-    t92 = /*#__PURE__*/React.createElement(material.Grid, {
+  if ($[250] !== handleInputDatePickerFocus) {
+    t92 = function t92() {
+      return handleInputDatePickerFocus("end");
+    };
+    $[250] = handleInputDatePickerFocus;
+    $[251] = t92;
+  } else {
+    t92 = $[251];
+  }
+  var t93;
+  if ($[252] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t93 = function t93(reason_0) {
+      return endInputDatePickerErrorRef.current = reason_0;
+    };
+    $[252] = t93;
+  } else {
+    t93 = $[252];
+  }
+  var t94;
+  if ($[253] !== enableKeyboardInput || $[254] !== inputDatePickerProps || $[255] !== inputStyle || $[256] !== t84 || $[257] !== t85 || $[258] !== t86 || $[259] !== t87 || $[260] !== t88 || $[261] !== t89 || $[262] !== t90 || $[263] !== t91 || $[264] !== t92 || $[265] !== toLabel || $[266] !== toLabelIcon || $[267] !== value_0[1]) {
+    t94 = /*#__PURE__*/React.createElement(material.Grid, {
       flex: 1
     }, /*#__PURE__*/React.createElement(PrivateInputDatePicker, _extends({}, inputDatePickerProps, {
       style: inputStyle,
       value: value_0[1],
       label: toLabel,
       labelIcon: toLabelIcon,
-      error: t82,
-      focused: t83,
-      required: t84,
-      readOnly: t85,
+      error: t84,
+      focused: t85,
+      required: t86,
+      readOnly: t87,
       enableKeyboardInput: enableKeyboardInput,
-      icon: t86,
-      startAdornment: t87,
-      endAdornment: t88,
+      icon: t88,
+      startAdornment: t89,
+      endAdornment: t90,
       inputRef: endDateTextFieldRef,
-      onChange: t89,
-      onFocus: t90,
-      onError: t91
+      onChange: t91,
+      onFocus: t92,
+      onError: t93
     })));
-    $[212] = enableKeyboardInput;
-    $[213] = inputDatePickerProps;
-    $[214] = inputStyle;
-    $[215] = t82;
-    $[216] = t83;
-    $[217] = t84;
-    $[218] = t85;
-    $[219] = t86;
-    $[220] = t87;
-    $[221] = t88;
-    $[222] = t89;
-    $[223] = t90;
-    $[224] = toLabel;
-    $[225] = toLabelIcon;
-    $[226] = value_0[1];
-    $[227] = t92;
+    $[253] = enableKeyboardInput;
+    $[254] = inputDatePickerProps;
+    $[255] = inputStyle;
+    $[256] = t84;
+    $[257] = t85;
+    $[258] = t86;
+    $[259] = t87;
+    $[260] = t88;
+    $[261] = t89;
+    $[262] = t90;
+    $[263] = t91;
+    $[264] = t92;
+    $[265] = toLabel;
+    $[266] = toLabelIcon;
+    $[267] = value_0[1];
+    $[268] = t94;
   } else {
-    t92 = $[227];
-  }
-  var t93;
-  if ($[228] !== t80 || $[229] !== t92) {
-    t93 = /*#__PURE__*/React.createElement(material.Grid, {
-      container: true,
-      alignItems: "center"
-    }, t80, t81, t92);
-    $[228] = t80;
-    $[229] = t92;
-    $[230] = t93;
-  } else {
-    t93 = $[230];
-  }
-  var t94;
-  if ($[231] !== open || $[232] !== t67 || $[233] !== t69 || $[234] !== t93) {
-    t94 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
-      open: open,
-      slotProps: t67,
-      title: t69
-    }, t93);
-    $[231] = open;
-    $[232] = t67;
-    $[233] = t69;
-    $[234] = t93;
-    $[235] = t94;
-  } else {
-    t94 = $[235];
+    t94 = $[268];
   }
   var t95;
-  if ($[236] !== error || $[237] !== errorHelperText || $[238] !== formColWithHelperText || $[239] !== fromError || $[240] !== fromErrorHelperText || $[241] !== helperText || $[242] !== toError || $[243] !== toErrorHelperText || $[244] !== variant) {
-    t95 = !formColWithHelperText && (helperText || error && errorHelperText || fromError && fromErrorHelperText || toError && toErrorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
+  if ($[269] !== t82 || $[270] !== t94) {
+    t95 = /*#__PURE__*/React.createElement(material.Grid, {
+      container: true,
+      alignItems: "center"
+    }, t82, t83, t94);
+    $[269] = t82;
+    $[270] = t94;
+    $[271] = t95;
+  } else {
+    t95 = $[271];
+  }
+  var t96;
+  if ($[272] !== open || $[273] !== t69 || $[274] !== t71 || $[275] !== t95) {
+    t96 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
+      open: open,
+      slotProps: t69,
+      title: t71
+    }, t95);
+    $[272] = open;
+    $[273] = t69;
+    $[274] = t71;
+    $[275] = t95;
+    $[276] = t96;
+  } else {
+    t96 = $[276];
+  }
+  var t97;
+  if ($[277] !== error || $[278] !== errorHelperText || $[279] !== formColWithHelperText || $[280] !== fromError || $[281] !== fromErrorHelperText || $[282] !== helperText || $[283] !== toError || $[284] !== toErrorHelperText || $[285] !== variant) {
+    t97 = !formColWithHelperText && (helperText || error && errorHelperText || fromError && fromErrorHelperText || toError && toErrorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
       error: error || fromError || toError,
       style: {
         marginLeft: variant === "standard" ? 0 : 14
       }
     }, error ? errorHelperText : fromError ? fromErrorHelperText : toError ? toErrorHelperText : helperText);
-    $[236] = error;
-    $[237] = errorHelperText;
-    $[238] = formColWithHelperText;
-    $[239] = fromError;
-    $[240] = fromErrorHelperText;
-    $[241] = helperText;
-    $[242] = toError;
-    $[243] = toErrorHelperText;
-    $[244] = variant;
-    $[245] = t95;
+    $[277] = error;
+    $[278] = errorHelperText;
+    $[279] = formColWithHelperText;
+    $[280] = fromError;
+    $[281] = fromErrorHelperText;
+    $[282] = helperText;
+    $[283] = toError;
+    $[284] = toErrorHelperText;
+    $[285] = variant;
+    $[286] = t97;
   } else {
-    t95 = $[245];
+    t97 = $[286];
   }
-  var t96;
-  if ($[246] !== t62 || $[247] !== t65 || $[248] !== t94 || $[249] !== t95) {
-    t96 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
+  var t98;
+  if ($[287] !== t64 || $[288] !== t67 || $[289] !== t96 || $[290] !== t97) {
+    t98 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
       dateAdapter: AdapterDayjs.AdapterDayjs
     }, /*#__PURE__*/React.createElement(material.ClickAwayListener, {
       mouseEvent: "onMouseDown",
       touchEvent: "onTouchStart",
-      onClickAway: t61
+      onClickAway: t63
     }, /*#__PURE__*/React.createElement("div", {
-      className: t62,
-      style: t65,
+      className: t64,
+      style: t67,
       onMouseDown: handleContainerMouseDown,
       onFocus: handleContainerFocus,
       onBlur: handleContainerBlur
-    }, t94, t95)));
-    $[246] = t62;
-    $[247] = t65;
-    $[248] = t94;
-    $[249] = t95;
-    $[250] = t96;
+    }, t96, t97)));
+    $[287] = t64;
+    $[288] = t67;
+    $[289] = t96;
+    $[290] = t97;
+    $[291] = t98;
   } else {
-    t96 = $[250];
+    t98 = $[291];
   }
-  return t96;
+  return t98;
 };
-function _temp$a() {
+var PFormDateRangePicker = function PFormDateRangePicker(props) {
+  var $ = compilerRuntime.c(2);
+  var t0;
+  if ($[0] !== props) {
+    t0 = /*#__PURE__*/React.createElement(PFormDateRangePickerInternal, props);
+    $[0] = props;
+    $[1] = t0;
+  } else {
+    t0 = $[1];
+  }
+  return t0;
+};
+function _temp$6() {
   var now = dayjs();
   return [now, now.add(1, "month"), now.add(2, "month")];
-}
-function _temp2() {
-  return "PFormDateRangePicker";
 }var LinkDialog = function LinkDialog(t0) {
   var $ = compilerRuntime.c(31);
   var open = t0.open,
@@ -23693,7 +24240,7 @@ var PFormFile = function PFormFile(t0) {
   var t32;
   if ($[63] !== focus || $[64] !== setData || $[65] !== setErrorErrorHelperText || $[66] !== t23 || $[67] !== t24 || $[68] !== t25 || $[69] !== t26 || $[70] !== t27 || $[71] !== t28 || $[72] !== t29 || $[73] !== t30 || $[74] !== t31 || $[75] !== updateValue) {
     t32 = {
-      getType: _temp$9,
+      getType: _temp$5,
       getName: t23,
       getReset: t24,
       reset: t25,
@@ -24201,11 +24748,11 @@ var PFormFile = function PFormFile(t0) {
   }
   return t64;
 };
-function _temp$9() {
+function _temp$5() {
   return "PFormFile";
 }var getFinalValue$4 = function getFinalValue(value) {
   return value || '';
-};insertStyle(".PFormImageFile .preview-img{max-width:100%}.PFormImageFile:not(.hide-file-name):not(.variant-standard) .preview-img{padding-right:14px}");var _excluded$5 = ["ref", "className", "imageSize", "preview", "previewMaxHeight", "accept", "value", "onChange", "onFile", "onLink"];
+};insertStyle(".PFormImageFile .preview-img{max-width:100%}.PFormImageFile:not(.hide-file-name):not(.variant-standard) .preview-img{padding-right:14px}");var _excluded$c = ["ref", "className", "imageSize", "preview", "previewMaxHeight", "accept", "value", "onChange", "onFile", "onLink"];
 var PFormImageFile = function PFormImageFile(t0) {
   var $ = compilerRuntime.c(51);
   var className;
@@ -24231,7 +24778,7 @@ var PFormImageFile = function PFormImageFile(t0) {
     onChange = _t.onChange;
     onFile = _t.onFile;
     onLink = _t.onLink;
-    props = _objectWithoutProperties(_t, _excluded$5);
+    props = _objectWithoutProperties(_t, _excluded$c);
     $[0] = t0;
     $[1] = className;
     $[2] = imageSize;
@@ -24271,7 +24818,7 @@ var PFormImageFile = function PFormImageFile(t0) {
     _useState2 = _slicedToArray(_useState, 2),
     alertDialogProps = _useState2[0],
     setAlertDialogProps = _useState2[1];
-  var _useState3 = React.useState(_temp$8),
+  var _useState3 = React.useState(_temp$4),
     _useState4 = _slicedToArray(_useState3, 1),
     urlKit = _useState4[0];
   var t3;
@@ -24537,7 +25084,7 @@ var PFormImageFile = function PFormImageFile(t0) {
   }
   return t15;
 };
-function _temp$8() {
+function _temp$4() {
   if (window.URL) {
     return window.URL;
   } else {
@@ -24567,9 +25114,10 @@ var DEFAULT_MAX_VALUE$1 = {
   year: 2050,
   month: 12
 };
-var PFormMonthPicker = function PFormMonthPicker(t0) {
-  var $ = compilerRuntime.c(210);
-  var ref = t0.ref,
+var PFormMonthPickerInternal = function PFormMonthPickerInternal(t0) {
+  var $ = compilerRuntime.c(250);
+  var t1 = t0.embedded,
+    ref = t0.ref,
     initVariant = t0.variant,
     initSize = t0.size,
     initColor = t0.color,
@@ -24590,26 +25138,27 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
     onChange = t0.onChange,
     onValidate = t0.onValidate,
     icon = t0.icon,
-    t1 = t0.format,
+    t2 = t0.format,
     initLabelShrink = t0.labelShrink,
     disablePast = t0.disablePast,
     disableFuture = t0.disableFuture,
-    t2 = t0.minValue,
-    t3 = t0.maxValue,
+    t3 = t0.minValue,
+    t4 = t0.maxValue,
     inputWidth = t0.inputWidth,
     enableKeyboardInput = t0.enableKeyboardInput,
     startAdornment = t0.startAdornment,
     endAdornment = t0.endAdornment,
-    t4 = t0.formValueYearNameSuffix,
-    t5 = t0.formValueMonthNameSuffix,
+    t5 = t0.formValueYearNameSuffix,
+    t6 = t0.formValueMonthNameSuffix,
     className = t0.className,
     initStyle = t0.style,
     sx = t0.sx;
-  var format = t1 === undefined ? "YYYY\uB144 MM\uC6D4" : t1;
-  var minValue = t2 === undefined ? DEFAULT_MIN_VALUE$1 : t2;
-  var maxValue = t3 === undefined ? DEFAULT_MAX_VALUE$1 : t3;
-  var formValueYearNameSuffix = t4 === undefined ? "_year" : t4;
-  var formValueMonthNameSuffix = t5 === undefined ? "_month" : t5;
+  var embedded = t1 === undefined ? false : t1;
+  var format = t2 === undefined ? "YYYY\uB144 MM\uC6D4" : t2;
+  var minValue = t3 === undefined ? DEFAULT_MIN_VALUE$1 : t3;
+  var maxValue = t4 === undefined ? DEFAULT_MAX_VALUE$1 : t4;
+  var formValueYearNameSuffix = t5 === undefined ? "_year" : t5;
+  var formValueMonthNameSuffix = t6 === undefined ? "_month" : t6;
   var id = React.useId();
   var _useFormState = useFormState(),
     formVariant = _useFormState.variant,
@@ -24633,6 +25182,7 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
   var fullWidth = initFullWidth !== null && initFullWidth !== void 0 ? initFullWidth : formFullWidth;
   var initValueRef = reactHook.useAutoUpdateRef(initValue);
   var ratingRef = React.useRef(null);
+  var embeddedRef = React.useRef(null);
   var inputRef = React.useRef(undefined);
   var closeTimeoutRef = React.useRef(undefined);
   var mouseDownTimeRef = React.useRef(undefined);
@@ -24652,120 +25202,120 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
     _useState6 = _slicedToArray(_useState5, 2),
     error = _useState6[0],
     _setError = _useState6[1];
-  var t6;
   var t7;
+  var t8;
   if ($[0] !== initError) {
-    t6 = function t6() {
+    t7 = function t7() {
       return _setError(initError);
     };
-    t7 = [initError];
+    t8 = [initError];
     $[0] = initError;
-    $[1] = t6;
-    $[2] = t7;
+    $[1] = t7;
+    $[2] = t8;
   } else {
-    t6 = $[1];
-    t7 = $[2];
+    t7 = $[1];
+    t8 = $[2];
   }
-  reactHook.useFirstSkipChanged(t6, t7);
+  reactHook.useFirstSkipChanged(t7, t8);
   var errorRef = reactHook.useAutoUpdateRef(error);
-  var t8;
+  var t9;
   if ($[3] !== errorRef) {
-    t8 = function t8(newValue) {
+    t9 = function t9(newValue) {
       _setError(newValue);
       errorRef.current = newValue;
     };
     $[3] = errorRef;
-    $[4] = t8;
+    $[4] = t9;
   } else {
-    t8 = $[4];
+    t9 = $[4];
   }
-  var setError = t8;
+  var setError = t9;
   var _useState7 = React.useState(initData),
     _useState8 = _slicedToArray(_useState7, 2),
     data = _useState8[0],
     _setData = _useState8[1];
   var t10;
-  var t9;
+  var t11;
   if ($[5] !== initData) {
-    t9 = function t9() {
+    t10 = function t10() {
       return _setData(initData);
     };
-    t10 = [initData];
+    t11 = [initData];
     $[5] = initData;
     $[6] = t10;
-    $[7] = t9;
+    $[7] = t11;
   } else {
     t10 = $[6];
-    t9 = $[7];
+    t11 = $[7];
   }
-  reactHook.useFirstSkipChanged(t9, t10);
+  reactHook.useFirstSkipChanged(t10, t11);
   var dataRef = reactHook.useAutoUpdateRef(data);
-  var t11;
+  var t12;
   if ($[8] !== dataRef) {
-    t11 = function t11(newValue_0) {
+    t12 = function t12(newValue_0) {
       _setData(newValue_0);
       dataRef.current = newValue_0;
     };
     $[8] = dataRef;
-    $[9] = t11;
+    $[9] = t12;
   } else {
-    t11 = $[9];
+    t12 = $[9];
   }
-  var setData = t11;
+  var setData = t12;
   var finalInitDisabled = initDisabled !== null && initDisabled !== void 0 ? initDisabled : formDisabled;
   var _useState9 = React.useState(finalInitDisabled),
     _useState0 = _slicedToArray(_useState9, 2),
     disabled = _useState0[0],
     setDisabled = _useState0[1];
-  var t12;
   var t13;
+  var t14;
   if ($[10] !== finalInitDisabled) {
-    t12 = function t12() {
+    t13 = function t13() {
       return setDisabled(finalInitDisabled);
     };
-    t13 = [finalInitDisabled];
+    t14 = [finalInitDisabled];
     $[10] = finalInitDisabled;
-    $[11] = t12;
-    $[12] = t13;
+    $[11] = t13;
+    $[12] = t14;
   } else {
-    t12 = $[11];
-    t13 = $[12];
+    t13 = $[11];
+    t14 = $[12];
   }
-  reactHook.useFirstSkipChanged(t12, t13);
+  reactHook.useFirstSkipChanged(t13, t14);
   var _useState1 = React.useState(initHidden),
     _useState10 = _slicedToArray(_useState1, 2),
     hidden = _useState10[0],
     setHidden = _useState10[1];
-  var t14;
   var t15;
+  var t16;
   if ($[13] !== initHidden) {
-    t14 = function t14() {
+    t15 = function t15() {
       return setHidden(initHidden);
     };
-    t15 = [initHidden];
+    t16 = [initHidden];
     $[13] = initHidden;
-    $[14] = t14;
-    $[15] = t15;
+    $[14] = t15;
+    $[15] = t16;
   } else {
-    t14 = $[14];
-    t15 = $[15];
+    t15 = $[14];
+    t16 = $[15];
   }
-  reactHook.useFirstSkipChanged(t14, t15);
-  var t16;
+  reactHook.useFirstSkipChanged(t15, t16);
+  var t17;
   if ($[16] !== setError) {
-    t16 = function t16(error_0, errorHelperText_0) {
+    t17 = function t17(error_0, errorHelperText_0) {
       setError(error_0);
       setErrorHelperText(error_0 ? errorHelperText_0 : undefined);
     };
     $[16] = setError;
-    $[17] = t16;
+    $[17] = t17;
   } else {
-    t16 = $[17];
+    t17 = $[17];
   }
-  var setErrorErrorHelperText = t16;
-  var t17;
+  var setErrorErrorHelperText = t17;
+  var t18;
   if ($[18] !== onValidateRef || $[19] !== required || $[20] !== setErrorErrorHelperText) {
-    t17 = function t17(value) {
+    t18 = function t18(value) {
       if (required && compare.empty(value)) {
         setErrorErrorHelperText(true, "\uD544\uC218 \uC120\uD0DD \uD56D\uBAA9\uC785\uB2C8\uB2E4.");
         return false;
@@ -24787,54 +25337,54 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
     $[18] = onValidateRef;
     $[19] = required;
     $[20] = setErrorErrorHelperText;
-    $[21] = t17;
+    $[21] = t18;
   } else {
-    t17 = $[21];
+    t18 = $[21];
   }
-  var validate = t17;
-  var t18;
+  var validate = t18;
+  var t19;
   if ($[22] !== initValue) {
-    t18 = getFinalValue$3(initValue);
+    t19 = getFinalValue$3(initValue);
     $[22] = initValue;
-    $[23] = t18;
+    $[23] = t19;
   } else {
-    t18 = $[23];
+    t19 = $[23];
   }
-  var _useState11 = React.useState(t18),
+  var _useState11 = React.useState(t19),
     _useState12 = _slicedToArray(_useState11, 2),
     value_0 = _useState12[0],
     _setValue = _useState12[1];
-  var t19;
   var t20;
+  var t21;
   if ($[24] !== initValue) {
-    t19 = function t19() {
+    t20 = function t20() {
       return _setValue(getFinalValue$3(initValue));
     };
-    t20 = [initValue];
+    t21 = [initValue];
     $[24] = initValue;
-    $[25] = t19;
-    $[26] = t20;
+    $[25] = t20;
+    $[26] = t21;
   } else {
-    t19 = $[25];
-    t20 = $[26];
+    t20 = $[25];
+    t21 = $[26];
   }
-  reactHook.useFirstSkipChanged(t19, t20);
+  reactHook.useFirstSkipChanged(t20, t21);
   var valueRef = reactHook.useAutoUpdateRef(value_0);
-  var t21;
+  var t22;
   if ($[27] !== valueRef) {
-    t21 = function t21(newValue_1) {
+    t22 = function t22(newValue_1) {
       _setValue(newValue_1);
       valueRef.current = newValue_1;
     };
     $[27] = valueRef;
-    $[28] = t21;
+    $[28] = t22;
   } else {
-    t21 = $[28];
+    t22 = $[28];
   }
-  var setValue = t21;
-  var t22;
+  var setValue = t22;
+  var t23;
   if ($[29] !== error || $[30] !== name || $[31] !== onChangeRef || $[32] !== onValueChange || $[33] !== setValue || $[34] !== validate) {
-    t22 = function t22(newValue_2) {
+    t23 = function t23(newValue_2) {
       var _onChangeRef$current;
       var finalValue = getFinalValue$3(newValue_2);
       setValue(finalValue);
@@ -24851,42 +25401,42 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
     $[32] = onValueChange;
     $[33] = setValue;
     $[34] = validate;
-    $[35] = t22;
+    $[35] = t23;
   } else {
-    t22 = $[35];
+    t23 = $[35];
   }
-  var updateValue = t22;
+  var updateValue = t23;
   var nowValue;
-  var t23;
+  var t24;
   if ($[36] === Symbol["for"]("react.memo_cache_sentinel")) {
     var nowDate = dayjs();
     nowValue = dateToValue$3(nowDate);
-    t23 = valueToYm$1(nowValue);
+    t24 = valueToYm$1(nowValue);
     $[36] = nowValue;
-    $[37] = t23;
+    $[37] = t24;
   } else {
     nowValue = $[36];
-    t23 = $[37];
+    t24 = $[37];
   }
-  var nowYm = t23;
-  var t24;
-  if ($[38] !== minValue) {
-    t24 = valueToDate$3(minValue);
-    $[38] = minValue;
-    $[39] = t24;
-  } else {
-    t24 = $[39];
-  }
-  var minDate = t24;
+  var nowYm = t24;
   var t25;
-  if ($[40] !== maxValue) {
-    t25 = valueToDate$3(maxValue);
-    $[40] = maxValue;
-    $[41] = t25;
+  if ($[38] !== minValue) {
+    t25 = valueToDate$3(minValue);
+    $[38] = minValue;
+    $[39] = t25;
   } else {
-    t25 = $[41];
+    t25 = $[39];
   }
-  var maxDate = t25;
+  var minDate = t25;
+  var t26;
+  if ($[40] !== maxValue) {
+    t26 = valueToDate$3(maxValue);
+    $[40] = maxValue;
+    $[41] = t26;
+  } else {
+    t26 = $[41];
+  }
+  var maxDate = t26;
   var minAvailableValue;
   if (disablePast) {
     var minYm = valueToYm$1(minValue);
@@ -24894,15 +25444,15 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
   } else {
     minAvailableValue = minValue;
   }
-  var t26;
+  var t27;
   if ($[42] !== minAvailableValue) {
-    t26 = valueToYm$1(minAvailableValue);
+    t27 = valueToYm$1(minAvailableValue);
     $[42] = minAvailableValue;
-    $[43] = t26;
+    $[43] = t27;
   } else {
-    t26 = $[43];
+    t27 = $[43];
   }
-  var minAvailableYm = t26;
+  var minAvailableYm = t27;
   var maxAvailableValue;
   if (disableFuture) {
     var maxYm = valueToYm$1(maxValue);
@@ -24910,18 +25460,18 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
   } else {
     maxAvailableValue = maxValue;
   }
-  var t27;
-  if ($[44] !== maxAvailableValue) {
-    t27 = valueToYm$1(maxAvailableValue);
-    $[44] = maxAvailableValue;
-    $[45] = t27;
-  } else {
-    t27 = $[45];
-  }
-  var maxAvailableYm = t27;
   var t28;
+  if ($[44] !== maxAvailableValue) {
+    t28 = valueToYm$1(maxAvailableValue);
+    $[44] = maxAvailableValue;
+    $[45] = t28;
+  } else {
+    t28 = $[45];
+  }
+  var maxAvailableYm = t28;
+  var t29;
   if ($[46] !== maxAvailableYm || $[47] !== maxDate || $[48] !== minAvailableYm || $[49] !== minDate) {
-    t28 = {
+    t29 = {
       minDate: minDate,
       maxDate: maxDate,
       minAvailableYm: minAvailableYm,
@@ -24931,30 +25481,30 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
     $[47] = maxDate;
     $[48] = minAvailableYm;
     $[49] = minDate;
-    $[50] = t28;
+    $[50] = t29;
   } else {
-    t28 = $[50];
+    t29 = $[50];
   }
-  var dateInfo = t28;
-  var t29;
+  var dateInfo = t29;
   var t30;
+  var t31;
   if ($[51] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t29 = function t29() {
+    t30 = function t30() {
       if (ratingRef.current) {
         inputRef.current = ratingRef.current.querySelector("input") || undefined;
       }
     };
-    t30 = [];
-    $[51] = t29;
-    $[52] = t30;
+    t31 = [];
+    $[51] = t30;
+    $[52] = t31;
   } else {
-    t29 = $[51];
-    t30 = $[52];
+    t30 = $[51];
+    t31 = $[52];
   }
-  React.useEffect(t29, t30);
-  var t31;
+  React.useEffect(t30, t31);
+  var t32;
   if ($[53] !== name || $[54] !== onRequestSearchSubmit || $[55] !== open || $[56] !== valueRef) {
-    t31 = function t31() {
+    t32 = function t32() {
       if (open) {
         openValueRef.current = valueRef.current;
       } else {
@@ -24975,98 +25525,114 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
     $[54] = onRequestSearchSubmit;
     $[55] = open;
     $[56] = valueRef;
-    $[57] = t31;
+    $[57] = t32;
   } else {
-    t31 = $[57];
+    t32 = $[57];
   }
-  var t32;
-  if ($[58] !== open) {
-    t32 = [open];
-    $[58] = open;
-    $[59] = t32;
-  } else {
-    t32 = $[59];
-  }
-  reactHook.useFirstSkipEffect(t31, t32);
   var t33;
-  if ($[60] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t33 = function t33() {
+  if ($[58] !== open) {
+    t33 = [open];
+    $[58] = open;
+    $[59] = t33;
+  } else {
+    t33 = $[59];
+  }
+  reactHook.useFirstSkipEffect(t32, t33);
+  var t34;
+  if ($[60] !== embedded) {
+    t34 = function t34() {
       var _inputRef$current;
+      if (embedded) {
+        var _embeddedRef$current;
+        (_embeddedRef$current = embeddedRef.current) === null || _embeddedRef$current === void 0 || _embeddedRef$current.focus();
+        return;
+      }
       (_inputRef$current = inputRef.current) === null || _inputRef$current === void 0 || _inputRef$current.focus();
       setTimeout(function () {
         var _inputRef$current2;
         (_inputRef$current2 = inputRef.current) === null || _inputRef$current2 === void 0 || _inputRef$current2.blur();
       });
     };
-    $[60] = t33;
+    $[60] = embedded;
+    $[61] = t34;
   } else {
-    t33 = $[60];
+    t34 = $[61];
   }
-  var focus = t33;
-  var t34;
-  if ($[61] !== name) {
-    t34 = function t34() {
-      return name;
-    };
-    $[61] = name;
-    $[62] = t34;
-  } else {
-    t34 = $[62];
-  }
+  var focus = t34;
   var t35;
-  if ($[63] !== initValueRef) {
+  if ($[62] !== embedded) {
     t35 = function t35() {
-      return getFinalValue$3(initValueRef.current);
+      return embedded ? "PFormEmbedMonthPicker" : "PFormMonthPicker";
     };
-    $[63] = initValueRef;
-    $[64] = t35;
+    $[62] = embedded;
+    $[63] = t35;
   } else {
-    t35 = $[64];
+    t35 = $[63];
   }
   var t36;
-  if ($[65] !== initValueRef || $[66] !== updateValue) {
+  if ($[64] !== name) {
     t36 = function t36() {
-      return updateValue(initValueRef.current);
+      return name;
     };
-    $[65] = initValueRef;
-    $[66] = updateValue;
-    $[67] = t36;
+    $[64] = name;
+    $[65] = t36;
   } else {
-    t36 = $[67];
+    t36 = $[65];
   }
   var t37;
-  if ($[68] !== valueRef) {
+  if ($[66] !== initValueRef) {
     t37 = function t37() {
-      return valueRef.current;
+      return getFinalValue$3(initValueRef.current);
     };
-    $[68] = valueRef;
-    $[69] = t37;
+    $[66] = initValueRef;
+    $[67] = t37;
   } else {
-    t37 = $[69];
+    t37 = $[67];
   }
   var t38;
-  if ($[70] !== dataRef) {
+  if ($[68] !== initValueRef || $[69] !== updateValue) {
     t38 = function t38() {
-      return dataRef.current;
+      return updateValue(initValueRef.current);
     };
-    $[70] = dataRef;
-    $[71] = t38;
+    $[68] = initValueRef;
+    $[69] = updateValue;
+    $[70] = t38;
   } else {
-    t38 = $[71];
+    t38 = $[70];
   }
   var t39;
-  if ($[72] !== valueRef) {
+  if ($[71] !== valueRef) {
     t39 = function t39() {
-      return valueRef.current ? valueRef.current.year : null;
+      return valueRef.current;
     };
-    $[72] = valueRef;
-    $[73] = t39;
+    $[71] = valueRef;
+    $[72] = t39;
   } else {
-    t39 = $[73];
+    t39 = $[72];
   }
   var t40;
-  if ($[74] !== updateValue || $[75] !== valueRef) {
-    t40 = function t40(year) {
+  if ($[73] !== dataRef) {
+    t40 = function t40() {
+      return dataRef.current;
+    };
+    $[73] = dataRef;
+    $[74] = t40;
+  } else {
+    t40 = $[74];
+  }
+  var t41;
+  if ($[75] !== valueRef) {
+    t41 = function t41() {
+      return valueRef.current ? valueRef.current.year : null;
+    };
+    $[75] = valueRef;
+    $[76] = t41;
+  } else {
+    t41 = $[76];
+  }
+  var t42;
+  if ($[77] !== updateValue || $[78] !== valueRef) {
+    t42 = function t42(year) {
       updateValue(year === null ? null : valueRef.current ? {
         year: year,
         month: valueRef.current.month
@@ -25075,25 +25641,25 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
         month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1
       });
     };
-    $[74] = updateValue;
-    $[75] = valueRef;
-    $[76] = t40;
+    $[77] = updateValue;
+    $[78] = valueRef;
+    $[79] = t42;
   } else {
-    t40 = $[76];
+    t42 = $[79];
   }
-  var t41;
-  if ($[77] !== valueRef) {
-    t41 = function t41() {
+  var t43;
+  if ($[80] !== valueRef) {
+    t43 = function t43() {
       return valueRef.current ? valueRef.current.month : null;
     };
-    $[77] = valueRef;
-    $[78] = t41;
+    $[80] = valueRef;
+    $[81] = t43;
   } else {
-    t41 = $[78];
+    t43 = $[81];
   }
-  var t42;
-  if ($[79] !== updateValue || $[80] !== valueRef) {
-    t42 = function t42(month) {
+  var t44;
+  if ($[82] !== updateValue || $[83] !== valueRef) {
+    t44 = function t44(month) {
       updateValue(month === null ? null : valueRef.current ? {
         year: valueRef.current.year,
         month: month
@@ -25102,202 +25668,204 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
         month: month
       });
     };
-    $[79] = updateValue;
-    $[80] = valueRef;
-    $[81] = t42;
+    $[82] = updateValue;
+    $[83] = valueRef;
+    $[84] = t44;
   } else {
-    t42 = $[81];
-  }
-  var t43;
-  if ($[82] !== exceptValue) {
-    t43 = function t43() {
-      return !!exceptValue;
-    };
-    $[82] = exceptValue;
-    $[83] = t43;
-  } else {
-    t43 = $[83];
-  }
-  var t44;
-  if ($[84] !== disabled) {
-    t44 = function t44() {
-      return !!disabled;
-    };
-    $[84] = disabled;
-    $[85] = t44;
-  } else {
-    t44 = $[85];
+    t44 = $[84];
   }
   var t45;
-  if ($[86] !== hidden) {
+  if ($[85] !== exceptValue) {
     t45 = function t45() {
-      return !!hidden;
+      return !!exceptValue;
     };
-    $[86] = hidden;
-    $[87] = t45;
+    $[85] = exceptValue;
+    $[86] = t45;
   } else {
-    t45 = $[87];
+    t45 = $[86];
   }
   var t46;
-  if ($[88] !== validate || $[89] !== valueRef) {
+  if ($[87] !== disabled) {
     t46 = function t46() {
-      return validate(valueRef.current);
+      return !!disabled;
     };
-    $[88] = validate;
-    $[89] = valueRef;
-    $[90] = t46;
+    $[87] = disabled;
+    $[88] = t46;
   } else {
-    t46 = $[90];
+    t46 = $[88];
   }
   var t47;
-  if ($[91] !== formValueYearNameSuffix) {
+  if ($[89] !== hidden) {
     t47 = function t47() {
-      return formValueYearNameSuffix;
+      return !!hidden;
     };
-    $[91] = formValueYearNameSuffix;
-    $[92] = t47;
+    $[89] = hidden;
+    $[90] = t47;
   } else {
-    t47 = $[92];
+    t47 = $[90];
   }
   var t48;
-  if ($[93] !== formValueMonthNameSuffix) {
+  if ($[91] !== validate || $[92] !== valueRef) {
     t48 = function t48() {
-      return formValueMonthNameSuffix;
+      return validate(valueRef.current);
     };
-    $[93] = formValueMonthNameSuffix;
-    $[94] = t48;
+    $[91] = validate;
+    $[92] = valueRef;
+    $[93] = t48;
   } else {
-    t48 = $[94];
+    t48 = $[93];
   }
   var t49;
-  if ($[95] !== formValueYearNameSuffix || $[96] !== name) {
+  if ($[94] !== formValueYearNameSuffix) {
     t49 = function t49() {
-      return "".concat(name).concat(formValueYearNameSuffix);
+      return formValueYearNameSuffix;
     };
-    $[95] = formValueYearNameSuffix;
-    $[96] = name;
-    $[97] = t49;
+    $[94] = formValueYearNameSuffix;
+    $[95] = t49;
   } else {
-    t49 = $[97];
+    t49 = $[95];
   }
   var t50;
-  if ($[98] !== formValueMonthNameSuffix || $[99] !== name) {
+  if ($[96] !== formValueMonthNameSuffix) {
     t50 = function t50() {
-      return "".concat(name).concat(formValueMonthNameSuffix);
+      return formValueMonthNameSuffix;
     };
-    $[98] = formValueMonthNameSuffix;
-    $[99] = name;
-    $[100] = t50;
+    $[96] = formValueMonthNameSuffix;
+    $[97] = t50;
   } else {
-    t50 = $[100];
+    t50 = $[97];
   }
   var t51;
-  if ($[101] !== setData || $[102] !== setErrorErrorHelperText || $[103] !== t34 || $[104] !== t35 || $[105] !== t36 || $[106] !== t37 || $[107] !== t38 || $[108] !== t39 || $[109] !== t40 || $[110] !== t41 || $[111] !== t42 || $[112] !== t43 || $[113] !== t44 || $[114] !== t45 || $[115] !== t46 || $[116] !== t47 || $[117] !== t48 || $[118] !== t49 || $[119] !== t50 || $[120] !== updateValue) {
-    t51 = {
-      getType: _temp$7,
-      getName: t34,
-      getReset: t35,
-      reset: t36,
-      getValue: t37,
+  if ($[98] !== formValueYearNameSuffix || $[99] !== name) {
+    t51 = function t51() {
+      return "".concat(name).concat(formValueYearNameSuffix);
+    };
+    $[98] = formValueYearNameSuffix;
+    $[99] = name;
+    $[100] = t51;
+  } else {
+    t51 = $[100];
+  }
+  var t52;
+  if ($[101] !== formValueMonthNameSuffix || $[102] !== name) {
+    t52 = function t52() {
+      return "".concat(name).concat(formValueMonthNameSuffix);
+    };
+    $[101] = formValueMonthNameSuffix;
+    $[102] = name;
+    $[103] = t52;
+  } else {
+    t52 = $[103];
+  }
+  var t53;
+  if ($[104] !== focus || $[105] !== setData || $[106] !== setErrorErrorHelperText || $[107] !== t35 || $[108] !== t36 || $[109] !== t37 || $[110] !== t38 || $[111] !== t39 || $[112] !== t40 || $[113] !== t41 || $[114] !== t42 || $[115] !== t43 || $[116] !== t44 || $[117] !== t45 || $[118] !== t46 || $[119] !== t47 || $[120] !== t48 || $[121] !== t49 || $[122] !== t50 || $[123] !== t51 || $[124] !== t52 || $[125] !== updateValue) {
+    t53 = {
+      getType: t35,
+      getName: t36,
+      getReset: t37,
+      reset: t38,
+      getValue: t39,
       setValue: updateValue,
-      getData: t38,
+      getData: t40,
       setData: setData,
-      getYear: t39,
-      setYear: t40,
-      getMonth: t41,
-      setMonth: t42,
-      isExceptValue: t43,
-      isDisabled: t44,
+      getYear: t41,
+      setYear: t42,
+      getMonth: t43,
+      setMonth: t44,
+      isExceptValue: t45,
+      isDisabled: t46,
       setDisabled: setDisabled,
-      isHidden: t45,
+      isHidden: t47,
       setHidden: setHidden,
       focus: focus,
       focusValidate: focus,
-      validate: t46,
+      validate: t48,
       setError: setErrorErrorHelperText,
-      getFormValueYearNameSuffix: t47,
-      getFormValueMonthNameSuffix: t48,
-      getFormValueYearName: t49,
-      getFormValueMonthName: t50
+      getFormValueYearNameSuffix: t49,
+      getFormValueMonthNameSuffix: t50,
+      getFormValueYearName: t51,
+      getFormValueMonthName: t52
     };
-    $[101] = setData;
-    $[102] = setErrorErrorHelperText;
-    $[103] = t34;
-    $[104] = t35;
-    $[105] = t36;
-    $[106] = t37;
-    $[107] = t38;
-    $[108] = t39;
-    $[109] = t40;
-    $[110] = t41;
-    $[111] = t42;
-    $[112] = t43;
-    $[113] = t44;
-    $[114] = t45;
-    $[115] = t46;
-    $[116] = t47;
-    $[117] = t48;
-    $[118] = t49;
-    $[119] = t50;
-    $[120] = updateValue;
-    $[121] = t51;
+    $[104] = focus;
+    $[105] = setData;
+    $[106] = setErrorErrorHelperText;
+    $[107] = t35;
+    $[108] = t36;
+    $[109] = t37;
+    $[110] = t38;
+    $[111] = t39;
+    $[112] = t40;
+    $[113] = t41;
+    $[114] = t42;
+    $[115] = t43;
+    $[116] = t44;
+    $[117] = t45;
+    $[118] = t46;
+    $[119] = t47;
+    $[120] = t48;
+    $[121] = t49;
+    $[122] = t50;
+    $[123] = t51;
+    $[124] = t52;
+    $[125] = updateValue;
+    $[126] = t53;
   } else {
-    t51 = $[121];
+    t53 = $[126];
   }
-  var commands = t51;
-  var t52;
-  if ($[122] !== id || $[123] !== onAddValueItem) {
-    t52 = function t52(commands_0) {
+  var commands = t53;
+  var t54;
+  if ($[127] !== id || $[128] !== onAddValueItem) {
+    t54 = function t54(commands_0) {
       return onAddValueItem(id, commands_0);
     };
-    $[122] = id;
-    $[123] = onAddValueItem;
-    $[124] = t52;
+    $[127] = id;
+    $[128] = onAddValueItem;
+    $[129] = t54;
   } else {
-    t52 = $[124];
+    t54 = $[129];
   }
-  var t53;
-  if ($[125] !== id || $[126] !== onRemoveValueItem) {
-    t53 = function t53() {
+  var t55;
+  if ($[130] !== id || $[131] !== onRemoveValueItem) {
+    t55 = function t55() {
       return onRemoveValueItem(id);
     };
-    $[125] = id;
-    $[126] = onRemoveValueItem;
-    $[127] = t53;
+    $[130] = id;
+    $[131] = onRemoveValueItem;
+    $[132] = t55;
   } else {
-    t53 = $[127];
+    t55 = $[132];
   }
-  reactHook.useForwardRef(ref, commands, t52, t53);
-  var t54;
-  if ($[128] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t54 = function t54() {
+  reactHook.useForwardRef(ref, commands, t54, t55);
+  var t56;
+  if ($[133] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t56 = function t56() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
       }
       mouseDownTimeRef.current = new Date().getTime();
     };
-    $[128] = t54;
+    $[133] = t56;
   } else {
-    t54 = $[128];
+    t56 = $[133];
   }
-  var handleContainerMouseDown = t54;
-  var t55;
-  if ($[129] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t55 = function t55() {
+  var handleContainerMouseDown = t56;
+  var t57;
+  if ($[134] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t57 = function t57() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
       }
     };
-    $[129] = t55;
+    $[134] = t57;
   } else {
-    t55 = $[129];
+    t57 = $[134];
   }
-  var handleContainerFocus = t55;
-  var t56;
-  if ($[130] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t56 = function t56() {
+  var handleContainerFocus = t57;
+  var t58;
+  if ($[135] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t58 = function t58() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
@@ -25309,70 +25877,75 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
         }, 10);
       }
     };
-    $[130] = t56;
+    $[135] = t58;
   } else {
-    t56 = $[130];
+    t58 = $[135];
   }
-  var handleContainerBlur = t56;
-  var t57;
-  if ($[131] !== name || $[132] !== onValueChangeByUser || $[133] !== updateValue) {
-    t57 = function t57(newValue_3, isMonthSelect) {
+  var handleContainerBlur = t58;
+  var t59;
+  if ($[136] !== embedded || $[137] !== name || $[138] !== onRequestSearchSubmit || $[139] !== onValueChangeByUser || $[140] !== updateValue) {
+    t59 = function t59(newValue_3, isMonthSelect) {
       updateValue(newValue_3);
       if (isMonthSelect) {
         setOpen(false);
       }
       setTimeout(function () {
         onValueChangeByUser(name, newValue_3);
+        if (embedded && isMonthSelect) {
+          onRequestSearchSubmit(name, newValue_3);
+        }
       });
     };
-    $[131] = name;
-    $[132] = onValueChangeByUser;
-    $[133] = updateValue;
-    $[134] = t57;
+    $[136] = embedded;
+    $[137] = name;
+    $[138] = onRequestSearchSubmit;
+    $[139] = onValueChangeByUser;
+    $[140] = updateValue;
+    $[141] = t59;
   } else {
-    t57 = $[134];
+    t59 = $[141];
   }
-  var handleContainerChange = t57;
-  var t58;
-  if ($[135] !== disabled || $[136] !== readOnly) {
-    t58 = function t58() {
+  var handleContainerChange = t59;
+  var t60;
+  if ($[142] !== disabled || $[143] !== readOnly) {
+    t60 = function t60() {
       if (readOnly || disabled) {
         return;
       }
       setOpen(true);
     };
-    $[135] = disabled;
-    $[136] = readOnly;
-    $[137] = t58;
+    $[142] = disabled;
+    $[143] = readOnly;
+    $[144] = t60;
   } else {
-    t58 = $[137];
+    t60 = $[144];
   }
-  var handleInputDatePickerFocus = t58;
-  var t59;
-  if ($[138] !== dateInfo.maxAvailableYm || $[139] !== dateInfo.minAvailableYm) {
-    t59 = function t59(date) {
+  var handleInputDatePickerFocus = t60;
+  var t61;
+  if ($[145] !== dateInfo.maxAvailableYm || $[146] !== dateInfo.minAvailableYm) {
+    t61 = function t61(date) {
       var dateYm = Number(date.format("YYYYMM"));
       return dateYm < dateInfo.minAvailableYm || dateYm > dateInfo.maxAvailableYm;
     };
-    $[138] = dateInfo.maxAvailableYm;
-    $[139] = dateInfo.minAvailableYm;
-    $[140] = t59;
+    $[145] = dateInfo.maxAvailableYm;
+    $[146] = dateInfo.minAvailableYm;
+    $[147] = t61;
   } else {
-    t59 = $[140];
+    t61 = $[147];
   }
-  var handleInputDatePickerShouldDisableYear = t59;
-  var t60;
-  if ($[141] !== value_0) {
-    t60 = value_0 ? valueToDate$3(value_0) : null;
-    $[141] = value_0;
-    $[142] = t60;
+  var handleInputDatePickerShouldDisableYear = t61;
+  var t62;
+  if ($[148] !== value_0) {
+    t62 = value_0 ? valueToDate$3(value_0) : null;
+    $[148] = value_0;
+    $[149] = t62;
   } else {
-    t60 = $[142];
+    t62 = $[149];
   }
-  var valueDate = t60;
-  var t61;
-  if ($[143] !== color || $[144] !== dateInfo.maxDate || $[145] !== dateInfo.minDate || $[146] !== disabled || $[147] !== format || $[148] !== fullWidth || $[149] !== labelShrink || $[150] !== size || $[151] !== variant) {
-    t61 = {
+  var valueDate = t62;
+  var t63;
+  if ($[150] !== color || $[151] !== dateInfo.maxDate || $[152] !== dateInfo.minDate || $[153] !== disabled || $[154] !== format || $[155] !== fullWidth || $[156] !== labelShrink || $[157] !== size || $[158] !== variant) {
+    t63 = {
       variant: variant,
       size: size,
       color: color,
@@ -25383,82 +25956,198 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
       minDate: dateInfo.minDate,
       maxDate: dateInfo.maxDate
     };
-    $[143] = color;
-    $[144] = dateInfo.maxDate;
-    $[145] = dateInfo.minDate;
-    $[146] = disabled;
-    $[147] = format;
-    $[148] = fullWidth;
-    $[149] = labelShrink;
-    $[150] = size;
-    $[151] = variant;
-    $[152] = t61;
+    $[150] = color;
+    $[151] = dateInfo.maxDate;
+    $[152] = dateInfo.minDate;
+    $[153] = disabled;
+    $[154] = format;
+    $[155] = fullWidth;
+    $[156] = labelShrink;
+    $[157] = size;
+    $[158] = variant;
+    $[159] = t63;
   } else {
-    t61 = $[152];
+    t63 = $[159];
   }
-  var inputDatePickerProps = t61;
-  var t62;
-  if ($[153] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t62 = function t62() {
+  var inputDatePickerProps = t63;
+  if (embedded) {
+    var _initStyle$display;
+    var _t;
+    if ($[160] !== className) {
+      _t = classNames(className, "PFormEmbedMonthPicker");
+      $[160] = className;
+      $[161] = _t;
+    } else {
+      _t = $[161];
+    }
+    var _t2 = hidden ? "none" : (_initStyle$display = initStyle === null || initStyle === void 0 ? void 0 : initStyle.display) !== null && _initStyle$display !== void 0 ? _initStyle$display : fullWidth ? "block" : "inline-block";
+    var _t3;
+    if ($[162] !== initStyle || $[163] !== _t2) {
+      _t3 = _objectSpread2(_objectSpread2({}, initStyle), {}, {
+        display: _t2
+      });
+      $[162] = initStyle;
+      $[163] = _t2;
+      $[164] = _t3;
+    } else {
+      _t3 = $[164];
+    }
+    var _t4 = disabled || readOnly;
+    var _t5 = typeof label === "string" ? label : name;
+    var _t6 = !!error;
+    var _t7;
+    if ($[165] === Symbol["for"]("react.memo_cache_sentinel")) {
+      _t7 = {
+        border: 0,
+        margin: 0,
+        padding: 0,
+        minWidth: 0
+      };
+      $[165] = _t7;
+    } else {
+      _t7 = $[165];
+    }
+    var _t8;
+    if ($[166] !== label || $[167] !== required) {
+      _t8 = label && /*#__PURE__*/React.createElement("legend", null, label, required && " *");
+      $[166] = label;
+      $[167] = required;
+      $[168] = _t8;
+    } else {
+      _t8 = $[168];
+    }
+    var _t9;
+    if ($[169] !== disableFuture || $[170] !== disablePast || $[171] !== handleContainerChange || $[172] !== maxValue || $[173] !== minValue || $[174] !== value_0) {
+      _t9 = /*#__PURE__*/React.createElement(PrivateMonthPicker, {
+        minValue: minValue,
+        maxValue: maxValue,
+        disablePast: disablePast,
+        disableFuture: disableFuture,
+        value: value_0,
+        onChange: handleContainerChange
+      });
+      $[169] = disableFuture;
+      $[170] = disablePast;
+      $[171] = handleContainerChange;
+      $[172] = maxValue;
+      $[173] = minValue;
+      $[174] = value_0;
+      $[175] = _t9;
+    } else {
+      _t9 = $[175];
+    }
+    var _t0;
+    if ($[176] !== _t4 || $[177] !== _t5 || $[178] !== _t6 || $[179] !== _t8 || $[180] !== _t9) {
+      _t0 = /*#__PURE__*/React.createElement("fieldset", {
+        ref: embeddedRef,
+        tabIndex: -1,
+        disabled: _t4,
+        "aria-label": _t5,
+        "aria-invalid": _t6,
+        style: _t7
+      }, _t8, _t9);
+      $[176] = _t4;
+      $[177] = _t5;
+      $[178] = _t6;
+      $[179] = _t8;
+      $[180] = _t9;
+      $[181] = _t0;
+    } else {
+      _t0 = $[181];
+    }
+    var _t1;
+    if ($[182] !== error || $[183] !== errorHelperText || $[184] !== formColWithHelperText || $[185] !== helperText) {
+      _t1 = !formColWithHelperText && (!!helperText || error && !!errorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
+        error: error
+      }, error ? errorHelperText : helperText);
+      $[182] = error;
+      $[183] = errorHelperText;
+      $[184] = formColWithHelperText;
+      $[185] = helperText;
+      $[186] = _t1;
+    } else {
+      _t1 = $[186];
+    }
+    var _t10;
+    if ($[187] !== sx || $[188] !== _t || $[189] !== _t3 || $[190] !== _t0 || $[191] !== _t1) {
+      _t10 = /*#__PURE__*/React.createElement(material.Box, {
+        className: _t,
+        style: _t3,
+        sx: sx
+      }, _t0, _t1);
+      $[187] = sx;
+      $[188] = _t;
+      $[189] = _t3;
+      $[190] = _t0;
+      $[191] = _t1;
+      $[192] = _t10;
+    } else {
+      _t10 = $[192];
+    }
+    return _t10;
+  }
+  var t64;
+  if ($[193] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t64 = function t64() {
       return setOpen(false);
     };
-    $[153] = t62;
+    $[193] = t64;
   } else {
-    t62 = $[153];
+    t64 = $[193];
   }
-  var t63;
-  if ($[154] !== className) {
-    t63 = classNames(className, "PFormMonthPicker");
-    $[154] = className;
-    $[155] = t63;
+  var t65;
+  if ($[194] !== className) {
+    t65 = classNames(className, "PFormMonthPicker");
+    $[194] = className;
+    $[195] = t65;
   } else {
-    t63 = $[155];
+    t65 = $[195];
   }
-  var t64 = hidden ? "none" : fullWidth ? "block" : "inline-block";
-  var t65 = fullWidth ? 1 : undefined;
-  var t66;
-  if ($[156] !== t64 || $[157] !== t65) {
-    t66 = {
-      display: t64,
-      flex: t65
-    };
-    $[156] = t64;
-    $[157] = t65;
-    $[158] = t66;
-  } else {
-    t66 = $[158];
-  }
-  var t67 = error && errorHelperText ? 8 : -14;
+  var t66 = hidden ? "none" : fullWidth ? "block" : "inline-block";
+  var t67 = fullWidth ? 1 : undefined;
   var t68;
-  if ($[159] !== t67) {
+  if ($[196] !== t66 || $[197] !== t67) {
     t68 = {
+      display: t66,
+      flex: t67
+    };
+    $[196] = t66;
+    $[197] = t67;
+    $[198] = t68;
+  } else {
+    t68 = $[198];
+  }
+  var t69 = error && errorHelperText ? 8 : -14;
+  var t70;
+  if ($[199] !== t69) {
+    t70 = {
       popper: {
         modifiers: [{
           name: "offset",
           options: {
-            offset: [0, t67]
+            offset: [0, t69]
           }
         }]
       }
     };
-    $[159] = t67;
-    $[160] = t68;
+    $[199] = t69;
+    $[200] = t70;
   } else {
-    t68 = $[160];
+    t70 = $[200];
   }
-  var t69;
-  if ($[161] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t69 = {
+  var t71;
+  if ($[201] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t71 = {
       display: "flex"
     };
-    $[161] = t69;
+    $[201] = t71;
   } else {
-    t69 = $[161];
+    t71 = $[201];
   }
-  var t70;
-  if ($[162] !== disableFuture || $[163] !== disablePast || $[164] !== handleContainerChange || $[165] !== maxValue || $[166] !== minValue || $[167] !== value_0) {
-    t70 = /*#__PURE__*/React.createElement("div", {
-      style: t69
+  var t72;
+  if ($[202] !== disableFuture || $[203] !== disablePast || $[204] !== handleContainerChange || $[205] !== maxValue || $[206] !== minValue || $[207] !== value_0) {
+    t72 = /*#__PURE__*/React.createElement("div", {
+      style: t71
     }, /*#__PURE__*/React.createElement(PrivateMonthPicker, {
       minValue: minValue,
       maxValue: maxValue,
@@ -25467,53 +26156,53 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
       value: value_0,
       onChange: handleContainerChange
     }));
-    $[162] = disableFuture;
-    $[163] = disablePast;
-    $[164] = handleContainerChange;
-    $[165] = maxValue;
-    $[166] = minValue;
-    $[167] = value_0;
-    $[168] = t70;
+    $[202] = disableFuture;
+    $[203] = disablePast;
+    $[204] = handleContainerChange;
+    $[205] = maxValue;
+    $[206] = minValue;
+    $[207] = value_0;
+    $[208] = t72;
   } else {
-    t70 = $[168];
+    t72 = $[208];
   }
-  var t71;
-  if ($[169] !== fullWidth || $[170] !== initStyle || $[171] !== inputWidth) {
-    t71 = inputWidth != null ? _objectSpread2({
+  var t73;
+  if ($[209] !== fullWidth || $[210] !== initStyle || $[211] !== inputWidth) {
+    t73 = inputWidth != null ? _objectSpread2({
       width: inputWidth
     }, initStyle) : _objectSpread2({
       width: fullWidth ? undefined : 150
     }, initStyle);
-    $[169] = fullWidth;
-    $[170] = initStyle;
-    $[171] = inputWidth;
-    $[172] = t71;
+    $[209] = fullWidth;
+    $[210] = initStyle;
+    $[211] = inputWidth;
+    $[212] = t73;
   } else {
-    t71 = $[172];
-  }
-  var t72;
-  if ($[173] !== updateValue) {
-    t72 = function t72(v) {
-      return updateValue(v ? dateToValue$3(v) : v);
-    };
-    $[173] = updateValue;
-    $[174] = t72;
-  } else {
-    t72 = $[174];
-  }
-  var t73;
-  if ($[175] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t73 = function t73(reason) {
-      return inputDatePickerErrorRef.current = reason;
-    };
-    $[175] = t73;
-  } else {
-    t73 = $[175];
+    t73 = $[212];
   }
   var t74;
-  if ($[176] !== enableKeyboardInput || $[177] !== endAdornment || $[178] !== error || $[179] !== focused || $[180] !== handleInputDatePickerFocus || $[181] !== handleInputDatePickerShouldDisableYear || $[182] !== icon || $[183] !== inputDatePickerProps || $[184] !== label || $[185] !== labelIcon || $[186] !== readOnly || $[187] !== required || $[188] !== startAdornment || $[189] !== sx || $[190] !== t71 || $[191] !== t72 || $[192] !== valueDate) {
-    t74 = /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(PrivateInputDatePicker, _extends({}, inputDatePickerProps, {
-      style: t71,
+  if ($[213] !== updateValue) {
+    t74 = function t74(v) {
+      return updateValue(v ? dateToValue$3(v) : v);
+    };
+    $[213] = updateValue;
+    $[214] = t74;
+  } else {
+    t74 = $[214];
+  }
+  var t75;
+  if ($[215] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t75 = function t75(reason) {
+      return inputDatePickerErrorRef.current = reason;
+    };
+    $[215] = t75;
+  } else {
+    t75 = $[215];
+  }
+  var t76;
+  if ($[216] !== enableKeyboardInput || $[217] !== endAdornment || $[218] !== error || $[219] !== focused || $[220] !== handleInputDatePickerFocus || $[221] !== handleInputDatePickerShouldDisableYear || $[222] !== icon || $[223] !== inputDatePickerProps || $[224] !== label || $[225] !== labelIcon || $[226] !== readOnly || $[227] !== required || $[228] !== startAdornment || $[229] !== sx || $[230] !== t73 || $[231] !== t74 || $[232] !== valueDate) {
+    t76 = /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(PrivateInputDatePicker, _extends({}, inputDatePickerProps, {
+      style: t73,
       sx: sx,
       value: valueDate,
       label: label,
@@ -25527,93 +26216,102 @@ var PFormMonthPicker = function PFormMonthPicker(t0) {
       startAdornment: startAdornment,
       endAdornment: endAdornment,
       inputRef: inputRef,
-      onChange: t72,
+      onChange: t74,
       onFocus: handleInputDatePickerFocus,
-      onError: t73,
+      onError: t75,
       shouldDisableYear: handleInputDatePickerShouldDisableYear
     })));
-    $[176] = enableKeyboardInput;
-    $[177] = endAdornment;
-    $[178] = error;
-    $[179] = focused;
-    $[180] = handleInputDatePickerFocus;
-    $[181] = handleInputDatePickerShouldDisableYear;
-    $[182] = icon;
-    $[183] = inputDatePickerProps;
-    $[184] = label;
-    $[185] = labelIcon;
-    $[186] = readOnly;
-    $[187] = required;
-    $[188] = startAdornment;
-    $[189] = sx;
-    $[190] = t71;
-    $[191] = t72;
-    $[192] = valueDate;
-    $[193] = t74;
+    $[216] = enableKeyboardInput;
+    $[217] = endAdornment;
+    $[218] = error;
+    $[219] = focused;
+    $[220] = handleInputDatePickerFocus;
+    $[221] = handleInputDatePickerShouldDisableYear;
+    $[222] = icon;
+    $[223] = inputDatePickerProps;
+    $[224] = label;
+    $[225] = labelIcon;
+    $[226] = readOnly;
+    $[227] = required;
+    $[228] = startAdornment;
+    $[229] = sx;
+    $[230] = t73;
+    $[231] = t74;
+    $[232] = valueDate;
+    $[233] = t76;
   } else {
-    t74 = $[193];
+    t76 = $[233];
   }
-  var t75;
-  if ($[194] !== open || $[195] !== t68 || $[196] !== t70 || $[197] !== t74) {
-    t75 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
+  var t77;
+  if ($[234] !== open || $[235] !== t70 || $[236] !== t72 || $[237] !== t76) {
+    t77 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
       open: open,
-      slotProps: t68,
-      title: t70
-    }, t74);
-    $[194] = open;
-    $[195] = t68;
-    $[196] = t70;
-    $[197] = t74;
-    $[198] = t75;
+      slotProps: t70,
+      title: t72
+    }, t76);
+    $[234] = open;
+    $[235] = t70;
+    $[236] = t72;
+    $[237] = t76;
+    $[238] = t77;
   } else {
-    t75 = $[198];
+    t77 = $[238];
   }
-  var t76;
-  if ($[199] !== error || $[200] !== errorHelperText || $[201] !== formColWithHelperText || $[202] !== helperText || $[203] !== variant) {
-    t76 = !formColWithHelperText && (!!helperText || error && !!errorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
+  var t78;
+  if ($[239] !== error || $[240] !== errorHelperText || $[241] !== formColWithHelperText || $[242] !== helperText || $[243] !== variant) {
+    t78 = !formColWithHelperText && (!!helperText || error && !!errorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
       error: error,
       style: {
         marginLeft: variant === "standard" ? 0 : 14
       }
     }, error ? errorHelperText : helperText);
-    $[199] = error;
-    $[200] = errorHelperText;
-    $[201] = formColWithHelperText;
-    $[202] = helperText;
-    $[203] = variant;
-    $[204] = t76;
+    $[239] = error;
+    $[240] = errorHelperText;
+    $[241] = formColWithHelperText;
+    $[242] = helperText;
+    $[243] = variant;
+    $[244] = t78;
   } else {
-    t76 = $[204];
+    t78 = $[244];
   }
-  var t77;
-  if ($[205] !== t63 || $[206] !== t66 || $[207] !== t75 || $[208] !== t76) {
-    t77 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
+  var t79;
+  if ($[245] !== t65 || $[246] !== t68 || $[247] !== t77 || $[248] !== t78) {
+    t79 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
       dateAdapter: AdapterDayjs.AdapterDayjs,
       adapterLocale: "ko"
     }, /*#__PURE__*/React.createElement(material.ClickAwayListener, {
       mouseEvent: "onMouseDown",
       touchEvent: "onTouchStart",
-      onClickAway: t62
+      onClickAway: t64
     }, /*#__PURE__*/React.createElement("div", {
-      className: t63,
-      style: t66,
+      className: t65,
+      style: t68,
       onMouseDown: handleContainerMouseDown,
       onFocus: handleContainerFocus,
       onBlur: handleContainerBlur
-    }, t75, t76)));
-    $[205] = t63;
-    $[206] = t66;
-    $[207] = t75;
-    $[208] = t76;
-    $[209] = t77;
+    }, t77, t78)));
+    $[245] = t65;
+    $[246] = t68;
+    $[247] = t77;
+    $[248] = t78;
+    $[249] = t79;
   } else {
-    t77 = $[209];
+    t79 = $[249];
   }
-  return t77;
+  return t79;
 };
-function _temp$7() {
-  return "PFormMonthPicker";
-}var DEFAULT_VALUE$1 = [null, null];
+var PFormMonthPicker = function PFormMonthPicker(props) {
+  var $ = compilerRuntime.c(2);
+  var t0;
+  if ($[0] !== props) {
+    t0 = /*#__PURE__*/React.createElement(PFormMonthPickerInternal, props);
+    $[0] = props;
+    $[1] = t0;
+  } else {
+    t0 = $[1];
+  }
+  return t0;
+};var DEFAULT_VALUE$1 = [null, null];
 var getFinalValue$2 = function getFinalValue(value) {
   return value || DEFAULT_VALUE$1;
 };
@@ -25637,9 +26335,10 @@ var DEFAULT_MAX_VALUE = {
   year: 2050,
   month: 12
 };
-var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
-  var $ = compilerRuntime.c(301);
-  var ref = t0.ref,
+var PFormMonthRangePickerInternal = function PFormMonthRangePickerInternal(t0) {
+  var $ = compilerRuntime.c(330);
+  var t1 = t0.embedded,
+    ref = t0.ref,
     initVariant = t0.variant,
     initSize = t0.size,
     initColor = t0.color,
@@ -25662,32 +26361,34 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
     onChange = t0.onChange,
     onValidate = t0.onValidate,
     icon = t0.icon,
-    t1 = t0.format,
+    t2 = t0.format,
     initLabelShrink = t0.labelShrink,
     disablePast = t0.disablePast,
     disableFuture = t0.disableFuture,
-    t2 = t0.minValue,
-    t3 = t0.maxValue,
+    t3 = t0.minValue,
+    t4 = t0.maxValue,
     inputWidth = t0.inputWidth,
     enableKeyboardInput = t0.enableKeyboardInput,
     startAdornment = t0.startAdornment,
     endAdornment = t0.endAdornment,
-    t4 = t0.formValueFromYearNameSuffix,
-    t5 = t0.formValueFromMonthNameSuffix,
-    t6 = t0.formValueToYearNameSuffix,
-    t7 = t0.formValueToMonthNameSuffix,
+    t5 = t0.formValueFromYearNameSuffix,
+    t6 = t0.formValueFromMonthNameSuffix,
+    t7 = t0.formValueToYearNameSuffix,
+    t8 = t0.formValueToMonthNameSuffix,
     align = t0.align,
     className = t0.className,
     initStyle = t0.style,
     sx = t0.sx;
-  var format = t1 === undefined ? DEFAULT_FORMAT$1 : t1;
-  var minValue = t2 === undefined ? DEFAULT_MIN_VALUE : t2;
-  var maxValue = t3 === undefined ? DEFAULT_MAX_VALUE : t3;
-  var formValueFromYearNameSuffix = t4 === undefined ? "_from_year" : t4;
-  var formValueFromMonthNameSuffix = t5 === undefined ? "_from_month" : t5;
-  var formValueToYearNameSuffix = t6 === undefined ? "_to_year" : t6;
-  var formValueToMonthNameSuffix = t7 === undefined ? "_to_month" : t7;
+  var embedded = t1 === undefined ? false : t1;
+  var format = t2 === undefined ? DEFAULT_FORMAT$1 : t2;
+  var minValue = t3 === undefined ? DEFAULT_MIN_VALUE : t3;
+  var maxValue = t4 === undefined ? DEFAULT_MAX_VALUE : t4;
+  var formValueFromYearNameSuffix = t5 === undefined ? "_from_year" : t5;
+  var formValueFromMonthNameSuffix = t6 === undefined ? "_from_month" : t6;
+  var formValueToYearNameSuffix = t7 === undefined ? "_to_year" : t7;
+  var formValueToMonthNameSuffix = t8 === undefined ? "_to_month" : t8;
   var id = React.useId();
+  var embeddedRef = React.useRef(null);
   var _useFormState = useFormState(),
     formVariant = _useFormState.variant,
     formSize = _useFormState.size,
@@ -25744,142 +26445,142 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
     _useState12 = _slicedToArray(_useState11, 2),
     error = _useState12[0],
     _setError = _useState12[1];
-  var t8;
+  var t10;
   var t9;
   if ($[0] !== initError) {
-    t8 = function t8() {
+    t9 = function t9() {
       return _setError(initError);
     };
-    t9 = [initError];
+    t10 = [initError];
     $[0] = initError;
-    $[1] = t8;
+    $[1] = t10;
     $[2] = t9;
   } else {
-    t8 = $[1];
+    t10 = $[1];
     t9 = $[2];
   }
-  reactHook.useFirstSkipChanged(t8, t9);
+  reactHook.useFirstSkipChanged(t9, t10);
   var errorRef = reactHook.useAutoUpdateRef(error);
-  var t10;
+  var t11;
   if ($[3] !== errorRef) {
-    t10 = function t10(newValue) {
+    t11 = function t11(newValue) {
       _setError(newValue);
       errorRef.current = newValue;
     };
     $[3] = errorRef;
-    $[4] = t10;
+    $[4] = t11;
   } else {
-    t10 = $[4];
+    t11 = $[4];
   }
-  var setError = t10;
+  var setError = t11;
   var _useState13 = React.useState(initData),
     _useState14 = _slicedToArray(_useState13, 2),
     data = _useState14[0],
     _setData = _useState14[1];
-  var t11;
   var t12;
+  var t13;
   if ($[5] !== initData) {
-    t11 = function t11() {
+    t12 = function t12() {
       return _setData(initData);
     };
-    t12 = [initData];
+    t13 = [initData];
     $[5] = initData;
-    $[6] = t11;
-    $[7] = t12;
+    $[6] = t12;
+    $[7] = t13;
   } else {
-    t11 = $[6];
-    t12 = $[7];
+    t12 = $[6];
+    t13 = $[7];
   }
-  reactHook.useFirstSkipChanged(t11, t12);
+  reactHook.useFirstSkipChanged(t12, t13);
   var dataRef = reactHook.useAutoUpdateRef(data);
-  var t13;
+  var t14;
   if ($[8] !== dataRef) {
-    t13 = function t13(newValue_0) {
+    t14 = function t14(newValue_0) {
       _setData(newValue_0);
       dataRef.current = newValue_0;
     };
     $[8] = dataRef;
-    $[9] = t13;
+    $[9] = t14;
   } else {
-    t13 = $[9];
+    t14 = $[9];
   }
-  var setData = t13;
+  var setData = t14;
   var finalInitDisabled = initDisabled !== null && initDisabled !== void 0 ? initDisabled : formDisabled;
   var _useState15 = React.useState(finalInitDisabled),
     _useState16 = _slicedToArray(_useState15, 2),
     disabled = _useState16[0],
     setDisabled = _useState16[1];
-  var t14;
   var t15;
+  var t16;
   if ($[10] !== finalInitDisabled) {
-    t14 = function t14() {
+    t15 = function t15() {
       return setDisabled(finalInitDisabled);
     };
-    t15 = [finalInitDisabled];
+    t16 = [finalInitDisabled];
     $[10] = finalInitDisabled;
-    $[11] = t14;
-    $[12] = t15;
+    $[11] = t15;
+    $[12] = t16;
   } else {
-    t14 = $[11];
-    t15 = $[12];
+    t15 = $[11];
+    t16 = $[12];
   }
-  reactHook.useFirstSkipChanged(t14, t15);
+  reactHook.useFirstSkipChanged(t15, t16);
   var _useState17 = React.useState(initHidden),
     _useState18 = _slicedToArray(_useState17, 2),
     hidden = _useState18[0],
     setHidden = _useState18[1];
-  var t16;
   var t17;
+  var t18;
   if ($[13] !== initHidden) {
-    t16 = function t16() {
+    t17 = function t17() {
       return setHidden(initHidden);
     };
-    t17 = [initHidden];
+    t18 = [initHidden];
     $[13] = initHidden;
-    $[14] = t16;
-    $[15] = t17;
+    $[14] = t17;
+    $[15] = t18;
   } else {
-    t16 = $[14];
-    t17 = $[15];
+    t17 = $[14];
+    t18 = $[15];
   }
-  reactHook.useFirstSkipChanged(t16, t17);
-  var t18;
+  reactHook.useFirstSkipChanged(t17, t18);
+  var t19;
   if ($[16] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t18 = function t18(error_0, fromErrorHelperText_0) {
+    t19 = function t19(error_0, fromErrorHelperText_0) {
       setFromError(error_0);
       setFromErrorHelperText(fromErrorHelperText_0);
     };
-    $[16] = t18;
+    $[16] = t19;
   } else {
-    t18 = $[16];
+    t19 = $[16];
   }
-  var setFromErrorErrorHelperText = t18;
-  var t19;
+  var setFromErrorErrorHelperText = t19;
+  var t20;
   if ($[17] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t19 = function t19(error_1, toErrorHelperText_0) {
+    t20 = function t20(error_1, toErrorHelperText_0) {
       setToError(error_1);
       setToErrorHelperText(toErrorHelperText_0);
     };
-    $[17] = t19;
+    $[17] = t20;
   } else {
-    t19 = $[17];
+    t20 = $[17];
   }
-  var setToErrorErrorHelperText = t19;
-  var t20;
+  var setToErrorErrorHelperText = t20;
+  var t21;
   if ($[18] !== setError) {
-    t20 = function t20(error_2, errorHelperText_0) {
+    t21 = function t21(error_2, errorHelperText_0) {
       setError(error_2);
       setErrorHelperText(error_2 ? errorHelperText_0 : undefined);
     };
     $[18] = setError;
-    $[19] = t20;
+    $[19] = t21;
   } else {
-    t20 = $[19];
+    t21 = $[19];
   }
-  var setErrorErrorHelperText = t20;
-  var t21;
+  var setErrorErrorHelperText = t21;
+  var t22;
   if ($[20] !== onValidateRef || $[21] !== required || $[22] !== setErrorErrorHelperText) {
-    t21 = function t21(value) {
+    t22 = function t22(value) {
       if (required && (value[0] == null || value[1] == null)) {
         if (value[0] == null && value[1] == null) {
           setErrorErrorHelperText(true, "\uD544\uC218 \uC785\uB825 \uD56D\uBAA9\uC785\uB2C8\uB2E4.");
@@ -25918,54 +26619,54 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
     $[20] = onValidateRef;
     $[21] = required;
     $[22] = setErrorErrorHelperText;
-    $[23] = t21;
+    $[23] = t22;
   } else {
-    t21 = $[23];
+    t22 = $[23];
   }
-  var validate = t21;
-  var t22;
+  var validate = t22;
+  var t23;
   if ($[24] !== initValue) {
-    t22 = getFinalValue$2(initValue);
+    t23 = getFinalValue$2(initValue);
     $[24] = initValue;
-    $[25] = t22;
+    $[25] = t23;
   } else {
-    t22 = $[25];
+    t23 = $[25];
   }
-  var _useState19 = React.useState(t22),
+  var _useState19 = React.useState(t23),
     _useState20 = _slicedToArray(_useState19, 2),
     value_0 = _useState20[0],
     _setValue = _useState20[1];
-  var t23;
   var t24;
+  var t25;
   if ($[26] !== initValue) {
-    t23 = function t23() {
+    t24 = function t24() {
       return _setValue(getFinalValue$2(initValue));
     };
-    t24 = [initValue];
+    t25 = [initValue];
     $[26] = initValue;
-    $[27] = t23;
-    $[28] = t24;
+    $[27] = t24;
+    $[28] = t25;
   } else {
-    t23 = $[27];
-    t24 = $[28];
+    t24 = $[27];
+    t25 = $[28];
   }
-  reactHook.useFirstSkipChanged(t23, t24);
+  reactHook.useFirstSkipChanged(t24, t25);
   var valueRef = reactHook.useAutoUpdateRef(value_0);
-  var t25;
+  var t26;
   if ($[29] !== valueRef) {
-    t25 = function t25(newValue_1) {
+    t26 = function t26(newValue_1) {
       _setValue(newValue_1);
       valueRef.current = newValue_1;
     };
     $[29] = valueRef;
-    $[30] = t25;
+    $[30] = t26;
   } else {
-    t25 = $[30];
+    t26 = $[30];
   }
-  var setValue = t25;
-  var t26;
+  var setValue = t26;
+  var t27;
   if ($[31] !== error || $[32] !== fromError || $[33] !== name || $[34] !== onChangeRef || $[35] !== onValueChange || $[36] !== setValue || $[37] !== toError || $[38] !== validate) {
-    t26 = function t26(newValue_2) {
+    t27 = function t27(newValue_2) {
       var _onChangeRef$current;
       var finalValue = getFinalValue$2(newValue_2);
       setValue(finalValue);
@@ -25984,42 +26685,42 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
     $[36] = setValue;
     $[37] = toError;
     $[38] = validate;
-    $[39] = t26;
+    $[39] = t27;
   } else {
-    t26 = $[39];
+    t27 = $[39];
   }
-  var updateValue = t26;
+  var updateValue = t27;
   var nowValue;
-  var t27;
+  var t28;
   if ($[40] === Symbol["for"]("react.memo_cache_sentinel")) {
     var nowDate = dayjs();
     nowValue = dateToValue$2(nowDate);
-    t27 = valueToYm(nowValue);
+    t28 = valueToYm(nowValue);
     $[40] = nowValue;
-    $[41] = t27;
+    $[41] = t28;
   } else {
     nowValue = $[40];
-    t27 = $[41];
+    t28 = $[41];
   }
-  var nowYm = t27;
-  var t28;
-  if ($[42] !== minValue) {
-    t28 = minValue ? valueToDate$2(minValue) : undefined;
-    $[42] = minValue;
-    $[43] = t28;
-  } else {
-    t28 = $[43];
-  }
-  var minDate = t28;
+  var nowYm = t28;
   var t29;
-  if ($[44] !== maxValue) {
-    t29 = maxValue ? valueToDate$2(maxValue) : undefined;
-    $[44] = maxValue;
-    $[45] = t29;
+  if ($[42] !== minValue) {
+    t29 = minValue ? valueToDate$2(minValue) : undefined;
+    $[42] = minValue;
+    $[43] = t29;
   } else {
-    t29 = $[45];
+    t29 = $[43];
   }
-  var maxDate = t29;
+  var minDate = t29;
+  var t30;
+  if ($[44] !== maxValue) {
+    t30 = maxValue ? valueToDate$2(maxValue) : undefined;
+    $[44] = maxValue;
+    $[45] = t30;
+  } else {
+    t30 = $[45];
+  }
+  var maxDate = t30;
   var minAvailableValue;
   if (disablePast) {
     var minYm = valueToYm(minValue);
@@ -26027,15 +26728,15 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
   } else {
     minAvailableValue = minValue;
   }
-  var t30;
+  var t31;
   if ($[46] !== minAvailableValue) {
-    t30 = valueToYm(minAvailableValue);
+    t31 = valueToYm(minAvailableValue);
     $[46] = minAvailableValue;
-    $[47] = t30;
+    $[47] = t31;
   } else {
-    t30 = $[47];
+    t31 = $[47];
   }
-  var minAvailableYm = t30;
+  var minAvailableYm = t31;
   var maxAvailableValue;
   if (disableFuture) {
     var maxYm = valueToYm(maxValue);
@@ -26043,18 +26744,18 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
   } else {
     maxAvailableValue = maxValue;
   }
-  var t31;
-  if ($[48] !== maxAvailableValue) {
-    t31 = valueToYm(maxAvailableValue);
-    $[48] = maxAvailableValue;
-    $[49] = t31;
-  } else {
-    t31 = $[49];
-  }
-  var maxAvailableYm = t31;
   var t32;
+  if ($[48] !== maxAvailableValue) {
+    t32 = valueToYm(maxAvailableValue);
+    $[48] = maxAvailableValue;
+    $[49] = t32;
+  } else {
+    t32 = $[49];
+  }
+  var maxAvailableYm = t32;
+  var t33;
   if ($[50] !== maxAvailableYm || $[51] !== maxDate || $[52] !== minAvailableYm || $[53] !== minDate) {
-    t32 = {
+    t33 = {
       minDate: minDate,
       maxDate: maxDate,
       minAvailableYm: minAvailableYm,
@@ -26064,14 +26765,14 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
     $[51] = maxDate;
     $[52] = minAvailableYm;
     $[53] = minDate;
-    $[54] = t32;
+    $[54] = t33;
   } else {
-    t32 = $[54];
+    t33 = $[54];
   }
-  var dateInfo = t32;
-  var t33;
+  var dateInfo = t33;
+  var t34;
   if ($[55] !== name || $[56] !== onRequestSearchSubmit || $[57] !== open || $[58] !== valueRef) {
-    t33 = function t33() {
+    t34 = function t34() {
       if (open) {
         openValueRef.current = valueRef.current;
       } else {
@@ -26092,136 +26793,152 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
     $[56] = onRequestSearchSubmit;
     $[57] = open;
     $[58] = valueRef;
-    $[59] = t33;
+    $[59] = t34;
   } else {
-    t33 = $[59];
+    t34 = $[59];
   }
-  var t34;
-  if ($[60] !== open) {
-    t34 = [open];
-    $[60] = open;
-    $[61] = t34;
-  } else {
-    t34 = $[61];
-  }
-  reactHook.useFirstSkipEffect(t33, t34);
   var t35;
-  if ($[62] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t35 = function t35() {
+  if ($[60] !== open) {
+    t35 = [open];
+    $[60] = open;
+    $[61] = t35;
+  } else {
+    t35 = $[61];
+  }
+  reactHook.useFirstSkipEffect(t34, t35);
+  var t36;
+  if ($[62] !== embedded) {
+    t36 = function t36() {
       var _startInputRef$curren;
+      if (embedded) {
+        var _embeddedRef$current;
+        (_embeddedRef$current = embeddedRef.current) === null || _embeddedRef$current === void 0 || _embeddedRef$current.focus();
+        return;
+      }
       (_startInputRef$curren = startInputRef.current) === null || _startInputRef$curren === void 0 || _startInputRef$curren.focus();
     };
-    $[62] = t35;
+    $[62] = embedded;
+    $[63] = t36;
   } else {
-    t35 = $[62];
+    t36 = $[63];
   }
-  var focus = t35;
-  var t36;
-  if ($[63] !== name) {
-    t36 = function t36() {
-      return name;
-    };
-    $[63] = name;
-    $[64] = t36;
-  } else {
-    t36 = $[64];
-  }
+  var focus = t36;
   var t37;
-  if ($[65] !== initValueRef) {
+  if ($[64] !== embedded) {
     t37 = function t37() {
-      return getFinalValue$2(initValueRef.current);
+      return embedded ? "PFormEmbedMonthRangePicker" : "PFormMonthRangePicker";
     };
-    $[65] = initValueRef;
-    $[66] = t37;
+    $[64] = embedded;
+    $[65] = t37;
   } else {
-    t37 = $[66];
+    t37 = $[65];
   }
   var t38;
-  if ($[67] !== initValueRef || $[68] !== updateValue) {
+  if ($[66] !== name) {
     t38 = function t38() {
-      return updateValue(initValueRef.current);
+      return name;
     };
-    $[67] = initValueRef;
-    $[68] = updateValue;
-    $[69] = t38;
+    $[66] = name;
+    $[67] = t38;
   } else {
-    t38 = $[69];
+    t38 = $[67];
   }
   var t39;
-  if ($[70] !== valueRef) {
+  if ($[68] !== initValueRef) {
     t39 = function t39() {
-      return valueRef.current;
+      return getFinalValue$2(initValueRef.current);
     };
-    $[70] = valueRef;
-    $[71] = t39;
+    $[68] = initValueRef;
+    $[69] = t39;
   } else {
-    t39 = $[71];
+    t39 = $[69];
   }
   var t40;
-  if ($[72] !== dataRef) {
+  if ($[70] !== initValueRef || $[71] !== updateValue) {
     t40 = function t40() {
-      return dataRef.current;
+      return updateValue(initValueRef.current);
     };
-    $[72] = dataRef;
-    $[73] = t40;
+    $[70] = initValueRef;
+    $[71] = updateValue;
+    $[72] = t40;
   } else {
-    t40 = $[73];
+    t40 = $[72];
   }
   var t41;
-  if ($[74] !== valueRef) {
+  if ($[73] !== valueRef) {
     t41 = function t41() {
-      return valueRef.current[0];
+      return valueRef.current;
     };
-    $[74] = valueRef;
-    $[75] = t41;
+    $[73] = valueRef;
+    $[74] = t41;
   } else {
-    t41 = $[75];
+    t41 = $[74];
   }
   var t42;
-  if ($[76] !== updateValue || $[77] !== valueRef) {
-    t42 = function t42(value_1) {
-      return updateValue([value_1, valueRef.current[1]]);
+  if ($[75] !== dataRef) {
+    t42 = function t42() {
+      return dataRef.current;
     };
-    $[76] = updateValue;
-    $[77] = valueRef;
-    $[78] = t42;
+    $[75] = dataRef;
+    $[76] = t42;
   } else {
-    t42 = $[78];
+    t42 = $[76];
   }
   var t43;
-  if ($[79] !== valueRef) {
+  if ($[77] !== valueRef) {
     t43 = function t43() {
-      return valueRef.current[1];
+      return valueRef.current[0];
     };
-    $[79] = valueRef;
-    $[80] = t43;
+    $[77] = valueRef;
+    $[78] = t43;
   } else {
-    t43 = $[80];
+    t43 = $[78];
   }
   var t44;
-  if ($[81] !== updateValue || $[82] !== valueRef) {
-    t44 = function t44(value_2) {
-      return updateValue([valueRef.current[0], value_2]);
+  if ($[79] !== updateValue || $[80] !== valueRef) {
+    t44 = function t44(value_1) {
+      return updateValue([value_1, valueRef.current[1]]);
     };
-    $[81] = updateValue;
-    $[82] = valueRef;
-    $[83] = t44;
+    $[79] = updateValue;
+    $[80] = valueRef;
+    $[81] = t44;
   } else {
-    t44 = $[83];
+    t44 = $[81];
   }
   var t45;
-  if ($[84] !== valueRef) {
+  if ($[82] !== valueRef) {
     t45 = function t45() {
-      return valueRef.current[0] ? valueRef.current[0].year : null;
+      return valueRef.current[1];
     };
-    $[84] = valueRef;
-    $[85] = t45;
+    $[82] = valueRef;
+    $[83] = t45;
   } else {
-    t45 = $[85];
+    t45 = $[83];
   }
   var t46;
-  if ($[86] !== updateValue || $[87] !== valueRef) {
-    t46 = function t46(year) {
+  if ($[84] !== updateValue || $[85] !== valueRef) {
+    t46 = function t46(value_2) {
+      return updateValue([valueRef.current[0], value_2]);
+    };
+    $[84] = updateValue;
+    $[85] = valueRef;
+    $[86] = t46;
+  } else {
+    t46 = $[86];
+  }
+  var t47;
+  if ($[87] !== valueRef) {
+    t47 = function t47() {
+      return valueRef.current[0] ? valueRef.current[0].year : null;
+    };
+    $[87] = valueRef;
+    $[88] = t47;
+  } else {
+    t47 = $[88];
+  }
+  var t48;
+  if ($[89] !== updateValue || $[90] !== valueRef) {
+    t48 = function t48(year) {
       updateValue([year === null ? null : valueRef.current[0] ? {
         year: year,
         month: valueRef.current[0].month
@@ -26230,25 +26947,25 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
         month: year === new Date().getFullYear() ? new Date().getMonth() + 1 : 1
       }, valueRef.current[1]]);
     };
-    $[86] = updateValue;
-    $[87] = valueRef;
-    $[88] = t46;
+    $[89] = updateValue;
+    $[90] = valueRef;
+    $[91] = t48;
   } else {
-    t46 = $[88];
+    t48 = $[91];
   }
-  var t47;
-  if ($[89] !== valueRef) {
-    t47 = function t47() {
+  var t49;
+  if ($[92] !== valueRef) {
+    t49 = function t49() {
       return valueRef.current[0] ? valueRef.current[0].month : null;
     };
-    $[89] = valueRef;
-    $[90] = t47;
+    $[92] = valueRef;
+    $[93] = t49;
   } else {
-    t47 = $[90];
+    t49 = $[93];
   }
-  var t48;
-  if ($[91] !== updateValue || $[92] !== valueRef) {
-    t48 = function t48(month) {
+  var t50;
+  if ($[94] !== updateValue || $[95] !== valueRef) {
+    t50 = function t50(month) {
       updateValue([month === null ? null : valueRef.current[0] ? {
         year: valueRef.current[0].year,
         month: month
@@ -26257,25 +26974,25 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
         month: month
       }, valueRef.current[1]]);
     };
-    $[91] = updateValue;
-    $[92] = valueRef;
-    $[93] = t48;
+    $[94] = updateValue;
+    $[95] = valueRef;
+    $[96] = t50;
   } else {
-    t48 = $[93];
+    t50 = $[96];
   }
-  var t49;
-  if ($[94] !== valueRef) {
-    t49 = function t49() {
+  var t51;
+  if ($[97] !== valueRef) {
+    t51 = function t51() {
       return valueRef.current[1] ? valueRef.current[1].year : null;
     };
-    $[94] = valueRef;
-    $[95] = t49;
+    $[97] = valueRef;
+    $[98] = t51;
   } else {
-    t49 = $[95];
+    t51 = $[98];
   }
-  var t50;
-  if ($[96] !== updateValue || $[97] !== valueRef) {
-    t50 = function t50(year_0) {
+  var t52;
+  if ($[99] !== updateValue || $[100] !== valueRef) {
+    t52 = function t52(year_0) {
       updateValue([valueRef.current[0], year_0 === null ? null : valueRef.current[1] ? {
         year: year_0,
         month: valueRef.current[1].month
@@ -26284,25 +27001,25 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
         month: year_0 === new Date().getFullYear() ? new Date().getMonth() + 1 : 1
       }]);
     };
-    $[96] = updateValue;
-    $[97] = valueRef;
-    $[98] = t50;
+    $[99] = updateValue;
+    $[100] = valueRef;
+    $[101] = t52;
   } else {
-    t50 = $[98];
+    t52 = $[101];
   }
-  var t51;
-  if ($[99] !== valueRef) {
-    t51 = function t51() {
+  var t53;
+  if ($[102] !== valueRef) {
+    t53 = function t53() {
       return valueRef.current[1] ? valueRef.current[1].month : null;
     };
-    $[99] = valueRef;
-    $[100] = t51;
+    $[102] = valueRef;
+    $[103] = t53;
   } else {
-    t51 = $[100];
+    t53 = $[103];
   }
-  var t52;
-  if ($[101] !== updateValue || $[102] !== valueRef) {
-    t52 = function t52(month_0) {
+  var t54;
+  if ($[104] !== updateValue || $[105] !== valueRef) {
+    t54 = function t54(month_0) {
       updateValue([valueRef.current[0], month_0 === null ? null : valueRef.current[1] ? {
         year: valueRef.current[1].year,
         month: month_0
@@ -26311,241 +27028,243 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
         month: month_0
       }]);
     };
-    $[101] = updateValue;
-    $[102] = valueRef;
-    $[103] = t52;
+    $[104] = updateValue;
+    $[105] = valueRef;
+    $[106] = t54;
   } else {
-    t52 = $[103];
-  }
-  var t53;
-  if ($[104] !== exceptValue) {
-    t53 = function t53() {
-      return !!exceptValue;
-    };
-    $[104] = exceptValue;
-    $[105] = t53;
-  } else {
-    t53 = $[105];
-  }
-  var t54;
-  if ($[106] !== disabled) {
-    t54 = function t54() {
-      return !!disabled;
-    };
-    $[106] = disabled;
-    $[107] = t54;
-  } else {
-    t54 = $[107];
+    t54 = $[106];
   }
   var t55;
-  if ($[108] !== hidden) {
+  if ($[107] !== exceptValue) {
     t55 = function t55() {
-      return !!hidden;
+      return !!exceptValue;
     };
-    $[108] = hidden;
-    $[109] = t55;
+    $[107] = exceptValue;
+    $[108] = t55;
   } else {
-    t55 = $[109];
+    t55 = $[108];
   }
   var t56;
-  if ($[110] !== validate || $[111] !== valueRef) {
+  if ($[109] !== disabled) {
     t56 = function t56() {
-      return validate(valueRef.current);
+      return !!disabled;
     };
-    $[110] = validate;
-    $[111] = valueRef;
-    $[112] = t56;
+    $[109] = disabled;
+    $[110] = t56;
   } else {
-    t56 = $[112];
+    t56 = $[110];
   }
   var t57;
-  if ($[113] !== formValueFromYearNameSuffix) {
+  if ($[111] !== hidden) {
     t57 = function t57() {
-      return formValueFromYearNameSuffix;
+      return !!hidden;
     };
-    $[113] = formValueFromYearNameSuffix;
-    $[114] = t57;
+    $[111] = hidden;
+    $[112] = t57;
   } else {
-    t57 = $[114];
+    t57 = $[112];
   }
   var t58;
-  if ($[115] !== formValueFromMonthNameSuffix) {
+  if ($[113] !== validate || $[114] !== valueRef) {
     t58 = function t58() {
-      return formValueFromMonthNameSuffix;
+      return validate(valueRef.current);
     };
-    $[115] = formValueFromMonthNameSuffix;
-    $[116] = t58;
+    $[113] = validate;
+    $[114] = valueRef;
+    $[115] = t58;
   } else {
-    t58 = $[116];
+    t58 = $[115];
   }
   var t59;
-  if ($[117] !== formValueToYearNameSuffix) {
+  if ($[116] !== formValueFromYearNameSuffix) {
     t59 = function t59() {
-      return formValueToYearNameSuffix;
+      return formValueFromYearNameSuffix;
     };
-    $[117] = formValueToYearNameSuffix;
-    $[118] = t59;
+    $[116] = formValueFromYearNameSuffix;
+    $[117] = t59;
   } else {
-    t59 = $[118];
+    t59 = $[117];
   }
   var t60;
-  if ($[119] !== formValueToMonthNameSuffix) {
+  if ($[118] !== formValueFromMonthNameSuffix) {
     t60 = function t60() {
-      return formValueToMonthNameSuffix;
+      return formValueFromMonthNameSuffix;
     };
-    $[119] = formValueToMonthNameSuffix;
-    $[120] = t60;
+    $[118] = formValueFromMonthNameSuffix;
+    $[119] = t60;
   } else {
-    t60 = $[120];
+    t60 = $[119];
   }
   var t61;
-  if ($[121] !== formValueFromYearNameSuffix || $[122] !== name) {
+  if ($[120] !== formValueToYearNameSuffix) {
     t61 = function t61() {
-      return "".concat(name).concat(formValueFromYearNameSuffix);
+      return formValueToYearNameSuffix;
     };
-    $[121] = formValueFromYearNameSuffix;
-    $[122] = name;
-    $[123] = t61;
+    $[120] = formValueToYearNameSuffix;
+    $[121] = t61;
   } else {
-    t61 = $[123];
+    t61 = $[121];
   }
   var t62;
-  if ($[124] !== formValueFromMonthNameSuffix || $[125] !== name) {
+  if ($[122] !== formValueToMonthNameSuffix) {
     t62 = function t62() {
-      return "".concat(name).concat(formValueFromMonthNameSuffix);
+      return formValueToMonthNameSuffix;
     };
-    $[124] = formValueFromMonthNameSuffix;
-    $[125] = name;
-    $[126] = t62;
+    $[122] = formValueToMonthNameSuffix;
+    $[123] = t62;
   } else {
-    t62 = $[126];
+    t62 = $[123];
   }
   var t63;
-  if ($[127] !== formValueToYearNameSuffix || $[128] !== name) {
+  if ($[124] !== formValueFromYearNameSuffix || $[125] !== name) {
     t63 = function t63() {
-      return "".concat(name).concat(formValueToYearNameSuffix);
+      return "".concat(name).concat(formValueFromYearNameSuffix);
     };
-    $[127] = formValueToYearNameSuffix;
-    $[128] = name;
-    $[129] = t63;
+    $[124] = formValueFromYearNameSuffix;
+    $[125] = name;
+    $[126] = t63;
   } else {
-    t63 = $[129];
+    t63 = $[126];
   }
   var t64;
-  if ($[130] !== formValueToMonthNameSuffix || $[131] !== name) {
+  if ($[127] !== formValueFromMonthNameSuffix || $[128] !== name) {
     t64 = function t64() {
-      return "".concat(name).concat(formValueToMonthNameSuffix);
+      return "".concat(name).concat(formValueFromMonthNameSuffix);
     };
-    $[130] = formValueToMonthNameSuffix;
-    $[131] = name;
-    $[132] = t64;
+    $[127] = formValueFromMonthNameSuffix;
+    $[128] = name;
+    $[129] = t64;
   } else {
-    t64 = $[132];
+    t64 = $[129];
   }
   var t65;
-  if ($[133] !== setData || $[134] !== setErrorErrorHelperText || $[135] !== t36 || $[136] !== t37 || $[137] !== t38 || $[138] !== t39 || $[139] !== t40 || $[140] !== t41 || $[141] !== t42 || $[142] !== t43 || $[143] !== t44 || $[144] !== t45 || $[145] !== t46 || $[146] !== t47 || $[147] !== t48 || $[148] !== t49 || $[149] !== t50 || $[150] !== t51 || $[151] !== t52 || $[152] !== t53 || $[153] !== t54 || $[154] !== t55 || $[155] !== t56 || $[156] !== t57 || $[157] !== t58 || $[158] !== t59 || $[159] !== t60 || $[160] !== t61 || $[161] !== t62 || $[162] !== t63 || $[163] !== t64 || $[164] !== updateValue) {
-    t65 = {
-      getType: _temp$6,
-      getName: t36,
-      getReset: t37,
-      reset: t38,
-      getValue: t39,
+  if ($[130] !== formValueToYearNameSuffix || $[131] !== name) {
+    t65 = function t65() {
+      return "".concat(name).concat(formValueToYearNameSuffix);
+    };
+    $[130] = formValueToYearNameSuffix;
+    $[131] = name;
+    $[132] = t65;
+  } else {
+    t65 = $[132];
+  }
+  var t66;
+  if ($[133] !== formValueToMonthNameSuffix || $[134] !== name) {
+    t66 = function t66() {
+      return "".concat(name).concat(formValueToMonthNameSuffix);
+    };
+    $[133] = formValueToMonthNameSuffix;
+    $[134] = name;
+    $[135] = t66;
+  } else {
+    t66 = $[135];
+  }
+  var t67;
+  if ($[136] !== focus || $[137] !== setData || $[138] !== setErrorErrorHelperText || $[139] !== t37 || $[140] !== t38 || $[141] !== t39 || $[142] !== t40 || $[143] !== t41 || $[144] !== t42 || $[145] !== t43 || $[146] !== t44 || $[147] !== t45 || $[148] !== t46 || $[149] !== t47 || $[150] !== t48 || $[151] !== t49 || $[152] !== t50 || $[153] !== t51 || $[154] !== t52 || $[155] !== t53 || $[156] !== t54 || $[157] !== t55 || $[158] !== t56 || $[159] !== t57 || $[160] !== t58 || $[161] !== t59 || $[162] !== t60 || $[163] !== t61 || $[164] !== t62 || $[165] !== t63 || $[166] !== t64 || $[167] !== t65 || $[168] !== t66 || $[169] !== updateValue) {
+    t67 = {
+      getType: t37,
+      getName: t38,
+      getReset: t39,
+      reset: t40,
+      getValue: t41,
       setValue: updateValue,
-      getData: t40,
+      getData: t42,
       setData: setData,
-      getFromValue: t41,
-      setFromValue: t42,
-      getToValue: t43,
-      setToValue: t44,
-      getFromYear: t45,
-      setFromYear: t46,
-      getFromMonth: t47,
-      setFromMonth: t48,
-      getToYear: t49,
-      setToYear: t50,
-      getToMonth: t51,
-      setToMonth: t52,
-      isExceptValue: t53,
-      isDisabled: t54,
+      getFromValue: t43,
+      setFromValue: t44,
+      getToValue: t45,
+      setToValue: t46,
+      getFromYear: t47,
+      setFromYear: t48,
+      getFromMonth: t49,
+      setFromMonth: t50,
+      getToYear: t51,
+      setToYear: t52,
+      getToMonth: t53,
+      setToMonth: t54,
+      isExceptValue: t55,
+      isDisabled: t56,
       setDisabled: setDisabled,
-      isHidden: t55,
+      isHidden: t57,
       setHidden: setHidden,
       focus: focus,
       focusValidate: focus,
-      validate: t56,
+      validate: t58,
       setError: setErrorErrorHelperText,
-      getFormValueFromYearNameSuffix: t57,
-      getFormValueFromMonthNameSuffix: t58,
-      getFormValueToYearNameSuffix: t59,
-      getFormValueToMonthNameSuffix: t60,
-      getFormValueFromYearName: t61,
-      getFormValueFromMonthName: t62,
-      getFormValueToYearName: t63,
-      getFormValueToMonthName: t64
+      getFormValueFromYearNameSuffix: t59,
+      getFormValueFromMonthNameSuffix: t60,
+      getFormValueToYearNameSuffix: t61,
+      getFormValueToMonthNameSuffix: t62,
+      getFormValueFromYearName: t63,
+      getFormValueFromMonthName: t64,
+      getFormValueToYearName: t65,
+      getFormValueToMonthName: t66
     };
-    $[133] = setData;
-    $[134] = setErrorErrorHelperText;
-    $[135] = t36;
-    $[136] = t37;
-    $[137] = t38;
-    $[138] = t39;
-    $[139] = t40;
-    $[140] = t41;
-    $[141] = t42;
-    $[142] = t43;
-    $[143] = t44;
-    $[144] = t45;
-    $[145] = t46;
-    $[146] = t47;
-    $[147] = t48;
-    $[148] = t49;
-    $[149] = t50;
-    $[150] = t51;
-    $[151] = t52;
-    $[152] = t53;
-    $[153] = t54;
-    $[154] = t55;
-    $[155] = t56;
-    $[156] = t57;
-    $[157] = t58;
-    $[158] = t59;
-    $[159] = t60;
-    $[160] = t61;
-    $[161] = t62;
-    $[162] = t63;
-    $[163] = t64;
-    $[164] = updateValue;
-    $[165] = t65;
+    $[136] = focus;
+    $[137] = setData;
+    $[138] = setErrorErrorHelperText;
+    $[139] = t37;
+    $[140] = t38;
+    $[141] = t39;
+    $[142] = t40;
+    $[143] = t41;
+    $[144] = t42;
+    $[145] = t43;
+    $[146] = t44;
+    $[147] = t45;
+    $[148] = t46;
+    $[149] = t47;
+    $[150] = t48;
+    $[151] = t49;
+    $[152] = t50;
+    $[153] = t51;
+    $[154] = t52;
+    $[155] = t53;
+    $[156] = t54;
+    $[157] = t55;
+    $[158] = t56;
+    $[159] = t57;
+    $[160] = t58;
+    $[161] = t59;
+    $[162] = t60;
+    $[163] = t61;
+    $[164] = t62;
+    $[165] = t63;
+    $[166] = t64;
+    $[167] = t65;
+    $[168] = t66;
+    $[169] = updateValue;
+    $[170] = t67;
   } else {
-    t65 = $[165];
+    t67 = $[170];
   }
-  var commands = t65;
-  var t66;
-  if ($[166] !== id || $[167] !== onAddValueItem) {
-    t66 = function t66(commands_0) {
+  var commands = t67;
+  var t68;
+  if ($[171] !== id || $[172] !== onAddValueItem) {
+    t68 = function t68(commands_0) {
       return onAddValueItem(id, commands_0);
     };
-    $[166] = id;
-    $[167] = onAddValueItem;
-    $[168] = t66;
+    $[171] = id;
+    $[172] = onAddValueItem;
+    $[173] = t68;
   } else {
-    t66 = $[168];
+    t68 = $[173];
   }
-  var t67;
-  if ($[169] !== id || $[170] !== onRemoveValueItem) {
-    t67 = function t67() {
+  var t69;
+  if ($[174] !== id || $[175] !== onRemoveValueItem) {
+    t69 = function t69() {
       return onRemoveValueItem(id);
     };
-    $[169] = id;
-    $[170] = onRemoveValueItem;
-    $[171] = t67;
+    $[174] = id;
+    $[175] = onRemoveValueItem;
+    $[176] = t69;
   } else {
-    t67 = $[171];
+    t69 = $[176];
   }
-  reactHook.useForwardRef(ref, commands, t66, t67);
-  var t68;
-  if ($[172] !== name || $[173] !== onValueChangeByUser || $[174] !== updateValue) {
-    t68 = function t68(newValue_3, selectType, isMonthSelect) {
+  reactHook.useForwardRef(ref, commands, t68, t69);
+  var t70;
+  if ($[177] !== embedded || $[178] !== name || $[179] !== onRequestSearchSubmit || $[180] !== onValueChangeByUser || $[181] !== updateValue) {
+    t70 = function t70(newValue_3, selectType, isMonthSelect) {
       updateValue(newValue_3);
       if (selectType === "start" && isMonthSelect) {
         setTimeout(function () {
@@ -26559,19 +27278,24 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
       }
       setTimeout(function () {
         onValueChangeByUser(name, newValue_3);
+        if (embedded && selectType === "end" && isMonthSelect) {
+          onRequestSearchSubmit(name, newValue_3);
+        }
       });
     };
-    $[172] = name;
-    $[173] = onValueChangeByUser;
-    $[174] = updateValue;
-    $[175] = t68;
+    $[177] = embedded;
+    $[178] = name;
+    $[179] = onRequestSearchSubmit;
+    $[180] = onValueChangeByUser;
+    $[181] = updateValue;
+    $[182] = t70;
   } else {
-    t68 = $[175];
+    t70 = $[182];
   }
-  var handleContainerChange = t68;
-  var t69;
-  if ($[176] !== dateInfo.maxAvailableYm || $[177] !== dateInfo.minAvailableYm || $[178] !== fromError || $[179] !== name || $[180] !== onValueChangeByUser || $[181] !== toError || $[182] !== updateValue || $[183] !== validate || $[184] !== valueRef) {
-    t69 = function t69(selectType_0, date) {
+  var handleContainerChange = t70;
+  var t71;
+  if ($[183] !== dateInfo.maxAvailableYm || $[184] !== dateInfo.minAvailableYm || $[185] !== fromError || $[186] !== name || $[187] !== onValueChangeByUser || $[188] !== toError || $[189] !== updateValue || $[190] !== validate || $[191] !== valueRef) {
+    t71 = function t71(selectType_0, date) {
       if (date == null || date.isValid()) {
         if (selectType_0 === "start") {
           var newValue_4 = [date ? dateToValue$2(date) : null, valueRef.current[1]];
@@ -26604,23 +27328,23 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
         }
       }
     };
-    $[176] = dateInfo.maxAvailableYm;
-    $[177] = dateInfo.minAvailableYm;
-    $[178] = fromError;
-    $[179] = name;
-    $[180] = onValueChangeByUser;
-    $[181] = toError;
-    $[182] = updateValue;
-    $[183] = validate;
-    $[184] = valueRef;
-    $[185] = t69;
+    $[183] = dateInfo.maxAvailableYm;
+    $[184] = dateInfo.minAvailableYm;
+    $[185] = fromError;
+    $[186] = name;
+    $[187] = onValueChangeByUser;
+    $[188] = toError;
+    $[189] = updateValue;
+    $[190] = validate;
+    $[191] = valueRef;
+    $[192] = t71;
   } else {
-    t69 = $[185];
+    t71 = $[192];
   }
-  var handleInputDatePickerChange = t69;
-  var t70;
-  if ($[186] !== disabled || $[187] !== readOnly || $[188] !== value_0) {
-    t70 = function t70(selectType_1) {
+  var handleInputDatePickerChange = t71;
+  var t72;
+  if ($[193] !== disabled || $[194] !== readOnly || $[195] !== value_0) {
+    t72 = function t72(selectType_1) {
       if (readOnly || disabled) {
         return;
       }
@@ -26631,56 +27355,56 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
         setOpen(true);
       }
     };
-    $[186] = disabled;
-    $[187] = readOnly;
-    $[188] = value_0;
-    $[189] = t70;
+    $[193] = disabled;
+    $[194] = readOnly;
+    $[195] = value_0;
+    $[196] = t72;
   } else {
-    t70 = $[189];
+    t72 = $[196];
   }
-  var handleInputDatePickerFocus = t70;
-  var t71;
-  if ($[190] !== dateInfo.maxAvailableYm || $[191] !== dateInfo.minAvailableYm) {
-    t71 = function t71(dt) {
+  var handleInputDatePickerFocus = t72;
+  var t73;
+  if ($[197] !== dateInfo.maxAvailableYm || $[198] !== dateInfo.minAvailableYm) {
+    t73 = function t73(dt) {
       var ym = dt.year() * 100 + (dt.month() + 1);
       return ym < dateInfo.minAvailableYm || ym > dateInfo.maxAvailableYm;
     };
-    $[190] = dateInfo.maxAvailableYm;
-    $[191] = dateInfo.minAvailableYm;
-    $[192] = t71;
+    $[197] = dateInfo.maxAvailableYm;
+    $[198] = dateInfo.minAvailableYm;
+    $[199] = t73;
   } else {
-    t71 = $[192];
+    t73 = $[199];
   }
-  var handleInputDatePickerShouldDisableYear = t71;
-  var t72;
-  if ($[193] !== value_0) {
-    t72 = !!value_0 && !!value_0[0] ? valueToDate$2(value_0[0]) : null;
-    $[193] = value_0;
-    $[194] = t72;
-  } else {
-    t72 = $[194];
-  }
-  var t73;
-  if ($[195] !== value_0) {
-    t73 = !!value_0 && !!value_0[1] ? valueToDate$2(value_0[1]) : null;
-    $[195] = value_0;
-    $[196] = t73;
-  } else {
-    t73 = $[196];
-  }
+  var handleInputDatePickerShouldDisableYear = t73;
   var t74;
-  if ($[197] !== t72 || $[198] !== t73) {
-    t74 = [t72, t73];
-    $[197] = t72;
-    $[198] = t73;
-    $[199] = t74;
+  if ($[200] !== value_0) {
+    t74 = !!value_0 && !!value_0[0] ? valueToDate$2(value_0[0]) : null;
+    $[200] = value_0;
+    $[201] = t74;
   } else {
-    t74 = $[199];
+    t74 = $[201];
   }
-  var valueDate = t74;
   var t75;
-  if ($[200] !== align || $[201] !== color || $[202] !== dateInfo.maxDate || $[203] !== dateInfo.minDate || $[204] !== disabled || $[205] !== format || $[206] !== fullWidth || $[207] !== labelShrink || $[208] !== size || $[209] !== variant) {
-    t75 = {
+  if ($[202] !== value_0) {
+    t75 = !!value_0 && !!value_0[1] ? valueToDate$2(value_0[1]) : null;
+    $[202] = value_0;
+    $[203] = t75;
+  } else {
+    t75 = $[203];
+  }
+  var t76;
+  if ($[204] !== t74 || $[205] !== t75) {
+    t76 = [t74, t75];
+    $[204] = t74;
+    $[205] = t75;
+    $[206] = t76;
+  } else {
+    t76 = $[206];
+  }
+  var valueDate = t76;
+  var t77;
+  if ($[207] !== align || $[208] !== color || $[209] !== dateInfo.maxDate || $[210] !== dateInfo.minDate || $[211] !== disabled || $[212] !== format || $[213] !== fullWidth || $[214] !== labelShrink || $[215] !== size || $[216] !== variant) {
+    t77 = {
       align: align,
       variant: variant,
       size: size,
@@ -26692,98 +27416,169 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
       minDate: dateInfo.minDate,
       maxDate: dateInfo.maxDate
     };
-    $[200] = align;
-    $[201] = color;
-    $[202] = dateInfo.maxDate;
-    $[203] = dateInfo.minDate;
-    $[204] = disabled;
-    $[205] = format;
-    $[206] = fullWidth;
-    $[207] = labelShrink;
-    $[208] = size;
-    $[209] = variant;
-    $[210] = t75;
+    $[207] = align;
+    $[208] = color;
+    $[209] = dateInfo.maxDate;
+    $[210] = dateInfo.minDate;
+    $[211] = disabled;
+    $[212] = format;
+    $[213] = fullWidth;
+    $[214] = labelShrink;
+    $[215] = size;
+    $[216] = variant;
+    $[217] = t77;
   } else {
-    t75 = $[210];
+    t77 = $[217];
   }
-  var inputDatePickerProps = t75;
-  var t76;
-  if ($[211] !== fullWidth || $[212] !== initStyle || $[213] !== inputWidth) {
-    t76 = inputWidth != null ? _objectSpread2({
+  var inputDatePickerProps = t77;
+  var t78;
+  if ($[218] !== fullWidth || $[219] !== initStyle || $[220] !== inputWidth) {
+    t78 = inputWidth != null ? _objectSpread2({
       width: inputWidth
     }, initStyle) : _objectSpread2({
       width: fullWidth ? undefined : 150
     }, initStyle);
-    $[211] = fullWidth;
-    $[212] = initStyle;
-    $[213] = inputWidth;
-    $[214] = t76;
+    $[218] = fullWidth;
+    $[219] = initStyle;
+    $[220] = inputWidth;
+    $[221] = t78;
   } else {
-    t76 = $[214];
+    t78 = $[221];
   }
-  var inputStyle = t76;
-  var t77;
-  if ($[215] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t77 = function t77() {
+  var inputStyle = t78;
+  if (embedded) {
+    var _t = !formColWithHelperText ? error ? errorHelperText : helperText : undefined;
+    var _t2;
+    if ($[222] === Symbol["for"]("react.memo_cache_sentinel")) {
+      _t2 = {
+        display: "flex"
+      };
+      $[222] = _t2;
+    } else {
+      _t2 = $[222];
+    }
+    var _t3;
+    if ($[223] !== disableFuture || $[224] !== disablePast || $[225] !== handleContainerChange || $[226] !== maxValue || $[227] !== minValue || $[228] !== value_0) {
+      _t3 = /*#__PURE__*/React.createElement("div", {
+        style: _t2
+      }, /*#__PURE__*/React.createElement(PrivateMonthRangePicker, {
+        minValue: minValue,
+        maxValue: maxValue,
+        disablePast: disablePast,
+        disableFuture: disableFuture,
+        value: value_0,
+        onChange: handleContainerChange
+      }));
+      $[223] = disableFuture;
+      $[224] = disablePast;
+      $[225] = handleContainerChange;
+      $[226] = maxValue;
+      $[227] = minValue;
+      $[228] = value_0;
+      $[229] = _t3;
+    } else {
+      _t3 = $[229];
+    }
+    var _t4;
+    if ($[230] !== className || $[231] !== disabled || $[232] !== error || $[233] !== fromLabel || $[234] !== fullWidth || $[235] !== hidden || $[236] !== initStyle || $[237] !== name || $[238] !== readOnly || $[239] !== required || $[240] !== sx || $[241] !== _t || $[242] !== _t3) {
+      _t4 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
+        dateAdapter: AdapterDayjs.AdapterDayjs
+      }, /*#__PURE__*/React.createElement(PrivateEmbedPicker, {
+        name: name,
+        label: fromLabel,
+        required: required,
+        disabled: disabled,
+        readOnly: readOnly,
+        hidden: hidden,
+        fullWidth: fullWidth,
+        error: error,
+        helperText: _t,
+        pickerRef: embeddedRef,
+        className: className,
+        style: initStyle,
+        sx: sx
+      }, _t3));
+      $[230] = className;
+      $[231] = disabled;
+      $[232] = error;
+      $[233] = fromLabel;
+      $[234] = fullWidth;
+      $[235] = hidden;
+      $[236] = initStyle;
+      $[237] = name;
+      $[238] = readOnly;
+      $[239] = required;
+      $[240] = sx;
+      $[241] = _t;
+      $[242] = _t3;
+      $[243] = _t4;
+    } else {
+      _t4 = $[243];
+    }
+    return _t4;
+  }
+  var t79;
+  if ($[244] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t79 = function t79() {
       return setOpen(false);
     };
-    $[215] = t77;
+    $[244] = t79;
   } else {
-    t77 = $[215];
+    t79 = $[244];
   }
-  var t78;
-  if ($[216] !== className) {
-    t78 = classNames(className, "PFormMonthRangePicker");
-    $[216] = className;
-    $[217] = t78;
+  var t80;
+  if ($[245] !== className) {
+    t80 = classNames(className, "PFormMonthRangePicker");
+    $[245] = className;
+    $[246] = t80;
   } else {
-    t78 = $[217];
+    t80 = $[246];
   }
-  var t79 = hidden ? "none" : fullWidth ? "block" : "inline-block";
-  var t80 = fullWidth ? 1 : undefined;
-  var t81;
-  if ($[218] !== t79 || $[219] !== t80) {
-    t81 = {
-      display: t79,
-      flex: t80
-    };
-    $[218] = t79;
-    $[219] = t80;
-    $[220] = t81;
-  } else {
-    t81 = $[220];
-  }
-  var t82 = error && errorHelperText ? 8 : -14;
+  var t81 = hidden ? "none" : fullWidth ? "block" : "inline-block";
+  var t82 = fullWidth ? 1 : undefined;
   var t83;
-  if ($[221] !== t82) {
+  if ($[247] !== t81 || $[248] !== t82) {
     t83 = {
+      display: t81,
+      flex: t82
+    };
+    $[247] = t81;
+    $[248] = t82;
+    $[249] = t83;
+  } else {
+    t83 = $[249];
+  }
+  var t84 = error && errorHelperText ? 8 : -14;
+  var t85;
+  if ($[250] !== t84) {
+    t85 = {
       popper: {
         modifiers: [{
           name: "offset",
           options: {
-            offset: [0, t82]
+            offset: [0, t84]
           }
         }]
       }
     };
-    $[221] = t82;
-    $[222] = t83;
+    $[250] = t84;
+    $[251] = t85;
   } else {
-    t83 = $[222];
+    t85 = $[251];
   }
-  var t84;
-  if ($[223] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t84 = {
+  var t86;
+  if ($[252] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t86 = {
       display: "flex"
     };
-    $[223] = t84;
+    $[252] = t86;
   } else {
-    t84 = $[223];
+    t86 = $[252];
   }
-  var t85;
-  if ($[224] !== disableFuture || $[225] !== disablePast || $[226] !== handleContainerChange || $[227] !== maxValue || $[228] !== minValue || $[229] !== value_0) {
-    t85 = /*#__PURE__*/React.createElement("div", {
-      style: t84
+  var t87;
+  if ($[253] !== disableFuture || $[254] !== disablePast || $[255] !== handleContainerChange || $[256] !== maxValue || $[257] !== minValue || $[258] !== value_0) {
+    t87 = /*#__PURE__*/React.createElement("div", {
+      style: t86
     }, /*#__PURE__*/React.createElement(PrivateMonthRangePicker, {
       minValue: minValue,
       maxValue: maxValue,
@@ -26792,50 +27587,50 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
       value: value_0,
       onChange: handleContainerChange
     }));
-    $[224] = disableFuture;
-    $[225] = disablePast;
-    $[226] = handleContainerChange;
-    $[227] = maxValue;
-    $[228] = minValue;
-    $[229] = value_0;
-    $[230] = t85;
+    $[253] = disableFuture;
+    $[254] = disablePast;
+    $[255] = handleContainerChange;
+    $[256] = maxValue;
+    $[257] = minValue;
+    $[258] = value_0;
+    $[259] = t87;
   } else {
-    t85 = $[230];
+    t87 = $[259];
   }
-  var t86 = error || fromError;
-  var t87 = focused || open;
-  var t88;
-  if ($[231] !== handleInputDatePickerChange) {
-    t88 = function t88(v) {
+  var t88 = error || fromError;
+  var t89 = focused || open;
+  var t90;
+  if ($[260] !== handleInputDatePickerChange) {
+    t90 = function t90(v) {
       return handleInputDatePickerChange("start", v);
     };
-    $[231] = handleInputDatePickerChange;
-    $[232] = t88;
+    $[260] = handleInputDatePickerChange;
+    $[261] = t90;
   } else {
-    t88 = $[232];
-  }
-  var t89;
-  if ($[233] !== handleInputDatePickerFocus) {
-    t89 = function t89() {
-      return handleInputDatePickerFocus("start");
-    };
-    $[233] = handleInputDatePickerFocus;
-    $[234] = t89;
-  } else {
-    t89 = $[234];
-  }
-  var t90;
-  if ($[235] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t90 = function t90(reason) {
-      return startInputDatePickerErrorRef.current = reason;
-    };
-    $[235] = t90;
-  } else {
-    t90 = $[235];
+    t90 = $[261];
   }
   var t91;
-  if ($[236] !== enableKeyboardInput || $[237] !== endAdornment || $[238] !== fromLabel || $[239] !== fromLabelIcon || $[240] !== handleInputDatePickerShouldDisableYear || $[241] !== icon || $[242] !== inputDatePickerProps || $[243] !== inputStyle || $[244] !== readOnly || $[245] !== required || $[246] !== startAdornment || $[247] !== sx || $[248] !== t86 || $[249] !== t87 || $[250] !== t88 || $[251] !== t89 || $[252] !== valueDate[0]) {
-    t91 = /*#__PURE__*/React.createElement(material.Grid, {
+  if ($[262] !== handleInputDatePickerFocus) {
+    t91 = function t91() {
+      return handleInputDatePickerFocus("start");
+    };
+    $[262] = handleInputDatePickerFocus;
+    $[263] = t91;
+  } else {
+    t91 = $[263];
+  }
+  var t92;
+  if ($[264] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t92 = function t92(reason) {
+      return startInputDatePickerErrorRef.current = reason;
+    };
+    $[264] = t92;
+  } else {
+    t92 = $[264];
+  }
+  var t93;
+  if ($[265] !== enableKeyboardInput || $[266] !== endAdornment || $[267] !== fromLabel || $[268] !== fromLabelIcon || $[269] !== handleInputDatePickerShouldDisableYear || $[270] !== icon || $[271] !== inputDatePickerProps || $[272] !== inputStyle || $[273] !== readOnly || $[274] !== required || $[275] !== startAdornment || $[276] !== sx || $[277] !== t88 || $[278] !== t89 || $[279] !== t90 || $[280] !== t91 || $[281] !== valueDate[0]) {
+    t93 = /*#__PURE__*/React.createElement(material.Grid, {
       flex: 1
     }, /*#__PURE__*/React.createElement(PrivateInputDatePicker, _extends({}, inputDatePickerProps, {
       style: inputStyle,
@@ -26843,8 +27638,8 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
       value: valueDate[0],
       label: fromLabel,
       labelIcon: fromLabelIcon,
-      error: t86,
-      focused: t87,
+      error: t88,
+      focused: t89,
       required: required,
       readOnly: readOnly,
       enableKeyboardInput: enableKeyboardInput,
@@ -26852,77 +27647,77 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
       startAdornment: startAdornment,
       endAdornment: endAdornment,
       inputRef: startInputRef,
-      onChange: t88,
-      onFocus: t89,
-      onError: t90,
+      onChange: t90,
+      onFocus: t91,
+      onError: t92,
       shouldDisableYear: handleInputDatePickerShouldDisableYear
     })));
-    $[236] = enableKeyboardInput;
-    $[237] = endAdornment;
-    $[238] = fromLabel;
-    $[239] = fromLabelIcon;
-    $[240] = handleInputDatePickerShouldDisableYear;
-    $[241] = icon;
-    $[242] = inputDatePickerProps;
-    $[243] = inputStyle;
-    $[244] = readOnly;
-    $[245] = required;
-    $[246] = startAdornment;
-    $[247] = sx;
-    $[248] = t86;
-    $[249] = t87;
-    $[250] = t88;
-    $[251] = t89;
-    $[252] = valueDate[0];
-    $[253] = t91;
+    $[265] = enableKeyboardInput;
+    $[266] = endAdornment;
+    $[267] = fromLabel;
+    $[268] = fromLabelIcon;
+    $[269] = handleInputDatePickerShouldDisableYear;
+    $[270] = icon;
+    $[271] = inputDatePickerProps;
+    $[272] = inputStyle;
+    $[273] = readOnly;
+    $[274] = required;
+    $[275] = startAdornment;
+    $[276] = sx;
+    $[277] = t88;
+    $[278] = t89;
+    $[279] = t90;
+    $[280] = t91;
+    $[281] = valueDate[0];
+    $[282] = t93;
   } else {
-    t91 = $[253];
+    t93 = $[282];
   }
-  var t92;
-  if ($[254] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t92 = /*#__PURE__*/React.createElement(material.Grid, {
+  var t94;
+  if ($[283] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t94 = /*#__PURE__*/React.createElement(material.Grid, {
       sx: {
         px: 1
       }
     }, "~");
-    $[254] = t92;
+    $[283] = t94;
   } else {
-    t92 = $[254];
+    t94 = $[283];
   }
-  var t93 = error || toError;
-  var t94 = focused || open;
-  var t95;
-  if ($[255] !== handleInputDatePickerChange) {
-    t95 = function t95(v_0) {
+  var t95 = error || toError;
+  var t96 = focused || open;
+  var t97;
+  if ($[284] !== handleInputDatePickerChange) {
+    t97 = function t97(v_0) {
       return handleInputDatePickerChange("end", v_0);
     };
-    $[255] = handleInputDatePickerChange;
-    $[256] = t95;
+    $[284] = handleInputDatePickerChange;
+    $[285] = t97;
   } else {
-    t95 = $[256];
-  }
-  var t96;
-  if ($[257] !== handleInputDatePickerFocus) {
-    t96 = function t96() {
-      return handleInputDatePickerFocus("end");
-    };
-    $[257] = handleInputDatePickerFocus;
-    $[258] = t96;
-  } else {
-    t96 = $[258];
-  }
-  var t97;
-  if ($[259] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t97 = function t97(reason_0) {
-      return endInputDatePickerErrorRef.current = reason_0;
-    };
-    $[259] = t97;
-  } else {
-    t97 = $[259];
+    t97 = $[285];
   }
   var t98;
-  if ($[260] !== enableKeyboardInput || $[261] !== endAdornment || $[262] !== handleInputDatePickerShouldDisableYear || $[263] !== icon || $[264] !== inputDatePickerProps || $[265] !== inputStyle || $[266] !== readOnly || $[267] !== required || $[268] !== startAdornment || $[269] !== sx || $[270] !== t93 || $[271] !== t94 || $[272] !== t95 || $[273] !== t96 || $[274] !== toLabel || $[275] !== toLabelIcon || $[276] !== valueDate[1]) {
-    t98 = /*#__PURE__*/React.createElement(material.Grid, {
+  if ($[286] !== handleInputDatePickerFocus) {
+    t98 = function t98() {
+      return handleInputDatePickerFocus("end");
+    };
+    $[286] = handleInputDatePickerFocus;
+    $[287] = t98;
+  } else {
+    t98 = $[287];
+  }
+  var t99;
+  if ($[288] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t99 = function t99(reason_0) {
+      return endInputDatePickerErrorRef.current = reason_0;
+    };
+    $[288] = t99;
+  } else {
+    t99 = $[288];
+  }
+  var t100;
+  if ($[289] !== enableKeyboardInput || $[290] !== endAdornment || $[291] !== handleInputDatePickerShouldDisableYear || $[292] !== icon || $[293] !== inputDatePickerProps || $[294] !== inputStyle || $[295] !== readOnly || $[296] !== required || $[297] !== startAdornment || $[298] !== sx || $[299] !== t95 || $[300] !== t96 || $[301] !== t97 || $[302] !== t98 || $[303] !== toLabel || $[304] !== toLabelIcon || $[305] !== valueDate[1]) {
+    t100 = /*#__PURE__*/React.createElement(material.Grid, {
       flex: 1
     }, /*#__PURE__*/React.createElement(PrivateInputDatePicker, _extends({}, inputDatePickerProps, {
       style: inputStyle,
@@ -26930,8 +27725,8 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
       value: valueDate[1],
       label: toLabel,
       labelIcon: toLabelIcon,
-      error: t93,
-      focused: t94,
+      error: t95,
+      focused: t96,
       required: required,
       readOnly: readOnly,
       enableKeyboardInput: enableKeyboardInput,
@@ -26939,106 +27734,115 @@ var PFormMonthRangePicker = function PFormMonthRangePicker(t0) {
       startAdornment: startAdornment,
       endAdornment: endAdornment,
       inputRef: endInputRef,
-      onChange: t95,
-      onFocus: t96,
-      onError: t97,
+      onChange: t97,
+      onFocus: t98,
+      onError: t99,
       shouldDisableYear: handleInputDatePickerShouldDisableYear
     })));
-    $[260] = enableKeyboardInput;
-    $[261] = endAdornment;
-    $[262] = handleInputDatePickerShouldDisableYear;
-    $[263] = icon;
-    $[264] = inputDatePickerProps;
-    $[265] = inputStyle;
-    $[266] = readOnly;
-    $[267] = required;
-    $[268] = startAdornment;
-    $[269] = sx;
-    $[270] = t93;
-    $[271] = t94;
-    $[272] = t95;
-    $[273] = t96;
-    $[274] = toLabel;
-    $[275] = toLabelIcon;
-    $[276] = valueDate[1];
-    $[277] = t98;
+    $[289] = enableKeyboardInput;
+    $[290] = endAdornment;
+    $[291] = handleInputDatePickerShouldDisableYear;
+    $[292] = icon;
+    $[293] = inputDatePickerProps;
+    $[294] = inputStyle;
+    $[295] = readOnly;
+    $[296] = required;
+    $[297] = startAdornment;
+    $[298] = sx;
+    $[299] = t95;
+    $[300] = t96;
+    $[301] = t97;
+    $[302] = t98;
+    $[303] = toLabel;
+    $[304] = toLabelIcon;
+    $[305] = valueDate[1];
+    $[306] = t100;
   } else {
-    t98 = $[277];
-  }
-  var t99;
-  if ($[278] !== t91 || $[279] !== t98) {
-    t99 = /*#__PURE__*/React.createElement(material.Grid, {
-      container: true,
-      alignItems: "center"
-    }, t91, t92, t98);
-    $[278] = t91;
-    $[279] = t98;
-    $[280] = t99;
-  } else {
-    t99 = $[280];
-  }
-  var t100;
-  if ($[281] !== open || $[282] !== t83 || $[283] !== t85 || $[284] !== t99) {
-    t100 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
-      open: open,
-      slotProps: t83,
-      title: t85
-    }, t99);
-    $[281] = open;
-    $[282] = t83;
-    $[283] = t85;
-    $[284] = t99;
-    $[285] = t100;
-  } else {
-    t100 = $[285];
+    t100 = $[306];
   }
   var t101;
-  if ($[286] !== error || $[287] !== errorHelperText || $[288] !== formColWithHelperText || $[289] !== fromError || $[290] !== fromErrorHelperText || $[291] !== helperText || $[292] !== toError || $[293] !== toErrorHelperText || $[294] !== variant) {
-    t101 = !formColWithHelperText && (helperText || error && errorHelperText || fromError && fromErrorHelperText || toError && toErrorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
+  if ($[307] !== t100 || $[308] !== t93) {
+    t101 = /*#__PURE__*/React.createElement(material.Grid, {
+      container: true,
+      alignItems: "center"
+    }, t93, t94, t100);
+    $[307] = t100;
+    $[308] = t93;
+    $[309] = t101;
+  } else {
+    t101 = $[309];
+  }
+  var t102;
+  if ($[310] !== open || $[311] !== t101 || $[312] !== t85 || $[313] !== t87) {
+    t102 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
+      open: open,
+      slotProps: t85,
+      title: t87
+    }, t101);
+    $[310] = open;
+    $[311] = t101;
+    $[312] = t85;
+    $[313] = t87;
+    $[314] = t102;
+  } else {
+    t102 = $[314];
+  }
+  var t103;
+  if ($[315] !== error || $[316] !== errorHelperText || $[317] !== formColWithHelperText || $[318] !== fromError || $[319] !== fromErrorHelperText || $[320] !== helperText || $[321] !== toError || $[322] !== toErrorHelperText || $[323] !== variant) {
+    t103 = !formColWithHelperText && (helperText || error && errorHelperText || fromError && fromErrorHelperText || toError && toErrorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
       error: error || fromError || toError,
       style: {
         marginLeft: variant === "standard" ? 0 : 14
       }
     }, error ? errorHelperText : fromError ? fromErrorHelperText : toError ? toErrorHelperText : helperText);
-    $[286] = error;
-    $[287] = errorHelperText;
-    $[288] = formColWithHelperText;
-    $[289] = fromError;
-    $[290] = fromErrorHelperText;
-    $[291] = helperText;
-    $[292] = toError;
-    $[293] = toErrorHelperText;
-    $[294] = variant;
-    $[295] = t101;
+    $[315] = error;
+    $[316] = errorHelperText;
+    $[317] = formColWithHelperText;
+    $[318] = fromError;
+    $[319] = fromErrorHelperText;
+    $[320] = helperText;
+    $[321] = toError;
+    $[322] = toErrorHelperText;
+    $[323] = variant;
+    $[324] = t103;
   } else {
-    t101 = $[295];
+    t103 = $[324];
   }
-  var t102;
-  if ($[296] !== t100 || $[297] !== t101 || $[298] !== t78 || $[299] !== t81) {
-    t102 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
+  var t104;
+  if ($[325] !== t102 || $[326] !== t103 || $[327] !== t80 || $[328] !== t83) {
+    t104 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
       dateAdapter: AdapterDayjs.AdapterDayjs,
       adapterLocale: "ko"
     }, /*#__PURE__*/React.createElement(material.ClickAwayListener, {
       mouseEvent: "onMouseDown",
       touchEvent: "onTouchStart",
-      onClickAway: t77
+      onClickAway: t79
     }, /*#__PURE__*/React.createElement("div", {
-      className: t78,
-      style: t81
-    }, t100, t101)));
-    $[296] = t100;
-    $[297] = t101;
-    $[298] = t78;
-    $[299] = t81;
-    $[300] = t102;
+      className: t80,
+      style: t83
+    }, t102, t103)));
+    $[325] = t102;
+    $[326] = t103;
+    $[327] = t80;
+    $[328] = t83;
+    $[329] = t104;
   } else {
-    t102 = $[300];
+    t104 = $[329];
   }
-  return t102;
+  return t104;
 };
-function _temp$6() {
-  return "PFormMonthRangePicker";
-}var valueToDate$1 = function valueToDate(v) {
+var PFormMonthRangePicker = function PFormMonthRangePicker(props) {
+  var $ = compilerRuntime.c(2);
+  var t0;
+  if ($[0] !== props) {
+    t0 = /*#__PURE__*/React.createElement(PFormMonthRangePickerInternal, props);
+    $[0] = props;
+    $[1] = t0;
+  } else {
+    t0 = $[1];
+  }
+  return t0;
+};var valueToDate$1 = function valueToDate(v) {
   return dayjs("".concat(v, "-01-01"));
 };
 var dateToValue$1 = function dateToValue(v) {
@@ -27047,9 +27851,10 @@ var dateToValue$1 = function dateToValue(v) {
 var getFinalValue$1 = function getFinalValue(newValue) {
   return newValue || null;
 };var DEFAULT_FORMAT = 'YYYY년';
-var PFormYearPicker = function PFormYearPicker(t0) {
-  var $ = compilerRuntime.c(174);
-  var ref = t0.ref,
+var PFormYearPickerInternal = function PFormYearPickerInternal(t0) {
+  var $ = compilerRuntime.c(203);
+  var t1 = t0.embedded,
+    ref = t0.ref,
     initVariant = t0.variant,
     initSize = t0.size,
     initColor = t0.color,
@@ -27070,12 +27875,12 @@ var PFormYearPicker = function PFormYearPicker(t0) {
     onChange = t0.onChange,
     onValidate = t0.onValidate,
     icon = t0.icon,
-    t1 = t0.format,
+    t2 = t0.format,
     initLabelShrink = t0.labelShrink,
     disablePast = t0.disablePast,
     disableFuture = t0.disableFuture,
-    t2 = t0.minYear,
-    t3 = t0.maxYear,
+    t3 = t0.minYear,
+    t4 = t0.maxYear,
     inputWidth = t0.inputWidth,
     enableKeyboardInput = t0.enableKeyboardInput,
     startAdornment = t0.startAdornment,
@@ -27083,10 +27888,12 @@ var PFormYearPicker = function PFormYearPicker(t0) {
     className = t0.className,
     initStyle = t0.style,
     sx = t0.sx;
-  var format = t1 === undefined ? DEFAULT_FORMAT : t1;
-  var minYear = t2 === undefined ? 2020 : t2;
-  var maxYear = t3 === undefined ? 2050 : t3;
+  var embedded = t1 === undefined ? false : t1;
+  var format = t2 === undefined ? DEFAULT_FORMAT : t2;
+  var minYear = t3 === undefined ? 2020 : t3;
+  var maxYear = t4 === undefined ? 2050 : t4;
   var id = React.useId();
+  var embeddedRef = React.useRef(null);
   var _useFormState = useFormState(),
     formVariant = _useFormState.variant,
     formSize = _useFormState.size,
@@ -27119,105 +27926,105 @@ var PFormYearPicker = function PFormYearPicker(t0) {
     _useState2 = _slicedToArray(_useState, 2),
     error = _useState2[0],
     _setError = _useState2[1];
-  var t4;
   var t5;
+  var t6;
   if ($[0] !== initError) {
-    t4 = function t4() {
+    t5 = function t5() {
       return _setError(initError);
     };
-    t5 = [initError];
+    t6 = [initError];
     $[0] = initError;
-    $[1] = t4;
-    $[2] = t5;
+    $[1] = t5;
+    $[2] = t6;
   } else {
-    t4 = $[1];
-    t5 = $[2];
+    t5 = $[1];
+    t6 = $[2];
   }
-  reactHook.useFirstSkipChanged(t4, t5);
+  reactHook.useFirstSkipChanged(t5, t6);
   var errorRef = reactHook.useAutoUpdateRef(error);
-  var t6;
+  var t7;
   if ($[3] !== errorRef) {
-    t6 = function t6(newValue) {
+    t7 = function t7(newValue) {
       _setError(newValue);
       errorRef.current = newValue;
     };
     $[3] = errorRef;
-    $[4] = t6;
+    $[4] = t7;
   } else {
-    t6 = $[4];
+    t7 = $[4];
   }
-  var setError = t6;
+  var setError = t7;
   var _useState3 = React.useState(initData),
     _useState4 = _slicedToArray(_useState3, 2),
     data = _useState4[0],
     _setData = _useState4[1];
-  var t7;
   var t8;
+  var t9;
   if ($[5] !== initData) {
-    t7 = function t7() {
+    t8 = function t8() {
       return _setData(initData);
     };
-    t8 = [initData];
+    t9 = [initData];
     $[5] = initData;
-    $[6] = t7;
-    $[7] = t8;
+    $[6] = t8;
+    $[7] = t9;
   } else {
-    t7 = $[6];
-    t8 = $[7];
+    t8 = $[6];
+    t9 = $[7];
   }
-  reactHook.useFirstSkipChanged(t7, t8);
+  reactHook.useFirstSkipChanged(t8, t9);
   var dataRef = reactHook.useAutoUpdateRef(data);
-  var t9;
+  var t10;
   if ($[8] !== dataRef) {
-    t9 = function t9(newValue_0) {
+    t10 = function t10(newValue_0) {
       _setData(newValue_0);
       dataRef.current = newValue_0;
     };
     $[8] = dataRef;
-    $[9] = t9;
+    $[9] = t10;
   } else {
-    t9 = $[9];
+    t10 = $[9];
   }
-  var setData = t9;
+  var setData = t10;
   var finalInitDisabled = initDisabled !== null && initDisabled !== void 0 ? initDisabled : formDisabled;
   var _useState5 = React.useState(finalInitDisabled),
     _useState6 = _slicedToArray(_useState5, 2),
     disabled = _useState6[0],
     setDisabled = _useState6[1];
-  var t10;
   var t11;
+  var t12;
   if ($[10] !== finalInitDisabled) {
-    t10 = function t10() {
+    t11 = function t11() {
       return setDisabled(finalInitDisabled);
     };
-    t11 = [finalInitDisabled];
+    t12 = [finalInitDisabled];
     $[10] = finalInitDisabled;
-    $[11] = t10;
-    $[12] = t11;
+    $[11] = t11;
+    $[12] = t12;
   } else {
-    t10 = $[11];
-    t11 = $[12];
+    t11 = $[11];
+    t12 = $[12];
   }
-  reactHook.useFirstSkipChanged(t10, t11);
+  reactHook.useFirstSkipChanged(t11, t12);
   var _useState7 = React.useState(initHidden),
     _useState8 = _slicedToArray(_useState7, 2),
     hidden = _useState8[0],
     setHidden = _useState8[1];
-  var t12;
   var t13;
+  var t14;
   if ($[13] !== initHidden) {
-    t12 = function t12() {
+    t13 = function t13() {
       return setHidden(initHidden);
     };
-    t13 = [initHidden];
+    t14 = [initHidden];
     $[13] = initHidden;
-    $[14] = t12;
-    $[15] = t13;
+    $[14] = t13;
+    $[15] = t14;
   } else {
-    t12 = $[14];
-    t13 = $[15];
+    t13 = $[14];
+    t14 = $[15];
   }
-  reactHook.useFirstSkipChanged(t12, t13);
+  reactHook.useFirstSkipChanged(t13, t14);
   var _useState9 = React.useState(),
     _useState0 = _slicedToArray(_useState9, 2),
     errorHelperText = _useState0[0],
@@ -27226,21 +28033,21 @@ var PFormYearPicker = function PFormYearPicker(t0) {
     _useState10 = _slicedToArray(_useState1, 2),
     open = _useState10[0],
     setOpen = _useState10[1];
-  var t14;
+  var t15;
   if ($[16] !== setError) {
-    t14 = function t14(error_0, errorHelperText_0) {
+    t15 = function t15(error_0, errorHelperText_0) {
       setError(error_0);
       setErrorHelperText(error_0 ? errorHelperText_0 : undefined);
     };
     $[16] = setError;
-    $[17] = t14;
+    $[17] = t15;
   } else {
-    t14 = $[17];
+    t15 = $[17];
   }
-  var setErrorErrorHelperText = t14;
-  var t15;
+  var setErrorErrorHelperText = t15;
+  var t16;
   if ($[18] !== onValidateRef || $[19] !== required || $[20] !== setErrorErrorHelperText) {
-    t15 = function t15(value) {
+    t16 = function t16(value) {
       if (required && compare.empty(value)) {
         setErrorErrorHelperText(true, "\uD544\uC218 \uC120\uD0DD \uD56D\uBAA9\uC785\uB2C8\uB2E4.");
         return false;
@@ -27262,69 +28069,75 @@ var PFormYearPicker = function PFormYearPicker(t0) {
     $[18] = onValidateRef;
     $[19] = required;
     $[20] = setErrorErrorHelperText;
-    $[21] = t15;
+    $[21] = t16;
   } else {
-    t15 = $[21];
+    t16 = $[21];
   }
-  var validate = t15;
-  var t16;
-  if ($[22] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t16 = function t16() {
+  var validate = t16;
+  var t17;
+  if ($[22] !== embedded) {
+    t17 = function t17() {
       var _inputRef$current;
+      if (embedded) {
+        var _embeddedRef$current;
+        (_embeddedRef$current = embeddedRef.current) === null || _embeddedRef$current === void 0 || _embeddedRef$current.focus();
+        return;
+      }
       (_inputRef$current = inputRef.current) === null || _inputRef$current === void 0 || _inputRef$current.focus();
       setTimeout(function () {
         var _inputRef$current2;
         (_inputRef$current2 = inputRef.current) === null || _inputRef$current2 === void 0 || _inputRef$current2.blur();
       });
     };
-    $[22] = t16;
+    $[22] = embedded;
+    $[23] = t17;
   } else {
-    t16 = $[22];
+    t17 = $[23];
   }
-  var focus = t16;
-  var t17;
-  if ($[23] !== initValue) {
-    t17 = getFinalValue$1(initValue);
-    $[23] = initValue;
-    $[24] = t17;
+  var focus = t17;
+  var t18;
+  if ($[24] !== initValue) {
+    t18 = getFinalValue$1(initValue);
+    $[24] = initValue;
+    $[25] = t18;
   } else {
-    t17 = $[24];
+    t18 = $[25];
   }
-  var _useState11 = React.useState(t17),
+  var _useState11 = React.useState(t18),
     _useState12 = _slicedToArray(_useState11, 2),
     value_0 = _useState12[0],
     _setValue = _useState12[1];
-  var t18;
   var t19;
-  if ($[25] !== initValue) {
-    t18 = function t18() {
+  var t20;
+  if ($[26] !== initValue) {
+    t19 = function t19() {
       return _setValue(getFinalValue$1(initValue));
     };
-    t19 = [initValue];
-    $[25] = initValue;
-    $[26] = t18;
+    t20 = [initValue];
+    $[26] = initValue;
     $[27] = t19;
+    $[28] = t20;
   } else {
-    t18 = $[26];
     t19 = $[27];
+    t20 = $[28];
   }
-  reactHook.useFirstSkipChanged(t18, t19);
+  reactHook.useFirstSkipChanged(t19, t20);
   var valueRef = reactHook.useAutoUpdateRef(value_0);
-  var t20;
-  if ($[28] !== valueRef) {
-    t20 = function t20(newValue_1) {
+  var t21;
+  if ($[29] !== valueRef) {
+    t21 = function t21(newValue_1) {
       _setValue(newValue_1);
       valueRef.current = newValue_1;
     };
-    $[28] = valueRef;
-    $[29] = t20;
+    $[29] = valueRef;
+    $[30] = t21;
   } else {
-    t20 = $[29];
+    t21 = $[30];
   }
-  var setValue = t20;
-  var t21;
-  if ($[30] !== error || $[31] !== name || $[32] !== onChangeRef || $[33] !== onValueChange || $[34] !== setValue || $[35] !== validate) {
-    t21 = function t21(newValue_2) {
+  var setValue = t21;
+  var t22;
+  if ($[31] !== error || $[32] !== name || $[33] !== onChangeRef || $[34] !== onValueChange || $[35] !== setValue || $[36] !== validate) {
+    t22 = function t22(newValue_2) {
       var _onChangeRef$current;
       var finalValue = getFinalValue$1(newValue_2);
       setValue(finalValue);
@@ -27335,60 +28148,60 @@ var PFormYearPicker = function PFormYearPicker(t0) {
       onValueChange(name, finalValue);
       return finalValue;
     };
-    $[30] = error;
-    $[31] = name;
-    $[32] = onChangeRef;
-    $[33] = onValueChange;
-    $[34] = setValue;
-    $[35] = validate;
-    $[36] = t21;
-  } else {
-    t21 = $[36];
-  }
-  var updateValue = t21;
-  var t22;
-  if ($[37] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t22 = new Date().getFullYear();
+    $[31] = error;
+    $[32] = name;
+    $[33] = onChangeRef;
+    $[34] = onValueChange;
+    $[35] = setValue;
+    $[36] = validate;
     $[37] = t22;
   } else {
     t22 = $[37];
   }
-  var nowYear = t22;
+  var updateValue = t22;
   var t23;
-  if ($[38] !== minYear) {
-    t23 = minYear ? valueToDate$1(minYear) : undefined;
-    $[38] = minYear;
-    $[39] = t23;
+  if ($[38] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t23 = new Date().getFullYear();
+    $[38] = t23;
   } else {
-    t23 = $[39];
+    t23 = $[38];
   }
-  var minDate = t23;
+  var nowYear = t23;
   var t24;
-  if ($[40] !== maxYear) {
-    t24 = maxYear ? valueToDate$1(maxYear) : undefined;
-    $[40] = maxYear;
-    $[41] = t24;
+  if ($[39] !== minYear) {
+    t24 = minYear ? valueToDate$1(minYear) : undefined;
+    $[39] = minYear;
+    $[40] = t24;
   } else {
-    t24 = $[41];
+    t24 = $[40];
   }
-  var maxDate = t24;
+  var minDate = t24;
   var t25;
-  if ($[42] !== maxDate || $[43] !== minDate) {
-    t25 = {
+  if ($[41] !== maxYear) {
+    t25 = maxYear ? valueToDate$1(maxYear) : undefined;
+    $[41] = maxYear;
+    $[42] = t25;
+  } else {
+    t25 = $[42];
+  }
+  var maxDate = t25;
+  var t26;
+  if ($[43] !== maxDate || $[44] !== minDate) {
+    t26 = {
       nowYear: nowYear,
       min: minDate,
       max: maxDate
     };
-    $[42] = maxDate;
-    $[43] = minDate;
-    $[44] = t25;
+    $[43] = maxDate;
+    $[44] = minDate;
+    $[45] = t26;
   } else {
-    t25 = $[44];
+    t26 = $[45];
   }
-  var dateInfo = t25;
-  var t26;
-  if ($[45] !== name || $[46] !== onRequestSearchSubmit || $[47] !== open || $[48] !== valueRef) {
-    t26 = function t26() {
+  var dateInfo = t26;
+  var t27;
+  if ($[46] !== name || $[47] !== onRequestSearchSubmit || $[48] !== open || $[49] !== valueRef) {
+    t27 = function t27() {
       if (open) {
         openValueRef.current = valueRef.current;
       } else {
@@ -27405,206 +28218,218 @@ var PFormYearPicker = function PFormYearPicker(t0) {
         }
       }
     };
-    $[45] = name;
-    $[46] = onRequestSearchSubmit;
-    $[47] = open;
-    $[48] = valueRef;
-    $[49] = t26;
+    $[46] = name;
+    $[47] = onRequestSearchSubmit;
+    $[48] = open;
+    $[49] = valueRef;
+    $[50] = t27;
   } else {
-    t26 = $[49];
+    t27 = $[50];
   }
-  var t27;
-  if ($[50] !== open) {
-    t27 = [open];
-    $[50] = open;
-    $[51] = t27;
-  } else {
-    t27 = $[51];
-  }
-  reactHook.useFirstSkipEffect(t26, t27);
   var t28;
-  if ($[52] !== name) {
-    t28 = function t28() {
-      return name;
-    };
-    $[52] = name;
-    $[53] = t28;
+  if ($[51] !== open) {
+    t28 = [open];
+    $[51] = open;
+    $[52] = t28;
   } else {
-    t28 = $[53];
+    t28 = $[52];
   }
+  reactHook.useFirstSkipEffect(t27, t28);
   var t29;
-  if ($[54] !== initValueRef) {
+  if ($[53] !== embedded) {
     t29 = function t29() {
-      return getFinalValue$1(initValueRef.current);
+      return embedded ? "PFormEmbedYearPicker" : "PFormYearPicker";
     };
-    $[54] = initValueRef;
-    $[55] = t29;
+    $[53] = embedded;
+    $[54] = t29;
   } else {
-    t29 = $[55];
+    t29 = $[54];
   }
   var t30;
-  if ($[56] !== initValueRef || $[57] !== updateValue) {
+  if ($[55] !== name) {
     t30 = function t30() {
-      return updateValue(initValueRef.current);
+      return name;
     };
-    $[56] = initValueRef;
-    $[57] = updateValue;
-    $[58] = t30;
+    $[55] = name;
+    $[56] = t30;
   } else {
-    t30 = $[58];
+    t30 = $[56];
   }
   var t31;
-  if ($[59] !== valueRef) {
+  if ($[57] !== initValueRef) {
     t31 = function t31() {
-      return valueRef.current;
+      return getFinalValue$1(initValueRef.current);
     };
-    $[59] = valueRef;
-    $[60] = t31;
+    $[57] = initValueRef;
+    $[58] = t31;
   } else {
-    t31 = $[60];
+    t31 = $[58];
   }
   var t32;
-  if ($[61] !== dataRef) {
+  if ($[59] !== initValueRef || $[60] !== updateValue) {
     t32 = function t32() {
-      return dataRef.current;
+      return updateValue(initValueRef.current);
     };
-    $[61] = dataRef;
-    $[62] = t32;
+    $[59] = initValueRef;
+    $[60] = updateValue;
+    $[61] = t32;
   } else {
-    t32 = $[62];
+    t32 = $[61];
   }
   var t33;
-  if ($[63] !== exceptValue) {
+  if ($[62] !== valueRef) {
     t33 = function t33() {
-      return !!exceptValue;
+      return valueRef.current;
     };
-    $[63] = exceptValue;
-    $[64] = t33;
+    $[62] = valueRef;
+    $[63] = t33;
   } else {
-    t33 = $[64];
+    t33 = $[63];
   }
   var t34;
-  if ($[65] !== disabled) {
+  if ($[64] !== dataRef) {
     t34 = function t34() {
-      return !!disabled;
+      return dataRef.current;
     };
-    $[65] = disabled;
-    $[66] = t34;
+    $[64] = dataRef;
+    $[65] = t34;
   } else {
-    t34 = $[66];
+    t34 = $[65];
   }
   var t35;
-  if ($[67] !== hidden) {
+  if ($[66] !== exceptValue) {
     t35 = function t35() {
-      return !!hidden;
+      return !!exceptValue;
     };
-    $[67] = hidden;
-    $[68] = t35;
+    $[66] = exceptValue;
+    $[67] = t35;
   } else {
-    t35 = $[68];
+    t35 = $[67];
   }
   var t36;
-  if ($[69] !== validate || $[70] !== valueRef) {
+  if ($[68] !== disabled) {
     t36 = function t36() {
-      return validate(valueRef.current);
+      return !!disabled;
     };
-    $[69] = validate;
-    $[70] = valueRef;
-    $[71] = t36;
+    $[68] = disabled;
+    $[69] = t36;
   } else {
-    t36 = $[71];
+    t36 = $[69];
   }
   var t37;
-  if ($[72] !== setData || $[73] !== setErrorErrorHelperText || $[74] !== t28 || $[75] !== t29 || $[76] !== t30 || $[77] !== t31 || $[78] !== t32 || $[79] !== t33 || $[80] !== t34 || $[81] !== t35 || $[82] !== t36 || $[83] !== updateValue) {
-    t37 = {
-      getType: _temp$5,
-      getName: t28,
-      getReset: t29,
-      reset: t30,
-      getValue: t31,
+  if ($[70] !== hidden) {
+    t37 = function t37() {
+      return !!hidden;
+    };
+    $[70] = hidden;
+    $[71] = t37;
+  } else {
+    t37 = $[71];
+  }
+  var t38;
+  if ($[72] !== validate || $[73] !== valueRef) {
+    t38 = function t38() {
+      return validate(valueRef.current);
+    };
+    $[72] = validate;
+    $[73] = valueRef;
+    $[74] = t38;
+  } else {
+    t38 = $[74];
+  }
+  var t39;
+  if ($[75] !== focus || $[76] !== setData || $[77] !== setErrorErrorHelperText || $[78] !== t29 || $[79] !== t30 || $[80] !== t31 || $[81] !== t32 || $[82] !== t33 || $[83] !== t34 || $[84] !== t35 || $[85] !== t36 || $[86] !== t37 || $[87] !== t38 || $[88] !== updateValue) {
+    t39 = {
+      getType: t29,
+      getName: t30,
+      getReset: t31,
+      reset: t32,
+      getValue: t33,
       setValue: updateValue,
-      getData: t32,
+      getData: t34,
       setData: setData,
-      isExceptValue: t33,
-      isDisabled: t34,
+      isExceptValue: t35,
+      isDisabled: t36,
       setDisabled: setDisabled,
-      isHidden: t35,
+      isHidden: t37,
       setHidden: setHidden,
       focus: focus,
       focusValidate: focus,
-      validate: t36,
+      validate: t38,
       setError: setErrorErrorHelperText
     };
-    $[72] = setData;
-    $[73] = setErrorErrorHelperText;
-    $[74] = t28;
-    $[75] = t29;
-    $[76] = t30;
-    $[77] = t31;
-    $[78] = t32;
-    $[79] = t33;
-    $[80] = t34;
-    $[81] = t35;
-    $[82] = t36;
-    $[83] = updateValue;
-    $[84] = t37;
+    $[75] = focus;
+    $[76] = setData;
+    $[77] = setErrorErrorHelperText;
+    $[78] = t29;
+    $[79] = t30;
+    $[80] = t31;
+    $[81] = t32;
+    $[82] = t33;
+    $[83] = t34;
+    $[84] = t35;
+    $[85] = t36;
+    $[86] = t37;
+    $[87] = t38;
+    $[88] = updateValue;
+    $[89] = t39;
   } else {
-    t37 = $[84];
+    t39 = $[89];
   }
-  var commands = t37;
-  var t38;
-  if ($[85] !== id || $[86] !== onAddValueItem) {
-    t38 = function t38(commands_0) {
+  var commands = t39;
+  var t40;
+  if ($[90] !== id || $[91] !== onAddValueItem) {
+    t40 = function t40(commands_0) {
       return onAddValueItem(id, commands_0);
     };
-    $[85] = id;
-    $[86] = onAddValueItem;
-    $[87] = t38;
+    $[90] = id;
+    $[91] = onAddValueItem;
+    $[92] = t40;
   } else {
-    t38 = $[87];
+    t40 = $[92];
   }
-  var t39;
-  if ($[88] !== id || $[89] !== onRemoveValueItem) {
-    t39 = function t39() {
+  var t41;
+  if ($[93] !== id || $[94] !== onRemoveValueItem) {
+    t41 = function t41() {
       return onRemoveValueItem(id);
     };
-    $[88] = id;
-    $[89] = onRemoveValueItem;
-    $[90] = t39;
+    $[93] = id;
+    $[94] = onRemoveValueItem;
+    $[95] = t41;
   } else {
-    t39 = $[90];
+    t41 = $[95];
   }
-  reactHook.useForwardRef(ref, commands, t38, t39);
-  var t40;
-  if ($[91] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t40 = function t40() {
+  reactHook.useForwardRef(ref, commands, t40, t41);
+  var t42;
+  if ($[96] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t42 = function t42() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
       }
       mouseDownTimeRef.current = new Date().getTime();
     };
-    $[91] = t40;
+    $[96] = t42;
   } else {
-    t40 = $[91];
+    t42 = $[96];
   }
-  var handleContainerMouseDown = t40;
-  var t41;
-  if ($[92] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t41 = function t41() {
+  var handleContainerMouseDown = t42;
+  var t43;
+  if ($[97] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t43 = function t43() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
       }
     };
-    $[92] = t41;
+    $[97] = t43;
   } else {
-    t41 = $[92];
+    t43 = $[97];
   }
-  var handleContainerFocus = t41;
-  var t42;
-  if ($[93] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t42 = function t42() {
+  var handleContainerFocus = t43;
+  var t44;
+  if ($[98] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t44 = function t44() {
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = undefined;
@@ -27616,146 +28441,222 @@ var PFormYearPicker = function PFormYearPicker(t0) {
         }, 10);
       }
     };
-    $[93] = t42;
+    $[98] = t44;
   } else {
-    t42 = $[93];
+    t44 = $[98];
   }
-  var handleContainerBlur = t42;
-  var t43;
-  if ($[94] !== name || $[95] !== onValueChangeByUser || $[96] !== updateValue) {
-    t43 = function t43(newValue_3, isClick) {
+  var handleContainerBlur = t44;
+  var t45;
+  if ($[99] !== embedded || $[100] !== name || $[101] !== onRequestSearchSubmit || $[102] !== onValueChangeByUser || $[103] !== updateValue) {
+    t45 = function t45(newValue_3, isClick) {
       updateValue(newValue_3);
       if (isClick) {
         setOpen(false);
       }
       setTimeout(function () {
         onValueChangeByUser(name, newValue_3);
+        if (embedded && isClick) {
+          onRequestSearchSubmit(name, newValue_3);
+        }
       });
     };
-    $[94] = name;
-    $[95] = onValueChangeByUser;
-    $[96] = updateValue;
-    $[97] = t43;
+    $[99] = embedded;
+    $[100] = name;
+    $[101] = onRequestSearchSubmit;
+    $[102] = onValueChangeByUser;
+    $[103] = updateValue;
+    $[104] = t45;
   } else {
-    t43 = $[97];
+    t45 = $[104];
   }
-  var handleContainerChange = t43;
-  var t44;
-  if ($[98] !== name || $[99] !== onValueChangeByUser || $[100] !== updateValue) {
-    t44 = function t44(v) {
+  var handleContainerChange = t45;
+  var t46;
+  if ($[105] !== name || $[106] !== onValueChangeByUser || $[107] !== updateValue) {
+    t46 = function t46(v) {
       var newValue_4 = v ? dateToValue$1(v) : v;
       updateValue(newValue_4);
       setTimeout(function () {
         onValueChangeByUser(name, newValue_4);
       });
     };
-    $[98] = name;
-    $[99] = onValueChangeByUser;
-    $[100] = updateValue;
-    $[101] = t44;
+    $[105] = name;
+    $[106] = onValueChangeByUser;
+    $[107] = updateValue;
+    $[108] = t46;
   } else {
-    t44 = $[101];
+    t46 = $[108];
   }
-  var handleInputDatePickerChange = t44;
-  var t45;
-  if ($[102] !== disabled || $[103] !== readOnly) {
-    t45 = function t45() {
+  var handleInputDatePickerChange = t46;
+  var t47;
+  if ($[109] !== disabled || $[110] !== readOnly) {
+    t47 = function t47() {
       if (readOnly || disabled) {
         return;
       }
       setOpen(true);
     };
-    $[102] = disabled;
-    $[103] = readOnly;
-    $[104] = t45;
+    $[109] = disabled;
+    $[110] = readOnly;
+    $[111] = t47;
   } else {
-    t45 = $[104];
+    t47 = $[111];
   }
-  var handleInputDatePickerFocus = t45;
-  var t46;
-  if ($[105] !== dateInfo.nowYear || $[106] !== disableFuture || $[107] !== disablePast) {
-    t46 = function t46(year) {
+  var handleInputDatePickerFocus = t47;
+  var t48;
+  if ($[112] !== dateInfo.nowYear || $[113] !== disableFuture || $[114] !== disablePast) {
+    t48 = function t48(year) {
       return !!disablePast && year.year() < dateInfo.nowYear || !!disableFuture && year.year() > dateInfo.nowYear;
     };
-    $[105] = dateInfo.nowYear;
-    $[106] = disableFuture;
-    $[107] = disablePast;
-    $[108] = t46;
+    $[112] = dateInfo.nowYear;
+    $[113] = disableFuture;
+    $[114] = disablePast;
+    $[115] = t48;
   } else {
-    t46 = $[108];
+    t48 = $[115];
   }
-  var handleInputDatePickerShouldDisableYear = t46;
-  var t47;
-  if ($[109] !== value_0) {
-    t47 = value_0 ? valueToDate$1(value_0) : null;
-    $[109] = value_0;
-    $[110] = t47;
+  var handleInputDatePickerShouldDisableYear = t48;
+  var t49;
+  if ($[116] !== value_0) {
+    t49 = value_0 ? valueToDate$1(value_0) : null;
+    $[116] = value_0;
+    $[117] = t49;
   } else {
-    t47 = $[110];
+    t49 = $[117];
   }
-  var valueDate = t47;
-  var t48;
-  if ($[111] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t48 = function t48() {
+  var valueDate = t49;
+  if (embedded) {
+    var _t = !formColWithHelperText ? error ? errorHelperText : helperText : undefined;
+    var _t2;
+    if ($[118] === Symbol["for"]("react.memo_cache_sentinel")) {
+      _t2 = {
+        display: "flex"
+      };
+      $[118] = _t2;
+    } else {
+      _t2 = $[118];
+    }
+    var _t3;
+    if ($[119] !== disableFuture || $[120] !== disablePast || $[121] !== handleContainerChange || $[122] !== maxYear || $[123] !== minYear || $[124] !== value_0) {
+      _t3 = /*#__PURE__*/React.createElement("div", {
+        style: _t2
+      }, /*#__PURE__*/React.createElement(PrivateYearPicker, {
+        minYear: minYear,
+        maxYear: maxYear,
+        disablePast: disablePast,
+        disableFuture: disableFuture,
+        value: value_0,
+        onChange: handleContainerChange
+      }));
+      $[119] = disableFuture;
+      $[120] = disablePast;
+      $[121] = handleContainerChange;
+      $[122] = maxYear;
+      $[123] = minYear;
+      $[124] = value_0;
+      $[125] = _t3;
+    } else {
+      _t3 = $[125];
+    }
+    var _t4;
+    if ($[126] !== className || $[127] !== disabled || $[128] !== error || $[129] !== fullWidth || $[130] !== hidden || $[131] !== initStyle || $[132] !== label || $[133] !== name || $[134] !== readOnly || $[135] !== required || $[136] !== sx || $[137] !== _t || $[138] !== _t3) {
+      _t4 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
+        dateAdapter: AdapterDayjs.AdapterDayjs
+      }, /*#__PURE__*/React.createElement(PrivateEmbedPicker, {
+        name: name,
+        label: label,
+        required: required,
+        disabled: disabled,
+        readOnly: readOnly,
+        hidden: hidden,
+        fullWidth: fullWidth,
+        error: error,
+        helperText: _t,
+        pickerRef: embeddedRef,
+        className: className,
+        style: initStyle,
+        sx: sx
+      }, _t3));
+      $[126] = className;
+      $[127] = disabled;
+      $[128] = error;
+      $[129] = fullWidth;
+      $[130] = hidden;
+      $[131] = initStyle;
+      $[132] = label;
+      $[133] = name;
+      $[134] = readOnly;
+      $[135] = required;
+      $[136] = sx;
+      $[137] = _t;
+      $[138] = _t3;
+      $[139] = _t4;
+    } else {
+      _t4 = $[139];
+    }
+    return _t4;
+  }
+  var t50;
+  if ($[140] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t50 = function t50() {
       return setOpen(false);
     };
-    $[111] = t48;
+    $[140] = t50;
   } else {
-    t48 = $[111];
+    t50 = $[140];
   }
-  var t49;
-  if ($[112] !== className) {
-    t49 = classNames(className, "PFormYearPicker");
-    $[112] = className;
-    $[113] = t49;
+  var t51;
+  if ($[141] !== className) {
+    t51 = classNames(className, "PFormYearPicker");
+    $[141] = className;
+    $[142] = t51;
   } else {
-    t49 = $[113];
+    t51 = $[142];
   }
-  var t50 = hidden ? "none" : fullWidth ? "block" : "inline-block";
-  var t51 = fullWidth ? 1 : undefined;
-  var t52;
-  if ($[114] !== t50 || $[115] !== t51) {
-    t52 = {
-      display: t50,
-      flex: t51
-    };
-    $[114] = t50;
-    $[115] = t51;
-    $[116] = t52;
-  } else {
-    t52 = $[116];
-  }
-  var t53 = error && errorHelperText ? 8 : -14;
+  var t52 = hidden ? "none" : fullWidth ? "block" : "inline-block";
+  var t53 = fullWidth ? 1 : undefined;
   var t54;
-  if ($[117] !== t53) {
+  if ($[143] !== t52 || $[144] !== t53) {
     t54 = {
+      display: t52,
+      flex: t53
+    };
+    $[143] = t52;
+    $[144] = t53;
+    $[145] = t54;
+  } else {
+    t54 = $[145];
+  }
+  var t55 = error && errorHelperText ? 8 : -14;
+  var t56;
+  if ($[146] !== t55) {
+    t56 = {
       popper: {
         modifiers: [{
           name: "offset",
           options: {
-            offset: [0, t53]
+            offset: [0, t55]
           }
         }]
       }
     };
-    $[117] = t53;
-    $[118] = t54;
+    $[146] = t55;
+    $[147] = t56;
   } else {
-    t54 = $[118];
+    t56 = $[147];
   }
-  var t55;
-  if ($[119] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t55 = {
+  var t57;
+  if ($[148] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t57 = {
       display: "flex"
     };
-    $[119] = t55;
+    $[148] = t57;
   } else {
-    t55 = $[119];
+    t57 = $[148];
   }
-  var t56;
-  if ($[120] !== disableFuture || $[121] !== disablePast || $[122] !== handleContainerChange || $[123] !== maxYear || $[124] !== minYear || $[125] !== value_0) {
-    t56 = /*#__PURE__*/React.createElement("div", {
-      style: t55
+  var t58;
+  if ($[149] !== disableFuture || $[150] !== disablePast || $[151] !== handleContainerChange || $[152] !== maxYear || $[153] !== minYear || $[154] !== value_0) {
+    t58 = /*#__PURE__*/React.createElement("div", {
+      style: t57
     }, /*#__PURE__*/React.createElement(PrivateYearPicker, {
       minYear: minYear,
       maxYear: maxYear,
@@ -27764,42 +28665,42 @@ var PFormYearPicker = function PFormYearPicker(t0) {
       value: value_0,
       onChange: handleContainerChange
     }));
-    $[120] = disableFuture;
-    $[121] = disablePast;
-    $[122] = handleContainerChange;
-    $[123] = maxYear;
-    $[124] = minYear;
-    $[125] = value_0;
-    $[126] = t56;
+    $[149] = disableFuture;
+    $[150] = disablePast;
+    $[151] = handleContainerChange;
+    $[152] = maxYear;
+    $[153] = minYear;
+    $[154] = value_0;
+    $[155] = t58;
   } else {
-    t56 = $[126];
+    t58 = $[155];
   }
-  var t57;
-  if ($[127] !== fullWidth || $[128] !== initStyle || $[129] !== inputWidth) {
-    t57 = inputWidth != null ? _objectSpread2({
+  var t59;
+  if ($[156] !== fullWidth || $[157] !== initStyle || $[158] !== inputWidth) {
+    t59 = inputWidth != null ? _objectSpread2({
       width: inputWidth
     }, initStyle) : _objectSpread2({
       width: fullWidth ? undefined : 150
     }, initStyle);
-    $[127] = fullWidth;
-    $[128] = initStyle;
-    $[129] = inputWidth;
-    $[130] = t57;
+    $[156] = fullWidth;
+    $[157] = initStyle;
+    $[158] = inputWidth;
+    $[159] = t59;
   } else {
-    t57 = $[130];
+    t59 = $[159];
   }
-  var t58;
-  if ($[131] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t58 = function t58(reason) {
+  var t60;
+  if ($[160] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t60 = function t60(reason) {
       return inputDatePickerErrorRef.current = reason;
     };
-    $[131] = t58;
+    $[160] = t60;
   } else {
-    t58 = $[131];
+    t60 = $[160];
   }
-  var t59;
-  if ($[132] !== color || $[133] !== dateInfo.max || $[134] !== dateInfo.min || $[135] !== disabled || $[136] !== enableKeyboardInput || $[137] !== endAdornment || $[138] !== error || $[139] !== focused || $[140] !== format || $[141] !== fullWidth || $[142] !== handleInputDatePickerChange || $[143] !== handleInputDatePickerFocus || $[144] !== handleInputDatePickerShouldDisableYear || $[145] !== icon || $[146] !== label || $[147] !== labelIcon || $[148] !== labelShrink || $[149] !== readOnly || $[150] !== required || $[151] !== size || $[152] !== startAdornment || $[153] !== sx || $[154] !== t57 || $[155] !== valueDate || $[156] !== variant) {
-    t59 = /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(PrivateInputDatePicker, {
+  var t61;
+  if ($[161] !== color || $[162] !== dateInfo.max || $[163] !== dateInfo.min || $[164] !== disabled || $[165] !== enableKeyboardInput || $[166] !== endAdornment || $[167] !== error || $[168] !== focused || $[169] !== format || $[170] !== fullWidth || $[171] !== handleInputDatePickerChange || $[172] !== handleInputDatePickerFocus || $[173] !== handleInputDatePickerShouldDisableYear || $[174] !== icon || $[175] !== label || $[176] !== labelIcon || $[177] !== labelShrink || $[178] !== readOnly || $[179] !== required || $[180] !== size || $[181] !== startAdornment || $[182] !== sx || $[183] !== t59 || $[184] !== valueDate || $[185] !== variant) {
+    t61 = /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(PrivateInputDatePicker, {
       variant: variant,
       size: size,
       color: color,
@@ -27810,7 +28711,7 @@ var PFormYearPicker = function PFormYearPicker(t0) {
       format: format,
       minDate: dateInfo.min,
       maxDate: dateInfo.max,
-      style: t57,
+      style: t59,
       sx: sx,
       value: valueDate,
       label: label,
@@ -27825,98 +28726,107 @@ var PFormYearPicker = function PFormYearPicker(t0) {
       inputRef: inputRef,
       onChange: handleInputDatePickerChange,
       onFocus: handleInputDatePickerFocus,
-      onError: t58,
+      onError: t60,
       shouldDisableYear: handleInputDatePickerShouldDisableYear
     }));
-    $[132] = color;
-    $[133] = dateInfo.max;
-    $[134] = dateInfo.min;
-    $[135] = disabled;
-    $[136] = enableKeyboardInput;
-    $[137] = endAdornment;
-    $[138] = error;
-    $[139] = focused;
-    $[140] = format;
-    $[141] = fullWidth;
-    $[142] = handleInputDatePickerChange;
-    $[143] = handleInputDatePickerFocus;
-    $[144] = handleInputDatePickerShouldDisableYear;
-    $[145] = icon;
-    $[146] = label;
-    $[147] = labelIcon;
-    $[148] = labelShrink;
-    $[149] = readOnly;
-    $[150] = required;
-    $[151] = size;
-    $[152] = startAdornment;
-    $[153] = sx;
-    $[154] = t57;
-    $[155] = valueDate;
-    $[156] = variant;
-    $[157] = t59;
+    $[161] = color;
+    $[162] = dateInfo.max;
+    $[163] = dateInfo.min;
+    $[164] = disabled;
+    $[165] = enableKeyboardInput;
+    $[166] = endAdornment;
+    $[167] = error;
+    $[168] = focused;
+    $[169] = format;
+    $[170] = fullWidth;
+    $[171] = handleInputDatePickerChange;
+    $[172] = handleInputDatePickerFocus;
+    $[173] = handleInputDatePickerShouldDisableYear;
+    $[174] = icon;
+    $[175] = label;
+    $[176] = labelIcon;
+    $[177] = labelShrink;
+    $[178] = readOnly;
+    $[179] = required;
+    $[180] = size;
+    $[181] = startAdornment;
+    $[182] = sx;
+    $[183] = t59;
+    $[184] = valueDate;
+    $[185] = variant;
+    $[186] = t61;
   } else {
-    t59 = $[157];
+    t61 = $[186];
   }
-  var t60;
-  if ($[158] !== open || $[159] !== t54 || $[160] !== t56 || $[161] !== t59) {
-    t60 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
+  var t62;
+  if ($[187] !== open || $[188] !== t56 || $[189] !== t58 || $[190] !== t61) {
+    t62 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
       open: open,
-      slotProps: t54,
-      title: t56
-    }, t59);
-    $[158] = open;
-    $[159] = t54;
-    $[160] = t56;
-    $[161] = t59;
-    $[162] = t60;
+      slotProps: t56,
+      title: t58
+    }, t61);
+    $[187] = open;
+    $[188] = t56;
+    $[189] = t58;
+    $[190] = t61;
+    $[191] = t62;
   } else {
-    t60 = $[162];
+    t62 = $[191];
   }
-  var t61;
-  if ($[163] !== error || $[164] !== errorHelperText || $[165] !== formColWithHelperText || $[166] !== helperText || $[167] !== variant) {
-    t61 = !formColWithHelperText && (!!helperText || error && !!errorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
+  var t63;
+  if ($[192] !== error || $[193] !== errorHelperText || $[194] !== formColWithHelperText || $[195] !== helperText || $[196] !== variant) {
+    t63 = !formColWithHelperText && (!!helperText || error && !!errorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
       error: error,
       style: {
         marginLeft: variant === "standard" ? 0 : 14
       }
     }, error ? errorHelperText : helperText);
-    $[163] = error;
-    $[164] = errorHelperText;
-    $[165] = formColWithHelperText;
-    $[166] = helperText;
-    $[167] = variant;
-    $[168] = t61;
+    $[192] = error;
+    $[193] = errorHelperText;
+    $[194] = formColWithHelperText;
+    $[195] = helperText;
+    $[196] = variant;
+    $[197] = t63;
   } else {
-    t61 = $[168];
+    t63 = $[197];
   }
-  var t62;
-  if ($[169] !== t49 || $[170] !== t52 || $[171] !== t60 || $[172] !== t61) {
-    t62 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
+  var t64;
+  if ($[198] !== t51 || $[199] !== t54 || $[200] !== t62 || $[201] !== t63) {
+    t64 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
       dateAdapter: AdapterDayjs.AdapterDayjs
     }, /*#__PURE__*/React.createElement(material.ClickAwayListener, {
       mouseEvent: "onMouseDown",
       touchEvent: "onTouchStart",
-      onClickAway: t48
+      onClickAway: t50
     }, /*#__PURE__*/React.createElement("div", {
-      className: t49,
-      style: t52,
+      className: t51,
+      style: t54,
       onMouseDown: handleContainerMouseDown,
       onFocus: handleContainerFocus,
       onBlur: handleContainerBlur
-    }, t60, t61)));
-    $[169] = t49;
-    $[170] = t52;
-    $[171] = t60;
-    $[172] = t61;
-    $[173] = t62;
+    }, t62, t63)));
+    $[198] = t51;
+    $[199] = t54;
+    $[200] = t62;
+    $[201] = t63;
+    $[202] = t64;
   } else {
-    t62 = $[173];
+    t64 = $[202];
   }
-  return t62;
+  return t64;
 };
-function _temp$5() {
-  return "PFormYearPicker";
-}var DEFAULT_VALUE = [null, null];
+var PFormYearPicker = function PFormYearPicker(props) {
+  var $ = compilerRuntime.c(2);
+  var t0;
+  if ($[0] !== props) {
+    t0 = /*#__PURE__*/React.createElement(PFormYearPickerInternal, props);
+    $[0] = props;
+    $[1] = t0;
+  } else {
+    t0 = $[1];
+  }
+  return t0;
+};var DEFAULT_VALUE = [null, null];
 var valueToDate = function valueToDate(v) {
   return dayjs("".concat(v, "-01-01"));
 };
@@ -27925,9 +28835,10 @@ var dateToValue = function dateToValue(v) {
 };
 var getFinalValue = function getFinalValue(value) {
   return value || DEFAULT_VALUE;
-};var PFormYearRangePicker = function PFormYearRangePicker(t0) {
-  var $ = compilerRuntime.c(248);
-  var ref = t0.ref,
+};var PFormYearRangePickerInternal = function PFormYearRangePickerInternal(t0) {
+  var $ = compilerRuntime.c(278);
+  var t1 = t0.embedded,
+    ref = t0.ref,
     initVariant = t0.variant,
     initSize = t0.size,
     initColor = t0.color,
@@ -27950,28 +28861,30 @@ var getFinalValue = function getFinalValue(value) {
     onChange = t0.onChange,
     onValidate = t0.onValidate,
     icon = t0.icon,
-    t1 = t0.format,
+    t2 = t0.format,
     initLabelShrink = t0.labelShrink,
     disablePast = t0.disablePast,
     disableFuture = t0.disableFuture,
-    t2 = t0.minYear,
-    t3 = t0.maxYear,
+    t3 = t0.minYear,
+    t4 = t0.maxYear,
     inputWidth = t0.inputWidth,
     enableKeyboardInput = t0.enableKeyboardInput,
     startAdornment = t0.startAdornment,
     endAdornment = t0.endAdornment,
-    t4 = t0.formValueFromNameSuffix,
-    t5 = t0.formValueToNameSuffix,
+    t5 = t0.formValueFromNameSuffix,
+    t6 = t0.formValueToNameSuffix,
     align = t0.align,
     className = t0.className,
     initStyle = t0.style,
     sx = t0.sx;
-  var format = t1 === undefined ? "YYYY\uB144" : t1;
-  var minYear = t2 === undefined ? 2020 : t2;
-  var maxYear = t3 === undefined ? 2050 : t3;
-  var formValueFromNameSuffix = t4 === undefined ? "_from" : t4;
-  var formValueToNameSuffix = t5 === undefined ? "_to" : t5;
+  var embedded = t1 === undefined ? false : t1;
+  var format = t2 === undefined ? "YYYY\uB144" : t2;
+  var minYear = t3 === undefined ? 2020 : t3;
+  var maxYear = t4 === undefined ? 2050 : t4;
+  var formValueFromNameSuffix = t5 === undefined ? "_from" : t5;
+  var formValueToNameSuffix = t6 === undefined ? "_to" : t6;
   var id = React.useId();
+  var embeddedRef = React.useRef(null);
   var _useFormState = useFormState(),
     formVariant = _useFormState.variant,
     formSize = _useFormState.size,
@@ -28035,142 +28948,142 @@ var getFinalValue = function getFinalValue(value) {
     _useState16 = _slicedToArray(_useState15, 2),
     error = _useState16[0],
     _setError = _useState16[1];
-  var t6;
   var t7;
+  var t8;
   if ($[0] !== initError) {
-    t6 = function t6() {
+    t7 = function t7() {
       return _setError(initError);
     };
-    t7 = [initError];
+    t8 = [initError];
     $[0] = initError;
-    $[1] = t6;
-    $[2] = t7;
+    $[1] = t7;
+    $[2] = t8;
   } else {
-    t6 = $[1];
-    t7 = $[2];
+    t7 = $[1];
+    t8 = $[2];
   }
-  reactHook.useFirstSkipChanged(t6, t7);
+  reactHook.useFirstSkipChanged(t7, t8);
   var errorRef = reactHook.useAutoUpdateRef(error);
-  var t8;
+  var t9;
   if ($[3] !== errorRef) {
-    t8 = function t8(newValue) {
+    t9 = function t9(newValue) {
       _setError(newValue);
       errorRef.current = newValue;
     };
     $[3] = errorRef;
-    $[4] = t8;
+    $[4] = t9;
   } else {
-    t8 = $[4];
+    t9 = $[4];
   }
-  var setError = t8;
+  var setError = t9;
   var _useState17 = React.useState(initData),
     _useState18 = _slicedToArray(_useState17, 2),
     data = _useState18[0],
     _setData = _useState18[1];
   var t10;
-  var t9;
+  var t11;
   if ($[5] !== initData) {
-    t9 = function t9() {
+    t10 = function t10() {
       return _setData(initData);
     };
-    t10 = [initData];
+    t11 = [initData];
     $[5] = initData;
     $[6] = t10;
-    $[7] = t9;
+    $[7] = t11;
   } else {
     t10 = $[6];
-    t9 = $[7];
+    t11 = $[7];
   }
-  reactHook.useFirstSkipChanged(t9, t10);
+  reactHook.useFirstSkipChanged(t10, t11);
   var dataRef = reactHook.useAutoUpdateRef(data);
-  var t11;
+  var t12;
   if ($[8] !== dataRef) {
-    t11 = function t11(newValue_0) {
+    t12 = function t12(newValue_0) {
       _setData(newValue_0);
       dataRef.current = newValue_0;
     };
     $[8] = dataRef;
-    $[9] = t11;
+    $[9] = t12;
   } else {
-    t11 = $[9];
+    t12 = $[9];
   }
-  var setData = t11;
+  var setData = t12;
   var finalInitDisabled = initDisabled !== null && initDisabled !== void 0 ? initDisabled : formDisabled;
   var _useState19 = React.useState(finalInitDisabled),
     _useState20 = _slicedToArray(_useState19, 2),
     disabled = _useState20[0],
     setDisabled = _useState20[1];
-  var t12;
   var t13;
+  var t14;
   if ($[10] !== finalInitDisabled) {
-    t12 = function t12() {
+    t13 = function t13() {
       return setDisabled(finalInitDisabled);
     };
-    t13 = [finalInitDisabled];
+    t14 = [finalInitDisabled];
     $[10] = finalInitDisabled;
-    $[11] = t12;
-    $[12] = t13;
+    $[11] = t13;
+    $[12] = t14;
   } else {
-    t12 = $[11];
-    t13 = $[12];
+    t13 = $[11];
+    t14 = $[12];
   }
-  reactHook.useFirstSkipChanged(t12, t13);
+  reactHook.useFirstSkipChanged(t13, t14);
   var _useState21 = React.useState(initHidden),
     _useState22 = _slicedToArray(_useState21, 2),
     hidden = _useState22[0],
     setHidden = _useState22[1];
-  var t14;
   var t15;
+  var t16;
   if ($[13] !== initHidden) {
-    t14 = function t14() {
+    t15 = function t15() {
       return setHidden(initHidden);
     };
-    t15 = [initHidden];
+    t16 = [initHidden];
     $[13] = initHidden;
-    $[14] = t14;
-    $[15] = t15;
+    $[14] = t15;
+    $[15] = t16;
   } else {
-    t14 = $[14];
-    t15 = $[15];
+    t15 = $[14];
+    t16 = $[15];
   }
-  reactHook.useFirstSkipChanged(t14, t15);
-  var t16;
+  reactHook.useFirstSkipChanged(t15, t16);
+  var t17;
   if ($[16] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t16 = function t16(error_0, fromErrorHelperText_0) {
+    t17 = function t17(error_0, fromErrorHelperText_0) {
       setFromError(error_0);
       setFromErrorHelperText(fromErrorHelperText_0);
     };
-    $[16] = t16;
+    $[16] = t17;
   } else {
-    t16 = $[16];
+    t17 = $[16];
   }
-  var setFromErrorErrorHelperText = t16;
-  var t17;
+  var setFromErrorErrorHelperText = t17;
+  var t18;
   if ($[17] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t17 = function t17(error_1, toErrorHelperText_0) {
+    t18 = function t18(error_1, toErrorHelperText_0) {
       setToError(error_1);
       setToErrorHelperText(toErrorHelperText_0);
     };
-    $[17] = t17;
+    $[17] = t18;
   } else {
-    t17 = $[17];
+    t18 = $[17];
   }
-  var setToErrorErrorHelperText = t17;
-  var t18;
+  var setToErrorErrorHelperText = t18;
+  var t19;
   if ($[18] !== setError) {
-    t18 = function t18(error_2, errorHelperText_0) {
+    t19 = function t19(error_2, errorHelperText_0) {
       setError(error_2);
       setErrorHelperText(error_2 ? errorHelperText_0 : undefined);
     };
     $[18] = setError;
-    $[19] = t18;
+    $[19] = t19;
   } else {
-    t18 = $[19];
+    t19 = $[19];
   }
-  var setErrorErrorHelperText = t18;
-  var t19;
+  var setErrorErrorHelperText = t19;
+  var t20;
   if ($[20] !== onValidateRef || $[21] !== required || $[22] !== setErrorErrorHelperText) {
-    t19 = function t19(value) {
+    t20 = function t20(value) {
       if (required && (value[0] == null || value[1] == null)) {
         if (value[0] == null && value[1] == null) {
           setErrorErrorHelperText(true, "\uD544\uC218 \uC785\uB825 \uD56D\uBAA9\uC785\uB2C8\uB2E4.");
@@ -28209,65 +29122,71 @@ var getFinalValue = function getFinalValue(value) {
     $[20] = onValidateRef;
     $[21] = required;
     $[22] = setErrorErrorHelperText;
-    $[23] = t19;
+    $[23] = t20;
   } else {
-    t19 = $[23];
+    t20 = $[23];
   }
-  var validate = t19;
-  var t20;
-  if ($[24] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t20 = function t20() {
+  var validate = t20;
+  var t21;
+  if ($[24] !== embedded) {
+    t21 = function t21() {
       var _startInputRef$curren;
+      if (embedded) {
+        var _embeddedRef$current;
+        (_embeddedRef$current = embeddedRef.current) === null || _embeddedRef$current === void 0 || _embeddedRef$current.focus();
+        return;
+      }
       (_startInputRef$curren = startInputRef.current) === null || _startInputRef$curren === void 0 || _startInputRef$curren.focus();
     };
-    $[24] = t20;
+    $[24] = embedded;
+    $[25] = t21;
   } else {
-    t20 = $[24];
+    t21 = $[25];
   }
-  var focus = t20;
-  var t21;
-  if ($[25] !== initValue) {
-    t21 = getFinalValue(initValue);
-    $[25] = initValue;
-    $[26] = t21;
+  var focus = t21;
+  var t22;
+  if ($[26] !== initValue) {
+    t22 = getFinalValue(initValue);
+    $[26] = initValue;
+    $[27] = t22;
   } else {
-    t21 = $[26];
+    t22 = $[27];
   }
-  var _useState23 = React.useState(t21),
+  var _useState23 = React.useState(t22),
     _useState24 = _slicedToArray(_useState23, 2),
     value_0 = _useState24[0],
     _setValue = _useState24[1];
-  var t22;
   var t23;
-  if ($[27] !== initValue) {
-    t22 = function t22() {
+  var t24;
+  if ($[28] !== initValue) {
+    t23 = function t23() {
       return _setValue(getFinalValue(initValue));
     };
-    t23 = [initValue];
-    $[27] = initValue;
-    $[28] = t22;
+    t24 = [initValue];
+    $[28] = initValue;
     $[29] = t23;
+    $[30] = t24;
   } else {
-    t22 = $[28];
     t23 = $[29];
+    t24 = $[30];
   }
-  reactHook.useFirstSkipChanged(t22, t23);
+  reactHook.useFirstSkipChanged(t23, t24);
   var valueRef = reactHook.useAutoUpdateRef(value_0);
-  var t24;
-  if ($[30] !== valueRef) {
-    t24 = function t24(newValue_1) {
+  var t25;
+  if ($[31] !== valueRef) {
+    t25 = function t25(newValue_1) {
       _setValue(newValue_1);
       valueRef.current = newValue_1;
     };
-    $[30] = valueRef;
-    $[31] = t24;
+    $[31] = valueRef;
+    $[32] = t25;
   } else {
-    t24 = $[31];
+    t25 = $[32];
   }
-  var setValue = t24;
-  var t25;
-  if ($[32] !== error || $[33] !== fromError || $[34] !== name || $[35] !== onChangeRef || $[36] !== onValueChange || $[37] !== setValue || $[38] !== toError || $[39] !== validate) {
-    t25 = function t25(newValue_2) {
+  var setValue = t25;
+  var t26;
+  if ($[33] !== error || $[34] !== fromError || $[35] !== name || $[36] !== onChangeRef || $[37] !== onValueChange || $[38] !== setValue || $[39] !== toError || $[40] !== validate) {
+    t26 = function t26(newValue_2) {
       var _onChangeRef$current;
       var finalValue = getFinalValue(newValue_2);
       setValue(finalValue);
@@ -28278,62 +29197,62 @@ var getFinalValue = function getFinalValue(value) {
       onValueChange(name, finalValue);
       return finalValue;
     };
-    $[32] = error;
-    $[33] = fromError;
-    $[34] = name;
-    $[35] = onChangeRef;
-    $[36] = onValueChange;
-    $[37] = setValue;
-    $[38] = toError;
-    $[39] = validate;
-    $[40] = t25;
-  } else {
-    t25 = $[40];
-  }
-  var updateValue = t25;
-  var t26;
-  if ($[41] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t26 = new Date().getFullYear();
+    $[33] = error;
+    $[34] = fromError;
+    $[35] = name;
+    $[36] = onChangeRef;
+    $[37] = onValueChange;
+    $[38] = setValue;
+    $[39] = toError;
+    $[40] = validate;
     $[41] = t26;
   } else {
     t26 = $[41];
   }
-  var nowYear = t26;
+  var updateValue = t26;
   var t27;
-  if ($[42] !== minYear) {
-    t27 = valueToDate(minYear);
-    $[42] = minYear;
-    $[43] = t27;
+  if ($[42] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t27 = new Date().getFullYear();
+    $[42] = t27;
   } else {
-    t27 = $[43];
+    t27 = $[42];
   }
-  var minDate = t27;
+  var nowYear = t27;
   var t28;
-  if ($[44] !== maxYear) {
-    t28 = valueToDate(maxYear);
-    $[44] = maxYear;
-    $[45] = t28;
+  if ($[43] !== minYear) {
+    t28 = valueToDate(minYear);
+    $[43] = minYear;
+    $[44] = t28;
   } else {
-    t28 = $[45];
+    t28 = $[44];
   }
-  var maxDate = t28;
+  var minDate = t28;
   var t29;
-  if ($[46] !== maxDate || $[47] !== minDate) {
-    t29 = {
+  if ($[45] !== maxYear) {
+    t29 = valueToDate(maxYear);
+    $[45] = maxYear;
+    $[46] = t29;
+  } else {
+    t29 = $[46];
+  }
+  var maxDate = t29;
+  var t30;
+  if ($[47] !== maxDate || $[48] !== minDate) {
+    t30 = {
       nowYear: nowYear,
       min: minDate,
       max: maxDate
     };
-    $[46] = maxDate;
-    $[47] = minDate;
-    $[48] = t29;
+    $[47] = maxDate;
+    $[48] = minDate;
+    $[49] = t30;
   } else {
-    t29 = $[48];
+    t30 = $[49];
   }
-  var dateInfo = t29;
-  var t30;
-  if ($[49] !== name || $[50] !== onRequestSearchSubmit || $[51] !== open || $[52] !== openValue || $[53] !== value_0) {
-    t30 = function t30() {
+  var dateInfo = t30;
+  var t31;
+  if ($[50] !== name || $[51] !== onRequestSearchSubmit || $[52] !== open || $[53] !== openValue || $[54] !== value_0) {
+    t31 = function t31() {
       if (open) {
         setOpenValue(value_0);
       } else {
@@ -28350,280 +29269,292 @@ var getFinalValue = function getFinalValue(value) {
         }
       }
     };
-    $[49] = name;
-    $[50] = onRequestSearchSubmit;
-    $[51] = open;
-    $[52] = openValue;
-    $[53] = value_0;
-    $[54] = t30;
+    $[50] = name;
+    $[51] = onRequestSearchSubmit;
+    $[52] = open;
+    $[53] = openValue;
+    $[54] = value_0;
+    $[55] = t31;
   } else {
-    t30 = $[54];
+    t31 = $[55];
   }
-  var t31;
-  if ($[55] !== open) {
-    t31 = [open];
-    $[55] = open;
-    $[56] = t31;
-  } else {
-    t31 = $[56];
-  }
-  reactHook.useFirstSkipEffect(t30, t31);
   var t32;
-  if ($[57] !== name) {
-    t32 = function t32() {
-      return name;
-    };
-    $[57] = name;
-    $[58] = t32;
+  if ($[56] !== open) {
+    t32 = [open];
+    $[56] = open;
+    $[57] = t32;
   } else {
-    t32 = $[58];
+    t32 = $[57];
   }
+  reactHook.useFirstSkipEffect(t31, t32);
   var t33;
-  if ($[59] !== initValueRef) {
+  if ($[58] !== embedded) {
     t33 = function t33() {
-      return getFinalValue(initValueRef.current);
+      return embedded ? "PFormEmbedYearRangePicker" : "PFormYearRangePicker";
     };
-    $[59] = initValueRef;
-    $[60] = t33;
+    $[58] = embedded;
+    $[59] = t33;
   } else {
-    t33 = $[60];
+    t33 = $[59];
   }
   var t34;
-  if ($[61] !== initValueRef || $[62] !== updateValue) {
+  if ($[60] !== name) {
     t34 = function t34() {
-      return updateValue(initValueRef.current);
+      return name;
     };
-    $[61] = initValueRef;
-    $[62] = updateValue;
-    $[63] = t34;
+    $[60] = name;
+    $[61] = t34;
   } else {
-    t34 = $[63];
+    t34 = $[61];
   }
   var t35;
-  if ($[64] !== valueRef) {
+  if ($[62] !== initValueRef) {
     t35 = function t35() {
-      return valueRef.current;
+      return getFinalValue(initValueRef.current);
     };
-    $[64] = valueRef;
-    $[65] = t35;
+    $[62] = initValueRef;
+    $[63] = t35;
   } else {
-    t35 = $[65];
+    t35 = $[63];
   }
   var t36;
-  if ($[66] !== dataRef) {
+  if ($[64] !== initValueRef || $[65] !== updateValue) {
     t36 = function t36() {
-      return dataRef.current;
+      return updateValue(initValueRef.current);
     };
-    $[66] = dataRef;
-    $[67] = t36;
+    $[64] = initValueRef;
+    $[65] = updateValue;
+    $[66] = t36;
   } else {
-    t36 = $[67];
+    t36 = $[66];
   }
   var t37;
-  if ($[68] !== valueRef) {
+  if ($[67] !== valueRef) {
     t37 = function t37() {
-      return valueRef.current[0];
+      return valueRef.current;
     };
-    $[68] = valueRef;
-    $[69] = t37;
+    $[67] = valueRef;
+    $[68] = t37;
   } else {
-    t37 = $[69];
+    t37 = $[68];
   }
   var t38;
-  if ($[70] !== updateValue || $[71] !== valueRef) {
-    t38 = function t38(value_1) {
-      return updateValue([value_1, valueRef.current[1]]);
+  if ($[69] !== dataRef) {
+    t38 = function t38() {
+      return dataRef.current;
     };
-    $[70] = updateValue;
-    $[71] = valueRef;
-    $[72] = t38;
+    $[69] = dataRef;
+    $[70] = t38;
   } else {
-    t38 = $[72];
+    t38 = $[70];
   }
   var t39;
-  if ($[73] !== valueRef) {
+  if ($[71] !== valueRef) {
     t39 = function t39() {
-      return valueRef.current[1];
+      return valueRef.current[0];
     };
-    $[73] = valueRef;
-    $[74] = t39;
+    $[71] = valueRef;
+    $[72] = t39;
   } else {
-    t39 = $[74];
+    t39 = $[72];
   }
   var t40;
-  if ($[75] !== updateValue || $[76] !== valueRef) {
-    t40 = function t40(value_2) {
-      return updateValue([valueRef.current[0], value_2]);
+  if ($[73] !== updateValue || $[74] !== valueRef) {
+    t40 = function t40(value_1) {
+      return updateValue([value_1, valueRef.current[1]]);
     };
-    $[75] = updateValue;
-    $[76] = valueRef;
-    $[77] = t40;
+    $[73] = updateValue;
+    $[74] = valueRef;
+    $[75] = t40;
   } else {
-    t40 = $[77];
+    t40 = $[75];
   }
   var t41;
-  if ($[78] !== exceptValue) {
+  if ($[76] !== valueRef) {
     t41 = function t41() {
-      return !!exceptValue;
+      return valueRef.current[1];
     };
-    $[78] = exceptValue;
-    $[79] = t41;
+    $[76] = valueRef;
+    $[77] = t41;
   } else {
-    t41 = $[79];
+    t41 = $[77];
   }
   var t42;
-  if ($[80] !== disabled) {
-    t42 = function t42() {
-      return !!disabled;
+  if ($[78] !== updateValue || $[79] !== valueRef) {
+    t42 = function t42(value_2) {
+      return updateValue([valueRef.current[0], value_2]);
     };
-    $[80] = disabled;
-    $[81] = t42;
+    $[78] = updateValue;
+    $[79] = valueRef;
+    $[80] = t42;
   } else {
-    t42 = $[81];
+    t42 = $[80];
   }
   var t43;
-  if ($[82] !== hidden) {
+  if ($[81] !== exceptValue) {
     t43 = function t43() {
-      return !!hidden;
+      return !!exceptValue;
     };
-    $[82] = hidden;
-    $[83] = t43;
+    $[81] = exceptValue;
+    $[82] = t43;
   } else {
-    t43 = $[83];
+    t43 = $[82];
   }
   var t44;
-  if ($[84] !== validate || $[85] !== valueRef) {
+  if ($[83] !== disabled) {
     t44 = function t44() {
-      return validate(valueRef.current);
+      return !!disabled;
     };
-    $[84] = validate;
-    $[85] = valueRef;
-    $[86] = t44;
+    $[83] = disabled;
+    $[84] = t44;
   } else {
-    t44 = $[86];
+    t44 = $[84];
   }
   var t45;
-  if ($[87] !== formValueFromNameSuffix) {
+  if ($[85] !== hidden) {
     t45 = function t45() {
-      return formValueFromNameSuffix;
+      return !!hidden;
     };
-    $[87] = formValueFromNameSuffix;
-    $[88] = t45;
+    $[85] = hidden;
+    $[86] = t45;
   } else {
-    t45 = $[88];
+    t45 = $[86];
   }
   var t46;
-  if ($[89] !== formValueToNameSuffix) {
+  if ($[87] !== validate || $[88] !== valueRef) {
     t46 = function t46() {
-      return formValueToNameSuffix;
+      return validate(valueRef.current);
     };
-    $[89] = formValueToNameSuffix;
-    $[90] = t46;
+    $[87] = validate;
+    $[88] = valueRef;
+    $[89] = t46;
   } else {
-    t46 = $[90];
+    t46 = $[89];
   }
   var t47;
-  if ($[91] !== formValueFromNameSuffix || $[92] !== name) {
+  if ($[90] !== formValueFromNameSuffix) {
     t47 = function t47() {
-      return "".concat(name).concat(formValueFromNameSuffix);
+      return formValueFromNameSuffix;
     };
-    $[91] = formValueFromNameSuffix;
-    $[92] = name;
-    $[93] = t47;
+    $[90] = formValueFromNameSuffix;
+    $[91] = t47;
   } else {
-    t47 = $[93];
+    t47 = $[91];
   }
   var t48;
-  if ($[94] !== formValueToNameSuffix || $[95] !== name) {
+  if ($[92] !== formValueToNameSuffix) {
     t48 = function t48() {
-      return "".concat(name).concat(formValueToNameSuffix);
+      return formValueToNameSuffix;
     };
-    $[94] = formValueToNameSuffix;
-    $[95] = name;
-    $[96] = t48;
+    $[92] = formValueToNameSuffix;
+    $[93] = t48;
   } else {
-    t48 = $[96];
+    t48 = $[93];
   }
   var t49;
-  if ($[97] !== setData || $[98] !== setErrorErrorHelperText || $[99] !== t32 || $[100] !== t33 || $[101] !== t34 || $[102] !== t35 || $[103] !== t36 || $[104] !== t37 || $[105] !== t38 || $[106] !== t39 || $[107] !== t40 || $[108] !== t41 || $[109] !== t42 || $[110] !== t43 || $[111] !== t44 || $[112] !== t45 || $[113] !== t46 || $[114] !== t47 || $[115] !== t48 || $[116] !== updateValue) {
-    t49 = {
-      getType: _temp$4,
-      getName: t32,
-      getReset: t33,
-      reset: t34,
-      getValue: t35,
+  if ($[94] !== formValueFromNameSuffix || $[95] !== name) {
+    t49 = function t49() {
+      return "".concat(name).concat(formValueFromNameSuffix);
+    };
+    $[94] = formValueFromNameSuffix;
+    $[95] = name;
+    $[96] = t49;
+  } else {
+    t49 = $[96];
+  }
+  var t50;
+  if ($[97] !== formValueToNameSuffix || $[98] !== name) {
+    t50 = function t50() {
+      return "".concat(name).concat(formValueToNameSuffix);
+    };
+    $[97] = formValueToNameSuffix;
+    $[98] = name;
+    $[99] = t50;
+  } else {
+    t50 = $[99];
+  }
+  var t51;
+  if ($[100] !== focus || $[101] !== setData || $[102] !== setErrorErrorHelperText || $[103] !== t33 || $[104] !== t34 || $[105] !== t35 || $[106] !== t36 || $[107] !== t37 || $[108] !== t38 || $[109] !== t39 || $[110] !== t40 || $[111] !== t41 || $[112] !== t42 || $[113] !== t43 || $[114] !== t44 || $[115] !== t45 || $[116] !== t46 || $[117] !== t47 || $[118] !== t48 || $[119] !== t49 || $[120] !== t50 || $[121] !== updateValue) {
+    t51 = {
+      getType: t33,
+      getName: t34,
+      getReset: t35,
+      reset: t36,
+      getValue: t37,
       setValue: updateValue,
-      getData: t36,
+      getData: t38,
       setData: setData,
-      getFromValue: t37,
-      setFromValue: t38,
-      getToValue: t39,
-      setToValue: t40,
-      isExceptValue: t41,
-      isDisabled: t42,
+      getFromValue: t39,
+      setFromValue: t40,
+      getToValue: t41,
+      setToValue: t42,
+      isExceptValue: t43,
+      isDisabled: t44,
       setDisabled: setDisabled,
-      isHidden: t43,
+      isHidden: t45,
       setHidden: setHidden,
       focus: focus,
       focusValidate: focus,
-      validate: t44,
+      validate: t46,
       setError: setErrorErrorHelperText,
-      getFormValueFromNameSuffix: t45,
-      getFormValueToNameSuffix: t46,
-      getFormValueFromName: t47,
-      getFormValueToName: t48
+      getFormValueFromNameSuffix: t47,
+      getFormValueToNameSuffix: t48,
+      getFormValueFromName: t49,
+      getFormValueToName: t50
     };
-    $[97] = setData;
-    $[98] = setErrorErrorHelperText;
-    $[99] = t32;
-    $[100] = t33;
-    $[101] = t34;
-    $[102] = t35;
-    $[103] = t36;
-    $[104] = t37;
-    $[105] = t38;
-    $[106] = t39;
-    $[107] = t40;
-    $[108] = t41;
-    $[109] = t42;
-    $[110] = t43;
-    $[111] = t44;
-    $[112] = t45;
-    $[113] = t46;
-    $[114] = t47;
-    $[115] = t48;
-    $[116] = updateValue;
-    $[117] = t49;
+    $[100] = focus;
+    $[101] = setData;
+    $[102] = setErrorErrorHelperText;
+    $[103] = t33;
+    $[104] = t34;
+    $[105] = t35;
+    $[106] = t36;
+    $[107] = t37;
+    $[108] = t38;
+    $[109] = t39;
+    $[110] = t40;
+    $[111] = t41;
+    $[112] = t42;
+    $[113] = t43;
+    $[114] = t44;
+    $[115] = t45;
+    $[116] = t46;
+    $[117] = t47;
+    $[118] = t48;
+    $[119] = t49;
+    $[120] = t50;
+    $[121] = updateValue;
+    $[122] = t51;
   } else {
-    t49 = $[117];
+    t51 = $[122];
   }
-  var commands = t49;
-  var t50;
-  if ($[118] !== id || $[119] !== onAddValueItem) {
-    t50 = function t50(commands_0) {
+  var commands = t51;
+  var t52;
+  if ($[123] !== id || $[124] !== onAddValueItem) {
+    t52 = function t52(commands_0) {
       return onAddValueItem(id, commands_0);
     };
-    $[118] = id;
-    $[119] = onAddValueItem;
-    $[120] = t50;
+    $[123] = id;
+    $[124] = onAddValueItem;
+    $[125] = t52;
   } else {
-    t50 = $[120];
+    t52 = $[125];
   }
-  var t51;
-  if ($[121] !== id || $[122] !== onRemoveValueItem) {
-    t51 = function t51() {
+  var t53;
+  if ($[126] !== id || $[127] !== onRemoveValueItem) {
+    t53 = function t53() {
       return onRemoveValueItem(id);
     };
-    $[121] = id;
-    $[122] = onRemoveValueItem;
-    $[123] = t51;
+    $[126] = id;
+    $[127] = onRemoveValueItem;
+    $[128] = t53;
   } else {
-    t51 = $[123];
+    t53 = $[128];
   }
-  reactHook.useForwardRef(ref, commands, t50, t51);
-  var t52;
-  if ($[124] !== name || $[125] !== onValueChangeByUser || $[126] !== updateValue) {
-    t52 = function t52(newValue_3, selectType_0) {
+  reactHook.useForwardRef(ref, commands, t52, t53);
+  var t54;
+  if ($[129] !== embedded || $[130] !== name || $[131] !== onRequestSearchSubmit || $[132] !== onValueChangeByUser || $[133] !== updateValue) {
+    t54 = function t54(newValue_3, selectType_0) {
       updateValue(newValue_3);
       if (selectType_0 === "start") {
         setTimeout(function () {
@@ -28633,24 +29564,32 @@ var getFinalValue = function getFinalValue(value) {
         });
       } else {
         if (selectType_0 === "end") {
+          if (embedded) {
+            setSelectType("start");
+          }
           setOpen(false);
         }
       }
       setTimeout(function () {
         onValueChangeByUser(name, newValue_3);
+        if (embedded && selectType_0 === "end") {
+          onRequestSearchSubmit(name, newValue_3);
+        }
       });
     };
-    $[124] = name;
-    $[125] = onValueChangeByUser;
-    $[126] = updateValue;
-    $[127] = t52;
+    $[129] = embedded;
+    $[130] = name;
+    $[131] = onRequestSearchSubmit;
+    $[132] = onValueChangeByUser;
+    $[133] = updateValue;
+    $[134] = t54;
   } else {
-    t52 = $[127];
+    t54 = $[134];
   }
-  var handleContainerChange = t52;
-  var t53;
-  if ($[128] !== fromError || $[129] !== maxYear || $[130] !== minYear || $[131] !== name || $[132] !== onValueChangeByUser || $[133] !== toError || $[134] !== updateValue || $[135] !== validate || $[136] !== valueRef) {
-    t53 = function t53(selectType_1, date) {
+  var handleContainerChange = t54;
+  var t55;
+  if ($[135] !== fromError || $[136] !== maxYear || $[137] !== minYear || $[138] !== name || $[139] !== onValueChangeByUser || $[140] !== toError || $[141] !== updateValue || $[142] !== validate || $[143] !== valueRef) {
+    t55 = function t55(selectType_1, date) {
       if (date == null || date.isValid()) {
         if (selectType_1 === "start") {
           var newValue_4 = [date ? dateToValue(date) : null, valueRef.current[1]];
@@ -28683,23 +29622,23 @@ var getFinalValue = function getFinalValue(value) {
         }
       }
     };
-    $[128] = fromError;
-    $[129] = maxYear;
-    $[130] = minYear;
-    $[131] = name;
-    $[132] = onValueChangeByUser;
-    $[133] = toError;
-    $[134] = updateValue;
-    $[135] = validate;
-    $[136] = valueRef;
-    $[137] = t53;
+    $[135] = fromError;
+    $[136] = maxYear;
+    $[137] = minYear;
+    $[138] = name;
+    $[139] = onValueChangeByUser;
+    $[140] = toError;
+    $[141] = updateValue;
+    $[142] = validate;
+    $[143] = valueRef;
+    $[144] = t55;
   } else {
-    t53 = $[137];
+    t55 = $[144];
   }
-  var handleInputDatePickerChange = t53;
-  var t54;
-  if ($[138] !== disabled || $[139] !== readOnly || $[140] !== valueRef) {
-    t54 = function t54(selectType_2) {
+  var handleInputDatePickerChange = t55;
+  var t56;
+  if ($[145] !== disabled || $[146] !== readOnly || $[147] !== valueRef) {
+    t56 = function t56(selectType_2) {
       if (readOnly || disabled) {
         return;
       }
@@ -28711,70 +29650,70 @@ var getFinalValue = function getFinalValue(value) {
         setOpen(true);
       }
     };
-    $[138] = disabled;
-    $[139] = readOnly;
-    $[140] = valueRef;
-    $[141] = t54;
+    $[145] = disabled;
+    $[146] = readOnly;
+    $[147] = valueRef;
+    $[148] = t56;
   } else {
-    t54 = $[141];
+    t56 = $[148];
   }
-  var handleInputDatePickerFocus = t54;
-  var t55;
-  if ($[142] !== dateInfo.nowYear || $[143] !== disableFuture || $[144] !== disablePast) {
-    t55 = function t55(year) {
+  var handleInputDatePickerFocus = t56;
+  var t57;
+  if ($[149] !== dateInfo.nowYear || $[150] !== disableFuture || $[151] !== disablePast) {
+    t57 = function t57(year) {
       return !!disablePast && year.year() < dateInfo.nowYear || !!disableFuture && year.year() > dateInfo.nowYear;
     };
-    $[142] = dateInfo.nowYear;
-    $[143] = disableFuture;
-    $[144] = disablePast;
-    $[145] = t55;
+    $[149] = dateInfo.nowYear;
+    $[150] = disableFuture;
+    $[151] = disablePast;
+    $[152] = t57;
   } else {
-    t55 = $[145];
+    t57 = $[152];
   }
-  var handleInputDatePickerShouldDisableYear = t55;
-  var t56;
-  if ($[146] !== value_0) {
-    t56 = !!value_0 && !!value_0[0] ? valueToDate(value_0[0]) : null;
-    $[146] = value_0;
-    $[147] = t56;
-  } else {
-    t56 = $[147];
-  }
-  var t57;
-  if ($[148] !== value_0) {
-    t57 = !!value_0 && !!value_0[1] ? valueToDate(value_0[1]) : null;
-    $[148] = value_0;
-    $[149] = t57;
-  } else {
-    t57 = $[149];
-  }
+  var handleInputDatePickerShouldDisableYear = t57;
   var t58;
-  if ($[150] !== t56 || $[151] !== t57) {
-    t58 = [t56, t57];
-    $[150] = t56;
-    $[151] = t57;
-    $[152] = t58;
+  if ($[153] !== value_0) {
+    t58 = !!value_0 && !!value_0[0] ? valueToDate(value_0[0]) : null;
+    $[153] = value_0;
+    $[154] = t58;
   } else {
-    t58 = $[152];
+    t58 = $[154];
   }
-  var valueDate = t58;
   var t59;
-  if ($[153] !== fullWidth || $[154] !== initStyle || $[155] !== inputWidth) {
-    t59 = inputWidth != null ? _objectSpread2({
-      width: inputWidth
-    }, initStyle) : _objectSpread2({
-      width: fullWidth ? undefined : 150
-    }, initStyle);
-    $[153] = fullWidth;
-    $[154] = initStyle;
-    $[155] = inputWidth;
+  if ($[155] !== value_0) {
+    t59 = !!value_0 && !!value_0[1] ? valueToDate(value_0[1]) : null;
+    $[155] = value_0;
     $[156] = t59;
   } else {
     t59 = $[156];
   }
   var t60;
-  if ($[157] !== align || $[158] !== color || $[159] !== dateInfo.max || $[160] !== dateInfo.min || $[161] !== disabled || $[162] !== enableKeyboardInput || $[163] !== endAdornment || $[164] !== focused || $[165] !== format || $[166] !== fullWidth || $[167] !== icon || $[168] !== labelShrink || $[169] !== readOnly || $[170] !== required || $[171] !== size || $[172] !== startAdornment || $[173] !== sx || $[174] !== t59 || $[175] !== variant) {
-    t60 = {
+  if ($[157] !== t58 || $[158] !== t59) {
+    t60 = [t58, t59];
+    $[157] = t58;
+    $[158] = t59;
+    $[159] = t60;
+  } else {
+    t60 = $[159];
+  }
+  var valueDate = t60;
+  var t61;
+  if ($[160] !== fullWidth || $[161] !== initStyle || $[162] !== inputWidth) {
+    t61 = inputWidth != null ? _objectSpread2({
+      width: inputWidth
+    }, initStyle) : _objectSpread2({
+      width: fullWidth ? undefined : 150
+    }, initStyle);
+    $[160] = fullWidth;
+    $[161] = initStyle;
+    $[162] = inputWidth;
+    $[163] = t61;
+  } else {
+    t61 = $[163];
+  }
+  var t62;
+  if ($[164] !== align || $[165] !== color || $[166] !== dateInfo.max || $[167] !== dateInfo.min || $[168] !== disabled || $[169] !== enableKeyboardInput || $[170] !== endAdornment || $[171] !== focused || $[172] !== format || $[173] !== fullWidth || $[174] !== icon || $[175] !== labelShrink || $[176] !== readOnly || $[177] !== required || $[178] !== size || $[179] !== startAdornment || $[180] !== sx || $[181] !== t61 || $[182] !== variant) {
+    t62 = {
       variant: variant,
       size: size,
       color: color,
@@ -28786,7 +29725,7 @@ var getFinalValue = function getFinalValue(value) {
       format: format,
       minDate: dateInfo.min,
       maxDate: dateInfo.max,
-      style: t59,
+      style: t61,
       sx: sx,
       required: required,
       readOnly: readOnly,
@@ -28795,92 +29734,165 @@ var getFinalValue = function getFinalValue(value) {
       startAdornment: startAdornment,
       endAdornment: endAdornment
     };
-    $[157] = align;
-    $[158] = color;
-    $[159] = dateInfo.max;
-    $[160] = dateInfo.min;
-    $[161] = disabled;
-    $[162] = enableKeyboardInput;
-    $[163] = endAdornment;
-    $[164] = focused;
-    $[165] = format;
-    $[166] = fullWidth;
-    $[167] = icon;
-    $[168] = labelShrink;
-    $[169] = readOnly;
-    $[170] = required;
-    $[171] = size;
-    $[172] = startAdornment;
-    $[173] = sx;
-    $[174] = t59;
-    $[175] = variant;
-    $[176] = t60;
+    $[164] = align;
+    $[165] = color;
+    $[166] = dateInfo.max;
+    $[167] = dateInfo.min;
+    $[168] = disabled;
+    $[169] = enableKeyboardInput;
+    $[170] = endAdornment;
+    $[171] = focused;
+    $[172] = format;
+    $[173] = fullWidth;
+    $[174] = icon;
+    $[175] = labelShrink;
+    $[176] = readOnly;
+    $[177] = required;
+    $[178] = size;
+    $[179] = startAdornment;
+    $[180] = sx;
+    $[181] = t61;
+    $[182] = variant;
+    $[183] = t62;
   } else {
-    t60 = $[176];
+    t62 = $[183];
   }
-  var privateInputDatePickerProps = t60;
-  var t61;
-  if ($[177] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t61 = function t61() {
+  var privateInputDatePickerProps = t62;
+  if (embedded) {
+    var _t = !formColWithHelperText ? error ? errorHelperText : helperText : undefined;
+    var _t2;
+    if ($[184] === Symbol["for"]("react.memo_cache_sentinel")) {
+      _t2 = {
+        display: "flex"
+      };
+      $[184] = _t2;
+    } else {
+      _t2 = $[184];
+    }
+    var _t3;
+    if ($[185] !== disableFuture || $[186] !== disablePast || $[187] !== handleContainerChange || $[188] !== maxYear || $[189] !== minYear || $[190] !== selectType || $[191] !== value_0) {
+      _t3 = /*#__PURE__*/React.createElement("div", {
+        style: _t2
+      }, /*#__PURE__*/React.createElement(PrivateYearRangePicker, {
+        selectType: selectType,
+        minYear: minYear,
+        maxYear: maxYear,
+        disablePast: disablePast,
+        disableFuture: disableFuture,
+        value: value_0,
+        onChange: handleContainerChange
+      }));
+      $[185] = disableFuture;
+      $[186] = disablePast;
+      $[187] = handleContainerChange;
+      $[188] = maxYear;
+      $[189] = minYear;
+      $[190] = selectType;
+      $[191] = value_0;
+      $[192] = _t3;
+    } else {
+      _t3 = $[192];
+    }
+    var _t4;
+    if ($[193] !== className || $[194] !== disabled || $[195] !== error || $[196] !== fromLabel || $[197] !== fullWidth || $[198] !== hidden || $[199] !== initStyle || $[200] !== name || $[201] !== readOnly || $[202] !== required || $[203] !== sx || $[204] !== _t || $[205] !== _t3) {
+      _t4 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
+        dateAdapter: AdapterDayjs.AdapterDayjs
+      }, /*#__PURE__*/React.createElement(PrivateEmbedPicker, {
+        name: name,
+        label: fromLabel,
+        required: required,
+        disabled: disabled,
+        readOnly: readOnly,
+        hidden: hidden,
+        fullWidth: fullWidth,
+        error: error,
+        helperText: _t,
+        pickerRef: embeddedRef,
+        className: className,
+        style: initStyle,
+        sx: sx
+      }, _t3));
+      $[193] = className;
+      $[194] = disabled;
+      $[195] = error;
+      $[196] = fromLabel;
+      $[197] = fullWidth;
+      $[198] = hidden;
+      $[199] = initStyle;
+      $[200] = name;
+      $[201] = readOnly;
+      $[202] = required;
+      $[203] = sx;
+      $[204] = _t;
+      $[205] = _t3;
+      $[206] = _t4;
+    } else {
+      _t4 = $[206];
+    }
+    return _t4;
+  }
+  var t63;
+  if ($[207] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t63 = function t63() {
       return setOpen(false);
     };
-    $[177] = t61;
+    $[207] = t63;
   } else {
-    t61 = $[177];
+    t63 = $[207];
   }
-  var t62;
-  if ($[178] !== className) {
-    t62 = classNames(className, "PFormYearRangePicker");
-    $[178] = className;
-    $[179] = t62;
+  var t64;
+  if ($[208] !== className) {
+    t64 = classNames(className, "PFormYearRangePicker");
+    $[208] = className;
+    $[209] = t64;
   } else {
-    t62 = $[179];
+    t64 = $[209];
   }
-  var t63 = hidden ? "none" : fullWidth ? "block" : "inline-block";
-  var t64 = fullWidth ? 1 : undefined;
-  var t65;
-  if ($[180] !== t63 || $[181] !== t64) {
-    t65 = {
-      display: t63,
-      flex: t64
-    };
-    $[180] = t63;
-    $[181] = t64;
-    $[182] = t65;
-  } else {
-    t65 = $[182];
-  }
-  var t66 = error && errorHelperText ? 8 : -14;
+  var t65 = hidden ? "none" : fullWidth ? "block" : "inline-block";
+  var t66 = fullWidth ? 1 : undefined;
   var t67;
-  if ($[183] !== t66) {
+  if ($[210] !== t65 || $[211] !== t66) {
     t67 = {
+      display: t65,
+      flex: t66
+    };
+    $[210] = t65;
+    $[211] = t66;
+    $[212] = t67;
+  } else {
+    t67 = $[212];
+  }
+  var t68 = error && errorHelperText ? 8 : -14;
+  var t69;
+  if ($[213] !== t68) {
+    t69 = {
       popper: {
         modifiers: [{
           name: "offset",
           options: {
-            offset: [0, t66]
+            offset: [0, t68]
           }
         }]
       }
     };
-    $[183] = t66;
-    $[184] = t67;
+    $[213] = t68;
+    $[214] = t69;
   } else {
-    t67 = $[184];
+    t69 = $[214];
   }
-  var t68;
-  if ($[185] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t68 = {
+  var t70;
+  if ($[215] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t70 = {
       display: "flex"
     };
-    $[185] = t68;
+    $[215] = t70;
   } else {
-    t68 = $[185];
+    t70 = $[215];
   }
-  var t69;
-  if ($[186] !== disableFuture || $[187] !== disablePast || $[188] !== handleContainerChange || $[189] !== maxYear || $[190] !== minYear || $[191] !== selectType || $[192] !== value_0) {
-    t69 = /*#__PURE__*/React.createElement("div", {
-      style: t68
+  var t71;
+  if ($[216] !== disableFuture || $[217] !== disablePast || $[218] !== handleContainerChange || $[219] !== maxYear || $[220] !== minYear || $[221] !== selectType || $[222] !== value_0) {
+    t71 = /*#__PURE__*/React.createElement("div", {
+      style: t70
     }, /*#__PURE__*/React.createElement(PrivateYearRangePicker, {
       selectType: selectType,
       minYear: minYear,
@@ -28890,221 +29902,230 @@ var getFinalValue = function getFinalValue(value) {
       value: value_0,
       onChange: handleContainerChange
     }));
-    $[186] = disableFuture;
-    $[187] = disablePast;
-    $[188] = handleContainerChange;
-    $[189] = maxYear;
-    $[190] = minYear;
-    $[191] = selectType;
-    $[192] = value_0;
-    $[193] = t69;
+    $[216] = disableFuture;
+    $[217] = disablePast;
+    $[218] = handleContainerChange;
+    $[219] = maxYear;
+    $[220] = minYear;
+    $[221] = selectType;
+    $[222] = value_0;
+    $[223] = t71;
   } else {
-    t69 = $[193];
+    t71 = $[223];
   }
-  var t70 = error || fromError;
-  var t71 = focused || open && selectType === "start";
-  var t72;
-  if ($[194] !== handleInputDatePickerChange) {
-    t72 = function t72(v) {
+  var t72 = error || fromError;
+  var t73 = focused || open && selectType === "start";
+  var t74;
+  if ($[224] !== handleInputDatePickerChange) {
+    t74 = function t74(v) {
       return handleInputDatePickerChange("start", v);
     };
-    $[194] = handleInputDatePickerChange;
-    $[195] = t72;
+    $[224] = handleInputDatePickerChange;
+    $[225] = t74;
   } else {
-    t72 = $[195];
-  }
-  var t73;
-  if ($[196] !== handleInputDatePickerFocus) {
-    t73 = function t73() {
-      return handleInputDatePickerFocus("start");
-    };
-    $[196] = handleInputDatePickerFocus;
-    $[197] = t73;
-  } else {
-    t73 = $[197];
-  }
-  var t74;
-  if ($[198] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t74 = function t74(reason) {
-      return startInputDatePickerErrorRef.current = reason;
-    };
-    $[198] = t74;
-  } else {
-    t74 = $[198];
+    t74 = $[225];
   }
   var t75;
-  if ($[199] !== fromLabel || $[200] !== fromLabelIcon || $[201] !== handleInputDatePickerShouldDisableYear || $[202] !== privateInputDatePickerProps || $[203] !== t70 || $[204] !== t71 || $[205] !== t72 || $[206] !== t73 || $[207] !== valueDate[0]) {
-    t75 = /*#__PURE__*/React.createElement(material.Grid, {
+  if ($[226] !== handleInputDatePickerFocus) {
+    t75 = function t75() {
+      return handleInputDatePickerFocus("start");
+    };
+    $[226] = handleInputDatePickerFocus;
+    $[227] = t75;
+  } else {
+    t75 = $[227];
+  }
+  var t76;
+  if ($[228] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t76 = function t76(reason) {
+      return startInputDatePickerErrorRef.current = reason;
+    };
+    $[228] = t76;
+  } else {
+    t76 = $[228];
+  }
+  var t77;
+  if ($[229] !== fromLabel || $[230] !== fromLabelIcon || $[231] !== handleInputDatePickerShouldDisableYear || $[232] !== privateInputDatePickerProps || $[233] !== t72 || $[234] !== t73 || $[235] !== t74 || $[236] !== t75 || $[237] !== valueDate[0]) {
+    t77 = /*#__PURE__*/React.createElement(material.Grid, {
       flex: 1
     }, /*#__PURE__*/React.createElement(PrivateInputDatePicker, _extends({}, privateInputDatePickerProps, {
       inputRef: startInputRef,
       value: valueDate[0],
       label: fromLabel,
       labelIcon: fromLabelIcon,
-      error: t70,
-      focused: t71,
-      onChange: t72,
-      onFocus: t73,
-      onError: t74,
+      error: t72,
+      focused: t73,
+      onChange: t74,
+      onFocus: t75,
+      onError: t76,
       shouldDisableYear: handleInputDatePickerShouldDisableYear
     })));
-    $[199] = fromLabel;
-    $[200] = fromLabelIcon;
-    $[201] = handleInputDatePickerShouldDisableYear;
-    $[202] = privateInputDatePickerProps;
-    $[203] = t70;
-    $[204] = t71;
-    $[205] = t72;
-    $[206] = t73;
-    $[207] = valueDate[0];
-    $[208] = t75;
+    $[229] = fromLabel;
+    $[230] = fromLabelIcon;
+    $[231] = handleInputDatePickerShouldDisableYear;
+    $[232] = privateInputDatePickerProps;
+    $[233] = t72;
+    $[234] = t73;
+    $[235] = t74;
+    $[236] = t75;
+    $[237] = valueDate[0];
+    $[238] = t77;
   } else {
-    t75 = $[208];
+    t77 = $[238];
   }
-  var t76;
-  if ($[209] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t76 = /*#__PURE__*/React.createElement(material.Grid, {
+  var t78;
+  if ($[239] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t78 = /*#__PURE__*/React.createElement(material.Grid, {
       sx: {
         px: 1
       }
     }, "~");
-    $[209] = t76;
+    $[239] = t78;
   } else {
-    t76 = $[209];
+    t78 = $[239];
   }
-  var t77 = error || toError;
-  var t78 = focused || open && selectType === "end";
-  var t79;
-  if ($[210] !== handleInputDatePickerChange) {
-    t79 = function t79(v_0) {
+  var t79 = error || toError;
+  var t80 = focused || open && selectType === "end";
+  var t81;
+  if ($[240] !== handleInputDatePickerChange) {
+    t81 = function t81(v_0) {
       return handleInputDatePickerChange("end", v_0);
     };
-    $[210] = handleInputDatePickerChange;
-    $[211] = t79;
+    $[240] = handleInputDatePickerChange;
+    $[241] = t81;
   } else {
-    t79 = $[211];
-  }
-  var t80;
-  if ($[212] !== handleInputDatePickerFocus) {
-    t80 = function t80() {
-      return handleInputDatePickerFocus("end");
-    };
-    $[212] = handleInputDatePickerFocus;
-    $[213] = t80;
-  } else {
-    t80 = $[213];
-  }
-  var t81;
-  if ($[214] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t81 = function t81(reason_0) {
-      return endInputDatePickerErrorRef.current = reason_0;
-    };
-    $[214] = t81;
-  } else {
-    t81 = $[214];
+    t81 = $[241];
   }
   var t82;
-  if ($[215] !== handleInputDatePickerShouldDisableYear || $[216] !== privateInputDatePickerProps || $[217] !== t77 || $[218] !== t78 || $[219] !== t79 || $[220] !== t80 || $[221] !== toLabel || $[222] !== toLabelIcon || $[223] !== valueDate[1]) {
-    t82 = /*#__PURE__*/React.createElement(material.Grid, {
+  if ($[242] !== handleInputDatePickerFocus) {
+    t82 = function t82() {
+      return handleInputDatePickerFocus("end");
+    };
+    $[242] = handleInputDatePickerFocus;
+    $[243] = t82;
+  } else {
+    t82 = $[243];
+  }
+  var t83;
+  if ($[244] === Symbol["for"]("react.memo_cache_sentinel")) {
+    t83 = function t83(reason_0) {
+      return endInputDatePickerErrorRef.current = reason_0;
+    };
+    $[244] = t83;
+  } else {
+    t83 = $[244];
+  }
+  var t84;
+  if ($[245] !== handleInputDatePickerShouldDisableYear || $[246] !== privateInputDatePickerProps || $[247] !== t79 || $[248] !== t80 || $[249] !== t81 || $[250] !== t82 || $[251] !== toLabel || $[252] !== toLabelIcon || $[253] !== valueDate[1]) {
+    t84 = /*#__PURE__*/React.createElement(material.Grid, {
       flex: 1
     }, /*#__PURE__*/React.createElement(PrivateInputDatePicker, _extends({}, privateInputDatePickerProps, {
       inputRef: endInputRef,
       value: valueDate[1],
       label: toLabel,
       labelIcon: toLabelIcon,
-      error: t77,
-      focused: t78,
-      onChange: t79,
-      onFocus: t80,
-      onError: t81,
+      error: t79,
+      focused: t80,
+      onChange: t81,
+      onFocus: t82,
+      onError: t83,
       shouldDisableYear: handleInputDatePickerShouldDisableYear
     })));
-    $[215] = handleInputDatePickerShouldDisableYear;
-    $[216] = privateInputDatePickerProps;
-    $[217] = t77;
-    $[218] = t78;
-    $[219] = t79;
-    $[220] = t80;
-    $[221] = toLabel;
-    $[222] = toLabelIcon;
-    $[223] = valueDate[1];
-    $[224] = t82;
+    $[245] = handleInputDatePickerShouldDisableYear;
+    $[246] = privateInputDatePickerProps;
+    $[247] = t79;
+    $[248] = t80;
+    $[249] = t81;
+    $[250] = t82;
+    $[251] = toLabel;
+    $[252] = toLabelIcon;
+    $[253] = valueDate[1];
+    $[254] = t84;
   } else {
-    t82 = $[224];
-  }
-  var t83;
-  if ($[225] !== t75 || $[226] !== t82) {
-    t83 = /*#__PURE__*/React.createElement(material.Grid, {
-      container: true,
-      alignItems: "center"
-    }, t75, t76, t82);
-    $[225] = t75;
-    $[226] = t82;
-    $[227] = t83;
-  } else {
-    t83 = $[227];
-  }
-  var t84;
-  if ($[228] !== open || $[229] !== t67 || $[230] !== t69 || $[231] !== t83) {
-    t84 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
-      open: open,
-      slotProps: t67,
-      title: t69
-    }, t83);
-    $[228] = open;
-    $[229] = t67;
-    $[230] = t69;
-    $[231] = t83;
-    $[232] = t84;
-  } else {
-    t84 = $[232];
+    t84 = $[254];
   }
   var t85;
-  if ($[233] !== error || $[234] !== errorHelperText || $[235] !== formColWithHelperText || $[236] !== fromError || $[237] !== fromErrorHelperText || $[238] !== helperText || $[239] !== toError || $[240] !== toErrorHelperText || $[241] !== variant) {
-    t85 = !formColWithHelperText && (helperText || error && errorHelperText || fromError && fromErrorHelperText || toError && toErrorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
+  if ($[255] !== t77 || $[256] !== t84) {
+    t85 = /*#__PURE__*/React.createElement(material.Grid, {
+      container: true,
+      alignItems: "center"
+    }, t77, t78, t84);
+    $[255] = t77;
+    $[256] = t84;
+    $[257] = t85;
+  } else {
+    t85 = $[257];
+  }
+  var t86;
+  if ($[258] !== open || $[259] !== t69 || $[260] !== t71 || $[261] !== t85) {
+    t86 = /*#__PURE__*/React.createElement(PrivateStyledTooltip, {
+      open: open,
+      slotProps: t69,
+      title: t71
+    }, t85);
+    $[258] = open;
+    $[259] = t69;
+    $[260] = t71;
+    $[261] = t85;
+    $[262] = t86;
+  } else {
+    t86 = $[262];
+  }
+  var t87;
+  if ($[263] !== error || $[264] !== errorHelperText || $[265] !== formColWithHelperText || $[266] !== fromError || $[267] !== fromErrorHelperText || $[268] !== helperText || $[269] !== toError || $[270] !== toErrorHelperText || $[271] !== variant) {
+    t87 = !formColWithHelperText && (helperText || error && errorHelperText || fromError && fromErrorHelperText || toError && toErrorHelperText) && /*#__PURE__*/React.createElement(material.FormHelperText, {
       error: error || fromError || toError,
       style: {
         marginLeft: variant === "standard" ? 0 : 14
       }
     }, error ? errorHelperText : fromError ? fromErrorHelperText : toError ? toErrorHelperText : helperText);
-    $[233] = error;
-    $[234] = errorHelperText;
-    $[235] = formColWithHelperText;
-    $[236] = fromError;
-    $[237] = fromErrorHelperText;
-    $[238] = helperText;
-    $[239] = toError;
-    $[240] = toErrorHelperText;
-    $[241] = variant;
-    $[242] = t85;
+    $[263] = error;
+    $[264] = errorHelperText;
+    $[265] = formColWithHelperText;
+    $[266] = fromError;
+    $[267] = fromErrorHelperText;
+    $[268] = helperText;
+    $[269] = toError;
+    $[270] = toErrorHelperText;
+    $[271] = variant;
+    $[272] = t87;
   } else {
-    t85 = $[242];
+    t87 = $[272];
   }
-  var t86;
-  if ($[243] !== t62 || $[244] !== t65 || $[245] !== t84 || $[246] !== t85) {
-    t86 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
+  var t88;
+  if ($[273] !== t64 || $[274] !== t67 || $[275] !== t86 || $[276] !== t87) {
+    t88 = /*#__PURE__*/React.createElement(xDatePickers.LocalizationProvider, {
       dateAdapter: AdapterDayjs.AdapterDayjs
     }, /*#__PURE__*/React.createElement(material.ClickAwayListener, {
       mouseEvent: "onMouseDown",
       touchEvent: "onTouchStart",
-      onClickAway: t61
+      onClickAway: t63
     }, /*#__PURE__*/React.createElement("div", {
-      className: t62,
-      style: t65
-    }, t84, t85)));
-    $[243] = t62;
-    $[244] = t65;
-    $[245] = t84;
-    $[246] = t85;
-    $[247] = t86;
+      className: t64,
+      style: t67
+    }, t86, t87)));
+    $[273] = t64;
+    $[274] = t67;
+    $[275] = t86;
+    $[276] = t87;
+    $[277] = t88;
   } else {
-    t86 = $[247];
+    t88 = $[277];
   }
-  return t86;
+  return t88;
 };
-function _temp$4() {
-  return "PFormYearRangePicker";
-}var PFormSwitch = function PFormSwitch(t0) {
+var PFormYearRangePicker = function PFormYearRangePicker(props) {
+  var $ = compilerRuntime.c(2);
+  var t0;
+  if ($[0] !== props) {
+    t0 = /*#__PURE__*/React.createElement(PFormYearRangePickerInternal, props);
+    $[0] = props;
+    $[1] = t0;
+  } else {
+    t0 = $[1];
+  }
+  return t0;
+};var PFormSwitch = function PFormSwitch(t0) {
   var $ = compilerRuntime.c(127);
   var ref = t0.ref,
     initVariant = t0.variant,
@@ -29716,7 +30737,279 @@ function _temp$4() {
 };
 function _temp$3() {
   return "PFormSwitch";
-}var _excluded$4 = ["children", "className"];
+}var PFormEmbedMonthPicker = function PFormEmbedMonthPicker(props) {
+  var $ = compilerRuntime.c(2);
+  var t0;
+  if ($[0] !== props) {
+    t0 = /*#__PURE__*/React.createElement(PFormMonthPickerInternal, _extends({}, props, {
+      embedded: true
+    }));
+    $[0] = props;
+    $[1] = t0;
+  } else {
+    t0 = $[1];
+  }
+  return t0;
+};var _excluded$b = ["className"];
+var PFormEmbedDatePicker = function PFormEmbedDatePicker(t0) {
+  var $ = compilerRuntime.c(8);
+  var className;
+  var props;
+  if ($[0] !== t0) {
+    var _t = t0;
+    className = _t.className;
+    props = _objectWithoutProperties(_t, _excluded$b);
+    $[0] = t0;
+    $[1] = className;
+    $[2] = props;
+  } else {
+    className = $[1];
+    props = $[2];
+  }
+  var t1;
+  if ($[3] !== className) {
+    t1 = classNames(className, "PFormEmbedDatePicker");
+    $[3] = className;
+    $[4] = t1;
+  } else {
+    t1 = $[4];
+  }
+  var t2;
+  if ($[5] !== props || $[6] !== t1) {
+    t2 = /*#__PURE__*/React.createElement(PFormDatePickerInternal, _extends({}, props, {
+      className: t1,
+      embedded: true
+    }));
+    $[5] = props;
+    $[6] = t1;
+    $[7] = t2;
+  } else {
+    t2 = $[7];
+  }
+  return t2;
+};var _excluded$a = ["className"];
+var PFormEmbedDateRangePicker = function PFormEmbedDateRangePicker(t0) {
+  var $ = compilerRuntime.c(8);
+  var className;
+  var props;
+  if ($[0] !== t0) {
+    var _t = t0;
+    className = _t.className;
+    props = _objectWithoutProperties(_t, _excluded$a);
+    $[0] = t0;
+    $[1] = className;
+    $[2] = props;
+  } else {
+    className = $[1];
+    props = $[2];
+  }
+  var t1;
+  if ($[3] !== className) {
+    t1 = classNames(className, "PFormEmbedDateRangePicker");
+    $[3] = className;
+    $[4] = t1;
+  } else {
+    t1 = $[4];
+  }
+  var t2;
+  if ($[5] !== props || $[6] !== t1) {
+    t2 = /*#__PURE__*/React.createElement(PFormDateRangePickerInternal, _extends({}, props, {
+      className: t1,
+      embedded: true
+    }));
+    $[5] = props;
+    $[6] = t1;
+    $[7] = t2;
+  } else {
+    t2 = $[7];
+  }
+  return t2;
+};var _excluded$9 = ["className"];
+var PFormEmbedDateTimePicker = function PFormEmbedDateTimePicker(t0) {
+  var $ = compilerRuntime.c(8);
+  var className;
+  var props;
+  if ($[0] !== t0) {
+    var _t = t0;
+    className = _t.className;
+    props = _objectWithoutProperties(_t, _excluded$9);
+    $[0] = t0;
+    $[1] = className;
+    $[2] = props;
+  } else {
+    className = $[1];
+    props = $[2];
+  }
+  var t1;
+  if ($[3] !== className) {
+    t1 = classNames(className, "PFormEmbedDateTimePicker");
+    $[3] = className;
+    $[4] = t1;
+  } else {
+    t1 = $[4];
+  }
+  var t2;
+  if ($[5] !== props || $[6] !== t1) {
+    t2 = /*#__PURE__*/React.createElement(PFormDateTimePickerInternal, _extends({}, props, {
+      className: t1,
+      embedded: true
+    }));
+    $[5] = props;
+    $[6] = t1;
+    $[7] = t2;
+  } else {
+    t2 = $[7];
+  }
+  return t2;
+};var _excluded$8 = ["className"];
+var PFormEmbedMonthRangePicker = function PFormEmbedMonthRangePicker(t0) {
+  var $ = compilerRuntime.c(8);
+  var className;
+  var props;
+  if ($[0] !== t0) {
+    var _t = t0;
+    className = _t.className;
+    props = _objectWithoutProperties(_t, _excluded$8);
+    $[0] = t0;
+    $[1] = className;
+    $[2] = props;
+  } else {
+    className = $[1];
+    props = $[2];
+  }
+  var t1;
+  if ($[3] !== className) {
+    t1 = classNames(className, "PFormEmbedMonthRangePicker");
+    $[3] = className;
+    $[4] = t1;
+  } else {
+    t1 = $[4];
+  }
+  var t2;
+  if ($[5] !== props || $[6] !== t1) {
+    t2 = /*#__PURE__*/React.createElement(PFormMonthRangePickerInternal, _extends({}, props, {
+      className: t1,
+      embedded: true
+    }));
+    $[5] = props;
+    $[6] = t1;
+    $[7] = t2;
+  } else {
+    t2 = $[7];
+  }
+  return t2;
+};var _excluded$7 = ["className"];
+var PFormEmbedTimePicker = function PFormEmbedTimePicker(t0) {
+  var $ = compilerRuntime.c(8);
+  var className;
+  var props;
+  if ($[0] !== t0) {
+    var _t = t0;
+    className = _t.className;
+    props = _objectWithoutProperties(_t, _excluded$7);
+    $[0] = t0;
+    $[1] = className;
+    $[2] = props;
+  } else {
+    className = $[1];
+    props = $[2];
+  }
+  var t1;
+  if ($[3] !== className) {
+    t1 = classNames(className, "PFormEmbedTimePicker");
+    $[3] = className;
+    $[4] = t1;
+  } else {
+    t1 = $[4];
+  }
+  var t2;
+  if ($[5] !== props || $[6] !== t1) {
+    t2 = /*#__PURE__*/React.createElement(PFormTimePickerInternal, _extends({}, props, {
+      className: t1,
+      embedded: true
+    }));
+    $[5] = props;
+    $[6] = t1;
+    $[7] = t2;
+  } else {
+    t2 = $[7];
+  }
+  return t2;
+};var _excluded$6 = ["className"];
+var PFormEmbedYearPicker = function PFormEmbedYearPicker(t0) {
+  var $ = compilerRuntime.c(8);
+  var className;
+  var props;
+  if ($[0] !== t0) {
+    var _t = t0;
+    className = _t.className;
+    props = _objectWithoutProperties(_t, _excluded$6);
+    $[0] = t0;
+    $[1] = className;
+    $[2] = props;
+  } else {
+    className = $[1];
+    props = $[2];
+  }
+  var t1;
+  if ($[3] !== className) {
+    t1 = classNames(className, "PFormEmbedYearPicker");
+    $[3] = className;
+    $[4] = t1;
+  } else {
+    t1 = $[4];
+  }
+  var t2;
+  if ($[5] !== props || $[6] !== t1) {
+    t2 = /*#__PURE__*/React.createElement(PFormYearPickerInternal, _extends({}, props, {
+      className: t1,
+      embedded: true
+    }));
+    $[5] = props;
+    $[6] = t1;
+    $[7] = t2;
+  } else {
+    t2 = $[7];
+  }
+  return t2;
+};var _excluded$5 = ["className"];
+var PFormEmbedYearRangePicker = function PFormEmbedYearRangePicker(t0) {
+  var $ = compilerRuntime.c(8);
+  var className;
+  var props;
+  if ($[0] !== t0) {
+    var _t = t0;
+    className = _t.className;
+    props = _objectWithoutProperties(_t, _excluded$5);
+    $[0] = t0;
+    $[1] = className;
+    $[2] = props;
+  } else {
+    className = $[1];
+    props = $[2];
+  }
+  var t1;
+  if ($[3] !== className) {
+    t1 = classNames(className, "PFormEmbedYearRangePicker");
+    $[3] = className;
+    $[4] = t1;
+  } else {
+    t1 = $[4];
+  }
+  var t2;
+  if ($[5] !== props || $[6] !== t1) {
+    t2 = /*#__PURE__*/React.createElement(PFormYearRangePickerInternal, _extends({}, props, {
+      className: t1,
+      embedded: true
+    }));
+    $[5] = props;
+    $[6] = t1;
+    $[7] = t2;
+  } else {
+    t2 = $[7];
+  }
+  return t2;
+};var _excluded$4 = ["children", "className"];
 var PSearchGroupRow = function PSearchGroupRow(t0) {
   var $ = compilerRuntime.c(12);
   var children;
@@ -30517,8 +31810,11 @@ var PHashSearch = function PHashSearch(t0) {
                   }
                   break bb11;
                 }
+              case "PFormEmbedDatePicker":
               case "PFormDatePicker":
+              case "PFormEmbedDateTimePicker":
               case "PFormDateTimePicker":
+              case "PFormEmbedTimePicker":
               case "PFormTimePicker":
                 {
                   if (compare.notEmpty(value_0)) {
@@ -30531,6 +31827,7 @@ var PHashSearch = function PHashSearch(t0) {
                   }
                   break bb11;
                 }
+              case "PFormEmbedDateRangePicker":
               case "PFormDateRangePicker":
                 {
                   var dateRangePickerCommands_0 = itemCommands;
@@ -30556,6 +31853,7 @@ var PHashSearch = function PHashSearch(t0) {
                   }
                   break bb11;
                 }
+              case "PFormEmbedYearRangePicker":
               case "PFormYearRangePicker":
                 {
                   var dateRangePickerCommands = itemCommands;
@@ -30570,6 +31868,7 @@ var PHashSearch = function PHashSearch(t0) {
                   }
                   break bb11;
                 }
+              case "PFormEmbedMonthPicker":
               case "PFormMonthPicker":
                 {
                   var monthCommands = itemCommands;
@@ -30584,6 +31883,7 @@ var PHashSearch = function PHashSearch(t0) {
                   }
                   break bb11;
                 }
+              case "PFormEmbedMonthRangePicker":
               case "PFormMonthRangePicker":
                 {
                   var monthRangeCommands = itemCommands;
@@ -30660,8 +31960,10 @@ var PHashSearch = function PHashSearch(t0) {
             var itemCommands_0 = searchRef.current.getItem(name_0);
             if (itemCommands_0) {
               var resetValue = null;
-              bb146: switch (itemCommands_0.getType()) {
+              bb153: switch (itemCommands_0.getType()) {
+                case "PFormEmbedDateRangePicker":
                 case "PFormDateRangePicker":
+                case "PFormEmbedYearRangePicker":
                 case "PFormYearRangePicker":
                   {
                     var commands_2 = itemCommands_0;
@@ -30677,8 +31979,9 @@ var PHashSearch = function PHashSearch(t0) {
                         resetValue = searchRef.current.getFormReset(itemName_1, toSuffix);
                       }
                     }
-                    break bb146;
+                    break bb153;
                   }
+                case "PFormEmbedMonthPicker":
                 case "PFormMonthPicker":
                   {
                     var commands_1 = itemCommands_0;
@@ -30694,8 +31997,9 @@ var PHashSearch = function PHashSearch(t0) {
                         resetValue = searchRef.current.getFormReset(itemName_0, monthSuffix);
                       }
                     }
-                    break bb146;
+                    break bb153;
                   }
+                case "PFormEmbedMonthRangePicker":
                 case "PFormMonthRangePicker":
                   {
                     var commands_0 = itemCommands_0;
@@ -30723,7 +32027,7 @@ var PHashSearch = function PHashSearch(t0) {
                         }
                       }
                     }
-                    break bb146;
+                    break bb153;
                   }
                 default:
                   {
@@ -30822,4 +32126,4 @@ function _temp() {
     return substring;
   });
   return values;
-}exports.PForm=PForm;exports.PFormAutocomplete=PFormAutocomplete;exports.PFormBlock=PFormBlock;exports.PFormBody=PFormBody;exports.PFormBusinessNo=PFormBusinessNo;exports.PFormButton=PFormButton;exports.PFormCheckbox=PFormCheckbox;exports.PFormCol=PFormCol;exports.PFormContext=PFormContext;exports.PFormContextDefaultValue=PFormContextDefaultValue;exports.PFormContextProvider=PFormContextProvider;exports.PFormDatePicker=PFormDatePicker;exports.PFormDateRangePicker=PFormDateRangePicker;exports.PFormDateTimePicker=PFormDateTimePicker;exports.PFormDivider=PFormDivider;exports.PFormEmail=PFormEmail;exports.PFormFile=PFormFile;exports.PFormFooter=PFormFooter;exports.PFormHidden=PFormHidden;exports.PFormImageFile=PFormImageFile;exports.PFormLabel=PFormLabel;exports.PFormMobile=PFormMobile;exports.PFormMonthPicker=PFormMonthPicker;exports.PFormMonthRangePicker=PFormMonthRangePicker;exports.PFormNumber=PFormNumber;exports.PFormPassword=PFormPassword;exports.PFormPersonalNo=PFormPersonalNo;exports.PFormRadioGroup=PFormRadioGroup;exports.PFormRating=PFormRating;exports.PFormRow=PFormRow;exports.PFormSearch=PFormSearch;exports.PFormSelect=PFormSelect;exports.PFormSwitch=PFormSwitch;exports.PFormTag=PFormTag;exports.PFormTel=PFormTel;exports.PFormText=PFormText;exports.PFormTextEditor=_PFormTextEditor;exports.PFormTextField=PFormTextField;exports.PFormTextarea=PFormTextarea;exports.PFormTimePicker=PFormTimePicker;exports.PFormToggleButtonGroup=PFormToggleButtonGroup;exports.PFormUrl=PFormUrl;exports.PFormYearPicker=PFormYearPicker;exports.PFormYearRangePicker=PFormYearRangePicker;exports.PHashSearch=PHashSearch;exports.PSearch=PSearch;exports.PSearchButton=PSearchButton;exports.PSearchGroup=PSearchGroup;exports.PSearchGroupRow=PSearchGroupRow;exports.PSearchMenuButton=PSearchMenuButton;exports.useFormState=useFormState;
+}exports.PForm=PForm;exports.PFormAutocomplete=PFormAutocomplete;exports.PFormBlock=PFormBlock;exports.PFormBody=PFormBody;exports.PFormBusinessNo=PFormBusinessNo;exports.PFormButton=PFormButton;exports.PFormCheckbox=PFormCheckbox;exports.PFormCol=PFormCol;exports.PFormContext=PFormContext;exports.PFormContextDefaultValue=PFormContextDefaultValue;exports.PFormContextProvider=PFormContextProvider;exports.PFormDatePicker=PFormDatePicker;exports.PFormDateRangePicker=PFormDateRangePicker;exports.PFormDateTimePicker=PFormDateTimePicker;exports.PFormDivider=PFormDivider;exports.PFormEmail=PFormEmail;exports.PFormEmbedDatePicker=PFormEmbedDatePicker;exports.PFormEmbedDateRangePicker=PFormEmbedDateRangePicker;exports.PFormEmbedDateTimePicker=PFormEmbedDateTimePicker;exports.PFormEmbedMonthPicker=PFormEmbedMonthPicker;exports.PFormEmbedMonthRangePicker=PFormEmbedMonthRangePicker;exports.PFormEmbedTimePicker=PFormEmbedTimePicker;exports.PFormEmbedYearPicker=PFormEmbedYearPicker;exports.PFormEmbedYearRangePicker=PFormEmbedYearRangePicker;exports.PFormFile=PFormFile;exports.PFormFooter=PFormFooter;exports.PFormHidden=PFormHidden;exports.PFormImageFile=PFormImageFile;exports.PFormLabel=PFormLabel;exports.PFormMobile=PFormMobile;exports.PFormMonthPicker=PFormMonthPicker;exports.PFormMonthRangePicker=PFormMonthRangePicker;exports.PFormNumber=PFormNumber;exports.PFormPassword=PFormPassword;exports.PFormPersonalNo=PFormPersonalNo;exports.PFormRadioGroup=PFormRadioGroup;exports.PFormRating=PFormRating;exports.PFormRow=PFormRow;exports.PFormSearch=PFormSearch;exports.PFormSelect=PFormSelect;exports.PFormSwitch=PFormSwitch;exports.PFormTag=PFormTag;exports.PFormTel=PFormTel;exports.PFormText=PFormText;exports.PFormTextEditor=_PFormTextEditor;exports.PFormTextField=PFormTextField;exports.PFormTextarea=PFormTextarea;exports.PFormTimePicker=PFormTimePicker;exports.PFormToggleButtonGroup=PFormToggleButtonGroup;exports.PFormUrl=PFormUrl;exports.PFormYearPicker=PFormYearPicker;exports.PFormYearRangePicker=PFormYearRangePicker;exports.PHashSearch=PHashSearch;exports.PSearch=PSearch;exports.PSearchButton=PSearchButton;exports.PSearchGroup=PSearchGroup;exports.PSearchGroupRow=PSearchGroupRow;exports.PSearchMenuButton=PSearchMenuButton;exports.useFormState=useFormState;

@@ -78,8 +78,11 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
                 }
               }
               break;
+            case 'PFormEmbedDatePicker':
             case 'PFormDatePicker':
+            case 'PFormEmbedDateTimePicker':
             case 'PFormDateTimePicker':
+            case 'PFormEmbedTimePicker':
             case 'PFormTimePicker':
               {
                 if (notEmpty(value)) {
@@ -92,6 +95,7 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
                 }
               }
               break;
+            case 'PFormEmbedDateRangePicker':
             case 'PFormDateRangePicker':
               {
                 const dateRangePickerCommands = itemCommands as PFormDateRangePickerCommands;
@@ -116,6 +120,7 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
                 }
               }
               break;
+            case 'PFormEmbedYearRangePicker':
             case 'PFormYearRangePicker':
               {
                 const dateRangePickerCommands = itemCommands as PFormYearRangePickerCommands;
@@ -129,6 +134,7 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
                 }
               }
               break;
+            case 'PFormEmbedMonthPicker':
             case 'PFormMonthPicker':
               {
                 const monthCommands = itemCommands as PFormMonthPickerCommands;
@@ -142,6 +148,7 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
                 }
               }
               break;
+            case 'PFormEmbedMonthRangePicker':
             case 'PFormMonthRangePicker':
               {
                 const monthRangeCommands = itemCommands as PFormMonthRangePickerCommands;
@@ -200,7 +207,9 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
               let resetValue: PFormValue | null = null;
 
               switch (itemCommands.getType()) {
+                case 'PFormEmbedDateRangePicker':
                 case 'PFormDateRangePicker':
+                case 'PFormEmbedYearRangePicker':
                 case 'PFormYearRangePicker':
                   {
                     const commands = itemCommands as PFormRangeValueItemNameCommands;
@@ -217,6 +226,7 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
                     }
                   }
                   break;
+                case 'PFormEmbedMonthPicker':
                 case 'PFormMonthPicker':
                   {
                     const commands = itemCommands as PFormMonthPickerCommands;
@@ -233,6 +243,7 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
                     }
                   }
                   break;
+                case 'PFormEmbedMonthRangePicker':
                 case 'PFormMonthRangePicker':
                   {
                     const commands = itemCommands as PFormMonthRangePickerCommands;

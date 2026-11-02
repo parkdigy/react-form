@@ -1,13 +1,14 @@
+import { PrivateDateTimePickerInternal } from '../../@private/PrivateDateTimePicker/PrivateDateTimePicker';
 import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { type PFormDateTimePickerProps as Props, type PFormDateTimePickerValue } from './PFormDateTimePicker.types';
-import { PrivateDateTimePicker } from '../../@private';
 import PFormContextProvider from '../../PFormContextProvider';
 import { useFormState } from '../../PFormContext';
 import { type PFormValueItemCommands } from '../../@types';
 import dayjs, { Dayjs } from 'dayjs';
 
-const PFormDateTimePicker = ({
+export const PFormDateTimePickerInternal = ({
+  embedded = false,
   ref,
   className,
   time,
@@ -16,7 +17,7 @@ const PFormDateTimePicker = ({
   disablePast,
   disableFuture,
   ...props
-}: Props) => {
+}: Props & { embedded?: boolean }) => {
   /********************************************************************************************************************
    * FormState
    * ******************************************************************************************************************/
@@ -73,10 +74,10 @@ const PFormDateTimePicker = ({
 
   const handleAddValueItem = useCallback(
     (id: string, commands: PFormValueItemCommands<PFormDateTimePickerValue, false>) => {
-      commands.getType = () => 'PFormDateTimePicker';
+      commands.getType = () => (embedded ? 'PFormEmbedDateTimePicker' : 'PFormDateTimePicker');
       onAddValueItem(id, commands);
     },
-    [onAddValueItem]
+    [embedded, onAddValueItem]
   );
 
   /********************************************************************************************************************
@@ -90,7 +91,8 @@ const PFormDateTimePicker = ({
         onAddValueItem: handleAddValueItem,
       }}
     >
-      <PrivateDateTimePicker
+      <PrivateDateTimePickerInternal
+        embedded={embedded}
         ref={ref}
         className={classNames(className, 'PFormDateTimePicker')}
         type='date_time'
@@ -104,5 +106,7 @@ const PFormDateTimePicker = ({
     </PFormContextProvider>
   );
 };
+
+const PFormDateTimePicker = (props: Props) => <PFormDateTimePickerInternal {...props} />;
 
 export default PFormDateTimePicker;
