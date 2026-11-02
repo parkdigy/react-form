@@ -124,15 +124,15 @@ function _taggedTemplateLiteral(e, t) {
 function _toConsumableArray(r) {
   return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread();
 }
-function _toPrimitive(t, r) {
+function _toPrimitive(t, e) {
   if ("object" != typeof t || !t) return t;
-  var e = t[Symbol.toPrimitive];
-  if (void 0 !== e) {
-    var i = e.call(t, r);
+  var r;
+  if ("undefined" != typeof Symbol && void 0 !== (r = t[Symbol.toPrimitive])) {
+    var i = r.call(t, e);
     if ("object" != typeof i) return i;
     throw new TypeError("@@toPrimitive must return a primitive value.");
   }
-  return ("string" === r ? String : Number)(t);
+  return ("string" === e ? String : Number)(t);
 }
 function _toPropertyKey(t) {
   var i = _toPrimitive(t, "string");
@@ -2524,7 +2524,7 @@ var StyledContentDiv = styled('div')(_templateObject2$7 || (_templateObject2$7 =
 };insertStyle(".PFormTextField{min-width:200px}.PFormTextField .clear-icon-button-wrap{display:none}.PFormTextField.variant-filled .clear-icon-button-wrap{margin-top:9px;margin-bottom:-9px}.PFormTextField:hover .clear-icon-button-wrap.show,.PFormTextField .MuiInputBase-root.Mui-focused .clear-icon-button-wrap.show{display:block}");var _excluded$y = ["ref", "variant", "size", "color", "focused", "labelShrink", "fullWidth", "submitWhenReturnKey", "name", "required", "value", "data", "icon", "labelIcon", "label", "error", "helperText", "errorHelperText", "exceptValue", "readOnly", "tabIndex", "disabled", "placeholder", "maxLength", "clear", "width", "slotProps", "inputRef", "select", "multiline", "validPattern", "invalidPattern", "startAdornment", "endAdornment", "noFormValueItem", "noValidationCheck", "hidden", "disableReturnKey", "defaultRequiredErrorHelperText", "defaultPatternErrorHelperText", "onChange", "onValue", "onValidate", "onBlur", "onKeyDown", "className", "style"];
 function PFormTextField(t0) {
   var _initSlotProps, _initSlotProps4;
-  var $ = c(228);
+  var $ = c(230);
   var className;
   var clear;
   var disableReturnKey;
@@ -3223,27 +3223,50 @@ function PFormTextField(t0) {
   }
   var handleChange = t37;
   var t38;
-  if ($[152] !== error || $[153] !== noValidationCheck || $[154] !== onBlurRef || $[155] !== validate || $[156] !== valueRef) {
-    t38 = function t38(e_0) {
+  if ($[152] !== focus || $[153] !== name || $[154] !== noFormValueItem || $[155] !== onRequestSearchSubmit || $[156] !== onValueChangeByUser || $[157] !== updateValue) {
+    t38 = function t38() {
+      var finalValue_1 = updateValue("");
+      focus();
+      if (!noFormValueItem) {
+        setTimeout(function () {
+          onValueChangeByUser(name, finalValue_1);
+          onRequestSearchSubmit(name, finalValue_1);
+        });
+      }
+    };
+    $[152] = focus;
+    $[153] = name;
+    $[154] = noFormValueItem;
+    $[155] = onRequestSearchSubmit;
+    $[156] = onValueChangeByUser;
+    $[157] = updateValue;
+    $[158] = t38;
+  } else {
+    t38 = $[158];
+  }
+  var handleClear = t38;
+  var t39;
+  if ($[159] !== error || $[160] !== noValidationCheck || $[161] !== onBlurRef || $[162] !== validate || $[163] !== valueRef) {
+    t39 = function t39(e_0) {
       var _onBlurRef$current;
       if (!noValidationCheck && error) {
         validate(valueRef.current);
       }
       (_onBlurRef$current = onBlurRef.current) === null || _onBlurRef$current === void 0 || _onBlurRef$current.call(onBlurRef, e_0);
     };
-    $[152] = error;
-    $[153] = noValidationCheck;
-    $[154] = onBlurRef;
-    $[155] = validate;
-    $[156] = valueRef;
-    $[157] = t38;
+    $[159] = error;
+    $[160] = noValidationCheck;
+    $[161] = onBlurRef;
+    $[162] = validate;
+    $[163] = valueRef;
+    $[164] = t39;
   } else {
-    t38 = $[157];
+    t39 = $[164];
   }
-  var handleBlur = t38;
-  var t39;
-  if ($[158] !== disableReturnKey || $[159] !== multiline || $[160] !== name || $[161] !== noFormValueItem || $[162] !== onKeyDownRef || $[163] !== onRequestSearchSubmit || $[164] !== onRequestSubmit || $[165] !== select || $[166] !== submitWhenReturnKey || $[167] !== valueRef) {
-    t39 = function t39(e_1) {
+  var handleBlur = t39;
+  var t40;
+  if ($[165] !== disableReturnKey || $[166] !== multiline || $[167] !== name || $[168] !== noFormValueItem || $[169] !== onKeyDownRef || $[170] !== onRequestSearchSubmit || $[171] !== onRequestSubmit || $[172] !== select || $[173] !== submitWhenReturnKey || $[174] !== valueRef) {
+    t40 = function t40(e_1) {
       var _onKeyDownRef$current;
       if (["Enter"].includes(e_1.key) && !select && (!multiline || multiline && disableReturnKey) && !noFormValueItem) {
         e_1.preventDefault();
@@ -3255,23 +3278,23 @@ function PFormTextField(t0) {
       }
       (_onKeyDownRef$current = onKeyDownRef.current) === null || _onKeyDownRef$current === void 0 || _onKeyDownRef$current.call(onKeyDownRef, e_1);
     };
-    $[158] = disableReturnKey;
-    $[159] = multiline;
-    $[160] = name;
-    $[161] = noFormValueItem;
-    $[162] = onKeyDownRef;
-    $[163] = onRequestSearchSubmit;
-    $[164] = onRequestSubmit;
-    $[165] = select;
-    $[166] = submitWhenReturnKey;
-    $[167] = valueRef;
-    $[168] = t39;
+    $[165] = disableReturnKey;
+    $[166] = multiline;
+    $[167] = name;
+    $[168] = noFormValueItem;
+    $[169] = onKeyDownRef;
+    $[170] = onRequestSearchSubmit;
+    $[171] = onRequestSubmit;
+    $[172] = select;
+    $[173] = submitWhenReturnKey;
+    $[174] = valueRef;
+    $[175] = t40;
   } else {
-    t39 = $[168];
+    t40 = $[175];
   }
-  var handleKeyDown = t39;
+  var handleKeyDown = t40;
   var newStyle;
-  if ($[169] !== hidden || $[170] !== initStyle || $[171] !== width) {
+  if ($[176] !== hidden || $[177] !== initStyle || $[178] !== width) {
     newStyle = _objectSpread2({}, initStyle);
     if (width != null) {
       newStyle.width = width;
@@ -3279,18 +3302,18 @@ function PFormTextField(t0) {
     if (hidden) {
       newStyle.display = "none";
     }
-    $[169] = hidden;
-    $[170] = initStyle;
-    $[171] = width;
-    $[172] = newStyle;
+    $[176] = hidden;
+    $[177] = initStyle;
+    $[178] = width;
+    $[179] = newStyle;
   } else {
-    newStyle = $[172];
+    newStyle = $[179];
   }
   var style = newStyle;
-  var t40;
-  if ($[173] !== clear || $[174] !== disabled || $[175] !== endAdornment || $[176] !== focus || $[177] !== icon || $[178] !== ((_initSlotProps = initSlotProps) === null || _initSlotProps === void 0 ? void 0 : _initSlotProps.input) || $[179] !== name || $[180] !== noFormValueItem || $[181] !== onRequestSearchSubmit || $[182] !== onValueChangeByUser || $[183] !== readOnly || $[184] !== showClear || $[185] !== startAdornment || $[186] !== updateValue) {
+  var t41;
+  if ($[180] !== clear || $[181] !== disabled || $[182] !== endAdornment || $[183] !== handleClear || $[184] !== icon || $[185] !== ((_initSlotProps = initSlotProps) === null || _initSlotProps === void 0 ? void 0 : _initSlotProps.input) || $[186] !== readOnly || $[187] !== showClear || $[188] !== startAdornment) {
     var _initSlotProps3;
-    t40 = function t40() {
+    t41 = function t41() {
       var _initSlotProps2;
       var newProps = _objectSpread2({}, (_initSlotProps2 = initSlotProps) === null || _initSlotProps2 === void 0 ? void 0 : _initSlotProps2.input);
       if (startAdornment || icon || newProps.startAdornment) {
@@ -3310,16 +3333,7 @@ function PFormTextField(t0) {
           className: "clear-icon-button",
           size: "small",
           tabIndex: -1,
-          onClick: function onClick() {
-            var finalValue_1 = updateValue("");
-            focus();
-            if (!noFormValueItem) {
-              setTimeout(function () {
-                onValueChangeByUser(name, finalValue_1);
-                onRequestSearchSubmit(name, finalValue_1);
-              });
-            }
-          }
+          onClick: handleClear
         }, /*#__PURE__*/React.createElement(PIcon, {
           size: "inherit"
         }, "ClearRounded"))), newProps.endAdornment, endAdornment && /*#__PURE__*/React.createElement(InputAdornment, {
@@ -3328,36 +3342,31 @@ function PFormTextField(t0) {
       }
       return newProps;
     };
-    $[173] = clear;
-    $[174] = disabled;
-    $[175] = endAdornment;
-    $[176] = focus;
-    $[177] = icon;
-    $[178] = (_initSlotProps3 = initSlotProps) === null || _initSlotProps3 === void 0 ? void 0 : _initSlotProps3.input;
-    $[179] = name;
-    $[180] = noFormValueItem;
-    $[181] = onRequestSearchSubmit;
-    $[182] = onValueChangeByUser;
-    $[183] = readOnly;
-    $[184] = showClear;
-    $[185] = startAdornment;
-    $[186] = updateValue;
-    $[187] = t40;
-  } else {
-    t40 = $[187];
-  }
-  (_initSlotProps4 = initSlotProps) === null || _initSlotProps4 === void 0 || _initSlotProps4.input;
-  var t41;
-  if ($[188] !== t40) {
-    t41 = t40();
-    $[188] = t40;
+    $[180] = clear;
+    $[181] = disabled;
+    $[182] = endAdornment;
+    $[183] = handleClear;
+    $[184] = icon;
+    $[185] = (_initSlotProps3 = initSlotProps) === null || _initSlotProps3 === void 0 ? void 0 : _initSlotProps3.input;
+    $[186] = readOnly;
+    $[187] = showClear;
+    $[188] = startAdornment;
     $[189] = t41;
   } else {
     t41 = $[189];
   }
-  var inputSlotProps = t41;
+  (_initSlotProps4 = initSlotProps) === null || _initSlotProps4 === void 0 || _initSlotProps4.input;
+  var t42;
+  if ($[190] !== t41) {
+    t42 = t41();
+    $[190] = t41;
+    $[191] = t42;
+  } else {
+    t42 = $[191];
+  }
+  var inputSlotProps = t42;
   var newSlotProps;
-  if ($[190] !== initSlotProps || $[191] !== inputSlotProps || $[192] !== labelShrink || $[193] !== maxLength || $[194] !== placeholder || $[195] !== readOnly || $[196] !== tabIndex) {
+  if ($[192] !== initSlotProps || $[193] !== inputSlotProps || $[194] !== labelShrink || $[195] !== maxLength || $[196] !== placeholder || $[197] !== readOnly || $[198] !== tabIndex) {
     var _initSlotProps5, _initSlotProps6, _initSlotProps7, _initSlotProps8, _initHtmlInputProps$c;
     newSlotProps = _objectSpread2(_objectSpread2({}, initSlotProps), {}, {
       formHelperText: {
@@ -3381,22 +3390,22 @@ function PFormTextField(t0) {
         newSlotProps.htmlInput.tabIndex = tabIndex;
       }
     }
-    $[190] = initSlotProps;
-    $[191] = inputSlotProps;
-    $[192] = labelShrink;
-    $[193] = maxLength;
-    $[194] = placeholder;
-    $[195] = readOnly;
-    $[196] = tabIndex;
-    $[197] = newSlotProps;
+    $[192] = initSlotProps;
+    $[193] = inputSlotProps;
+    $[194] = labelShrink;
+    $[195] = maxLength;
+    $[196] = placeholder;
+    $[197] = readOnly;
+    $[198] = tabIndex;
+    $[199] = newSlotProps;
   } else {
-    newSlotProps = $[197];
+    newSlotProps = $[199];
   }
   var slotProps = newSlotProps;
-  var t42 = focused || undefined;
-  var t43;
-  if ($[198] !== initLabel || $[199] !== labelIcon) {
-    t43 = labelIcon ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PIcon, {
+  var t43 = focused || undefined;
+  var t44;
+  if ($[200] !== initLabel || $[201] !== labelIcon) {
+    t44 = labelIcon ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PIcon, {
       style: {
         verticalAlign: "middle",
         marginRight: 4
@@ -3407,42 +3416,42 @@ function PFormTextField(t0) {
         verticalAlign: "middle"
       }
     }, initLabel)) : initLabel;
-    $[198] = initLabel;
-    $[199] = labelIcon;
-    $[200] = t43;
-  } else {
-    t43 = $[200];
-  }
-  var t44 = "variant-".concat(variant);
-  var t45;
-  if ($[201] !== className || $[202] !== t44) {
-    t45 = classNames(className, "PFormValueItem", "PFormTextField", t44);
-    $[201] = className;
+    $[200] = initLabel;
+    $[201] = labelIcon;
     $[202] = t44;
-    $[203] = t45;
   } else {
-    t45 = $[203];
+    t44 = $[202];
   }
-  var t46 = initInputRef ? initInputRef : inputRef;
-  var t47 = !width && fullWidth;
-  var t48 = formColWithHelperText ? undefined : error ? errorHelperText : helperText;
-  var t49;
-  if ($[204] !== color || $[205] !== disabled || $[206] !== error || $[207] !== handleBlur || $[208] !== handleChange || $[209] !== handleKeyDown || $[210] !== multiline || $[211] !== name || $[212] !== placeholder || $[213] !== props || $[214] !== required || $[215] !== select || $[216] !== size || $[217] !== slotProps || $[218] !== style || $[219] !== t42 || $[220] !== t43 || $[221] !== t45 || $[222] !== t46 || $[223] !== t47 || $[224] !== t48 || $[225] !== value_0 || $[226] !== variant) {
-    t49 = /*#__PURE__*/React.createElement(TextField, _extends({}, props, {
+  var t45 = "variant-".concat(variant);
+  var t46;
+  if ($[203] !== className || $[204] !== t45) {
+    t46 = classNames(className, "PFormValueItem", "PFormTextField", t45);
+    $[203] = className;
+    $[204] = t45;
+    $[205] = t46;
+  } else {
+    t46 = $[205];
+  }
+  var t47 = initInputRef ? initInputRef : inputRef;
+  var t48 = !width && fullWidth;
+  var t49 = formColWithHelperText ? undefined : error ? errorHelperText : helperText;
+  var t50;
+  if ($[206] !== color || $[207] !== disabled || $[208] !== error || $[209] !== handleBlur || $[210] !== handleChange || $[211] !== handleKeyDown || $[212] !== multiline || $[213] !== name || $[214] !== placeholder || $[215] !== props || $[216] !== required || $[217] !== select || $[218] !== size || $[219] !== slotProps || $[220] !== style || $[221] !== t43 || $[222] !== t44 || $[223] !== t46 || $[224] !== t47 || $[225] !== t48 || $[226] !== t49 || $[227] !== value_0 || $[228] !== variant) {
+    t50 = /*#__PURE__*/React.createElement(TextField, _extends({}, props, {
       variant: variant,
       size: size,
       color: color,
-      focused: t42,
+      focused: t43,
       name: name,
-      label: t43,
+      label: t44,
       placeholder: placeholder,
-      className: t45,
-      inputRef: t46,
+      className: t46,
+      inputRef: t47,
       value: value_0,
       required: required,
-      fullWidth: t47,
+      fullWidth: t48,
       error: error,
-      helperText: t48,
+      helperText: t49,
       slotProps: slotProps,
       disabled: disabled,
       style: style,
@@ -3452,34 +3461,34 @@ function PFormTextField(t0) {
       onBlur: handleBlur,
       onKeyDown: handleKeyDown
     }));
-    $[204] = color;
-    $[205] = disabled;
-    $[206] = error;
-    $[207] = handleBlur;
-    $[208] = handleChange;
-    $[209] = handleKeyDown;
-    $[210] = multiline;
-    $[211] = name;
-    $[212] = placeholder;
-    $[213] = props;
-    $[214] = required;
-    $[215] = select;
-    $[216] = size;
-    $[217] = slotProps;
-    $[218] = style;
-    $[219] = t42;
-    $[220] = t43;
-    $[221] = t45;
-    $[222] = t46;
-    $[223] = t47;
-    $[224] = t48;
-    $[225] = value_0;
-    $[226] = variant;
-    $[227] = t49;
+    $[206] = color;
+    $[207] = disabled;
+    $[208] = error;
+    $[209] = handleBlur;
+    $[210] = handleChange;
+    $[211] = handleKeyDown;
+    $[212] = multiline;
+    $[213] = name;
+    $[214] = placeholder;
+    $[215] = props;
+    $[216] = required;
+    $[217] = select;
+    $[218] = size;
+    $[219] = slotProps;
+    $[220] = style;
+    $[221] = t43;
+    $[222] = t44;
+    $[223] = t46;
+    $[224] = t47;
+    $[225] = t48;
+    $[226] = t49;
+    $[227] = value_0;
+    $[228] = variant;
+    $[229] = t50;
   } else {
-    t49 = $[227];
+    t50 = $[229];
   }
-  return t49;
+  return t50;
 }
 function _temp$w() {
   return "default";
@@ -8686,7 +8695,7 @@ function PFormRadioGroup(t0) {
 }
 function _temp$p() {
   return "PFormRadioGroup";
-}insertStyle(".PFormToggleButtonGroup.loading .PFormItemBase-Control-wrap .PFormItemBase-Control{align-items:center !important}.PFormToggleButtonGroup .ToggleButton{display:inline-flex;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;align-items:center}.PFormToggleButtonGroup .ToggleButton .__label__{height:0;line-height:0 !important;overflow:visible !important}.PFormToggleButtonGroup.type-checkbox .ToggleButton,.PFormToggleButtonGroup.type-radio .ToggleButton{padding-left:3px;padding-right:5px;border:0 !important;margin-left:0 !important;justify-content:flex-start;display:flex;background-color:rgba(0,0,0,0) !important}.PFormToggleButtonGroup.type-checkbox .ToggleButton:not(:last-child),.PFormToggleButtonGroup.type-radio .ToggleButton:not(:last-child){margin-right:5px}.PFormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__,.PFormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-unchecked__,.PFormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__,.PFormToggleButtonGroup.type-radio .ToggleButton .__checkbox-unchecked__{margin-right:3px}.PFormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__,.PFormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__{display:none}.PFormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected.Mui-disabled,.PFormToggleButtonGroup.type-radio .ToggleButton.Mui-selected.Mui-disabled{opacity:.5}.PFormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-checked__,.PFormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-checked__{display:block}.PFormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-unchecked__,.PFormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-unchecked__{display:none}.PFormToggleButtonGroup:not(.with-label).variant-outlined .PFormItemBase-Control-wrap{margin-top:15px;margin-bottom:-15px}.PFormToggleButtonGroup:not(.with-label).variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PFormToggleButtonGroup:not(.with-label).variant-filled .PFormItemBase-Control-wrap{margin-top:15px;margin-bottom:-15px}.PFormToggleButtonGroup:not(.with-label).variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PFormToggleButtonGroup:not(.with-label).variant-standard .PFormItemBase-Control-wrap{margin-top:0px;margin-bottom:0px}.PFormToggleButtonGroup:not(.with-label).variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:28px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-outlined .PFormItemBase-Control-wrap{margin-top:13px;margin-bottom:-13px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:24px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-filled .PFormItemBase-Control-wrap{margin-top:13px;margin-bottom:-13px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:31px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-standard .PFormItemBase-Control-wrap{margin-top:0px;margin-bottom:0px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:26px}.PFormToggleButtonGroup.with-label.variant-outlined .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PFormToggleButtonGroup.with-label.variant-filled .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PFormToggleButtonGroup.with-label.variant-standard .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:28px}.PFormToggleButtonGroup.with-label.size-small.variant-outlined .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.size-small.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:24px}.PFormToggleButtonGroup.with-label.size-small.variant-filled .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.size-small.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:31px}.PFormToggleButtonGroup.with-label.size-small.variant-standard .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.size-small.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:26px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-outlined .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-filled .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-standard .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:28px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-outlined .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:24px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-filled .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:31px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-standard .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:26px}");function PFormToggleButtonGroup(t0) {
+}insertStyle(".PFormToggleButtonGroup.loading .PFormItemBase-Control-wrap .PFormItemBase-Control{align-items:center !important}.PFormToggleButtonGroup .ToggleButton{display:inline-flex;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;align-items:center}.PFormToggleButtonGroup .ToggleButton .__label__{height:0;line-height:0 !important;overflow:visible !important}.PFormToggleButtonGroup.type-checkbox .ToggleButton,.PFormToggleButtonGroup.type-radio .ToggleButton{padding-left:3px;padding-right:5px;border:0 !important;margin-left:0 !important;justify-content:flex-start;display:flex;background-color:rgba(0,0,0,0) !important}.PFormToggleButtonGroup.type-checkbox .ToggleButton:not(:last-child),.PFormToggleButtonGroup.type-radio .ToggleButton:not(:last-child){margin-right:5px}.PFormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__,.PFormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-unchecked__,.PFormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__,.PFormToggleButtonGroup.type-radio .ToggleButton .__checkbox-unchecked__{margin-right:3px}.PFormToggleButtonGroup.type-checkbox .ToggleButton .__checkbox-checked__,.PFormToggleButtonGroup.type-radio .ToggleButton .__checkbox-checked__{display:none}.PFormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected.Mui-disabled,.PFormToggleButtonGroup.type-radio .ToggleButton.Mui-selected.Mui-disabled{opacity:.5}.PFormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-checked__,.PFormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-checked__{display:block}.PFormToggleButtonGroup.type-checkbox .ToggleButton.Mui-selected .__checkbox-unchecked__,.PFormToggleButtonGroup.type-radio .ToggleButton.Mui-selected .__checkbox-unchecked__{display:none}.PFormToggleButtonGroup:not(.with-label).variant-outlined .PFormItemBase-Control-wrap{margin-top:15px;margin-bottom:-15px}.PFormToggleButtonGroup:not(.with-label).variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PFormToggleButtonGroup:not(.with-label).variant-filled .PFormItemBase-Control-wrap{margin-top:15px;margin-bottom:-15px}.PFormToggleButtonGroup:not(.with-label).variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PFormToggleButtonGroup:not(.with-label).variant-standard .PFormItemBase-Control-wrap{margin-top:0px;margin-bottom:-0px}.PFormToggleButtonGroup:not(.with-label).variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:28px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-outlined .PFormItemBase-Control-wrap{margin-top:13px;margin-bottom:-13px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:24px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-filled .PFormItemBase-Control-wrap{margin-top:13px;margin-bottom:-13px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:31px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-standard .PFormItemBase-Control-wrap{margin-top:0px;margin-bottom:-0px}.PFormToggleButtonGroup:not(.with-label).size-small.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:26px}.PFormToggleButtonGroup.with-label.variant-outlined .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PFormToggleButtonGroup.with-label.variant-filled .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PFormToggleButtonGroup.with-label.variant-standard .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:28px}.PFormToggleButtonGroup.with-label.size-small.variant-outlined .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.size-small.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:24px}.PFormToggleButtonGroup.with-label.size-small.variant-filled .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.size-small.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:31px}.PFormToggleButtonGroup.with-label.size-small.variant-standard .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PFormToggleButtonGroup.with-label.size-small.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:26px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-outlined .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-filled .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:37px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-standard .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:28px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-outlined .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-outlined .PFormItemBase-Control-wrap .ToggleButton{height:24px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-filled .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-filled .PFormItemBase-Control-wrap .ToggleButton{height:31px}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-standard .PFormItemBase-Control-wrap{margin-top:0;margin-bottom:0}.PForm .PFormCol.with-label .PFormToggleButtonGroup.size-small.variant-standard .PFormItemBase-Control-wrap .ToggleButton{height:26px}");function PFormToggleButtonGroup(t0) {
   var $ = c(236);
   var ref = t0.ref,
     initVariant = t0.variant,
