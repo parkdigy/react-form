@@ -1,6 +1,13 @@
-import { type PFormMonthPickerCommands, type PFormMonthPickerProps } from '../PFormMonthPicker';
+import type {
+  PFormMonthPickerCommands,
+  PFormMonthPickerProps,
+  PFormMonthPickerBaseValue,
+  PFormMonthPickerValue,
+} from '../PFormMonthPicker';
 
 export type PFormEmbedMonthPickerCommands = PFormMonthPickerCommands;
+export type PFormEmbedMonthPickerBaseValue = PFormMonthPickerBaseValue;
+export type PFormEmbedMonthPickerValue = PFormMonthPickerValue;
 
 export type PFormEmbedMonthPickerProps = Omit<
   PFormMonthPickerProps,
