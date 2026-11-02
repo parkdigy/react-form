@@ -27,7 +27,7 @@ const PrivateTimeSelect = ({
 
   const containerRef = useRef<HTMLDivElement>(null);
   const simpleBarRef = useRef<HTMLDivElement>(null);
-  const scrollTimerRef = useRef<NodeJS.Timeout>(undefined);
+  const scrollTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const onSelectRef = useAutoUpdateRef(initOnSelect);
 
   /********************************************************************************************************************

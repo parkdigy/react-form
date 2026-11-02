@@ -1,4 +1,4 @@
-const webpack = require('webpack');
+const { rspack } = require('@rspack/core');
 
 const llProduction = `(
   (message, ...args) => {
@@ -30,7 +30,7 @@ class MyDefinedPlugin {
   }
 
   apply(compiler) {
-    new webpack.DefinePlugin(this._data).apply(compiler);
+    new rspack.DefinePlugin(this._data).apply(compiler);
   }
 }
 

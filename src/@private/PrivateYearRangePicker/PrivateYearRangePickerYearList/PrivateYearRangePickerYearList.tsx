@@ -22,7 +22,7 @@ const PrivateYearRangePickerYearList = ({
   const yearsContainerRef = useRef<HTMLDivElement>(null);
   const startButtonRef = useRef<HTMLDivElement | null>(null);
   const endButtonRef = useRef<HTMLDivElement | null>(null);
-  const mouseOverTimer = useRef<NodeJS.Timeout>(undefined);
+  const mouseOverTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   /********************************************************************************************************************
    * State

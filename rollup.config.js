@@ -35,7 +35,7 @@ const getConfig = () => ({
     warn(warning);
   },
   plugins: [
-    del({ targets: 'dist/*' }),
+    (typeof del === 'function' ? del : del.default)({ targets: 'dist/*' }),
     peerDepsExternal(),
     eslint({
       throwOnError: true,

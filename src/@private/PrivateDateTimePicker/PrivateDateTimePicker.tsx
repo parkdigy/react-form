@@ -97,7 +97,7 @@ const PrivateDateTimePicker = ({
 
   const privateStaticDateTimePickerRef = useRef<PrivateStaticDateTimePickerCommands>(null);
   const textFieldInputRef = useRef<HTMLInputElement>(undefined);
-  const closeTimeoutRef = useRef<NodeJS.Timeout>(undefined);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const mouseDownTimeRef = useRef<number>(undefined);
   const openValueRef = useRef<PrivateDatePickerValue | undefined>(undefined);
   const onValidateRef = useAutoUpdateRef(onValidate);

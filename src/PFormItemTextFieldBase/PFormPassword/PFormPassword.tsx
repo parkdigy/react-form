@@ -5,7 +5,7 @@ import PFormText from '../PFormText';
 import { notEmpty } from '@pdg/compare';
 import { type PFormPasswordProps as Props, type PFormPasswordValue } from './PFormPassword.types';
 import './PFormPassword.scss';
-import { type InputBaseProps } from '@mui/material/InputBase/InputBase';
+import { type InputBaseProps } from '@mui/material/InputBase';
 import { useAutoUpdateRef } from '@pdg/react-hook';
 
 const StyledEyeInputAdornment = styled(InputAdornment)`

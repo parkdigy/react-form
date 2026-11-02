@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES2017",
     "module": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "jsx": "react",
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -11,11 +11,10 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "preserveSymlinks": true,
-    "baseUrl": "./",
     "paths": {
-      "@comp": ["src/component"],
-      "@ccomp": ["src/component/Common"],
-      "@common": ["src/@common"]
+      "@comp": ["./src/component"],
+      "@ccomp": ["./src/component/Common"],
+      "@common": ["./src/@common"]
     },
     "typeRoots": ["node_modules/@types", "src/@types"]
   },

@@ -6,7 +6,7 @@ import { empty, notEmpty } from '@pdg/compare';
 import { type PFormTextFieldProps, type PFormTextFieldCommands, type PFormTextFieldValue } from './PFormTextField.types';
 import { useFormState } from '../../PFormContext';
 import { PIcon } from '@pdg/react-component';
-import { type InputProps as StandardInputProps } from '@mui/material/Input/Input';
+import { type InputProps as StandardInputProps } from '@mui/material/Input';
 import './PFormTextField.scss';
 
 type InputSlotProps = StandardInputProps;
@@ -353,6 +353,17 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
     [updateValue, noFormValueItem, onValueChangeByUser, name, select, onRequestSearchSubmit]
   );
 
+  const handleClear = useCallback(() => {
+    const finalValue = updateValue('');
+    focus();
+    if (!noFormValueItem) {
+      setTimeout(() => {
+        onValueChangeByUser(name, finalValue);
+        onRequestSearchSubmit(name, finalValue);
+      });
+    }
+  }, [updateValue, focus, noFormValueItem, onValueChangeByUser, name, onRequestSearchSubmit]);
+
   /** handleBlur */
   const handleBlur = useCallback(
     (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -431,16 +442,7 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
                 className={'clear-icon-button'}
                 size='small'
                 tabIndex={-1}
-                onClick={() => {
-                  const finalValue = updateValue('');
-                  focus();
-                  if (!noFormValueItem) {
-                    setTimeout(() => {
-                      onValueChangeByUser(name, finalValue);
-                      onRequestSearchSubmit(name, finalValue);
-                    });
-                  }
-                }}
+                onClick={handleClear}
               >
                 <PIcon size='inherit'>ClearRounded</PIcon>
               </IconButton>
@@ -457,17 +459,12 @@ function PFormTextField<T = PFormTextFieldValue, AllowUndefinedValue extends boo
     clear,
     disabled,
     endAdornment,
-    focus,
+    handleClear,
     icon,
     initSlotProps?.input,
-    name,
-    noFormValueItem,
-    onRequestSearchSubmit,
-    onValueChangeByUser,
     readOnly,
     showClear,
     startAdornment,
-    updateValue,
   ]);
 
   /** slotProps */

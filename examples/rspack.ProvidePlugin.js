@@ -1,8 +1,8 @@
-const webpack = require('webpack');
+const { rspack } = require('@rspack/core');
 
 class MyProvidePlugin {
   apply(compiler) {
-    new webpack.ProvidePlugin({
+    new rspack.ProvidePlugin({
       styled: ['styled-components', 'default'],
     }).apply(compiler);
   }

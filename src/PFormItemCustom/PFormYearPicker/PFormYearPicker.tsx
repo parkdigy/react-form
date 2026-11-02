@@ -109,7 +109,7 @@ const PFormYearPicker = ({
 
   const initValueRef = useAutoUpdateRef(initValue);
   const inputRef = useRef<HTMLInputElement>(undefined);
-  const closeTimeoutRef = useRef<NodeJS.Timeout>(undefined);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const mouseDownTimeRef = useRef<number>(undefined);
   const inputDatePickerErrorRef = useRef<DateValidationError>(null);
   const openValueRef = useRef<PFormYearPickerValue>(undefined);
