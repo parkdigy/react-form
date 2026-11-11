@@ -14,6 +14,7 @@ import {
   PFormDateRangePicker,
   PSearchCommands,
   PFormToggleButtonGroupItems,
+  PFormAutocomplete,
 } from '../../../../src';
 import { FormHelperText, Grid, MenuItem, MenuList } from '@mui/material';
 import dayjs from 'dayjs';
@@ -74,6 +75,13 @@ const HashSearch = () => {
           lv('Item 4', 4),
           lv('Item 5', 5),
         ]}
+      />
+      <PFormAutocomplete
+        name='PFormAutocomplete'
+        label='앱'
+        onLoadItems={async () => {
+          return [lv('앱 1', 1), lv('앱 2', 2), lv('앱 3', 3), lv('앱 4', 4), lv('앱 5', 5)];
+        }}
       />
       <PFormDatePicker name='PFormDatePicker' disablePast />
       <PFormDateTimePicker name='PFormDateTimePicker' time='minute' disablePast maxDate={dayjs().add(1, 'day')} />

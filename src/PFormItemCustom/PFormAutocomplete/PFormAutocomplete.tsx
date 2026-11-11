@@ -43,7 +43,6 @@ function PFormAutocomplete<
   color: initColor,
   focused: initFocused,
   labelShrink: initLabelShrink,
-  fullWidth: initFullWidth,
   /********************************************************************************************************************/
   name,
   labelIcon,
@@ -135,7 +134,6 @@ function PFormAutocomplete<
     color: formColor,
     focused: formFocused,
     labelShrink: formLabelShrink,
-    fullWidth: formFullWidth,
     disabled: formDisabled,
     onAddValueItem,
     onRemoveValueItem,
@@ -153,7 +151,6 @@ function PFormAutocomplete<
   const color = initColor ?? formColor;
   const focused = initFocused ?? formFocused;
   const labelShrink = initLabelShrink ?? formLabelShrink;
-  const fullWidth = initFullWidth ?? formFullWidth;
 
   /** error */
   const [error, _setError] = useState(initError);
@@ -707,8 +704,8 @@ function PFormAutocomplete<
       options={items || []}
       className={classNames(className, 'PFormValueItem', 'PFormAutocomplete')}
       sx={sx}
+      fullWidth
       multiple={multiple}
-      fullWidth={!width && fullWidth}
       openOnFocus={openOnFocus}
       disableClearable={disableClearable}
       disablePortal={disablePortal}

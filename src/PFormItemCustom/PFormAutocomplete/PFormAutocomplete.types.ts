@@ -41,7 +41,7 @@ export interface PFormAutocompleteProps<
 >
   extends
     PCommonSxProps,
-    PFormValueItemProps<Value>,
+    Omit<PFormValueItemProps<Value>, 'fullWidth'>,
     Pick<PFormTextFieldProps<SingleValue>, 'required' | 'focused' | 'labelShrink' | 'onFocus' | 'onBlur'> {
   ref?: React.Ref<PFormAutocompleteCommands<SingleValue, Multiple>>;
   items?: Items;

@@ -11324,14 +11324,13 @@ _PFormTextEditor.apiKey = '';
 function _temp$f() {
   return "PFormTextEditor";
 }function PFormAutocomplete(t0) {
-  var $ = c(254);
+  var $ = c(253);
   var ref = t0.ref,
     initVariant = t0.variant,
     initSize = t0.size,
     initColor = t0.color,
     initFocused = t0.focused,
     initLabelShrink = t0.labelShrink,
-    initFullWidth = t0.fullWidth,
     name = t0.name,
     labelIcon = t0.labelIcon,
     label = t0.label,
@@ -11397,7 +11396,6 @@ function _temp$f() {
     formColor = _useFormState.color,
     formFocused = _useFormState.focused,
     formLabelShrink = _useFormState.labelShrink,
-    formFullWidth = _useFormState.fullWidth,
     formDisabled = _useFormState.disabled,
     onAddValueItem = _useFormState.onAddValueItem,
     onRemoveValueItem = _useFormState.onRemoveValueItem,
@@ -11409,7 +11407,6 @@ function _temp$f() {
   var color = initColor !== null && initColor !== void 0 ? initColor : formColor;
   var focused = initFocused !== null && initFocused !== void 0 ? initFocused : formFocused;
   var labelShrink = initLabelShrink !== null && initLabelShrink !== void 0 ? initLabelShrink : formLabelShrink;
-  var fullWidth = initFullWidth !== null && initFullWidth !== void 0 ? initFullWidth : formFullWidth;
   var _useState = useState(initError),
     _useState2 = _slicedToArray(_useState, 2),
     error = _useState2[0],
@@ -12471,34 +12468,33 @@ function _temp$f() {
   } else {
     t69 = $[198];
   }
-  var t70 = !width && fullWidth;
-  var t71 = displayValue;
-  var t72 = loading || isOnGetItemLoading;
-  var t73;
+  var t70 = displayValue;
+  var t71 = loading || isOnGetItemLoading;
+  var t72;
   if ($[199] !== handleChange) {
-    t73 = function t73(e, value_4, reason_0, details_0) {
+    t72 = function t72(e, value_4, reason_0, details_0) {
       return handleChange(value_4, reason_0, details_0);
     };
     $[199] = handleChange;
-    $[200] = t73;
+    $[200] = t72;
   } else {
-    t73 = $[200];
+    t72 = $[200];
   }
-  var t74;
+  var t73;
   if ($[201] !== onRenderItem) {
-    t74 = function t74(props, option_1) {
+    t73 = function t73(props, option_1) {
       return /*#__PURE__*/React.createElement("li", _extends({}, props, {
         key: "".concat(option_1.value)
       }), onRenderItem ? onRenderItem(option_1) : option_1.label);
     };
     $[201] = onRenderItem;
-    $[202] = t74;
+    $[202] = t73;
   } else {
-    t74 = $[202];
+    t73 = $[202];
   }
-  var t75;
+  var t74;
   if ($[203] === Symbol["for"]("react.memo_cache_sentinel")) {
-    t75 = function t75(event, newInputValue, reason_1) {
+    t74 = function t74(event, newInputValue, reason_1) {
       if (reason_1 === "input") {
         setInputValue(newInputValue);
       } else {
@@ -12507,13 +12503,13 @@ function _temp$f() {
         }
       }
     };
-    $[203] = t75;
+    $[203] = t74;
   } else {
-    t75 = $[203];
+    t74 = $[203];
   }
-  var t76;
+  var t75;
   if ($[204] !== multiple || $[205] !== onRenderTag || $[206] !== onRenderValue || $[207] !== size || $[208] !== variant) {
-    t76 = multiple ? function (value_5, getItemProps) {
+    t75 = multiple ? function (value_5, getItemProps) {
       if (Array.isArray(value_5)) {
         return value_5.map(function (option_2, index) {
           return /*#__PURE__*/React.createElement(Chip, _extends({
@@ -12552,13 +12548,13 @@ function _temp$f() {
     $[206] = onRenderValue;
     $[207] = size;
     $[208] = variant;
-    $[209] = t76;
+    $[209] = t75;
   } else {
-    t76 = $[209];
+    t75 = $[209];
   }
-  var t77;
+  var t76;
   if ($[210] !== autoFocus || $[211] !== color || $[212] !== disabled || $[213] !== error || $[214] !== errorHelperText || $[215] !== focused || $[216] !== helperText || $[217] !== isOnGetItemLoading || $[218] !== label || $[219] !== labelIcon || $[220] !== labelShrink || $[221] !== loading || $[222] !== name || $[223] !== onBlurRef || $[224] !== onFocusRef || $[225] !== placeholder || $[226] !== readOnly || $[227] !== required || $[228] !== size || $[229] !== variant) {
-    t77 = function t77(params) {
+    t76 = function t76(params) {
       var _params$inputProps;
       var slotProps = {
         input: _objectSpread2(_objectSpread2({}, params.InputProps), {}, {
@@ -12631,37 +12627,37 @@ function _temp$f() {
     $[227] = required;
     $[228] = size;
     $[229] = variant;
-    $[230] = t77;
+    $[230] = t76;
   } else {
-    t77 = $[230];
+    t76 = $[230];
   }
-  var t78;
-  if ($[231] !== disableClearable || $[232] !== disablePortal || $[233] !== disabled || $[234] !== getLimitTagsText || $[235] !== handleGetOptionDisabled || $[236] !== limitTags || $[237] !== loadingText || $[238] !== multiple || $[239] !== noOptionsText || $[240] !== openOnFocus || $[241] !== readOnly || $[242] !== style || $[243] !== sx || $[244] !== t68 || $[245] !== t69 || $[246] !== t70 || $[247] !== t71 || $[248] !== t72 || $[249] !== t73 || $[250] !== t74 || $[251] !== t76 || $[252] !== t77) {
-    t78 = /*#__PURE__*/React.createElement(Autocomplete, {
+  var t77;
+  if ($[231] !== disableClearable || $[232] !== disablePortal || $[233] !== disabled || $[234] !== getLimitTagsText || $[235] !== handleGetOptionDisabled || $[236] !== limitTags || $[237] !== loadingText || $[238] !== multiple || $[239] !== noOptionsText || $[240] !== openOnFocus || $[241] !== readOnly || $[242] !== style || $[243] !== sx || $[244] !== t68 || $[245] !== t69 || $[246] !== t70 || $[247] !== t71 || $[248] !== t72 || $[249] !== t73 || $[250] !== t75 || $[251] !== t76) {
+    t77 = /*#__PURE__*/React.createElement(Autocomplete, {
       options: t68,
       className: t69,
       sx: sx,
+      fullWidth: true,
       multiple: multiple,
-      fullWidth: t70,
       openOnFocus: openOnFocus,
       disableClearable: disableClearable,
       disablePortal: disablePortal,
       noOptionsText: noOptionsText,
-      value: t71,
+      value: t70,
       style: style,
       isOptionEqualToValue: _temp6,
       getOptionDisabled: handleGetOptionDisabled,
       disabled: disabled,
       readOnly: readOnly,
-      loading: t72,
+      loading: t71,
       loadingText: loadingText,
       limitTags: limitTags,
       getLimitTagsText: getLimitTagsText,
-      onChange: t73,
-      renderOption: t74,
-      onInputChange: t75,
-      renderValue: t76,
-      renderInput: t77
+      onChange: t72,
+      renderOption: t73,
+      onInputChange: t74,
+      renderValue: t75,
+      renderInput: t76
     });
     $[231] = disableClearable;
     $[232] = disablePortal;
@@ -12682,14 +12678,13 @@ function _temp$f() {
     $[247] = t71;
     $[248] = t72;
     $[249] = t73;
-    $[250] = t74;
+    $[250] = t75;
     $[251] = t76;
     $[252] = t77;
-    $[253] = t78;
   } else {
-    t78 = $[253];
+    t77 = $[252];
   }
-  return t78;
+  return t77;
 }
 function _temp6(option_0, value_3) {
   return option_0.value === value_3.value;
