@@ -6246,14 +6246,11 @@ var PFormPersonalNo = function PFormPersonalNo(t0) {
         if (value_0.length === 14 && value_0.includes("-")) {
           var jumin = value_0.replace(/-/g, "").split("").map(_temp$k);
           var ckarr = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5];
-          for (var i = 0; i < jumin.length - 1; i = i + 1, i) {
-            jumin[i] = jumin[i] * ckarr[i];
-          }
           var juminlast = jumin[jumin.length - 1];
-          var sum = 0;
-          for (var i_0 = 0; i_0 < jumin.length - 1; i_0 = i_0 + 1, i_0) {
-            sum = sum + jumin[i_0];
-          }
+          var sum = jumin.slice(0, -1).reduce(function (total, digit, index) {
+            var _ckarr$index;
+            return total + digit * ((_ckarr$index = ckarr[index]) !== null && _ckarr$index !== void 0 ? _ckarr$index : NaN);
+          }, 0);
           sum = sum % 11;
           sum = 11 - sum;
           if (sum > 9) {
@@ -9294,8 +9291,9 @@ function _temp$i() {
               setFirstItem = true;
             }
           }
-          if (setFirstItem) {
-            updateValue(multiple ? [items[0].value] : items[0].value);
+          var firstItem = items[0];
+          if (setFirstItem && firstItem) {
+            updateValue(multiple ? [firstItem.value] : firstItem.value);
           }
         }
       }
@@ -13273,6 +13271,9 @@ var PrivateYearSelect = function PrivateYearSelect(t0) {
       if (activeEls && activeEls.length > 0) {
         var _containerRef$current2, _simpleBarRef$current;
         var activeEl = activeEls[0];
+        if (!activeEl) {
+          return;
+        }
         var activeRect = activeEl.getBoundingClientRect();
         var containerRect = (_containerRef$current2 = containerRef.current) === null || _containerRef$current2 === void 0 ? void 0 : _containerRef$current2.getBoundingClientRect();
         var simpleBarRect = (_simpleBarRef$current = simpleBarRef.current) === null || _simpleBarRef$current === void 0 ? void 0 : _simpleBarRef$current.getBoundingClientRect();
@@ -13575,6 +13576,9 @@ var PrivateTimeSelect = function PrivateTimeSelect(t0) {
           scrollTimerRef.current = undefined;
         }
         var valueEl = valueEls[0];
+        if (!valueEl) {
+          return;
+        }
         scrollTimerRef.current = setInterval(function () {
           var valueRect = valueEl.getBoundingClientRect();
           if (valueRect.top !== lastSelectedTop) {
@@ -21397,6 +21401,7 @@ var PFormDateRangePickerTooltipPickerContainer = function PFormDateRangePickerTo
     _useState4 = _slicedToArray(_useState3, 2),
     yearMonthSelectIndex = _useState4[0],
     setYearMonthSelectIndex = _useState4[1];
+  var selectedValue = yearMonthSelectIndex === 2 ? undefined : value[yearMonthSelectIndex];
   var _useState5 = useState(false),
     _useState6 = _slicedToArray(_useState5, 2),
     yearSelectOpen = _useState6[0],
@@ -21903,7 +21908,7 @@ var PFormDateRangePickerTooltipPickerContainer = function PFormDateRangePickerTo
     t33 = $[87];
   }
   var t34;
-  if ($[88] !== availableDate || $[89] !== handleYearSelect || $[90] !== months || $[91] !== theme || $[92] !== value || $[93] !== yearMonthSelectIndex || $[94] !== yearSelectOpen) {
+  if ($[88] !== availableDate || $[89] !== handleYearSelect || $[90] !== months || $[91] !== selectedValue || $[92] !== theme || $[93] !== yearMonthSelectIndex || $[94] !== yearSelectOpen) {
     t34 = yearSelectOpen && /*#__PURE__*/React.createElement("div", {
       ref: yearSelectRef,
       className: "year-select"
@@ -21914,11 +21919,10 @@ var PFormDateRangePickerTooltipPickerContainer = function PFormDateRangePickerTo
       },
       spacing: 1
     }, YEARS.map(function (y) {
-      var _value$yearMonthSelec;
       var today = dayjs();
       var isToday = y === today.year();
       var isActive = y === months[yearMonthSelectIndex].year();
-      var isSelected = y === ((_value$yearMonthSelec = value[yearMonthSelectIndex]) === null || _value$yearMonthSelec === void 0 ? void 0 : _value$yearMonthSelec.year());
+      var isSelected = y === (selectedValue === null || selectedValue === void 0 ? void 0 : selectedValue.year());
       var disabled_0 = !isDateAvailable(dayjs(y.toString(), "YYYY"), availableDate, "year");
       return /*#__PURE__*/React.createElement(Grid, {
         key: y,
@@ -21946,8 +21950,8 @@ var PFormDateRangePickerTooltipPickerContainer = function PFormDateRangePickerTo
     $[88] = availableDate;
     $[89] = handleYearSelect;
     $[90] = months;
-    $[91] = theme;
-    $[92] = value;
+    $[91] = selectedValue;
+    $[92] = theme;
     $[93] = yearMonthSelectIndex;
     $[94] = yearSelectOpen;
     $[95] = t34;
@@ -21955,7 +21959,7 @@ var PFormDateRangePickerTooltipPickerContainer = function PFormDateRangePickerTo
     t34 = $[95];
   }
   var t35;
-  if ($[96] !== availableDate || $[97] !== handleMonthSelect || $[98] !== monthSelectOpen || $[99] !== months || $[100] !== theme || $[101] !== value || $[102] !== yearMonthSelectIndex) {
+  if ($[96] !== availableDate || $[97] !== handleMonthSelect || $[98] !== monthSelectOpen || $[99] !== months || $[100] !== selectedValue || $[101] !== theme || $[102] !== yearMonthSelectIndex) {
     t35 = monthSelectOpen && /*#__PURE__*/React.createElement("div", {
       className: "month-select"
     }, /*#__PURE__*/React.createElement(Grid, {
@@ -21965,11 +21969,10 @@ var PFormDateRangePickerTooltipPickerContainer = function PFormDateRangePickerTo
       },
       spacing: 1
     }, MONTHS.map(function (m_0) {
-      var _value$yearMonthSelec2, _value$yearMonthSelec3;
       var today_0 = dayjs();
       var isToday_0 = today_0.year() === months[yearMonthSelectIndex].year() && m_0 === today_0.month();
       var isActive_0 = m_0 === months[yearMonthSelectIndex].month();
-      var isSelected_0 = ((_value$yearMonthSelec2 = value[yearMonthSelectIndex]) === null || _value$yearMonthSelec2 === void 0 ? void 0 : _value$yearMonthSelec2.year()) === months[yearMonthSelectIndex].year() && m_0 === ((_value$yearMonthSelec3 = value[yearMonthSelectIndex]) === null || _value$yearMonthSelec3 === void 0 ? void 0 : _value$yearMonthSelec3.month());
+      var isSelected_0 = (selectedValue === null || selectedValue === void 0 ? void 0 : selectedValue.year()) === months[yearMonthSelectIndex].year() && m_0 === (selectedValue === null || selectedValue === void 0 ? void 0 : selectedValue.month());
       var ym = months[yearMonthSelectIndex].year() * 100 + (m_0 + 1);
       var disabled_1 = !isDateAvailable(dayjs(ym.toString(), "YYYYMM"), availableDate, "month");
       return /*#__PURE__*/React.createElement(Grid, {
@@ -21999,8 +22002,8 @@ var PFormDateRangePickerTooltipPickerContainer = function PFormDateRangePickerTo
     $[97] = handleMonthSelect;
     $[98] = monthSelectOpen;
     $[99] = months;
-    $[100] = theme;
-    $[101] = value;
+    $[100] = selectedValue;
+    $[101] = theme;
     $[102] = yearMonthSelectIndex;
     $[103] = t35;
   } else {
@@ -24298,8 +24301,12 @@ var PFormFile = function PFormFile(t0) {
   if ($[83] !== fileSizeCheck || $[84] !== name || $[85] !== onFile || $[86] !== onValueChangeByUser || $[87] !== updateValue) {
     t35 = function t35(e) {
       if (onFile) {
+        var _target$files;
         var target = e.currentTarget;
-        var file_0 = target.files[0];
+        var file_0 = (_target$files = target.files) === null || _target$files === void 0 ? void 0 : _target$files[0];
+        if (!file_0) {
+          return;
+        }
         fileSizeCheck(file_0).then(function () {
           onFile(file_0).then(function (url) {
             updateValue(url);
@@ -31784,8 +31791,10 @@ var PHashSearch = function PHashSearch(t0) {
       if (commands) {
         commands.resetAll();
         var hashValues = deHash();
-        Object.keys(hashValues).forEach(function (name) {
-          var value_0 = hashValues[name];
+        Object.entries(hashValues).forEach(function (t2) {
+          var _t2 = _slicedToArray(t2, 2),
+            name = _t2[0],
+            value_0 = _t2[1];
           var itemCommands = commands.getItem(name);
           if (itemCommands) {
             bb11: switch (itemCommands.getType()) {
@@ -31949,8 +31958,10 @@ var PHashSearch = function PHashSearch(t0) {
     t4 = function t4(params) {
       if (onRequestHashChangeRef.current) {
         var hashes = [];
-        Object.keys(params).forEach(function (name_0) {
-          var value_1 = params[name_0];
+        Object.entries(params).forEach(function (t5) {
+          var _t3 = _slicedToArray(t5, 2),
+            name_0 = _t3[0],
+            value_1 = _t3[1];
           if (searchRef.current) {
             var itemCommands_0 = searchRef.current.getItem(name_0);
             if (itemCommands_0) {

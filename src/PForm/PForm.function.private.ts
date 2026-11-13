@@ -101,7 +101,7 @@ export const appendFormValueData = (data: PFormValueMap, itemCommands: PFormValu
     case 'PFormDateRangePicker':
       {
         const commands = itemCommands as PFormRangeValueItemNameCommands;
-        const value = getItemFormValue(itemCommands) as PFormValue[];
+        const value = getItemFormValue(itemCommands) as [PFormValue, PFormValue];
         data[commands.getFormValueFromName()] = value[0];
         data[commands.getFormValueToName()] = value[1];
       }
@@ -119,7 +119,7 @@ export const appendFormValueData = (data: PFormValueMap, itemCommands: PFormValu
     case 'PFormYearRangePicker':
       {
         const commands = itemCommands as PFormRangeValueItemNameCommands;
-        const value = getItemFormValue(itemCommands) as PFormValue[];
+        const value = getItemFormValue(itemCommands) as [PFormValue, PFormValue];
         data[commands.getFormValueFromName()] = value[0];
         data[commands.getFormValueToName()] = value[1];
       }
@@ -128,7 +128,7 @@ export const appendFormValueData = (data: PFormValueMap, itemCommands: PFormValu
     case 'PFormMonthRangePicker':
       {
         const commands = itemCommands as PFormYearMonthRangeValueItemNameCommands;
-        const value = getItemFormValue(itemCommands) as PFormYearMonthValue[];
+        const value = getItemFormValue(itemCommands) as [PFormYearMonthValue, PFormYearMonthValue];
         data[commands.getFormValueFromYearName()] = value[0].year;
         data[commands.getFormValueFromMonthName()] = value[0].month;
         data[commands.getFormValueToYearName()] = value[1].year;

@@ -46,6 +46,7 @@ const PrivateTimeSelect = ({
       }
 
       const valueEl = valueEls[0];
+      if (!valueEl) return;
       scrollTimerRef.current = setInterval(() => {
         const valueRect = valueEl.getBoundingClientRect();
         if (valueRect.top !== lastSelectedTop) {

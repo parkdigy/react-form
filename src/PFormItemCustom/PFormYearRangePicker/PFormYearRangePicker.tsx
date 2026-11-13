@@ -466,7 +466,7 @@ export const PFormYearRangePickerInternal = ({
    * Render - Variable
    * ******************************************************************************************************************/
 
-  const valueDate = useMemo(
+  const valueDate = useMemo<[Dayjs | null, Dayjs | null]>(
     () => [!!value && !!value[0] ? valueToDate(value[0]) : null, !!value && !!value[1] ? valueToDate(value[1]) : null],
     [value]
   );

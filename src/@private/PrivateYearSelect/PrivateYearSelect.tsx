@@ -29,6 +29,7 @@ const PrivateYearSelect = ({ selectYear, activeYear, availableDate, onSelect: in
     const activeEls = containerRef.current?.getElementsByClassName(`private-year-select-value-${activeYear}`);
     if (activeEls && activeEls.length > 0) {
       const activeEl = activeEls[0];
+      if (!activeEl) return;
 
       const activeRect = activeEl.getBoundingClientRect();
       const containerRect = containerRef.current?.getBoundingClientRect();

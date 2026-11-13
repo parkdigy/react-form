@@ -399,8 +399,9 @@ function PFormToggleButtonGroup<
           }
         }
 
-        if (setFirstItem) {
-          updateValue((multiple ? [items[0].value] : items[0].value) as Props['value']);
+        const firstItem = items[0];
+        if (setFirstItem && firstItem) {
+          updateValue((multiple ? [firstItem.value] : firstItem.value) as Props['value']);
         }
       }
     }

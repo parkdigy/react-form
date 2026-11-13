@@ -197,7 +197,7 @@ const PForm = ({
           case 'PFormEmbedYearRangePicker':
           case 'PFormYearRangePicker': {
             const commands = valueItem as PFormRangeValueItemNameCommands;
-            const value = getItemFormValue(valueItem, !!isReset) as PFormValue[];
+            const value = getItemFormValue(valueItem, !!isReset) as [PFormValue, PFormValue];
             if (notEmpty(subKey)) {
               if (subKey === commands.getFormValueFromNameSuffix()) {
                 return value[0];
@@ -233,7 +233,7 @@ const PForm = ({
           case 'PFormEmbedMonthRangePicker':
           case 'PFormMonthRangePicker': {
             const commands = valueItem as PFormYearMonthRangeValueItemNameCommands;
-            const value = getItemFormValue(valueItem, !!isReset) as { year: number | ''; month: number | '' }[];
+            const value = getItemFormValue(valueItem, !!isReset) as [PFormYearMonthValue, PFormYearMonthValue];
             if (notEmpty(subKey)) {
               if (subKey === commands.getFormValueFromYearNameSuffix()) {
                 return value[0].year;

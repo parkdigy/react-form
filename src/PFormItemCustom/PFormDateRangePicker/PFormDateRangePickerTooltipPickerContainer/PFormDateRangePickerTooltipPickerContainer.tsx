@@ -62,7 +62,8 @@ const PFormDateRangePickerTooltipPickerContainer = ({
    * ******************************************************************************************************************/
 
   const [focusedDate, setFocusedDate] = useState<PFormDateRangePickerTooltipPickerDateValue>();
-  const [yearMonthSelectIndex, setYearMonthSelectIndex] = useState<number>(0);
+  const [yearMonthSelectIndex, setYearMonthSelectIndex] = useState<0 | 1 | 2>(0);
+  const selectedValue = yearMonthSelectIndex === 2 ? undefined : value[yearMonthSelectIndex];
   const [yearSelectOpen, setYearSelectOpen] = useState(false);
   const [monthSelectOpen, setMonthSelectOpen] = useState(false);
 
@@ -145,7 +146,7 @@ const PFormDateRangePickerTooltipPickerContainer = ({
 
   /** handleYearSelectClick */
   const handleYearSelectClick = useCallback(
-    (index: number) => {
+    (index: 0 | 1 | 2) => {
       if (yearSelectOpen) {
         setYearSelectOpen(false);
         if (index !== yearMonthSelectIndex) {
@@ -166,7 +167,7 @@ const PFormDateRangePickerTooltipPickerContainer = ({
 
   /** handleMonthSelectClick */
   const handleMonthSelectClick = useCallback(
-    (index: number) => {
+    (index: 0 | 1 | 2) => {
       if (monthSelectOpen) {
         setMonthSelectOpen(false);
         if (index !== yearMonthSelectIndex) {
@@ -208,7 +209,7 @@ const PFormDateRangePickerTooltipPickerContainer = ({
 
   /** getMonthTitle */
   const getMonthTitle = useCallback(
-    (index: number): ReactNode => {
+    (index: 0 | 1 | 2): ReactNode => {
       return (
         <div className='month-title'>
           <Button
@@ -383,7 +384,7 @@ const PFormDateRangePickerTooltipPickerContainer = ({
                     const today = dayjs();
                     const isToday = y === today.year();
                     const isActive = y === months[yearMonthSelectIndex].year();
-                    const isSelected = y === value[yearMonthSelectIndex]?.year();
+                    const isSelected = y === selectedValue?.year();
                     const disabled = !isDateAvailable(dayjs(y.toString(), 'YYYY'), availableDate, 'year');
 
                     return (
@@ -421,8 +422,8 @@ const PFormDateRangePickerTooltipPickerContainer = ({
                     const isToday = today.year() === months[yearMonthSelectIndex].year() && m === today.month();
                     const isActive = m === months[yearMonthSelectIndex].month();
                     const isSelected =
-                      value[yearMonthSelectIndex]?.year() === months[yearMonthSelectIndex].year() &&
-                      m === value[yearMonthSelectIndex]?.month();
+                      selectedValue?.year() === months[yearMonthSelectIndex].year() &&
+                      m === selectedValue?.month();
                     const ym = months[yearMonthSelectIndex].year() * 100 + (m + 1);
                     const disabled = !isDateAvailable(dayjs(ym.toString(), 'YYYYMM'), availableDate, 'month');
 

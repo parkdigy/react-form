@@ -341,7 +341,8 @@ const PFormFile = ({
     (e: ChangeEvent<HTMLInputElement>) => {
       if (onFile) {
         const target = e.currentTarget;
-        const file = (target.files as FileList)[0];
+        const file = target.files?.[0];
+        if (!file) return;
         fileSizeCheck(file).then(() => {
           onFile(file).then((url) => {
             updateValue(url);

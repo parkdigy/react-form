@@ -63,8 +63,7 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
       commands.resetAll();
 
       const hashValues = deHash();
-      Object.keys(hashValues).forEach((name) => {
-        const value: PFormValue = hashValues[name];
+      Object.entries(hashValues).forEach(([name, value]) => {
         const itemCommands = commands.getItem(name);
         if (itemCommands) {
           switch (itemCommands.getType()) {
@@ -198,8 +197,7 @@ export const PHashSearch = ({ ref, className, noAutoSubmit, onSubmit, onRequestH
     (params: PFormValueMap) => {
       if (onRequestHashChangeRef.current) {
         const hashes: string[] = [];
-        Object.keys(params).forEach((name) => {
-          const value = params[name];
+        Object.entries(params).forEach(([name, value]) => {
           if (searchRef.current) {
             const itemCommands = searchRef.current.getItem(name);
 

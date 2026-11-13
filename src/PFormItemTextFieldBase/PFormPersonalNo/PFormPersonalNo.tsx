@@ -43,15 +43,8 @@ const PFormPersonalNo = ({
             .map((v) => Number(v));
           const ckarr = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5];
 
-          for (let i = 0; i < jumin.length - 1; i += 1) {
-            jumin[i] = jumin[i] * ckarr[i];
-          }
           const juminlast = jumin[jumin.length - 1];
-
-          let sum = 0;
-          for (let i = 0; i < jumin.length - 1; i += 1) {
-            sum += jumin[i];
-          }
+          let sum = jumin.slice(0, -1).reduce((total, digit, index) => total + digit * (ckarr[index] ?? NaN), 0);
 
           sum = sum % 11;
 
